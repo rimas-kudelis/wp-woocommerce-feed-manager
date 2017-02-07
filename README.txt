@@ -1,4 +1,4 @@
-=== Best-WooCommerce-Product-Feed ===
+=== Best WooCommerce Product Feed ===
 Contributors: rextheme
 Donate link: https://rextheme.com
 Tags: woocommerce-product-feed, xml-export, google-shopping, google-shopping-feed, google-merchant-feed
