@@ -26,4 +26,3 @@ This plugin helps you to create xml product feed based on your WooCommerce produ
 
 = 1.0 =
 * Initial version with support for Google Merchant
-* Another change.
