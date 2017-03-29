@@ -27,9 +27,8 @@ You can post your product feeds manually from your site. Your feeds are also acc
 
 == Changelog ==
 
+= 1.0.0 =
+* Initial version with support for Google Merchant
+
 = 1.0.1 =
 * Optimize to deal with large numbers of products.
-
-= 1.0 =
-* Initial version with support for Google Merchant
-* Another change.
