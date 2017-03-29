@@ -101,8 +101,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	protected function prepare_products_args( $args ) {
 
 		$this->products_args = array(
-			'post_type'      => 'product',
-			'posts_per_page' => -1,
+			'post_type'              => 'product',
+      'fields'                 => 'ids',
+      'posts_per_page'         => -1,
+      'update_post_term_cache' => false,
+      'update_post_meta_cache' => false,
 		);
 
 		if ( $args['products_scope'] === 'custom'){
@@ -156,7 +159,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         return array(
-			'id'           => $product->get_id(),
+            'id'           => $product->get_id(),
             'sku'          => $product->get_sku(),
             'title'        => $product->get_title(),
             'desc'         => $product->get_post_data()->post_excerpt,

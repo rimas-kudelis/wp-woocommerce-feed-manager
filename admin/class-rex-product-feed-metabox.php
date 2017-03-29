@@ -58,7 +58,6 @@ class Rex_Product_Metabox {
                 'all'    => __( 'All Published Products', 'rex-product-feed' ),
                 'product_cat'   => __( 'Map Category', 'rex-product-feed' ),
                 'product_tag'   => __( 'Map Tag', 'rex-product-feed' ),
-                'custom' => __( 'Custom', 'rex-product-feed' ),
             ),
         ) );
 
@@ -91,26 +90,6 @@ class Rex_Product_Metabox {
                 'data-conditional-value' => 'product_tag',
             ),
         ) );
-
-        $box->add_field( array(
-            'name'    => __( 'Attach Products', 'cmb2' ),
-            'desc'    => __( 'Drag products from the left column to the right column to attach them to this feed.<br />You may rearrange the order of the posts in the right column by dragging and dropping.', 'cmb2' ),
-            'id'      => $this->prefix . 'product_items',
-            'type'    => 'custom_attached_posts',
-            'options' => array(
-                'show_thumbnails' => true, // Show thumbnails on the left
-                'filter_boxes'    => true, // Show a text box for filtering the results
-                'query_args'      => array(
-                    'posts_per_page' => -1,
-                    'post_type'      => 'product',
-                ),
-            ),
-            'attributes' => array(
-                'data-conditional-id'    => $this->prefix . 'products',
-                'data-conditional-value' => 'custom',
-            ),
-        ) );
-
     }
 
     /**
