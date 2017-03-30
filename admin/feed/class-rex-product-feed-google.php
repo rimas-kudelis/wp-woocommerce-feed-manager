@@ -31,7 +31,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
 
 		foreach( $this->products as $product ) {
 
-			$data = $this->get_product_data( $product->ID );
+			$data = $this->get_product_data( $product );
 
 			$item = GoogleShopping::createItem();
 			$item->id($data['id']);
