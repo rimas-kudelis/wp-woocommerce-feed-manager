@@ -4,7 +4,7 @@ Donate link: https://rextheme.com
 Tags: woocommerce-product-feed, xml-export, google-shopping, google-shopping-feed, google-merchant-feed
 Requires at least: 3.0.1
 Tested up to: 4.7.2
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,3 +35,8 @@ You can post your product feeds manually from your site. Your feeds are also acc
 
 = 1.0.2 =
 * Fix issue with feed attributes values.
+
+= 1.1.0 =
+* New feature: Feed customization with custom attributes and values.
+* Improves UI
+* Bug fixes

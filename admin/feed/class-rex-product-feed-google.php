@@ -29,21 +29,16 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
 		GoogleShopping::link($this->link);
 		GoogleShopping::description($this->desc);
 
+    // Loop through all products.
 		foreach( $this->products as $product ) {
 
-			$data = $this->get_product_data( $product );
-
+			$atts = $this->get_product_data( $product );
 			$item = GoogleShopping::createItem();
-			$item->id($data['id']);
-			$item->title($data['title']);
-			$item->description($data['desc']);
-			$item->price($data['price']);
-			$item->availability($data['availability']);
-			$item->condition('new');
-            $item->mpn($data['sku']);
-            $item->identifier_exists('no');
-			$item->link($data['link']);
-			$item->image_link($data['image']);
+
+      // add all attributes for each product.
+      foreach ($atts as $key => $value) {
+        $item->$key($value); // invoke $key as method of $item object.
+      }
 
 		}
 

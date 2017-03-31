@@ -14,38 +14,38 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
     );
 
     public static $prefixLengthsPsr4 = array (
-        'P' =>
+        'P' => 
         array (
             'PhilipNewcomer\\WP_Ajax_Helper\\' => 30,
         ),
-        'C' =>
+        'C' => 
         array (
             'Composer\\Installers\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'PhilipNewcomer\\WP_Ajax_Helper\\' =>
+        'PhilipNewcomer\\WP_Ajax_Helper\\' => 
         array (
             0 => __DIR__ . '/..' . '/philipnewcomer/wp-ajax-helper/src/components',
         ),
-        'Composer\\Installers\\' =>
+        'Composer\\Installers\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'L' =>
+        'L' => 
         array (
-            'LukeSnowden\\GoogleShoppingFeed' =>
+            'LukeSnowden\\GoogleShoppingFeed' => 
             array (
                 0 => __DIR__ . '/..' . '/lukesnowden/google-shopping-feed/src',
             ),
         ),
-        'G' =>
+        'G' => 
         array (
-            'Gregwar\\Cache' =>
+            'Gregwar\\Cache' => 
             array (
                 0 => __DIR__ . '/..' . '/gregwar/cache',
             ),

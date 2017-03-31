@@ -117,6 +117,25 @@ class Rex_Product_Metabox {
             ),
         ) );
 
+        $box->add_field( array(
+            'id'        => $this->prefix . 'config_heading',
+            'name'      => 'Configure Feed Attributes and values.',
+            'type'      => 'title',
+            'after_row' => array($this, 'atts_config_cb'),
+        ) );
+
+    }
+
+    /**
+     * Display Feed Config Metabox.
+     *
+     * @return void
+     * @author Khorshed Alam
+     **/
+    public function atts_config_cb($field_args, $field){
+      $feed_rules    = get_post_meta( $field->object_id, $this->prefix . 'feed_config', true );
+      $feed_template = new Rex_Feed_Template_Google($feed_rules);
+      require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
     }
 
     /**
@@ -149,13 +168,15 @@ class Rex_Product_Metabox {
 
     }
 
-    public  function after_field_xml_file_cb($field_args, $field){
+    public function after_field_xml_file_cb($field_args, $field){
         $feed_url = get_post_meta( $field->object_id, $this->prefix . 'xml_file', true );
         // Only show feed url not empty.
         if ( strlen($feed_url) > 0 ){
             $url = esc_url( get_post_meta( $field->object_id, 'rex_feed_xml_file', true ) );
-            echo '<a target="_blank" class="button" href="' . $url . '">View Feed</a> ';
-            echo '<a target="_blank" class="button" href="' . $url . '" download>Download</a>';
+            echo '<a target="_blank" class="btn waves-effect waves-light" href="' . $url . '">
+              <i class="material-icons">open_in_new</i>View Feed</a> ';
+            echo '<a target="_blank" class="btn waves-effect waves-light" href="' . $url . '" download>
+            <i class="material-icons">system_update_alt</i>Download</a>';
         }
     }
 

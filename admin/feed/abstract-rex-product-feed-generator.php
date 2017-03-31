@@ -53,6 +53,15 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	 */
 	protected $link;
 
+  /**
+   * The feed rules containig all attributes and their value mappings for the feed.
+   *
+   * @since    1.0.0
+   * @access   protected
+   * @var      Rex_Product_Feed_Abstract_Generator    $feed_rules    Contains attributes and value mappings for the feed.
+   */
+  protected $feed_rules;
+
 	/**
 	 * The Product Query args to retrieve specific products for making the Feed.
 	 *
@@ -90,7 +99,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	 */
 	public function __construct( $config ) {
 		$this->prepare_products_args( $config['products'] );
-		$this->setup_feed_data( $config['info'] );
+    $this->setup_feed_data( $config['info'] );
+		$this->setup_feed_rules( $config['feed_config'] );
 		$this->setup_products();
 	}
 
@@ -101,7 +111,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	protected function prepare_products_args( $args ) {
 
 		$this->products_args = array(
-			'post_type'              => 'product',
+      'post_type'              => 'product',
       'fields'                 => 'ids',
       'posts_per_page'         => -1,
       'update_post_term_cache' => false,
@@ -132,6 +142,21 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 		$this->link  = esc_url( home_url('/') );
 	}
 
+  /**
+   * Setup the rules
+   * @param $info
+   */
+  protected function setup_feed_rules( $info ){
+    $feed_rules       = array();
+    parse_str( $info, $feed_rules );
+
+    $feed_rules       = $feed_rules['fc'];
+    $this->feed_rules = $feed_rules;
+
+    // save the feed_rules into feed post_meta.
+    update_post_meta( $this->id, 'rex_feed_feed_config', $this->feed_rules );
+  }
+
 
 	/**
 	 * Get the products to generate feed
@@ -149,8 +174,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	 *
 	 * @return array
 	 */
-	protected function get_product_data( $id = false ){
-		$product = new WC_Product($id);
+	protected function get_product_data( $product_id = false ){
+		$data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules );
+    return $data->get_all_data();
 
         if ( $product->is_in_stock() == TRUE ) {
             $availability = 'in stock';
@@ -159,7 +185,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         return array(
-            'id'           => $product->get_id(),
+      			'id'           => $product->get_id(),
             'sku'          => $product->get_sku(),
             'title'        => $product->get_title(),
             'desc'         => $product->get_post_data()->post_excerpt,

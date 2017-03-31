@@ -80,7 +80,7 @@ class Rex_Product_Feed_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles($hook) {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -94,7 +94,18 @@ class Rex_Product_Feed_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rex-product-feed-admin.css', array(), $this->version, 'all' );
+    $screen = get_current_screen();
+
+    if( $hook != 'post.php' && $hook != 'post-new.php' ){
+      return;
+    }
+
+    if ( $screen->post_type === 'product-feed' ) {
+      wp_enqueue_style( 'materialize-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+      wp_enqueue_style( 'materialize-css', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
+  		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rex-product-feed-admin.css', array(), $this->version, 'all' );
+    }
+
 
 	}
 
@@ -103,7 +114,7 @@ class Rex_Product_Feed_Admin {
    *
    * @since    1.0.0
    */
-  public function enqueue_scripts() {
+  public function enqueue_scripts($hook) {
 
     /**
      * This function is provided for demonstration purposes only.
@@ -117,7 +128,16 @@ class Rex_Product_Feed_Admin {
      * class.
      */
 
-    wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-admin.js', array( 'jquery' ), $this->version, false );
+    if( $hook != 'post.php' && $hook != 'post-new.php' ){
+      return;
+    }
+
+    $screen = get_current_screen();
+
+    if ( $screen->post_type === 'product-feed' ) {
+      wp_enqueue_script( 'materialize-js', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, false );
+      wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-admin.js', array( 'jquery' ), $this->version, false );
+  }
 
   }
 
@@ -128,6 +148,36 @@ class Rex_Product_Feed_Admin {
    */
   public function register_cpt() {
     $this->cpt->register();
+  }
+
+  /**
+   * Remove Bulk Edit for Feed
+   *
+   * @since    1.0.0
+   */
+  public function remove_bulk_edit( $actions ){
+    unset( $actions['edit'] );
+    return $actions;
+  }
+
+  /**
+   * Remove Quick Edit for Feed
+   *
+   * @since    1.0.0
+   */
+  public function remove_quick_edit( $actions ){
+    // Abort if the post type is not "books"
+    if ( ! is_post_type_archive( 'product-feed' ) ) {
+      return $actions;
+    }
+
+    // Remove the Quick Edit link
+    if ( isset( $actions['inline hide-if-no-js'] ) ) {
+      unset( $actions['inline hide-if-no-js'] );
+    }
+
+    // Return the set of links without Quick Edit
+    return $actions;
   }
 
 	/**

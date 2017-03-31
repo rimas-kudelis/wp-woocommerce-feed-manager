@@ -116,7 +116,7 @@ class Item
     public function price($price)
     {
         $node = new Node('price');
-        $this->nodes['price'] = $node->value(number_format($price, 2, '.', ''))->_namespace($this->namespace);
+        $this->nodes['price'] = $node->value($price)->_namespace($this->namespace);
     }
 
     /**
@@ -127,7 +127,7 @@ class Item
     public function sale_price($salePrice)
     {
         $node = new Node('sale_price');
-        $this->nodes['sale_price'] = $node->value(number_format($salePrice, 2, '.', ''))->_namespace($this->namespace);
+        $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
     }
 
     /**
@@ -371,6 +371,24 @@ class Item
     {
         $node = new Node('custom_label_4');
         $this->nodes['custom_label_4'] = $node->value($customLabel)->_namespace($this->namespace);
+    }
+
+    /**
+     * @param string $name
+     * @param array $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        // check if additional_image_link attributes
+        if ( 0 === strpos( $name, 'additional_image_link_' ) ) {
+          $name = 'additional_image_link';
+          $node = new Node($name);
+          $this->nodes[$name][] = $node->value($arguments[0])->_namespace($this->namespace);
+        }else{ // other attributes
+          $node = new Node($name);
+          $this->nodes[$name] = $node->value($arguments[0])->_namespace($this->namespace);
+        }
+
     }
 
     /**
