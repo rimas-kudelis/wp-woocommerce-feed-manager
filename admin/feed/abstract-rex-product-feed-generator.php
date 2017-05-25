@@ -72,13 +72,22 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	protected $products_args;
 
 	/**
-	 * The Product Query args to retrieve specific products for making the Feed.
+	 * Array contains all products.
 	 *
 	 * @since    1.0.0
 	 * @access   protected
 	 * @var      Rex_Product_Feed_Abstract_Generator    $products    Contains all products to make feed.
 	 */
 	protected $products;
+
+  /**
+   * Array contains all variable products for creating feed with variations.
+   *
+   * @since    1.0.0
+   * @access   protected
+   * @var      Rex_Product_Feed_Abstract_Generator    $products    Contains all products to make feed.
+   */
+  protected $variable_products;
 
 	/**
 	 * The Feed.
@@ -102,6 +111,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     $this->setup_feed_data( $config['info'] );
 		$this->setup_feed_rules( $config['feed_config'] );
 		$this->setup_products();
+    $this->setup_variable_products();
 	}
 
 	/**
@@ -116,6 +126,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
       'posts_per_page'         => -1,
       'update_post_term_cache' => false,
       'update_post_meta_cache' => false,
+      'cache_results'          => false,
 		);
 
 		if ( $args['products_scope'] === 'custom'){
@@ -167,6 +178,45 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 	}
 
+  /**
+   * Setup the variable products from products array.
+   */
+  protected function setup_variable_products() {
+
+    $this->variable_products = array();
+
+    // Loop through all products and separate the variable products.
+    foreach( $this->products as $product_id ) {
+      if( $this->is_variable_product( $product_id ) ){
+        $this->variable_products[] = $product_id;
+      }
+    }
+
+    // remove variable products from products array
+    if ( !empty( $this->variable_products ) ) {
+      $this->products = array_diff( $this->products, $this->variable_products );
+    }
+
+  }
+
+  /**
+   * Setup the variable products from products array.
+   */
+  protected function is_variable_product( $product_id = false ) {
+
+    if ( false === $product_id ) {
+      return false;
+    }
+
+    $product = wc_get_product( $product_id );
+
+    if( $product->is_type( 'variable' ) ){
+      return true;
+    }
+
+    return false;
+  }
+
 
 	/**
 	 * Get Product data.
@@ -177,24 +227,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	protected function get_product_data( $product_id = false ){
 		$data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules );
     return $data->get_all_data();
-
-        if ( $product->is_in_stock() == TRUE ) {
-            $availability = 'in stock';
-        } else {
-            $availability = 'out of stock';
-        }
-
-        return array(
-      			'id'           => $product->get_id(),
-            'sku'          => $product->get_sku(),
-            'title'        => $product->get_title(),
-            'desc'         => $product->get_post_data()->post_excerpt,
-            'link'         => $product->get_permalink(),
-            'image'        => wp_get_attachment_url($product->get_image_id()),
-            'price'        => $product->get_price(),
-            'currency'     => get_woocommerce_currency(),
-            'availability' => $availability,
-		);
 	}
 
 	/**

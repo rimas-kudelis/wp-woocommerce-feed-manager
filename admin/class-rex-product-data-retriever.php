@@ -48,6 +48,24 @@ class Rex_Product_Data_Retriever {
    */
   private $product;
 
+  /**
+   * Variant atts for feed.
+   *
+   * @since    1.0.0
+   * @access   private
+   * @var      object    $metabox    The current metabox of this plugin.
+   */
+  private $variant_atts = array( 'color', 'pattern', 'material', 'age_group', 'gender', 'size', 'size_type', 'size_system' );
+
+  /**
+   * Additional images of current product.
+   *
+   * @since    1.0.0
+   * @access   private
+   * @var      object    $metabox    The current metabox of this plugin.
+   */
+  private $additional_images = array();
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -56,11 +74,12 @@ class Rex_Product_Data_Retriever {
 	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $product, $feed_rules ) {
-    $this->product           = new WC_Product( $product );
+    $this->product           = wc_get_product( $product );
     $this->feed_rules        = $feed_rules;
     $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
-    // $this->set_test_feed_rules(); only for testing purpose of all atts values;
+    // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
     $this->set_all_value();
+    $this->maybe_set_variation_data();
 	}
 
 
@@ -160,16 +179,16 @@ class Rex_Product_Data_Retriever {
         return $this->product->get_title(); break;
 
       case 'price':
-        return number_format( $this->product->get_price(), 2, '.', ''); break;
+        return $this->product->get_price(); break;
 
       case 'sale_price':
-        return number_format( $this->product->get_sale_price(), 2, '.', ''); break;
+        return $this->product->get_sale_price(); break;
 
       case 'description':
-        return $this->product->get_post_data()->post_content; break;
+        return $this->product->get_description(); break;
 
       case 'short_description':
-        return $this->product->get_post_data()->post_excerpt; break;
+        return $this->product->get_short_description(); break;
 
       case 'product_cats':
         return $this->get_product_cats(); break;
@@ -211,12 +230,12 @@ class Rex_Product_Data_Retriever {
         return $this->product->get_rating_count(); break;
 
       case 'sale_price_dates_from':
-        return date( get_option( 'date_format' ), $this->product->sale_price_dates_from ); break;
+        return date( get_option( 'date_format' ), $this->product->get_date_on_sale_from() ); break;
 
       case 'sale_price_dates_to':
-        return date( get_option( 'date_format' ), $this->product->sale_price_dates_to ); break;
+        return date( get_option( 'date_format' ), $this->product->get_date_on_sale_to() ); break;
 
-      default: return false; break;
+      default: return ''; break;
     }
   }
 
@@ -293,8 +312,8 @@ class Rex_Product_Data_Retriever {
   private function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
     $terms = get_the_terms( $id, $taxonomy );
 
-    if ( empty( $terms ) && is_wp_error( $terms ) ){
-      return false;
+    if ( empty( $terms ) || is_wp_error( $terms ) ){
+      return '';
     }
 
     $term_names = array();
@@ -315,7 +334,7 @@ class Rex_Product_Data_Retriever {
    */
   private function set_additional_images() {
 
-    $img_ids = $this->product->get_gallery_attachment_ids();
+    $img_ids = $this->product->get_gallery_image_ids();
 
     $images = array();
     if ( ! empty( $img_ids ) ) {
@@ -413,6 +432,29 @@ class Rex_Product_Data_Retriever {
       return substr($val, 0, $limit);
     }
     return $val;
+  }
+
+  /**
+   * Setup variation data if current product is a variable product.
+   *
+   * @since    1.0.0
+   */
+  private function maybe_set_variation_data() {
+
+    if ( 'WC_Product_Variation' != get_class($this->product) ) {
+      return;
+    }
+
+    $variant_atts = $this->product->get_variation_attributes();
+
+    foreach ($variant_atts as $key => $value) {
+      $key = str_replace( 'attribute_pa_', '', $key);
+
+      if( in_array($key, $this->variant_atts) ){
+        $this->data[$key] = $value;
+      }
+    }
+
   }
 
 }

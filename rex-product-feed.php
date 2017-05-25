@@ -16,7 +16,7 @@
  * Plugin Name:       Best Products Feed for WooCoommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchant shop and acquiring real buyer.
- * Version:           1.1.1
+ * Version:           1.1.2
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
