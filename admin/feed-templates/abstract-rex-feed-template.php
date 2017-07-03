@@ -132,12 +132,12 @@ abstract class Rex_Feed_Abstract_Template {
    *
    * @since    1.0.0
    */
-  public function printAttType( $key, $selected = '' ){
+  public function printAttType( $key, $select = '' ){
     $options = array( 'meta' => 'Attribute', 'static' => 'Static');
     echo "<select class='type-dropdown' name='fc[$key][type]'>";
     echo "<option value=''>Please Select</option>";
     foreach ($options as $key => $option) {
-      $selected = $selected === $key ? "selected='selected'" : "";
+      $selected = $select === $key ? "selected='selected'" : "";
       echo "<option value='$key' $selected>$option</option>";
     }
     echo "</select>";
