@@ -79,7 +79,7 @@ class Rex_Product_Data_Retriever {
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
         $this->set_all_value();
-        $this->maybe_set_variation_data();
+//        $this->maybe_set_variation_data();
     }
 
 
@@ -145,7 +145,7 @@ class Rex_Product_Data_Retriever {
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix($val, $rule);
         // maybe escape
-        $val = $this->maybe_escape($val, $rule);
+        $val = $this->maybe_escape($val, $rule['escape']);
         // maybe limit
         $val = $this->maybe_limit($val, $rule['limit']);
 
@@ -179,7 +179,7 @@ class Rex_Product_Data_Retriever {
                 return $this->product->get_title(); break;
 
             case 'price':
-                return $this->product->get_price(); break;
+                return $this->product->get_regular_price(); break;
 
             case 'sale_price':
                 return $this->product->get_sale_price(); break;
@@ -195,7 +195,14 @@ class Rex_Product_Data_Retriever {
                 break;
 
             case 'short_description':
-                return $this->product->get_short_description(); break;
+                if(($this->is_children())):
+                    $_product = wc_get_product( $this->product->post->post_parent );
+                    $_product_desc =  $_product->get_short_description();
+                    return $_product_desc;
+                else:
+                    return $this->product->get_short_description();
+                endif;
+                break;
 
             case 'product_cats':
                 return $this->get_product_cats(); break;
@@ -424,7 +431,27 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     private function maybe_escape($val, $escape) {
-        return $val;
+        switch ($escape){
+            case 'strip_tags':
+                return strip_tags($val);
+            case 'utf_8_encode':
+                return utf8_encode($val);
+            case 'htmlentities':
+                return htmlentities($val);
+            case 'integer':
+                return intval($val);
+            case 'price':
+                return intval($val);
+            case 'remove_space':
+                return preg_replace('/\s+/', '', $val);;
+            case 'remove_shortcodes':
+                return strip_shortcodes( $val );
+            case 'remove_special':
+                return filter_var($val, FILTER_SANITIZE_STRING);;
+            case 'cdata':
+                return "<![CDATA [$val]]>";
+            default: return $val; break;
+        }
     }
 
 

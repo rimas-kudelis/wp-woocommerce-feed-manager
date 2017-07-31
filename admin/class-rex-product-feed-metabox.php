@@ -34,6 +34,7 @@ class Rex_Product_Metabox {
         $this->feed_file();
     }
 
+
     /**
      * Products Selection Metabox
      *
@@ -113,13 +114,33 @@ class Rex_Product_Metabox {
             'show_option_none' => false,
             'default'          => 'all',
             'options'          => array(
-                'google'    => __( 'Google Shopping', 'rex-product-feed' ),
+                'google'       => __( 'Google Shopping', 'rex-product-feed' ),
+                'amazon'       => __( 'Amazon Ads', 'rex-product-feed' ),
+                'ebay'         => __( 'eBay(Shopping.com)', 'rex-product-feed' ),
+                'nextag'       => __( 'Nextag', 'rex-product-feed' ),
+                'pricegrabber' => __( 'Price Grabber', 'rex-product-feed' ),
+                'bing'         => __( 'Bing', 'rex-product-feed' ),
+                'kelkoo'       => __( 'Kelkoo', 'rex-product-feed' ),
+            ),
+        ) );
+
+        $box->add_field( array(
+            'name'             => __('File Format', 'rex-product-feed' ),
+            'desc'             => __('Select Format of the Feed.', 'rex-product-feed' ),
+            'id'               => $this->prefix . 'feed_format',
+            'type'             => 'select',
+            'show_option_none' => false,
+            'default'          => 'all',
+            'options'          => array(
+                'xml'       => __( 'XML', 'rex-product-feed' ),
+//                'csv'       => __( 'CSV', 'rex-product-feed' ),
+                'text'      => __( 'TEXT', 'rex-product-feed' ),
             ),
         ) );
 
         $box->add_field( array(
             'id'        => $this->prefix . 'config_heading',
-            'name'      => 'Configure Feed Attributes and values.',
+            'name'      => 'Configure Feed Attributes and their values.',
             'type'      => 'title',
             'after_row' => array($this, 'atts_config_cb'),
         ) );
@@ -133,9 +154,15 @@ class Rex_Product_Metabox {
      * @author Khorshed Alam
      **/
     public function atts_config_cb($field_args, $field){
-      $feed_rules    = get_post_meta( $field->object_id, $this->prefix . 'feed_config', true );
-      $feed_template = new Rex_Feed_Template_Google($feed_rules);
-      require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
+        $feed_rules    = get_post_meta( $field->object_id, $this->prefix . 'feed_config', true );
+        $feed_template = new Rex_Feed_Template_Google($feed_rules);
+        echo '<div id="rex-feed-config">';
+
+        require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
+        require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
+
+        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>Add New Attribute</a>';
+        echo '</div>';
     }
 
     /**
@@ -146,15 +173,16 @@ class Rex_Product_Metabox {
      **/
     private function feed_file(){
         $box = new_cmb2_box( array(
-            'id'            => $this->prefix . 'file',
-            'title'         => esc_html__( 'XML Feed', 'rex-product-feed' ),
+            'id'            => $this->prefix . 'file_link',
+            'title'         => esc_html__( 'Feed URL', 'rex-product-feed' ),
             'object_types'  => array( 'product-feed' ), // Post type
             'context'       => 'side',
+            'priority'      => 'low'
         ) );
 
         $box->add_field( array(
-            'name'             => __('', 'rex-product-feed' ),
-            'desc'             => __('Your XML Feed URL', 'rex-product-feed' ),
+            'name'             => __('Your Feed URL', 'rex-product-feed' ),
+            'desc'             => __('', 'rex-product-feed' ),
             'id'               => $this->prefix . 'xml_file',
             'type'             => 'text',
             'sanitization_cb'  => array($this, 'sanitize_xml_file'),
@@ -168,6 +196,12 @@ class Rex_Product_Metabox {
 
     }
 
+
+    /**
+     * Output a message if the current page has the id of "2" (the about page)
+     * @param  object $field_args Current field args
+     * @param  object $field      Current field object
+     */
     public function after_field_xml_file_cb($field_args, $field){
         $feed_url = get_post_meta( $field->object_id, $this->prefix . 'xml_file', true );
         // Only show feed url not empty.
@@ -188,8 +222,13 @@ class Rex_Product_Metabox {
      * @author Khorshed Alam
      **/
     public function sanitize_xml_file($value, $field_args, $field){
+        $format = $field->data_to_save['rex_feed_feed_format'];
         $path  = wp_upload_dir();
-        $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.xml";
+        if($format == 'xml'){
+            $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.xml";
+        }elseif ($format == 'text'){
+            $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.txt";
+        }
         return esc_url( $path );
     }
 

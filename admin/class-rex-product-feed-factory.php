@@ -11,18 +11,22 @@
  */
 class Rex_Product_Feed_Factory {
 
-	public static function build( $config ){
-		$className = 'Rex_Product_Feed_'. ucfirst( $config['merchant'] );
+    private static $other_merchants = array( 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay' );
 
-		if( $config == '' || ! class_exists( $className ) ) {
-			throw new Exception('Invalid Merchant.');
-		} else {
-			return new $className( $config );
-		}
+    public static function build( $config ){
 
-		return false;
-	}
+        if ( in_array( $config['merchant'], self::$other_merchants ) ) {
+            $className = 'Rex_Product_Feed_Other';
+        }else{
+            $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
+        }
 
+        if( $config == '' || ! class_exists( $className ) ) {
+            throw new Exception('Invalid Merchant.');
+        } else {
+            return new $className( $config );
+        }
 
-
+        return false;
+    }
 }

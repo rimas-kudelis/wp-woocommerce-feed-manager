@@ -52,3 +52,30 @@
 #poststuff #titlewrap {
   overflow: hidden;
 }
+
+#rex-feed-config{
+  position: relative;
+}
+
+.rex-loading-spinner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 9;
+  opacity: .9;
+  text-align: center;
+}
+.rex-loading-spinner .preloader-wrapper.small.active {
+  margin: 100px 0;
+}
+.cmb2-id-rex-feed-xml-file{
+  text-align: center;
+}
+
+.cmb2-id-rex-feed-xml-file a{
+  margin: 10px 0;
+  width: 80%;
+}

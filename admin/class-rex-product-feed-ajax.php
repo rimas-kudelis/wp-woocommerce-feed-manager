@@ -21,32 +21,52 @@
  */
 class Rex_Product_Feed_Ajax {
 
-	/**
-	 * Hook in ajax handlers.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function init() {
+    /**
+     * Hook in ajax handlers.
+     *
+     * @since    1.0.0
+     */
+    public static function init() {
 
-		$validations = array(
-			'logged_in' => true,
-			'user_can'  => 'manage_options',
-		);
+        $validations = array(
+            'logged_in' => true,
+            'user_can'  => 'manage_options',
+        );
 
-		wp_ajax_helper()->handle( 'my-handle' )
-		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_feed' ) )
-		                ->with_validation( $validations );
-	}
+        wp_ajax_helper()->handle( 'my-handle' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_feed' ) )
+            ->with_validation( $validations );
 
-	public static function generate_feed( $config ){
+        wp_ajax_helper()->handle( 'merchant-change' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )
+            ->with_validation( $validations );
+    }
 
-		try {
-			$merchant = Rex_Product_Feed_Factory::build( $config );
-		} catch (Exception $e) {
-			return $e->getMessage();
-		}
+    public static function generate_feed( $config ){
 
-		return $merchant->make_feed();
-	}
+        try {
+            $merchant = Rex_Product_Feed_Factory::build( $config );
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+        return $merchant->make_feed();
+    }
+
+    public static function show_feed_template( $merchant ){
+
+        $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
+
+        if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
+            $feed_rules = false;
+        }
+
+        $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
+
+        ob_start();
+        include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
+        return ob_get_clean();
+
+    }
 
 }

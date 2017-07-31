@@ -33,13 +33,13 @@
         $('select').material_select();
 
         if ( $('#rex_feed_xml_file').val() == '' ) {
-            $('#rex_feed_file').slideUp('fast');
+            $('#rex_feed_file_link').slideUp('fast');
         }
     });
 
     /**
-    * Add a new table-row and update it's
-    */
+     * Add a new table-row and update it's
+     */
     $(document).on('click', '#rex-new-attr', function () {
         var rowId = $('#config-table tbody tr').length;
         $("#config-table tbody tr:first")
@@ -95,14 +95,17 @@
             name = $(item).attr('name');
 
             if ( name != undefined ) {
-              // get new name via regex
-              name = name.replace(/^fc\[\d+\]/, 'fc[' + rowId + ']');
-              $(item).attr('name', name);
+                // get new name via regex
+                name = name.replace(/^fc\[\d+\]/, 'fc[' + rowId + ']');
+                $(item).attr('name', name);
             }
 
         });
     }
 
+    /**
+     * Event listener for Attribute type change functionality.
+     */
     $(document).on('change', 'select.type-dropdown', function () {
         var selected = $(this).find('option:selected').val();
         if ( selected == 'static' ) {
@@ -112,6 +115,48 @@
             $(this).closest('td').next('td').find('.static-input').hide();
             $(this).closest('td').next('td').find('.meta-dropdown').show();
         }
+    });
+
+    /**
+     * Event listener for feed type change.
+     */
+
+    $(document).on('change', '#rex_feed_merchant', function () {
+        var selected = $(this).find('option:selected').val();
+        if ( selected == 'google' ) {
+            $('.cmb2-id-rex-feed-feed-format').hide();
+        }else{
+            $('.cmb2-id-rex-feed-feed-format').show();
+        }
+    });
+
+
+    /**
+     * Event listener for Merchant change functionality.
+     */
+    $(document).on('change', '#rex_feed_merchant', function () {
+
+        $('.rex-loading-spinner').slideDown('fast');
+
+        var $payload = {
+            merchant: $('#rex_feed_merchant').find(':selected').val(),
+            post_id: $('#post_ID').val()
+            // feed_format: $('#rex_feed_feed_format').find(':selected').val()
+        };
+        var $confBox = $('#rex-feed-config');
+
+        wpAjaxHelperRequest( 'merchant-change', $payload )
+            .success( function( response ) {
+                $confBox.fadeOut();
+                $confBox.find('#config-table').html( response );
+                $('select').material_select();
+                $('.rex-loading-spinner').fadeOut('fast');
+                $confBox.fadeIn();
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh! Merchant change returned error!' );
+                console.log( response.statusText );
+            });
     });
 
     function get_checkbox_val( name ){
@@ -136,6 +181,7 @@
 
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
+            feed_format: $('#rex_feed_feed_format').find(':selected').val(),
             info : {
                 post_id: $('#post_ID').val(),
                 title: $('#title').val(),
@@ -157,9 +203,18 @@
                 console.log( 'Woohoo!' );
                 // 'response' will be the response from the handle's callback function, as either a string or JSON.
                 console.log( response );
-                $('#publish').removeClass('disabled');
-                $(document).off( 'click', '#publish', save_feed );
-                $('#publish').trigger( 'click' );
+                var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+                console.log('location.hostname:' + location.hostname);
+                if(response == 'false' || response == ''){
+                    $(msg).insertAfter( $( ".wrap .page-title-action" ));
+                    $('#publishing-action span.spinner').removeClass('is-active');
+                    $('#publish').removeClass('disabled');
+                }else {
+                    $('#publish').removeClass('disabled');
+                    $(document).off( 'click', '#publish', save_feed );
+                    $('#publish').trigger( 'click' );
+                }
+
             })
             .error( function( response ) {
                 $('#publishing-action span.spinner').removeClass('is-active');
