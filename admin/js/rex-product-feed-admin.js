@@ -145,7 +145,7 @@
         };
         var $confBox = $('#rex-feed-config');
 
-        wpAjaxHelperRequest( 'merchant-change', $payload )
+        wpAjaxHelperRequest( 'Fmerchant-change', $payload )
             .success( function( response ) {
                 $confBox.fadeOut();
                 $confBox.find('#config-table').html( response );
