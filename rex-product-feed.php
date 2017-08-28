@@ -30,19 +30,20 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
+
 // Create a helper function for easy SDK access.
 function rex_product_feed() {
     global $rex_product_feed;
 
-    if ( ! isset( $rex_product_feed ) ) {
+    if ( ! isset( $bwf_fs ) ) {
         // Include Freemius SDK.
         require_once dirname(__FILE__) . '/freemius/start.php';
 
         $rex_product_feed = fs_dynamic_init( array(
-            'id'                  => '1260',
+            'id'                  => '1327',
             'slug'                => 'best-woocommerce-feed',
             'type'                => 'plugin',
-            'public_key'          => 'pk_10b344e36e5e1aaf459a0a15655bd',
+            'public_key'          => 'pk_872b130317a310d70105122544cde',
             'is_premium'          => true,
             // If your plugin is a serviceware, set this option to false.
             'has_premium_version' => true,
@@ -55,12 +56,14 @@ function rex_product_feed() {
             ),
             // Set the SDK to work in a sandbox mode (for development & testing).
             // IMPORTANT: MAKE SURE TO REMOVE SECRET KEY BEFORE DEPLOYMENT.
-            'secret_key'          => 'sk_h4^$lDf4(l=z<jxkqZbBo-{#zSvXV',
+            'secret_key'          => 'sk_~Wnp0];iCZ0jp2-t[aSJ{?i:N=oy4',
         ) );
     }
 
     return $rex_product_feed;
 }
+
+
 
 // Init Freemius.
 rex_product_feed();
