@@ -3,7 +3,7 @@ Contributors: rextheme
 Donate link: https://rextheme.com
 Tags: woocommerce-product-feed, xml-export, google-shopping, google-shopping-feed, google-merchant-feed
 Requires at least: 3.0.1
-Tested up to: 4.7.2
+Tested up to: 4.8.1
 Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
