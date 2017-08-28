@@ -36,27 +36,27 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 Set smart filter and ordering per channel, so only your most profitable products make it to the product feed. It helps you to exclude the non-profitable or out of season products you don’t want to share. 
 
 **Supported Merchants:**
-	* <a target="_blank" href="https://www.google.com/retail/merchant-center/">Google Shopping </a>
-	* <a target="_blank" href="https://advertising.amazon.com/">Amazon Seller Ad </a>
-	* <a target="_blank" href="http://www.ebaycommercenetwork.com/">eBay Commerce Network </a>
-	* <a target="_blank" href="http://www.nextag.com/">Nextag.com </a>
-	* <a target="_blank" href="http://www.pricegrabber.com/">Pricegrabber.com </a>
-	* <a target="_blank" href="https://www.kelkoo.com/">Kelkoo.com </a>
-	* <a target="_blank" href="http://advertise.bingads.microsoft.com/en-uk/home">Bing Ads </a>
+	*<a target="_blank" href="https://www.google.com/retail/merchant-center/">Google Shopping </a>
+	*<a target="_blank" href="https://advertising.amazon.com/">Amazon Seller Ad </a>
+	*<a target="_blank" href="http://www.ebaycommercenetwork.com/">eBay Commerce Network </a>
+	*<a target="_blank" href="http://www.nextag.com/">Nextag.com </a>
+	*<a target="_blank" href="http://www.pricegrabber.com/">Pricegrabber.com </a>
+	*<a target="_blank" href="https://www.kelkoo.com/">Kelkoo.com </a>
+	*<a target="_blank" href="http://advertise.bingads.microsoft.com/en-uk/home">Bing Ads </a>
 
 Currently, our Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
 
 **Features:**
-* You can create feed Up-to 2000 products in free version
-* Unlimited feed creation for Pro-Users
-* XML and TXT formats
-* Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
-* Attribute Prefix and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
-* Create custom field names
-* Map your categories to those of other channels, such as Google Shopping
-* Intuitive user interface
-* Use advanced commands to optimize your product feeds while creating or exporting
-* Remove the chances of feed specifications errors by matching merchants’ feed import requirements
+*You can create feed Up-to 2000 products in free version
+*Unlimited feed creation for Pro-Users
+*XML and TXT formats
+*Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
+*Attribute Prefix and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
+*Create custom field names
+*Map your categories to those of other channels, such as Google Shopping
+*Intuitive user interface
+*Use advanced commands to optimize your product feeds while creating or exporting
+*Remove the chances of feed specifications errors by matching merchants’ feed import requirements
 
 
 == Installation ==
