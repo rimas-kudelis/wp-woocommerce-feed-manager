@@ -83,6 +83,18 @@ This plugin outputs product feeds in the following file formats: TXT, XML format
 You may use our product for free, limited to 2000 items in total.
 To upgrade to PRO with no restrictions, you may purchase a license key from: WP Dashboard > Product Feed > Upgrade. 
  
+== Screenshots ==
+1. Select ‘Product Feeds” from the Admin Menu
+2. Click ‘Add New’ for Creating New Feed
+3. Click ‘Title Field’ & Give Feed Name
+4. Select ‘Products’ to Create Feed For
+5. Click ‘All Published Products’ & Select ‘Map Category’ for Category Mapping
+6. Select ‘Merchant Type’ for Desired Merchant Store
+7. Select Your Desired File Formate
+8. Click ‘Add New Attribute’ & Select ‘Static’ for Custom Attribute
+9. Attribute Customization
+10. Click to Publish Feed
+11. Download the Feed 
 
 == Changelog ==
 
