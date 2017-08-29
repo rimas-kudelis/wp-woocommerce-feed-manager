@@ -8,7 +8,7 @@ Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchant shop,Amazon,Ebay,Nextag,Pricegrabber,Bing,Kelkoo  and acquiring real buyer.
+Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchan, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
 
