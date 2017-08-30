@@ -163,3 +163,11 @@ function run_rex_product_feed() {
 
 }
 run_rex_product_feed();
+
+rex_product_feed()->add_action('after_uninstall', 'rex_uninstall_cleanup');
+
+function rex_uninstall_cleanup(){
+  if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+    exit;
+  }
+}
