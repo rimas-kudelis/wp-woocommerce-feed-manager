@@ -21,7 +21,8 @@
 class Rex_Feed_Attributes {
 
     public static function get_attributes(){
-        return array(
+
+        $attributes = array(
             'Primary Attributes'        => array(
                 'id'                        => 'Product Id',
                 'title'                     => 'Product Title',
@@ -60,6 +61,18 @@ class Rex_Feed_Attributes {
                 'image_10'       => 'Additional Image 10',
             ),
         );
+
+        global $wpdb;
+        //Load the main attributes
+        $sql = 'SELECT attribute_name as name, attribute_type as type FROM ' . $wpdb->prefix . 'woocommerce_attribute_taxonomies';
+        $data = $wpdb->get_results($sql);
+        if (count($data)) {
+            foreach ($data as $key => $value) {
+                $attr["bwf_attr_pa_" . $value->name] = $value->name;
+            }
+            $attributes['Product Attributes'] = $attr;
+        }
+        return $attributes;
     }
 
 }

@@ -77,6 +77,7 @@ class Rex_Product_Data_Retriever {
         $this->product           = wc_get_product( $product );
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
+
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
         $this->set_all_value();
 //        $this->maybe_set_variation_data();
@@ -140,6 +141,9 @@ class Rex_Product_Data_Retriever {
 
         }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
             $val = $this->set_image_att( $rule['meta_key']  );
+
+        }elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_product_att( $rule['meta_key']  );
         }
 
         // maybe add prefix/suffix
@@ -269,6 +273,23 @@ class Rex_Product_Data_Retriever {
     }
 
     /**
+     * Set a Product attribute.
+     *
+     * @since    1.0.0
+     */
+    private function set_product_att( $key ) {
+        if ( 'WC_Product_Variation' != get_class($this->product) ) {
+            return;
+        }
+        $variant_atts = $this->product->get_variation_attributes();
+        $key = str_replace( 'bwf_attr_pa_', 'attribute_pa_', $key);
+        if(array_key_exists($key, $variant_atts)){
+           return $variant_atts[$key];
+        }
+        return '';
+    }
+
+    /**
      * Get additional image url by key.
      *
      * @since    1.0.0
@@ -380,6 +401,15 @@ class Rex_Product_Data_Retriever {
      */
     private function is_image_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Image Attributes'] );
+    }
+
+    /**
+     * Helper to check if a attribute is a Image Attribute.
+     *
+     * @since    1.0.0
+     */
+    private function is_product_attr( $key ) {
+        return array_key_exists( $key, $this->product_meta_keys['Product Attributes'] );
     }
 
 
