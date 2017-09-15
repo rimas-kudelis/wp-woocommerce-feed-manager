@@ -44,11 +44,11 @@ function rex_product_feed() {
             'slug'                => 'best-woocommerce-feed',
             'type'                => 'plugin',
             'public_key'          => 'pk_872b130317a310d70105122544cde',
-            'is_premium'          => true,
+            'is_premium'          => false,
             // If your plugin is a serviceware, set this option to false.
-            'has_premium_version' => true,
+            'has_premium_version' => false,
             'has_addons'          => false,
-            'has_paid_plans'      => true,
+            'has_paid_plans'      => false,
             'menu'                => array(
                 'slug'           => 'edit.php?post_type=product-feed',
                 'contact'        => true,
@@ -68,6 +68,7 @@ function rex_product_feed() {
 rex_product_feed();
 // Signal that SDK was initiated.
 do_action( 'rex_product_feed_loaded' );
+
 
 
 /**
