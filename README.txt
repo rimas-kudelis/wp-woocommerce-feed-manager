@@ -1,18 +1,42 @@
 === Best WooCommerce Product Feed ===
 Contributors: rextheme
 Donate link: https://rextheme.com
-Tags: product feed, woocommerce product feed, WooCommerce Product Feed, amazon, ebay, pricegrabber product feed, amazon product feed, nextag, pricegrabber
+Tags: product feed, woocommerce product feed, amazon, ebay, pricegrabber product feed, amazon product feed, nextag, pricegrabber
 Requires at least: 3.0.1
 Tested up to: 4.8.1
 Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchan, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
+Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
 
 Best WooCommerce Product Feed generates product feed to Sync product with your merchant shops. Using this plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different dealer shops. This product feed has setups that meet the requirements from various merchant stores.
+
+**Features:**
+* You can create feed Up-to 2000 products in free version
+* Unlimited feed creation for Pro-Users
+* XML and TXT formats
+* Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
+* Attribute Prefix and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
+* Create custom field names
+* Map your categories to those of other channels, such as Google Shopping
+* Intuitive user interface
+* Use advanced commands to optimize your product feeds while creating or exporting
+* Remove the chances of feed specifications errors by matching merchants’ feed import requirements
+
+**Supported Merchants:**
+
+    - [Google Shopping](https://www.google.com/retail/merchant-center/)
+    - [Amazon Seller Ad](https://advertising.amazon.com/)
+    - [eBay Commerce Network](http://www.ebaycommercenetwork.com/)
+    - [Nextag.com](http://www.nextag.com/)
+    - [Pricegrabber.com](http://www.pricegrabber.com/)
+    - [Kelkoo.com](https://www.kelkoo.com/)
+    - [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
+
+Currently, our Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
  
 We enlisted all the required and recommended fields of the feed with the WordPress database. So after installation, you are ready to submit your product feed to merchant centers. You will have full control over your product feed. You can choose what products to show and which products not.
 
@@ -34,29 +58,6 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 
 **Smart Filter & Rules**
 Set smart filter and ordering per channel, so only your most profitable products make it to the product feed. It helps you to exclude the non-profitable or out of season products you don’t want to share. 
-
-**Supported Merchants:**
-	*<a target="_blank" href="https://www.google.com/retail/merchant-center/">Google Shopping </a>
-	*<a target="_blank" href="https://advertising.amazon.com/">Amazon Seller Ad </a>
-	*<a target="_blank" href="http://www.ebaycommercenetwork.com/">eBay Commerce Network </a>
-	*<a target="_blank" href="http://www.nextag.com/">Nextag.com </a>
-	*<a target="_blank" href="http://www.pricegrabber.com/">Pricegrabber.com </a>
-	*<a target="_blank" href="https://www.kelkoo.com/">Kelkoo.com </a>
-	*<a target="_blank" href="http://advertise.bingads.microsoft.com/en-uk/home">Bing Ads </a>
-
-Currently, our Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
-
-**Features:**
-*You can create feed Up-to 2000 products in free version
-*Unlimited feed creation for Pro-Users
-*XML and TXT formats
-*Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
-*Attribute Prefix and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
-*Create custom field names
-*Map your categories to those of other channels, such as Google Shopping
-*Intuitive user interface
-*Use advanced commands to optimize your product feeds while creating or exporting
-*Remove the chances of feed specifications errors by matching merchants’ feed import requirements
 
 
 == Installation ==
@@ -83,6 +84,9 @@ This plugin outputs product feeds in the following file formats: TXT, XML format
 You may use our product for free, limited to 2000 items in total.
 To upgrade to PRO with no restrictions, you may purchase a license key from: WP Dashboard > Product Feed > Upgrade. 
  
+= How to Generate WooCommerce Product Feed Using Best WooCommerce Product Feed =
+[youtube https://youtu.be/ANS5hQrdAMY]
+
 == Screenshots ==
 1. Select ‘Product Feeds” from the Admin Menu
 2. Click ‘Add New’ for Creating New Feed

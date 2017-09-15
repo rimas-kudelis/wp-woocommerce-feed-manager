@@ -128,7 +128,7 @@ class Rex_Feed_Template_Pricegrabber extends Rex_Feed_Abstract_Template {
             ),
             array(
                 'attr'     => 'Manufacturer Name',
-                'type'     => 'meta',
+                'type'     => 'static',
                 'meta_key' => '',
                 'st_value' => '',
                 'prefix'   => '',

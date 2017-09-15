@@ -22,13 +22,13 @@ class Rex_Feed_Template_Nextag extends Rex_Feed_Abstract_Template {
 
     protected function init_atts(){
         $this->attributes = array(
-            'Required Information' =>  array(
+            'Required Information'  =>  array(
                 'title'             => 'Product Name',
                 'description'       => 'Product Description',
                 'price'             => 'Price',
                 'link'              => 'Click-out URL',
                 'category'          => 'Category',
-                'brand'             => 'Manufacturer',
+                'manufacturer'      => 'Manufacturer',
             ),
 
             'Unique Product Identifier' => array(
@@ -130,6 +130,17 @@ class Rex_Feed_Template_Nextag extends Rex_Feed_Abstract_Template {
                 'attr'     => 'condition',
                 'type'     => 'meta',
                 'meta_key' => 'condition',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+
+            array(
+                'attr'     => 'manufacturer',
+                'type'     => 'static',
+                'meta_key' => '',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
