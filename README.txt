@@ -14,7 +14,8 @@ Best WooCommerce Product Feed helps you to sell more by uploading products to Go
 
 Best WooCommerce Product Feed generates product feed to Sync product with your merchant shops. Using this plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different dealer shops. This product feed has setups that meet the requirements from various merchant stores.
 
-**Features:**
+= Features: =
+
 * You can create feed Up-to 2000 products in free version
 * Unlimited feed creation for Pro-Users
 * XML and TXT formats
@@ -28,13 +29,13 @@ Best WooCommerce Product Feed generates product feed to Sync product with your m
 
 **Supported Merchants:**
 
-    - [Google Shopping](https://www.google.com/retail/merchant-center/)
-    - [Amazon Seller Ad](https://advertising.amazon.com/)
-    - [eBay Commerce Network](http://www.ebaycommercenetwork.com/)
-    - [Nextag.com](http://www.nextag.com/)
-    - [Pricegrabber.com](http://www.pricegrabber.com/)
-    - [Kelkoo.com](https://www.kelkoo.com/)
-    - [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
+- [Google Shopping](https://www.google.com/retail/merchant-center/)
+- [Amazon Seller Ad](https://advertising.amazon.com/)
+- [eBay Commerce Network](http://www.ebaycommercenetwork.com/)
+- [Nextag.com](http://www.nextag.com/)
+- [Pricegrabber.com](http://www.pricegrabber.com/)
+- [Kelkoo.com](https://www.kelkoo.com/)
+- [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
 
 Currently, our Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
  
@@ -84,7 +85,7 @@ This plugin outputs product feeds in the following file formats: TXT, XML format
 You may use our product for free, limited to 2000 items in total.
 To upgrade to PRO with no restrictions, you may purchase a license key from: WP Dashboard > Product Feed > Upgrade. 
  
-= How to Generate WooCommerce Product Feed Using Best WooCommerce Product Feed =
+== How to Generate WooCommerce Product Feed Using Best WooCommerce Product Feed ==
 [youtube https://youtu.be/ANS5hQrdAMY]
 
 == Screenshots ==
