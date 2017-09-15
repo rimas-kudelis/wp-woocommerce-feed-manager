@@ -4,7 +4,7 @@ Donate link: https://rextheme.com
 Tags: product feed, woocommerce product feed, amazon, ebay, pricegrabber product feed, amazon product feed, nextag, pricegrabber
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,3 +133,6 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 = 1.1.5 =
 * Added the difference between premium and free version
 
+= 1.1.6 =
+* Compatible with php7
+* Category Mapping
