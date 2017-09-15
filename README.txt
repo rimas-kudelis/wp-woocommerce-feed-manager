@@ -11,11 +11,9 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
-
 Best WooCommerce Product Feed generates product feed to Sync product with your merchant shops. Using this plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different dealer shops. This product feed has setups that meet the requirements from various merchant stores.
 
 = Features: =
-
 * You can create feed Up-to 2000 products in free version
 * Unlimited feed creation for Pro-Users
 * XML and TXT formats
@@ -28,7 +26,6 @@ Best WooCommerce Product Feed generates product feed to Sync product with your m
 * Remove the chances of feed specifications errors by matching merchants’ feed import requirements
 
 **Supported Merchants:**
-
 - [Google Shopping](https://www.google.com/retail/merchant-center/)
 - [Amazon Seller Ad](https://advertising.amazon.com/)
 - [eBay Commerce Network](http://www.ebaycommercenetwork.com/)
@@ -38,7 +35,6 @@ Best WooCommerce Product Feed generates product feed to Sync product with your m
 - [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
 
 Currently, our Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
- 
 We enlisted all the required and recommended fields of the feed with the WordPress database. So after installation, you are ready to submit your product feed to merchant centers. You will have full control over your product feed. You can choose what products to show and which products not.
 
 **Get Most Features in Free** 
@@ -62,25 +58,19 @@ Set smart filter and ordering per channel, so only your most profitable products
 
 
 == Installation ==
-
 1. Upload the plugin to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Now a new menu 'Product Feeds' will appear in admin screen from where you can create and manage feeds.
 
 == Frequently Asked Questions ==
-
 = Which shopping merchants are supported? =
 Currently we support 7 major shopping engines.
- 
 = Does the plugin supports product variation? =
 Yes, It does.
- 
 = Is there a product limit? =
 No, you can add as many products to your product feeds as you want but this feature is only available for pro-users. In free version you can create feed up-to 2000 products.
- 
 = What file formats does this plugin support? =
 This plugin outputs product feeds in the following file formats: TXT, XML formats.
- 
 = How do I upgrade to pro? =
 You may use our product for free, limited to 2000 items in total.
 To upgrade to PRO with no restrictions, you may purchase a license key from: WP Dashboard > Product Feed > Upgrade. 
