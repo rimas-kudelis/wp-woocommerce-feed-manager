@@ -114,6 +114,7 @@ class Rex_Product_Metabox {
             'show_option_none' => false,
             'default'          => 'all',
             'options'          => array(
+                'custom'       => __( 'Custom', 'rex-product-feed' ),
                 'google'       => __( 'Google Shopping', 'rex-product-feed' ),
                 'amazon'       => __( 'Amazon Ads', 'rex-product-feed' ),
                 'ebay'         => __( 'eBay(Shopping.com)', 'rex-product-feed' ),
@@ -121,6 +122,7 @@ class Rex_Product_Metabox {
                 'pricegrabber' => __( 'Price Grabber', 'rex-product-feed' ),
                 'bing'         => __( 'Bing', 'rex-product-feed' ),
                 'kelkoo'       => __( 'Kelkoo', 'rex-product-feed' ),
+                'become'       => __( 'Become', 'rex-product-feed' ),
             ),
         ) );
 

@@ -4,7 +4,7 @@ Donate link: https://rextheme.com
 Tags: product feed, woocommerce product feed, amazon, ebay, pricegrabber product feed, amazon product feed, nextag, pricegrabber
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,8 +17,9 @@ Best WooCommerce Product Feed generates product feed to Sync product with your m
 * You can create feed Up-to 2000 products in free version
 * Unlimited feed creation for Pro-Users
 * XML and TXT formats
+* Supports Yith brand attributes
 * Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
-* Attribute Prefix and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
+* Static attribute, Prefix, and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
 * Create custom field names
 * Map your categories to those of other channels, such as Google Shopping
 * Intuitive user interface
@@ -29,10 +30,11 @@ Best WooCommerce Product Feed generates product feed to Sync product with your m
 - [Google Shopping](https://www.google.com/retail/merchant-center/)
 - [Amazon Seller Ad](https://advertising.amazon.com/)
 - [eBay Commerce Network](http://www.ebaycommercenetwork.com/)
-- [Nextag.com](http://www.nextag.com/)
-- [Pricegrabber.com](http://www.pricegrabber.com/)
-- [Kelkoo.com](https://www.kelkoo.com/)
+- [Nextag](http://www.nextag.com/)
+- [Pricegrabber](http://www.pricegrabber.com/)
+- [Kelkoo](https://www.kelkoo.com/)
 - [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
+- [Become](http://www.become.com/)
 
 Currently, our Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
 We enlisted all the required and recommended fields of the feed with the WordPress database. So after installation, you are ready to submit your product feed to merchant centers. You will have full control over your product feed. You can choose what products to show and which products not.
@@ -64,7 +66,7 @@ Set smart filter and ordering per channel, so only your most profitable products
 
 == Frequently Asked Questions ==
 = Which shopping merchants are supported? =
-Currently we support 7 major shopping engines.
+Currently we support 8 major shopping engines.
 = Does the plugin supports product variation? =
 Yes, It does.
 = Is there a product limit? =
@@ -127,3 +129,8 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 = 1.1.6 =
 * Compatible with php7
 * Category Mapping
+
+= 1.1.7 =
+* New merchant - Become
+* yith brand attribute support
+* custom template

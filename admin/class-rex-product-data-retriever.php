@@ -142,9 +142,15 @@ class Rex_Product_Data_Retriever {
         }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
             $val = $this->set_image_att( $rule['meta_key']  );
 
-        }elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_product_att( $rule['meta_key']  );
         }
+        elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_product_att( $rule['meta_key']  );
+
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_product_dynamic_att( $rule['meta_key']  );
+        }
+
 
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix($val, $rule);
@@ -290,6 +296,24 @@ class Rex_Product_Data_Retriever {
     }
 
     /**
+     * Set a Product Dynamic attribute.
+     *
+     * @since    1.0.0
+     */
+    private function set_product_dynamic_att( $key ) {
+
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            $attr_name = $this->get_product_dynamic_tags($this->product->get_parent_id(), $key);
+        }else{
+            $attr_name = $this->get_product_dynamic_tags($this->product->get_id(), $key);
+        }
+        if($attr_name){
+            return $attr_name;
+        }
+        return '';
+    }
+
+    /**
      * Get additional image url by key.
      *
      * @since    1.0.0
@@ -331,6 +355,19 @@ class Rex_Product_Data_Retriever {
      */
     private function get_product_tags( $before = '', $sep = ', ', $after = '' ) {
         return $this->get_the_term_list( $this->product->get_id(), 'product_tag', $before, $sep, $after );
+    }
+
+    /**
+     * Retrieve a product's dynamic attributes as a list with specified format.
+     *
+     *
+     * @param string $before Optional. Before list.
+     * @param string $sep Optional. Separate items using this.
+     * @param string $after Optional. After list.
+     * @return string|false
+     */
+    private function get_product_dynamic_tags( $id, $key, $before = '', $sep = ', ', $after = '' ) {
+        return $this->get_the_term_list($id, $key, $before, $sep, $after );
     }
 
     /**
@@ -404,12 +441,21 @@ class Rex_Product_Data_Retriever {
     }
 
     /**
-     * Helper to check if a attribute is a Image Attribute.
+     * Helper to check if a attribute is a Product Attribute.
      *
      * @since    1.0.0
      */
     private function is_product_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Product Attributes'] );
+    }
+
+    /**
+     * Helper to check if a attribute is a Product dynamic Attribute.
+     *
+     * @since    1.0.0
+     */
+    private function is_product_dynamic_attr( $key ) {
+        return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
     }
 
 

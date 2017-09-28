@@ -62,6 +62,7 @@ class Rex_Feed_Attributes {
             ),
         );
 
+        //Product Attributes
         global $wpdb;
         //Load the main attributes
         $sql = 'SELECT attribute_name as name, attribute_type as type FROM ' . $wpdb->prefix . 'woocommerce_attribute_taxonomies';
@@ -72,6 +73,35 @@ class Rex_Feed_Attributes {
             }
             $attributes['Product Attributes'] = $attr;
         }
+
+
+        //Product Dynamic Attributes
+
+        $list = array();
+        $no_taxonomies = array("category","post_tag","nav_menu","link_category","post_format","product_type","product_visibility","product_cat","product_shipping_class","product_tag");
+        $taxonomies = get_taxonomies();
+        $diff_taxonomies = array_diff($taxonomies, $no_taxonomies);
+
+        foreach($diff_taxonomies as $tax_diff){
+            $taxonomy_details = get_taxonomy( $tax_diff );
+            foreach($taxonomy_details as $kk => $vv){
+                if($kk == "name"){
+                    $attr_name = $vv;
+                }
+
+                if($kk == "labels"){
+                    foreach($vv as $kw => $kv){
+                        if($kw == "singular_name"){
+//                            $attr_name = strtolower(str_replace(" ", "_",$kv));
+                            $attr_name_clean = ucfirst($kv);
+                        }
+                    }
+                }
+            }
+            $list["$attr_name"] = $attr_name_clean;
+        }
+        $attributes['Product Dynamic Attributes'] = $list;
+
         return $attributes;
     }
 

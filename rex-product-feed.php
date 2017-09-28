@@ -16,7 +16,7 @@
  * Plugin Name:       Best Products Feed for WooCoommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchant shop and acquiring real buyer.
- * Version:           1.1.6
+ * Version:           1.1.7
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -45,7 +45,6 @@ function rex_product_feed() {
             'type'                => 'plugin',
             'public_key'          => 'pk_872b130317a310d70105122544cde',
             'is_premium'          => false,
-            // If your plugin is a serviceware, set this option to false.
             'has_premium_version' => false,
             'has_addons'          => false,
             'has_paid_plans'      => false,
@@ -54,8 +53,6 @@ function rex_product_feed() {
                 'contact'        => true,
                 'support'        => true,
             ),
-            // Set the SDK to work in a sandbox mode (for development & testing).
-            // IMPORTANT: MAKE SURE TO REMOVE SECRET KEY BEFORE DEPLOYMENT.
         ) );
     }
 
@@ -162,13 +159,24 @@ function run_rex_product_feed() {
     $plugin = new Rex_Product_Feed();
     $plugin->run();
 
+
+
+
+
+    //testing and debug
+
+    $config = get_post_meta( 129, 'rex_feed_feed_config', true );
+    $merchant = get_post_meta( 129, 'rex_feed_merchant', true );
+//    $feed_class = 'Rex_Product_Feed_' .
+    $create_feed = new Rex_Product_Feed_Google($config);
+
 }
 run_rex_product_feed();
 
 rex_product_feed()->add_action('after_uninstall', 'rex_uninstall_cleanup');
 
 function rex_uninstall_cleanup(){
-  if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-    exit;
-  }
+    if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+        exit;
+    }
 }
