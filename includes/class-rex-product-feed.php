@@ -152,11 +152,11 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'init', $plugin_admin, 'register_cpt' );
         $this->loader->add_action( 'cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
+        $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages');
 
         // remove bulk edit and quick edit for our feed cpt.
         $this->loader->add_filter( 'bulk_actions-edit-product-feed', $plugin_admin, 'remove_bulk_edit' );
         $this->loader->add_filter( 'post_row_actions', $plugin_admin, 'remove_quick_edit' );
-        $this->loader->add_filter( 'page_row_actions', $plugin_admin, 'remove_quick_edit' );
     }
 
     /**

@@ -76,7 +76,6 @@ class Rex_Feed_Attributes {
 
 
         //Product Dynamic Attributes
-
         $list = array();
         $no_taxonomies = array("category","post_tag","nav_menu","link_category","post_format","product_type","product_visibility","product_cat","product_shipping_class","product_tag");
         $taxonomies = get_taxonomies();
@@ -101,6 +100,21 @@ class Rex_Feed_Attributes {
             $list["$attr_name"] = $attr_name_clean;
         }
         $attributes['Product Dynamic Attributes'] = $list;
+
+
+
+        //Category Mapping
+        $cat_maps_array = array();
+        $pattern = '/^rex_cat_map_[a-z]+$/';
+        $cat_maps = preg_grep($pattern, array_keys(wp_load_alloptions()));
+        if($cat_maps){
+            foreach ($cat_maps as $cat_map){
+                $option = get_option($cat_map);
+                $cat_maps_array["$cat_map"] = $option['map_name'];
+            }
+        }
+
+        $attributes['Category Map'] = $cat_maps_array;
 
         return $attributes;
     }

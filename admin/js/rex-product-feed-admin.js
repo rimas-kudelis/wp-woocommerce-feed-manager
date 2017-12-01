@@ -223,8 +223,100 @@
                 console.log( response.statusText );
             });
     }
-
     $(document).on('click', '#publish', save_feed);
 
 
+    function category_mapping(event) {
+        event.preventDefault();
+        var $payload = {
+            map_name: $('#map_name').val(),
+            cat_map: $('.add_cat_map').serialize(),
+        };
+        if ($('#map_name').val().length != 0){
+            $('.rex-loading-spinner').slideDown('fast');
+            wpAjaxHelperRequest( 'category-mapping', $payload )
+                .success( function( response ) {
+                    $('.rex-loading-spinner').fadeOut('fast');
+                    setTimeout(function(){// wait for 5 secs(2)
+                        location.reload(); // then reload the page.(3)
+                    }, 1000);
+                    console.log('ola');
+                })
+                .error( function( response ) {
+                    console.log( 'Uh, oh!' );
+                    console.log( response.statusText );
+                });
+        }else {
+            alert('Please Insert Category Map Name')
+        }
+
+    }
+    $(document).on('click', '#save_mapping_cat', category_mapping);
+
+
+    function delete_mapping(event) {
+        event.preventDefault();
+        var container = $(this).closest('.acordion-item');
+        var map_name = container.find('.mapper_name_update');
+        var $payload = {
+            map_name: map_name.text()
+        };
+        $('.rex-loading-spinner').slideDown('fast');
+        wpAjaxHelperRequest( 'category-mapping-delete', $payload )
+            .success( function( response ) {
+                $('.rex-loading-spinner').fadeOut('fast');
+                container.fadeOut();
+                console.log('Hello');
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+
+    }
+    $(document).on('click', '#delete_mapping_cat', delete_mapping);
+
+
+
+    function category_mapper_accordion(event) {
+        $(this).slideDown(500);
+        $(this).toggleClass('selected');
+
+        var this_inner = $(this).parent().next();
+        var this_a = $(this);
+
+        $(this).parent().next().slideToggle(function() {
+            $('.accordion > h2 > a').not(this_a).removeClass('selected');
+            $(".inner").not(this_inner).slideUp();
+        });
+        return false;
+    }
+    $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
+
+
+
+
+    function category_mapping_update(event) {
+        event.preventDefault();
+        var form = $(this).closest('form');
+        var container = $(this).closest('.acordion-item');
+        var map_name = container.find('.mapper_name_update');
+        var $payload = {
+            map_name: map_name.text(),
+            cat_map: form.serialize(),
+        };
+        $('.rex-loading-spinner').slideDown('fast');
+        wpAjaxHelperRequest( 'category-mapping-update', $payload )
+            .success( function( response ) {
+                $('.rex-loading-spinner').fadeOut('fast');
+                console.log('ola');
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on('click', '#update_mapping_cat', category_mapping_update);
+
 })( jQuery );
+

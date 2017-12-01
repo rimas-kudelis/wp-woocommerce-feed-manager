@@ -53,6 +53,7 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
     );
 
     public static $classMap = array (
+        'CategoryMapping' => __DIR__ . '/../..' . '/admin/class-category-mapping.php',
         'RexPremium' => __DIR__ . '/../..' . '/admin/class-rex-free-plugin-handler.php',
         'RexTheme\\RexShoppingFeed\\Containers\\RexShopping' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Containers/RexShopping.php',
         'RexTheme\\RexShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Feed.php',

@@ -37,11 +37,13 @@ class Rex_Product_CPT {
      */
     private function post_types(){
         register_extended_post_type( 'product-feed', array(
+
             'rewrite'            => false,
             'query_var'          => false,
             'publicly_queryable' => false,
             'supports'           => array( 'title' ),
             'enter_title_here'   => 'Enter feed title here',
+            'menu_icon'           => PLUGIN_DIR_URL . 'admin/icon/icon.png',
             'admin_cols' => array(
 
                 'merchant' => array(
@@ -65,7 +67,6 @@ class Rex_Product_CPT {
                         echo '<a target="_blank" class="button" href="' . $url . '" download>Download</a>';
                     }
                 ),
-
                 'date'
             ),
         ));

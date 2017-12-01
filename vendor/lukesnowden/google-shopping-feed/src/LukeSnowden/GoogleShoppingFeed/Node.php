@@ -86,11 +86,6 @@ class Node
         if ($this->cdata && ! preg_match("#^<!\[CDATA#is", $this->value)) {
             $this->value = ($this->name == 'google_product_category') ? htmlspecialchars(preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $this->value)) : htmlspecialchars("<![CDATA[{$this->value}]]>") ;
         }
-//        if($this->name == 'google_product_category'){
-//            var_dump($this->value);
-//            wp_die();
-//        }
         $parent->addChild($this->name, $this->value, $this->_namespace);
-        // $parent->{$this->name} = $this->value;
     }
 }

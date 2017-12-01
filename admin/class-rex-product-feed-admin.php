@@ -96,7 +96,7 @@ class Rex_Product_Feed_Admin {
 
         $screen = get_current_screen();
 
-        if( $hook != 'post.php' && $hook != 'post-new.php' ){
+        if( $hook != 'post.php' && $hook != 'post-new.php' && $hook != 'product-feed_page_category_mapping' ){
             return;
         }
 
@@ -104,6 +104,7 @@ class Rex_Product_Feed_Admin {
             wp_enqueue_style( 'materialize-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
             wp_enqueue_style( 'materialize-css', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rex-product-feed-admin.css', array(), $this->version, 'all' );
+
         }
 
 
@@ -128,7 +129,8 @@ class Rex_Product_Feed_Admin {
          * class.
          */
 
-        if( $hook != 'post.php' && $hook != 'post-new.php' ){
+
+        if( $hook != 'post.php' && $hook != 'post-new.php' && $hook != 'product-feed_page_category_mapping' ){
             return;
         }
 
@@ -207,6 +209,20 @@ class Rex_Product_Feed_Admin {
      */
     public function register_metaboxes() {
         $this->metabox->register();
+    }
+
+
+    /**
+     * Register Plugin Admin Pages
+     *
+     * @since    1.0.0
+     */
+    public function load_admin_pages() {
+        add_submenu_page('edit.php?post_type=product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_options', 'category_mapping',  __CLASS__ .'::category_mapping');
+    }
+
+    public function category_mapping(){
+        require plugin_dir_path(__FILE__) . '/partials/category_mapping.php';
     }
 
 }

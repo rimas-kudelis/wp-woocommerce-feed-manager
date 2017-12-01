@@ -3,8 +3,8 @@ Contributors: rextheme
 Donate link: https://rextheme.com
 Tags: product feed, woocommerce product feed, amazon, ebay, pricegrabber product feed, amazon product feed, nextag, pricegrabber
 Requires at least: 3.0.1
-Tested up to: 4.8.1
-Stable tag: 1.1.7
+Tested up to: 4.9.1
+Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,3 +134,6 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 * New merchant - Become
 * yith brand attribute support
 * custom template
+
+= 1.1.8 =
+* Add Category Mapping Feature

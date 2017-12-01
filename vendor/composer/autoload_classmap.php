@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CategoryMapping' => $baseDir . '/admin/class-category-mapping.php',
     'RexPremium' => $baseDir . '/admin/class-rex-free-plugin-handler.php',
     'RexTheme\\RexShoppingFeed\\Containers\\RexShopping' => $baseDir . '/admin/feed/rex-shopping-feed/Containers/RexShopping.php',
     'RexTheme\\RexShoppingFeed\\Feed' => $baseDir . '/admin/feed/rex-shopping-feed/Feed.php',

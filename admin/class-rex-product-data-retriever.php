@@ -117,11 +117,9 @@ class Rex_Product_Data_Retriever {
      */
     public function set_all_value() {
         $this->data = array();
-
         foreach ($this->feed_rules as $key => $rule) {
             $this->data[ $rule['attr'] ] = $this->set_val( $rule );
         }
-
     }
 
 
@@ -149,6 +147,9 @@ class Rex_Product_Data_Retriever {
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_dynamic_att( $rule['meta_key']  );
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
 
 
@@ -313,6 +314,33 @@ class Rex_Product_Data_Retriever {
         return '';
     }
 
+
+    /**
+     * Set Product Category Map
+     *
+     * @since    1.0.0
+     */
+    private function set_cat_mapper_att( $key ) {
+
+        $first_cat = array();
+        $cat_lists = get_the_terms( $this->product->get_id(), 'product_cat' );
+        if($cat_lists){
+            $first_cat = reset($cat_lists);
+        }
+
+        $map_category = get_option($key);
+        if($first_cat){
+            foreach ($map_category as $key => $value){
+                if($first_cat->term_id == $value['cat_id']){
+                    return utf8_decode(urldecode($value['value']));
+                }
+            }
+        }
+        return '';
+
+    }
+
+
     /**
      * Get additional image url by key.
      *
@@ -456,6 +484,15 @@ class Rex_Product_Data_Retriever {
      */
     private function is_product_dynamic_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
+    }
+
+    /**
+     * Helper to check if a attribute is a Category Mapper.
+     *
+     * @since    1.0.0
+     */
+    private function is_product_category_mapper_attr( $key ) {
+        return array_key_exists( $key, $this->product_meta_keys['Category Map'] );
     }
 
 
