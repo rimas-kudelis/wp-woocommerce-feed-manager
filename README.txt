@@ -1,6 +1,6 @@
 === Best WooCommerce Product Feed ===
 Contributors: rextheme
-Donate link: https://rextheme.com
+Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: product feed, woocommerce product feed, amazon, ebay, pricegrabber product feed, amazon product feed, nextag, pricegrabber
 Requires at least: 3.0.1
 Tested up to: 4.9.1
