@@ -1,17 +1,17 @@
 === Best WooCommerce Product Feed for Google Shopping, Amazon, & etc ===
 Contributors: rextheme
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
-Tags: google shopping, product feed, google product feed, amazon, ebay, pricegrabber product feed, amazon product feed
+Tags: google shopping, product feed, google product feed, pricegrabber product feed, amazon product feed
 Requires at least: 3.0.1
 Tested up to: 4.9.1
 Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best WooCommerce Product Feed helps you to sell more by uploading products to Google shopping, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
+Best WooCommerce Product Feed helps you to sell more by uploading product feed to Google shopping, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
-Best WooCommerce Product Feed generates google product feed or other kinds of merhacnt product feed to Sync product with your google shop or merchant centers. Using Best WooCommerce Product Feed plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different merchant shops. The plugin has setups that meet the requirements from various merchant stores.
+Best WooCommerce Product Feed generates google product feed or other kinds of merchant product feed to Sync product with your google shop or merchant centers. Using Best WooCommerce Product Feed plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different merchant shops. The plugin has setups that meet the requirements from various merchant stores.
 
 We have connected all the recommended fields of the feed with the WordPress database. So after installing the plugin you are ready to submit your product feed to merchant center. You can also tweak the content of every field in order to maximize your ROI from your products in merchant shops.
 
@@ -69,7 +69,7 @@ Set smart filter and ordering per channel, so only your most profitable products
 == Frequently Asked Questions ==
 = Which shopping merchants are supported? =
 Currently we support 8 major shopping engines like Google Shopping, Amazon, Ebay & etc.
-= Does Best WooCommerce ProducT Feed supports product variation? =
+= Does Best WooCommerce Product Feed supports product variation? =
 Yes, It does.
 = Is there a product limit? =
 No, you can add as many products to your product feeds as you want but this feature is only available for pro-users. In free version you can create product feed up-to 2000 products.
