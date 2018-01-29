@@ -1,7 +1,7 @@
 === Best WooCommerce Product Feed for Google Shopping, Amazon, & etc ===
 Contributors: rextheme
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
-Tags: google shopping, product feed, google product feed, pricegrabber product feed, amazon product feed
+Tags: google shopping, product feed, google product feed, amazon, ebay, pricegrabber product feed, amazon product feed
 Requires at least: 3.0.1
 Tested up to: 4.9.1
 Stable tag: 1.1.8
