@@ -1,7 +1,7 @@
 === Best WooCommerce Product Feed for Google Shopping, Amazon, & etc ===
 Contributors: rextheme
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
-Tags: google shopping, product feed, google product feed, pricegrabber product feed, amazon product feed
+Tags: google shopping, product feed, google product feed, product data feed, amazon product feed
 Requires at least: 3.0.1
 Tested up to: 4.9.1
 Stable tag: 1.1.8
@@ -49,10 +49,13 @@ Our product feed plugin is compatible with any WooCommece theme you name. So you
 
 **Create Product Feed Using Category Mapping**
 Google shopping requires category mapping. It's must for google shopping feed. Best WooCommerce Product Feed lets you do that. You can also the category mapping for other merchant shops. 
+
 This means you can find out which Shopping Engine categories have the best matching with yours. Best practice is to assign most matching shopping engine category to your store category for each product. During the creation process of your feeds, you can also create a category for that particular product. And after creating the category, you’ll get an option to map it to your market place category so that you can make two categories aligned to each other. Not only does it support 1-to-1 category mapping but you can also map subsets of products on a channel-category based on product names.
 
 **Make Dynamic Attributes As You Need**
-Best WooCommerce Product Feed gives you the ability to set your conditions for any types of attributes. Different types of WooCommerce users have different kinds & classes of goods and services. So, you may need varieties of custom values to demonstrate your products. That's why we are giving the options to make dynamic attributes as your need. Also, it is possible to generate the data feed file according to the search engines requirements without changing the attributes in your store. Determine yourself what attributes to include or exclude in your product feed.
+Best WooCommerce Product Feed gives you the ability to set your conditions for any types of attributes. Different types of WooCommerce users have different kinds & classes of goods and services. So, you may need varieties of custom values to demonstrate your products. That's why we are giving the options to make dynamic attributes as your need. 
+
+Also, it is possible to generate the data feed file according to the search engines requirements without changing the attributes in your store. Determine yourself what attributes to include or exclude in your product feed.
 
 **Custom Taxonomy For You** 
 Add custom taxonomies with naming you requires and fill it with static or dynamic values to your product feed. You can easily use any custom taxonomy or other WooCommerce plugin or extensions taxonomy value into feeds. E.g., Brand, Model No, size, etc. So you can easily use those value into your feed.
