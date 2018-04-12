@@ -1,7 +1,7 @@
 === Best WooCommerce Product Feed for Google, Facebook, Amazon, Bing, Ebay & more ===
 Contributors: rextheme
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
-Tags: google shopping, product feed, google product feed, product data feed, amazon product feed
+Tags: google shopping, woocommerce product feed, google product feed, product data feed, amazon product feed
 Requires at least: 3.0.1
 Tested up to: 4.9.1
 Stable tag: 1.1.8
