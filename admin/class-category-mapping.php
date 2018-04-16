@@ -6,7 +6,7 @@
  * Helper Class to retrieve Woo Product Category
  *
  * @link       https://rextheme.com
- * @since      1.0.0
+ * @since      1.1.8
  *
  * @package    Rex_Product_Feed
  * @subpackage Rex_Product_Feed/admin/partials/

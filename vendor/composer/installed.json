@@ -1,97 +1,5 @@
 [
     {
-        "name": "gregwar/cache",
-        "version": "v1.0.12",
-        "version_normalized": "1.0.12.0",
-        "target-dir": "Gregwar/Cache",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Gregwar/Cache.git",
-            "reference": "305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Gregwar/Cache/zipball/305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3",
-            "reference": "305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3"
-        },
-        "time": "2016-09-23T08:16:04+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Gregwar\\Cache": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Gregwar",
-                "email": "g.passault@gmail.com"
-            }
-        ],
-        "description": "A lightweight file-system cache system",
-        "keywords": [
-            "cache",
-            "caching",
-            "file-system",
-            "system"
-        ]
-    },
-    {
-        "name": "lukesnowden/google-shopping-feed",
-        "version": "2.0.0",
-        "version_normalized": "2.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/lukesnowden/google-shopping-feed.git",
-            "reference": "9c54caf6be146f128edacd577ae09da2861e3d7d"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/lukesnowden/google-shopping-feed/zipball/9c54caf6be146f128edacd577ae09da2861e3d7d",
-            "reference": "9c54caf6be146f128edacd577ae09da2861e3d7d",
-            "shasum": ""
-        },
-        "require": {
-            "gregwar/cache": "1.0.*",
-            "php": ">=5.3.0"
-        },
-        "time": "2016-11-21T15:51:31+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "LukeSnowden\\GoogleShoppingFeed": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Luke Snowden",
-                "email": "luke@sno.wden.co.uk"
-            }
-        ],
-        "description": "Google Shopping Feed API",
-        "homepage": "https://github.com/lukesnowden/google-shopping-feed",
-        "keywords": [
-            "Google Shopping Feed",
-            "api",
-            "feed",
-            "google",
-            "shopping"
-        ]
-    },
-    {
         "name": "composer/installers",
         "version": "v1.2.0",
         "version_normalized": "1.2.0.0",
@@ -201,6 +109,51 @@
         ]
     },
     {
+        "name": "gregwar/cache",
+        "version": "v1.0.12",
+        "version_normalized": "1.0.12.0",
+        "target-dir": "Gregwar/Cache",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Gregwar/Cache.git",
+            "reference": "305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Gregwar/Cache/zipball/305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3",
+            "reference": "305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "time": "2016-09-23T08:16:04+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Gregwar\\Cache": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Gregwar",
+                "email": "g.passault@gmail.com"
+            }
+        ],
+        "description": "A lightweight file-system cache system",
+        "keywords": [
+            "cache",
+            "caching",
+            "file-system",
+            "system"
+        ]
+    },
+    {
         "name": "johnbillion/extended-cpts",
         "version": "3.0.3",
         "version_normalized": "3.0.3.0",
@@ -243,6 +196,53 @@
         ],
         "description": "A library which provides extended functionality to WordPress custom post types, allowing developers to quickly build custom post types without having to write the same code again and again.",
         "homepage": "https://github.com/johnbillion/extended-cpts/"
+    },
+    {
+        "name": "lukesnowden/google-shopping-feed",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/lukesnowden/google-shopping-feed.git",
+            "reference": "9c54caf6be146f128edacd577ae09da2861e3d7d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/lukesnowden/google-shopping-feed/zipball/9c54caf6be146f128edacd577ae09da2861e3d7d",
+            "reference": "9c54caf6be146f128edacd577ae09da2861e3d7d",
+            "shasum": ""
+        },
+        "require": {
+            "gregwar/cache": "1.0.*",
+            "php": ">=5.3.0"
+        },
+        "time": "2016-11-21T15:51:31+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "LukeSnowden\\GoogleShoppingFeed": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Luke Snowden",
+                "email": "luke@sno.wden.co.uk"
+            }
+        ],
+        "description": "Google Shopping Feed API",
+        "homepage": "https://github.com/lukesnowden/google-shopping-feed",
+        "keywords": [
+            "Google Shopping Feed",
+            "api",
+            "feed",
+            "google",
+            "shopping"
+        ]
     },
     {
         "name": "philipnewcomer/wp-ajax-helper",
@@ -318,7 +318,7 @@
         },
         "time": "2016-11-08T15:24:55+00:00",
         "type": "wordpress-plugin",
-        "installation-source": "dist",
+        "installation-source": "source",
         "notification-url": "https://packagist.org/downloads/",
         "license": [
             "GPL-2.0+"

@@ -62,9 +62,8 @@ class Rex_Feed_Attributes {
             ),
         );
 
-        //Product Attributes
+        //Get the Product Attributes
         global $wpdb;
-        //Load the main attributes
         $sql = 'SELECT attribute_name as name, attribute_type as type FROM ' . $wpdb->prefix . 'woocommerce_attribute_taxonomies';
         $data = $wpdb->get_results($sql);
         if (count($data)) {
@@ -97,9 +96,27 @@ class Rex_Feed_Attributes {
                     }
                 }
             }
+
             $list["$attr_name"] = $attr_name_clean;
         }
         $attributes['Product Dynamic Attributes'] = $list;
+
+        //custom attributes
+        $list = array();
+        $sql = "SELECT meta_key as name, meta_value as type FROM " . $wpdb->prefix . "postmeta" . "  group by meta_key";
+        $data = $wpdb->get_results($sql);
+        if (count($data)) {
+            foreach ($data as $key => $value) {
+                if (substr($value->name, 0, 1) !== "_") {
+                    if (!preg_match("/pyre|sbg|fusion|rex/i",$value->name)){
+                        $value_display = str_replace("_", " ",$value->name);
+                        $list["custom_attributes_" . $value->name] = ucfirst($value_display);
+                    }
+                }
+            }
+        }
+        $attributes['Custom Attributes'] = $list;
+
 
 
 

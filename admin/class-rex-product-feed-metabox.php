@@ -116,6 +116,7 @@ class Rex_Product_Metabox {
             'options'          => array(
                 'custom'       => __( 'Custom', 'rex-product-feed' ),
                 'google'       => __( 'Google Shopping', 'rex-product-feed' ),
+                'facebook'     => __( 'Facebook', 'rex-product-feed' ),
                 'amazon'       => __( 'Amazon Ads', 'rex-product-feed' ),
                 'ebay'         => __( 'eBay(Shopping.com)', 'rex-product-feed' ),
                 'nextag'       => __( 'Nextag', 'rex-product-feed' ),

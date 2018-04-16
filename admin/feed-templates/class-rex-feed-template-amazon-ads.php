@@ -4,7 +4,7 @@
  * The Amazon Feed Template class.
  *
  * @link       https://rextheme.com
- * @since      1.0.0
+ * @since      1.1.4
  *
  * @package    Rex_Product_Feed
  * @subpackage Rex_Product_Feed/admin/feed-templates/

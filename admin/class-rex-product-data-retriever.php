@@ -77,7 +77,6 @@ class Rex_Product_Data_Retriever {
         $this->product           = wc_get_product( $product );
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
-
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
         $this->set_all_value();
 //        $this->maybe_set_variation_data();
@@ -147,10 +146,15 @@ class Rex_Product_Data_Retriever {
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_dynamic_att( $rule['meta_key']  );
+
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_product_custom_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_product_custom_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
             $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
+
 
 
         // maybe add prefix/suffix
@@ -291,7 +295,7 @@ class Rex_Product_Data_Retriever {
         $variant_atts = $this->product->get_variation_attributes();
         $key = str_replace( 'bwf_attr_pa_', 'attribute_pa_', $key);
         if(array_key_exists($key, $variant_atts)){
-           return $variant_atts[$key];
+            return $variant_atts[$key];
         }
         return '';
     }
@@ -305,9 +309,31 @@ class Rex_Product_Data_Retriever {
 
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             $attr_name = $this->get_product_dynamic_tags($this->product->get_parent_id(), $key);
-        }else{
+        } else{
+
             $attr_name = $this->get_product_dynamic_tags($this->product->get_id(), $key);
         }
+        if($attr_name){
+            return $attr_name;
+        }
+        return '';
+    }
+
+    /**
+     * Set a Product Custom attribute.
+     *
+     * @since    1.0.0
+     */
+    private function set_product_custom_att( $key ) {
+
+        $new_key = str_replace('custom_attributes_', '', $key);
+
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            $attr_name = get_post_meta($this->product->get_parent_id(), $new_key, true);
+        } else{
+            $attr_name = get_post_meta($this->product->get_id(), $new_key, true);
+        }
+
         if($attr_name){
             return $attr_name;
         }
@@ -483,7 +509,18 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     private function is_product_dynamic_attr( $key ) {
+
         return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
+    }
+
+    /**
+     * Helper to check if a attribute is a Product Custom Attribute.
+     *
+     * @since    1.0.0
+     */
+    private function is_product_custom_attr( $key ) {
+
+        return array_key_exists( $key, $this->product_meta_keys['Product Custom Attributes'] );
     }
 
     /**
@@ -615,4 +652,8 @@ class Rex_Product_Data_Retriever {
         return $this->product->post->post_parent? true: false;
     }
 
+    function __call($name, $arguments)
+    {
+        // TODO: Implement __call() method.
+    }
 }
