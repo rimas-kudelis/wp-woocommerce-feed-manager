@@ -152,5 +152,5 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 * Add Support for woocommerce custom field
 * Add new merchant - Facebook
 
-= 1.1.10 =
+= 1.1.9.1 =
 * Fixed: Sale Price will not be visible if empty(For Google Merchant)
