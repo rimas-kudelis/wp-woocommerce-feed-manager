@@ -204,7 +204,6 @@
                 // 'response' will be the response from the handle's callback function, as either a string or JSON.
                 console.log( response );
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-                console.log('location.hostname:' + location.hostname);
                 if(response == 'false' || response == ''){
                     $(msg).insertAfter( $( ".wrap .page-title-action" ));
                     $('#publishing-action span.spinner').removeClass('is-active');

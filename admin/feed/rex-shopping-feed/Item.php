@@ -127,8 +127,12 @@ class Item
      */
     public function sale_price($salePrice)
     {
-        $node = new Node('sale_price');
-        $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+
+        if ($salePrice) {
+            $node = new Node('sale_price');
+            $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+        }
+
     }
 
     /**

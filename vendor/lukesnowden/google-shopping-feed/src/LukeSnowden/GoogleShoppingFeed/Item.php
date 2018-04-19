@@ -126,8 +126,30 @@ class Item
      */
     public function sale_price($salePrice)
     {
-        $node = new Node('sale_price');
-        $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+        preg_match_all('!\d+!', $salePrice, $matches);
+        $sPrice = implode(' ', $matches[0]);
+
+        if ($sPrice) {
+            $node = new Node('sale_price');
+            $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+        }
+
+    }
+
+
+    /**
+     * [sale_price - set the sale price effective date, do not format before passing]
+     * @param  [type] $salePriceEffectiveDate [description]
+     * @return [type]            [description]
+     */
+    public function sale_price_effective_date($salePriceEffectiveDate)
+    {
+
+        if ($salePriceEffectiveDate) {
+            $node = new Node('sale_price_effective_dat');
+            $this->nodes['sale_price_effective_dat'] = $node->value($salePriceEffectiveDate)->_namespace($this->namespace);
+        }
+
     }
 
     /**
@@ -379,6 +401,7 @@ class Item
      */
     public function __call($name, $arguments)
     {
+
         // check if additional_image_link attributes
         if ( 0 === strpos( $name, 'additional_image_link_' ) ) {
           $name = 'additional_image_link';

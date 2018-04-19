@@ -45,6 +45,7 @@ class Rex_Feed_Attributes {
                 'product_tags'              => 'Tags',
                 'sale_price_dates_from'     => 'Sale Start Date',
                 'sale_price_dates_to'       => 'Sale End Date',
+                'sale_price_effective_date' => 'Sale Price Effective Date',
             ),
 
             'Image Attributes' => array(

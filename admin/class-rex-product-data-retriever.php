@@ -194,10 +194,14 @@ class Rex_Product_Data_Retriever {
                 return $this->product->get_title(); break;
 
             case 'price':
-                return $this->product->get_regular_price(); break;
+                return number_format((float)$this->product->get_regular_price(), 2, '.', '');
+                break;
 
             case 'sale_price':
-                return $this->product->get_sale_price(); break;
+                if ($this->product->get_sale_price()) {
+                    return number_format((float)$this->product->get_sale_price(), 2, '.', '');
+                }
+                break;
 
             case 'description':
                 if(($this->is_children())):
@@ -263,6 +267,22 @@ class Rex_Product_Data_Retriever {
 
             case 'sale_price_dates_to':
                 return date( get_option( 'date_format' ), $this->product->get_date_on_sale_to() ); break;
+
+            case 'sale_price_effective_date':
+
+
+                $sale_price_dates_to        = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_to', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
+                $sale_price_dates_from      = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_from', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
+
+                if ( ! empty( $sale_price_dates_to ) && ! empty( $sale_price_dates_from ) ) {
+                    $from   = date( "c", strtotime( $sale_price_dates_from ) );
+                    $to     = date( "c", strtotime( $sale_price_dates_to ) );
+
+
+                    return $from . '/' . $to;
+                }else {
+                    return '';
+                }
 
             default: return ''; break;
         }

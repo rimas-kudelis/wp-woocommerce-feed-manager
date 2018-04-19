@@ -4,7 +4,7 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: google shopping, woocommerce product feed, google product feed, product data feed, amazon product feed
 Requires at least: 3.0.1
 Tested up to: 4.9.1
-Stable tag: 1.1.9
+Stable tag: 1.1.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,8 +14,6 @@ Best WooCommerce Product Feed helps you to sell more by uploading product feed t
 Best WooCommerce Product Feed generates google product feed or other kinds of merchant product feed to Sync product with your google shop or merchant centers. Using Best WooCommerce Product Feed plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different merchant shops. The plugin has setups that meet the requirements from various merchant stores.
 
 We have connected all the recommended fields of the feed with the WordPress database. So after installing the plugin you are ready to submit your product feed to merchant center. You can also tweak the content of every field in order to maximize your ROI from your products in merchant shops.
-
-Best WooCommerce Product Feed tops the performance of other feed operations scripts as with it you can create your custom product feeds. Select products by using filters for SKU, Brand, Category, Keyword and Price is possible only by using Best WooCommerce Product Feed. Also, feed configuration is really intuitive with the easy user interface. Just a few clicks and you can map your custom attributes and default merchant attributes.
 
 = Features: =
 * You can create feed Up-to 2000 products in free version
@@ -153,3 +151,6 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 = 1.1.9 =
 * Add Support for woocommerce custom field
 * Add new merchant - Facebook
+
+= 1.1.10 =
+* Fixed: Sale Price will not be visible if empty(For Google Merchant)

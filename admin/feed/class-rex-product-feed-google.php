@@ -34,7 +34,8 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         $this->generate_variable_product_feed();
         $this->feed = GoogleShopping::asRss();
 
-
+//        var_dump($this->feed);
+//        wp_die();
 
         return $this->save_feed($this->feed_format);
     }
