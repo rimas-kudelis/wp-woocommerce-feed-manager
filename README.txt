@@ -4,7 +4,7 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: google shopping, woocommerce product feed, google product feed, product data feed, amazon product feed
 Requires at least: 3.0.1
 Tested up to: 4.9.1
-Stable tag: 1.1.9.1
+Stable tag: 1.1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,3 +154,6 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 
 = 1.1.9.1 =
 * Fixed: Sale Price will not be visible if empty(For Google Merchant)
+
+= 1.1.9.2 =
+* Fixed: Category mapping added to Facebook

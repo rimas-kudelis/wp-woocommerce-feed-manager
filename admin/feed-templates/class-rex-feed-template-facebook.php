@@ -29,6 +29,7 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
             'link'                     => 'Product URL [link]',
             'product_type'             => 'Product Categories [product_type] ',
             'image_link'               => 'Main Image [image_link]',
+            'google_product_category'  => 'Google Product Category [google_product_category]',
             'additional_image_link_1'  => 'Additional Image 1 [additional_image_link]',
             'additional_image_link_2'  => 'Additional Image 2 [additional_image_link]',
             'additional_image_link_3'  => 'Additional Image 3 [additional_image_link]',
@@ -173,6 +174,17 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
         ),
         array(
             'attr'     => 'brand',
+            'type'     => 'meta',
+            'meta_key' => '',
+            'st_value' => '',
+            'prefix'   => '',
+            'suffix'   => '',
+            'escape'   => 'default',
+            'limit'    => 0,
+        ),
+
+        array(
+            'attr'     => 'google_product_category',
             'type'     => 'meta',
             'meta_key' => '',
             'st_value' => '',
