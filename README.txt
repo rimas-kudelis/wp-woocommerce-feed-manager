@@ -1,19 +1,57 @@
 === Best WooCommerce Product Feed for Google, Facebook, Amazon, Bing, Ebay & more ===
 Contributors: rextheme
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
-Tags: google shopping, woocommerce product feed, google product feed, product data feed, amazon product feed
+Tags: woocommerce product feed, woocommerce, Google shopping, Google product feed, Product feed, Amazon, Google Merchant Export, Google product feed export, Facebook product feed, WooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, rextheme, txt export, csv export, xml export,woocommerce export,product export, Bing Shopping, Bing product feed, Bing remarking, Google Merchant Feed, Facebook feed, Bing feed, Facebook Product Feed, Facebook Dynamic remarketing, Data Feed, XML product feed, CSV product feed, TSV, TXT product feed, comparison shopping engines, comparison shopping websites, pricegrabber, Kelkoo, Become
 Requires at least: 3.0.1
-Tested up to: 4.9.1
-Stable tag: 1.1.9.2
+Tested up to: 4.9.6
+Requires PHP: 5.2.4
+Stable tag: 1.1.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best WooCommerce Product Feed helps you to sell more by uploading product feed to Google shopping, Amazon, Ebay, Nextag, Pricegrabber, Facebook and acquiring real buyer.
+Best WooCommerce Product Feed helps you to sell more by uploading product feed to Google shopping, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
 Best WooCommerce Product Feed generates google product feed or other kinds of merchant product feed to Sync product with your google shop or merchant centers. Using Best WooCommerce Product Feed plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different merchant shops. The plugin has setups that meet the requirements from various merchant stores.
 
+
+> FREE VERSION SUPPORTS UP TO 2000 PRODUCTS INCLUDING VARIATIONS.
+
+
+
 We have connected all the recommended fields of the feed with the WordPress database. So after installing the plugin you are ready to submit your product feed to merchant center. You can also tweak the content of every field in order to maximize your ROI from your products in merchant shops.
+
+With BWF feed solution, you will not just save your time for feed creation but also get rid of the technical hassles of products listings, and we have the most EASY user interface.
+
+>  If YOU LOVE THE PLUGIN OR HAVE MORE THAN 2000 PRODUCTS IN YOUR WooCommerce SHOP, YOU CAN TRY FULL FEATURED PREMIUM VERSION. OUR PRO Version is HIGHLY SCALABLE FOR FEEDS & MERCHANTS. Please contact us if you have any pre-sale questions. [JUST ONE CLICK AWAY!](https://rextheme.com/all-tickets/)
+
+
+**Best WooCommerce Product Feed Means Most Features in Free**
+Best WooCommerce Product Feed offers you most features for free than the other product feed plugins out there. Create google product feed or other product feed (2000 product) for free.
+
+**Compatible With Any WooCommerce Theme**
+Our product feed plugin is compatible with any WooCommece theme you name. So you don't have to worry about the look of your website if you want to use Best WooCommerce Product Feed as your product feed plugin.
+
+**Custom Filter & Rules**
+Set smart custom filter and ordering per channel, so only your most profitable products make it to the product feed. It helps you to exclude the non-profitable or out of season products you don’t want to share.
+
+**Create Product Feed Using Category Mapping**
+Google shopping and Facebook Dynamic Ads requires category mapping. It's must for these two merchant shop. Best WooCommerce Product Feed lets you do that.
+
+Categories are the primary key to get products into the search result. So, the best practice is to assign most matching shopping engine category to your store category for each product. With BWF you’ll get an option to map it to your marketplace category so that you can make two categories aligned with each other.
+
+>  *This process is entirely dynamic with our plugin & you can assign all of your categories to make it more relevant & reachable to buyers. You can also the category mapping for other merchant shops.*
+
+
+Not only does it supports 1-to-1 category mapping but you can also map subsets of products on a channel-category based on product names.
+
+**Make Dynamic Attributes As You Need**
+Best WooCommerce Product Feed gives you the ability to set your conditions for any types of attributes. Different types of WooCommerce users have different kinds & classes of goods and services. So, you may need varieties of custom values to demonstrate your products. That's why we are giving the options to make dynamic attributes as your need.
+
+Also, it is possible to generate the data feed file according to the search engines requirements without changing the attributes in your store. Determine yourself what attributes to include or exclude in your product feed.
+
+**BWF Lets You Add Custom Taxonomy**
+Add custom taxonomies with naming you requires and fill it with static or dynamic values to your product feed. You can easily use any custom taxonomy or other WooCommerce plugin or extensions taxonomy value into feeds. E.g., Brand, Model No, size, etc. So you can easily use those value into your feed.
 
 = Features: =
 * You can create feed Up-to 2000 products in free version
@@ -22,7 +60,6 @@ We have connected all the recommended fields of the feed with the WordPress data
 * Supports Yith brand attributes
 * Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
 * Static attribute, Prefix, and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
-* Create custom fields
 * Create custom field names
 * Map your categories to those of other channels, such as Google Shopping
 * Intuitive user interface
@@ -42,31 +79,8 @@ We have connected all the recommended fields of the feed with the WordPress data
 
 Currently, Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
 
-
-**Get Most Features in Free** 
-Best WooCommerce Product Feed offers you most features for free than the other product feed plugins out there. Create google product feed or other product feed (2000 product) for free. 
-
-**Compatible With Any WooCommerce Theme**
-Our product feed plugin is compatible with any WooCommece theme you name. So you don't have to worry about the look of your website if you want to use Best WooCommerce Product Feed as your product feed plugin.
-
-**Create Product Feed Using Category Mapping**
-Google shopping requires category mapping. It's must for google shopping feed. Best WooCommerce Product Feed lets you do that. You can also the category mapping for other merchant shops. 
-
-This means you can find out which Shopping Engine categories have the best matching with yours. Best practice is to assign most matching shopping engine category to your store category for each product. During the creation process of your feeds, you can also create a category for that particular product. And after creating the category, you’ll get an option to map it to your market place category so that you can make two categories aligned to each other. Not only does it support 1-to-1 category mapping but you can also map subsets of products on a channel-category based on product names.
-
-**Add Custom Fields**
-Now you can add custom fields with naming you require and fill it with static or dynamic values to your product feed.
-
-**Make Dynamic Attributes As You Need**
-Best WooCommerce Product Feed gives you the ability to set your conditions for any types of attributes. Different types of WooCommerce users have different kinds & classes of goods and services. So, you may need varieties of custom values to demonstrate your products. That's why we are giving the options to make dynamic attributes as your need. 
-
-Also, it is possible to generate the data feed file according to the search engines requirements without changing the attributes in your store. Determine yourself what attributes to include or exclude in your product feed.
-
-**Custom Taxonomy For You** 
-Add custom taxonomies with naming you requires and fill it with static or dynamic values to your product feed. You can easily use any custom taxonomy or other WooCommerce plugin or extensions taxonomy value into feeds. E.g., Brand, Model No, size, etc. So you can easily use those value into your feed.
-
-**Smart Filter & Rules**
-Set smart filter and ordering per channel, so only your most profitable products make it to the product feed. It helps you to exclude the non-profitable or out of season products you don’t want to share. 
+**BWF Has Best Support Team**
+We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: rextheme@gmail.com.
 
 
 == Installation ==
@@ -105,55 +119,91 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 
 == Changelog ==
 
-= 1.0.0 =
-* Initial version with support for Google Merchant
 
-= 1.0.1 =
-* Optimize to deal with large numbers of products.
+= 1.1.10 =
+* Add product filter option
 
-= 1.0.2 =
-* Fix issue with feed attributes values.
 
-= 1.1.0 =
-* New feature: Feed customization with custom attributes and values.
-* Improves UI
-* Bug fixes
+= 1.1.9.2 =
+* google_product_category added to Facebook
 
-= 1.1.1 =
-* Fixed issue on other pages causing by scripts
 
-= 1.1.2 =
-* Normalize windows path for ajax
+= 1.1.9.1 =
+* Fixed: Sale Price will not be visible if empty(For Google Merchant)
 
-= 1.1.3 =
-* Product description issue for variable products
-* Update dropdown type for merchants
 
-= 1.1.4 =
-* Add new merchants (amazon, bing, ebay, kelkoo, nextag, pricegrabber)
-* Provide support for both xml and text feed
+= 1.1.9 =
+* Add Support for woocommerce custom field
+* Add new merchant - Facebook
 
-= 1.1.5 =
-* Added the difference between premium and free version
 
-= 1.1.6 =
-* Compatible with php7
-* Category Mapping
+= 1.1.8 =
+* Add Category Mapping Feature
+
 
 = 1.1.7 =
 * New merchant - Become
 * yith brand attribute support
 * custom template
 
-= 1.1.8 =
-* Add Category Mapping Feature
 
-= 1.1.9 =
-* Add Support for woocommerce custom field
-* Add new merchant - Facebook
+= 1.1.6 =
+* Compatible with php7
+* Category Mapping
 
-= 1.1.9.1 =
-* Fixed: Sale Price will not be visible if empty(For Google Merchant)
 
-= 1.1.9.2 =
-* Fixed: Category mapping added to Facebook
+= 1.1.5 =
+* Added the difference between premium and free version
+
+
+= 1.1.4 =
+* Add new merchants (amazon, bing, ebay, kelkoo, nextag, pricegrabber)
+* Provide support for both xml and text feed
+
+
+= 1.1.3 =
+* Product description issue for variable products
+* Update dropdown type for merchants
+
+
+= 1.1.2 =
+* Normalize windows path for ajax
+
+
+= 1.1.1 =
+* Fixed issue on other pages causing by scripts
+
+
+= 1.1.0 =
+* New feature: Feed customization with custom attributes and values.
+* Improves UI
+* Bug fixes
+
+= 1.0.2 =
+* Fix issue with feed attributes values.
+
+= 1.0.1 =
+* Optimize to deal with large numbers of products.
+
+
+= 1.0.0 =
+* Initial version with support for Google Merchant
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

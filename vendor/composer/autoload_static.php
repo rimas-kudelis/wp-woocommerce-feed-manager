@@ -81,6 +81,7 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
         'Rex_Product_Feed_Factory' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-factory.php',
         'Rex_Product_Feed_Google' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-google.php',
         'Rex_Product_Feed_Other' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-other.php',
+        'Rex_Product_Filter' => __DIR__ . '/../..' . '/admin/feed-filter/class-rex-product-filter.php',
         'Rex_Product_Metabox' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-metabox.php',
     );
 

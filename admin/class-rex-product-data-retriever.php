@@ -66,6 +66,10 @@ class Rex_Product_Data_Retriever {
      */
     private $additional_images = array();
 
+
+
+
+
     /**
      * Initialize the class and set its properties.
      *
@@ -75,6 +79,11 @@ class Rex_Product_Data_Retriever {
      */
     public function __construct( $product, $feed_rules ) {
         $this->product           = wc_get_product( $product );
+
+//        $this->allowed = Rex_Product_Filter::allowedProduct($this->product, $feed_filter_rules);
+
+
+
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
@@ -676,4 +685,16 @@ class Rex_Product_Data_Retriever {
     {
         // TODO: Implement __call() method.
     }
+
+
+//    /**
+//     * Check if this product is child product or not
+//     *
+//     * @return bool
+//     * @since    1.0.0
+//     */
+//    private function is_children(){
+//        return $this->product->post->post_parent? true: false;
+//    }
+
 }

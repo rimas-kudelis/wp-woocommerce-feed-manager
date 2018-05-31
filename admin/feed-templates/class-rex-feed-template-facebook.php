@@ -182,17 +182,6 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
             'escape'   => 'default',
             'limit'    => 0,
         ),
-
-        array(
-            'attr'     => 'google_product_category',
-            'type'     => 'meta',
-            'meta_key' => '',
-            'st_value' => '',
-            'prefix'   => '',
-            'suffix'   => '',
-            'escape'   => 'default',
-            'limit'    => 0,
-        ),
     );
   }
 

@@ -34,5 +34,6 @@ return array(
     'Rex_Product_Feed_Factory' => $baseDir . '/admin/class-rex-product-feed-factory.php',
     'Rex_Product_Feed_Google' => $baseDir . '/admin/feed/class-rex-product-feed-google.php',
     'Rex_Product_Feed_Other' => $baseDir . '/admin/feed/class-rex-product-feed-other.php',
+    'Rex_Product_Filter' => $baseDir . '/admin/feed-filter/class-rex-product-filter.php',
     'Rex_Product_Metabox' => $baseDir . '/admin/class-rex-product-feed-metabox.php',
 );

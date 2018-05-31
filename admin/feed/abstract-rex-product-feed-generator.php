@@ -72,13 +72,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected $feed_format;
 
     /**
-     * The feed rules containig all attributes and their value mappings for the feed.
+     * The feed rules containing all attributes and their value mappings for the feed.
      *
      * @since    1.0.0
      * @access   protected
      * @var      Rex_Product_Feed_Abstract_Generator    $feed_rules    Contains attributes and value mappings for the feed.
      */
     protected $feed_rules;
+
+
+    /**
+     * The feed filter rules containing all condition and values for the feed.
+     *
+     * @since    1.1.10
+     * @access   protected
+     * @var      Rex_Product_Feed_Abstract_Generator    $feed_rules_filter    Contains condition and value for the feed.
+     */
+    protected $feed_rules_filter;
 
     /**
      * The Product Query args to retrieve specific products for making the Feed.
@@ -116,7 +126,38 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected $feed;
 
 
+    /**
+     * Allowed Product
+     *
+     * @since    1.1.10
+     * @access   private
+     * @var      bool    $allowed
+     */
+    protected $allowed;
+
+
+
+    /**
+     * Post per page
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $posts_per_page
+     */
     protected $posts_per_page;
+
+
+    /**
+     * Product Scope
+     *
+     * @since    1.1.10
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $product_scope
+     */
+    protected $product_scope;
+
+
+
 
     /**
      * Define the core functionality of the plugin.
@@ -141,6 +182,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->prepare_products_args($config['products']);
             $this->setup_feed_data($config['info']);
             $this->setup_feed_rules($config['feed_config']);
+            $this->setup_feed_filter_rules($config['feed_config']);
             $this->setup_products();
             $this->setup_variable_products();
             $this->merchant = $config['merchant'];
@@ -158,6 +200,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function prepare_products_args( $args ) {
 
+
+        $this->product_scope = $args['products_scope'];
+
         $this->products_args = array(
             'post_type'              => 'product',
             'fields'                 => 'ids',
@@ -167,9 +212,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             'cache_results'          => false,
         );
 
+
         if ( $args['products_scope'] === 'custom'){
             $this->products_args['post__in'] = $args['items'];
-        }elseif ( $args['products_scope'] !== 'all') {
+        } elseif ( $args['products_scope'] !== 'all' && $args['products_scope'] !== 'filter') {
+
             $terms = $args['products_scope'] === 'product_tag' ? 'tags' : 'cats';
 
             $this->products_args['tax_query'][] = array(
@@ -198,12 +245,24 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_feed_rules( $info ){
         $feed_rules       = array();
         parse_str( $info, $feed_rules );
-
         $feed_rules       = $feed_rules['fc'];
         $this->feed_rules = $feed_rules;
-
         // save the feed_rules into feed post_meta.
         update_post_meta( $this->id, 'rex_feed_feed_config', $this->feed_rules );
+    }
+
+
+    /**
+     * Setup the rules for filter
+     * @param $info
+     */
+    protected function setup_feed_filter_rules( $info ){
+        $feed_rules_filter       = array();
+        parse_str( $info, $feed_rules_filter );
+        $feed_rules_filter          = $feed_rules_filter['ff'];
+        $this->feed_rules_filter    = $feed_rules_filter;
+        // save the feed_rules_filter into feed post_meta.
+        update_post_meta( $this->id, 'rex_feed_feed_config_filter', $this->feed_rules_filter );
     }
 
 
@@ -213,6 +272,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_products() {
 
         $this->products = get_posts( $this->products_args );
+
 
     }
 
@@ -263,8 +323,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return array
      */
     protected function get_product_data( $product_id = false ){
-        $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules );
+        $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
         return $data->get_all_data();
+
     }
 
     /**

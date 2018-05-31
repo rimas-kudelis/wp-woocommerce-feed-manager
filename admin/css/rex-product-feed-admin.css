@@ -146,3 +146,11 @@
   padding: 20px;
   float: right;
 }
+
+
+
+/*Product Filter*/
+#rex-feed-config-filter,
+.cmb2-id-rex-feed-config-filter-title {
+  display: none;
+}

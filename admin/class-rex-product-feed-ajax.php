@@ -41,6 +41,9 @@ class Rex_Product_Feed_Ajax {
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )
             ->with_validation( $validations );
 
+        /**
+         * Google Category Mapping
+         */
         wp_ajax_helper()->handle( 'category-mapping' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping' ) )
             ->with_validation( $validations );
@@ -61,8 +64,8 @@ class Rex_Product_Feed_Ajax {
         } catch (Exception $e) {
             return $e->getMessage();
         }
-
         return $merchant->make_feed();
+
     }
 
     public static function show_feed_template( $merchant ){
@@ -100,7 +103,6 @@ class Rex_Product_Feed_Ajax {
 
 
     }
-
 
     public function category_mapping_update($payload){
         $map_category = array();

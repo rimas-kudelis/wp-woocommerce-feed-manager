@@ -1,9 +1,14 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: AR
- * Date: 11/16/17
- * Time: 12:38 PM
+ * Provide a admin area view for the plugin
+ *
+ * This file is display the google category mapping feature
+ *
+ * @link       https://rextheme.com
+ * @since      1.0.0
+ *
+ * @package    Rex_Product_Feed
+ * @subpackage Rex_Product_Feed/admin/partials
  */
 
 
@@ -11,7 +16,6 @@
 $product_category = new CategoryMapping();
 $categories = $product_category->get_category();
 
-//var_dump($categories);
 $all_options = wp_load_alloptions();
 $cat_map_options  = array();
 

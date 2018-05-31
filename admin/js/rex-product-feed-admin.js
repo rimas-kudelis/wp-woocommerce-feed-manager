@@ -41,23 +41,34 @@
      * Add a new table-row and update it's
      */
     $(document).on('click', '#rex-new-attr', function () {
-        var rowId = $('#config-table tbody tr').length;
-        $("#config-table tbody tr:first")
+        var rowId = $(this).siblings('#config-table').find('tbody tr').length;
+        var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
+        var parent = $(this).siblings('#config-table').parent();
+
+        if(parent.hasClass('rex-feed-config-filter')) {
+            var filter = true;
+        }else {
+            filter = false;
+        }
+
+
+        $(this).siblings('#config-table').find('tbody tr:first')
             .clone()
-            .insertAfter('#config-table tbody tr:last')
+            .insertAfter(lastrow)
             .attr('data-row-id', rowId)
 
 
-        var $row = $('#config-table').find("[data-row-id='" + rowId + "']");
+        var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");
         $row.find('ul.dropdown-content.select-dropdown, .caret, .select-dropdown ').remove();
 
         $row.find('input, select').val('');
 
-        updateFormNameAtts( $row, rowId);
+        updateFormNameAtts( $row, rowId, filter);
         $row.find('select').material_select();
 
 
     });
+
 
     /**
      * Delete a table-row and update all row-id
@@ -66,8 +77,17 @@
     $(document).on('click', '#config-table .delete', function () {
         var $nextRows, rowId;
 
+        var table = $(this).closest('table');
+        var parent = table.parent();
+
         // delete row and get it's row-id
         rowId = $(this).closest('tr').remove().data('row-id');
+
+        if(parent.hasClass('rex-feed-config-filter')) {
+            var filter = true;
+        }else {
+            filter = false;
+        }
 
         // Gell the next rows
         if ( rowId == 0) {
@@ -79,7 +99,7 @@
         // Update their row-id and name attributes
         $nextRows.each( function (index, el) {
             $(el).attr( 'data-row-id', rowId);
-            updateFormNameAtts( $(el), rowId);
+            updateFormNameAtts( $(el), rowId, filter);
             rowId++;
         });
     });
@@ -88,7 +108,7 @@
      * Function for updating select and input box name
      * attribute under a table-row.
      */
-    function updateFormNameAtts( $row, rowId){
+    function updateFormNameAtts( $row, rowId, filter){
         var name, $el;
         $el = $row.find('input, select');
         $el.each(function(index, item) {
@@ -96,12 +116,19 @@
 
             if ( name != undefined ) {
                 // get new name via regex
-                name = name.replace(/^fc\[\d+\]/, 'fc[' + rowId + ']');
-                $(item).attr('name', name);
+                if (filter) {
+                    name = name.replace(/^ff\[\d+\]/, 'ff[' + rowId + ']');
+                    $(item).attr('name', name);
+                }else {
+                    name = name.replace(/^fc\[\d+\]/, 'fc[' + rowId + ']');
+                    $(item).attr('name', name);
+                }
+
             }
 
         });
     }
+
 
     /**
      * Event listener for Attribute type change functionality.
@@ -118,9 +145,24 @@
     });
 
     /**
+     * Event listener for Filter Product.
+     */
+    $(document).on('change', '#rex_feed_products', function () {
+        var selected = $('#rex_feed_products').find(':selected').val();
+        if ( selected == 'filter' ) {
+            $('.cmb2-id-rex-feed-config-filter-title').show();
+            $('#rex-feed-config-filter').show();
+        }else{
+            $('.cmb2-id-rex-feed-config-filter-title').hide();
+            $('#rex-feed-config-filter').hide();
+        }
+    });
+
+
+
+    /**
      * Event listener for feed type change.
      */
-
     $(document).on('change', '#rex_feed_merchant', function () {
         var selected = $(this).find('option:selected').val();
         if ( selected == 'google' ) {
@@ -136,14 +178,16 @@
      */
     $(document).on('change', '#rex_feed_merchant', function () {
 
-        $('.rex-loading-spinner').slideDown('fast');
+        var $confBox = $('.rex-feed-config');
+
+        $confBox.find('.rex-loading-spinner').slideDown('fast');
 
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
             post_id: $('#post_ID').val()
             // feed_format: $('#rex_feed_feed_format').find(':selected').val()
         };
-        var $confBox = $('#rex-feed-config');
+
 
         wpAjaxHelperRequest( 'merchant-change', $payload )
             .success( function( response ) {
@@ -179,6 +223,7 @@
         $('#publishing-action span.spinner').addClass('is-active');
         $(this).addClass('disabled');
 
+
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),
@@ -196,6 +241,7 @@
             },
 
             feed_config: $('form').serialize(),
+
         };
 
         wpAjaxHelperRequest( 'my-handle', $payload )
@@ -265,7 +311,6 @@
             .success( function( response ) {
                 $('.rex-loading-spinner').fadeOut('fast');
                 container.fadeOut();
-                console.log('Hello');
             })
             .error( function( response ) {
                 console.log( 'Uh, oh!' );

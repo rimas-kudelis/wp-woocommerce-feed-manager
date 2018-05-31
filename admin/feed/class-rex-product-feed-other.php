@@ -50,13 +50,25 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         // Loop through all products.
         foreach( $this->products as $product ) {
 
-            $atts = $this->get_product_data( $product );
-            $item = RexShopping::createItem();
+            $pr = wc_get_product($product);
 
-            // add all attributes for each product.
-            foreach ($atts as $key => $value) {
-                $item->$key($value); // invoke $key as method of $item object.
+            if($this->product_scope == 'all') {
+                $this->allowed = true;
+            }else {
+                $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
             }
+
+            if ($this->allowed) {
+                $atts = $this->get_product_data( $product );
+                $item = RexShopping::createItem();
+
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+
+            }
+
 
         }
     }
@@ -74,15 +86,27 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             // add all variants into feed
             foreach ($children as $child) {
 
-                $item = RexShopping::createItem();
-                $atts = $this->get_product_data( $child );
+                $pr = wc_get_product($child);
 
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+                if($this->product_scope == 'all') {
+                    $this->allowed = true;
+                }else {
+                    $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
                 }
 
+                if ($this->allowed) {
+                    $item = RexShopping::createItem();
+                    $atts = $this->get_product_data( $child );
+
+                    // add all attributes for each product.
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+
 //                $item->item_group_id( $product->get_id() );
+                }
+
+
 
             }
         }

@@ -33,9 +33,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         $this->generate_simple_product_feed();
         $this->generate_variable_product_feed();
         $this->feed = GoogleShopping::asRss();
-
-
-
         return $this->save_feed($this->feed_format);
     }
 
@@ -46,13 +43,26 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         // Loop through all products.
         foreach( $this->products as $product ) {
 
-            $atts = $this->get_product_data( $product );
-            $item = GoogleShopping::createItem();
+            $pr = wc_get_product($product);
 
-            // add all attributes for each product.
-            foreach ($atts as $key => $value) {
-                $item->$key($value); // invoke $key as method of $item object.
+            if($this->product_scope == 'all') {
+                $this->allowed = true;
+            }else {
+                $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
             }
+
+            if ($this->allowed) {
+                $atts = $this->get_product_data( $product );
+                $item = GoogleShopping::createItem();
+
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+            }
+
+
+
 
         }
     }
@@ -70,15 +80,27 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             // add all variants into feed
             foreach ($children as $child) {
 
-                $item = GoogleShopping::createItem();
-                $atts = $this->get_product_data( $child );
+                $pr = wc_get_product($child);
 
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+                if($this->product_scope == 'all') {
+                    $this->allowed = true;
+                }else {
+                    $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
                 }
 
-                $item->item_group_id( $product->get_id() );
+                if ($this->allowed) {
+                    $item = GoogleShopping::createItem();
+                    $atts = $this->get_product_data( $child );
+
+                    // add all attributes for each product.
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+
+                    $item->item_group_id( $product->get_id() );
+                }
+
+
 
             }
         }

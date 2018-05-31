@@ -57,14 +57,24 @@ class Rex_Product_Metabox {
             'default'          => 'all',
             'options'          => array(
                 'all'    => __( 'All Published Products', 'rex-product-feed' ),
-                'product_cat'   => __( 'Map Category', 'rex-product-feed' ),
-                'product_tag'   => __( 'Map Tag', 'rex-product-feed' ),
+                'filter'    => __( 'Custom Filter', 'rex-product-feed' ),
+                'product_cat'   => __( 'Category Filter', 'rex-product-feed' ),
+                'product_tag'   => __( 'Tag Filter', 'rex-product-feed' ),
             ),
+        ) );
+
+
+        // filter product
+        $box->add_field( array(
+            'id'        => $this->prefix . 'config_filter_title',
+            'name'      => 'Configure Feed Filters and Rules',
+            'type'      => 'title',
+            'after_row' => array($this, 'atts_filter_cb'),
         ) );
 
         $box->add_field( array(
             'name'           => 'Product Category',
-            'desc'           => 'Description Goes Here',
+            'desc'           => 'Select Category',
             'id'             => $this->prefix . 'cats',
             'taxonomy'       => 'product_cat', //Enter Taxonomy Slug
             'type'           => 'taxonomy_multicheck',
@@ -79,7 +89,7 @@ class Rex_Product_Metabox {
 
         $box->add_field( array(
             'name'           => 'Product Tag',
-            'desc'           => 'Description Goes Here',
+            'desc'           => 'Select Tag',
             'id'             => $this->prefix . 'tags',
             'taxonomy'       => 'product_tag', //Enter Taxonomy Slug
             'type'           => 'taxonomy_multicheck',
@@ -91,6 +101,7 @@ class Rex_Product_Metabox {
                 'data-conditional-value' => 'product_tag',
             ),
         ) );
+
     }
 
     /**
@@ -159,14 +170,34 @@ class Rex_Product_Metabox {
     public function atts_config_cb($field_args, $field){
         $feed_rules    = get_post_meta( $field->object_id, $this->prefix . 'feed_config', true );
         $feed_template = new Rex_Feed_Template_Google($feed_rules);
-        echo '<div id="rex-feed-config">';
-
+        echo '<div id="rex-feed-config" class="rex-feed-config">';
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
-
         echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>Add New Attribute</a>';
         echo '</div>';
     }
+
+
+
+    /**
+     * Display Feed Filter Metabox.
+     *
+     * @return void
+     * @author RexTheme
+     **/
+    public function atts_filter_cb($field_args, $field){
+        $feed_filter_rules      = get_post_meta( $field->object_id, $this->prefix . 'feed_config_filter', true );
+        $feed_filter            = new Rex_Product_Filter($feed_filter_rules);
+
+
+        echo '<div id="rex-feed-config-filter" class="rex-feed-config-filter">';
+        require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
+        require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display-filter.php';
+        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>Add New Filter</a>';
+        echo '</div>';
+    }
+
+
 
     /**
      * Defines Metaboxes for Feed
