@@ -79,7 +79,7 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 Currently, Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
 
 **BWF Has Best Support Team**
-We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: rextheme@gmail.com.
+We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: support@rextheme.com.
 
 
 == Installation ==
