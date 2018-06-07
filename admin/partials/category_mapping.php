@@ -56,9 +56,9 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
                                                 $temp_key = 'category-'.$category->term_id;
                                                 if(array_key_exists($temp_key, $data)){
                                                     $temp_value =htmlspecialchars(utf8_decode(urldecode($data[$temp_key]["value"]))) ;
-                                                    echo "<td><input type='text' name='category-{$category->term_id}' value='$temp_value'></td>";
+                                                    echo "<td><input type='text' class='category-suggest' name='category-{$category->term_id}' value='$temp_value'></td>";
                                                 }else{
-                                                    echo "<td><input type='text' name='category-{$category->term_id}'></td>";
+                                                    echo "<td><input type='text' class='category-suggest'  name='category-{$category->term_id}'></td>";
                                                 }
                                                 echo "</tr>";
                                             endforeach;
@@ -88,6 +88,7 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
 
 <div class="category-mapper-wrapper">
     <h5><strong>Add New Category Map</strong></h5>
+
     <table class="widefat fixed">
         <tbody>
             <tr>
@@ -114,7 +115,7 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
                         foreach ($categories as $category):
                             echo "<tr>";
                                 echo "<td>{$category->name}</td>";
-                                echo "<td><input type='text' name='category-{$category->term_id}'></td>";
+                                echo "<td><input class='category-suggest' type='text' name='category-{$category->term_id}'></td>";
                             echo "</tr>";
                         endforeach;
                     }

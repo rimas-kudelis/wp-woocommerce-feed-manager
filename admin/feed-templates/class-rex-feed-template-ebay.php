@@ -25,7 +25,7 @@ class Rex_Feed_Template_Ebay extends Rex_Feed_Abstract_Template {
             'Required Information'  =>  array(
                 'Merchant_SKU'      => 'Merchant SKU',
                 'Product_Name'      => 'Product Name',
-                'category'          => 'Product Name',
+                'category'          => 'Product Category',
                 'Producl_URL'       => 'Product URL',
                 'Image_URL'         => 'Image URL',
                 'Current_Price'     => 'Current Price',

@@ -110,6 +110,10 @@
 .inner{
   border:thin dotted #ccc;
 }
+
+.rex-accordion .acordion-item {
+  margin: 10px 0;
+}
 .rex-accordion + h6
 {
   margin-top: 64px;
@@ -153,4 +157,16 @@
 #rex-feed-config-filter,
 .cmb2-id-rex-feed-config-filter-title {
   display: none;
+}
+
+
+/**
+Easy Auto Complete
+ */
+
+.easy-autocomplete {
+  width: 100% !important;
+}
+.easy-autocomplete input {
+  padding: 6px 0 6px 6px;
 }

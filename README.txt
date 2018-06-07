@@ -1,10 +1,11 @@
 === Best WooCommerce Product Feed for Google, Facebook, Amazon, Bing, Ebay & more ===
-Contributors: rextheme, coderexco, samwikwiki
+Contributors: rextheme
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: woocommerce product feed, woocommerce, Google shopping, Google product feed, Product feed, Amazon, Google Merchant Export, Google product feed export, Facebook product feed, WooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, rextheme, txt export, csv export, xml export,woocommerce export,product export, Bing Shopping, Bing product feed, Bing remarking, Google Merchant Feed, Facebook feed, Bing feed, Facebook Product Feed, Facebook Dynamic remarketing, Data Feed, XML product feed, CSV product feed, TSV, TXT product feed, comparison shopping engines, comparison shopping websites, pricegrabber, Kelkoo, Become
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 1.1.10
+Stable tag: 1.1.10.1
+
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,11 +76,12 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 - [Kelkoo](https://www.kelkoo.com/)
 - [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
 - [Become](http://www.become.com/)
+- [Shopzilla](http://www.shopzilla.com/)
 
 Currently, Best WooCommerce Product Feed plugin supports 7 major merchants. We are working on the other platforms, and the number will increase day by day.
 
 **BWF Has Best Support Team**
-We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: support@rextheme.com.
+We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: rextheme@gmail.com.
 
 
 == Installation ==
@@ -118,60 +120,51 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 
 == Changelog ==
 
+= 1.1.10.1 =
+* Add new merchant (Shopzilla)
+* Add google category auto suggestion
 
 = 1.1.10 =
 * Add product filter option
 
-
 = 1.1.9.2 =
 * google_product_category added to Facebook
 
-
 = 1.1.9.1 =
 * Fixed: Sale Price will not be visible if empty(For Google Merchant)
-
 
 = 1.1.9 =
 * Add Support for woocommerce custom field
 * Add new merchant - Facebook
 
-
 = 1.1.8 =
 * Add Category Mapping Feature
-
 
 = 1.1.7 =
 * New merchant - Become
 * yith brand attribute support
 * custom template
 
-
 = 1.1.6 =
 * Compatible with php7
 * Category Mapping
 
-
 = 1.1.5 =
 * Added the difference between premium and free version
-
 
 = 1.1.4 =
 * Add new merchants (amazon, bing, ebay, kelkoo, nextag, pricegrabber)
 * Provide support for both xml and text feed
 
-
 = 1.1.3 =
 * Product description issue for variable products
 * Update dropdown type for merchants
 
-
 = 1.1.2 =
 * Normalize windows path for ajax
 
-
 = 1.1.1 =
 * Fixed issue on other pages causing by scripts
-
 
 = 1.1.0 =
 * New feature: Feed customization with custom attributes and values.
@@ -184,25 +177,6 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 = 1.0.1 =
 * Optimize to deal with large numbers of products.
 
-
 = 1.0.0 =
 * Initial version with support for Google Merchant
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

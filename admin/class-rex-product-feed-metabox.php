@@ -77,7 +77,7 @@ class Rex_Product_Metabox {
             'desc'           => 'Select Category',
             'id'             => $this->prefix . 'cats',
             'taxonomy'       => 'product_cat', //Enter Taxonomy Slug
-            'type'           => 'taxonomy_multicheck',
+            'type'           => 'taxonomy_multicheck_inline',
             'text'           => array(
                 'no_terms_text' => 'Sorry, no product categories could be found.'
             ),
@@ -92,7 +92,7 @@ class Rex_Product_Metabox {
             'desc'           => 'Select Tag',
             'id'             => $this->prefix . 'tags',
             'taxonomy'       => 'product_tag', //Enter Taxonomy Slug
-            'type'           => 'taxonomy_multicheck',
+            'type'           => 'taxonomy_multicheck_inline',
             'text'           => array(
                 'no_terms_text' => 'Sorry, no product tags could be found.'
             ),
@@ -135,6 +135,7 @@ class Rex_Product_Metabox {
                 'bing'         => __( 'Bing', 'rex-product-feed' ),
                 'kelkoo'       => __( 'Kelkoo', 'rex-product-feed' ),
                 'become'       => __( 'Become', 'rex-product-feed' ),
+                'shopzilla'    => __( 'ShopZilla', 'rex-product-feed' ),
             ),
         ) );
 
