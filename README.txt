@@ -1,5 +1,5 @@
 === Best WooCommerce Product Feed for Google, Facebook, Amazon, Bing, Ebay & more ===
-Contributors: rextheme
+Contributors: rextheme, coderexco, samwikwiki
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: woocommerce product feed, woocommerce, Google shopping, Google product feed, Product feed, Amazon, Google Merchant Export, Google product feed export, Facebook product feed, WooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, rextheme, txt export, csv export, xml export,woocommerce export,product export, Bing Shopping, Bing product feed, Bing remarking, Google Merchant Feed, Facebook feed, Bing feed, Facebook Product Feed, Facebook Dynamic remarketing, Data Feed, XML product feed, CSV product feed, TSV, TXT product feed, comparison shopping engines, comparison shopping websites, pricegrabber, Kelkoo, Become, Shopzilla
 Requires at least: 3.0.1
