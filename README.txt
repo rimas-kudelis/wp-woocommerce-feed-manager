@@ -120,17 +120,17 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 
 == Changelog ==
 
-= 1.1.10.1 =
+= 1.2.2 =
 * Add new merchant (Shopzilla)
 * Add google category auto suggestion
 
-= 1.1.10 =
+= 1.2.1 =
 * Add product filter option
 
-= 1.1.9.2 =
+= 1.2.0 =
 * google_product_category added to Facebook
 
-= 1.1.9.1 =
+= 1.1.10 =
 * Fixed: Sale Price will not be visible if empty(For Google Merchant)
 
 = 1.1.9 =
