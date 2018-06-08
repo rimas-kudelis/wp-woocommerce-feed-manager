@@ -135,7 +135,8 @@ class Rex_Product_Metabox {
                 'bing'         => __( 'Bing', 'rex-product-feed' ),
                 'kelkoo'       => __( 'Kelkoo', 'rex-product-feed' ),
                 'become'       => __( 'Become', 'rex-product-feed' ),
-                'shopzilla'    => __( 'ShopZilla', 'rex-product-feed' ),
+                'shopzilla'    => __( 'ShopZilla.com', 'rex-product-feed' ),
+                'shopping'     => __( 'Shopping.com', 'rex-product-feed' ),
             ),
         ) );
 

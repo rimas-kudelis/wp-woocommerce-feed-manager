@@ -72,6 +72,7 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
         'Rex_Feed_Template_Kelkoo' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-Kelkoo.php',
         'Rex_Feed_Template_Nextag' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-nextag.php',
         'Rex_Feed_Template_Pricegrabber' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-pricegrabber.php',
+        'Rex_Feed_Template_Shopping' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopping.php',
         'Rex_Feed_Template_Shopzilla' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopzilla.php',
         'Rex_Product_CPT' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-cpt.php',
         'Rex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/class-rex-product-data-retriever.php',

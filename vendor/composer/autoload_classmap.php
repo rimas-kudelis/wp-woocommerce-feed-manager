@@ -25,6 +25,7 @@ return array(
     'Rex_Feed_Template_Kelkoo' => $baseDir . '/admin/feed-templates/class-rex-feed-template-Kelkoo.php',
     'Rex_Feed_Template_Nextag' => $baseDir . '/admin/feed-templates/class-rex-feed-template-nextag.php',
     'Rex_Feed_Template_Pricegrabber' => $baseDir . '/admin/feed-templates/class-rex-feed-template-pricegrabber.php',
+    'Rex_Feed_Template_Shopping' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopping.php',
     'Rex_Feed_Template_Shopzilla' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopzilla.php',
     'Rex_Product_CPT' => $baseDir . '/admin/class-rex-product-feed-cpt.php',
     'Rex_Product_Data_Retriever' => $baseDir . '/admin/class-rex-product-data-retriever.php',
