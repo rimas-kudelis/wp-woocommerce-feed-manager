@@ -5,7 +5,6 @@ Tags: woocommerce product feed, woocommerce, Google shopping, Google product fee
 Requires at least: 3.0.1
 Tested up to: 4.9.6
 Stable tag: 1.2.3
-
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,10 +12,7 @@ Best WooCommerce Product Feed helps you to sell more by uploading product feed t
 
 == Description ==
 Best WooCommerce Product Feed generates google product feed or other kinds of merchant product feed to Sync product with your google shop or merchant centers. Using Best WooCommerce Product Feed plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different merchant shops. The plugin has setups that meet the requirements from various merchant stores.
-
-
-> FREE VERSION SUPPORTS UP TO 2000 PRODUCTS INCLUDING VARIATIONS.
-
+<a href="http://openvoyce.com/products/bwf" target="_blank">Have a suggestion or feature request? Let us know!</a>
 
 
 We have connected all the recommended fields of the feed with the WordPress database. So after installing the plugin you are ready to submit your product feed to merchant center. You can also tweak the content of every field in order to maximize your ROI from your products in merchant shops.
@@ -66,6 +62,8 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 * Use advanced commands to optimize your product feeds while creating or exporting
 * Remove the chances of feed specifications errors by matching merchants’ feed import requirements
 
+> FREE VERSION SUPPORTS UP TO 2000 PRODUCTS INCLUDING VARIATIONS.
+
 **Supported Merchants:**
 - [Google Shopping](https://www.google.com/retail/merchant-center/)
 - [Amazon Seller Ad](https://advertising.amazon.com/)
@@ -77,8 +75,9 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 - [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
 - [Become](http://www.become.com/)
 - [Shopzilla](http://www.shopzilla.com/)
+- [Shopping](http://www.shopping.com/)
 
-Currently, Best WooCommerce Product Feed plugin supports 10 major merchants. We are working on the other platforms, and the number will increase day by day.
+Currently, Best WooCommerce Product Feed plugin supports 11 major merchants. We are working on the other platforms, and the number will increase day by day.
 
 **BWF Has Best Support Team**
 We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: rextheme@gmail.com.
@@ -91,7 +90,7 @@ We've got a dedicated team of programmers and WordPress experts to make your jou
 
 == Frequently Asked Questions ==
 = Which shopping merchants are supported? =
-Currently we support 10 major shopping engines like Google Shopping, Amazon, Facebook, Ebay & etc.
+Currently we support 11 major shopping engines like Google Shopping, Amazon, Facebook, Ebay & etc.
 = Does Best WooCommerce Product Feed supports product variation? =
 Yes, It does.
 = Is there a product limit? =
@@ -119,6 +118,9 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 11. Download the Feed 
 
 == Changelog ==
+
+= 1.2.3 =
+* Add new merchant (Shopping)
 
 = 1.2.2 =
 * Add new merchant (Shopzilla)
