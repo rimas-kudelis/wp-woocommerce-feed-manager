@@ -1,7 +1,7 @@
 === Best WooCommerce Product Feed for Google, Facebook, Amazon, Bing, Ebay & more ===
 Contributors: rextheme, coderexco, samwikwiki
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, Google shopping, Google product feed, Product feed, Amazon, Google Merchant Export, Google product feed export, Facebook product feed, WooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, rextheme, txt export, csv export, xml export,woocommerce export,product export, Bing Shopping, Bing product feed, Bing remarking, Google Merchant Feed, Facebook feed, Bing feed, Facebook Product Feed, Facebook Dynamic remarketing, Data Feed, XML product feed, CSV product feed, TSV, TXT product feed, comparison shopping engines, comparison shopping websites, pricegrabber, Kelkoo, Become, Shopzilla
+Tags: woocommerce product feed, woocommerce, Google shopping, Google product feed, Product feed, Amazon, Google Merchant Export, Google product feed export, Facebook product feed, WooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, rextheme, txt export, csv export, xml export,woocommerce export,product export, Bing Shopping, Bing product feed, Bing remarking, Google Merchant Feed, Facebook feed, Bing feed, Facebook Product Feed, Facebook Dynamic remarketing, Data Feed, XML product feed, CSV product feed, TSV, TXT product feed, comparison shopping engines, comparison shopping websites, pricegrabber, Kelkoo, Become, Shopzilla, Shopping
 Requires at least: 3.0.1
 Tested up to: 4.9.6
 Stable tag: 1.2.3
@@ -80,7 +80,7 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 Currently, Best WooCommerce Product Feed plugin supports 11 major merchants. We are working on the other platforms, and the number will increase day by day.
 
 **BWF Has Best Support Team**
-We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: rextheme@gmail.com.
+We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: support@rextheme.com.
 
 
 == Installation ==
