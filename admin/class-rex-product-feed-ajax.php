@@ -70,6 +70,7 @@ class Rex_Product_Feed_Ajax {
 
     public static function show_feed_template( $merchant ){
 
+
         $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
 
         if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {

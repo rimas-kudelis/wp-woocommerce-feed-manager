@@ -1,0 +1,147 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Best Products Feed for WooCoommerce\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-06 08:53+0000\n"
+"PO-Revision-Date: 2018-06-11 07:39+0000\n"
+"Last-Translator: Coderexco <coderexco@gmail.com>\n"
+"Language-Team: Portuguese (Brazil)\n"
+"Language: pt-BR\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: admin/class-rex-product-feed-admin.php:224
+msgid "Category Mapping"
+msgstr "Mapeamento de Categorias"
+
+#: admin/class-rex-product-feed-metabox.php:47 
+#: admin/class-rex-product-feed-metabox.php:52
+msgid "Products"
+msgstr "Produtos"
+
+#: admin/class-rex-product-feed-metabox.php:53
+msgid "Select products to create feed for."
+msgstr "Selecione produtos para criar feed para."
+
+#: admin/class-rex-product-feed-metabox.php:59
+msgid "All Published Products"
+msgstr "Todos os produtos publicados"
+
+#: admin/class-rex-product-feed-metabox.php:60
+msgid "Custom Filter"
+msgstr "Filtro customizado"
+
+#: admin/class-rex-product-feed-metabox.php:61
+msgid "Category Filter"
+msgstr "Filtro de Categoria"
+
+#: admin/class-rex-product-feed-metabox.php:62
+msgid "Tag Filter"
+msgstr "Filtro de tag"
+
+#: admin/class-rex-product-feed-metabox.php:116
+msgid "Feed Configuration"
+msgstr "Configuração de Feed"
+
+#: admin/class-rex-product-feed-metabox.php:121
+msgid "Merchant Type"
+msgstr "Tipo de comerciante"
+
+#: admin/class-rex-product-feed-metabox.php:122
+msgid "Select Merchant Type of the Feed."
+msgstr "Selecione o tipo de comerciante do feed."
+
+#: admin/class-rex-product-feed-metabox.php:128
+msgid "Custom"
+msgstr "personalizadas"
+
+#: admin/class-rex-product-feed-metabox.php:129
+msgid "Google Shopping"
+msgstr "Google Shopping"
+
+#: admin/class-rex-product-feed-metabox.php:130
+msgid "Facebook"
+msgstr "Facebook"
+
+#: admin/class-rex-product-feed-metabox.php:131
+msgid "Amazon Ads"
+msgstr "Amazon Ads"
+
+#: admin/class-rex-product-feed-metabox.php:132
+msgid "eBay(Shopping.com)"
+msgstr "eBay(Shopping.com)"
+
+#: admin/class-rex-product-feed-metabox.php:133
+msgid "Nextag"
+msgstr "Nextag"
+
+#: admin/class-rex-product-feed-metabox.php:134
+msgid "Price Grabber"
+msgstr "Price Grabber"
+
+#: admin/class-rex-product-feed-metabox.php:135
+msgid "Bing"
+msgstr "Bing"
+
+#: admin/class-rex-product-feed-metabox.php:136
+msgid "Kelkoo"
+msgstr "Kelkoo"
+
+#: admin/class-rex-product-feed-metabox.php:137
+msgid "Become"
+msgstr "Become"
+
+#: admin/class-rex-product-feed-metabox.php:138
+msgid "ShopZilla"
+msgstr "ShopZilla"
+
+#: admin/class-rex-product-feed-metabox.php:143
+msgid "File Format"
+msgstr "Formato de arquivo"
+
+#: admin/class-rex-product-feed-metabox.php:144
+msgid "Select Format of the Feed."
+msgstr "Selecione o formato do feed."
+
+#: admin/class-rex-product-feed-metabox.php:150
+msgid "XML"
+msgstr "XML"
+
+#: admin/class-rex-product-feed-metabox.php:152
+msgid "TEXT"
+msgstr "TEXTO"
+
+#: admin/class-rex-product-feed-metabox.php:212
+msgid "Feed URL"
+msgstr "URL de alimentação"
+
+#: admin/class-rex-product-feed-metabox.php:219
+msgid "Your Feed URL"
+msgstr "URL do seu feed"
+
+#. Name of the plugin
+msgid "Best Products Feed for WooCoommerce"
+msgstr ""
+"Melhor Feed de Produtos para WooCommerce\n"
+
+#. Description of the plugin
+msgid ""
+"Best WooCommerce Product Feed helps you to sell more by uploading products "
+"to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real "
+"buyer."
+msgstr ""
+"Best WooCommerce Product Feed ajuda você a vender mais fazendo upload de "
+"produtos para o comerciante do Google, Amazon, Ebay, Nextag e PriceGet e "
+"adquirindo um comprador real."
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "https://rextheme.com"
+msgstr "https://rextheme.com"
+
+#. Author of the plugin
+msgid "RexTheme"
+msgstr "RexTheme"

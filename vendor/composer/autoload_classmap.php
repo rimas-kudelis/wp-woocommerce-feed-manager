@@ -22,6 +22,7 @@ return array(
     'Rex_Feed_Template_Facebook' => $baseDir . '/admin/feed-templates/class-rex-feed-template-facebook.php',
     'Rex_Feed_Template_Factory' => $baseDir . '/admin/class-rex-feed-template-factory.php',
     'Rex_Feed_Template_Google' => $baseDir . '/admin/feed-templates/class-rex-feed-template-google.php',
+    'Rex_Feed_Template_Google_Ad' => $baseDir . '/admin/feed-templates/class-rex-feed-template-google-ad.php',
     'Rex_Feed_Template_Kelkoo' => $baseDir . '/admin/feed-templates/class-rex-feed-template-Kelkoo.php',
     'Rex_Feed_Template_Nextag' => $baseDir . '/admin/feed-templates/class-rex-feed-template-nextag.php',
     'Rex_Feed_Template_Pricegrabber' => $baseDir . '/admin/feed-templates/class-rex-feed-template-pricegrabber.php',

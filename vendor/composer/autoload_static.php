@@ -69,6 +69,7 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
         'Rex_Feed_Template_Facebook' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-facebook.php',
         'Rex_Feed_Template_Factory' => __DIR__ . '/../..' . '/admin/class-rex-feed-template-factory.php',
         'Rex_Feed_Template_Google' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-google.php',
+        'Rex_Feed_Template_Google_Ad' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-google-ad.php',
         'Rex_Feed_Template_Kelkoo' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-Kelkoo.php',
         'Rex_Feed_Template_Nextag' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-nextag.php',
         'Rex_Feed_Template_Pricegrabber' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-pricegrabber.php',

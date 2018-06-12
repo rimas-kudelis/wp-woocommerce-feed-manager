@@ -1,10 +1,10 @@
 === Best WooCommerce Product Feed for Google, Facebook, Amazon, Bing, Ebay & more ===
 Contributors: rextheme, coderexco, samwikwiki
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, Google shopping, Google product feed, Product feed, Amazon, Google Merchant Export, Google product feed export, Facebook product feed, WooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, rextheme, txt export, csv export, xml export,woocommerce export,product export, Bing Shopping, Bing product feed, Bing remarking, Google Merchant Feed, Facebook feed, Bing feed, Facebook Product Feed, Facebook Dynamic remarketing, Data Feed, XML product feed, CSV product feed, TSV, TXT product feed, comparison shopping engines, comparison shopping websites, pricegrabber, Kelkoo, Become, Shopzilla, Shopping
+Tags: woocommerce product feed, woocommerce, Google shopping, Google product feed, Product feed, Amazon, Google Merchant Export, Google product feed export, Facebook product feed, WooCommerce export, woocommerce variations, e-commerce, google merchant product feed, product variations, variations export, wp-e-commerce export, rextheme, txt export, csv export, xml export,woocommerce export,product export, Bing Shopping, Bing product feed, Bing remarking, Google Merchant Feed, Facebook feed, Bing feed, Facebook Product Feed, Facebook Dynamic remarketing, Data Feed, XML product feed, CSV product feed, TSV, TXT product feed, comparison shopping engines, comparison shopping websites, pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,7 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 
 **Supported Merchants:**
 - [Google Shopping](https://www.google.com/retail/merchant-center/)
+- [Google Adwords](https://www.google.com/adwords/)
 - [Amazon Seller Ad](https://advertising.amazon.com/)
 - [Facebook Dynamic Product Ads](https://developers.facebook.com/docs/marketing-api/dynamic-product-ads/)
 - [eBay Commerce Network](http://www.ebaycommercenetwork.com/)
@@ -77,7 +78,7 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 - [Shopzilla](http://www.shopzilla.com/)
 - [Shopping](http://www.shopping.com/)
 
-Currently, Best WooCommerce Product Feed plugin supports 11 major merchants. We are working on the other platforms, and the number will increase day by day.
+Currently, Best WooCommerce Product Feed plugin supports 12 major merchants. We are working on the other platforms, and the number will increase day by day.
 
 **BWF Has Best Support Team**
 We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: support@rextheme.com.
@@ -90,7 +91,7 @@ We've got a dedicated team of programmers and WordPress experts to make your jou
 
 == Frequently Asked Questions ==
 = Which shopping merchants are supported? =
-Currently we support 11 major shopping engines like Google Shopping, Amazon, Facebook, Ebay & etc.
+Currently we support 12 major shopping engines like Google Shopping, Amazon, Facebook, Ebay & etc.
 = Does Best WooCommerce Product Feed supports product variation? =
 Yes, It does.
 = Is there a product limit? =
@@ -119,15 +120,19 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 
 == Changelog ==
 
+= 1.2.4 =
+* Added new merchant (Google Adwords)
+* Wordpress Multilanguage support: Spanish (Spain), Afrikaans, Chinese (China), Portuguese (Brazil)
+
 = 1.2.3 =
-* Add new merchant (Shopping)
+* Added new merchant (Shopping)
 
 = 1.2.2 =
-* Add new merchant (Shopzilla)
-* Add google category auto suggestion
+* Added new merchant (Shopzilla)
+* Added google category auto suggestion
 
 = 1.2.1 =
-* Add product filter option
+* Added product filter option
 
 = 1.2.0 =
 * google_product_category added to Facebook
@@ -136,11 +141,11 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 * Fixed: Sale Price will not be visible if empty(For Google Merchant)
 
 = 1.1.9 =
-* Add Support for woocommerce custom field
-* Add new merchant - Facebook
+* Added Support for woocommerce custom field
+* Added new merchant - Facebook
 
 = 1.1.8 =
-* Add Category Mapping Feature
+* Added Category Mapping Feature
 
 = 1.1.7 =
 * New merchant - Become
@@ -155,7 +160,7 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 * Added the difference between premium and free version
 
 = 1.1.4 =
-* Add new merchants (amazon, bing, ebay, kelkoo, nextag, pricegrabber)
+* Added new merchants (amazon, bing, ebay, kelkoo, nextag, pricegrabber)
 * Provide support for both xml and text feed
 
 = 1.1.3 =
