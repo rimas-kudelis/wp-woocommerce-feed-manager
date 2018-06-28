@@ -53,7 +53,7 @@ class Rex_Feed_Template_Google extends Rex_Feed_Abstract_Template {
 
       'Unique Product Identifiers' => array(
         'brand'             => 'Manufacturer [brand]',
-        'upc'               => 'GTIN [gtin]',
+        'gtin'              => 'GTIN [gtin]',
         'mpn'               => 'MPN [mpn]',
         'identifier_exists' => 'Identifier Exist [identifier_exists]',
       ),

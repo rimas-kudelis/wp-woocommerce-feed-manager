@@ -95,20 +95,21 @@ class Rex_Product_Feed_Admin {
          */
 
         $screen = get_current_screen();
-
-        if( $hook != 'post.php' && $hook != 'post-new.php' && $hook != 'product-feed_page_category_mapping' ){
+//        if( ($hook != 'post.php' && $hook != 'post-new.php') || ($hook != 'feed_page_category_mapping' ) ){
+//            return;
+//        }
+//
+        if( ($hook === 'edit.php' ) ){
             return;
         }
 
-        if ( $screen->post_type === 'product-feed' ) {
+        if ( $screen->post_type === 'product-feed' || $screen->id === 'product-feed_page_category_mapping' || $screen->id === 'product-feed_page_user_on_boarding') {
             wp_enqueue_style( 'materialize-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
             wp_enqueue_style( 'materialize-css', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'easy-auto', 'https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rex-product-feed-admin.css', array(), $this->version, 'all' );
 
         }
-
-
     }
 
     /**
@@ -131,13 +132,17 @@ class Rex_Product_Feed_Admin {
          */
 
 
-        if( $hook != 'post.php' && $hook != 'post-new.php' && $hook != 'product-feed_page_category_mapping' ){
+//        if( $hook != 'post.php' && $hook != 'post-new.php' && $hook != 'product-feed_page_category_mapping' && $hook != 'product-feed_page_user_on_boarding' ){
+//            return;
+//        }
+
+        $screen = get_current_screen();
+        if( ($hook === 'edit.php' ) ){
             return;
         }
 
-        $screen = get_current_screen();
 
-        if ( $screen->post_type === 'product-feed' ) {
+        if ( $screen->post_type === 'product-feed' || $screen->id === 'product-feed_page_category_mapping' || $screen->id === 'product-feed_page_user_on_boarding' ) {
             wp_enqueue_script( 'materialize-js', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, false );
             wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, false );
             wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery' ), $this->version, false );
@@ -155,9 +160,7 @@ class Rex_Product_Feed_Admin {
     public function dequeue_scripts($hook) {
 
         $screen = get_current_screen();
-
         if ( $screen->post_type != 'product-feed' ) {
-
             wp_dequeue_script( 'cmb2-scripts' );
             wp_dequeue_script( 'cmb2-conditionals' );
             wp_dequeue_script( 'wp-ajax-helper' );
@@ -221,11 +224,19 @@ class Rex_Product_Feed_Admin {
      * @since    1.0.0
      */
     public function load_admin_pages() {
-        add_submenu_page('edit.php?post_type=product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_options', 'category_mapping',  __CLASS__ .'::category_mapping');
+        add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_options', 'product-feed', null, PLUGIN_DIR_URL . 'admin/icon/icon.png', 5 );
+        add_submenu_page('product-feed', 'Add New Feed', 'Add New Feed', 'manage_options', 'post-new.php?post_type=product-feed');
+        add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_options', 'category_mapping',  __CLASS__ .'::category_mapping');
+        add_submenu_page('product-feed', __('User on-boarding page', 'rex-product-feed'), __('User on-boarding page', 'rex-product-feed'), 'manage_options', 'user_on_boarding',  __CLASS__ .'::user_on_boarding');
     }
 
     public function category_mapping(){
         require plugin_dir_path(__FILE__) . '/partials/category_mapping.php';
+    }
+
+
+    public function user_on_boarding(){
+        require plugin_dir_path(__FILE__) . '/partials/on_boarding.php';
     }
 
 }

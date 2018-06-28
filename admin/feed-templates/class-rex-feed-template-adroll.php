@@ -1,10 +1,10 @@
 <?php
 
 /**
- * The Become Feed Template class.
+ * The AdRoll Feed Template class.
  *
  * @link       https://rextheme.com
- * @since      1.1.7
+ * @since      1.2.5
  *
  * @package    Rex_Product_Feed
  * @subpackage Rex_Product_Feed/admin/feed-templates/
@@ -12,36 +12,24 @@
 
 /**
  *
- * Defines the attributes and template for become feed.
+ * Defines the attributes and template for AdRoll feed.
  *
  * @package    Rex_Product_Feed
  * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_become
  * @author     RexTheme <info@rextheme.com>
  */
-class Rex_Feed_Template_Become extends Rex_Feed_Abstract_Template {
+class Rex_Feed_Template_Adroll extends Rex_Feed_Abstract_Template {
 
     protected function init_atts(){
         $this->attributes = array(
-            'Required Information'     =>  array(
-                'Label'                 => 'Product Title',
-                'Offer Url'             => 'Product URL',
-                'Prices'                => 'Price',
-                'Image Url'             => 'Image URL',
-                'Merchant Category'     => 'Category',
-                'Description'           => 'Product Description',
-            ),
-
-            'Additional Information' => array(
-                'Product Id'            => 'Product ID',
-                'MFPN'                  => 'Mfr Part',
-                'UPC'                   => 'UPC (Universal Product Code)',
-                'ISBN'                  => 'ISBN',
-                'Asin'                  => 'ASIN(alphanumeric Amazon stock number)',
-                'Delivery Period'       => 'Delivery Period',
-                'Delivery Charge'       => 'Delivery Cost',
-                'Delivery Period Text'  => 'Delivery Period Text',
-                'Manufacturer'          => 'Manufacturer',
-                'Old Prices'            => 'Old Prices',
+            'Required Information'  =>  array(
+                'id'            => 'Product ID',
+                'title'         => 'Product Title',
+                'description'   => 'Description',
+                'link'          => 'Product URL',
+                'image_link'    => 'Primary Image URL',
+                'price'         => 'Price',
+                'categories'    => 'Category',
             ),
 
         );
@@ -50,7 +38,18 @@ class Rex_Feed_Template_Become extends Rex_Feed_Abstract_Template {
     protected function init_default_template_mappings(){
         $this->template_mappings = array(
             array(
-                'attr'     => 'Label',
+                'attr'     => 'id',
+                'type'     => 'meta',
+                'meta_key' => 'id',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+
+            array(
+                'attr'     => 'title',
                 'type'     => 'meta',
                 'meta_key' => 'title',
                 'st_value' => '',
@@ -59,9 +58,18 @@ class Rex_Feed_Template_Become extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
             array(
-                'attr'     => 'Offer Url',
+                'attr'     => 'description',
+                'type'     => 'meta',
+                'meta_key' => 'description',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'link',
                 'type'     => 'meta',
                 'meta_key' => 'link',
                 'st_value' => '',
@@ -70,9 +78,8 @@ class Rex_Feed_Template_Become extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
             array(
-                'attr'     => 'Prices',
+                'attr'     => 'price',
                 'type'     => 'meta',
                 'meta_key' => 'price',
                 'st_value' => '',
@@ -81,9 +88,8 @@ class Rex_Feed_Template_Become extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
             array(
-                'attr'     => 'Image Url',
+                'attr'     => 'image_link',
                 'type'     => 'meta',
                 'meta_key' => 'featured_image',
                 'st_value' => '',
@@ -94,20 +100,9 @@ class Rex_Feed_Template_Become extends Rex_Feed_Abstract_Template {
             ),
 
             array(
-                'attr'     => 'Merchant Category',
-                'type'     => 'static',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-
-            array(
-                'attr'     => 'Description',
+                'attr'     => 'categories',
                 'type'     => 'meta',
-                'meta_key' => 'description',
+                'meta_key' => 'product_cats',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',

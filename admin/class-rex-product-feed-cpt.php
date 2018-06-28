@@ -37,13 +37,13 @@ class Rex_Product_CPT {
      */
     private function post_types(){
         register_extended_post_type( 'product-feed', array(
-
+            'show_in_menu' => 'product-feed',
             'rewrite'            => false,
             'query_var'          => false,
             'publicly_queryable' => false,
             'supports'           => array( 'title' ),
             'enter_title_here'   => 'Enter feed title here',
-            'menu_icon'           => PLUGIN_DIR_URL . 'admin/icon/icon.png',
+//            'menu_icon'           => PLUGIN_DIR_URL . 'admin/icon/icon.png',
             'admin_cols' => array(
 
                 'merchant' => array(

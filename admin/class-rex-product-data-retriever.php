@@ -128,6 +128,7 @@ class Rex_Product_Data_Retriever {
         foreach ($this->feed_rules as $key => $rule) {
             $this->data[ $rule['attr'] ] = $this->set_val( $rule );
         }
+
     }
 
 
@@ -292,6 +293,9 @@ class Rex_Product_Data_Retriever {
                 }else {
                     return '';
                 }
+
+            case 'identifier_exists':
+                return $this->calculate_identifier_exists($this->data);
 
             default: return ''; break;
         }
@@ -697,4 +701,37 @@ class Rex_Product_Data_Retriever {
 //        return $this->product->post->post_parent? true: false;
 //    }
 
+
+
+    /**
+     * calculate the value of identifier_exists
+     *
+     * @return string
+     * @since    1.2.5
+     */
+
+    public function calculate_identifier_exists ($data) {
+
+        $identifier_exists = "no";
+
+        if (array_key_exists("brand", $data) AND ($data['brand'] != "")){
+            if ((array_key_exists("gtin", $data)) AND ($data['gtin'] != "")){
+                $identifier_exists = "yes";
+            } elseif ((array_key_exists("mpn", $data)) AND ($data['mpn'] != "")){
+                $identifier_exists = "yes";
+            } else {
+                $identifier_exists = "no";
+            }
+        } else {
+            if ((array_key_exists("gtin", $data)) AND ($data['gtin'] != "")){
+                $identifier_exists = "no";
+            } elseif ((array_key_exists("mpn", $data)) AND ($data['mpn'] != "")){
+                $identifier_exists = "no";
+            } else {
+                $identifier_exists = "no";
+            }
+        }
+
+        return $identifier_exists;
+    }
 }

@@ -14,6 +14,7 @@ return array(
     'RexTheme\\RexShoppingFeed\\Node' => $baseDir . '/admin/feed/rex-shopping-feed/Node.php',
     'Rex_Feed_Abstract_Template' => $baseDir . '/admin/feed-templates/abstract-rex-feed-template.php',
     'Rex_Feed_Attributes' => $baseDir . '/admin/class-rex-feed-attributes.php',
+    'Rex_Feed_Template_Adroll' => $baseDir . '/admin/feed-templates/class-rex-feed-template-adroll.php',
     'Rex_Feed_Template_Amazon' => $baseDir . '/admin/feed-templates/class-rex-feed-template-amazon-ads.php',
     'Rex_Feed_Template_Become' => $baseDir . '/admin/feed-templates/class-rex-feed-template-become.php',
     'Rex_Feed_Template_Bing' => $baseDir . '/admin/feed-templates/class-rex-feed-template-bing.php',

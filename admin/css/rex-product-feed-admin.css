@@ -143,7 +143,7 @@
 }
 /*.rex-accordion a.selected*/
 /*{*/
-  /*color: red ;*/
+/*color: red ;*/
 /*}*/
 
 .cat-map-actions{
@@ -170,3 +170,262 @@ Easy Auto Complete
 .easy-autocomplete input {
   padding: 6px 0 6px 6px;
 }
+
+
+/**
+* On Boarding Page
+ */
+
+
+.row {
+  width: 100%;
+  height: auto;
+  padding: 15px;
+}
+
+.rex-onboarding {
+  background: #fff;
+  padding: 15px 25px;
+  margin-top: -8px;
+  border: 1px solid rgba( 0,0,0,0.1 );
+  border-top: none;
+  position: relative;
+  display: flex;
+  min-height: 830px;
+}
+
+.rex-onboarding .banner-block img {
+  width: 100%;
+}
+.left {
+  flex: 0 0 60%;
+}
+.right {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/*.rex-onboarding .wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: row;
+}*/
+
+
+.onboarding-block  {
+  background-color: #fff;
+  height: 210px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+
+.onboarding-block .header {
+  position: relative;
+  padding-left: 65px!important;
+}
+.onboarding-block .header:before {
+  content: "";
+  position: absolute;
+  left: 63px;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: #eee;
+}
+.onboarding-block .header .title-icon  {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.banner-block {
+  padding: 8px;
+}
+
+.onboarding-block .header {
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+  padding: 0 10px;
+}
+
+
+.onboarding-block p {
+  font-size: 14px;
+}
+
+.onboarding-block .body {
+  padding: 18px 15px;
+}
+
+
+
+
+
+.tabs-icon {
+  font-size: 10px;
+  overflow: hidden;
+}
+.tabs-icon i {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: -15px;
+  font-size: 24px;
+}
+.tabs-icon a.active {
+  background-color: #F3F3F3;
+}
+.tabs-icon a:focus {
+  box-shadow: none;
+  outline: none;
+}
+/* OVERWRITE MATERIAL CSS MIN WIDTH FOR MOBILE */
+.tabs .tab {
+  min-width: 50px !important
+}
+.tabs .tab-hide {
+  display: none;
+}
+.no-pd {
+  padding: 0 !important
+}
+
+
+
+
+
+.rex-onboarding .block-wrapper{
+  /*display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: flex-start;*/
+}
+
+.rex-onboarding .wrapper {
+  padding-right: 30px;
+}
+.rex-onboarding .block-wrapper{
+  clear: both;
+  padding-top: 30px;
+}
+.rex-onboarding .single-block {
+  width: 48.4%;
+  float: left;
+  margin-left: 30px;
+  margin-bottom: 30px;
+}
+.rex-onboarding .single-block:nth-child(odd){
+  margin-left: 0;
+}
+.rex-onboarding .single-block-full {
+  width: 100%;
+  clear: left;
+  float: none;
+}
+
+.rex-onboarding .onboarding-block .header h4 {
+  margin: 1em 0;
+  padding: 0 1.26582em;
+  font-size: 1.185em;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rex-onboarding .right .rex-banner{
+  text-align: center;
+}
+.rex-onboarding .right .rex-banner img.banner-logo{
+  width: auto;
+}
+.rex-onboarding .right .rex-banner .update-btn {
+  font-size: 1em;
+  color: #23282d;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .065em;
+  text-align: center;
+  margin: 20px auto 100px;
+  display: block;
+  border: 1px solid rgb(232, 232, 232);
+  border-radius: 4px;
+  padding: 15px;
+  width: 200px;
+  outline: none;
+  box-shadow: none;
+  transition: all .3s;
+}
+.rex-onboarding .right .rex-banner .update-btn:hover {
+  border-color: rgb(232, 232, 232);
+  box-shadow: 0 4px 7px 0 rgba(0,0,0,0.10);
+}
+
+
+.rex-upgrade h4 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+
+.rex-upgrade .parent {
+  font-family: 'Roboto';
+  counter-reset: my-counter;
+  width: 400px;
+  margin-bottom: 30px;
+}
+
+.rex-upgrade .item {
+  position: relative;
+  padding-left: 30px;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 5px;
+}
+.rex-upgrade .item:before {
+  color: white;
+  background-color: #1FB3FB;
+  border-radius: 50%;
+  counter-increment: my-counter;
+  content: counter(my-counter);
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  left: 0;
+  margin-right: 10px;
+  position: absolute;
+  text-align: center;
+  width: 20px;
+}
+
+
+.rex-onboarding .tabs {
+  height: 55px;
+}
+
+.bwf-btn {
+  background: #1FB3FB;
+}
+
+.bwf-btn:hover {
+  background-color: #47CCCF;
+}
+
+.rex-onboarding .tabs .tab a{
+  color: #47CCCF;
+}
+.rex-onboarding .tabs .tab a:hover, .rex-onboarding .tabs .tab a.active {
+  color: #1FB3FB;
+}
+
+
+.rex-onboarding .tabs .indicator{
+
+  background-color: #1FB3FB;
+}
+

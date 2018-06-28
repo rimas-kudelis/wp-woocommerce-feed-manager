@@ -131,6 +131,7 @@ class Rex_Product_Metabox {
                 'facebook'     => __( 'Facebook', 'rex-product-feed' ),
                 'amazon'       => __( 'Amazon Ads', 'rex-product-feed' ),
                 'ebay'         => __( 'eBay(Shopping.com)', 'rex-product-feed' ),
+                'adroll'       => __( 'Adroll.com', 'rex-product-feed' ),
                 'nextag'       => __( 'Nextag', 'rex-product-feed' ),
                 'pricegrabber' => __( 'Price Grabber', 'rex-product-feed' ),
                 'bing'         => __( 'Bing', 'rex-product-feed' ),

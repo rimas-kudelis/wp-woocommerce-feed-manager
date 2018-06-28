@@ -16,7 +16,7 @@
  * Plugin Name:       Best Products Feed for WooCoommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
- * Version:           1.2.4
+ * Version:           1.2.5
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -53,9 +53,10 @@ function rex_product_feed() {
             'has_addons'          => false,
             'has_paid_plans'      => false,
             'menu'                => array(
-                'slug'           => 'edit.php?post_type=product-feed',
+                'slug'           => 'product-feed',
                 'contact'        => true,
                 'support'        => true,
+                'first-path' => 'admin.php?page=user_on_boarding'
             ),
         ) );
     }
@@ -175,3 +176,15 @@ function rex_uninstall_cleanup(){
         exit;
     }
 }
+
+
+    function debug_admin_menus() {
+        global $submenu, $menu, $pagenow;
+        if ( current_user_can('manage_options') ) { // ONLY DO THIS FOR ADMIN
+            if( $pagenow == 'index.php' ) {  // PRINTS ON DASHBOARD
+                echo '<pre>'; print_r( $menu ); echo '</pre>'; // TOP LEVEL MENUS
+                echo '<pre>'; print_r( $submenu ); echo '</pre>'; // SUBMENUS
+            }
+        }
+    }
+    add_action( 'admin_notices', 'debug_admin_menus' );

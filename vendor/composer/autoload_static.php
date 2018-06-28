@@ -61,6 +61,7 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
         'RexTheme\\RexShoppingFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Node.php',
         'Rex_Feed_Abstract_Template' => __DIR__ . '/../..' . '/admin/feed-templates/abstract-rex-feed-template.php',
         'Rex_Feed_Attributes' => __DIR__ . '/../..' . '/admin/class-rex-feed-attributes.php',
+        'Rex_Feed_Template_Adroll' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-adroll.php',
         'Rex_Feed_Template_Amazon' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-amazon-ads.php',
         'Rex_Feed_Template_Become' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-become.php',
         'Rex_Feed_Template_Bing' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-bing.php',

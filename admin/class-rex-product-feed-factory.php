@@ -11,7 +11,7 @@
  */
 class Rex_Product_Feed_Factory {
 
-    private static $other_merchants = array( 'custom', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad');
+    private static $other_merchants = array( 'custom', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll');
 
     public static function build( $config ){
 
