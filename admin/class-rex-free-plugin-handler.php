@@ -8,6 +8,7 @@ class RexPremium{
     private $remaining_feed;
 
     public static function rex_remaining_feed_option(){
+
 //        if(!get_option('rex_remaining_feed')){
 //            update_option('rex_remaining_feed', self::REX_REMAINING_FEED);
 //        }
@@ -15,6 +16,7 @@ class RexPremium{
         if(!get_option('rex_remaining_feed') ||  get_option('rex_remaining_feed') > 50 ){
             update_option('rex_remaining_feed', self::REX_REMAINING_FEED);
         }
+
     }
 
     public function rex_remaining_feed(){

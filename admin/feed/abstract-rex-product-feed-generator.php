@@ -172,24 +172,41 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     {
 
         $this->posts_per_page = -1;
+
         if (rex_product_feed()->is_free_plan()) {
             // ... free only logic ...
-            $no_post = new RexPremium();
-            $this->posts_per_page = $no_post->rex_remaining_feed();
+            $this->posts_per_page = 50;
+        }else {
+            $this->posts_per_page = -1;
         }
 
-        if ($this->posts_per_page >= -1) {
-            $this->prepare_products_args($config['products']);
-            $this->setup_feed_data($config['info']);
-            $this->setup_feed_rules($config['feed_config']);
-            $this->setup_feed_filter_rules($config['feed_config']);
-            $this->setup_products();
-            $this->setup_variable_products();
-            $this->merchant = $config['merchant'];
-            $this->feed_format = $config['feed_format'];
-        } else {
-            return false;
-        }
+        $this->prepare_products_args($config['products']);
+        $this->setup_feed_data($config['info']);
+        $this->setup_feed_rules($config['feed_config']);
+        $this->setup_feed_filter_rules($config['feed_config']);
+        $this->setup_products();
+        $this->setup_variable_products();
+        $this->merchant = $config['merchant'];
+        $this->feed_format = $config['feed_format'];
+
+//        if (rex_product_feed()->is_free_plan()) {
+//            // ... free only logic ...
+//            $no_post = new RexPremium();
+//            $this->posts_per_page = $no_post->rex_remaining_feed();
+//        }
+//
+//        if ($this->posts_per_page >= -1) {
+//            $this->prepare_products_args($config['products']);
+//            $this->setup_feed_data($config['info']);
+//            $this->setup_feed_rules($config['feed_config']);
+//            $this->setup_feed_filter_rules($config['feed_config']);
+//            $this->setup_products();
+//            $this->setup_variable_products();
+//            $this->merchant = $config['merchant'];
+//            $this->feed_format = $config['feed_format'];
+//        } else {
+//            return false;
+//        }
     }
 
 
@@ -347,6 +364,13 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }elseif ($format == 'text'){
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
         }
+
+
+//        var_dump($this->feed);
+//        wp_die();
+
+
+
         return file_put_contents($file, $this->feed) ? 'true' : 'false';
     }
 

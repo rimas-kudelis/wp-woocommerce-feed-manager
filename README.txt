@@ -4,7 +4,7 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -101,8 +101,8 @@ No, you can add as many products to your product feeds as you want but this feat
 This plugin outputs product feeds in the following file formats: TXT, XML formats. For creating google product feed you have to select XML format.
 = How do I upgrade to pro? =
 You may use WooCommerce Product Feed Manager for free, limited to 50 items in total.
-To upgrade to PRO with no restrictions, you may purchase a license key from: WP Dashboard > Product Feed > Upgrade. 
- 
+To upgrade to PRO with no restrictions, you may purchase a license key from: WP Dashboard > Product Feed > Upgrade.
+
 == How to Generate Google Product Feed/other product feed Using Best WooCommerce Product Feed ==
 [youtube https://youtu.be/ANS5hQrdAMY]
 
@@ -117,10 +117,12 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 8. Click ‘Add New Attribute’ & Select ‘Static’ for Custom Attribute
 9. Attribute Customization
 10. Click to Publish Feed
-11. Download the Feed 
+11. Download the Feed
 
 == Changelog ==
 
+= 1.2.6 =
+* Bug Fixes
 
 = 1.2.5 =
 * Added new merchant (AdRoll.com)
