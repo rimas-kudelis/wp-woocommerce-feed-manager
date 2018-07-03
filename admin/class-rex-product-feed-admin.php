@@ -161,8 +161,8 @@ class Rex_Product_Feed_Admin {
 
         $screen = get_current_screen();
         if ( $screen->post_type != 'product-feed' ) {
-            wp_dequeue_script( 'cmb2-scripts' );
-            wp_dequeue_script( 'cmb2-conditionals' );
+            // wp_dequeue_script( 'cmb2-scripts' );
+            // wp_dequeue_script( 'cmb2-conditionals' );
             // wp_dequeue_script( 'wp-ajax-helper' );
 
         }
