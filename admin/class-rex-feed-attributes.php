@@ -118,7 +118,7 @@ class Rex_Feed_Attributes {
                 }
             }
         }
-        $attributes['Custom Attributes'] = $list;
+        $attributes['Product Custom Attributes'] = $list;
 
 
 
@@ -130,12 +130,10 @@ class Rex_Feed_Attributes {
         if($cat_maps){
             foreach ($cat_maps as $cat_map){
                 $option = get_option($cat_map);
-                $cat_maps_array["$cat_map"] = $option['map_name'];
+                $cat_maps_array["$cat_map"] = $option['map-name'];
             }
         }
-
         $attributes['Category Map'] = $cat_maps_array;
-
         return $attributes;
     }
 

@@ -25,112 +25,150 @@ foreach ( $all_options as $name => $value ) {
     }
 }
 
+$x = 0;
+$cat_keys = [];
+
 require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
 ?>
 
-<div class="rex-accordion">
-        <?php
-            if ($cat_map_options){
-                foreach ($cat_map_options as $key=>$value){
+<div class="row">
+    <div class="col s12 m12">
+        <div class="rex-accordion">
+            <?php
+            if ($cat_map_options) {
+                foreach ($cat_map_options as $key => $value) {
                     $data = unserialize($value);
-                    $map_name = $data['map_name'];?>
+                    $map_name = $data['map-name'];
+                    $map_config = $data['map-config'];
+                    ?>
                     <div class="acordion-item">
-                        <h6><a href="#" class="mapper_name_update"><?php echo $map_name?></a></h6>
+                        <h6><a href="#" class="mapper_name_update"><?php echo $map_name ?></a></h6>
                         <div class="inner" style="display: none;">
                             <form action="" method="post" class="update_cat_map">
-                                <table class="widefat fixed">
+                                <table class="widefat fixed cat-map highlight" id="cat-map">
                                     <thead>
-                                        <tr>
-                                            <th>Product Category</th>
-                                            <th>Merchant Category</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Product Category</th>
+                                        <th>Merchant Category</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
 
-                                        <?php
-                                        if($product_category){
-                                            foreach ($categories as $category):
-                                                $temp_key = $temp_value = '';
-                                                echo "<tr>";
-                                                echo "<td>{$category->name}</td>";
-                                                $temp_key = 'category-'.$category->term_id;
-                                                if(array_key_exists($temp_key, $data)){
-                                                    $temp_value =htmlspecialchars(utf8_decode(urldecode($data[$temp_key]["value"]))) ;
-                                                    echo "<td><input type='text' class='category-suggest' name='category-{$category->term_id}' value='$temp_value'></td>";
-                                                }else{
-                                                    echo "<td><input type='text' class='category-suggest'  name='category-{$category->term_id}'></td>";
-                                                }
-                                                echo "</tr>";
-                                            endforeach;
-                                        }
+                                    <?php foreach ($map_config as $config){
                                         ?>
-                                        <tr>
-                                            <td></td>
-                                            <td>
-                                                <div class="cat-map-actions">
-                                                    <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat">Update</button>
-                                                    <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat">Delete</button>
-                                                </div>
 
+                                        <tr data-row-id="<?php echo $x; ?>" class="trow">
+                                            <td>
+                                                <select name="category-map[<?php echo $x; ?>][map-key]">
+                                                    <?php
+                                                    if($categories){
+                                                        foreach ($categories as $category){
+                                                            $temp_key = $temp_value = '';
+                                                            $temp_key = $category->term_id;
+
+                                                            $selected = $config['map-key'] ==  $temp_key ? 'selected' : '';
+                                                            ?>
+                                                            <option value='<?php echo $category->term_id ?>' <?php echo $selected; ?>><?php echo $category->name ?></option>
+                                                        <?php }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </td>
+                                            <td class="input-map">
+                                                <input class='category-suggest' type='text' name='category-map[<?php echo $x; ?>][map-value]' data-value="" value="<?php echo $config['map-value']; ?>">
+                                            </td>
+                                            <td>
+                                                <a class="btn-floating waves-effect waves-light red delete">
+                                                    <i class="material-icons">delete</i>
+                                                </a>
                                             </td>
                                         </tr>
+                                        <?php $x++; } ?>
                                     </tbody>
                                 </table>
-
+                                <a id="rex-new-cat" class="waves-effect waves-light btn-large rex-new-cat bwf-btn"><i class="material-icons left">add</i>Add New Category</a>
+                                <div class="cat-map-actions">
+                                    <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat">Update</button>
+                                    <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat">Delete</button>
+                                </div>
                             </form>
                         </div>
                     </div>
-
                 <?php }
+
+
             }
-        ?>
+            ?>
+        </div>
+    </div>
 </div>
 
-<div class="category-mapper-wrapper">
-    <h5><strong>Add New Category Map</strong></h5>
 
-    <table class="widefat fixed">
-        <tbody>
-            <tr>
-                <td>Mapper Name</td>
-                <td><input id="map_name" type="text" name="mapper_name"></td>
-            </tr>
-        </tbody>
-    </table>
 
-    <form action="" method="post" class="add_cat_map">
 
-        <table class="widefat fixed">
-            <thead>
+
+
+<div class="row">
+    <div class="col s12 m12">
+        <div class="category-mapper-wrapper card ">
+            <div class="section">
+                <h5><strong>Add New Category Map</strong></h5>
+            </div>
+
+            <table class="widefat fixed highlight">
+                <tbody>
                 <tr>
-                    <th>Product Category</th>
-                    <th>Merchant Category</th>
+                    <td><p>Mapper Name</p></td>
+                    <td><input id="map_name" type="text" name="mapper_name"></td>
                 </tr>
-            </thead>
+                </tbody>
+            </table>
 
-            <tbody>
 
-                <?php
-                    if($product_category){
-                        foreach ($categories as $category):
-                            echo "<tr>";
-                                echo "<td>{$category->name}</td>";
-                                echo "<td><input class='category-suggest' type='text' name='category-{$category->term_id}'></td>";
-                            echo "</tr>";
-                        endforeach;
-                    }
-                ?>
-                <tr>
-                    <td></td>
-                    <td>
-                        <div class="cat-map-actions">
-                            <button type="submit" class="waves-effect waves-light btn-large green" id="save_mapping_cat">Save</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
+            <form action="" method="post" class="add_cat_map">
+
+                <table class="widefat fixed cat-map highlight" id="cat-map">
+                    <thead>
+                    <tr>
+                        <th>Product Category</th>
+                        <th>Merchant Category</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr data-row-id="0" class="trow">
+                        <td>
+                            <select name="category-map[0][map-key]">
+                                <?php
+                                if($product_category){
+                                    foreach ($categories as $category){?>
+                                        <option value='<?php echo $category->term_id ?>'><?php echo $category->name ?></option>
+                                    <?php }
+                                }
+                                ?>
+                            </select>
+                        </td>
+                        <td class="input-map">
+                            <input class='category-suggest' type='text' name='category-map[0][map-value]' data-value="">
+                        </td>
+                        <td>
+                            <a class="btn-floating waves-effect waves-light red delete">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a id="rex-new-cat" class="waves-effect waves-light btn-large rex-new-cat bwf-btn"><i class="material-icons left">add</i>Add New Category</a>
+
+                <div class="cat-map-actions">
+                    <button type="submit" class="waves-effect waves-light btn-large green" id="save_mapping_cat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
 
 

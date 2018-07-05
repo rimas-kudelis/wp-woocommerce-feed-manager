@@ -30,7 +30,8 @@ class Rex_Product_Feed_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-//        exit( wp_redirect( admin_url( 'post_type=product-feed&page=user_on_boarding' ) ) );
+	    update_option('rex_bwfm_first_installation', time());
+	    update_option('rex_bwfm_notification_status', 'yes');
 	}
 
 }

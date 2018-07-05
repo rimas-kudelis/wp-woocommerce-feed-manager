@@ -287,10 +287,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * Get the products to generate feed
      */
     protected function setup_products() {
-
         $this->products = get_posts( $this->products_args );
 
-
+        if( count($this->products) >= 50 ) {
+            update_option('rex_total_feed', 'yes');
+        }
     }
 
     /**

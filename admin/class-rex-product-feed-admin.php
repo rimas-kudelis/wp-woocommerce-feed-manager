@@ -103,7 +103,7 @@ class Rex_Product_Feed_Admin {
             return;
         }
 
-        if ( $screen->post_type === 'product-feed' || $screen->id === 'product-feed_page_category_mapping' || $screen->id === 'product-feed_page_user_on_boarding') {
+        if ( $screen->post_type === 'product-feed' || $screen->id === 'product-feed_page_category_mapping' || $screen->id === 'product-feed_page_bwfm-dashboard') {
             wp_enqueue_style( 'materialize-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
             wp_enqueue_style( 'materialize-css', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'easy-auto', 'https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.min.css', array(), $this->version, 'all' );
@@ -142,12 +142,14 @@ class Rex_Product_Feed_Admin {
         }
 
 
-        if ( $screen->post_type === 'product-feed' || $screen->id === 'product-feed_page_category_mapping' || $screen->id === 'product-feed_page_user_on_boarding' ) {
+        if ( $screen->post_type === 'product-feed' || $screen->id === 'product-feed_page_category_mapping' || $screen->id === 'product-feed_page_bwfm-dashboard' ) {
             wp_enqueue_script( 'materialize-js', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, false );
-            wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, false );
-            wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery' ), $this->version, false );
+
             wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-admin.js', array( 'jquery' ), $this->version, false );
         }
+
+        wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery' ), $this->version, false );
 
     }
 
@@ -168,6 +170,65 @@ class Rex_Product_Feed_Admin {
         }
 
     }
+
+
+    /**
+     * Admin Notices
+     *
+     * @since    1.2.7
+     */
+    public function bwfm_admin_notices() {
+        $total_feed = get_option('rex_total_feed');
+        $show_notice = get_option('rex_bwfm_notification_status');
+
+        if ($total_feed == 'yes' AND $show_notice != 'no') {
+            ?>
+            <div class="notice notice-info bwfm-review-notice" style="position: relative">
+                <p><strong style="font-weight: bold">Hey, I noticed you just created a new feed with 50 products using WC product feed manager – that’s awesome! Could you please do me a
+                        BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.<br>~ Lincoln </strong></p>
+
+                <ul>
+                    <li>
+                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="stop-bwfm-notice" style="font-weight: bold">Ok, you deserve it</a>
+                    </li>
+                    <li>
+                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold">Nope, maybe later</a>
+                    </li>
+                    <li>
+                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold">I already did</a>
+                    </li>
+                </ul>
+                <button type="button" class="notice-dismiss bwfm-dismiss-notice"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'rex-product-feed' ) . '</span></button>
+            </div>
+        <?php }
+
+        $activation_time = get_option('rex_bwfm_first_installation');
+//            $user_review  =
+        $current_time = time();
+        $notice_start = 1209600;
+        $interval   = ($current_time - $activation_time)>$notice_start ? true : false;
+
+        if ($interval AND $show_notice !='no') {?>
+            <div class="notice notice-info bwfm-review-notice" style="position: relative">
+                <p><strong style="font-weight: bold">Hey, I noticed you are using WC product feed manager for over two weeks – that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.<br>~ Lincoln </strong></p>
+                <ul>
+                    <li>
+                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="stop-bwfm-notice" style="font-weight: bold">Ok, you deserve it</a>
+                    </li>
+                    <li>
+                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold">Nope, maybe later</a>
+                    </li>
+                    <li>
+                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold">I already did</a>
+                    </li>
+                </ul>
+                <button type="button" class="notice-dismiss bwfm-dismiss-notice"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'rex-product-feed' ) . '</span></button>
+            </div>
+
+        <?php }
+    }
+
+
 
     /**
      * Register CPT for the Plugin
@@ -227,7 +288,7 @@ class Rex_Product_Feed_Admin {
         add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_options', 'product-feed', null, PLUGIN_DIR_URL . 'admin/icon/icon.png', 5 );
         add_submenu_page('product-feed', 'Add New Feed', 'Add New Feed', 'manage_options', 'post-new.php?post_type=product-feed');
         add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_options', 'category_mapping',  __CLASS__ .'::category_mapping');
-        add_submenu_page('product-feed', __('User on-boarding page', 'rex-product-feed'), __('User on-boarding page', 'rex-product-feed'), 'manage_options', 'user_on_boarding',  __CLASS__ .'::user_on_boarding');
+        add_submenu_page('product-feed', __('Dashboard', 'rex-product-feed'), __('Dashboard', 'rex-product-feed'), 'manage_options', 'bwfm-dashboard',  __CLASS__ .'::user_dashboard');
     }
 
     public function category_mapping(){
@@ -235,7 +296,7 @@ class Rex_Product_Feed_Admin {
     }
 
 
-    public function user_on_boarding(){
+    public function user_dashboard(){
         require plugin_dir_path(__FILE__) . '/partials/on_boarding.php';
     }
 

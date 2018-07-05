@@ -82,10 +82,10 @@ class Rex_Product_Data_Retriever {
 
 //        $this->allowed = Rex_Product_Filter::allowedProduct($this->product, $feed_filter_rules);
 
-
-
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
+
+
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
         $this->set_all_value();
 //        $this->maybe_set_variation_data();
@@ -147,10 +147,12 @@ class Rex_Product_Data_Retriever {
             $val = $this->set_pr_att( $rule['meta_key']  );
 
         }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
+
             $val = $this->set_image_att( $rule['meta_key']  );
 
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
+
             $val = $this->set_product_att( $rule['meta_key']  );
 
         }
@@ -164,7 +166,6 @@ class Rex_Product_Data_Retriever {
         elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
             $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
-
 
 
         // maybe add prefix/suffix
@@ -380,23 +381,20 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     private function set_cat_mapper_att( $key ) {
-
         $first_cat = array();
         $cat_lists = get_the_terms( $this->product->get_id(), 'product_cat' );
         if($cat_lists){
             $first_cat = reset($cat_lists);
         }
-
         $map_category = get_option($key);
         if($first_cat){
-            foreach ($map_category as $key => $value){
-                if($first_cat->term_id == $value['cat_id']){
-                    return utf8_decode(urldecode($value['value']));
+            foreach ($map_category['map-config'] as $key => $value){
+                if( $first_cat->term_id == $value['map-key']){
+                    return utf8_decode(urldecode($value['map-value']));
                 }
             }
         }
         return '';
-
     }
 
 
@@ -552,7 +550,6 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     private function is_product_custom_attr( $key ) {
-
         return array_key_exists( $key, $this->product_meta_keys['Product Custom Attributes'] );
     }
 

@@ -4,14 +4,14 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best WooCommerce Product Feed Manager helps you to sell more by uploading product feed to Google shopping, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
+WooCommerce Product Feed Manager helps you to sell more by uploading product feed to Google shopping, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
-Best WooCommerce Product Feed Manager generates google product feed or other kinds of merchant product feed to Sync product with your google shop or merchant centers. Using WooCommerce Product Feed Manager plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different merchant shops. The plugin has setups that meet the requirements from various merchant stores.
+WooCommerce Product Feed Manager generates google product feed or other kinds of merchant product feed to Sync product with your google shop or merchant centers. Using WooCommerce Product Feed Manager plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different merchant shops. The plugin has setups that meet the requirements from various merchant stores.
 >   <a href="http://openvoyce.com/products/bwf" target="_blank">Have a suggestion or feature request? Let us know!</a>
 
 
@@ -22,11 +22,11 @@ With WooCommerce Product Feed Manager, you will not just save your time for feed
 >  If YOU LOVE THE PLUGIN OR HAVE MORE THAN 50 PRODUCTS IN YOUR WooCommerce SHOP, YOU CAN TRY FULL FEATURED PREMIUM VERSION. OUR PRO Version is HIGHLY SCALABLE FOR FEEDS & MERCHANTS. Please contact us if you have any pre-sale questions. [JUST ONE CLICK AWAY!](https://rextheme.com/all-tickets/)
 
 
-**Best WooCommerce Product Feed Manager Means Most Features in Free**
+**WooCommerce Product Feed Manager Means Most Features in Free**
 WooCommerce Product Feed Manager offers you most features for free than the other product feed plugins out there. Create google product feed or other product feed (50 product) for free.
 
 **Compatible With Any WooCommerce Theme**
-Our product feed plugin is compatible with any WooCommece theme you name. So you don't have to worry about the look of your website if you want to use Best WooCommerce Product Feed as your product feed plugin.
+Our product feed plugin is compatible with any WooCommece theme you name. So you don't have to worry about the look of your website if you want to use WooCommerce Product Feed as your product feed plugin.
 
 **Custom Filter & Rules**
 Set smart custom filter and ordering per channel, so only your most profitable products make it to the product feed. It helps you to exclude the non-profitable or out of season products you don’t want to share.
@@ -34,7 +34,7 @@ Set smart custom filter and ordering per channel, so only your most profitable p
 **Create Product Feed Using Category Mapping**
 Google shopping and Facebook Dynamic Ads requires category mapping. It's must for these two merchant shop. WooCommerce Product Feed Manager lets you do that.
 
-Categories are the primary key to get products into the search result. So, the best practice is to assign most matching shopping engine category to your store category for each product. With Best WooCommerce Product Feed Manager, you’ll get an option to map it to your marketplace category so that you can make two categories aligned with each other.
+Categories are the primary key to get products into the search result. So, the practice is to assign most matching shopping engine category to your store category for each product. With WooCommerce Product Feed Manager, you’ll get an option to map it to your marketplace category so that you can make two categories aligned with each other.
 
 >  *This process is entirely dynamic with our plugin & you can assign all of your categories to make it more relevant & reachable to buyers. You can also the category mapping for other merchant shops.*
 
@@ -79,21 +79,21 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 - [Shopzilla](http://www.shopzilla.com/)
 - [Shopping](http://www.shopping.com/)
 
-Currently, Best WooCommerce Product Feed Manager plugin supports 13 major merchants. We are working on the other platforms, and the number will increase day by day.
+Currently, WooCommerce Product Feed Manager plugin supports 13 major merchants. We are working on the other platforms, and the number will increase day by day.
 
-**WooCommerce Product Feed Manager Has Best Support Team**
+**WooCommerce Product Feed Manager Has Support Team**
 We've got a dedicated team of programmers and WordPress experts to make your journey easy & error free. So, if you want to use our plugin or if you are facing any problem with our plugin feel free to contact by emailing here: support@rextheme.com.
 
 
 == Installation ==
-1. Upload the Best WooCommerce Product Feed Manager to the `/wp-content/plugins/` directory
+1. Upload the WooCommerce Product Feed Manager to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Now a new menu 'Product Feeds' will appear in admin screen from where you can create and manage product feeds.
 
 == Frequently Asked Questions ==
 = Which shopping merchants are supported? =
 Currently we support 13 major shopping engines like Google Shopping, Amazon, Facebook, Ebay & etc.
-= Does Best WooCommerce Product Feed Manager supports product variation? =
+= Does WooCommerce Product Feed Manager supports product variation? =
 Yes, It does.
 = Is there a product limit? =
 No, you can add as many products to your product feeds as you want but this feature is only available for pro-users. In free version you can create product feed up-to 50 products.
@@ -103,7 +103,7 @@ This plugin outputs product feeds in the following file formats: TXT, XML format
 You may use WooCommerce Product Feed Manager for free, limited to 50 items in total.
 To upgrade to PRO with no restrictions, you may purchase a license key from: WP Dashboard > Product Feed > Upgrade.
 
-== How to Generate Google Product Feed/other product feed Using Best WooCommerce Product Feed ==
+== How to Generate Google Product Feed/other product feed Using WooCommerce Product Feed ==
 [youtube https://youtu.be/ANS5hQrdAMY]
 
 == Screenshots ==
@@ -120,6 +120,10 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 11. Download the Feed
 
 == Changelog ==
+
+= 1.2.7 =
+* Fixed UI issues
+* Fixed custom attributes mapping to feed
 
 = 1.2.6 =
 * Bug Fixes

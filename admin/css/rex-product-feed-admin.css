@@ -91,7 +91,7 @@
 .rex-accordion h6 a{
   padding: 10px 20px;
   font-size: 0.9em;
-  background: #A1C500;
+  background: #38CBD3;
   border-bottom: 1px solid #E1E1E1;
   display: block;
   text-decoration: none;
@@ -141,16 +141,46 @@
   padding: 10px 20px;
   background:#ececec
 }
-/*.rex-accordion a.selected*/
-/*{*/
-/*color: red ;*/
-/*}*/
 
 .cat-map-actions{
-  padding: 20px;
-  float: right;
+  padding: 20px 0;
 }
 
+.category-mapper-wrapper {
+  max-width: 100%;
+}
+
+.category-mapper-wrapper table td {
+  vertical-align: middle;
+}
+
+.category-mapper-wrapper table td p{
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.cat-map {
+  padding: 15px 0;
+  margin: 15px 0;
+}
+
+
+a.mapper_name_update:focus {
+  box-shadow: none;
+}
+
+
+.input-map input {
+  border-color: inherit;
+  border-style: inherit;
+  border-width: inherit;
+  box-shadow: none;
+  color: inherit;
+  float: none;
+  border-bottom: 1px solid #9e9e9e;
+  border-radius: 0;
+  padding: 0;
+}
 
 
 /*Product Filter*/
@@ -167,9 +197,9 @@ Easy Auto Complete
 .easy-autocomplete {
   width: 100% !important;
 }
-.easy-autocomplete input {
-  padding: 6px 0 6px 6px;
-}
+/*.easy-autocomplete input {*/
+  /*padding: 6px 0 6px 6px;*/
+/*}*/
 
 
 /**

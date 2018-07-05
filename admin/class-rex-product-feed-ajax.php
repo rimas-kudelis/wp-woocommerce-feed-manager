@@ -41,6 +41,14 @@ class Rex_Product_Feed_Ajax {
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )
             ->with_validation( $validations );
 
+
+        /**
+         * Stop Admin Notices
+         */
+        wp_ajax_helper()->handle( 'stop-notices' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'stop_notices' ) )
+            ->with_validation( $validations );
+
         /**
          * Google Category Mapping
          */
@@ -78,51 +86,45 @@ class Rex_Product_Feed_Ajax {
         }
 
         $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
-
         ob_start();
         include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         return ob_get_clean();
 
     }
 
+    /**
+     * Save Category Map
+     */
     public function category_mapping($payload){
-
         $map_category = array();
-        $temps = array();
         $map_name = $payload['map_name'];
-        $cats = explode("&", $payload['cat_map']);
-        foreach ($cats as $cat){
-            array_push($temps, explode("=", $cat));
+        $cat_map_array       = array();
+        parse_str( $payload['cat_map'], $cat_map_array );
+        $cat_map_array       = $cat_map_array['category-map'];
+        $cat_mapper['map-name'] = $map_name;
+        $cat_mapper['map-config'] = $cat_map_array;
+
+        if ( get_option( 'rex_cat_map_'.str_replace(' ', '', strtolower($map_name)) ) !== false ) {
+            update_option( 'rex_cat_map_'.str_replace(' ', '', strtolower($map_name)), $cat_mapper );
+        }else {
+            add_option('rex_cat_map_'.str_replace(' ', '', strtolower($map_name)), $cat_mapper);
         }
-        foreach ($temps as $temp){
-            $map_category[$temp[0]]['value'] = htmlspecialchars($temp[1]);
-            $map_category[$temp[0]]['cat_id'] = preg_replace('/[^0-9]/', '', $temp[0]);;
-        }
-        $map_category['map_name'] = $map_name;
-        add_option('rex_cat_map_'. str_replace(' ', '', strtolower($map_name)), $map_category);
         return $map_category;
-
-
     }
 
     public function category_mapping_update($payload){
         $map_category = array();
-        $temps = array();
         $map_name = $payload['map_name'];
-        $cats = explode("&", $payload['cat_map']);
-        foreach ($cats as $cat){
-            array_push($temps, explode("=", $cat));
-        }
-        foreach ($temps as $temp){
-            $map_category[$temp[0]]['value'] = htmlspecialchars($temp[1]);
-            $map_category[$temp[0]]['cat_id'] = preg_replace('/[^0-9]/', '', $temp[0]);
-        }
-        $map_category['map_name'] = $map_name;
-
+        $cat_map_array       = array();
+        parse_str( $payload['cat_map'], $cat_map_array );
+        $cat_map_array       = $cat_map_array['category-map'];
+        $cat_mapper['map-name'] = $map_name;
+        $cat_mapper['map-config'] = $cat_map_array;
         if ( get_option( 'rex_cat_map_'.str_replace(' ', '', strtolower($map_name)) ) !== false ) {
-            update_option( 'rex_cat_map_'.str_replace(' ', '', strtolower($map_name)), $map_category );
+            update_option( 'rex_cat_map_'.str_replace(' ', '', strtolower($map_name)), $cat_mapper );
+        }else {
+            add_option('rex_cat_map_'.str_replace(' ', '', strtolower($map_name)), $cat_mapper);
         }
-
         return $map_category;
     }
 
@@ -135,6 +137,12 @@ class Rex_Product_Feed_Ajax {
         }
 
         return 'Success';
+    }
+
+
+    function stop_notices($payload) {
+        update_option('rex_bwfm_notification_status', 'no');
+        return 'success';
     }
 
 }

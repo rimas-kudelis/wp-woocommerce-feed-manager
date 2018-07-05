@@ -14,33 +14,20 @@
 
 ?>
 
-
-
-
-
-<div class="row">
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="row">
     <div class="rex-onboarding">
         <div class="left">
             <div class="wrapper">
                 <div class="col s12 no-pd">
-                    <ul class="tabs tabs-icon">
+                    <ul class="tabs tabs-icon rex-tabs">
                         <li class="tab col s3"><a href="#tab1"><i class="material-icons">settings</i>General</a></li>
-                        <li class="tab col s3"><a href="#tab2"><i class="material-icons">thumb_up_alt</i>Go Premium</a></li>
+                        <li class="tab col s3"><a href="#tab2"><i class="material-icons">perm_media</i>Video Tutorials</a></li>
+
+                        <?php
+                            if ( rex_product_feed()->is_free_plan() ) {?>
+                                <li class="tab col s3"><a href="#tab3"><i class="material-icons">thumb_up_alt</i>Go Premium</a></li>
+                            <?php }
+                        ?>
                     </ul>
                 </div>
 
@@ -140,25 +127,40 @@
                     </div>
                 </div>
                 <div id="tab2" class="block-wrapper">
-                    <div class="rex-upgrade">
-                        <h4>Why upgrade to Premium Version?</h4>
-                        <div class="parent">
-                            <div class="item">Supports more than 50 products</div>
-                            <div class="item">24x7 Support</div>
-                            <div class="item">Supports YITH brand attributes</div>
-                            <div class="item">Custom Filtering</div>
-                            <div class="item">Dynamic Attribute</div>
-                        </div>
-                        <a href="https://checkout.freemius.com/mode/dialog/plugin/1327/plan/1878/" target="_blank" class="waves-effect waves-light btn bwf-btn">Get Premium Version</a>
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                     </div>
                 </div>
+
+                <?php
+                if ( rex_product_feed()->is_free_plan() ) {?>
+                    <div id="tab3" class="block-wrapper">
+                        <div class="rex-upgrade">
+                            <h4>Why upgrade to Premium Version?</h4>
+                            <div class="parent">
+                                <div class="item">Supports more than 50 products</div>
+                                <div class="item">Access to a elite support team</div>
+                                <div class="item">Supports YITH brand attributes</div>
+                                <div class="item">Custom Filtering</div>
+                                <div class="item">Dynamic Attribute</div>
+                            </div>
+                            <a href="https://checkout.freemius.com/mode/dialog/plugin/1327/plan/1878/" target="_blank" class="waves-effect waves-light btn bwf-btn">Get Premium Version</a>
+                        </div>
+                    </div>
+                <?php }
+                ?>
+
             </div>
         </div>
 
         <div class="right">
             <div class="rex-banner">
-                <img src="https://ps.w.org/best-woocommerce-feed/assets/icon-128x128.jpg?rev=1737647" class="banner-logo" alt="logo">
-                <a href="https://checkout.freemius.com/mode/dialog/plugin/1327/plan/1878/" class="update-btn" target="_blank">Upgrade to Pro</a>
+                <?php
+                    if ( rex_product_feed()->is_free_plan() ) {?>
+                        <img src="https://ps.w.org/best-woocommerce-feed/assets/icon-128x128.jpg?rev=1737647" class="banner-logo" alt="logo">
+                        <a href="https://checkout.freemius.com/mode/dialog/plugin/1327/plan/1878/" class="update-btn" target="_blank">Upgrade to Pro</a>
+                    <?php }
+                ?>
 
                 <a href="https://wordpress.org/plugins/social-booster/" target="_blank"><img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/Social_Booster_Banner.png'?>" alt="rex-banner"></a>
             </div>
