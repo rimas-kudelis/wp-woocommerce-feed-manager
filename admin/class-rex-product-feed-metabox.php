@@ -56,11 +56,12 @@ class Rex_Product_Metabox {
             'show_option_none' => false,
             'default'          => 'all',
             'options'          => array(
-                'all'    => __( 'All Published Products', 'rex-product-feed' ),
-                'filter'    => __( 'Custom Filter', 'rex-product-feed' ),
+                'all'           => __( 'All Published Products', 'rex-product-feed' ),
+                'filter'        => __( 'Custom Filter', 'rex-product-feed' ),
                 'product_cat'   => __( 'Category Filter', 'rex-product-feed' ),
                 'product_tag'   => __( 'Tag Filter', 'rex-product-feed' ),
             ),
+            'before_row' => array($this, 'progress_config_cb'),
         ) );
 
 
@@ -178,6 +179,20 @@ class Rex_Product_Metabox {
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>Add New Attribute</a>';
+        echo '</div>';
+    }
+
+
+    /**
+     * Display Feed Config Metabox.
+     *
+     * @return void
+     * @author RexTheme
+     **/
+    public function progress_config_cb($field_args, $field){
+
+        echo '<div id="rex-feed-progress" class="rex-feed-progress">';
+        require plugin_dir_path( __FILE__ ) . 'partials/progress-bar.php';
         echo '</div>';
     }
 

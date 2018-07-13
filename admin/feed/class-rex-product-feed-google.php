@@ -28,11 +28,21 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         GoogleShopping::title($this->title);
         GoogleShopping::link($this->link);
         GoogleShopping::description($this->desc);
-        // Generate feed for both simple and variable products.
+
+//         Generate feed for both simple and variable products.
         $this->generate_simple_product_feed();
         $this->generate_variable_product_feed();
+
         $this->feed = GoogleShopping::asRss();
-        return $this->save_feed($this->feed_format);
+
+        if ($this->batch >= $this->tbatch ) {
+            $this->save_feed($this->feed_format);
+            return array(
+                'msg' => 'finish'
+            );
+        }else {
+            return $this->save_feed($this->feed_format);
+        }
 
     }
 
@@ -53,12 +63,12 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             if ($this->allowed) {
                 $atts = $this->get_product_data( $product );
                 $item = GoogleShopping::createItem();
+
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
             }
-
         }
     }
 

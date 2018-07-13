@@ -4,7 +4,7 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 1.2.7
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,12 @@ Categories are the primary key to get products into the search result. So, the p
 
 > *Not only does it supports 1-to-1 category mapping but you can also map subsets of products on a channel-category based on product names.*
 
+
+
+**Batch Processing Feed Generation**
+WooCommerce Product Feed Manager creates feed with batch processing. Due to PHP execution time and memory limit its not possible to process Thousands of products at a time. So we developed our plugin with the functionality to make feed in  batches. Batch processing is compatible with any server and any amount of products you have in your site.
+
+
 **Make Dynamic Attributes As You Need**
 WooCommerce Product Feed Manager gives you the ability to set your conditions for any types of attributes. Different types of WooCommerce users have different kinds & classes of goods and services. So, you may need varieties of custom values to demonstrate your products. That's why we are giving the options to make dynamic attributes as your need.
 
@@ -57,6 +63,7 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 * Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
 * Static attribute, Prefix, and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
 * Create custom field names
+* Make feed in batches
 * Map your categories to those of other channels, such as Google Shopping
 * Intuitive user interface
 * Use advanced commands to optimize your product feeds while creating or exporting
@@ -120,6 +127,9 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 11. Download the Feed
 
 == Changelog ==
+
+= 1.3.0 =
+* Added batch processing
 
 = 1.2.7 =
 * Fixed UI issues

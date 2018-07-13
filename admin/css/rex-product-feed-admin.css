@@ -202,6 +202,120 @@ Easy Auto Complete
 /*}*/
 
 
+
+
+
+.rex-feed-progress .meter {
+  height: 20px;  /* Can be anything */
+  position: relative;
+  margin: 60px 0 20px 0; /* Just for demo spacing */
+  background: #55555521;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
+  padding: 10px;
+  -webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+  -moz-box-shadow   : inset 0 -1px 1px rgba(255,255,255,0.3);
+  box-shadow        : inset 0 -1px 1px rgba(255,255,255,0.3);
+}
+.rex-feed-progress .meter > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  height: 100%;
+  -webkit-border-top-right-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  -webkit-border-top-left-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  -moz-border-radius-topleft: 20px;
+  -moz-border-radius-bottomleft: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: rgb(43,194,83);
+  background-image: -webkit-gradient(
+          linear,
+          left bottom,
+          left top,
+          color-stop(0, rgb(43,194,83)),
+          color-stop(1, rgb(84,240,84))
+  );
+  background-image: -moz-linear-gradient(
+          center bottom,
+          rgb(43,194,83) 37%,
+          rgb(84,240,84) 69%
+  );
+  -webkit-box-shadow:
+          inset 0 2px 9px  rgba(255,255,255,0.3),
+          inset 0 -2px 6px rgba(0,0,0,0.4);
+  -moz-box-shadow:
+          inset 0 2px 9px  rgba(255,255,255,0.3),
+          inset 0 -2px 6px rgba(0,0,0,0.4);
+  box-shadow:
+          inset 0 2px 9px  rgba(255,255,255,0.3),
+          inset 0 -2px 6px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+.rex-feed-progress .meter > span:after, .animate > span > span {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background-image:
+          -webkit-gradient(linear, 0 0, 100% 100%,
+          color-stop(.25, rgba(255, 255, 255, .2)),
+          color-stop(.25, transparent), color-stop(.5, transparent),
+          color-stop(.5, rgba(255, 255, 255, .2)),
+          color-stop(.75, rgba(255, 255, 255, .2)),
+          color-stop(.75, transparent), to(transparent)
+          );
+  background-image:
+          -moz-linear-gradient(
+                  -45deg,
+                  rgba(255, 255, 255, .2) 25%,
+                  transparent 25%,
+                  transparent 50%,
+                  rgba(255, 255, 255, .2) 50%,
+                  rgba(255, 255, 255, .2) 75%,
+                  transparent 75%,
+                  transparent
+          );
+  z-index: 1;
+  -webkit-background-size: 50px 50px;
+  -moz-background-size: 50px 50px;
+  -webkit-animation: move 2s linear infinite;
+  -webkit-border-top-right-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  -webkit-border-top-left-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  -moz-border-radius-topleft: 20px;
+  -moz-border-radius-bottomleft: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  overflow: hidden;
+}
+
+.rex-feed-progress .animate > span:after {
+  display: none;
+}
+
+@-webkit-keyframes move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+
 /**
 * On Boarding Page
  */
@@ -589,3 +703,156 @@ Easy Auto Complete
     height: 200px;
   }
 }
+
+
+
+
+/*progress bar*/
+
+
+.skill-progress {
+  padding-bottom: 35px;
+  padding-top: 34px;
+}
+.progress-title-holder {
+  position: relative;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.progress-wrapper {
+  width: 100%;
+  z-index: 10;
+}
+.progress-mark {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+}
+.progress-outter {
+  background-color: #f2f3f9;
+}
+.progress-content {
+  width: 0%;
+  background: #7bbc54;
+}
+.progress-content,
+.progress-outter {
+  border-radius: 50px;
+  height: 6px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.bwfm-progressbar {
+  position:relative;
+  display:block;
+  margin-bottom:15px;
+  width:100%;
+  background:#eee;
+  height:35px;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  -webkit-transition:0.4s linear;
+  -moz-transition:0.4s linear;
+  -ms-transition:0.4s linear;
+  -o-transition:0.4s linear;
+  transition:0.4s linear;
+  -webkit-transition-property:width, background-color;
+  -moz-transition-property:width, background-color;
+  -ms-transition-property:width, background-color;
+  -o-transition-property:width, background-color;
+  transition-property:width, background-color;
+}
+
+.progressbar-title {
+  position:absolute;
+  top:0;
+  left:0;
+  width:110px;
+  font-weight:bold;
+  font-size:13px;
+  color:#ffffff;
+  background:#6adcfa;
+  -webkit-border-top-left-radius:3px;
+  -webkit-border-bottom-left-radius:4px;
+  -moz-border-radius-topleft:3px;
+  -moz-border-radius-bottomleft:3px;
+  border-top-left-radius:3px;
+  border-bottom-left-radius:3px;
+}
+
+.progressbar-title span {
+  display:block;
+  background:rgba(0, 0, 0, 0.1);
+  padding:0 20px;
+  height:35px;
+  line-height:35px;
+  -webkit-border-top-left-radius:3px;
+  -webkit-border-bottom-left-radius:3px;
+  -moz-border-radius-topleft:3px;
+  -moz-border-radius-bottomleft:3px;
+  border-top-left-radius:3px;
+  border-bottom-left-radius:3px;
+}
+
+.progressbar-bar {
+  height:35px;
+  width:0;
+  background:#6adcfa;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+}
+
+.progressbar-bar-percent {
+  position:absolute;
+  right:10px;
+  top:0;
+  font-size:11px;
+  height:35px;
+  line-height:35px;
+  color:#ffffff;
+  color:rgba(0, 0, 0, 0.4);
+}
+
+.progress-msg .fa,
+.progress-msg span{
+  font-size: 16px !important;
+  color: #20BAFC;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -158,6 +158,37 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 
 
+    /**
+     * Product Offset
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $offset
+     */
+    protected $offset;
+
+
+    /**
+     * Product Current Batch
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $batch
+     */
+    protected $batch;
+
+
+    /**
+     * Product Total Batch
+     *
+     * @since    2.0.0
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $tbatch
+     */
+    protected $tbatch;
+
+
+
 
     /**
      * Define the core functionality of the plugin.
@@ -172,16 +203,15 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     {
 
         $this->posts_per_page = -1;
-
         if (rex_product_feed()->is_free_plan()) {
             // ... free only logic ...
             $this->posts_per_page = 50;
         }else {
-            $this->posts_per_page = -1;
+            $this->posts_per_page = 100;
         }
 
-        $this->prepare_products_args($config['products']);
         $this->setup_feed_data($config['info']);
+        $this->prepare_products_args($config['products']);
         $this->setup_feed_rules($config['feed_config']);
         $this->setup_feed_filter_rules($config['feed_config']);
         $this->setup_products();
@@ -189,24 +219,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
 
-//        if (rex_product_feed()->is_free_plan()) {
-//            // ... free only logic ...
-//            $no_post = new RexPremium();
-//            $this->posts_per_page = $no_post->rex_remaining_feed();
-//        }
-//
-//        if ($this->posts_per_page >= -1) {
-//            $this->prepare_products_args($config['products']);
-//            $this->setup_feed_data($config['info']);
-//            $this->setup_feed_rules($config['feed_config']);
-//            $this->setup_feed_filter_rules($config['feed_config']);
-//            $this->setup_products();
-//            $this->setup_variable_products();
-//            $this->merchant = $config['merchant'];
-//            $this->feed_format = $config['feed_format'];
-//        } else {
-//            return false;
-//        }
     }
 
 
@@ -219,13 +231,13 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 
         $this->product_scope = $args['products_scope'];
-
         $this->products_args = array(
             'post_type'              => 'product',
             'fields'                 => 'ids',
             'posts_per_page'         => $this->posts_per_page,
-            'update_post_term_cache' => false,
-            'update_post_meta_cache' => false,
+            'offset'                 => $this->offset,
+            'update_post_term_cache' => true,
+            'update_post_meta_cache' => true,
             'cache_results'          => false,
         );
 
@@ -249,10 +261,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $info
      */
     protected function setup_feed_data( $info ){
-        $this->id    = $info['post_id'];
-        $this->title = $info['title'];
-        $this->desc  = $info['desc'];
-        $this->link  = esc_url( home_url('/') );
+
+
+        if (rex_product_feed()->is_free_plan()) {
+            $totalProducts = 50;
+        }else {
+            $products=wp_count_posts('product');
+            $variations=wp_count_posts('product_variation');
+            $totalProducts=$products->publish + $variations->publish;
+
+        }
+        $this->tbatch   =   ceil($totalProducts/100);
+        $this->id       =   $info['post_id'];
+        $this->title    =   $info['title'];
+        $this->desc     =   $info['desc'];
+        $this->offset   =   $info['offset'];
+        $this->batch    =   (int) $info['batch'];
+        $this->link     =   esc_url( home_url('/') );
     }
 
     /**
@@ -289,9 +314,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_products() {
         $this->products = get_posts( $this->products_args );
 
-        if( count($this->products) >= 50 ) {
-            update_option('rex_total_feed', 'yes');
-        }
     }
 
     /**
@@ -334,6 +356,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     }
 
 
+
     /**
      * Get Product data.
      * @param bool $id
@@ -345,6 +368,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         return $data->get_all_data();
 
     }
+
 
     /**
      * Save the feed as XML file.
@@ -360,27 +384,71 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         if($format == 'xml'){
-
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
+            if( file_exists($file) ) {
+                if($this->batch == 1) {
+                    return file_put_contents($file, $this->feed) ? 'true' : 'false';
+                }else {
+                    $feed = $this->merge_feeds($file);
+                    return file_put_contents($file, $feed) ? 'true' : 'false';
+                }
+            }else{
+                return file_put_contents($file, $this->feed) ? 'true' : 'false';
+            }
         }elseif ($format == 'text'){
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
         }
 
+        return file_put_contents($file, $this->feed, FILE_APPEND) ? 'true' : 'false';
 
-//        var_dump($this->feed);
-//        wp_die();
-
-
-
-        return file_put_contents($file, $this->feed) ? 'true' : 'false';
     }
+
+
+    /**
+     * Responsible for merge batch feeds.
+     * @return string
+     **/
+
+    protected function merge_feeds($prev_feed){
+        $xml_str = simplexml_load_file($prev_feed)->asXML();
+        $orgdoc = new DOMDocument;
+        $orgdoc->loadXML($xml_str);
+
+        if($this->merchant === 'google' || $this->merchant === 'facebook') {
+            $parent = $orgdoc->getElementsByTagName('channel')->item(0);
+        }else {
+            $parent = $orgdoc->getElementsByTagName('products')->item(0);
+        }
+
+        // Create a new document
+        $newdoc = new DOMDocument;
+        $newdoc->loadXML($this->feed);
+
+        // The node we want to import to a new document
+
+        if($this->merchant === 'google' || $this->merchant === 'facebook') {
+            $node = $newdoc->getElementsByTagName("item");
+        }else {
+            $node = $newdoc->getElementsByTagName("product");
+        }
+
+        for ($i = 0; $i < $node->length; $i ++) {
+            $item = $node->item($i);
+            // Import the node, and all its children, to the document
+            $item = $orgdoc->importNode($item, true);
+            $parent->appendChild($item);
+        }
+        return $orgdoc->saveXML();
+
+    }
+
+
 
     /**
      * Responsible for creating the feed.
      * @return string
      **/
     abstract public function make_feed();
-
 
 
 }

@@ -1,6 +1,21 @@
 (function( $ ) {
     'use strict';
 
+    var progressWidth = 0;
+
+    $(function() {
+        $(".meter > span").each(function() {
+            $(this)
+                .data("origWidth", $(this).width())
+                .width(0)
+                .animate({
+                    width: $(this).data("origWidth")
+                }, 1200);
+        });
+    });
+
+
+
     /**
      * All of the code for your admin-facing JavaScript source
      * should reside in this file.
@@ -217,21 +232,45 @@
         return vals;
     };
 
-    function save_feed(event) {
-        event.preventDefault();
 
-        // activate spinner and disable button
+    // $(document).on('click', '#publish', save_feed);
+
+
+
+    function get_product_number(event) {
+        event.preventDefault();
+        var $payload = {};
         $('#publishing-action span.spinner').addClass('is-active');
         $(this).addClass('disabled');
+        $('.bwfm-progressbar, .progress-msg').fadeIn();
+        $('.progress-msg span').html('Calculating products.....')
+
+        wpAjaxHelperRequest( 'my-handle', $payload )
+            .success( function( response ) {
+                console.log('Total Number of Products: ' + response.products);
+                generate_feed(response.products, 0, 1);
+            })
+            .error( function( response ) {
+                $('#publishing-action span.spinner').removeClass('is-active');
+                $('#publish').removeClass('disabled');
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on('click', '#publish', get_product_number);
 
 
+    function generate_feed( product, offset, batch ) {
+        
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),
             info : {
-                post_id: $('#post_ID').val(),
-                title: $('#title').val(),
-                desc: $('#title').val(),
+                post_id     : $('#post_ID').val(),
+                title       : $('#title').val(),
+                desc        : $('#title').val(),
+                offset      : offset,
+                batch       : batch
             },
 
             products: {
@@ -241,26 +280,49 @@
                 // items: $('#rex_feed_product_items').val().split(',').slice()
             },
 
-            feed_config: $('form').serialize(),
+            feed_config : $('form').serialize(),
 
         };
+        var batches = Math.ceil( product/100 );
+        console.log('Total Batch: '+ batches);
+        console.log('Total Product(s): '+ product);
+        console.log('Processing Batch Number: '+ batch);
+        console.log('Offset Number: '+ offset);
 
-        wpAjaxHelperRequest( 'my-handle', $payload )
+        var progressbar = 100/batches;
+        progressWidth = progressWidth + progressbar;
+        // feed_progressBar(progressWidth);
+        if (progressWidth >= 100) {
+            $('.progress-msg span').html('Generating feed. Please wait.....');
+        }else {
+            $('.progress-msg span').html('Processing feed.....');
+        }
+
+
+
+        wpAjaxHelperRequest( 'generate-feed', $payload )
             .success( function( response ) {
                 console.log( 'Woohoo!' );
-                // 'response' will be the response from the handle's callback function, as either a string or JSON.
-                console.log( response );
+                console.log(response);
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-                if(response == 'false' || response == ''){
-                    $(msg).insertAfter( $( ".wrap .page-title-action" ));
-                    $('#publishing-action span.spinner').removeClass('is-active');
-                    $('#publish').removeClass('disabled');
-                }else {
-                    $('#publish').removeClass('disabled');
-                    $(document).off( 'click', '#publish', save_feed );
-                    $('#publish').trigger( 'click' );
-                }
 
+                if(response == 'false' || response == ''){
+                    generate_feed(product, offset, batch);
+                }else if (response.msg == 'finish') {
+                    feed_progressBar(progressWidth);
+                    $('#publish').removeClass('disabled');
+                    $(document).off( 'click', '#publish', get_product_number );
+                    $('#publish').trigger( 'click' );
+                } else {
+                    if ( batch < batches ) {
+                        setTimeout(function(){
+                            offset = offset + 100;
+                            batch++;
+                            feed_progressBar(progressWidth);
+                            generate_feed(product, offset, batch);
+                        }, 2000);
+                    }
+                }
             })
             .error( function( response ) {
                 $('#publishing-action span.spinner').removeClass('is-active');
@@ -268,9 +330,109 @@
                 console.log( 'Uh, oh!' );
                 console.log( response.statusText );
             });
-    }
-    $(document).on('click', '#publish', save_feed);
 
+    }
+
+    function feed_progressBar(width) {
+
+        $('.progressbar-bar').animate({
+            width:width + '%'
+        },1000);
+        $('.progressbar-bar-percent').html(width+ '%');
+
+    }
+
+
+    function category_mapping(event) {
+        event.preventDefault();
+        var $payload = {
+            map_name: $('#map_name').val(),
+            cat_map: $('.add_cat_map').serialize(),
+        };
+        if ($('#map_name').val().length != 0){
+            $('.rex-loading-spinner').slideDown('fast');
+            wpAjaxHelperRequest( 'category-mapping', $payload )
+                .success( function( response ) {
+                    $('.rex-loading-spinner').fadeOut('fast');
+                    setTimeout(function(){// wait for 5 secs(2)
+                        location.reload(); // then reload the page.(3)
+                    }, 1000);
+                    console.log('Woohoo!');
+                })
+                .error( function( response ) {
+                    console.log( 'Uh, oh!' );
+                    console.log( response.statusText );
+                });
+        }else {
+            alert('Please Insert Category Map Name')
+        }
+
+    }
+    $(document).on('click', '#save_mapping_cat', category_mapping);
+
+
+    function delete_mapping(event) {
+        event.preventDefault();
+        var container = $(this).closest('.acordion-item');
+        var map_name = container.find('.mapper_name_update');
+        var $payload = {
+            map_name: map_name.text()
+        };
+        $('.rex-loading-spinner').slideDown('fast');
+        wpAjaxHelperRequest( 'category-mapping-delete', $payload )
+            .success( function( response ) {
+                $('.rex-loading-spinner').fadeOut('fast');
+                container.fadeOut();
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+
+    }
+    $(document).on('click', '#delete_mapping_cat', delete_mapping);
+
+
+
+    function category_mapper_accordion(event) {
+        $(this).slideDown(500);
+        $(this).toggleClass('selected');
+
+        var this_inner = $(this).parent().next();
+        var this_a = $(this);
+
+        $(this).parent().next().slideToggle(function() {
+            $('.accordion > h2 > a').not(this_a).removeClass('selected');
+            $(".inner").not(this_inner).slideUp();
+        });
+        return false;
+    }
+    $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
+
+
+
+
+    function category_mapping_update(event) {
+        event.preventDefault();
+        var form = $(this).closest('form');
+        var container = $(this).closest('.acordion-item');
+        var map_name = container.find('.mapper_name_update');
+        var $payload = {
+            map_name: map_name.text(),
+            cat_map: form.serialize(),
+        };
+        $('.rex-loading-spinner').slideDown('fast');
+        wpAjaxHelperRequest( 'category-mapping-update', $payload )
+            .success( function( response ) {
+                $('.rex-loading-spinner').fadeOut('fast');
+                console.log('Woohoo!');
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on('click', '#update_mapping_cat', category_mapping_update);
 
 })( jQuery );
 

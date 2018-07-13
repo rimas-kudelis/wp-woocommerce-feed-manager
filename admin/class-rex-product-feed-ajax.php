@@ -34,7 +34,17 @@ class Rex_Product_Feed_Ajax {
         );
 
         wp_ajax_helper()->handle( 'my-handle' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'get_product_number' ) )
+            ->with_validation( $validations );
+
+
+        wp_ajax_helper()->handle( 'generate-feed' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_feed' ) )
+            ->with_validation( $validations );
+
+
+        wp_ajax_helper()->handle( 'save-feed' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_feed' ) )
             ->with_validation( $validations );
 
         wp_ajax_helper()->handle( 'merchant-change' )
@@ -65,26 +75,54 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
     }
 
-    public static function generate_feed( $config ){
 
+    /**
+     * Get total number of products
+     *
+     * @since    2.0.0
+     */
+    public static function get_product_number($payload) {
+
+        if (rex_product_feed()->is_free_plan()) {
+            $totalProducts = 50;
+        }else {
+            $products=wp_count_posts('product');
+            $variations=wp_count_posts('product_variation');
+            $totalProducts=$products->publish + $variations->publish;
+
+        }
+        return array(
+            'products'  => $totalProducts,
+        );
+    }
+
+
+    /**
+     * Get total number of products
+     *
+     * @since    2.0.0
+     */
+
+    public static function save_feed($payload) {
+
+    }
+
+
+
+    public static function generate_feed( $config ){
         try {
             $merchant = Rex_Product_Feed_Factory::build( $config );
         } catch (Exception $e) {
             return $e->getMessage();
         }
         return $merchant->make_feed();
-
     }
 
     public static function show_feed_template( $merchant ){
-
-
         $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
-
         if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
             $feed_rules = false;
         }
-
         $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
         ob_start();
         include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';

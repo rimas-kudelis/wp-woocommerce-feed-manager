@@ -5553,20 +5553,20 @@ jQuery(document).ready(function($){
     /**
      * Saved category map accordion initialize
      */
-    function category_mapper_accordion(event) {
-        $(this).slideDown(500);
-        $(this).toggleClass('selected');
-
-        var this_inner = $(this).parent().next();
-        var this_a = $(this);
-
-        $(this).parent().next().slideToggle(function() {
-            $('.accordion > h2 > a').not(this_a).removeClass('selected');
-            $(".inner").not(this_inner).slideUp();
-        });
-        return false;
-    }
-    $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
+    // function category_mapper_accordion(event) {
+    //     $(this).slideDown(500);
+    //     $(this).toggleClass('selected');
+    //
+    //     var this_inner = $(this).parent().next();
+    //     var this_a = $(this);
+    //
+    //     $(this).parent().next().slideToggle(function() {
+    //         $('.accordion > h2 > a').not(this_a).removeClass('selected');
+    //         $(".inner").not(this_inner).slideUp();
+    //     });
+    //     return false;
+    // }
+    // $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
 
 
 
@@ -5640,14 +5640,23 @@ jQuery(document).ready(function($){
     function stop_notice(event) {
         event.preventDefault();
         var $payload = {};
+        var link = $(this).attr('href');
+        var cls = $(this).attr('class');
 
         wpAjaxHelperRequest( 'stop-notices', $payload )
             .success( function( response ) {
                 console.log( 'Woohoo!' );
                 // 'response' will be the response from the handle's callback function, as either a string or JSON.
                 console.log( response );
-
                 $(".bwfm-review-notice").hide();
+
+                console.log(cls);
+
+                // if(cls == 'bwfm-dismiss-notice') {
+                //     window.open(link,'_blank');
+                // }
+
+
             })
             .error( function( response ) {
 

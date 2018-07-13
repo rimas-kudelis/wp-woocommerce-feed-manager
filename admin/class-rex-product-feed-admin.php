@@ -107,6 +107,7 @@ class Rex_Product_Feed_Admin {
             wp_enqueue_style( 'materialize-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
             wp_enqueue_style( 'materialize-css', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'easy-auto', 'https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.min.css', array(), $this->version, 'all' );
+            wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rex-product-feed-admin.css', array(), $this->version, 'all' );
 
         }
@@ -144,13 +145,10 @@ class Rex_Product_Feed_Admin {
 
         if ( $screen->post_type === 'product-feed' || $screen->id === 'product-feed_page_category_mapping' || $screen->id === 'product-feed_page_bwfm-dashboard' ) {
             wp_enqueue_script( 'materialize-js', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, false );
-
             wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-admin.js', array( 'jquery' ), $this->version, false );
         }
-
         wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, false );
         wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery' ), $this->version, false );
-
     }
 
     /**
@@ -189,7 +187,7 @@ class Rex_Product_Feed_Admin {
 
                 <ul>
                     <li>
-                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="stop-bwfm-notice" style="font-weight: bold">Ok, you deserve it</a>
+                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="" style="font-weight: bold">Ok, you deserve it</a>
                     </li>
                     <li>
                         <a href="#" class="stop-bwfm-notice" style="font-weight: bold">Nope, maybe later</a>
@@ -213,7 +211,7 @@ class Rex_Product_Feed_Admin {
                 <p><strong style="font-weight: bold">Hey, I noticed you are using WC product feed manager for over two weeks – that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.<br>~ Lincoln </strong></p>
                 <ul>
                     <li>
-                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="stop-bwfm-notice" style="font-weight: bold">Ok, you deserve it</a>
+                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="" style="font-weight: bold">Ok, you deserve it</a>
                     </li>
                     <li>
                         <a href="#" class="stop-bwfm-notice" style="font-weight: bold">Nope, maybe later</a>

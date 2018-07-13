@@ -33,7 +33,15 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         $this->generate_simple_product_feed();
         $this->generate_variable_product_feed();
         $this->feed = GoogleShopping::asRss();
-        return $this->save_feed($this->feed_format);
+
+        if ($this->batch >= $this->tbatch ) {
+            $this->save_feed($this->feed_format);
+            return array(
+                'msg' => 'finish'
+            );
+        }else {
+            return $this->save_feed($this->feed_format);
+        }
     }
 
     /**
