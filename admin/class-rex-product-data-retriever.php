@@ -235,6 +235,7 @@ class Rex_Product_Data_Retriever {
                 break;
 
             case 'product_cats':
+
                 return $this->get_product_cats(); break;
 
             case 'product_tags':
@@ -426,7 +427,13 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     private function get_product_cats( $before = '', $sep = ', ', $after = '' ) {
-        return $this->get_the_term_list( $this->product->get_id(), 'product_cat', $before, $sep, $after );
+
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            return $this->get_the_term_list( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
+        }else {
+            return $this->get_the_term_list( $this->product->get_id(), 'product_cat', $before, $sep, $after );
+        }
+
     }
 
     /**
@@ -439,7 +446,12 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     private function get_product_tags( $before = '', $sep = ', ', $after = '' ) {
-        return $this->get_the_term_list( $this->product->get_id(), 'product_tag', $before, $sep, $after );
+
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            return $this->get_the_term_list( $this->product->get_parent_id(), 'product_tag', $before, $sep, $after );
+        }else {
+            return $this->get_the_term_list( $this->product->get_id(), 'product_tag', $before, $sep, $after );
+        }
     }
 
     /**
