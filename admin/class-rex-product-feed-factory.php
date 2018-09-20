@@ -14,7 +14,7 @@ class Rex_Product_Feed_Factory {
 
     private static $other_merchants = array( 'custom', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll');
 
-    public static function build( $config ){
+    public static function build( $config, $bypass = false ){
 
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {
             $className = 'Rex_Product_Feed_Other';
@@ -26,7 +26,7 @@ class Rex_Product_Feed_Factory {
         if( $config == '' || ! class_exists( $className ) ) {
             throw new Exception('Invalid Merchant.');
         } else {
-            return new $className( $config );
+            return new $className( $config, $bypass );
         }
 
         return false;

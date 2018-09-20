@@ -59,6 +59,19 @@ class Rex_Product_Feed_Admin {
      */
     private $metabox;
 
+
+    /**
+     * Cron Handler
+     *
+     * @since    1.3.2
+     * @access   private
+     * @var      object    $cron    The current cron of this plugin.
+     */
+    private $cron;
+
+
+
+
     /**
      * Initialize the class and set its properties.
      *
@@ -72,6 +85,9 @@ class Rex_Product_Feed_Admin {
         $this->version     = $version;
         $this->cpt         = new Rex_Product_CPT;
         $this->metabox     = new Rex_Product_Metabox;
+
+        $this->cron        = new Rex_Product_Feed_Cron_Handler();
+
 
     }
 
@@ -99,6 +115,8 @@ class Rex_Product_Feed_Admin {
 //            return;
 //        }
 //
+
+
         if( ($hook === 'edit.php' ) ){
             return;
         }
@@ -109,8 +127,9 @@ class Rex_Product_Feed_Admin {
             wp_enqueue_style( 'easy-auto', 'https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rex-product-feed-admin.css', array(), $this->version, 'all' );
-
         }
+
+
     }
 
     /**
@@ -206,18 +225,23 @@ class Rex_Product_Feed_Admin {
         $notice_start = 1209600;
         $interval   = ($current_time - $activation_time)>$notice_start ? true : false;
 
+
+
         if ($interval AND $show_notice !='no') {?>
-            <div class="notice notice-info bwfm-review-notice" style="position: relative">
+            <div class="notice notice-info bwfm-review-notice" style="position: relative; border-left-color: #00b4ff;">
                 <p><strong style="font-weight: bold">Hey, I noticed you are using WC product feed manager for over two weeks – that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.<br>~ Lincoln </strong></p>
                 <ul>
-                    <li>
-                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="" style="font-weight: bold">Ok, you deserve it</a>
+                    <li style="display: inline;">
+                        <span class="dashicons dashicons-external" style="font-size: 1.4em; padding-left: 10px"></span>
+                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="" style="font-weight: bold; padding-left: 10px;">Ok, you deserve it</a>
                     </li>
-                    <li>
-                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold">Nope, maybe later</a>
+                    <li style="display: inline;">
+                        <span class="dashicons dashicons-calendar" style="font-size: 1.4em; padding-left: 10px"></span>
+                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold; padding-left: 10px;">Nope, maybe later</a>
                     </li>
-                    <li>
-                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold">I already did</a>
+                    <li style="display: inline;">
+                        <span class="dashicons dashicons-smiley" style="font-size: 1.4em; padding-left: 10px"></span>
+                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold; padding-left: 10px;">I already did</a>
                     </li>
                 </ul>
                 <button type="button" class="notice-dismiss bwfm-dismiss-notice"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'rex-product-feed' ) . '</span></button>
@@ -289,13 +313,63 @@ class Rex_Product_Feed_Admin {
         add_submenu_page('product-feed', __('Dashboard', 'rex-product-feed'), __('Dashboard', 'rex-product-feed'), 'manage_options', 'bwfm-dashboard',  __CLASS__ .'::user_dashboard');
     }
 
-    public function category_mapping(){
+    public static function category_mapping(){
         require plugin_dir_path(__FILE__) . '/partials/category_mapping.php';
     }
 
 
-    public function user_dashboard(){
+    public static function user_dashboard(){
         require plugin_dir_path(__FILE__) . '/partials/on_boarding.php';
+    }
+
+
+    /**
+     *  Feed Cron handler
+     * @since    1.3.2
+     */
+    public function activate_schedule_update() {
+        $this->cron->rex_feed_cron_handler();
+    }
+
+
+
+    /*
+     * Admin Footer Styles
+     */
+    function rex_admin_footer_style() {
+        echo '<style>
+                .blink span {
+                  font-size: 35px;
+                  animation-name: blink;
+                  animation-duration: 1.4s;
+                  animation-iteration-count: infinite;
+                  animation-fill-mode: both;
+                }
+                
+                .blink span:first-child {
+                  margin-left: 5px;
+                }
+                
+                .blink span:nth-child(2) {
+                  animation-delay: .2s;
+                }
+                
+                .blink span:nth-child(3) {
+                  animation-delay: .4s;
+                }
+                
+                @keyframes blink {
+                  0% {
+                    opacity: .2;
+                  }
+                  20% {
+                    opacity: 1;
+                  }
+                  100% {
+                    opacity: .2;
+                  }
+                }
+        </style>';
     }
 
 }

@@ -3,8 +3,8 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
-Tested up to: 4.9.6
-Stable tag: 1.3.2
+Tested up to: 4.9.8
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,7 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 * Static attribute, Prefix, and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
 * Create custom field names
 * Make feed in batches
+* Schedule auto update of feed, under same specifications, with newly added products
 * Map your categories to those of other channels, such as Google Shopping
 * Intuitive user interface
 * Use advanced commands to optimize your product feeds while creating or exporting
@@ -109,9 +110,15 @@ This plugin outputs product feeds in the following file formats: TXT, XML format
 = How do I upgrade to pro? =
 You may use WooCommerce Product Feed Manager for free, limited to 50 items in total.
 To upgrade to PRO with no restrictions, you may purchase a license key from: WP Dashboard > Product Feed > Upgrade.
+= What is the feed auto update feature? =
+For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically.
+You can choose daily update or hourly update of feed.
+
 
 == How to Generate Google Product Feed/other product feed Using WooCommerce Product Feed ==
 [youtube https://youtu.be/ANS5hQrdAMY]
+
+
 
 == Screenshots ==
 1. Select ‘Product Feeds” from the Admin Menu
@@ -128,91 +135,94 @@ To upgrade to PRO with no restrictions, you may purchase a license key from: WP 
 
 == Changelog ==
 
-= 1.3.2 =
+= 2.0.0 (2018-09-20) =
+* Added schedule update
+
+= 1.3.2 (2018-08-25) =
 * Bug fix: Solve merchat category mapping for variable products
 
-= 1.3.1 =
+= 1.3.1 (2018-07-20) =
 * Bug fix: Solve problem with product variations
 
-= 1.3.0 =
+= 1.3.0 (2018-07-13) =
 * Added batch processing
 
-= 1.2.7 =
+= 1.2.7 (2018-07-06) =
 * Fixed UI issues
 * Fixed custom attributes mapping to feed
 
-= 1.2.6 =
+= 1.2.6 (2018-07-03) =
 * Bug Fixes
 
-= 1.2.5 =
+= 1.2.5 (2018-06-29) =
 * Added new merchant (AdRoll.com)
 * Added user on-boarding page
 * Added dynamic identifier_exists value for Google feed
 
-= 1.2.4 =
+= 1.2.4 (2018-06-11) =
 * Added new merchant (Google Adwords)
 * Wordpress Multilanguage support: Spanish (Spain), Afrikaans, Chinese (China), Portuguese (Brazil)
 
-= 1.2.3 =
+= 1.2.3 (2018-06-09) =
 * Added new merchant (Shopping)
 
-= 1.2.2 =
+= 1.2.2 (2018-05-19) =
 * Added new merchant (Shopzilla)
 * Added google category auto suggestion
 
-= 1.2.1 =
+= 1.2.1 (2018-05-12) =
 * Added product filter option
 
-= 1.2.0 =
+= 1.2.0 (2018-05-06) =
 * google_product_category added to Facebook
 
-= 1.1.10 =
+= 1.1.10 (2018-05-07) =
 * Fixed: Sale Price will not be visible if empty(For Google Merchant)
 
-= 1.1.9 =
+= 1.1.9 (2018-04-23) =
 * Added Support for woocommerce custom field
 * Added new merchant - Facebook
 
-= 1.1.8 =
+= 1.1.8 (2017-12-27) =
 * Added Category Mapping Feature
 
-= 1.1.7 =
+= 1.1.7 (2017-12-04) =
 * New merchant - Become
 * yith brand attribute support
 * custom template
 
-= 1.1.6 =
+= 1.1.6 (2017-10-29) =
 * Compatible with php7
 * Category Mapping
 
-= 1.1.5 =
+= 1.1.5 (2017-09-15) =
 * Added the difference between premium and free version
 
-= 1.1.4 =
+= 1.1.4 (2017-08-29) =
 * Added new merchants (amazon, bing, ebay, kelkoo, nextag, pricegrabber)
 * Provide support for both xml and text feed
 
-= 1.1.3 =
+= 1.1.3 (2017-07-03) =
 * Product description issue for variable products
 * Update dropdown type for merchants
 
-= 1.1.2 =
+= 1.1.2 (2017-05-25) =
 * Normalize windows path for ajax
 
-= 1.1.1 =
+= 1.1.1 (2017-04-04) =
 * Fixed issue on other pages causing by scripts
 
-= 1.1.0 =
+= 1.1.0 (2017-03-31) =
 * New feature: Feed customization with custom attributes and values.
 * Improves UI
 * Bug fixes
 
-= 1.0.2 =
+= 1.0.2 (2017-03-30) =
 * Fix issue with feed attributes values.
 
-= 1.0.1 =
+= 1.0.1 (2017-02-10) =
 * Optimize to deal with large numbers of products.
 
-= 1.0.0 =
+= 1.0.0 (2017-02-07) =
 * Initial version with support for Google Merchant
 

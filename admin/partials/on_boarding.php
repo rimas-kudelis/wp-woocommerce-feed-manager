@@ -47,7 +47,7 @@
 
                             <div class="body">
                                 <p>
-                                    Before You start, you can check our Documentation to get familiar with Best WooCommerce Product Feed Manager.
+                                    Before You start, you can check our Documentation to get familiar with WooCommerce Product Feed Manager.
                                 </p>
 
                                 <a class="waves-effect waves-light btn bwf-btn" href="https://www.youtube.com/channel/UCf-NabV2v7DGN8MxQNrxkmw" target="_blank">View Documentation</a>
@@ -94,12 +94,12 @@
                         <div class="onboarding-block">
                             <div class="header">
                                 <img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/Rating.png'?>" class="title-icon" alt="bwf-documentation">
-                                <h4>Make BWFM Popular</h4>
+                                <h4>Make WPFM Popular</h4>
                             </div>
 
                             <div class="body">
                                 <p>
-                                    Your rating and feedback matters to us. If you are happy with Best WooCommerce Product Feed Manager give us a rating.
+                                    Your rating and feedback matters to us. If you are happy with WooCommerce Product Feed Manager give us a rating.
                                 </p>
 
                                 <a class="waves-effect waves-light btn bwf-btn" href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank">Rate Us! </a>

@@ -31,6 +31,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
      * @author
      **/
     public function make_feed() {
+        RexShopping::$container = null;
         RexShopping::init(false, $this->setItemWrapper(), null, '', $this->setItemsWrapper());
         RexShopping::title($this->title);
         RexShopping::link($this->link);

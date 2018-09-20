@@ -103,6 +103,20 @@ class Rex_Product_Metabox {
             ),
         ) );
 
+
+        $box->add_field( array(
+            'name'           => __( 'Refresh Interval', 'rex-product-feed' ),
+            'desc'           => __( 'Feed Schedule Update', 'rex-product-feed' ),
+            'id'             => $this->prefix . 'schedule',
+            'type'           => 'radio_inline',
+            'options' => array(
+                'no'        => __( 'No Interval', 'rex-product-feed' ),
+                'daily'     => __( 'Daily', 'rex-product-feed' ),
+                'hourly'    => __( 'Hourly', 'rex-product-feed' ),
+            ),
+            'default' => 'no',
+        ) );
+
     }
 
     /**

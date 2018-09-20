@@ -16,10 +16,14 @@ class Feed
     protected $namespace = 'http://base.google.com/ns/1.0';
 
     /**
-     * [$version description]
      * @var string
      */
     protected $version = '2.0';
+
+    /**
+     * @var string
+     */
+    protected $iso4217CountryCode = 'GBP';
 
     /**
      * Stores the list of items for the feed
@@ -28,8 +32,7 @@ class Feed
     private $items = array();
 
     /**
-     * [$channelCreated description]
-     * @var boolean
+     * @var bool
      */
     private $channelCreated = false;
 
@@ -40,25 +43,21 @@ class Feed
     private $feed = null;
 
     /**
-     * [$title description]
      * @var string
      */
     private $title = '';
 
     /**
-     * [$cacheDir description]
      * @var string
      */
     private $cacheDir = 'cache';
 
     /**
-     * [$description description]
      * @var string
      */
     private $description = '';
 
     /**
-     * [$link description]
      * @var string
      */
     private $link = '';
@@ -96,15 +95,31 @@ class Feed
     }
 
     /**
+     * @param $code
+     */
+    public function setIso4217CountryCode( $code )
+    {
+        $this->iso4217CountryCode = $code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIso4217CountryCode()
+    {
+        return $this->iso4217CountryCode;
+    }
+
+    /**
      * [channel description]
      */
     private function channel()
     {
         if (! $this->channelCreated) {
             $channel = $this->feed->addChild('channel');
-            $channel->addChild('title', $this->title);
-            $channel->addChild('link', $this->link);
-            $channel->addChild('description', $this->description);
+            $channel->addChild('title', htmlspecialchars($this->title));
+            $channel->addChild('link', htmlspecialchars($this->link));
+            $channel->addChild('description', htmlspecialchars($this->description));
             $this->channelCreated = true;
         }
     }
@@ -115,7 +130,7 @@ class Feed
     public function createItem()
     {
         $this->channel();
-        $item = new Item;
+        $item = new Item($this);
         $index = 'index_' . md5(microtime());
         $this->items[$index] = $item;
         $item->setIndex($index);
@@ -188,26 +203,58 @@ class Feed
 
     /**
      * Retrieve Google product categories from internet and cache the result
+     * @param string $languageISO639
      * @return array
      */
-    public function categories()
+    public function categories($languageISO639 = 'gb')
     {
+        //map two letter language to culture
+        $languageMap = array(
+            'au' => 'en-AU',
+            'br' => 'pt-BR',
+            'cn' => 'zh-CN',
+            'cz' => 'cs-CZ',
+            'de' => 'de-DE',
+            'dk' => 'da-DK',
+            'es' => 'es-ES',
+            'fr' => 'fr-FR',
+            'gb' => 'en-GB',
+            'it' => 'it-IT',
+            'jp' => 'ja-JP',
+            'nl' => 'nl-NL',
+            'no' => 'no-NO',
+            'pl' => 'pl-PL',
+            'ru' => 'ru-RU',
+            'sw' => 'sv-SE',
+            'tr' => 'tr-TR',
+            'us' => 'en-US'
+        );
+        //set default language to gb for backward compatibility
+        $languageCulture = $languageMap['gb'];
+        if (array_key_exists($languageISO639, $languageMap)) {
+            $languageCulture = $languageMap[$languageISO639];
+        }
+
         $cache = new Cache;
         $cache->setCacheDirectory($this->cacheDir);
-        $data = $cache->getOrCreate('google-feed-taxonomy.txt', array( 'max-age' => '86400' ), function () {
-            return file_get_contents("http://www.google.com/basepages/producttype/taxonomy.en-GB.txt");
-        });
+        $data = $cache->getOrCreate('google-feed-taxonomy.'.$languageISO639.'.txt', array('max-age' => '86400'),
+            function () use ($languageCulture) {
+                return file_get_contents("http://www.google.com/basepages/producttype/taxonomy." . $languageCulture . ".txt");
+            }
+        );
+
         return explode("\n", trim($data));
     }
 
     /**
      * Build an HTML select containing Google taxonomy categories
      * @param string $selected
+     * @param string $languageISO639
      * @return string
      */
-    public function categoriesAsSelect($selected = '')
+    public function categoriesAsSelect($selected = '', $languageISO639 = 'gb')
     {
-        $categories = $this->categories();
+        $categories = $this->categories($languageISO639);
         unset($categories[0]);
         $select = '<select name="google_category">';
         $select .= '<option value="">Please select a Google Category</option>';
@@ -219,16 +266,30 @@ class Feed
     }
 
     /**
+     * @param string $languageISO639
+     * @return array
+     */
+    public function categoriesAsNameAssociativeArray( $languageISO639 = 'gb' )
+    {
+        $categories = $this->categories($languageISO639);
+        unset($categories[0]);
+        $return = [];
+        foreach( $categories as $key => $value ) {
+            $return[$value] = $value;
+        }
+        return $return;
+    }
+
+    /**
      * Generate RSS feed
      * @param bool $output
      * @return string
      */
     public function asRss($output = false)
     {
-        ob_end_clean();
+        if (ob_get_contents()) ob_end_clean();
         $this->addItemsToFeed();
         $data = html_entity_decode($this->feed->asXml());
-//        $data = $this->feed->asXml();
         if ($output) {
             header('Content-Type: application/xml; charset=utf-8');
             die($data);

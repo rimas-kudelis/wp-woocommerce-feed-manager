@@ -108,13 +108,15 @@ class Rex_Feed_Attributes {
         $list = array();
         $sql = "SELECT meta_key as name, meta_value as type FROM " . $wpdb->prefix . "postmeta" . "  group by meta_key";
         $data = $wpdb->get_results($sql);
+
+
         if (count($data)) {
             foreach ($data as $key => $value) {
-                if (substr($value->name, 0, 1) !== "_") {
-                    if (!preg_match("/pyre|sbg|fusion|rex/i",$value->name)){
+//                if (substr($value->name, 0, 1) !== "_") {
+                    if (!preg_match("/pyre|sbg|fusion|rex|woosea/i",$value->name)){
                         $value_display = str_replace("_", " ",$value->name);
                         $list["custom_attributes_" . $value->name] = ucfirst($value_display);
-                    }
+//                    }
                 }
             }
         }

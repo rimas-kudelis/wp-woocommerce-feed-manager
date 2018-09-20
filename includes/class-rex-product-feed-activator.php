@@ -30,6 +30,16 @@ class Rex_Product_Feed_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
+
+        /*
+         * Schedule Feed Update
+         * @since 1.3.3
+         */
+        if (! wp_next_scheduled ( 'rex_feed_schedule_update' )) {
+            wp_schedule_event(time(), 'hourly', 'rex_feed_schedule_update');
+        }
+
+
 	    update_option('rex_bwfm_first_installation', time());
 	    update_option('rex_bwfm_notification_status', 'yes');
 	}

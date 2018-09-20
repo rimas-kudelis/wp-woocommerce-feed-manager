@@ -230,7 +230,7 @@
         });
 
         return vals;
-    };
+    }
 
 
     // $(document).on('click', '#publish', save_feed);
@@ -277,7 +277,6 @@
                 products_scope: $('#rex_feed_products').find(':selected').val(),
                 tags: get_checkbox_val('tags'),
                 cats: get_checkbox_val('cats'),
-                // items: $('#rex_feed_product_items').val().split(',').slice()
             },
 
             feed_config : $('form').serialize(),

@@ -59,6 +59,33 @@ class Rex_Product_CPT {
                     'meta_key'    => 'rex_feed_xml_file',
                 ),
 
+                'refresh_interval'  => array(
+                    'title'         => 'Refresh Interval',
+                    'meta_key'      => 'rex_feed_schedule',
+                    'function'    => function (){
+                        echo ucwords( esc_html( get_post_meta( get_the_id(), 'rex_feed_schedule', true ) ) );
+                    }
+                ),
+
+                'feed_status'  => array(
+                    'title'         => 'Feed Status',
+                    'function'    => function (){
+                        if ( get_post_meta( get_the_id(), 'rex_feed_status', true ) ) {
+
+                            if(get_post_meta( get_the_id(), 'rex_feed_status', true ) == 'processing') {
+                                echo '<div class="blink">'.ucwords( esc_html( get_post_meta( get_the_id(), 'rex_feed_status', true ) ) ).'<span>.</span><span>.</span><span>.</span></div>';
+                            }else {
+                                echo ucwords( esc_html( get_post_meta( get_the_id(), 'rex_feed_status', true ) ) );
+                            }
+
+
+                        }else {
+                            echo 'Completed';
+                        }
+
+                    }
+                ),
+
                 'view_feed' => array(
                     'title'       => 'View/Download',
                     'function'    => function (){
@@ -67,6 +94,7 @@ class Rex_Product_CPT {
                         echo '<a target="_blank" class="button" href="' . $url . '" download>Download</a>';
                     }
                 ),
+
                 'date'
             ),
         ));

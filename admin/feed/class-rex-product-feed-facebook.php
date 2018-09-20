@@ -25,6 +25,8 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
 
+        GoogleShopping::$container = null;
+
         GoogleShopping::title($this->title);
         GoogleShopping::link($this->link);
         GoogleShopping::description($this->desc);

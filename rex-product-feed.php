@@ -13,17 +13,17 @@
  * @package           Rex_Product_Feed
  *
  * @wordpress-plugin
- * Plugin Name:       Best Products Feed for WooCoommerce
+ * Plugin Name:       WooCommerce Product Feed Manager
  * Plugin URI:        https://rextheme.com
- * Description:       Best WooCommerce Product Feed helps you to sell more by uploading products to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
- * Version:           1.3.2
+ * Description:       WooCommerce Product Feed Manager helps you to sell more by uploading products to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
+ * Version:           2.0.0
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       rex-product-feed
- * WC requires at least: 3.0
- * WC tested up to: 3.4
+ * WC requires at least: 3.0.0
+ * WC tested up to: 3.4.5
  * Domain Path:       /languages
  */
 
@@ -102,7 +102,7 @@ function rex_check_dependency(){
  * Display admin notice if WooCoomerce not activated
  **/
 function rex_product_feed_admin_notice() {
-    echo '<div class="error"><p><strong>Best Products Feed for WooCoommerce</strong> has been <strong>deactivated</strong>. Please install and activate <b>WooCoommerce</b> before activating this plugin.</p></div>';
+    echo '<div class="error"><p><strong>WooCcommerce Product Feed Manager</strong> has been <strong>deactivated</strong>. Please install and activate <b>WooCoommerce</b> before activating this plugin.</p></div>';
 
     if ( isset( $_GET['activate'] ) ){
         unset( $_GET['activate'] );
@@ -154,6 +154,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-rex-product-feed.php';
 
 
 
+
 /**
  * Begins execution of the plugin.
  *
@@ -180,12 +181,16 @@ function rex_uninstall_cleanup(){
 }
 
 
-
-
-
-
-
-
-
+if (!function_exists('write_log')) {
+    function write_log($log) {
+        if (true === WP_DEBUG) {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+    }
+}
 
 

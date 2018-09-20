@@ -81,12 +81,17 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
         'Rex_Product_Feed_Abstract_Generator' => __DIR__ . '/../..' . '/admin/feed/abstract-rex-product-feed-generator.php',
         'Rex_Product_Feed_Admin' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-admin.php',
         'Rex_Product_Feed_Ajax' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-ajax.php',
+        'Rex_Product_Feed_Background_Process' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-background-process.php',
+        'Rex_Product_Feed_Controller' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-controller.php',
+        'Rex_Product_Feed_Cron_Handler' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-cron-handler.php',
         'Rex_Product_Feed_Facebook' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-facebook.php',
         'Rex_Product_Feed_Factory' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-factory.php',
         'Rex_Product_Feed_Google' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-google.php',
         'Rex_Product_Feed_Other' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-other.php',
         'Rex_Product_Filter' => __DIR__ . '/../..' . '/admin/feed-filter/class-rex-product-filter.php',
         'Rex_Product_Metabox' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-metabox.php',
+        'WP_Async_Request' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
+        'WP_Background_Process' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

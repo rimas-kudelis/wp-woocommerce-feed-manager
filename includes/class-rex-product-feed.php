@@ -75,6 +75,7 @@ class Rex_Product_Feed {
         $this->set_locale();
         $this->define_admin_hooks();
 
+
         if (rex_product_feed()->is_free_plan()) {
             // ... free only logic ...
             RexPremium::rex_remaining_feed_option();
@@ -154,10 +155,18 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages');
+        $this->loader->add_action('admin_footer', $plugin_admin, 'rex_admin_footer_style');
 
         // remove bulk edit and quick edit for our feed cpt.
         $this->loader->add_filter( 'bulk_actions-edit-product-feed', $plugin_admin, 'remove_bulk_edit' );
         $this->loader->add_filter( 'post_row_actions', $plugin_admin, 'remove_quick_edit' );
+
+
+
+        /*
+         * register rex feed schedule
+         */
+        $this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update' );
     }
 
     /**

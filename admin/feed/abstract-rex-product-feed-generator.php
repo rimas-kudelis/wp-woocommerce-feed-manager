@@ -188,6 +188,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected $tbatch;
 
 
+    /**
+     * Bypass functionality from child
+     *
+     * @since    1.3.3
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $bypass
+     */
+    protected $bypass;
+
+
 
 
     /**
@@ -197,9 +207,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * Load the dependencies, define the locale, and set the hooks for the admin area and
      * the public-facing side of the site.
      * @param $config
+     * @param $bypass
      * @since    1.0.0
      */
-    public function __construct( $config )
+    public function __construct( $config, $bypass = false )
     {
 
         $this->posts_per_page = -1;
@@ -209,11 +220,19 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }else {
             $this->posts_per_page = 100;
         }
+        $this->bypass = $bypass;
 
         $this->setup_feed_data($config['info']);
         $this->prepare_products_args($config['products']);
-        $this->setup_feed_rules($config['feed_config']);
-        $this->setup_feed_filter_rules($config['feed_config']);
+
+        if (!$this->bypass){
+            $this->setup_feed_rules($config['feed_config']);
+            $this->setup_feed_filter_rules($config['feed_config']);
+        }else {
+            $this->feed_rules = $config['feed_config'];
+            $this->feed_rules_filter = $config['feed_filter'];
+        }
+
         $this->setup_products();
         $this->setup_variable_products();
         $this->merchant = $config['merchant'];
@@ -254,6 +273,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 'terms'    => $args[$terms]
             );
         }
+
     }
 
     /**
@@ -313,7 +333,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_products() {
         $this->products = get_posts( $this->products_args );
-
     }
 
     /**
@@ -386,6 +405,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($format == 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
             if( file_exists($file) ) {
+
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
                 }else {
