@@ -161,7 +161,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     /**
      * Product Offset
      *
-     * @since    2.0.0
+     * @since    1.3.0
      * @access   private
      * @var      Rex_Product_Feed_Abstract_Generator    $offset
      */
@@ -171,7 +171,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     /**
      * Product Current Batch
      *
-     * @since    2.0.0
+     * @since    1.3.0
      * @access   private
      * @var      Rex_Product_Feed_Abstract_Generator    $batch
      */
@@ -181,7 +181,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     /**
      * Product Total Batch
      *
-     * @since    2.0.0
+     * @since    1.3.0
      * @access   private
      * @var      Rex_Product_Feed_Abstract_Generator    $tbatch
      */
@@ -191,11 +191,21 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     /**
      * Bypass functionality from child
      *
-     * @since    1.3.3
+     * @since    2.0.0
      * @access   private
      * @var      Rex_Product_Feed_Abstract_Generator    $bypass
      */
     protected $bypass;
+
+
+    /**
+     * Product variations include/exclude
+     *
+     * @since    2.0.1
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $variations
+     */
+    protected $variations;
 
 
 
@@ -213,6 +223,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     public function __construct( $config, $bypass = false )
     {
 
+
         $this->posts_per_page = -1;
         if (rex_product_feed()->is_free_plan()) {
             // ... free only logic ...
@@ -228,9 +239,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if (!$this->bypass){
             $this->setup_feed_rules($config['feed_config']);
             $this->setup_feed_filter_rules($config['feed_config']);
+            $this->variations = $this->include_product_variations($config['feed_config']);
         }else {
             $this->feed_rules = $config['feed_config'];
             $this->feed_rules_filter = $config['feed_filter'];
+            $this->variations   = $config['include_variations'];
         }
 
         $this->setup_products();
@@ -314,6 +327,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     }
 
 
+
+    /**
+     * Include Product Variations
+     * @param $info
+     * @return bool
+     */
+    protected function include_product_variations( $info ){
+        $feed_rules       = array();
+        parse_str( $info, $feed_rules );
+        $include_variations       = $feed_rules['rex_feed_variations'];
+        if ($include_variations === 'yes') {
+            return true;
+        }
+        return false;
+    }
+
+
     /**
      * Setup the rules for filter
      * @param $info
@@ -323,6 +353,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         parse_str( $info, $feed_rules_filter );
         $feed_rules_filter          = $feed_rules_filter['ff'];
         $this->feed_rules_filter    = $feed_rules_filter;
+
         // save the feed_rules_filter into feed post_meta.
         update_post_meta( $this->id, 'rex_feed_feed_config_filter', $this->feed_rules_filter );
     }
@@ -354,6 +385,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->products = array_diff( $this->products, $this->variable_products );
         }
 
+        // remove all variable product if product variations is exclude
+        if (!$this->variations) {
+            $this->variable_products = array();
+        }
     }
 
     /**

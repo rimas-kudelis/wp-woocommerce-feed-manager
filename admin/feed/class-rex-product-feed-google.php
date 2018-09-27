@@ -34,6 +34,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         // Generate feed for both simple and variable products.
         $this->generate_simple_product_feed();
         $this->generate_variable_product_feed();
+
         $this->feed = GoogleShopping::asRss();
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);

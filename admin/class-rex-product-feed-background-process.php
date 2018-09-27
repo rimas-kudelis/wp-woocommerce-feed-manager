@@ -94,6 +94,7 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
             $feed_config = get_post_meta($item_id, 'rex_feed_feed_config', true);
             $feed_filter = get_post_meta($item_id, 'rex_feed_feed_config_filter', true);
             $feed_products = get_post_meta($item_id, 'rex_feed_products', true);
+            $include_variations = get_post_meta($item_id, '	rex_feed_variations', true) === 'yes' ? true : false ;
 
             if ( $feed_products !== 'all' && $feed_products !== 'filter') {
                 $terms = $feed_products === 'product_tag' ? 'tags' : 'cats';
@@ -132,6 +133,7 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                 ),
                 'feed_config'    => $feed_config,
                 'feed_filter'    => $feed_filter,
+                'include_variations' => $include_variations,
             );
 
             try {

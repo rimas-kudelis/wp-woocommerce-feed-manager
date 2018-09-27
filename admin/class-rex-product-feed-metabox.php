@@ -104,6 +104,9 @@ class Rex_Product_Metabox {
         ) );
 
 
+        /*
+         * Schedule Time
+         */
         $box->add_field( array(
             'name'           => __( 'Refresh Interval', 'rex-product-feed' ),
             'desc'           => __( 'Feed Schedule Update', 'rex-product-feed' ),
@@ -115,6 +118,22 @@ class Rex_Product_Metabox {
                 'hourly'    => __( 'Hourly', 'rex-product-feed' ),
             ),
             'default' => 'no',
+        ) );
+
+
+        /*
+         * Include/Exclude Variations
+         */
+        $box->add_field( array(
+            'name'           => __( 'Include Product Variations', 'rex-product-feed' ),
+            'desc'           => __( 'Include/Exclude Products Variations', 'rex-product-feed' ),
+            'id'             => $this->prefix . 'variations',
+            'type'           => 'radio_inline',
+            'options' => array(
+                'yes'       => __( 'Yes', 'rex-product-feed' ),
+                'no'        => __( 'No', 'rex-product-feed' ),
+            ),
+            'default' => 'yes',
         ) );
 
     }
