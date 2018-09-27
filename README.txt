@@ -135,7 +135,7 @@ You can choose daily update or hourly update of feed.
 
 == Changelog ==
 
-= 2.0.0 (2018-09-27) =
+= 2.0.1 (2018-09-27) =
 * Added option to include/exclude variable products
 
 
