@@ -112,11 +112,15 @@ class Item
     public function price($price)
     {
         /** @var $price - Added hack in for when the variants are being created it passes over the new ISO currency code which breaks number_format */
-        $price = (float) preg_replace( "/^([0-9]+\.?[0-9]*)(\s[A-Z]{3})$/", "$1", $price );
+//        $price = (float) preg_replace( "/^([0-9]+\.?[0-9]*)(\s[A-Z]{3})$/", "$1", $price );
+//        $node = new Node('price');
+//        $price = number_format($price, 2, '.', '');
+//        $code = $this->googleShoppingFeed->getIso4217CountryCode();
+//        $this->nodes['price'] = $node->value( $price . " {$code}" )->_namespace($this->namespace);
+
+
         $node = new Node('price');
-        $price = number_format($price, 2, '.', '');
-        $code = $this->googleShoppingFeed->getIso4217CountryCode();
-        $this->nodes['price'] = $node->value( $price . " {$code}" )->_namespace($this->namespace);
+        $this->nodes['price'] = $node->value($price)->_namespace($this->namespace);
     }
 
     /**
@@ -125,11 +129,19 @@ class Item
     public function sale_price($salePrice)
     {
         /** @var $salePrice - Added hack in for when the variants are being created it passes over the new ISO currency code which breaks number_format */
-        $salePrice = (float) preg_replace( "/^([0-9]+\.?[0-9]*)(\s[A-Z]{3})$/", "$1", $salePrice );
-        $node = new Node('sale_price');
-        $salePrice = number_format($salePrice, 2, '.', '');
-        $code = $this->googleShoppingFeed->getIso4217CountryCode();
-        $this->nodes['sale_price'] = $node->value( $salePrice . " {$code}" )->_namespace($this->namespace);
+//        $salePrice = (float) preg_replace( "/^([0-9]+\.?[0-9]*)(\s[A-Z]{3})$/", "$1", $salePrice );
+//        $node = new Node('sale_price');
+//        $salePrice = number_format($salePrice, 2, '.', '');
+//        $code = $this->googleShoppingFeed->getIso4217CountryCode();
+//        $this->nodes['sale_price'] = $node->value( $salePrice . " {$code}" )->_namespace($this->namespace);
+
+        preg_match_all('!\d+!', $salePrice, $matches);
+        $sPrice = implode(' ', $matches[0]);
+
+        if ($sPrice) {
+            $node = new Node('sale_price');
+            $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+        }
     }
 
     /**
