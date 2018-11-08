@@ -202,35 +202,40 @@ class Rex_Product_Data_Retriever {
                 return $this->product->get_sku(); break;
 
             case 'title':
-                return $this->product->get_title(); break;
+                return $this->product->get_name(); break;
 
             case 'price':
+
+                if ($this->product->is_type( 'grouped' ))
+                    return number_format((float)$this->get_grouped_price($this->product, 'regular'), 2, '.', '');
                 return number_format((float)$this->product->get_regular_price(), 2, '.', '');
                 break;
 
             case 'sale_price':
-                if ($this->product->get_sale_price()) {
-                    return number_format((float)$this->product->get_sale_price(), 2, '.', '');
-                }
+
+                if ($this->product->is_type( 'grouped' ))
+                    return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
+                return number_format((float)$this->product->get_sale_price(), 2, '.', '');
                 break;
+
 
             case 'description':
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->post->post_parent );
-                    $_product_desc =  $_product->get_description();
+                    $_product_desc =  $this->remove_short_codes($_product->get_description());
                     return $_product_desc;
                 else:
-                    return $this->product->get_description();
+                    return $this->remove_short_codes($this->product->get_description());
                 endif;
                 break;
 
             case 'short_description':
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->post->post_parent );
-                    $_product_desc =  $_product->get_short_description();
+                    $_product_desc = $this->remove_short_codes($_product->get_short_description());
                     return $_product_desc;
                 else:
-                    return $this->product->get_short_description();
+                    return $this->remove_short_codes($this->product->get_short_description()) ;
                 endif;
                 break;
 
@@ -546,6 +551,7 @@ class Rex_Product_Data_Retriever {
         return array_key_exists( $key, $this->product_meta_keys['Product Attributes'] );
     }
 
+
     /**
      * Helper to check if a attribute is a Product dynamic Attribute.
      *
@@ -555,6 +561,7 @@ class Rex_Product_Data_Retriever {
 
         return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
     }
+
 
     /**
      * Helper to check if a attribute is a Product Custom Attribute.
@@ -583,6 +590,34 @@ class Rex_Product_Data_Retriever {
     private function get_condition( ) {
         return 'New';
     }
+
+
+    /**
+     * Get grouped price
+     *
+     * @since    2.0.3
+     */
+    public function get_grouped_price($product, $type) {
+        $groupProductIds = $product->get_children();
+        $sum = 0;
+        if(!empty($groupProductIds)){
+
+            foreach($groupProductIds as $id){
+                $product = wc_get_product($id);
+                $regularPrice=$product->get_regular_price();
+                $currentPrice=$product->get_price();
+                if($type == "regular"){
+                    $sum += $regularPrice;
+                }else{
+                    $sum += $currentPrice;
+                }
+            }
+        }
+
+        return $sum;
+    }
+
+
 
     /**
      * Helper to get availability of a product
@@ -685,30 +720,60 @@ class Rex_Product_Data_Retriever {
 
 
     /**
-     * Check if this product is child product or not
+     * Remove shortcode
+     * from content
      *
-     * @return bool
-     * @since    1.0.0
+     * @param $content
+     * @return string
+     * @since    2.0.3
      */
-    private function is_children(){
-        return $this->product->post->post_parent? true: false;
+
+    public function remove_short_codes($content) {
+        if(empty($content)){
+            return "";
+        }
+        $content = $this->remove_invalid_xml($content);
+        return strip_shortcodes($content);
     }
 
-    function __call($name, $arguments)
-    {
-        // TODO: Implement __call() method.
+
+
+    /**
+     * Removes invalid XML
+     *
+     * @param string $value
+     * @return string
+     */
+    public function remove_invalid_xml($value) {
+
+        $ret = "";
+        $current = "";
+        if (empty($value)) {
+            return $ret;
+        }
+
+        $length = strlen($value);
+        for ($i=0; $i < $length; $i++) {
+            $current = ord($value{$i});
+            if (($current == 0x9) ||
+                ($current == 0xA) ||
+                ($current == 0xD) ||
+                (($current >= 0x20) && ($current <= 0xD7FF)) ||
+                (($current >= 0xE000) && ($current <= 0xFFFD)) ||
+                (($current >= 0x10000) && ($current <= 0x10FFFF)))
+            {
+                $ret .= chr($current);
+            }
+            else
+            {
+                $ret .= " ";
+            }
+        }
+        return $ret;
+
     }
 
 
-//    /**
-//     * Check if this product is child product or not
-//     *
-//     * @return bool
-//     * @since    1.0.0
-//     */
-//    private function is_children(){
-//        return $this->product->post->post_parent? true: false;
-//    }
 
 
 
@@ -743,4 +808,25 @@ class Rex_Product_Data_Retriever {
 
         return $identifier_exists;
     }
+
+
+    /**
+     * Check if this product is child product or not
+     *
+     * @return bool
+     * @since    1.0.0
+     */
+    private function is_children(){
+        return $this->product->post->post_parent? true: false;
+    }
+
+
+
+    function __call($name, $arguments)
+    {
+        // TODO: Implement __call() method.
+    }
+
+
+
 }

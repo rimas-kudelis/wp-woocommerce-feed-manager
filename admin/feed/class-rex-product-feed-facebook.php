@@ -33,6 +33,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
         // Generate feed for both simple and variable products.
         $this->generate_simple_product_feed();
+        $this->generate_grouped_product_feed();
         $this->generate_variable_product_feed();
         $this->feed = GoogleShopping::asRss();
 
@@ -71,11 +72,37 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-
-
-
         }
     }
+
+
+    /**
+     * Generate Feed data for Grouped Products
+     **/
+    private function generate_grouped_product_feed(){
+        // Loop through all variable products.
+        foreach( $this->grouped_products as $product ) {
+
+            $pr  = new WC_Product_Grouped( $product );
+
+            if($this->product_scope == 'all') {
+                $this->allowed = true;
+            }else {
+                $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
+            }
+
+            if ($this->allowed) {
+                $item = GoogleShopping::createItem();
+                $atts = $this->get_product_data( $product );
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+            }
+        }
+    }
+
+
 
     /**
      * Generate Feed data for Variable Products

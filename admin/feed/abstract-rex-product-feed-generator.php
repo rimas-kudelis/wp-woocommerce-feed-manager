@@ -117,6 +117,18 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected $variable_products;
 
+
+    /**
+     * Array contains all variable products for creating feed with variations.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      Rex_Product_Feed_Abstract_Generator    $products    Contains all products to make feed.
+     */
+    protected $grouped_products;
+
+
+
     /**
      * The Feed.
      * @since    1.0.0
@@ -208,6 +220,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected $variations;
 
 
+    /**
+     * parent product include/exclude
+     *
+     * @since    2.0.3
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $parent_product
+     */
+    protected $parent_product;
+
+
 
 
     /**
@@ -240,16 +262,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->setup_feed_rules($config['feed_config']);
             $this->setup_feed_filter_rules($config['feed_config']);
             $this->variations = $this->include_product_variations($config['feed_config']);
+            $this->parent_product = $this->include_parent_product($config['feed_config']);
         }else {
             $this->feed_rules = $config['feed_config'];
             $this->feed_rules_filter = $config['feed_filter'];
             $this->variations   = $config['include_variations'];
+            $this->parent_product   = $config['include_variations'];
         }
 
         $this->setup_products();
         $this->setup_variable_products();
+        $this->setup_group_products();
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
+
+
+//       var_dump($this->products, $this->variable_products, $this->grouped_products);
+//       wp_die();
 
     }
 
@@ -345,6 +374,22 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 
     /**
+     * Include Product Variations
+     * @param $info
+     * @return bool
+     */
+    protected function include_parent_product( $info ){
+        $feed_rules       = array();
+        parse_str( $info, $feed_rules );
+        $include_parent       = $feed_rules['rex_feed_parent_product'];
+        if ($include_parent === 'yes') {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
      * Setup the rules for filter
      * @param $info
      */
@@ -365,6 +410,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_products() {
         $this->products = get_posts( $this->products_args );
     }
+
 
     /**
      * Setup the variable products from products array.
@@ -391,6 +437,35 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
     }
 
+
+
+    /**
+     * Setup the variable products from products array.
+     */
+    protected function setup_group_products() {
+
+        $this->grouped_products = array();
+
+        // Loop through all products and separate the variable products.
+        foreach( $this->products as $product_id ) {
+            if( $this->is_grouped_product( $product_id ) ){
+                $this->grouped_products[] = $product_id;
+            }
+        }
+
+        // remove variable products from products array
+        if ( !empty( $this->grouped_products ) ) {
+            $this->products = array_diff( $this->products, $this->grouped_products );
+        }
+
+        // remove all variable product if product variations is exclude
+        if (!$this->parent_product) {
+            $this->grouped_products = array();
+        }
+    }
+
+
+
     /**
      * Setup the variable products from products array.
      */
@@ -403,6 +478,26 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $product = wc_get_product( $product_id );
 
         if( $product->is_type( 'variable' ) ){
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+    /**
+     * Setup the variable products from products array.
+     */
+    protected function is_grouped_product( $product_id = false ) {
+
+        if ( false === $product_id ) {
+            return false;
+        }
+
+        $product = wc_get_product( $product_id );
+
+        if( $product->is_type( 'grouped' ) ){
             return true;
         }
 

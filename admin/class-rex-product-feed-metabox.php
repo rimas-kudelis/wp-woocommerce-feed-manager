@@ -136,6 +136,22 @@ class Rex_Product_Metabox {
             'default' => 'yes',
         ) );
 
+
+        /*
+         * Exclude parent product (group product)
+         */
+        $box->add_field( array(
+            'name'           => __( 'Include Parent Product (Grouped Product)', 'rex-product-feed' ),
+            'desc'           => __( 'Include/Exclude Parent Product', 'rex-product-feed' ),
+            'id'             => $this->prefix . 'parent_product',
+            'type'           => 'radio_inline',
+            'options' => array(
+                'yes'       => __( 'Yes', 'rex-product-feed' ),
+                'no'        => __( 'No', 'rex-product-feed' ),
+            ),
+            'default' => 'yes',
+        ) );
+
     }
 
     /**

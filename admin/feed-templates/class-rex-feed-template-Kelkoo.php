@@ -78,7 +78,7 @@ class Rex_Feed_Template_Kelkoo extends Rex_Feed_Abstract_Template {
                 'meta_key' => 'price',
                 'st_value' => '',
                 'prefix'   => '',
-                'suffix'   => '',
+                'suffix'   => ' '.get_option('woocommerce_currency'),
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
