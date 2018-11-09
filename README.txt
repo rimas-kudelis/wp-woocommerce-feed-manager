@@ -136,8 +136,8 @@ You can choose daily update or hourly update of feed.
 
 == Changelog ==
 
-= 2.0.3 (2018-11-08) =
-* Added feature to exclude parent from product
+= 2.1.0 (2018-11-08) =
+* Added feature to exclude parent from group product
 
 = 2.0.2 (2018-09-28) =
 * Bug Fix: Solve g:price value for Google Merchant
