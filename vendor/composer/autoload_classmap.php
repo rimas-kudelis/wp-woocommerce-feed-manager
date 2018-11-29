@@ -7,6 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'CategoryMapping' => $baseDir . '/admin/class-category-mapping.php',
+    'Google_Service_Exception' => $vendorDir . '/google/apiclient/src/Google/Service/Exception.php',
+    'Google_Service_Resource' => $vendorDir . '/google/apiclient/src/Google/Service/Resource.php',
     'RexPremium' => $baseDir . '/admin/class-rex-free-plugin-handler.php',
     'RexTheme\\RexShoppingFeed\\Containers\\RexShopping' => $baseDir . '/admin/feed/rex-shopping-feed/Containers/RexShopping.php',
     'RexTheme\\RexShoppingFeed\\Feed' => $baseDir . '/admin/feed/rex-shopping-feed/Feed.php',
@@ -29,6 +31,7 @@ return array(
     'Rex_Feed_Template_Pricegrabber' => $baseDir . '/admin/feed-templates/class-rex-feed-template-pricegrabber.php',
     'Rex_Feed_Template_Shopping' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopping.php',
     'Rex_Feed_Template_Shopzilla' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopzilla.php',
+    'Rex_Google_Merchant_Settings_Api' => $baseDir . '/admin/class-rex-google-merchant-content-api.php',
     'Rex_Product_CPT' => $baseDir . '/admin/class-rex-product-feed-cpt.php',
     'Rex_Product_Data_Retriever' => $baseDir . '/admin/class-rex-product-data-retriever.php',
     'Rex_Product_Feed_Abstract_Generator' => $baseDir . '/admin/feed/abstract-rex-product-feed-generator.php',

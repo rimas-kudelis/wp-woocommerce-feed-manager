@@ -21,6 +21,7 @@ class GoogleShopping
         if (is_null(static::$container)) {
             static::$container = new Feed;
         }
+
         return static::$container;
     }
 

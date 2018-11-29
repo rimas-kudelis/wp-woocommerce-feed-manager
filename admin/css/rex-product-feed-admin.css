@@ -80,6 +80,10 @@
   width: 80%;
 }
 
+.ui_tpicker_hour_slider select ,
+.ui_tpicker_minute_slider select {
+  display: block;
+}
 
 
 /*Category Mapper*/
@@ -839,15 +843,71 @@ Easy Auto Complete
 }
 
 
+/*
+* Google merchant api
+*/
+
+#cmb2-metabox-rex_feed_google_merchant .cmb-th,
+#cmb2-metabox-rex_feed_google_merchant .cmb-td {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+#cmb2-metabox-rex_feed_google_merchant .google-desc {
+  color: #aaa;
+  font-style: italic;
+  margin: 0;
+}
+
+#cmb2-metabox-rex_feed_google_merchant input[type="text"] {
+  height: 10px;
+  margin-bottom: 0;
+}
+#cmb2-metabox-rex_feed_google_merchant input[type="text"].select-dropdown{
+  height: auto;
+  margin-bottom: 0;
+}
+#cmb2-metabox-rex_feed_google_merchant .cmb2-metabox-description {
+  font-size: 12px;
+}
+
+#cmb2-metabox-rex_feed_google_merchant .cmb-row  {
+  border-bottom: 0;
+  padding-top: 10px !important;
+  margin-bottom: 0;
+  padding-bottom: 0 !important;
+}
+
+#cmb2-metabox-rex_feed_google_merchant .cmb-row.cmb-type-select {
+  padding-bottom: 0;
+  padding-top: 20px !important;
+}
 
 
+.rex-google-status .rex-error {
+  color: red;
+  padding-top: 10px;
+}
 
+.rex-card {
+  background: #f2fafe !important;;
+}
 
+.rex-p {
+  color: #7d8d94 !important;
+}
 
+#cmb2-metabox-rex_feed_google_merchant .google-status {
+  margin-top: 40px;
+}
 
+#cmb2-metabox-rex_feed_google_merchant #send-to-google {
+  margin-top: 40px;
+}
 
-
-
+.rex-card-title {
+  color: #26a69a;
+}
 
 
 

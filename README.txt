@@ -4,29 +4,39 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to: 4.9.8
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 WooCommerce Product Feed Manager helps you to sell more by uploading product feed to Google shopping, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
-WooCommerce Product Feed Manager generates google product feed or other kinds of merchant product feed to Sync product with your google shop or merchant centers. Using WooCommerce Product Feed Manager plugin, you can quickly add all your product (no limitation) from your WooCommerce store to different merchant shops. The plugin has setups that meet the requirements from various merchant stores.
+WooCommerce Product Feed Manager generates product feeds according to merchants' required fields to synchronize your products with google shop or other merchant stores. Using WooCommerce Product Feed Manager plugin, you can quickly add your products (up to 50 products in free version/ unlimited in premium version) from your WooCommerce store to different merchant shops.
 >   <a href="http://openvoyce.com/products/bwf" target="_blank">Have a suggestion or feature request? Let us know!</a>
 
 
-We have connected all the recommended fields of the feed with the WordPress database. So after installing the plugin you are ready to submit your product feed to merchant center. You can also tweak the content of every field in order to maximize your ROI from your products in merchant shops.
+We have connected all the recommended fields of your feed with WordPress database. So after installing the plugin you can easily submit feeds to your desired merchant centers. You can also tweak the content of every field in order to maximize your ROI from your products.
 
-With WooCommerce Product Feed Manager, you will not just save your time for feed creation but also get rid of the technical hassles of products listings, and we have the most EASY user interface.
+Moreover, if you promote your products in a Google Mechant shop, you can send your feeds to Google Shopping directly from the dashboard of this plugin. Set your scheduled uploads in hourly/ weekly/ monthly basis and Google Shopping will fetch your feeds accordingly. You do not need to manually download feeds and upload them in your Google Merchant Shop.
+
+This feature is **exclusively** available in this plugin for Google Shopping only.
+
+In a word, WooCommerce Product Feed Manager not only just saves your time for feed creation but also reduces the technical hassles of product listing; with the EASIEST user interface you will ever get in other product feed plugins, We assure you with that.
 
 >  If YOU LOVE THE PLUGIN OR HAVE MORE THAN 50 PRODUCTS IN YOUR WooCommerce SHOP, YOU CAN TRY FULL FEATURED PREMIUM VERSION. OUR PRO Version is HIGHLY SCALABLE FOR FEEDS & MERCHANTS. Please contact us if you have any pre-sale questions. [JUST ONE CLICK AWAY!](https://rextheme.com/all-tickets/)
 
 
 **WooCommerce Product Feed Manager Means Most Features in Free**
-WooCommerce Product Feed Manager offers you most features for free than the other product feed plugins out there. Create google product feed or other product feed (50 product) for free.
+WooCommerce Product Feed Manager offers you most premium features without any cost that other product feed plugins hardly offer in their free versions. Create google product feed or other merchants' product feeds (50 products) for free and (unlimited products) in premium.
 
 **Compatible With Any WooCommerce Theme**
-Our product feed plugin is compatible with any WooCommece theme you name. So you don't have to worry about the look of your website if you want to use WooCommerce Product Feed as your product feed plugin.
+Don't worry about the look of your website if you are using WooCommerce theme along with our product feed plugin. Because, this product feed plugin is compatible with any WooCommece theme.
+
+**Auto Sync. Your Product Feeds To Google Merchant Shop Directly Through WooCommerce Product Feed Manager**
+WooCommerce product feed manager offers this exclusive feature to send your product feeds directly to your Google Merchant Shop.
+
+You can easily set this up in the section 'Google Merchant Settings' under Product Feed Dashboard. See this video to find out how to set it up. Once it is set up, you can then send feeds to your Google Merchant Shop according to any schedule you want.
+
 
 **Custom Filter & Rules**
 Set smart custom filter and ordering per channel, so only your most profitable products make it to the product feed. It helps you to exclude the non-profitable or out of season products you don’t want to share.
@@ -57,6 +67,7 @@ Add custom taxonomies with naming you requires and fill it with static or dynami
 
 = Features: =
 * You can create feed Up-to 50 products in free version
+* Upload your feed in Google Shopping with a few clicks from your plugin dashboard.
 * Unlimited feed creation for Pro-Users
 * XML and TXT formats
 * Supports Yith brand attributes
@@ -136,8 +147,14 @@ You can choose daily update or hourly update of feed.
 
 == Changelog ==
 
+= 3.0.0 (2018-11-29) =
+* Send feed to google merchant
+
 = 2.1.0 (2018-11-08) =
 * Added feature to exclude parent from group product
+
+= 2.0.3 (2018-11-08) =
+* Added feature to exclude parent from product
 
 = 2.0.2 (2018-09-28) =
 * Bug Fix: Solve g:price value for Google Merchant

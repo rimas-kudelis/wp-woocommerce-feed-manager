@@ -4,19 +4,36 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit54b648127e56be9035c9d8426f792abf
+class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
 {
     public static $files = array (
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'db1766888a4f96ab813d6f6a38125eb9' => __DIR__ . '/..' . '/philipnewcomer/wp-ajax-helper/src/functions.php',
         '61b9c0b2c629ace5be0b7ec3e2b7b6b4' => __DIR__ . '/..' . '/johnbillion/extended-cpts/extended-cpts.php',
-        '10e2bd795825f9abb125ae7cc3251364' => __DIR__ . '/..' . '/webdevstudios/cmb2/init.php',
-        'adf28e29e7828443316a15259fb59459' => __DIR__ . '/..' . '/cmb2-conditionals/cmb2-conditionals.php',
+        'ea11851aa7a28f9ec6d6de365f5d5d51' => __DIR__ . '/../..' . '/includes/cmb2/init.php',
+        '5e622670e91c83ee37f2106cafc7d4b8' => __DIR__ . '/../..' . '/includes/cmb2-conditionals/cmb2-conditionals.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Cache\\' => 10,
             'PhilipNewcomer\\WP_Ajax_Helper\\' => 30,
+        ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
+            'Google\\Auth\\' => 12,
         ),
         'C' => 
         array (
@@ -25,9 +42,41 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
         'PhilipNewcomer\\WP_Ajax_Helper\\' => 
         array (
             0 => __DIR__ . '/..' . '/philipnewcomer/wp-ajax-helper/src/components',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Google\\Auth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/auth/src',
         ),
         'Composer\\Installers\\' => 
         array (
@@ -45,15 +94,21 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
         ),
         'G' => 
         array (
-            'Gregwar\\Cache' => 
+            'Google_Service_' => 
             array (
-                0 => __DIR__ . '/..' . '/gregwar/cache',
+                0 => __DIR__ . '/..' . '/google/apiclient-services/src',
+            ),
+            'Google_' => 
+            array (
+                0 => __DIR__ . '/..' . '/google/apiclient/src',
             ),
         ),
     );
 
     public static $classMap = array (
         'CategoryMapping' => __DIR__ . '/../..' . '/admin/class-category-mapping.php',
+        'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
+        'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
         'RexPremium' => __DIR__ . '/../..' . '/admin/class-rex-free-plugin-handler.php',
         'RexTheme\\RexShoppingFeed\\Containers\\RexShopping' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Containers/RexShopping.php',
         'RexTheme\\RexShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Feed.php',
@@ -76,6 +131,7 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
         'Rex_Feed_Template_Pricegrabber' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-pricegrabber.php',
         'Rex_Feed_Template_Shopping' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopping.php',
         'Rex_Feed_Template_Shopzilla' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopzilla.php',
+        'Rex_Google_Merchant_Settings_Api' => __DIR__ . '/../..' . '/admin/class-rex-google-merchant-content-api.php',
         'Rex_Product_CPT' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-cpt.php',
         'Rex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/class-rex-product-data-retriever.php',
         'Rex_Product_Feed_Abstract_Generator' => __DIR__ . '/../..' . '/admin/feed/abstract-rex-product-feed-generator.php',
@@ -97,10 +153,10 @@ class ComposerStaticInit54b648127e56be9035c9d8426f792abf
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit54b648127e56be9035c9d8426f792abf::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit54b648127e56be9035c9d8426f792abf::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit54b648127e56be9035c9d8426f792abf::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit54b648127e56be9035c9d8426f792abf::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118::$classMap;
 
         }, null, ClassLoader::class);
     }

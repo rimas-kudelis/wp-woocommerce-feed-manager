@@ -46,6 +46,7 @@
 
     $(document).ready(function() {
         $('select').material_select();
+        $('.ui-timepicker-select').material_select('destroy');
 
         if ( $('#rex_feed_xml_file').val() == '' ) {
             $('#rex_feed_file_link').slideUp('fast');
@@ -432,6 +433,93 @@
             });
     }
     $(document).on('click', '#update_mapping_cat', category_mapping_update);
+
+
+
+
+    /*
+     * google merchant settings
+     */
+    function save_google_merchant_settings(event) {
+        event.preventDefault();
+        $('.rex-loading-spinner').slideDown('fast');
+        var payload = {
+            client_id : $(this).find('#client_id').val(),
+            client_secret : $(this).find('#client_secret').val(),
+            merchant_id : $(this).find('#merchant_id').val(),
+            merchant_settings: true
+        };
+        wpAjaxHelperRequest( 'google-merchant-settings', payload )
+            .success( function( response ) {
+                console.log('Woohoo!');
+                $('.merchant-action').html(response.html);
+                $('.rex-loading-spinner').fadeOut('fast');
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+
+
+    }
+    $(document).on('submit', '#rex-google-merchant', save_google_merchant_settings);
+
+
+
+
+    /*
+     * Send feed to Google
+     * Merchant Center
+     */
+    function send_to_google(event) {
+        event.preventDefault();
+        $('.rex-loading-spinner').slideDown('fast');
+        var payload = {
+            feed_id     : $('#post_ID').val(),
+            schedule    : $('#rex_feed_google_schedule option:selected').val(),
+            hour        : $('#rex_feed_google_schedule_time option:selected').val(),
+            country     : $('#rex_feed_google_target_country').val(),
+            language    : $('#rex_feed_google_target_language').val()
+        };
+
+        if ($('#rex_feed_google_schedule option:selected').val() == 'monthly') {
+            payload['month'] = $('#rex_feed_google_schedule_month option:selected').val();
+            payload['day'] = '';
+        }else if ($('#rex_feed_google_schedule option:selected').val() == 'weekly') {
+            payload['day'] = $('#rex_feed_google_schedule_week_day option:selected').val();
+            payload['month'] = '';
+        }else {
+            payload['month'] = '';
+            payload['day'] = '';
+        }
+
+        console.log(payload);
+
+        $('.rex-google-status').html('<p>Sending......</p>');
+        wpAjaxHelperRequest( 'send-to-google', payload )
+            .success( function( response ) {
+                console.log('Woohoo!');
+                console.log(response);
+                $('.rex-loading-spinner').fadeOut('fast');
+                location.reload();
+            })
+            .error( function( response ) {
+                $('.rex-loading-spinner').fadeOut('fast');
+                $('.rex-google-status').html('<div class="rex-error">Something is wrong! Please try again</div>');
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on('click', '#send-to-google', send_to_google);
+
+
+    function reset_form(event) {
+        event.preventDefault();
+        $(this).closest('form').find("input[type=text]").not(':disabled').val("");
+        $(this).closest('form').find("button[type=submit]").prop('disabled', false);
+    }
+    $(document).on('click', '.rex-reset-btn', reset_form);
+
 
 })( jQuery );
 

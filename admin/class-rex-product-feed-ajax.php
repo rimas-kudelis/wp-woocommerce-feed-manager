@@ -65,6 +65,22 @@ class Rex_Product_Feed_Ajax {
         wp_ajax_helper()->handle( 'category-mapping-delete' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_delete' ) )
             ->with_validation( $validations );
+
+
+        /*
+         * Google merchant settings
+         */
+        wp_ajax_helper()->handle( 'google-merchant-settings' )
+            ->with_callback( array( 'Rex_Google_Merchant_Settings_Api', 'save_settings' ) )
+            ->with_validation( $validations );
+
+        /*
+         * Send to Google
+         * Merchant Center
+         */
+        wp_ajax_helper()->handle( 'send-to-google' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'send_to_google' ) )
+            ->with_validation( $validations );
     }
 
 
@@ -173,6 +189,105 @@ class Rex_Product_Feed_Ajax {
     function stop_notices($payload) {
         update_option('rex_bwfm_notification_status', 'no');
         return 'success';
+    }
+
+
+    /*
+     * Send to Google
+     */
+    public static function send_to_google($payload) {
+
+        $feed_id = $payload['feed_id'];
+        $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
+        if ($rex_google_merchant->is_authenticate()) {
+            $feed_url = get_post_meta( $feed_id, 'rex_feed_xml_file', true );
+            $feed_title = get_the_title($feed_id);
+            $client = $rex_google_merchant::get_client();
+            $client_id = $rex_google_merchant::$client_id;
+            $client_secret = $rex_google_merchant::$client_secret;
+            $merchant_id = $rex_google_merchant::$merchant_id;
+
+
+            $access_token = $rex_google_merchant->get_access_token();
+            $client->setClientId($client_id);
+            $client->setClientSecret($client_secret);
+            $client->setScopes( 'https://www.googleapis.com/auth/content' );
+            $client->setAccessToken($access_token);
+
+            /*
+             * Initialize service and datafeed
+             */
+            $service = new Google_Service_ShoppingContent($client);
+            $datafeed = new Google_Service_ShoppingContent_Datafeed();
+
+            $name = $feed_title;
+            $filename = $name.uniqid();
+            $datafeed->setName($name);
+            $datafeed->setContentType('products');
+            $datafeed->setAttributeLanguage($payload['language']);
+            $datafeed->setContentLanguage($payload['language']);
+            $datafeed->setIntendedDestinations(array('Shopping'));
+            if (!$rex_google_merchant->feed_exists($feed_id)){
+                $datafeed->setFileName($filename);
+            }else {
+                $datafeed->setFileName(get_post_meta($feed_id, 'rex_feed_google_data_feed_file_name', true));
+            }
+
+            $datafeed->setTargetCountry($payload['country']);
+
+            /*
+             * Initialize Schedule
+             */
+            $fetch_schedule = new Google_Service_ShoppingContent_DatafeedFetchSchedule();
+            if($payload['schedule'] === 'monthly') {
+                $fetch_schedule->setDayOfMonth($payload['']);
+            }
+            if($payload['schedule'] === 'weekly') {
+                $fetch_schedule->setWeekday($payload['day']);
+            }
+            $fetch_schedule->setHour($payload['hour']);
+            $fetch_schedule->setFetchUrl($feed_url);
+
+            /*
+             * initialize feed format
+             */
+            $format = new Google_Service_ShoppingContent_DatafeedFormat();
+            $format->setFileEncoding('utf-8');
+            $datafeed->setFormat($format);
+            $datafeed->setFetchSchedule($fetch_schedule);
+
+            try {
+                if ($rex_google_merchant->feed_exists($feed_id)){
+                    $datafeedID = get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true);
+                    $datafeed->setId($datafeedID);
+                    $service->datafeeds->update($merchant_id, $datafeedID, $datafeed);
+                    error_log($datafeedID);
+                }else {
+                    $datafeed = $service->datafeeds->insert($merchant_id, $datafeed);
+                    $datafeedID = $datafeed->getId();
+                    $datafeedFileName = $datafeed->getFileName();
+                    update_post_meta($feed_id, 'rex_feed_google_data_feed_id',$datafeedID );
+                    update_post_meta($feed_id, 'rex_feed_google_data_feed_file_name',$datafeedFileName );
+                    error_log(print_r($datafeed, 1));
+                    error_log($datafeedID);
+                }
+                $service->datafeeds->fetchnow($merchant_id, $datafeedID);
+            }
+            catch(Exception $e) {
+                error_log(print_r($e->getMessage(), 1));
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+
+
+        update_post_meta($feed_id, 'rex_feed_google_schedule',$payload['schedule'] );
+        update_post_meta($feed_id, 'rex_feed_google_schedule_time',$payload['hour'] );
+        update_post_meta($feed_id, 'rex_feed_google_schedule_month',$payload['month'] );
+        update_post_meta($feed_id, 'rex_feed_google_schedule_week_day',$payload['day'] );
+        update_post_meta($feed_id, 'rex_feed_google_target_country',$payload['country'] );
+        update_post_meta($feed_id, 'rex_feed_google_target_language',$payload['language'] );
+
+        return array('success' => true);
     }
 
 }

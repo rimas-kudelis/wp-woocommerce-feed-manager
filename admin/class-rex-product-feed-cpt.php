@@ -78,7 +78,6 @@ class Rex_Product_CPT {
                                 echo ucwords( esc_html( get_post_meta( get_the_id(), 'rex_feed_status', true ) ) );
                             }
 
-
                         }else {
                             echo 'Completed';
                         }

@@ -6,8 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'a0edc8309cc5e1d60e3047b5df6b7052' => $vendorDir . '/guzzlehttp/psr7/src/functions_include.php',
+    'c964ee0ededf28c96ebd9db5099ef910' => $vendorDir . '/guzzlehttp/promises/src/functions_include.php',
+    '37a3dc5111fe8f707ab4c132ef1dbc62' => $vendorDir . '/guzzlehttp/guzzle/src/functions_include.php',
     'db1766888a4f96ab813d6f6a38125eb9' => $vendorDir . '/philipnewcomer/wp-ajax-helper/src/functions.php',
     '61b9c0b2c629ace5be0b7ec3e2b7b6b4' => $vendorDir . '/johnbillion/extended-cpts/extended-cpts.php',
-    '10e2bd795825f9abb125ae7cc3251364' => $vendorDir . '/webdevstudios/cmb2/init.php',
-    'adf28e29e7828443316a15259fb59459' => $vendorDir . '/cmb2-conditionals/cmb2-conditionals.php',
+    'ea11851aa7a28f9ec6d6de365f5d5d51' => $baseDir . '/includes/cmb2/init.php',
+    '5e622670e91c83ee37f2106cafc7d4b8' => $baseDir . '/includes/cmb2-conditionals/cmb2-conditionals.php',
 );

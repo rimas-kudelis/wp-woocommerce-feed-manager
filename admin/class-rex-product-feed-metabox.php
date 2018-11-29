@@ -32,6 +32,7 @@ class Rex_Product_Metabox {
         $this->products();
         $this->feed_config();
         $this->feed_file();
+        $this->google_merchant();
     }
 
 
@@ -47,6 +48,7 @@ class Rex_Product_Metabox {
             'title'         => esc_html__( 'Products', 'rex-product-feed' ),
             'object_types'  => array( 'product-feed' ), // Post type
         ) );
+
 
         $box->add_field( array(
             'name'             => __('Products', 'rex-product-feed' ),
@@ -158,7 +160,7 @@ class Rex_Product_Metabox {
      * Defines Metaboxes for Feed Configuration
      *
      * @return void
-     * @author Khorshed Alam
+     * @author RexTheme
      **/
     private function feed_config(){
         $box = new_cmb2_box( array(
@@ -219,7 +221,7 @@ class Rex_Product_Metabox {
      * Display Feed Config Metabox.
      *
      * @return void
-     * @author Khorshed Alam
+     * @author RexTheme
      **/
     public function atts_config_cb($field_args, $field){
         $feed_rules    = get_post_meta( $field->object_id, $this->prefix . 'feed_config', true );
@@ -271,9 +273,11 @@ class Rex_Product_Metabox {
      * Defines Metaboxes for Feed
      *
      * @return void
-     * @author Khorshed Alam
+     * @author RexTheme
      **/
     private function feed_file(){
+
+
         $box = new_cmb2_box( array(
             'id'            => $this->prefix . 'file_link',
             'title'         => esc_html__( 'Feed URL', 'rex-product-feed' ),
@@ -299,6 +303,9 @@ class Rex_Product_Metabox {
     }
 
 
+
+
+
     /**
      * Output a message if the current page has the id of "2" (the about page)
      * @param  object $field_args Current field args
@@ -318,10 +325,155 @@ class Rex_Product_Metabox {
 
 
     /**
+     * Defines Metaboxes for Google Merchant
+     *
+     * @since 4.0.0
+     * @return void
+     * @author RexTheme
+     **/
+    private function google_merchant(){
+
+        $box = new_cmb2_box( array(
+            'id'            => $this->prefix . 'google_merchant',
+            'title'         => esc_html__( 'Send to Google Merchant', 'rex-product-feed' ),
+            'object_types'  => array( 'product-feed' ), // Post type
+            'context'       => 'side',
+            'priority'      => 'low',
+            'show_on_cb'    =>  array($this, 'cmb_only_show_google'),
+        ) );
+
+        $box->add_field( array(
+            'name'    => __('Target Country', 'rex-product-feed' ),
+            'id'      => $this->prefix . 'google_target_country',
+            'type'    => 'text',
+            'default' => 'US',
+            'attributes'  => array(
+                'required'    => 'required',
+            ),
+            'before_row'    => array($this, 'google_merchant_desc'),
+        ) );
+
+        $box->add_field( array(
+            'name'    => __('Target Language', 'rex-product-feed' ),
+            'id'      => $this->prefix . 'google_target_language',
+            'type'    => 'text',
+            'default' => 'en',
+            'attributes'  => array(
+                'required'    => 'required',
+            ),
+        ) );
+
+        $box->add_field( array(
+            'name'             =>  __('Schedule', 'rex-product-feed' ),
+            'id'               => $this->prefix . 'google_schedule',
+            'type'             => 'select',
+            'default'          => 'hourly',
+            'options'          => array(
+                'monthly'   => __( 'Monthly', 'rex-product-feed' ),
+                'weekly'    => __( 'Weekly', 'rex-product-feed' ),
+                'hourly'    => __( 'Hourly', 'rex-product-feed' ),
+            ),
+        ) );
+
+        $month_array = range(1,31);
+        array_unshift($month_array,"");
+        unset($month_array[0]);
+        $box->add_field( array(
+            'name'             =>  __('Select day of month', 'rex-product-feed' ),
+            'id'               => $this->prefix . 'google_schedule_month',
+            'type'             => 'select',
+            'default'          => 1,
+            'options'          => $month_array,
+            'attributes' => array(
+                'data-conditional-id'    => $this->prefix . 'google_schedule',
+                'data-conditional-value' => 'monthly',
+            ),
+        ));
+
+        $box->add_field( array(
+            'name'             =>  __('Select day of week', 'rex-product-feed' ),
+            'id'               => $this->prefix . 'google_schedule_week_day',
+            'type'             => 'select',
+            'default'          => 'monday',
+            'options'          => array(
+                'monday' => 'Monday',
+                'tuesday' => 'Tuesday',
+                'wednesday' => 'Wednesday',
+                'thursday' => 'Thursday',
+                'friday' => 'Friday',
+                'saturday' => 'Saturday',
+                'sunday' => 'Sunday',
+            ),
+            'attributes' => array(
+                'data-conditional-id'    => $this->prefix . 'google_schedule',
+                'data-conditional-value' => 'weekly',
+            ),
+        ));
+
+        $box->add_field( array(
+            'name'             =>  __('Select Hour', 'rex-product-feed' ),
+            'id'               => $this->prefix . 'google_schedule_time',
+            'type'             => 'select',
+            'default'          => 1,
+            'options'          => range(0,23),
+            'after_field'      => array($this, 'after_field_google_merchant_cb'),
+        ) );
+    }
+
+
+    /**
+     * Output a message if the current page has the id of "2" (the about page)
+     * @param  object $field_args Current field args
+     * @param  object $field      Current field object
+     */
+    function google_merchant_desc( $field_args, $field ) {
+       echo __('<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, 
+                United States is US and the abbreviation for language, English is en. <a href="http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed');
+    }
+
+
+
+    /**
+     * Only display a metabox if the merchant is google
+     * @param  object $cmb CMB2 object
+     * @return bool        True/false whether to show the metabox
+     */
+    public function cmb_only_show_google($feed) {
+        $status = get_post_meta( $feed->object_id, 'rex_feed_merchant', 1 );
+        return 'google' === $status;
+    }
+
+
+    /**
+     * Output a message if the feed merchant is google
+     * @param  object $field_args Current field args
+     * @param  object $field      Current field object
+     */
+    public function after_field_google_merchant_cb($field_args, $field){
+        $feed_merchant = get_post_meta( $field->object_id, 'rex_feed_merchant', true );
+        // Only show feed url not empty.
+        if ( $feed_merchant === 'google' ){
+            $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
+            $message = __('Oops!! Access token has expired 😕. Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed');
+            if (!($rex_google_merchant->is_authenticate())){
+                echo sprintf('<p class="google-status">%s <a href="%s">'. __('Authenticate', 'rex-product-feed') .'</a> </p>',
+                    $message,
+                    admin_url( 'admin.php?page=merchant_settings'));
+            }else {
+                echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
+                        '. __('Send to google merchant', 'rex-product-feed') .'
+                      </a> ';
+            }
+            echo '<div class="rex-google-status"></div>';
+        }
+    }
+
+
+    /**
      * Update the XML File URL on Sanitization Hook.
      *
      * @return string
-     * @author Khorshed Alam
+     * @author RexTheme
      **/
     public function sanitize_xml_file($value, $field_args, $field){
         $format = $field->data_to_save['rex_feed_feed_format'];
