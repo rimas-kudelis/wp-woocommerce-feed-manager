@@ -4,7 +4,7 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to: 4.9.8
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,11 +17,11 @@ WooCommerce Product Feed Manager generates product feeds according to merchants'
 
 We have connected all the recommended fields of your feed with WordPress database. So after installing the plugin you can easily submit feeds to your desired merchant centers. You can also tweak the content of every field in order to maximize your ROI from your products.
 
-Moreover, if you promote your products in a Google Mechant shop, you can send your feeds to Google Shopping directly from the dashboard of this plugin. Set your scheduled uploads in hourly/ weekly/ monthly basis and Google Shopping will fetch your feeds accordingly. You do not need to manually download feeds and upload them in your Google Merchant Shop.
+Moreover, if you promote your products in a Google Mechant shop, you can send your feeds to **Google Shopping** directly from the dashboard of this plugin. Set your scheduled uploads in hourly/ weekly/ monthly basis and Google Shopping will fetch your feeds accordingly. You do not need to manually download feeds and upload them in your Google Merchant Shop.
 
-This feature is **exclusively** available in this plugin for Google Shopping only.
+This feature is exclusively available in this plugin for Google Shopping only.
 
-In a word, WooCommerce Product Feed Manager not only just saves your time for feed creation but also reduces the technical hassles of product listing; with the EASIEST user interface you will ever get in other product feed plugins, We assure you with that.
+In a word, WooCommerce Product Feed Manager not only just saves your time for feed creation but also reduces the technical hassles of product listing; with the *EASIEST* user interface you will ever get in other product feed plugins, We assure you with that.
 
 >  If YOU LOVE THE PLUGIN OR HAVE MORE THAN 50 PRODUCTS IN YOUR WooCommerce SHOP, YOU CAN TRY FULL FEATURED PREMIUM VERSION. OUR PRO Version is HIGHLY SCALABLE FOR FEEDS & MERCHANTS. Please contact us if you have any pre-sale questions. [JUST ONE CLICK AWAY!](https://rextheme.com/all-tickets/)
 
@@ -146,6 +146,9 @@ You can choose daily update or hourly update of feed.
 11. Download the Feed
 
 == Changelog ==
+
+= 2.2.1 (2018-12-18) =
+* Bug Fix: Solve g:price value for Google Merchant
 
 = 2.2.0 (2018-11-29) =
 * Send feed to google merchant

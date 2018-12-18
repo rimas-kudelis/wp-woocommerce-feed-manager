@@ -112,11 +112,10 @@ class Item
     public function price($price)
     {
         /** @var $price - Added hack in for when the variants are being created it passes over the new ISO currency code which breaks number_format */
-        $price = (float) preg_replace( "/^([0-9]+\.?[0-9]*)(\s[A-Z]{3})$/", "$1", $price );
+
+
         $node = new Node('price');
-        $price = number_format($price, 2, '.', '');
-        $code = $this->googleShoppingFeed->getIso4217CountryCode();
-        $this->nodes['price'] = $node->value( $price . " {$code}" )->_namespace($this->namespace);
+        $this->nodes['price'] = $node->value($price)->_namespace($this->namespace);
     }
 
     /**
@@ -127,9 +126,14 @@ class Item
         /** @var $salePrice - Added hack in for when the variants are being created it passes over the new ISO currency code which breaks number_format */
         $salePrice = (float) preg_replace( "/^([0-9]+\.?[0-9]*)(\s[A-Z]{3})$/", "$1", $salePrice );
         $node = new Node('sale_price');
-        $salePrice = number_format($salePrice, 2, '.', '');
-        $code = $this->googleShoppingFeed->getIso4217CountryCode();
-        $this->nodes['sale_price'] = $node->value( $salePrice . " {$code}" )->_namespace($this->namespace);
+//        $salePrice = number_format($salePrice, 2, '.', '');
+//        $code = $this->googleShoppingFeed->getIso4217CountryCode();
+//        $this->nodes['sale_price'] = $node->value( $salePrice . " {$code}" )->_namespace($this->namespace);
+
+        $node = new Node('sale_price');
+        $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+
+
     }
 
     /**
@@ -521,10 +525,10 @@ class Item
         $node = new Node('pattern');
         $this->nodes['pattern'] = $node->value($pattern)->_namespace($this->namespace);
     }
-    
+
     /**
      * Add one additional image (string) or multiple images (array).
-     * 
+     *
      * @param $imagesLink
      */
     public function additional_image_link($imagesLink)
@@ -534,12 +538,12 @@ class Item
             foreach ($imagesLink as $imageLink) {
                 $node = new Node('additional_image_link');
                 $imageLink = $this->safeCharEncodeURL(urldecode($imageLink));
-                array_push($this->nodes['additional_image_link'], $node->value($imageLink)->_namespace($this->namespace)->addCdata());            
+                array_push($this->nodes['additional_image_link'], $node->value($imageLink)->_namespace($this->namespace)->addCdata());
             }
         } else {
             $node = new Node('additional_image_link');
             $imageLink = $this->safeCharEncodeURL(urldecode($imagesLink));
-            array_push($this->nodes['additional_image_link'], $node->value($imagesLink)->_namespace($this->namespace)->addCdata()); 
-        }   
+            array_push($this->nodes['additional_image_link'], $node->value($imagesLink)->_namespace($this->namespace)->addCdata());
+        }
     }
 }
