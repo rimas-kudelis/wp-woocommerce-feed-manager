@@ -3,8 +3,8 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
-Tested up to: 4.9.8
-Stable tag: 2.2.1
+Tested up to: 5.0.3
+Stable tag: 2.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,13 +147,16 @@ You can choose daily update or hourly update of feed.
 
 == Changelog ==
 
+= 2.2.2 (2019-02-19) =
+* Add language support for Arabic, French, Deutsch, Russian
+
 = 2.2.1 (2018-12-18) =
 * Bug Fix: Solve g:price value for Google Merchant
 
 = 2.2.0 (2018-11-29) =
 * Send feed to google merchant
 
-= 2.1.0 (2018-11-08) =
+= 2.1.0 (2018-11-15) =
 * Added feature to exclude parent from group product
 
 = 2.0.3 (2018-11-08) =

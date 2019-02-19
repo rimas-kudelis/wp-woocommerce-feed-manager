@@ -2,156 +2,428 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Best Products Feed for WooCoommerce\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-06 06:25+0000\n"
-"PO-Revision-Date: 2018-06-06 08:58+0000\n"
+"POT-Creation-Date: 2018-06-06 08:53+0000\n"
+"PO-Revision-Date: 2019-02-19 07:17+0000\n"
 "Last-Translator: sadi <sadi@coderex.co>\n"
-"Language-Team: Español\n"
-"Language: es_ES\n"
+"Language-Team: Spanish (Spain)\n"
+"Language: es-ES\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.2.0; wp-5.0.3"
 
-#: admin/class-rex-product-feed-metabox.php:47
-#: admin/class-rex-product-feed-metabox.php:52
+#: admin/class-rex-google-merchant-content-api.php:79 
+#: admin/class-rex-google-merchant-content-api.php:118
+msgid "You are not authorized."
+msgstr "Usted no está autorizado."
+
+#: admin/class-rex-google-merchant-content-api.php:80 
+#: admin/class-rex-google-merchant-content-api.php:119
+msgid ""
+"Your access token has expired. This application uses OAuth 2.0 to Access "
+"Google APIs. Please insert the information below and authenticate token for "
+"Google Merchant Shop. Generated access token expires after 3600 sec."
+msgstr ""
+"Su token de acceso ha caducado. Esta aplicación utiliza OAuth 2.0 para "
+"acceder a las API de Google. Por favor, inserte la siguiente información y "
+"autentique el token para Google Merchant Shop El token de acceso generado "
+"expira después de 3600 seg."
+
+#: admin/class-rex-google-merchant-content-api.php:91
+msgid "You are authorized."
+msgstr "Usted está autorizado."
+
+#: admin/class-rex-google-merchant-content-api.php:92
+msgid ""
+"You are now ready to send feed from WooCommerce Product Feed Manager to your "
+"Google Merchant Center. 🚀"
+msgstr ""
+"Ahora está listo para enviar noticias de WooCommerce Product Feed Manager a "
+"su Google Merchant Center. 🚀"
+
+#: admin/class-rex-product-feed-admin.php:204
+msgid ""
+"Hey, I noticed you just created a new feed with 50 products using WC product "
+"feed manager – that’s awesome! Could you please do me a\n"
+"                        BIG favor and give it a 5-star rating on WordPress? "
+"Just to help us spread the word and boost our motivation."
+msgstr ""
+"Oye, me di cuenta de que acabas de crear una nueva fuente con 50 productos "
+"usando el administrador de fuentes de productos de WC. ¿Podría por favor "
+"hacerme un ¿A favor y dale una calificación de 5 estrellas en WordPress? "
+"Solo para ayudarnos a difundir la palabra y aumentar nuestra motivación."
+
+#: admin/class-rex-product-feed-admin.php:209 
+#: admin/class-rex-product-feed-admin.php:236
+msgid "Ok, you deserve it"
+msgstr ""
+"Ok te lo mereces\n"
+
+#: admin/class-rex-product-feed-admin.php:212 
+#: admin/class-rex-product-feed-admin.php:240
+msgid "Nope, maybe later."
+msgstr "No, tal vez más tarde."
+
+#: admin/class-rex-product-feed-admin.php:215 
+#: admin/class-rex-product-feed-admin.php:244
+msgid "I already did."
+msgstr "Ya lo hice."
+
+#: admin/class-rex-product-feed-admin.php:218 
+#: admin/class-rex-product-feed-admin.php:247
+msgid "Dismiss this notice."
+msgstr ""
+"Descartar este aviso.\n"
+
+#: admin/class-rex-product-feed-admin.php:232
+msgid ""
+"Hey, I noticed you are using WC product feed manager for over two weeks – "
+"that’s awesome! Could you please do me a BIG favor and give it a 5-star "
+"rating on WordPress? Just to help us spread the word and boost our "
+"motivation."
+msgstr ""
+"Oye, me di cuenta de que estás usando el administrador de feeds de productos "
+"de WC durante más de dos semanas. ¡Eso es increíble! ¿Podría por favor "
+"hacerme un GRAN favor y darle una calificación de 5 estrellas en WordPress? "
+"Solo para ayudarnos a difundir la palabra y aumentar nuestra motivación."
+
+#: admin/class-rex-product-feed-admin.php:310
+msgid "Product Feed"
+msgstr "Alimentación del producto"
+
+#: admin/class-rex-product-feed-admin.php:311
+msgid "Add New Feed"
+msgstr ""
+"Añadir nuevo feed\n"
+
+#: admin/class-rex-product-feed-admin.php:312
+msgid "Category Mapping"
+msgstr ""
+"Mapeo de Categoría\n"
+
+#: admin/class-rex-product-feed-admin.php:313
+msgid "Google Merchant Settings"
+msgstr "Configuración de Google Merchant"
+
+#: admin/class-rex-product-feed-admin.php:314
+msgid "Dashboard"
+msgstr "Tablero"
+
+#: admin/class-rex-product-feed-metabox.php:54
 msgid "Products"
 msgstr "Productos"
 
-#: admin/class-rex-product-feed-metabox.php:53
+#: admin/class-rex-product-feed-metabox.php:55
 msgid "Select products to create feed for."
 msgstr ""
 "Seleccione los productos para crear el feed.\n"
 
-#: admin/class-rex-product-feed-metabox.php:59
+#: admin/class-rex-product-feed-metabox.php:61
 msgid "All Published Products"
 msgstr ""
 "\n"
 "Todos los productos publicados"
 
-#: admin/class-rex-product-feed-metabox.php:60
+#: admin/class-rex-product-feed-metabox.php:62
 msgid "Custom Filter"
 msgstr ""
 "Filtro personalizado\n"
 
-#: admin/class-rex-product-feed-metabox.php:61
+#: admin/class-rex-product-feed-metabox.php:63
 msgid "Category Filter"
 msgstr ""
 "Filtro de categoría\n"
 
-#: admin/class-rex-product-feed-metabox.php:62
+#: admin/class-rex-product-feed-metabox.php:64
 msgid "Tag Filter"
 msgstr ""
 "Filtro de etiqueta\n"
 
-#: admin/class-rex-product-feed-metabox.php:116
-msgid "Feed Configuration"
-msgstr ""
-"Configuración de alimentación\n"
+#: admin/class-rex-product-feed-metabox.php:113
+msgid "Refresh Interval"
+msgstr "Actualizar intervalo"
 
-#: admin/class-rex-product-feed-metabox.php:121
+#: admin/class-rex-product-feed-metabox.php:114
+msgid "Feed Schedule Update"
+msgstr "Actualización del horario de alimentación"
+
+#: admin/class-rex-product-feed-metabox.php:118
+msgid "No Interval"
+msgstr "Sin intervalo"
+
+#: admin/class-rex-product-feed-metabox.php:119
+msgid "Daily"
+msgstr ""
+"\n"
+"Diario"
+
+#: admin/class-rex-product-feed-metabox.php:120 
+#: admin/class-rex-product-feed-metabox.php:400
+msgid "Hourly"
+msgstr "Cada hora"
+
+#: admin/class-rex-product-feed-metabox.php:130
+msgid "Include Product Variations"
+msgstr ""
+"\n"
+"Incluir variaciones de producto"
+
+#: admin/class-rex-product-feed-metabox.php:131
+msgid "Include/Exclude Products Variations"
+msgstr ""
+"\n"
+"Incluir / Excluir variaciones de productos"
+
+#: admin/class-rex-product-feed-metabox.php:135 
+#: admin/class-rex-product-feed-metabox.php:151
+msgid "Yes"
+msgstr ""
+"\n"
+"Sí"
+
+#: admin/class-rex-product-feed-metabox.php:136 
+#: admin/class-rex-product-feed-metabox.php:152
+msgid "No"
+msgstr ""
+"\n"
+"No"
+
+#: admin/class-rex-product-feed-metabox.php:146
+msgid "Include Parent Product (Grouped Product)"
+msgstr ""
+"\n"
+"Incluir producto principal (producto agrupado)"
+
+#: admin/class-rex-product-feed-metabox.php:147
+msgid "Include/Exclude Parent Product"
+msgstr "Incluir / Excluir producto principal"
+
+#: admin/class-rex-product-feed-metabox.php:173 
+#: admin/class-rex-product-feed-metabox.php:174
+msgid "WPML Language"
+msgstr ""
+"\n"
+"Lenguaje WPML"
+
+#: admin/class-rex-product-feed-metabox.php:199
 msgid "Merchant Type"
 msgstr ""
 "Tipo de comerciante\n"
 
-#: admin/class-rex-product-feed-metabox.php:122
+#: admin/class-rex-product-feed-metabox.php:200
 msgid "Select Merchant Type of the Feed."
 msgstr ""
 "Seleccione el tipo de comerciante de la alimentación.\n"
 
-#: admin/class-rex-product-feed-metabox.php:128
+#: admin/class-rex-product-feed-metabox.php:206
 msgid "Custom"
 msgstr "Personalizado"
 
-#: admin/class-rex-product-feed-metabox.php:129
+#: admin/class-rex-product-feed-metabox.php:207
 msgid "Google Shopping"
 msgstr "Google Shopping"
 
-#: admin/class-rex-product-feed-metabox.php:130
+#: admin/class-rex-product-feed-metabox.php:208
+msgid "Google Adwords"
+msgstr "Google Adwords"
+
+#: admin/class-rex-product-feed-metabox.php:209
 msgid "Facebook"
 msgstr "Facebook"
 
-#: admin/class-rex-product-feed-metabox.php:131
+#: admin/class-rex-product-feed-metabox.php:210
 msgid "Amazon Ads"
 msgstr ""
 "Anuncios de Amazon\n"
 
-#: admin/class-rex-product-feed-metabox.php:132
+#: admin/class-rex-product-feed-metabox.php:211
 msgid "eBay(Shopping.com)"
 msgstr "eBay(Shopping.com)"
 
-#: admin/class-rex-product-feed-metabox.php:133
+#: admin/class-rex-product-feed-metabox.php:212
+msgid "Adroll.com"
+msgstr "Adroll.com"
+
+#: admin/class-rex-product-feed-metabox.php:213
 msgid "Nextag"
 msgstr "Nextag"
 
-#: admin/class-rex-product-feed-metabox.php:134
+#: admin/class-rex-product-feed-metabox.php:214
 msgid "Price Grabber"
 msgstr "Price Grabber"
 
-#: admin/class-rex-product-feed-metabox.php:135
+#: admin/class-rex-product-feed-metabox.php:215
 msgid "Bing"
 msgstr "Bing"
 
-#: admin/class-rex-product-feed-metabox.php:136
+#: admin/class-rex-product-feed-metabox.php:216
 msgid "Kelkoo"
 msgstr "Kelkoo"
 
-#: admin/class-rex-product-feed-metabox.php:137
+#: admin/class-rex-product-feed-metabox.php:217
 msgid "Become"
 msgstr "Become"
 
-#: admin/class-rex-product-feed-metabox.php:142
+#: admin/class-rex-product-feed-metabox.php:218
+msgid "ShopZilla.com"
+msgstr "ShopZilla.com"
+
+#: admin/class-rex-product-feed-metabox.php:219
+msgid "Shopping.com"
+msgstr "Shopping.com"
+
+#: admin/class-rex-product-feed-metabox.php:224
 msgid "File Format"
 msgstr ""
 "Formato de archivo\n"
 
-#: admin/class-rex-product-feed-metabox.php:143
+#: admin/class-rex-product-feed-metabox.php:225
 msgid "Select Format of the Feed."
 msgstr "Seleccione el formato de la alimentación."
 
-#: admin/class-rex-product-feed-metabox.php:149
+#: admin/class-rex-product-feed-metabox.php:231
 msgid "XML"
 msgstr "XML"
 
-#: admin/class-rex-product-feed-metabox.php:151
+#: admin/class-rex-product-feed-metabox.php:233
 msgid "TEXT"
 msgstr "TEXTO"
 
-#: admin/class-rex-product-feed-metabox.php:211
-msgid "Feed URL"
-msgstr ""
-"URL para el canal\n"
+#: admin/class-rex-product-feed-metabox.php:258
+msgid "Add New Attribute"
+msgstr "Añadir nuevo atributo"
 
-#: admin/class-rex-product-feed-metabox.php:218
+#: admin/class-rex-product-feed-metabox.php:292
+msgid "Add New Filter"
+msgstr "Añadir nuevo filtro"
+
+#: admin/class-rex-product-feed-metabox.php:316
 msgid "Your Feed URL"
 msgstr ""
 "Su URL de fuente\n"
 
-#: admin/class-rex-product-feed-admin.php:221
-msgid "Category Mapping"
+#: admin/class-rex-product-feed-metabox.php:346
+msgid "View Feed"
 msgstr ""
-"Mapeo de Categoría\n"
+"Ver Feed\n"
 
-#. Name of the plugin
-msgid "Best Products Feed for WooCoommerce"
+#: admin/class-rex-product-feed-metabox.php:348
+msgid "Download Feed"
+msgstr "Descargar Feed"
+
+#: admin/class-rex-product-feed-metabox.php:372
+msgid "Target Country"
+msgstr "País de destino"
+
+#: admin/class-rex-product-feed-metabox.php:383
+msgid "Target Language"
+msgstr "Lengua de llegada"
+
+#: admin/class-rex-product-feed-metabox.php:393
+msgid "Schedule"
 msgstr ""
-"Best Products Feed para WooCoommerce\n"
+"\n"
+"Programar"
 
-#. Description of the plugin
+#: admin/class-rex-product-feed-metabox.php:398
+msgid "Monthly"
+msgstr "Mensual"
+
+#: admin/class-rex-product-feed-metabox.php:399
+msgid "Weekly"
+msgstr "Semanal"
+
+#: admin/class-rex-product-feed-metabox.php:408
+msgid "Select day of month"
+msgstr ""
+"\n"
+"Seleccione el día del mes"
+
+#: admin/class-rex-product-feed-metabox.php:420
+msgid "Select day of week"
+msgstr ""
+"\n"
+"Seleccione el día de la semana"
+
+#: admin/class-rex-product-feed-metabox.php:440
+msgid "Select Hour"
+msgstr "Seleccione la hora"
+
+#: admin/class-rex-product-feed-metabox.php:456
 msgid ""
-"Best WooCommerce Product Feed helps you to sell more by uploading products "
-"to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real "
-"buyer."
+"Please note that Google has fixed abbreviations for Location and Language. "
+"For example, the abbreviation for target location, \n"
+"                United States is US and the abbreviation for language, "
+"English is en."
 msgstr ""
-"Best WooCommerce Product Feed le ayuda a vender más mediante la carga de "
-"productos en Google merchant, Amazon, Ebay, Nextag, Pricegrabber y la "
-"adquisición de un comprador real."
+"\n"
+"Tenga en cuenta que Google ha corregido las abreviaturas de Ubicación e "
+"Idioma. Por ejemplo, la abreviatura para la ubicación de destino, Estados "
+"Unidos es EE. UU. Y la abreviatura para idioma, inglés es en."
 
-#. URI of the plugin
-#. Author URI of the plugin
-msgid "https://rextheme.com"
-msgstr "https://rextheme.com"
+#: admin/class-rex-product-feed-metabox.php:457
+msgid "Click here"
+msgstr ""
+"haga clic aquí\n"
 
-#. Author of the plugin
-msgid "RexTheme"
-msgstr "RexTheme"
+#: admin/class-rex-product-feed-metabox.php:457
+msgid "to see the list of all abbreviations set by Google."
+msgstr "para ver la lista de todas las abreviaturas establecidas por Google."
+
+#: admin/class-rex-product-feed-metabox.php:483
+msgid ""
+"Oops!! Access token has expired.Please authenticate token for Google "
+"Merchant Shop to be able to send feed."
+msgstr ""
+"Ups! El token de acceso ha caducado. Autentique el token para que Google "
+"Merchant Shop pueda enviar feeds."
+
+#: admin/class-rex-product-feed-metabox.php:485
+msgid "Authenticate"
+msgstr "Autenticar"
+
+#: admin/class-rex-product-feed-metabox.php:490
+msgid "Send to google merchant"
+msgstr "Enviar a google comerciante"
+
+#: admin/partials/merchant_settings.php:43
+msgid "Client ID#: "
+msgstr ""
+"\n"
+"Identificación del cliente#:"
+
+#: admin/partials/merchant_settings.php:47
+msgid "Client Secret: "
+msgstr ""
+"\n"
+"Secreto del cliente:"
+
+#: admin/partials/merchant_settings.php:51
+msgid "Merchant ID# : "
+msgstr ""
+"\n"
+"Identificación del comerciante# :"
+
+#: admin/partials/merchant_settings.php:56
+msgid "Redirect URL"
+msgstr "Redireccionar URL"
+
+#: admin/partials/merchant_settings.php:59
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: admin/partials/merchant_settings.php:60
+msgid "replay"
+msgstr "repetición"
+
+#: admin/partials/merchant_settings.php:63
+msgid "Submit"
+msgstr ""
+"\n"
+"Enviar"
+
+#: admin/partials/merchant_settings.php:64
+msgid "send"
+msgstr "enviar"

@@ -3,142 +3,383 @@ msgstr ""
 "Project-Id-Version: Best Products Feed for WooCoommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-06 08:53+0000\n"
-"PO-Revision-Date: 2018-06-12 06:22+0000\n"
-"Last-Translator: Coderexco <coderexco@gmail.com>\n"
+"PO-Revision-Date: 2019-02-19 07:22+0000\n"
+"Last-Translator: sadi <sadi@coderex.co>\n"
 "Language-Team: Chinese (China)\n"
 "Language: zh-CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.2.0; wp-5.0.3"
 
-#: admin/class-rex-product-feed-admin.php:224
+#: admin/class-rex-google-merchant-content-api.php:79 
+#: admin/class-rex-google-merchant-content-api.php:118
+msgid "You are not authorized."
+msgstr ""
+"\n"
+"您没有权限"
+
+#: admin/class-rex-google-merchant-content-api.php:80 
+#: admin/class-rex-google-merchant-content-api.php:119
+msgid ""
+"Your access token has expired. This application uses OAuth 2.0 to Access "
+"Google APIs. Please insert the information below and authenticate token for "
+"Google Merchant Shop. Generated access token expires after 3600 sec."
+msgstr ""
+"\n"
+"您的访问令牌已过期。此应用程序使用OAuth 2.0访问Google API。请输入以下信息并验证Google Merchant "
+"Shop的令牌。生成的访问令牌在3600秒后过期。"
+
+#: admin/class-rex-google-merchant-content-api.php:91
+msgid "You are authorized."
+msgstr "你被授权."
+
+#: admin/class-rex-google-merchant-content-api.php:92
+msgid ""
+"You are now ready to send feed from WooCommerce Product Feed Manager to your "
+"Google Merchant Center. 🚀"
+msgstr ""
+"您现在可以将WooCommerce Product Feed Manager的Feed发送到您的Google Merchant Center 🚀. \n"
+
+#: admin/class-rex-product-feed-admin.php:204
+msgid ""
+"Hey, I noticed you just created a new feed with 50 products using WC product "
+"feed manager – that’s awesome! Could you please do me a\n"
+"                        BIG favor and give it a 5-star rating on WordPress? "
+"Just to help us spread the word and boost our motivation."
+msgstr ""
+"嘿，我注意到你刚刚用WC产品饲料管理器创建了一个包含50种产品的新饲料 - 真棒！你能帮我一个忙吗？BIG青睐并给予WordPress "
+"5星评级？只是为了帮助我们传播信息并提升我们的动力。"
+
+#: admin/class-rex-product-feed-admin.php:209 
+#: admin/class-rex-product-feed-admin.php:236
+msgid "Ok, you deserve it"
+msgstr "好的，你应得的"
+
+#: admin/class-rex-product-feed-admin.php:212 
+#: admin/class-rex-product-feed-admin.php:240
+msgid "Nope, maybe later."
+msgstr "不，也许以后。"
+
+#: admin/class-rex-product-feed-admin.php:215 
+#: admin/class-rex-product-feed-admin.php:244
+msgid "I already did."
+msgstr "我已经做了。"
+
+#: admin/class-rex-product-feed-admin.php:218 
+#: admin/class-rex-product-feed-admin.php:247
+msgid "Dismiss this notice."
+msgstr "驳回此通知。"
+
+#: admin/class-rex-product-feed-admin.php:232
+msgid ""
+"Hey, I noticed you are using WC product feed manager for over two weeks – "
+"that’s awesome! Could you please do me a BIG favor and give it a 5-star "
+"rating on WordPress? Just to help us spread the word and boost our "
+"motivation."
+msgstr ""
+"嘿，我注意到你使用WC产品饲料管理器超过两周了 - "
+"这真棒！你能帮我一个大忙，给它一个5星级的WordPress评级吗？只是为了帮助我们传播信息并提升我们的动力。"
+
+#: admin/class-rex-product-feed-admin.php:310
+msgid "Product Feed"
+msgstr "产品 饲料"
+
+#: admin/class-rex-product-feed-admin.php:311
+msgid "Add New Feed"
+msgstr "添加新Feed"
+
+#: admin/class-rex-product-feed-admin.php:312
 msgid "Category Mapping"
 msgstr "类别映射"
 
-#: admin/class-rex-product-feed-metabox.php:47 
-#: admin/class-rex-product-feed-metabox.php:52
+#: admin/class-rex-product-feed-admin.php:313
+msgid "Google Merchant Settings"
+msgstr "谷歌 商人 设置"
+
+#: admin/class-rex-product-feed-admin.php:314
+msgid "Dashboard"
+msgstr "仪表板"
+
+#: admin/class-rex-product-feed-metabox.php:54
 msgid "Products"
 msgstr "制品"
 
-#: admin/class-rex-product-feed-metabox.php:53
+#: admin/class-rex-product-feed-metabox.php:55
 msgid "Select products to create feed for."
 msgstr "选择要为其创建饲料的产品。"
 
-#: admin/class-rex-product-feed-metabox.php:59
+#: admin/class-rex-product-feed-metabox.php:61
 msgid "All Published Products"
 msgstr "所有已发布产品"
 
-#: admin/class-rex-product-feed-metabox.php:60
+#: admin/class-rex-product-feed-metabox.php:62
 msgid "Custom Filter"
 msgstr "定制过滤器"
 
-#: admin/class-rex-product-feed-metabox.php:61
+#: admin/class-rex-product-feed-metabox.php:63
 msgid "Category Filter"
 msgstr "类别过滤器"
 
-#: admin/class-rex-product-feed-metabox.php:62
+#: admin/class-rex-product-feed-metabox.php:64
 msgid "Tag Filter"
 msgstr "标签过滤器"
 
-#: admin/class-rex-product-feed-metabox.php:116
-msgid "Feed Configuration"
-msgstr "饲料配置"
+#: admin/class-rex-product-feed-metabox.php:113
+msgid "Refresh Interval"
+msgstr ""
+"刷新间隔\n"
 
-#: admin/class-rex-product-feed-metabox.php:121
+#: admin/class-rex-product-feed-metabox.php:114
+msgid "Feed Schedule Update"
+msgstr "饲料计划更新"
+
+#: admin/class-rex-product-feed-metabox.php:118
+msgid "No Interval"
+msgstr "没有间隔"
+
+#: admin/class-rex-product-feed-metabox.php:119
+msgid "Daily"
+msgstr "日常"
+
+#: admin/class-rex-product-feed-metabox.php:120 
+#: admin/class-rex-product-feed-metabox.php:400
+msgid "Hourly"
+msgstr "每小时"
+
+#: admin/class-rex-product-feed-metabox.php:130
+msgid "Include Product Variations"
+msgstr "包括产品变化"
+
+#: admin/class-rex-product-feed-metabox.php:131
+msgid "Include/Exclude Products Variations"
+msgstr "包括/排除产品差异"
+
+#: admin/class-rex-product-feed-metabox.php:135 
+#: admin/class-rex-product-feed-metabox.php:151
+msgid "Yes"
+msgstr "是"
+
+#: admin/class-rex-product-feed-metabox.php:136 
+#: admin/class-rex-product-feed-metabox.php:152
+msgid "No"
+msgstr "没有"
+
+#: admin/class-rex-product-feed-metabox.php:146
+msgid "Include Parent Product (Grouped Product)"
+msgstr "包括父产品（分组产品）"
+
+#: admin/class-rex-product-feed-metabox.php:147
+msgid "Include/Exclude Parent Product"
+msgstr "包括/排除父产品"
+
+#: admin/class-rex-product-feed-metabox.php:173 
+#: admin/class-rex-product-feed-metabox.php:174
+msgid "WPML Language"
+msgstr "WPML 语言"
+
+#: admin/class-rex-product-feed-metabox.php:199
 msgid "Merchant Type"
 msgstr "商家类型"
 
-#: admin/class-rex-product-feed-metabox.php:122
+#: admin/class-rex-product-feed-metabox.php:200
 msgid "Select Merchant Type of the Feed."
 msgstr "选择Feed的商家类型。"
 
-#: admin/class-rex-product-feed-metabox.php:128
+#: admin/class-rex-product-feed-metabox.php:206
 msgid "Custom"
 msgstr "习惯"
 
-#: admin/class-rex-product-feed-metabox.php:129
+#: admin/class-rex-product-feed-metabox.php:207
 msgid "Google Shopping"
-msgstr "Google Shopping"
+msgstr "谷歌购物"
 
-#: admin/class-rex-product-feed-metabox.php:130
+#: admin/class-rex-product-feed-metabox.php:208
+msgid "Google Adwords"
+msgstr "谷歌广告关键词"
+
+#: admin/class-rex-product-feed-metabox.php:209
 msgid "Facebook"
-msgstr "Facebook"
+msgstr ""
+"\n"
+"Facebook"
 
-#: admin/class-rex-product-feed-metabox.php:131
+#: admin/class-rex-product-feed-metabox.php:210
 msgid "Amazon Ads"
 msgstr "Amazon Ads"
 
-#: admin/class-rex-product-feed-metabox.php:132
+#: admin/class-rex-product-feed-metabox.php:211
 msgid "eBay(Shopping.com)"
 msgstr "eBay(Shopping.com)"
 
-#: admin/class-rex-product-feed-metabox.php:133
+#: admin/class-rex-product-feed-metabox.php:212
+msgid "Adroll.com"
+msgstr "Adroll.com"
+
+#: admin/class-rex-product-feed-metabox.php:213
 msgid "Nextag"
 msgstr "Nextag"
 
-#: admin/class-rex-product-feed-metabox.php:134
+#: admin/class-rex-product-feed-metabox.php:214
 msgid "Price Grabber"
 msgstr "Price Grabber"
 
-#: admin/class-rex-product-feed-metabox.php:135
+#: admin/class-rex-product-feed-metabox.php:215
 msgid "Bing"
 msgstr "Bing"
 
-#: admin/class-rex-product-feed-metabox.php:136
+#: admin/class-rex-product-feed-metabox.php:216
 msgid "Kelkoo"
 msgstr "Kelkoo"
 
-#: admin/class-rex-product-feed-metabox.php:137
+#: admin/class-rex-product-feed-metabox.php:217
 msgid "Become"
 msgstr "Become"
 
-#: admin/class-rex-product-feed-metabox.php:138
-msgid "ShopZilla"
-msgstr "ShopZilla"
+#: admin/class-rex-product-feed-metabox.php:218
+msgid "ShopZilla.com"
+msgstr "ShopZilla.com"
 
-#: admin/class-rex-product-feed-metabox.php:143
+#: admin/class-rex-product-feed-metabox.php:219
+msgid "Shopping.com"
+msgstr "Shopping.com"
+
+#: admin/class-rex-product-feed-metabox.php:224
 msgid "File Format"
 msgstr "文件格式"
 
-#: admin/class-rex-product-feed-metabox.php:144
+#: admin/class-rex-product-feed-metabox.php:225
 msgid "Select Format of the Feed."
 msgstr "选择Feed的格式。"
 
-#: admin/class-rex-product-feed-metabox.php:150
+#: admin/class-rex-product-feed-metabox.php:231
 msgid "XML"
 msgstr "XML"
 
-#: admin/class-rex-product-feed-metabox.php:152
+#: admin/class-rex-product-feed-metabox.php:233
 msgid "TEXT"
 msgstr "TEXT"
 
-#: admin/class-rex-product-feed-metabox.php:212
-msgid "Feed URL"
-msgstr "饲料网址"
+#: admin/class-rex-product-feed-metabox.php:258
+msgid "Add New Attribute"
+msgstr "添加新属性"
 
-#: admin/class-rex-product-feed-metabox.php:219
+#: admin/class-rex-product-feed-metabox.php:292
+msgid "Add New Filter"
+msgstr "添加新过滤器"
+
+#: admin/class-rex-product-feed-metabox.php:316
 msgid "Your Feed URL"
 msgstr "您的供稿网址"
 
-#. Name of the plugin
-msgid "Best Products Feed for WooCoommerce"
-msgstr "WooCommerce 的最佳产品饲料"
+#: admin/class-rex-product-feed-metabox.php:346
+msgid "View Feed"
+msgstr "查看Feed"
 
-#. Description of the plugin
-msgid ""
-"Best WooCommerce Product Feed helps you to sell more by uploading products "
-"to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real "
-"buyer."
+#: admin/class-rex-product-feed-metabox.php:348
+msgid "Download Feed"
+msgstr "下载Feed"
+
+#: admin/class-rex-product-feed-metabox.php:372
+msgid "Target Country"
 msgstr ""
-"最好的WooCommerce产品饲料帮助您通过上传产品到谷歌商家，亚马逊，Ebay，Nextag，Pricegrabber和收购真正的买家来销售更多。"
+"\n"
+"目标国家"
 
-#. URI of the plugin
-#. Author URI of the plugin
-msgid "https://rextheme.com"
-msgstr "https://rextheme.com"
+#: admin/class-rex-product-feed-metabox.php:383
+msgid "Target Language"
+msgstr "目标语言"
 
-#. Author of the plugin
-msgid "RexTheme"
-msgstr "RexTheme"
+#: admin/class-rex-product-feed-metabox.php:393
+msgid "Schedule"
+msgstr "时间表"
+
+#: admin/class-rex-product-feed-metabox.php:398
+msgid "Monthly"
+msgstr "每月一次"
+
+#: admin/class-rex-product-feed-metabox.php:399
+msgid "Weekly"
+msgstr "每周"
+
+#: admin/class-rex-product-feed-metabox.php:408
+msgid "Select day of month"
+msgstr "选择月中的某一天"
+
+#: admin/class-rex-product-feed-metabox.php:420
+msgid "Select day of week"
+msgstr "选择星期几"
+
+#: admin/class-rex-product-feed-metabox.php:440
+msgid "Select Hour"
+msgstr "选择小时"
+
+#: admin/class-rex-product-feed-metabox.php:456
+msgid ""
+"Please note that Google has fixed abbreviations for Location and Language. "
+"For example, the abbreviation for target location, \n"
+"                United States is US and the abbreviation for language, "
+"English is en."
+msgstr "请注意，Google已修复了位置和语言的缩写。例如，目标位置的缩写， 美国是美国语言的缩写，英语是en。"
+
+#: admin/class-rex-product-feed-metabox.php:457
+msgid "Click here"
+msgstr "点击这里"
+
+#: admin/class-rex-product-feed-metabox.php:457
+msgid "to see the list of all abbreviations set by Google."
+msgstr "查看Google设置的所有缩写列表。"
+
+#: admin/class-rex-product-feed-metabox.php:483
+msgid ""
+"Oops!! Access token has expired.Please authenticate token for Google "
+"Merchant Shop to be able to send feed."
+msgstr "哎呀！访问令牌已过期。请为Google Merchant Shop验证令牌，以便能够发送Feed。"
+
+#: admin/class-rex-product-feed-metabox.php:485
+msgid "Authenticate"
+msgstr ""
+"\n"
+"认证"
+
+#: admin/class-rex-product-feed-metabox.php:490
+msgid "Send to google merchant"
+msgstr "发送给谷歌商家"
+
+#: admin/partials/merchant_settings.php:43
+msgid "Client ID#: "
+msgstr "客户ID＃："
+
+#: admin/partials/merchant_settings.php:47
+msgid "Client Secret: "
+msgstr "客户秘密："
+
+#: admin/partials/merchant_settings.php:51
+msgid "Merchant ID# : "
+msgstr "商家ID＃："
+
+#: admin/partials/merchant_settings.php:56
+msgid "Redirect URL"
+msgstr "重定向网址"
+
+#: admin/partials/merchant_settings.php:59
+msgid "Reset"
+msgstr "重启"
+
+#: admin/partials/merchant_settings.php:60
+msgid "replay"
+msgstr "重播"
+
+#: admin/partials/merchant_settings.php:63
+msgid "Submit"
+msgstr ""
+"\n"
+"提交"
+
+#: admin/partials/merchant_settings.php:64
+msgid "send"
+msgstr ""
+"\n"
+"发送"

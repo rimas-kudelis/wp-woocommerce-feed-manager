@@ -154,6 +154,32 @@ class Rex_Product_Metabox {
             'default' => 'yes',
         ) );
 
+
+        /*
+         * WPML Support
+         */
+        if ( function_exists('icl_object_id') ) {
+            global $sitepress;
+            $active_languages = $sitepress->get_active_languages();
+            $no_of_languages = count($active_languages);
+            $option_array = array();
+
+            if($no_of_languages>0) {
+                foreach ($active_languages as $key => $value){
+                    $option_array[$key] = $value['display_name'];
+                }
+
+                $box->add_field( array(
+                    'name'          => __( 'WPML Language', 'rex-product-feed' ),
+                    'desc'          => __( 'WPML Language', 'rex-product-feed' ),
+                    'id'            => $this->prefix . 'wpml_language',
+                    'type'          => 'radio_inline',
+                    'options'       => $option_array,
+                ) );
+            }
+
+        }
+
     }
 
     /**
@@ -229,7 +255,7 @@ class Rex_Product_Metabox {
         echo '<div id="rex-feed-config" class="rex-feed-config">';
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
-        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>Add New Attribute</a>';
+        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>'.__('Add New Attribute','rex-product-feed').'</a>';
         echo '</div>';
     }
 
@@ -263,7 +289,7 @@ class Rex_Product_Metabox {
         echo '<div id="rex-feed-config-filter" class="rex-feed-config-filter">';
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display-filter.php';
-        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>Add New Filter</a>';
+        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>'.__('Add New Filter', 'rex-product-feed').'</a>';
         echo '</div>';
     }
 
@@ -317,9 +343,9 @@ class Rex_Product_Metabox {
         if ( strlen($feed_url) > 0 ){
             $url = esc_url( get_post_meta( $field->object_id, 'rex_feed_xml_file', true ) );
             echo '<a target="_blank" class="btn waves-effect waves-light" href="' . $url . '">
-              <i class="material-icons">open_in_new</i>View Feed</a> ';
+              <i class="material-icons">open_in_new</i>'.__('View Feed', 'rex-product-feed').'</a> ';
             echo '<a target="_blank" class="btn waves-effect waves-light" href="' . $url . '" download>
-            <i class="material-icons">system_update_alt</i>Download</a>';
+            <i class="material-icons">system_update_alt</i>'.__('Download Feed', 'rex-product-feed').'</a>';
         }
     }
 
@@ -427,8 +453,8 @@ class Rex_Product_Metabox {
      * @param  object $field      Current field object
      */
     function google_merchant_desc( $field_args, $field ) {
-       echo __('<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, 
-                United States is US and the abbreviation for language, English is en. <a href="http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed');
+       echo __('<p class="google-desc">'.__('Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, 
+                United States is US and the abbreviation for language, English is en.', 'rex-product-feed').' <a href="http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml" target="_blank">'.__('Click here', 'rex-product-feed').'</a> '.__('to see the list of all abbreviations set by Google.', 'rex-product-feed').'</p>', 'rex-product-feed');
     }
 
 

@@ -230,6 +230,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected $parent_product;
 
 
+    /**
+     * wpml enable
+     *
+     * @since    2.2.2
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $wpml_language
+     */
+    protected $wpml_language;
+
+
 
 
     /**
@@ -276,10 +286,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
 
-
-//       var_dump($this->products, $this->variable_products, $this->grouped_products);
-//       wp_die();
-
     }
 
 
@@ -290,7 +296,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function prepare_products_args( $args ) {
 
-
         $this->product_scope = $args['products_scope'];
         $this->products_args = array(
             'post_type'              => 'product',
@@ -300,6 +305,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             'update_post_term_cache' => true,
             'update_post_meta_cache' => true,
             'cache_results'          => false,
+            'suppress_filters' => true,
         );
 
 
@@ -349,6 +355,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_feed_rules( $info ){
         $feed_rules       = array();
         parse_str( $info, $feed_rules );
+        $this->wpml_language = $feed_rules['rex_feed_wpml_language'] ? $feed_rules['rex_feed_wpml_language'] : get_post_meta($this->id, 'rex_feed_wpml_language', true);
         $feed_rules       = $feed_rules['fc'];
         $this->feed_rules = $feed_rules;
         // save the feed_rules into feed post_meta.
@@ -513,6 +520,14 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return array
      */
     protected function get_product_data( $product_id = false ){
+
+        if ( function_exists('icl_object_id') ) {
+            if($this->wpml_language) {
+                global $sitepress;
+                $sitepress->switch_lang($this->wpml_language);
+                $product_id = apply_filters( 'wpml_object_id', $product_id, 'product', TRUE, $this->wpml_language );
+            }
+        }
         $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
         return $data->get_all_data();
 
