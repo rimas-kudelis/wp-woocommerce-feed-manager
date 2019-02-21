@@ -68,8 +68,6 @@ class Rex_Product_Data_Retriever {
 
 
 
-
-
     /**
      * Initialize the class and set its properties.
      *
@@ -77,7 +75,7 @@ class Rex_Product_Data_Retriever {
      * @param      string    $plugin_name       The name of this plugin.
      * @param      string    $version    The version of this plugin.
      */
-    public function __construct( $product, $feed_rules ) {
+    public function __construct( $product, $feed_rules, $wpml = null ) {
         $this->product           = wc_get_product( $product );
 
 //        $this->allowed = Rex_Product_Filter::allowedProduct($this->product, $feed_filter_rules);
@@ -240,7 +238,6 @@ class Rex_Product_Data_Retriever {
                 break;
 
             case 'product_cats':
-
                 return $this->get_product_cats(); break;
 
             case 'product_tags':
@@ -432,7 +429,6 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     private function get_product_cats( $before = '', $sep = ', ', $after = '' ) {
-
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             return $this->get_the_term_list( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
         }else {

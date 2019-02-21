@@ -151,7 +151,7 @@ class Rex_Product_Filter {
                 }
             }
         }
-        $attributes['Custom Attributes'] = $list;
+
         return $attributes;
     }
 

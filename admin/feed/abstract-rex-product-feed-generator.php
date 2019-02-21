@@ -305,7 +305,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             'update_post_term_cache' => true,
             'update_post_meta_cache' => true,
             'cache_results'          => false,
-            'suppress_filters' => true,
+            'suppress_filters'       => false
         );
 
 
@@ -415,7 +415,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * Get the products to generate feed
      */
     protected function setup_products() {
-        $this->products = get_posts( $this->products_args );
+        if ( function_exists('icl_object_id') ) {
+            global $sitepress;
+            $sitepress->switch_lang($sitepress->get_default_language());
+        }
+        $products = get_posts( $this->products_args );
+        if ( function_exists('icl_object_id') ) {
+            if($this->wpml_language) {
+                global $sitepress;
+                $this->products = array_map(function($id){
+                    $product_id = apply_filters( 'wpml_object_id', $id, 'product', TRUE, $this->wpml_language );
+                    return $product_id;
+                }, $products);
+
+            }
+        }else{
+            $this->products = $products;
+        }
     }
 
 
@@ -524,13 +540,20 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if ( function_exists('icl_object_id') ) {
             if($this->wpml_language) {
                 global $sitepress;
-                $sitepress->switch_lang($this->wpml_language);
-                $product_id = apply_filters( 'wpml_object_id', $product_id, 'product', TRUE, $this->wpml_language );
+                $original = apply_filters( 'wpml_element_trid', NULL, $product_id, 'post_product' );
+                if($original == $product_id) {
+                    $sitepress->switch_lang($sitepress->get_default_language());
+                    $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
+                }else {
+                    $sitepress->switch_lang($this->wpml_language);
+                    $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
+                }
             }
+        }else{
+            $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
         }
-        $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
-        return $data->get_all_data();
 
+        return $data->get_all_data();
     }
 
 

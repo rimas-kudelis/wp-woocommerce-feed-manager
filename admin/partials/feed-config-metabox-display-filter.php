@@ -18,6 +18,9 @@ if ( ! isset($feed_filter) ) {
     return;
 }
 
+unset($feed_filter->getFilterMappings()['Primary Attributes']['product_cats']);
+unset($feed_filter->getFilterMappings()['Primary Attributes']['product_tags']);
+
 ?>
 
 

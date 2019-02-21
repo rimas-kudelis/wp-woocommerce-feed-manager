@@ -4,7 +4,7 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to: 5.0.3
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,10 +65,14 @@ Also, it is possible to generate the data feed file according to the search engi
 **WooCommerce Product Feed Manager Lets You Add Custom Taxonomy**
 Add custom taxonomies with naming you requires and fill it with static or dynamic values to your product feed. You can easily use any custom taxonomy or other WooCommerce plugin or extensions taxonomy value into feeds. E.g., Brand, Model No, size, etc. So you can easily use those value into your feed.
 
+**WPML support**
+WooCommerce Product Feed manager is completely compatible with WPML. You can choose to save products in different languages using WPML and generate feed on your desired language using WPFM.
+
 = Features: =
 * You can create feed Up-to 50 products in free version
 * Upload your feed in Google Shopping with a few clicks from your plugin dashboard.
 * Unlimited feed creation for Pro-Users
+* Supports WPML
 * XML and TXT formats
 * Supports Yith brand attributes
 * Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
@@ -146,6 +150,9 @@ You can choose daily update or hourly update of feed.
 11. Download the Feed
 
 == Changelog ==
+
+= 2.2.3 (2019-02-21) =
+* Add WPML support
 
 = 2.2.2 (2019-02-19) =
 * Add language support for Arabic, French, Deutsch, Russian
