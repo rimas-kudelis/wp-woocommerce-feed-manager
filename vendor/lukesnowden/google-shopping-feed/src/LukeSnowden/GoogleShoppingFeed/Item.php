@@ -546,4 +546,23 @@ class Item
             array_push($this->nodes['additional_image_link'], $node->value($imagesLink)->_namespace($this->namespace)->addCdata());
         }
     }
+
+
+    /**
+     * @param string $name
+     * @param array $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        // check if additional_image_link attributes
+        if ( 0 === strpos( $name, 'additional_image_link_' ) ) {
+            $name = 'additional_image_link';
+            $node = new Node($name);
+            $this->nodes[$name][] = $node->value($arguments[0])->_namespace($this->namespace);
+        }else{ // other attributes
+            $node = new Node($name);
+            $this->nodes[$name] = $node->value($arguments[0])->_namespace($this->namespace);
+        }
+
+    }
 }

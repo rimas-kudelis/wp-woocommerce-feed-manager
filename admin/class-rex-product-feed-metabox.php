@@ -175,6 +175,7 @@ class Rex_Product_Metabox {
                     'id'            => $this->prefix . 'wpml_language',
                     'type'          => 'radio_inline',
                     'options'       => $option_array,
+                    'default'       => array_keys($option_array)[0],
                 ) );
             }
 
