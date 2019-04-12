@@ -5591,7 +5591,7 @@ jQuery(document).ready(function($){
         $(parent_table).find(".trow:last").find('.input-map').append('<input class="category-suggest" type="text" name="category-map[0][map-value]" data-value="">');
         updateFormNameAtts( $row, rowId);
         $(parent_table).find(".trow:last").find('.category-suggest:last').easyAutocomplete(options);
-        $row.find('select').material_select();
+        $row.find('select').formSelect();
     });
 
 

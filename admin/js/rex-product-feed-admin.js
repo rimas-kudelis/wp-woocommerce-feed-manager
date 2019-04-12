@@ -45,12 +45,16 @@
      */
 
     $(document).ready(function() {
-        $('select').material_select();
-        $('.ui-timepicker-select').material_select('destroy');
+        $('select').formSelect();
+        $('.ui-timepicker-select').formSelect('destroy');
 
         if ( $('#rex_feed_xml_file').val() == '' ) {
             $('#rex_feed_file_link').slideUp('fast');
         }
+
+        $('.rex-tabs').tabs();
+
+
 
     });
 
@@ -81,7 +85,7 @@
         $row.find('input, select').val('');
 
         updateFormNameAtts( $row, rowId, filter);
-        $row.find('select').material_select();
+        $row.find('select').formSelect();
 
 
     });
@@ -210,7 +214,7 @@
             .success( function( response ) {
                 $confBox.fadeOut();
                 $confBox.find('#config-table').html( response );
-                $('select').material_select();
+                $('select').formSelect();
                 $('.rex-loading-spinner').fadeOut('fast');
                 $confBox.fadeIn();
             })

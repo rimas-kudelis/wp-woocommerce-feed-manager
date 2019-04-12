@@ -34,14 +34,14 @@
                 <div id="tab1" class="block-wrapper">
                     <div class="single-block">
                         <div class="onboarding-block banner-block">
-                            <img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/banner.png'?>" alt="rex-banner">
+                            <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/banner.png'?>" alt="rex-banner">
                         </div>
                     </div>
                     <div class="single-block">
                         <div class="onboarding-block">
 
                             <div class="header">
-                                <img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/Document.png'?>" class="title-icon" alt="bwf-documentation">
+                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Document.png'?>" class="title-icon" alt="bwf-documentation">
                                 <h4>Documentation</h4>
                             </div>
 
@@ -59,7 +59,7 @@
 
                         <div class="onboarding-block">
                             <div class="header">
-                                <img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/Support.png'?>" class="title-icon" alt="bwf-documentation">
+                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Support.png'?>" class="title-icon" alt="bwf-documentation">
                                 <h4>Support</h4>
                             </div>
 
@@ -76,7 +76,7 @@
                     <div class="single-block">
                         <div class="onboarding-block">
                             <div class="header">
-                                <img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/Feedback.png'?>" class="title-icon" alt="bwf-documentation">
+                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Feedback.png'?>" class="title-icon" alt="bwf-documentation">
                                 <h4>Share Your Thoughts</h4>
                             </div>
 
@@ -93,7 +93,7 @@
                     <div class="single-block">
                         <div class="onboarding-block">
                             <div class="header">
-                                <img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/Rating.png'?>" class="title-icon" alt="bwf-documentation">
+                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Rating.png'?>" class="title-icon" alt="bwf-documentation">
                                 <h4>Make WPFM Popular</h4>
                             </div>
 
@@ -111,7 +111,7 @@
                     <div class="single-block">
                         <div class="onboarding-block">
                             <div class="header">
-                                <img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/Heart.png'?>" class="title-icon" alt="bwf-documentation">
+                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Heart.png'?>" class="title-icon" alt="bwf-documentation">
                                 <h4>Share On</h4>
                             </div>
 
@@ -162,7 +162,7 @@
                     <?php }
                 ?>
 
-                <a href="https://wordpress.org/plugins/social-booster/" target="_blank"><img src="<?php echo PLUGIN_DIR_URL . 'admin/icon/Social_Booster_Banner.png'?>" alt="rex-banner"></a>
+                <a href="https://wordpress.org/plugins/social-booster/" target="_blank"><img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Social_Booster_Banner.png'?>" alt="rex-banner"></a>
             </div>
         </div>
     </div>

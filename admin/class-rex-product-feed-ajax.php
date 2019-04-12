@@ -97,7 +97,6 @@ class Rex_Product_Feed_Ajax {
             $products=wp_count_posts('product');
             $variations=wp_count_posts('product_variation');
             $totalProducts=$products->publish + $variations->publish;
-
         }
         return array(
             'products'  => $totalProducts,

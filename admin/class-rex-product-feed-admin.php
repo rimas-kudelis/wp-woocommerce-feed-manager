@@ -70,6 +70,36 @@ class Rex_Product_Feed_Admin {
     private $cron;
 
 
+    /**
+     * Google merchant page
+     *
+     * @since    1.3.2
+     * @access   private
+     * @var      string
+     */
+    private $google_screen_hook_suffix = null;
+
+
+    /**
+     * Category Mapping page
+     *
+     * @since    1.3.2
+     * @access   private
+     * @var      string
+     */
+    private $category_mapping_screen_hook_suffix = null;
+
+
+    /**
+     * Dashboard
+     *
+     * @since    1.3.2
+     * @access   private
+     * @var      string
+     */
+    private $dashboard_screen_hook_suffix = null;
+
+
 
 
     /**
@@ -123,7 +153,7 @@ class Rex_Product_Feed_Admin {
 
 
 
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, array('product-feed_page_category_mapping', 'product-feed_page_bwfm-dashboard', 'product-feed_page_merchant_settings')) ) {
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)) ) {
             wp_enqueue_style( 'materialize-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
             wp_enqueue_style( 'materialize-css', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'easy-auto', 'https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.min.css', array(), $this->version, 'all' );
@@ -164,8 +194,8 @@ class Rex_Product_Feed_Admin {
         }
 
 
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, array('product-feed_page_category_mapping', 'product-feed_page_bwfm-dashboard', 'product-feed_page_merchant_settings')) ) {
-            wp_enqueue_script( 'materialize-js', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, false );
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)) ) {
+            wp_enqueue_script( 'materialize-js', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, true );
             wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-admin.js', array( 'jquery' ), $this->version, false );
         }
         wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, false );
@@ -309,11 +339,11 @@ class Rex_Product_Feed_Admin {
      * @since    1.0.0
      */
     public function load_admin_pages() {
-        add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_options', 'product-feed', null, PLUGIN_DIR_URL . 'admin/icon/icon.png', 5 );
+        add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_options', 'product-feed', null, WPFM_PLUGIN_DIR_URL . 'admin/icon/icon.png', 5 );
         add_submenu_page('product-feed',  __( 'Add New Feed', 'rex-product-feed' ), __( 'Add New Feed', 'rex-product-feed' ), 'manage_options', 'post-new.php?post_type=product-feed');
-        add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_options', 'category_mapping',  __CLASS__ .'::category_mapping');
-        add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_options', 'merchant_settings',  __CLASS__ .'::merchant_settings');
-        add_submenu_page('product-feed', __('Dashboard', 'rex-product-feed'), __('Dashboard', 'rex-product-feed'), 'manage_options', 'bwfm-dashboard',  __CLASS__ .'::user_dashboard');
+        $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_options', 'category_mapping',  __CLASS__ .'::category_mapping');
+        $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_options', 'merchant_settings',  __CLASS__ .'::merchant_settings');
+        $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Dashboard', 'rex-product-feed'), __('Dashboard', 'rex-product-feed'), 'manage_options', 'bwfm-dashboard',  __CLASS__ .'::user_dashboard');
     }
 
     public static function category_mapping(){

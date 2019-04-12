@@ -587,13 +587,15 @@ Easy Auto Complete
   background-color: #1FB3FB;
 }
 
-
+.rex-onboarding .tabs .tab a:focus {
+  background: none;
+}
 
 
 /*------------responsive style------------*/
 @media (max-width: 1700px) {
   .rex-onboarding .single-block {
-    width: 48%;
+    width: 47%;
   }
   .onboarding-block {
     height: 195px;
@@ -603,6 +605,8 @@ Easy Auto Complete
   }
   .rex-onboarding .left {
     width: 65%;
+    float: left!important;
+    padding-right: 20px;
   }
   .rex-onboarding .right {
     width: 35%;
@@ -612,7 +616,7 @@ Easy Auto Complete
 
 @media (max-width: 1500px) {
   .rex-onboarding {
-    min-height: 730px;
+    /*min-height: 730px;*/
   }
   .left {
     width: 70%;
@@ -910,7 +914,17 @@ Easy Auto Complete
 }
 
 
-
+/*
+** Temporary Fix
+ */
+input[type="checkbox"],
+input[type="radio"],
+[type="radio"]:not(:checked),
+[type="radio"]:checked {
+  position: relative;
+  opacity: 1;
+  pointer-events: initial;
+}
 
 
 
