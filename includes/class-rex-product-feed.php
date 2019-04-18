@@ -167,6 +167,15 @@ class Rex_Product_Feed {
          * register rex feed schedule
          */
         $this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update' );
+
+        /*
+         * register product_custom_fields
+         */
+//        $this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'rex_product_custom_fields__premium_only' );
+//        $this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'rex_product_custom_fields_save__premium_only' );
+//
+//        $this->loader->add_action( 'woocommerce_product_after_variable_attributes', $plugin_admin, 'rex_product_variable_custom_fields__premium_only', 10, 3 );
+//        $this->loader->add_action( 'woocommerce_save_product_variation',            $plugin_admin, 'rex_product_variable_custom_fields_save__premium_only', 10, 2 );
     }
 
     /**

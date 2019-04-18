@@ -5493,6 +5493,7 @@ jQuery(document).ready(function($){
         }else {
             alert('Please Insert Category Map Name')
         }
+        return false;
 
     }
     $(document).on('click', '#save_mapping_cat', category_mapping);
@@ -5548,26 +5549,6 @@ jQuery(document).ready(function($){
 
     }
     $(document).on('click', '#delete_mapping_cat', delete_mapping);
-
-
-    /**
-     * Saved category map accordion initialize
-     */
-    // function category_mapper_accordion(event) {
-    //     $(this).slideDown(500);
-    //     $(this).toggleClass('selected');
-    //
-    //     var this_inner = $(this).parent().next();
-    //     var this_a = $(this);
-    //
-    //     $(this).parent().next().slideToggle(function() {
-    //         $('.accordion > h2 > a').not(this_a).removeClass('selected');
-    //         $(".inner").not(this_inner).slideUp();
-    //     });
-    //     return false;
-    // }
-    // $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
-
 
 
     /**
@@ -5664,5 +5645,23 @@ jQuery(document).ready(function($){
 
     }
     $(document).on('click', '.stop-bwfm-notice, .bwfm-dismiss-notice', stop_notice);
+
+
+
+
+    function category_mapper_accordion(event) {
+        $(this).slideDown(500);
+        $(this).toggleClass('selected');
+
+        var this_inner = $(this).parent().next();
+        var this_a = $(this);
+
+        $(this).parent().next().slideToggle(function() {
+            $('.accordion > h2 > a').not(this_a).removeClass('selected');
+            $(".inner").not(this_inner).slideUp();
+        });
+        return false;
+    }
+    $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
 
 }); 

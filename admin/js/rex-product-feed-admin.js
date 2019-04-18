@@ -186,11 +186,21 @@
      */
     $(document).on('change', '#rex_feed_merchant', function () {
         var selected = $(this).find('option:selected').val();
-        if ( selected == 'google' ) {
+        var csv = '';
+        if ( selected == 'google' || selected == 'facebook') {
             $('.cmb2-id-rex-feed-feed-format').hide();
         }else{
             $('.cmb2-id-rex-feed-feed-format').show();
         }
+        // if ( selected == 'facebook' ) {
+        //     $("#rex_feed_feed_format option[value='csv']").remove();
+        //     csv = 'removed';
+        // }
+        // if(selected != 'facebook' || selected != 'google' ){
+        //     if(csv == 'removed'){
+        //         $("#rex_feed_feed_format").append("<option value='csv'>CSV</option>");
+        //     }
+        // }
     });
 
 
@@ -252,7 +262,7 @@
 
         wpAjaxHelperRequest( 'my-handle', $payload )
             .success( function( response ) {
-                console.log('Total Number of Products: ' + response.products);
+                // console.log('Total Number of Products: ' + response.products);
                 generate_feed(response.products, 0, 1);
             })
             .error( function( response ) {
@@ -285,8 +295,8 @@
             },
 
             feed_config : $('form').serialize(),
-
         };
+
         var batches = Math.ceil( product/100 );
         console.log('Total Batch: '+ batches);
         console.log('Total Product(s): '+ product);
@@ -345,100 +355,6 @@
         $('.progressbar-bar-percent').html(width+ '%');
 
     }
-
-
-    function category_mapping(event) {
-        event.preventDefault();
-        var $payload = {
-            map_name: $('#map_name').val(),
-            cat_map: $('.add_cat_map').serialize(),
-        };
-        if ($('#map_name').val().length != 0){
-            $('.rex-loading-spinner').slideDown('fast');
-            wpAjaxHelperRequest( 'category-mapping', $payload )
-                .success( function( response ) {
-                    $('.rex-loading-spinner').fadeOut('fast');
-                    setTimeout(function(){// wait for 5 secs(2)
-                        location.reload(); // then reload the page.(3)
-                    }, 1000);
-                    console.log('Woohoo!');
-                })
-                .error( function( response ) {
-                    console.log( 'Uh, oh!' );
-                    console.log( response.statusText );
-                });
-        }else {
-            alert('Please Insert Category Map Name')
-        }
-
-    }
-    $(document).on('click', '#save_mapping_cat', category_mapping);
-
-
-    function delete_mapping(event) {
-        event.preventDefault();
-        var container = $(this).closest('.acordion-item');
-        var map_name = container.find('.mapper_name_update');
-        var $payload = {
-            map_name: map_name.text()
-        };
-        $('.rex-loading-spinner').slideDown('fast');
-        wpAjaxHelperRequest( 'category-mapping-delete', $payload )
-            .success( function( response ) {
-                $('.rex-loading-spinner').fadeOut('fast');
-                container.fadeOut();
-            })
-            .error( function( response ) {
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
-            });
-
-    }
-    $(document).on('click', '#delete_mapping_cat', delete_mapping);
-
-
-
-    function category_mapper_accordion(event) {
-        $(this).slideDown(500);
-        $(this).toggleClass('selected');
-
-        var this_inner = $(this).parent().next();
-        var this_a = $(this);
-
-        $(this).parent().next().slideToggle(function() {
-            $('.accordion > h2 > a').not(this_a).removeClass('selected');
-            $(".inner").not(this_inner).slideUp();
-        });
-        return false;
-    }
-    $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
-
-
-
-
-    function category_mapping_update(event) {
-        event.preventDefault();
-        var form = $(this).closest('form');
-        var container = $(this).closest('.acordion-item');
-        var map_name = container.find('.mapper_name_update');
-        var $payload = {
-            map_name: map_name.text(),
-            cat_map: form.serialize(),
-        };
-        $('.rex-loading-spinner').slideDown('fast');
-        wpAjaxHelperRequest( 'category-mapping-update', $payload )
-            .success( function( response ) {
-                $('.rex-loading-spinner').fadeOut('fast');
-                console.log('Woohoo!');
-            })
-            .error( function( response ) {
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
-            });
-    }
-    $(document).on('click', '#update_mapping_cat', category_mapping_update);
-
-
 
 
     /*
@@ -523,6 +439,29 @@
         $(this).closest('form').find("button[type=submit]").prop('disabled', false);
     }
     $(document).on('click', '.rex-reset-btn', reset_form);
+
+
+    function product_custom_field_settings() {
+        var payload = {};
+        if($('#rex-product-custom-field').is(":checked")) {
+            payload = {
+                custom_field : 'yes',
+            };
+        }else {
+            payload = {
+                custom_field : 'no',
+            };
+        }
+        wpAjaxHelperRequest( 'rex-product-custom-field', payload )
+            .success( function( response ) {
+                console.log('Woohoo!');
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on('change', '#rex-product-custom-field', product_custom_field_settings);
 
 
 })( jQuery );

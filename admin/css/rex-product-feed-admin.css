@@ -864,7 +864,7 @@ Easy Auto Complete
 }
 
 #cmb2-metabox-rex_feed_google_merchant input[type="text"] {
-  height: 10px;
+  /*height: 10px;*/
   margin-bottom: 0;
 }
 #cmb2-metabox-rex_feed_google_merchant input[type="text"].select-dropdown{
@@ -917,14 +917,14 @@ Easy Auto Complete
 /*
 ** Temporary Fix
  */
-input[type="checkbox"],
-input[type="radio"],
-[type="radio"]:not(:checked),
-[type="radio"]:checked {
-  position: relative;
-  opacity: 1;
-  pointer-events: initial;
-}
+/*input[type="checkbox"],*/
+/*input[type="radio"],*/
+/*[type="radio"]:not(:checked),*/
+/*[type="radio"]:checked {*/
+  /*position: relative;*/
+  /*opacity: 1;*/
+  /*pointer-events: initial;*/
+/*}*/
 
 
 

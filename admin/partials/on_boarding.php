@@ -143,6 +143,7 @@
                                 <div class="item">Supports YITH brand attributes</div>
                                 <div class="item">Custom Filtering</div>
                                 <div class="item">Dynamic Attribute</div>
+                                <div class="item">Added Brand, GTIN, MPN and UPC fields on products.</div>
                             </div>
                             <a href="https://checkout.freemius.com/mode/dialog/plugin/1327/plan/1878/" target="_blank" class="waves-effect waves-light btn bwf-btn">Get Premium Version</a>
                         </div>

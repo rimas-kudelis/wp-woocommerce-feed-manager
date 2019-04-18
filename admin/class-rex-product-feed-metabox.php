@@ -230,10 +230,23 @@ class Rex_Product_Metabox {
             'default'          => 'all',
             'options'          => array(
                 'xml'       => __( 'XML', 'rex-product-feed' ),
-//                'csv'       => __( 'CSV', 'rex-product-feed' ),
                 'text'      => __( 'TEXT', 'rex-product-feed' ),
             ),
         ) );
+
+        // $box->add_field( array(
+        //     'name'             => __('Select Delimeter', 'rex-product-feed' ),
+        //     'desc'             => __('Select Delimeter of the csv format', 'rex-product-feed' ),
+        //     'id'               => $this->prefix . 'feed_csv_delimeter',
+        //     'type'             => 'select',
+        //     'show_option_none' => false,
+        //     'default'          => 'all',
+        //     'options'          => array(
+        //         'xml'       => __( 'XML', 'rex-product-feed' ),
+        //         'csv'       => __( 'CSV', 'rex-product-feed' ),
+        //         'text'      => __( 'TEXT', 'rex-product-feed' ),
+        //     ),
+        // ) );
 
         $box->add_field( array(
             'id'        => $this->prefix . 'config_heading',
@@ -509,8 +522,9 @@ class Rex_Product_Metabox {
             $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.xml";
         }elseif ($format == 'text'){
             $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.txt";
+        }elseif ($format == 'csv'){
+            $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.csv";
         }
         return esc_url( $path );
     }
-
 }

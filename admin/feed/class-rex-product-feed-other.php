@@ -36,7 +36,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         RexShopping::title($this->title);
         RexShopping::link($this->link);
         RexShopping::description($this->desc);
-
+        
         // Generate feed for both simple and variable products.
         $this->generate_simple_product_feed();
         $this->generate_grouped_product_feed();
@@ -186,9 +186,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         } elseif ($this->feed_format == 'text') {
             return RexShopping::asTxt();
         }
-//        elseif ($this->feed_format == 'csv') {
-//            return $this->get_csv_feed();
-//        }
         return false;
     }
 

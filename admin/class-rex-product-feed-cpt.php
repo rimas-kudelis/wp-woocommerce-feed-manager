@@ -39,7 +39,7 @@ class Rex_Product_CPT {
         register_extended_post_type( 'product-feed', array(
             'show_in_menu' => 'product-feed',
             'rewrite'            => false,
-            'query_var'          => false,
+            'query_var'          => true,
             'publicly_queryable' => false,
             'supports'           => array( 'title' ),
             'enter_title_here'   => 'Enter feed title here',

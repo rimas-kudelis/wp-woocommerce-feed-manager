@@ -366,7 +366,13 @@ class Rex_Product_Data_Retriever {
         $new_key = str_replace('custom_attributes_', '', $key);
 
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            $attr_name = get_post_meta($this->product->get_parent_id(), $new_key, true);
+
+            if($new_key === '_wpfm_product_brand') {
+                $attr_name = get_post_meta($this->product->get_parent_id(), $new_key, true);
+            }else {
+                $attr_name = get_post_meta($this->product->get_id(), $new_key, true);
+            }
+
         } else{
             $attr_name = get_post_meta($this->product->get_id(), $new_key, true);
         }
@@ -385,10 +391,15 @@ class Rex_Product_Data_Retriever {
      */
     private function set_cat_mapper_att( $key ) {
         $first_cat = array();
-        $cat_lists = get_the_terms( $this->product->get_id(), 'product_cat' );
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            $cat_lists = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
+        } else{
+            $cat_lists = get_the_terms( $this->product->get_id(), 'product_cat' );
+        }
         if($cat_lists){
             $first_cat = reset($cat_lists);
         }
+        error_log(print_r($first_cat, 1));
         $map_category = get_option($key);
         if($first_cat){
             foreach ($map_category['map-config'] as $key => $value){

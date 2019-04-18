@@ -1,10 +1,10 @@
 === WooCommerce Product Feed Manager ===
-Contributors: rextheme, coderexco
+Contributors: rextheme, coderexco, freemius
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to: 5.1.1
-Stable tag: 2.2.3.3
+Stable tag: 2.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,10 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 2.2.4 (2019-04-18) =
+* Improve category mapping UI
+* Added CSV format
+
 = 2.2.3.3 (2019-04-12) =
 * Bug Fix: Compatible with latest materialize css update
 * Bug Fix: Compatible with loco translate
@@ -195,10 +199,10 @@ WP Dashboard > Product Feed > Upgrade.
 * Security patch for freemius
 
 = 2.2.3 (2019-02-21) =
-* Add WPML support
+* Added WPML support
 
 = 2.2.2 (2019-02-19) =
-* Add language support for Arabic, French, Deutsch, Russian
+* Added language support for Arabic, French, Deutsch, Russian
 
 = 2.2.1 (2018-12-18) =
 * Bug Fix: Solve g:price value for Google Merchant
@@ -217,7 +221,6 @@ WP Dashboard > Product Feed > Upgrade.
 
 = 2.0.1 (2018-09-27) =
 * Added option to include/exclude variable products
-
 
 = 2.0.0 (2018-09-20) =
 * Added schedule update

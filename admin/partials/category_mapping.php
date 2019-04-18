@@ -12,7 +12,6 @@
  */
 
 
-
 $product_category = new CategoryMapping();
 $categories = $product_category->get_category();
 
@@ -37,9 +36,36 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
             <?php
             if ($cat_map_options) {
                 foreach ($cat_map_options as $key => $value) {
-                    $data = unserialize($value);
-                    $map_name = $data['map-name'];
-                    $map_config = $data['map-config'];
+                        $data = unserialize($value);
+                        $map_name = $data['map-name'];
+                        $map_config = $data['map-config'];
+
+                    ?>
+                    <?php
+                    $existing_category_mapping_array = array();
+                    $temp_cat_array = array();
+                    $temp_config_array = array();
+                    if($categories){
+                        foreach ($categories as $category){
+                            $temp_cat_array[$category->term_id] = array(
+                                    'name'  => $category->name,
+                                    'id'  => $category->term_id,
+                            );
+                        }
+                    }
+
+                    if($map_config) {
+                        foreach ($map_config as $config) {
+                            $temp_config_array[$config['map-key']] = $config;
+                        }
+                    }
+
+                    foreach ($temp_cat_array as $k=>$v) {
+                        if($temp_config_array[$k]) {
+                            $temp_cat_array[$k] = $temp_cat_array[$k] + $temp_config_array[$k];
+                        }
+                    }
+
                     ?>
                     <div class="acordion-item">
                         <h6><a href="#" class="mapper_name_update"><?php echo $map_name ?></a></h6>
@@ -48,45 +74,22 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
                                 <table class="widefat fixed cat-map highlight" id="cat-map">
                                     <thead>
                                     <tr>
-                                        <th>Product Category</th>
-                                        <th>Merchant Category</th>
+                                        <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
+                                        <th><?php echo __('Google Merchant Category', 'rex-product-feed'); ?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
 
-                                    <?php foreach ($map_config as $config){
-                                        ?>
 
-                                        <tr data-row-id="<?php echo $x; ?>" class="trow">
-                                            <td>
-                                                <select name="category-map[<?php echo $x; ?>][map-key]">
-                                                    <?php
-                                                    if($categories){
-                                                        foreach ($categories as $category){
-                                                            $temp_key = $temp_value = '';
-                                                            $temp_key = $category->term_id;
+                                            <?php foreach ($temp_cat_array as $index => $cat_value){
+                                                echo "<tr>";
+                                                echo "<td>{$cat_value['name']}</td>";
+                                                echo "<td><input class='category-suggest' type='text' name='category-{$cat_value['id']}' value='{$cat_value['map-value']}'></td>";
+                                                echo "</tr>";
+                                            } ?>
 
-                                                            $selected = $config['map-key'] ==  $temp_key ? 'selected' : '';
-                                                            ?>
-                                                            <option value='<?php echo $category->term_id ?>' <?php echo $selected; ?>><?php echo $category->name ?></option>
-                                                        <?php }
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </td>
-                                            <td class="input-map">
-                                                <input class='category-suggest' type='text' name='category-map[<?php echo $x; ?>][map-value]' data-value="" value="<?php echo $config['map-value']; ?>">
-                                            </td>
-                                            <td>
-                                                <a class="btn-floating waves-effect waves-light red delete">
-                                                    <i class="material-icons">delete</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <?php $x++; } ?>
                                     </tbody>
                                 </table>
-                                <a id="rex-new-cat" class="waves-effect waves-light btn-large rex-new-cat bwf-btn"><i class="material-icons left">add</i>Add New Category</a>
                                 <div class="cat-map-actions">
                                     <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat">Update</button>
                                     <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat">Delete</button>
@@ -95,18 +98,11 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
                         </div>
                     </div>
                 <?php }
-
-
             }
             ?>
         </div>
     </div>
 </div>
-
-
-
-
-
 
 <div class="row">
     <div class="col s12 m12">
@@ -125,43 +121,29 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
             </table>
 
 
-            <form action="" method="post" class="add_cat_map">
+            <form action="#" method="post" class="add_cat_map">
 
                 <table class="widefat fixed cat-map highlight" id="cat-map">
                     <thead>
                     <tr>
-                        <th>Product Category</th>
-                        <th>Merchant Category</th>
+                        <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
+                        <th><?php echo __('Google Merchant Category', 'rex-product-feed'); ?></th>
                     </tr>
                     </thead>
 
                     <tbody>
-
-                    <tr data-row-id="0" class="trow">
-                        <td>
-                            <select name="category-map[0][map-key]">
-                                <?php
-                                if($product_category){
-                                    foreach ($categories as $category){?>
-                                        <option value='<?php echo $category->term_id ?>'><?php echo $category->name ?></option>
-                                    <?php }
-                                }
-                                ?>
-                            </select>
-                        </td>
-                        <td class="input-map">
-                            <input class='category-suggest' type='text' name='category-map[0][map-value]' data-value="">
-                        </td>
-                        <td>
-                            <a class="btn-floating waves-effect waves-light red delete">
-                                <i class="material-icons">delete</i>
-                            </a>
-                        </td>
-                    </tr>
+                    <?php
+                        if($product_category){
+                            foreach ($categories as $category):
+                                echo "<tr>";
+	                                echo "<td>{$category->name}</td>";
+	                                echo "<td><input class='category-suggest' type='text' name='category-{$category->term_id}'></td>";
+	                            echo "</tr>";
+	                        endforeach;
+	                    }
+	                ?>
                     </tbody>
                 </table>
-                <a id="rex-new-cat" class="waves-effect waves-light btn-large rex-new-cat bwf-btn"><i class="material-icons left">add</i>Add New Category</a>
-
                 <div class="cat-map-actions">
                     <button type="submit" class="waves-effect waves-light btn-large green" id="save_mapping_cat">Save</button>
                 </div>
