@@ -186,7 +186,6 @@ WP Dashboard > Product Feed > Upgrade.
 
 = 2.2.4 (2019-04-18) =
 * Improve category mapping UI
-* Added CSV format
 
 = 2.2.3.3 (2019-04-12) =
 * Bug Fix: Compatible with latest materialize css update
