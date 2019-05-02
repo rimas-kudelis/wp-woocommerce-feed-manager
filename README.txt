@@ -73,7 +73,7 @@ WooCommerce Product Feed manager is completely compatible with WPML. You can cho
 * Upload your feed in Google Shopping with a few clicks from your plugin dashboard.
 * Unlimited feed creation for Pro-Users
 * Supports WPML
-* XML and TXT formats
+* XML, CSV and TXT formats
 * Supports Yith brand attributes
 * Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
 * Static attribute, Prefix, and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
@@ -143,6 +143,7 @@ In the free version, you can generate product feed for up to 50 products per fee
 This plugin generates product feeds in the following file formats:
 - TXT
 - XML
+- CSV
 **For creating Google product feed, you must use XML format.
 = What is the feed auto update feature? =
 For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily updates or hourly updates of feed.
