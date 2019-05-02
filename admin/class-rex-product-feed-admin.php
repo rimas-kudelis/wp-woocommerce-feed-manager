@@ -429,9 +429,6 @@ class Rex_Product_Feed_Admin
             'merchant_settings',
             __CLASS__ . '::merchant_settings'
         );
-        //        if ( rex_product_feed()->is__premium_only() ) {
-        //            $this->wpfm_settings_page = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_options', 'wpfm_settings', __CLASS__ . '::wpfm_settings__premium_only');
-        //        }
         $this->dashboard_screen_hook_suffix = add_submenu_page(
             'product-feed',
             __( 'Dashboard', 'rex-product-feed' ),

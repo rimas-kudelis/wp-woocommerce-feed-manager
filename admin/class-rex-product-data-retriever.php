@@ -87,6 +87,7 @@ class Rex_Product_Data_Retriever {
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
         $this->set_all_value();
 //        $this->maybe_set_variation_data();
+
     }
 
 

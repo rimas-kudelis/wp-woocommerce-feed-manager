@@ -185,6 +185,8 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             return RexShopping::asRss();
         } elseif ($this->feed_format == 'text') {
             return RexShopping::asTxt();
+        } elseif ($this->feed_format == 'csv') {
+            return RexShopping::asCsv();
         }
         return false;
     }
