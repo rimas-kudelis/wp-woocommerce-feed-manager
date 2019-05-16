@@ -127,7 +127,7 @@ class Rex_Feed_Attributes {
 
         //Category Mapping
         $cat_maps_array = array();
-        $pattern = '/^rex_cat_map_[a-z]+$/';
+        $pattern = '/^rex_cat_map_[a-z0-9]+$/';
         $cat_maps = preg_grep($pattern, array_keys(wp_load_alloptions()));
         if($cat_maps){
             foreach ($cat_maps as $cat_map){

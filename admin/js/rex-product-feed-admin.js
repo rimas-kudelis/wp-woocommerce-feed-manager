@@ -187,7 +187,7 @@
     $(document).on('change', '#rex_feed_merchant', function () {
         var selected = $(this).find('option:selected').val();
         var csv = '';
-        if ( selected == 'google' ) {
+        if ( selected == 'google') {
             $('.cmb2-id-rex-feed-feed-format').hide();
         }else{
             $('.cmb2-id-rex-feed-feed-format').show();
@@ -276,7 +276,7 @@
 
 
     function generate_feed( product, offset, batch ) {
-
+        
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),

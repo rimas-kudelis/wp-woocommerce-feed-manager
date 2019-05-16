@@ -4,7 +4,7 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to: 5.2
-Stable tag: 2.2.5
+Stable tag: 2.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,7 +73,7 @@ WooCommerce Product Feed manager is completely compatible with WPML. You can cho
 * Upload your feed in Google Shopping with a few clicks from your plugin dashboard.
 * Unlimited feed creation for Pro-Users
 * Supports WPML
-* XML, CSV and TXT formats
+* XML and TXT formats
 * Supports Yith brand attributes
 * Feeds are also accessible via HTTP or HTTPS. So that supported merchant can easily and automatically fetch product feed using given Feed URL
 * Static attribute, Prefix, and Suffix. You can add Marketing or Promo Text with Product Title, Description And it's also possible to add Price symbol, currency code with the price.
@@ -143,7 +143,6 @@ In the free version, you can generate product feed for up to 50 products per fee
 This plugin generates product feeds in the following file formats:
 - TXT
 - XML
-- CSV
 **For creating Google product feed, you must use XML format.
 = What is the feed auto update feature? =
 For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily updates or hourly updates of feed.
@@ -184,6 +183,16 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 2.2.6 (2019-05-16) =
+* Fixed: UI loading conflict with themify builder
+* Added: Missing google categories
+* Added: CSV format for Facebook
+
+
+= 2.2.5 (2019-05-02) =
+* Bug Fix: Fix feed schedule update for variation product settings
+* Added CSV format
 
 = 2.2.5 (2019-05-02) =
 * Bug Fix: Fix feed schedule update for variation product settings

@@ -160,6 +160,7 @@ class Rex_Product_Feed {
         // remove bulk edit and quick edit for our feed cpt.
         $this->loader->add_filter( 'bulk_actions-edit-product-feed', $plugin_admin, 'remove_bulk_edit' );
         $this->loader->add_filter( 'post_row_actions', $plugin_admin, 'remove_quick_edit' );
+        $this->loader->add_filter( 'themify_top_pages', $plugin_admin, 'wpfm_themify_top_pages_modify' );
 
 
 
