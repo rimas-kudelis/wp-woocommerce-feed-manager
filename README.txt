@@ -194,9 +194,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Bug Fix: Fix feed schedule update for variation product settings
 * Added CSV format
 
-= 2.2.5 (2019-05-02) =
-* Bug Fix: Fix feed schedule update for variation product settings
-* Added CSV format
 
 = 2.2.4 (2019-04-18) =
 * Improve category mapping UI
