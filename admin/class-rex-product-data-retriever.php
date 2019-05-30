@@ -83,7 +83,6 @@ class Rex_Product_Data_Retriever {
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
 
-
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
         $this->set_all_value();
 //        $this->maybe_set_variation_data();
@@ -145,7 +144,8 @@ class Rex_Product_Data_Retriever {
         }elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
             $val = $this->set_pr_att( $rule['meta_key']  );
 
-        }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
 
             $val = $this->set_image_att( $rule['meta_key']  );
 
@@ -220,7 +220,7 @@ class Rex_Product_Data_Retriever {
 
             case 'description':
                 if(($this->is_children())):
-                    $_product = wc_get_product( $this->product->post->post_parent );
+                    $_product = wc_get_product( $this->product->get_parent_id() );
                     $_product_desc =  $this->remove_short_codes($_product->get_description());
                     return $_product_desc;
                 else:
@@ -230,7 +230,7 @@ class Rex_Product_Data_Retriever {
 
             case 'short_description':
                 if(($this->is_children())):
-                    $_product = wc_get_product( $this->product->post->post_parent );
+                    $_product = wc_get_product( $this->product->get_parent_id() );
                     $_product_desc = $this->remove_short_codes($_product->get_short_description());
                     return $_product_desc;
                 else:
@@ -825,7 +825,7 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     private function is_children(){
-        return $this->product->post->post_parent? true: false;
+        return $this->product->get_parent_id() ? true: false;
     }
 
 

@@ -113,7 +113,7 @@ class Rex_Feed_Attributes {
         if (count($data)) {
             foreach ($data as $key => $value) {
 //                if (substr($value->name, 0, 1) !== "_") {
-                    if (!preg_match("/pyre|sbg|fusion|rex|woosea/i",$value->name)){
+                    if (!preg_match("/pyre|sbg|fusion|rex/i",$value->name)){
                         $value_display = str_replace("_", " ",$value->name);
                         $list["custom_attributes_" . $value->name] = ucfirst($value_display);
 //                    }

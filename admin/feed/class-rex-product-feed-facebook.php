@@ -66,11 +66,13 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 $atts = $this->get_product_data( $product );
                 $item = GoogleShopping::createItem();
 
+
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
             }
+
 
         }
     }
@@ -116,15 +118,12 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
             // add all variants into feed
             foreach ($children as $child) {
-
                 $pr = wc_get_product($child);
-
                 if($this->product_scope == 'all') {
                     $this->allowed = true;
                 }else {
                     $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
                 }
-
                 if ($this->allowed) {
                     $item = GoogleShopping::createItem();
                     $atts = $this->get_product_data( $child );

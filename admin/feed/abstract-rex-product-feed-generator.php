@@ -291,7 +291,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
     {
         $feed_rules = array();
         parse_str( $info, $feed_rules );
-        $this->wpml_language = ( $feed_rules['rex_feed_wpml_language'] ? $feed_rules['rex_feed_wpml_language'] : get_post_meta( $this->id, 'rex_feed_wpml_language', true ) );
+        $this->wpml_language =  isset($feed_rules['rex_feed_wpml_language']) ? $feed_rules['rex_feed_wpml_language'] : get_post_meta( $this->id, 'rex_feed_wpml_language', true ) ;
         $feed_rules = $feed_rules['fc'];
         $this->feed_rules = $feed_rules;
         // save the feed_rules into feed post_meta.
