@@ -184,7 +184,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 3.0 (2019-05-20) =
+= 3.0 (2019-06-20) =
 * Removed Freemious SDK
 * Added shipping_class support
 * Improved category mapping
