@@ -39,8 +39,8 @@ if ( ! isset($feed_template) ) {
 
     <?php foreach ( $feed_template->getTemplateMappings() as $key => $item): ?>
         <?php
-        $hideStaticInput = $item['type'] == 'meta' ? 'style="display:none;"' : '';
-        $hideMetaInput   = $item['type'] != 'meta' ? 'style="display:none;"' : '';
+        $hideStaticInput = $item['type'] != 'static' ? 'style="display:none;"' : '';
+        $hideMetaInput   = $item['type'] == 'static' ? 'style="display:none;"' : '';
         ?>
         <tr data-row-id="<?php echo $key; ?>">
             <td><?php $feed_template->printSelectDropdown( $key, 'attr', $item['attr'] ); ?></td>

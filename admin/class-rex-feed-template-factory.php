@@ -8,6 +8,7 @@
  *
  * @package    Rex_Feed_Template_Factory
  * @subpackage Rex_Feed_Template_Factory/includes
+ *
  */
 class Rex_Feed_Template_Factory {
 

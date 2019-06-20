@@ -96,6 +96,7 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
             $feed_products = get_post_meta($item_id, 'rex_feed_products', true);
             $include_variations = get_post_meta($item_id, 'rex_feed_variations', true) === 'yes' ? true : false ;
 
+
             if ( $feed_products !== 'all' && $feed_products !== 'filter') {
                 $terms = $feed_products === 'product_tag' ? 'tags' : 'cats';
                 if($terms == 'tags' ) {

@@ -15,79 +15,36 @@
 $product_category = new CategoryMapping();
 $categories = $product_category->get_category();
 
-$all_options = wp_load_alloptions();
-$cat_map_options  = array();
-
-foreach ( $all_options as $name => $value ) {
-    if ( stristr( $name, 'rex_cat_map_' ) ) {
-        $cat_map_options[ $name ] = $value;
-    }
-}
-
-$x = 0;
-$cat_keys = [];
-
+$category_map = get_option('rex-wpfm-category-mapping');
 require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
+$db_version = get_option('rex_wpfm_db_version');
 ?>
+
 
 <div class="row">
     <div class="col s12 m12">
         <div class="rex-accordion">
-            <?php
-            if ($cat_map_options) {
-                foreach ($cat_map_options as $key => $value) {
-                        $data = unserialize($value);
-                        $map_name = $data['map-name'];
-                        $map_config = $data['map-config'];
-
-                    ?>
-                    <?php
-                    $existing_category_mapping_array = array();
-                    $temp_cat_array = array();
-                    $temp_config_array = array();
-                    if($categories){
-                        foreach ($categories as $category){
-                            $temp_cat_array[$category->term_id] = array(
-                                    'name'  => $category->name,
-                                    'id'  => $category->term_id,
-                            );
-                        }
-                    }
-
-                    if($map_config) {
-                        foreach ($map_config as $config) {
-                            $temp_config_array[$config['map-key']] = $config;
-                        }
-                    }
-
-                    foreach ($temp_cat_array as $k=>$v) {
-                        if($temp_config_array[$k]) {
-                            $temp_cat_array[$k] = $temp_cat_array[$k] + $temp_config_array[$k];
-                        }
-                    }
-
+            <?php if ($category_map) {  ?>
+                <?php foreach ($category_map as $key => $value) {
                     ?>
                     <div class="acordion-item">
-                        <h6><a href="#" class="mapper_name_update"><?php echo $map_name ?></a></h6>
+                        <h6><a href="#" class="mapper_name_update" data-id="<?php echo $key; ?>"><?php echo $value['map-name'] ?></a></h6>
                         <div class="inner" style="display: none;">
                             <form action="" method="post" class="update_cat_map">
                                 <table class="widefat fixed cat-map highlight" id="cat-map">
                                     <thead>
-                                    <tr>
-                                        <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
-                                        <th><?php echo __('Google Merchant Category', 'rex-product-feed'); ?></th>
-                                    </tr>
+                                        <tr>
+                                            <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
+                                            <th><?php echo __('Google Merchant Category', 'rex-product-feed'); ?></th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-
-
-                                            <?php foreach ($temp_cat_array as $index => $cat_value){
-                                                echo "<tr>";
-                                                echo "<td>{$cat_value['name']}</td>";
-                                                echo "<td><input class='category-suggest' type='text' name='category-{$cat_value['id']}' value='{$cat_value['map-value']}'></td>";
-                                                echo "</tr>";
-                                            } ?>
-
+                                    <?php foreach ($value['map-config'] as $index => $cat_value){
+                                        echo "<tr>";
+                                        echo "<td>{$cat_value['cat-name']}</td>";
+                                        echo "<td><div class='input-field'><input class='category-suggest' type='text' name='category-{$cat_value['map-key']}' value='{$cat_value['map-value']}'></div></td>";
+                                        echo "</tr>";
+                                    } ?>
                                     </tbody>
                                 </table>
                                 <div class="cat-map-actions">
@@ -97,12 +54,19 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
                             </form>
                         </div>
                     </div>
-                <?php }
-            }
-            ?>
+                <?php } ?>
+            <?php }
+            else { if($db_version >= 3) {?>
+                    <div class="info-msg">
+                        <i class="fa fa-info-circle"></i>
+                        <?php echo __('Please update WPFM database', 'rex-product-feed'); ?>
+                    </div>
+                <?php } }?>
         </div>
     </div>
 </div>
+
+
 
 <div class="row">
     <div class="col s12 m12">
@@ -137,7 +101,7 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
                             foreach ($categories as $category):
                                 echo "<tr>";
 	                                echo "<td>{$category->name}</td>";
-	                                echo "<td><input class='category-suggest' type='text' name='category-{$category->term_id}'></td>";
+	                                echo "<td><div class='input-field'><input class='autocomplete category-suggest' type='text' name='category-{$category->term_id}'></div></td>";
 	                            echo "</tr>";
 	                        endforeach;
 	                    }

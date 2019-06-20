@@ -54,7 +54,18 @@
 
         $('.rex-tabs').tabs();
 
+        //---------popup when click disabled input-------
+        $( ".single-merchant > .disabled .lever" ).on("click", function(){
+            $(".premium-merchant-alert").addClass("show-alert");
+        });
 
+        $( ".premium-merchant-alert .close, .premium-merchant-alert button.close, .premium-merchant-alert" ).on("click", function(){
+            $(".premium-merchant-alert").removeClass("show-alert");
+        });
+
+        $(".premium-merchant-alert .alert-box").on("click", function (e) {
+            e.stopPropagation();
+        });
 
     });
 
@@ -184,24 +195,15 @@
     /**
      * Event listener for feed type change.
      */
-    $(document).on('change', '#rex_feed_merchant', function () {
-        var selected = $(this).find('option:selected').val();
-        var csv = '';
-        if ( selected == 'google') {
-            $('.cmb2-id-rex-feed-feed-format').hide();
-        }else{
-            $('.cmb2-id-rex-feed-feed-format').show();
-        }
-        // if ( selected == 'facebook' ) {
-        //     $("#rex_feed_feed_format option[value='csv']").remove();
-        //     csv = 'removed';
-        // }
-        // if(selected != 'facebook' || selected != 'google' ){
-        //     if(csv == 'removed'){
-        //         $("#rex_feed_feed_format").append("<option value='csv'>CSV</option>");
-        //     }
-        // }
-    });
+    // $(document).on('change', '#rex_feed_merchant', function () {
+    //     var selected = $(this).find('option:selected').val();
+    //     var csv = '';
+    //     if ( selected == 'google' ) {
+    //         $('.cmb2-id-rex-feed-feed-format').hide();
+    //     }else{
+    //         $('.cmb2-id-rex-feed-feed-format').show();
+    //     }
+    // });
 
 
     /**
@@ -276,10 +278,12 @@
 
 
     function generate_feed( product, offset, batch ) {
-        
+
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),
+            localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
+            ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
             info : {
                 post_id     : $('#post_ID').val(),
                 title       : $('#title').val(),
@@ -441,27 +445,40 @@
     $(document).on('click', '.rex-reset-btn', reset_form);
 
 
-    function product_custom_field_settings() {
+    /**
+     * Change merchant status
+     */
+    function product_feed_change_merchant_status() {
         var payload = {};
-        if($('#rex-product-custom-field').is(":checked")) {
-            payload = {
-                custom_field : 'yes',
+        var $this = $(this);
+        var key = $this.attr('data-value');
+        var name = $this.attr('data-name');
+        var isfree = $this.attr('data-is-free');
+        if($this.is(":checked")) {
+            payload[key] = {
+                status : 1,
+                name : name,
+                free: isfree,
             };
         }else {
-            payload = {
-                custom_field : 'no',
+            payload[key] = {
+                status : 0,
+                name : name,
+                free: isfree,
             };
         }
-        wpAjaxHelperRequest( 'rex-product-custom-field', payload )
+        wpAjaxHelperRequest( 'rex-product-change-merchant-status', payload )
             .success( function( response ) {
-                console.log('Woohoo!');
+                console.log('woohoo!');
             })
             .error( function( response ) {
-                console.log( 'Uh, oh!' );
+                console.log( 'uh, oh!' );
                 console.log( response.statusText );
             });
     }
-    $(document).on('change', '#rex-product-custom-field', product_custom_field_settings);
+    $(document).on('change', '#rex-product-feed-merchant', product_feed_change_merchant_status);
+
+
 
 
 })( jQuery );

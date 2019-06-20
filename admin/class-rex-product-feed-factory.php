@@ -11,17 +11,17 @@
  */
 class Rex_Product_Feed_Factory {
 
-
-    private static $other_merchants = array( 'custom', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll');
+    private static $other_merchants;
 
     public static function build( $config, $bypass = false ){
+
+        self::$other_merchants = apply_filters('wpfm_merchant_array', array( 'custom', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll'));
 
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {
             $className = 'Rex_Product_Feed_Other';
         }else{
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
         }
-
 
         if( $config == '' || ! class_exists( $className ) ) {
             throw new Exception('Invalid Merchant.');

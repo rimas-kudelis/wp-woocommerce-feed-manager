@@ -1049,5 +1049,49 @@
         "keywords": [
             "google"
         ]
+    },
+    {
+        "name": "appsero/client",
+        "version": "v1.1.1",
+        "version_normalized": "1.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/AppSero/client.git",
+            "reference": "dedab5a4813b113ce901b2670bb8b00cd12063e9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/AppSero/client/zipball/dedab5a4813b113ce901b2670bb8b00cd12063e9",
+            "reference": "dedab5a4813b113ce901b2670bb8b00cd12063e9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "time": "2019-05-14T08:54:07+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Appsero\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Tareq Hasan",
+                "email": "tareq@appsero.com"
+            }
+        ],
+        "description": "Appsero Client",
+        "keywords": [
+            "analytics",
+            "plugin",
+            "theme",
+            "wordpress"
+        ]
     }
 ]

@@ -139,7 +139,7 @@ abstract class Rex_Feed_Abstract_Template {
      * @param string $select
      */
     public function printAttType( $key, $select = '' ){
-        $options = array( 'meta' => 'Attribute', 'static' => 'Static');
+        $options = apply_filters('wpfm_pro_feed_attribute_type_render', array( 'meta' => 'Attribute', 'static' => 'Static'));
         echo "<select class='type-dropdown' name='fc[$key][type]'>";
         echo "<option value=''>Please Select</option>";
         foreach ($options as $key => $option) {

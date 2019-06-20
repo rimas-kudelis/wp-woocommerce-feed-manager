@@ -75,11 +75,6 @@ class Rex_Product_Feed {
         $this->set_locale();
         $this->define_admin_hooks();
 
-
-        if (rex_product_feed()->is_free_plan()) {
-            // ... free only logic ...
-            RexPremium::rex_remaining_feed_option();
-        }
     }
 
     /**
@@ -102,7 +97,12 @@ class Rex_Product_Feed {
         /**
          * Get Composer Autoloader.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+        $autoload_file_array = apply_filters('wpfm_autoload_file_array', array(plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php'));
+
+        foreach ( $autoload_file_array as $file ) {
+            require_once $file;
+        }
+
 
         /**
          * The class responsible for orchestrating the actions and filters of the
@@ -146,12 +146,15 @@ class Rex_Product_Feed {
      */
     private function define_admin_hooks() {
 
+        global $rex_product_feed_database_update;
+        $rex_product_feed_database_update = new Rex_Product_Feed_Database_Update();
+
         $plugin_admin = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
         $this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'dequeue_scripts', 5 );
         $this->loader->add_action( 'init', $plugin_admin, 'register_cpt' );
-        $this->loader->add_action( 'admin_notices', $plugin_admin, 'bwfm_admin_notices' );
+        $this->loader->add_action( 'admin_notices', $plugin_admin, 'rex_wpfm_admin_notices' );
         $this->loader->add_action( 'cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages');
@@ -160,23 +163,24 @@ class Rex_Product_Feed {
         // remove bulk edit and quick edit for our feed cpt.
         $this->loader->add_filter( 'bulk_actions-edit-product-feed', $plugin_admin, 'remove_bulk_edit' );
         $this->loader->add_filter( 'post_row_actions', $plugin_admin, 'remove_quick_edit' );
-        $this->loader->add_filter( 'themify_top_pages', $plugin_admin, 'wpfm_themify_top_pages_modify' );
+        $this->loader->add_filter( 'plugin_row_meta', $plugin_admin, 'wpfm_plugin_row_meta', 10, 2 );
 
+        /**
+         * new merchant status
+         */
+        $this->loader->add_filter( 'wpfm_available_merchants_status', $plugin_admin, 'wpfm_available_merchants_status', 10, 1 );
 
+        /*
+         * Custom ajax
+         * for data base update
+         */
+        $this->loader->add_action('wp_ajax_rex_wpfm_database_update', 'Rex_Product_Feed_Ajax', 'rex_wpfm_database_update');
 
         /*
          * register rex feed schedule
          */
         $this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update' );
 
-        /*
-         * register product_custom_fields
-         */
-//        $this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'rex_product_custom_fields__premium_only' );
-//        $this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'rex_product_custom_fields_save__premium_only' );
-//
-//        $this->loader->add_action( 'woocommerce_product_after_variable_attributes', $plugin_admin, 'rex_product_variable_custom_fields__premium_only', 10, 3 );
-//        $this->loader->add_action( 'woocommerce_save_product_variation',            $plugin_admin, 'rex_product_variable_custom_fields_save__premium_only', 10, 2 );
     }
 
     /**
@@ -186,6 +190,8 @@ class Rex_Product_Feed {
      */
     public function run() {
         $this->loader->run();
+        $client = new Appsero\Client( '859b0b74-d740-4bba-9e7a-b7c71d0a2db6', 'WooCommerce Product Feed', __FILE__ );
+        $client->insights()->init();
     }
 
     /**

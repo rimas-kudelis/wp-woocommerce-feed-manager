@@ -9,264 +9,407 @@
  * @package    Rex_Product_Metabox
  * @subpackage Rex_Product_Feed/admin
  */
-class Rex_Product_Feed_Ajax
-{
+
+
+class Rex_Product_Feed_Ajax {
+
     /**
      * Hook in ajax handlers.
      *
      * @since    1.0.0
      */
-    public static function init()
-    {
+    public static function init() {
+
         $validations = array(
             'logged_in' => true,
             'user_can'  => 'manage_options',
         );
-        wp_ajax_helper()->handle( 'my-handle' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'get_product_number' ) )->with_validation( $validations );
-        wp_ajax_helper()->handle( 'generate-feed' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_feed' ) )->with_validation( $validations );
-        wp_ajax_helper()->handle( 'save-feed' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_feed' ) )->with_validation( $validations );
-        wp_ajax_helper()->handle( 'merchant-change' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )->with_validation( $validations );
+
+        wp_ajax_helper()->handle( 'my-handle' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'get_product_number' ) )
+            ->with_validation( $validations );
+
+
+        wp_ajax_helper()->handle( 'generate-feed' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_feed' ) )
+            ->with_validation( $validations );
+
+
+        wp_ajax_helper()->handle( 'save-feed' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_feed' ) )
+            ->with_validation( $validations );
+
+        wp_ajax_helper()->handle( 'merchant-change' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )
+            ->with_validation( $validations );
+
+
         /**
          * Stop Admin Notices
          */
-        wp_ajax_helper()->handle( 'stop-notices' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'stop_notices' ) )->with_validation( $validations );
+        wp_ajax_helper()->handle( 'stop-notices' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'stop_notices' ) )
+            ->with_validation( $validations );
+
         /**
          * Google Category Mapping
          */
-        wp_ajax_helper()->handle( 'category-mapping' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping' ) )->with_validation( $validations );
-        wp_ajax_helper()->handle( 'category-mapping-update' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_update' ) )->with_validation( $validations );
-        wp_ajax_helper()->handle( 'category-mapping-delete' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_delete' ) )->with_validation( $validations );
+        wp_ajax_helper()->handle( 'category-mapping' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping' ) )
+            ->with_validation( $validations );
+
+        wp_ajax_helper()->handle( 'category-mapping-update' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_update' ) )
+            ->with_validation( $validations );
+
+        wp_ajax_helper()->handle( 'category-mapping-delete' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_delete' ) )
+            ->with_validation( $validations );
+
+
         /*
          * Google merchant settings
          */
-        wp_ajax_helper()->handle( 'google-merchant-settings' )->with_callback( array( 'Rex_Google_Merchant_Settings_Api', 'save_settings' ) )->with_validation( $validations );
+        wp_ajax_helper()->handle( 'google-merchant-settings' )
+            ->with_callback( array( 'Rex_Google_Merchant_Settings_Api', 'save_settings' ) )
+            ->with_validation( $validations );
+
         /*
          * Send to Google
          * Merchant Center
          */
-        wp_ajax_helper()->handle( 'send-to-google' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'send_to_google' ) )->with_validation( $validations );
+        wp_ajax_helper()->handle( 'send-to-google' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'send_to_google' ) )
+            ->with_validation( $validations );
+
+
+
         /*
          * Add custom field
          * to product
          */
-        wp_ajax_helper()->handle( 'rex-product-custom-field' )->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_product_custom_field' ) )->with_validation( $validations );
+        wp_ajax_helper()->handle( 'rex-product-change-merchant-status' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_product_change_merchant_status' ) )
+            ->with_validation( $validations );
+
+
+        /*
+         * Database Update
+         */
+        wp_ajax_helper()->handle( 'rex-wpfm-database-update' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_wpfm_database_update' ) )
+            ->with_validation( $validations );
+
+
+        /*
+         * Database Update
+         */
+        wp_ajax_helper()->handle( 'rex-wpfm-fetch-google-category' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'fetch_google_category' ) )
+            ->with_validation( $validations );
+
+
     }
-    
+
+
+
+
+
     /**
      * Get total number of products
      *
      * @since    2.0.0
      */
-    public static function get_product_number( $payload )
-    {
+    public static function get_product_number($payload) {
         $totalProducts = 50;
-        return array(
-            'products' => $totalProducts,
+        $products = array(
+            'products'  => $totalProducts,
         );
+        return apply_filters('wpfm_get_total_number_of_products', $products);
     }
-    
+
+
+
+
     /**
-     * Get total number of products
-     *
-     * @since    2.0.0
+     * Generate feed
+     * @param $config
+     * @return string
      */
-    public static function save_feed( $payload )
-    {
-    }
-    
-    public static function generate_feed( $config )
-    {
+    public static function generate_feed( $config ){
         try {
             $merchant = Rex_Product_Feed_Factory::build( $config );
-        } catch ( Exception $e ) {
+        } catch (Exception $e) {
             return $e->getMessage();
         }
         return $merchant->make_feed();
     }
-    
-    public static function show_feed_template( $merchant )
-    {
-        $feed_rules = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
+
+
+    /**
+     * Show feed template
+     * @param $merchant
+     * @return string
+     */
+    public static function show_feed_template( $merchant ){
+        $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
         if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
             $feed_rules = false;
         }
+
         $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
+
         ob_start();
-        include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
+        if( in_array($merchant['merchant'], apply_filters('wpfm_has_custom_feed_config', array()))) {
+            do_action('wpfm_custom_metabox_display_'. $merchant['merchant'], $merchant['merchant'], $feed_template);
+        }else {
+            include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
+        }
         return ob_get_clean();
+
     }
-    
+
+
     /**
      * Save Category Map
+     * @param $payload
+     * @return string
      */
-    public function category_mapping( $payload )
-    {
-        $map_category = array();
+    public static function category_mapping($payload){
         $map_name = $payload['map_name'];
-        $cat_map_array = array();
+        $map_name_hash = md5(sanitize_title($map_name).time());
+        $cat_map_array       = array();
         parse_str( $payload['cat_map'], $cat_map_array );
-        $cat_array = array();
-        if ( $cat_map_array ) {
-            foreach ( $cat_map_array as $key => $value ) {
-                array_push( $cat_array, array(
-                    'map-key'   => preg_replace( '/[^0-9]/', '', $key ),
-                    'map-value' => $value,
-                ) );
+        $config_array = array();
+        $map_array = array();
+        if($cat_map_array) {
+            foreach ($cat_map_array as $key=>$value) {
+                $cat_id = preg_replace('/[^0-9]/', '', $key);
+                $product_cat = get_term_by('id', $cat_id, 'product_cat');
+                $category_name = '';
+                if($product_cat) {
+                    $category_name = $product_cat->name;
+                }
+                array_push($config_array, array('map-key' => $cat_id, 'map-value' => $value, 'cat-name' => $category_name));
             }
         }
-        $cat_mapper['map-name'] = $map_name;
-        $cat_mapper['map-config'] = $cat_array;
-        
-        if ( get_option( 'rex_cat_map_' . str_replace( ' ', '', strtolower( $map_name ) ) ) !== false ) {
-            update_option( 'rex_cat_map_' . str_replace( ' ', '', strtolower( $map_name ) ), $cat_mapper );
-        } else {
-            add_option( 'rex_cat_map_' . str_replace( ' ', '', strtolower( $map_name ) ), $cat_mapper );
-        }
-        
-        return $map_category;
+
+        $map_array['map-name'] = $map_name;
+        $map_array['map-config'] = $config_array;
+        $category_map = get_option('rex-wpfm-category-mapping') ? get_option('rex-wpfm-category-mapping') : array();
+        $category_map[$map_name_hash] = $map_array;
+        update_option('rex-wpfm-category-mapping', $category_map);
+        return 'success';
     }
-    
-    public function category_mapping_update( $payload )
-    {
-        $map_category = array();
+
+
+    /**
+     * generate category mapping
+     * @param $payload
+     * @return string
+     */
+    public static function category_mapping_update($payload){
+        $map_key = $payload['map_key'];
         $map_name = $payload['map_name'];
-        $cat_map_array = array();
+        $cat_map_array       = array();
         parse_str( $payload['cat_map'], $cat_map_array );
-        $cat_array = array();
-        if ( $cat_map_array ) {
-            foreach ( $cat_map_array as $key => $value ) {
-                array_push( $cat_array, array(
-                    'map-key'   => preg_replace( '/[^0-9]/', '', $key ),
-                    'map-value' => $value,
-                ) );
+        $config_array = array();
+        $map_array = array();
+        if($cat_map_array) {
+            foreach ($cat_map_array as $key=>$value) {
+                $cat_id = preg_replace('/[^0-9]/', '', $key);
+                $product_cat = get_term_by('id', $cat_id, 'product_cat');
+                $category_name = '';
+                if($product_cat) {
+                    $category_name = $product_cat->name;
+                }
+                array_push($config_array, array('map-key' => $cat_id, 'map-value' => $value, 'cat-name' => $category_name));
             }
         }
-        $cat_map_array = $cat_map_array['category-map'];
-        $cat_mapper['map-name'] = $map_name;
-        $cat_mapper['map-config'] = $cat_array;
-        
-        if ( get_option( 'rex_cat_map_' . str_replace( ' ', '', strtolower( $map_name ) ) ) !== false ) {
-            update_option( 'rex_cat_map_' . str_replace( ' ', '', strtolower( $map_name ) ), $cat_mapper );
-        } else {
-            add_option( 'rex_cat_map_' . str_replace( ' ', '', strtolower( $map_name ) ), $cat_mapper );
-        }
-        
-        return $map_category;
+
+        $map_array['map-name'] = $map_name;
+        $map_array['map-config'] = $config_array;
+        $category_map = get_option('rex-wpfm-category-mapping') ? get_option('rex-wpfm-category-mapping') : array();
+        $category_map[$map_key] = $map_array;
+        update_option('rex-wpfm-category-mapping', $category_map);
+        return 'success';
     }
-    
-    public function category_mapping_delete( $payload )
-    {
-        $map_name = $payload['map_name'];
-        if ( get_option( 'rex_cat_map_' . str_replace( ' ', '', strtolower( $map_name ) ) ) !== false ) {
-            delete_option( 'rex_cat_map_' . str_replace( ' ', '', strtolower( $map_name ) ) );
-        }
+
+
+    /**
+     * Delete Category Mapping
+     * @param $payload
+     * @return string
+     */
+    public static function category_mapping_delete($payload){
+        $map_key = $payload['map_key'];
+        $category_map = get_option('rex-wpfm-category-mapping');
+        unset($category_map[$map_key]);
+        update_option('rex-wpfm-category-mapping', $category_map);
         return 'Success';
     }
-    
-    function stop_notices( $payload )
-    {
-        update_option( 'rex_bwfm_notification_status', 'no' );
-        return 'success';
-    }
-    
-    function rex_product_custom_field( $payload )
-    {
-        update_option( 'rex-product-custom-field', $payload['custom_field'] );
-        return 'success';
-    }
-    
-    /*
-     * Send to Google
+
+
+    /**
+     * Stop admin notices
+     * @param $payload
+     * @return string
      */
-    public static function send_to_google( $payload )
-    {
+    function stop_notices($payload) {
+        update_option('rex_bwfm_notification_status', 'no');
+        return 'success';
+    }
+
+
+
+
+
+    /**
+     * Change merchant status
+     * @param $payload
+     * @return string
+     */
+    function rex_product_change_merchant_status($payload) {
+        $merchants = get_option('rex_wpfm_merchant_status');
+        if(!$merchants) {
+            $latest_merchants = $payload;
+        }else {
+            $latest_merchants = array_merge($merchants, $payload);
+        }
+        update_option('rex_wpfm_merchant_status', $latest_merchants);
+        return 'success';
+    }
+
+
+    /**
+     * Send feed to Google
+     * @param $payload
+     * @return array
+     */
+    public static function send_to_google($payload) {
+
         $feed_id = $payload['feed_id'];
         $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
-        
-        if ( $rex_google_merchant->is_authenticate() ) {
+        if ($rex_google_merchant->is_authenticate()) {
             $feed_url = get_post_meta( $feed_id, 'rex_feed_xml_file', true );
-            $feed_title = get_the_title( $feed_id );
+            $feed_title = get_the_title($feed_id);
             $client = $rex_google_merchant::get_client();
             $client_id = $rex_google_merchant::$client_id;
             $client_secret = $rex_google_merchant::$client_secret;
             $merchant_id = $rex_google_merchant::$merchant_id;
+
+
             $access_token = $rex_google_merchant->get_access_token();
-            $client->setClientId( $client_id );
-            $client->setClientSecret( $client_secret );
+            $client->setClientId($client_id);
+            $client->setClientSecret($client_secret);
             $client->setScopes( 'https://www.googleapis.com/auth/content' );
-            $client->setAccessToken( $access_token );
+            $client->setAccessToken($access_token);
+
             /*
              * Initialize service and datafeed
              */
-            $service = new Google_Service_ShoppingContent( $client );
+            $service = new Google_Service_ShoppingContent($client);
             $datafeed = new Google_Service_ShoppingContent_Datafeed();
+
             $name = $feed_title;
-            $filename = $name . uniqid();
-            $datafeed->setName( $name );
-            $datafeed->setContentType( 'products' );
-            $datafeed->setAttributeLanguage( $payload['language'] );
-            $datafeed->setContentLanguage( $payload['language'] );
-            $datafeed->setIntendedDestinations( array( 'Shopping' ) );
-            
-            if ( !$rex_google_merchant->feed_exists( $feed_id ) ) {
-                $datafeed->setFileName( $filename );
-            } else {
-                $datafeed->setFileName( get_post_meta( $feed_id, 'rex_feed_google_data_feed_file_name', true ) );
+            $filename = $name.uniqid();
+            $datafeed->setName($name);
+            $datafeed->setContentType('products');
+            $datafeed->setAttributeLanguage($payload['language']);
+            $datafeed->setContentLanguage($payload['language']);
+            $datafeed->setIntendedDestinations(array('Shopping'));
+            if (!$rex_google_merchant->feed_exists($feed_id)){
+                $datafeed->setFileName($filename);
+            }else {
+                $datafeed->setFileName(get_post_meta($feed_id, 'rex_feed_google_data_feed_file_name', true));
             }
-            
-            $datafeed->setTargetCountry( $payload['country'] );
+
+            $datafeed->setTargetCountry($payload['country']);
+
             /*
              * Initialize Schedule
              */
             $fetch_schedule = new Google_Service_ShoppingContent_DatafeedFetchSchedule();
-            if ( $payload['schedule'] === 'monthly' ) {
-                $fetch_schedule->setDayOfMonth( $payload[''] );
+            if($payload['schedule'] === 'monthly') {
+                $fetch_schedule->setDayOfMonth($payload['']);
             }
-            if ( $payload['schedule'] === 'weekly' ) {
-                $fetch_schedule->setWeekday( $payload['day'] );
+            if($payload['schedule'] === 'weekly') {
+                $fetch_schedule->setWeekday($payload['day']);
             }
-            $fetch_schedule->setHour( $payload['hour'] );
-            $fetch_schedule->setFetchUrl( $feed_url );
+            $fetch_schedule->setHour($payload['hour']);
+            $fetch_schedule->setFetchUrl($feed_url);
+
             /*
              * initialize feed format
              */
             $format = new Google_Service_ShoppingContent_DatafeedFormat();
-            $format->setFileEncoding( 'utf-8' );
-            $datafeed->setFormat( $format );
-            $datafeed->setFetchSchedule( $fetch_schedule );
+            $format->setFileEncoding('utf-8');
+            $datafeed->setFormat($format);
+            $datafeed->setFetchSchedule($fetch_schedule);
+
             try {
-                
-                if ( $rex_google_merchant->feed_exists( $feed_id ) ) {
-                    $datafeedID = get_post_meta( $feed_id, 'rex_feed_google_data_feed_id', true );
-                    $datafeed->setId( $datafeedID );
-                    $service->datafeeds->update( $merchant_id, $datafeedID, $datafeed );
-                    error_log( $datafeedID );
-                } else {
-                    $datafeed = $service->datafeeds->insert( $merchant_id, $datafeed );
+                if ($rex_google_merchant->feed_exists($feed_id)){
+                    $datafeedID = get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true);
+                    $datafeed->setId($datafeedID);
+                    $service->datafeeds->update($merchant_id, $datafeedID, $datafeed);
+                }else {
+                    $datafeed = $service->datafeeds->insert($merchant_id, $datafeed);
                     $datafeedID = $datafeed->getId();
                     $datafeedFileName = $datafeed->getFileName();
-                    update_post_meta( $feed_id, 'rex_feed_google_data_feed_id', $datafeedID );
-                    update_post_meta( $feed_id, 'rex_feed_google_data_feed_file_name', $datafeedFileName );
-                    error_log( print_r( $datafeed, 1 ) );
-                    error_log( $datafeedID );
+                    update_post_meta($feed_id, 'rex_feed_google_data_feed_id',$datafeedID );
+                    update_post_meta($feed_id, 'rex_feed_google_data_feed_file_name',$datafeedFileName );
+
                 }
-                
-                $service->datafeeds->fetchnow( $merchant_id, $datafeedID );
-            } catch ( Exception $e ) {
-                error_log( print_r( $e->getMessage(), 1 ) );
-                echo  'Message: ' . $e->getMessage() ;
+                $service->datafeeds->fetchnow($merchant_id, $datafeedID);
+            }
+            catch(Exception $e) {
+                error_log(print_r($e->getMessage(), 1));
+                echo 'Message: ' .$e->getMessage();
             }
         }
-        
-        update_post_meta( $feed_id, 'rex_feed_google_schedule', $payload['schedule'] );
-        update_post_meta( $feed_id, 'rex_feed_google_schedule_time', $payload['hour'] );
-        update_post_meta( $feed_id, 'rex_feed_google_schedule_month', $payload['month'] );
-        update_post_meta( $feed_id, 'rex_feed_google_schedule_week_day', $payload['day'] );
-        update_post_meta( $feed_id, 'rex_feed_google_target_country', $payload['country'] );
-        update_post_meta( $feed_id, 'rex_feed_google_target_language', $payload['language'] );
-        return array(
-            'success' => true,
-        );
+
+        update_post_meta($feed_id, 'rex_feed_google_schedule',$payload['schedule'] );
+        update_post_meta($feed_id, 'rex_feed_google_schedule_time',$payload['hour'] );
+        update_post_meta($feed_id, 'rex_feed_google_schedule_month',$payload['month'] );
+        update_post_meta($feed_id, 'rex_feed_google_schedule_week_day',$payload['day'] );
+        update_post_meta($feed_id, 'rex_feed_google_target_country',$payload['country'] );
+        update_post_meta($feed_id, 'rex_feed_google_target_language',$payload['language'] );
+        return array('success' => true);
+    }
+
+
+    /**
+     * WPFM database update
+     */
+    public static function rex_wpfm_database_update() {
+        check_ajax_referer('rex-wpfm-ajax', 'security');
+        require_once WPFM_PLUGIN_DIR_PATH . 'includes/class-rex-product-feed-activator.php';
+        set_transient( 'rex-wpfm-database-update-running', true, 3153600000 );
+        global $rex_product_feed_database_update;
+        $db_updates_callbacks = Rex_Product_Feed_Activator::get_db_update_callbacks();
+        $rex_product_feed_database_update->push_to_queue( $db_updates_callbacks);
+        $rex_product_feed_database_update->save()->dispatch();
+        Rex_Product_Feed_Activator::update_db_version('2.2.5');
+        wp_send_json_success('success');
+        wp_die();
+    }
+
+
+    /**
+     * Fetch google category
+     * @param $payload
+     * @return string
+     */
+    public static function fetch_google_category($payload) {
+        $file =  dirname(__FILE__) . '/partials/google_category_list.txt';
+        $matches = array();
+        $handle = @fopen($file, "r");
+        while (!feof($handle)) {
+            $cat = fgets($handle);
+            $matches[] = $cat;
+        }
+        fclose($handle);
+        return json_encode($matches, JSON_PRETTY_PRINT);
     }
 
 }

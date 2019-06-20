@@ -38,6 +38,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
 
         $this->feed = GoogleShopping::asRss();
 
+
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(

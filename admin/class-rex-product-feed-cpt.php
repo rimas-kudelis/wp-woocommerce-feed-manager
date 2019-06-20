@@ -50,7 +50,7 @@ class Rex_Product_CPT {
                     'title'       => 'Merchant',
                     'meta_key'    => 'rex_feed_merchant',
                     'function'    => function (){
-                        echo ucwords( esc_html( get_post_meta( get_the_id(), 'rex_feed_merchant', true ) ) );
+                        echo ucwords( esc_html( str_replace('_', ' ' , get_post_meta( get_the_id(), 'rex_feed_merchant', true )) ) );
                     }
                 ),
 

@@ -4,7 +4,8 @@
         "johnbillion/extended-cpts": "^3.0",
         "philipnewcomer/wp-ajax-helper": "^1.0",
         "a5hleyrich/wp-background-processing": "^1.0",
-        "google/apiclient": "^2.2"
+        "google/apiclient": "^2.2",
+        "appsero/client": "^1.1"
     },
     "autoload": {
         "classmap": ["admin/"],

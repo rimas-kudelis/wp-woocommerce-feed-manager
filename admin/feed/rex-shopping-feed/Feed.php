@@ -25,65 +25,65 @@ class Feed
      * Stores the list of items for the feed
      * @var Item[]
      */
-    private $items = array();
+    protected $items = array();
 
     /**
      * Stores the list of items for the feed
      * @var Item[]
      */
-    private $items_row = array();
+    protected $items_row = array();
 
     /**
      * [$channelCreated description]
      * @var boolean
      */
-    private $channelName;
+    protected $channelName;
 
 
     /**
      * [$channelCreated description]
      * @var boolean
      */
-    private $itemlName;
+    protected $itemlName;
 
     /**
      * [$channelCreated description]
      * @var boolean
      */
-    private $channelCreated = false;
+    protected $channelCreated = false;
 
     /**
      * The base for the feed
      * @var SimpleXMLElement
      */
-    private $feed = null;
+    protected $feed = null;
 
     /**
      * [$title description]
      * @var string
      */
-    private $title = '';
+    protected $title = '';
 
     /**
      * [$cacheDir description]
      * @var string
      */
-    private $cacheDir = 'cache';
+    protected $cacheDir = 'cache';
 
     /**
      * [$description description]
      * @var string
      */
-    private $description = '';
+    protected $description = '';
 
     /**
      * [$link description]
      * @var string
      */
-    private $link = '';
+    protected $link = '';
 
 
-    private $rss = 'rss';
+    protected $rss = 'rss';
 
     /**
      * Feed constructor
@@ -149,6 +149,7 @@ class Feed
      */
     public function createItem()
     {
+
         $this->channel();
         $item = new Item($this->namespace);
         $index = 'index_' . md5(microtime());
@@ -207,8 +208,6 @@ class Feed
     private function addItemsToFeed()
     {
         foreach ($this->items as $item) {
-
-
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
                 $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);
@@ -225,8 +224,6 @@ class Feed
                 }
             }
         }
-
-
     }
 
     private function addItemsToFeedText() {
@@ -317,12 +314,14 @@ class Feed
     /**
      * Generate RSS feed
      * @param bool $output
+     * @param string/bool $merchant
      * @return string
      */
     public function asRss($output = false)
     {
         ob_end_clean();
         $this->addItemsToFeed();
+
 //        $data = html_entity_decode($this->feed->asXml());
         $data = $this->feed->asXml();
         if ($output) {

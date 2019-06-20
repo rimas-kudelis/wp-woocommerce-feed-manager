@@ -29,7 +29,6 @@ class Rex_Feed_Template_Adroll extends Rex_Feed_Abstract_Template {
                 'link'          => 'Product URL',
                 'image_link'    => 'Primary Image URL',
                 'price'         => 'Price',
-                'categories'    => 'Category',
             ),
 
         );

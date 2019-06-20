@@ -48,6 +48,10 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         array (
             'Composer\\Installers\\' => 20,
         ),
+        'A' => 
+        array (
+            'Appsero\\' => 8,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -99,6 +103,10 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
         ),
+        'Appsero\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/appsero/client/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -130,7 +138,6 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         'CategoryMapping' => __DIR__ . '/../..' . '/admin/class-category-mapping.php',
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
-        'RexPremium' => __DIR__ . '/../..' . '/admin/class-rex-free-plugin-handler.php',
         'RexTheme\\RexShoppingFeed\\Containers\\RexShopping' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Containers/RexShopping.php',
         'RexTheme\\RexShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Feed.php',
         'RexTheme\\RexShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Item.php',
@@ -161,9 +168,11 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         'Rex_Product_Feed_Background_Process' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-background-process.php',
         'Rex_Product_Feed_Controller' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-controller.php',
         'Rex_Product_Feed_Cron_Handler' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-cron-handler.php',
+        'Rex_Product_Feed_Database_Update' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-database-update.php',
         'Rex_Product_Feed_Facebook' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-facebook.php',
         'Rex_Product_Feed_Factory' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-factory.php',
         'Rex_Product_Feed_Google' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-google.php',
+        'Rex_Product_Feed_Notices' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-notices.php',
         'Rex_Product_Feed_Other' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-other.php',
         'Rex_Product_Filter' => __DIR__ . '/../..' . '/admin/feed-filter/class-rex-product-filter.php',
         'Rex_Product_Metabox' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-metabox.php',

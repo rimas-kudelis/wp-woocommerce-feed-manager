@@ -40,6 +40,7 @@ class Rex_Feed_Attributes {
                 'width'                     => 'Width',
                 'height'                    => 'Height',
                 'length'                    => 'Length',
+                "shipping_class"            => "Shipping Class",
                 'rating_total'              => 'Total Rating',
                 'rating_average'            => 'Average Rating',
                 'product_tags'              => 'Tags',
@@ -47,7 +48,6 @@ class Rex_Feed_Attributes {
                 'sale_price_dates_to'       => 'Sale End Date',
                 'sale_price_effective_date' => 'Sale Price Effective Date',
                 'identifier_exists'         => 'Identifier Exists Calculator',
-
             ),
 
             'Image Attributes' => array(
@@ -113,7 +113,7 @@ class Rex_Feed_Attributes {
         if (count($data)) {
             foreach ($data as $key => $value) {
 //                if (substr($value->name, 0, 1) !== "_") {
-                    if (!preg_match("/pyre|sbg|fusion|rex/i",$value->name)){
+                    if (!preg_match("/pyre|sbg|fusion|rex|woosea/i",$value->name)){
                         $value_display = str_replace("_", " ",$value->name);
                         $list["custom_attributes_" . $value->name] = ucfirst($value_display);
 //                    }
@@ -126,13 +126,24 @@ class Rex_Feed_Attributes {
 
 
         //Category Mapping
+//        $cat_maps_array = array();
+//        $pattern = '/^rex_cat_map_[a-z]+$/';
+//        $cat_maps = preg_grep($pattern, array_keys(wp_load_alloptions()));
+//        if($cat_maps){
+//            foreach ($cat_maps as $cat_map){
+//                $option = get_option($cat_map);
+//                $cat_maps_array["$cat_map"] = $option['map-name'];
+//            }
+//        }
+//        $attributes['Category Map'] = $cat_maps_array;
+//        return $attributes;
+
+
         $cat_maps_array = array();
-        $pattern = '/^rex_cat_map_[a-z0-9]+$/';
-        $cat_maps = preg_grep($pattern, array_keys(wp_load_alloptions()));
+        $cat_maps = get_option('rex-wpfm-category-mapping');
         if($cat_maps){
-            foreach ($cat_maps as $cat_map){
-                $option = get_option($cat_map);
-                $cat_maps_array["$cat_map"] = $option['map-name'];
+            foreach ($cat_maps as $key => $cat_map){
+                $cat_maps_array[$key] = $cat_map['map-name'];
             }
         }
         $attributes['Category Map'] = $cat_maps_array;

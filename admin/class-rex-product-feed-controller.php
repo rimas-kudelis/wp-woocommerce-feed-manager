@@ -22,7 +22,7 @@ class Rex_Product_Feed_Controller {
      */
     protected static function get_feed_queue() {
 
-        return null != get_option('rex_feed_queue') ? get_option('rex_feed_queue') : array();
+        return null != get_option('rex_wpfm_feed_queue') ? get_option('rex_wpfm_feed_queue') : array();
     }
 
 
@@ -37,7 +37,7 @@ class Rex_Product_Feed_Controller {
 
         if( ! in_array( $feed_id, $feed_queue_ids ) ) {
             array_push( $feed_queue_ids, $feed_id );
-            update_option( 'rex_feed_queue', $feed_queue_ids );
+            update_option( 'rex_wpfm_feed_queue', $feed_queue_ids );
         }
     }
 
@@ -55,7 +55,7 @@ class Rex_Product_Feed_Controller {
         if( ( $key = array_search( $feed_id, $feed_queue_ids ) ) !== false ) {
             unset( $feed_queue_ids[ $key ] );
             $feed_queue = array_values( $feed_queue_ids ); // resort after unset
-            update_option( 'rex_feed_queue', $feed_queue );
+            update_option( 'rex_wpfm_feed_queue', $feed_queue );
         }
     }
 
@@ -64,7 +64,7 @@ class Rex_Product_Feed_Controller {
      * Empties the feed queue
      */
     public static function clear_feed_queue() {
-        update_option( 'rex_feed_queue', array() );
+        update_option( 'rex_wpfm_feed_queue', array() );
     }
 
 

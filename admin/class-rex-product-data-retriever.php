@@ -18,7 +18,7 @@ class Rex_Product_Data_Retriever {
      * @access   private
      * @var      string    $plugin_name    The ID of this plugin.
      */
-    private $feed_rules;
+    protected $feed_rules;
 
     /**
      * Contains all available meta keys for products.
@@ -27,7 +27,7 @@ class Rex_Product_Data_Retriever {
      * @access   private
      * @var      string    $plugin_name    The ID of this plugin.
      */
-    private $product_meta_keys;
+    protected $product_meta_keys;
 
     /**
      * The data of product retrived by feed_rules.
@@ -36,7 +36,7 @@ class Rex_Product_Data_Retriever {
      * @access   private
      * @var      string    $data    The current version of this plugin.
      */
-    private $data;
+    protected $data;
 
 
     /**
@@ -46,7 +46,7 @@ class Rex_Product_Data_Retriever {
      * @access   private
      * @var      object    $metabox    The current metabox of this plugin.
      */
-    private $product;
+    protected $product;
 
     /**
      * Variant atts for feed.
@@ -55,7 +55,7 @@ class Rex_Product_Data_Retriever {
      * @access   private
      * @var      object    $metabox    The current metabox of this plugin.
      */
-    private $variant_atts = array( 'color', 'pattern', 'material', 'age_group', 'gender', 'size', 'size_type', 'size_system' );
+    protected $variant_atts = array( 'color', 'pattern', 'material', 'age_group', 'gender', 'size', 'size_type', 'size_system' );
 
     /**
      * Additional images of current product.
@@ -64,7 +64,7 @@ class Rex_Product_Data_Retriever {
      * @access   private
      * @var      object    $metabox    The current metabox of this plugin.
      */
-    private $additional_images = array();
+    protected $additional_images = array();
 
 
 
@@ -83,10 +83,10 @@ class Rex_Product_Data_Retriever {
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
 
+
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
         $this->set_all_value();
 //        $this->maybe_set_variation_data();
-
     }
 
 
@@ -144,8 +144,7 @@ class Rex_Product_Data_Retriever {
         }elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
             $val = $this->set_pr_att( $rule['meta_key']  );
 
-        }
-        elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
+        }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
 
             $val = $this->set_image_att( $rule['meta_key']  );
 
@@ -192,7 +191,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function set_pr_att( $key ) {
+    protected function set_pr_att( $key ) {
         switch ( $key ) {
             case 'id':
                 return $this->product->get_id(); break;
@@ -204,7 +203,6 @@ class Rex_Product_Data_Retriever {
                 return $this->product->get_name(); break;
 
             case 'price':
-
                 if ($this->product->is_type( 'grouped' ))
                     return number_format((float)$this->get_grouped_price($this->product, 'regular'), 2, '.', '');
                 return number_format((float)$this->product->get_regular_price(), 2, '.', '');
@@ -268,6 +266,9 @@ class Rex_Product_Data_Retriever {
             case 'length':
                 return $this->product->get_length(); break;
 
+            case 'shipping_class':
+                return $this->product->get_shipping_class(); break;
+
             case 'type':
                 return $this->product->get_type(); break;
 
@@ -312,7 +313,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function set_image_att( $key ) {
+    protected function set_image_att( $key ) {
         switch ( $key ) {
             case 'featured_image':
                 return wp_get_attachment_url(  $this->product->get_image_id() ); break;
@@ -326,7 +327,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function set_product_att( $key ) {
+    protected function set_product_att( $key ) {
         if ( 'WC_Product_Variation' != get_class($this->product) ) {
             return;
         }
@@ -343,7 +344,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function set_product_dynamic_att( $key ) {
+    protected function set_product_dynamic_att( $key ) {
 
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             $attr_name = $this->get_product_dynamic_tags($this->product->get_parent_id(), $key);
@@ -362,7 +363,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function set_product_custom_att( $key ) {
+    protected function set_product_custom_att( $key ) {
 
         $new_key = str_replace('custom_attributes_', '', $key);
 
@@ -388,9 +389,9 @@ class Rex_Product_Data_Retriever {
     /**
      * Set Product Category Map
      *
-     * @since    1.0.0
+     * @since    3.0
      */
-    private function set_cat_mapper_att( $key ) {
+    protected function set_cat_mapper_att( $key ) {
         $first_cat = array();
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             $cat_lists = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
@@ -400,12 +401,18 @@ class Rex_Product_Data_Retriever {
         if($cat_lists){
             $first_cat = reset($cat_lists);
         }
-        error_log(print_r($first_cat, 1));
-        $map_category = get_option($key);
-        if($first_cat){
-            foreach ($map_category['map-config'] as $key => $value){
-                if( $first_cat->term_id == $value['map-key']){
-                    return utf8_decode(urldecode($value['map-value']));
+
+        $wpfm_category_map = get_option('rex-wpfm-category-mapping');
+        if($wpfm_category_map) {
+            $map = $wpfm_category_map[$key];
+            $map_config = $map['map-config'];
+            if($first_cat){
+                foreach ($map_config as $key => $value){
+                    if( $first_cat->term_id == $value['map-key']){
+                        $map_value = $value['map-value'];
+                        preg_match("~^(\d+)~", $map_value, $m);
+                        return utf8_decode(urldecode($m[1]));
+                    }
                 }
             }
         }
@@ -418,7 +425,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function get_additional_image( $key ) {
+    protected function get_additional_image( $key ) {
 
         if ( empty( $this->additional_images ) ) {
             $this->set_additional_images();
@@ -440,7 +447,7 @@ class Rex_Product_Data_Retriever {
      * @param string $after Optional. After list.
      * @return string|false
      */
-    private function get_product_cats( $before = '', $sep = ', ', $after = '' ) {
+    protected function get_product_cats( $before = '', $sep = ', ', $after = '' ) {
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             return $this->get_the_term_list( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
         }else {
@@ -458,7 +465,7 @@ class Rex_Product_Data_Retriever {
      * @param string $after Optional. After list.
      * @return string|false
      */
-    private function get_product_tags( $before = '', $sep = ', ', $after = '' ) {
+    protected function get_product_tags( $before = '', $sep = ', ', $after = '' ) {
 
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             return $this->get_the_term_list( $this->product->get_parent_id(), 'product_tag', $before, $sep, $after );
@@ -476,7 +483,7 @@ class Rex_Product_Data_Retriever {
      * @param string $after Optional. After list.
      * @return string|false
      */
-    private function get_product_dynamic_tags( $id, $key, $before = '', $sep = ', ', $after = '' ) {
+    protected function get_product_dynamic_tags( $id, $key, $before = '', $sep = ', ', $after = '' ) {
         return $this->get_the_term_list($id, $key, $before, $sep, $after );
     }
 
@@ -491,7 +498,7 @@ class Rex_Product_Data_Retriever {
      * @param string $after Optional. After list.
      * @return string|false
      */
-    private function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
+    protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
         $terms = get_the_terms( $id, $taxonomy );
 
         if ( empty( $terms ) || is_wp_error( $terms ) ){
@@ -514,7 +521,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function set_additional_images() {
+    protected function set_additional_images() {
 
         $img_ids = $this->product->get_gallery_image_ids();
 
@@ -537,7 +544,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function is_primary_attr( $key ) {
+    protected function is_primary_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Primary Attributes'] );
     }
 
@@ -546,7 +553,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function is_image_attr( $key ) {
+    protected function is_image_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Image Attributes'] );
     }
 
@@ -555,7 +562,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function is_product_attr( $key ) {
+    protected function is_product_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Product Attributes'] );
     }
 
@@ -565,7 +572,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function is_product_dynamic_attr( $key ) {
+    protected function is_product_dynamic_attr( $key ) {
 
         return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
     }
@@ -576,7 +583,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function is_product_custom_attr( $key ) {
+    protected function is_product_custom_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Product Custom Attributes'] );
     }
 
@@ -585,7 +592,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function is_product_category_mapper_attr( $key ) {
+    protected function is_product_category_mapper_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Category Map'] );
     }
 
@@ -595,7 +602,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function get_condition( ) {
+    protected function get_condition( ) {
         return 'New';
     }
 
@@ -632,7 +639,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function get_availability( ) {
+    protected function get_availability( ) {
         if ( $this->product->is_in_stock() == TRUE ) {
             return 'in stock';
         } else {
@@ -645,7 +652,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function maybe_add_prefix_suffix($val, $rule) {
+    protected function maybe_add_prefix_suffix($val, $rule) {
         $prefix =  $rule['prefix'];
         $suffix =  $rule['suffix'];
 
@@ -665,7 +672,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function maybe_escape($val, $escape) {
+    protected function maybe_escape($val, $escape) {
         switch ($escape){
             case 'strip_tags':
                 return strip_tags($val);
@@ -695,7 +702,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function maybe_limit($val, $limit) {
+    protected function maybe_limit($val, $limit) {
         $limit = (int) $limit;
         if ( $limit > 0) {
             return substr($val, 0, $limit);
@@ -708,7 +715,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    private function maybe_set_variation_data() {
+    protected function maybe_set_variation_data() {
 
         if ( 'WC_Product_Variation' != get_class($this->product) ) {
             return;
@@ -824,7 +831,7 @@ class Rex_Product_Data_Retriever {
      * @return bool
      * @since    1.0.0
      */
-    private function is_children(){
+    protected function is_children(){
         return $this->product->get_parent_id() ? true: false;
     }
 

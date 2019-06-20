@@ -1,10 +1,10 @@
 === WooCommerce Product Feed Manager ===
-Contributors: rextheme, coderexco, freemius
+Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
-Tested up to: 5.2.1
-Stable tag: 2.2.7
+Tested up to: 5.1.1
+Stable tag: 2.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,26 +184,14 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 2.2.7 (2019-05-30) =
-* Fixed: Custom attribute mapping for Facebook
-* Bug Fix: Some notices and warnings on feed generation
-* Compatibility Checked : WordPress 5.2.1
-* Compatibility Checked : WooCommerce 3.6.4
-
-
-= 2.2.6 (2019-05-16) =
-* Fixed: UI loading conflict with themify builder
-* Added: Missing google categories
-* Added: CSV format for Facebook
-
-
-= 2.2.5 (2019-05-02) =
-* Bug Fix: Fix feed schedule update for variation product settings
-* Added CSV format
-
+= 3.0 (2019-05-20) =
+* Removed Freemious SDK
+* Added shipping_class support
+* Improved category mapping
 
 = 2.2.4 (2019-04-18) =
 * Improve category mapping UI
+* Added CSV format
 
 = 2.2.3.3 (2019-04-12) =
 * Bug Fix: Compatible with latest materialize css update

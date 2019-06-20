@@ -3,16 +3,6 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       https://rextheme.com
- * @since      1.0.0
- *
- * @package    Rex_Product_Metabox
- * @subpackage Rex_Product_Feed/admin
- */
-
-/**
- * The admin-specific functionality of the plugin.
- *
  * Defines all the Metaboxes for Products
  *
  * @package    Rex_Product_Metabox
@@ -29,10 +19,16 @@ class Rex_Product_Metabox {
      * @since    1.0.0
      */
     public function register() {
+        $is_premium = apply_filters('wpfm_is_premium_activate', false);
         $this->products();
+        if(!$is_premium) $this->upgrade_notice();
         $this->feed_config();
         $this->feed_file();
         $this->google_merchant();
+
+
+
+        add_filter( 'cmb2_select_attributes', array($this, 'wpfm_merchant_dropdown'), 10, 4 );
     }
 
 
@@ -168,7 +164,6 @@ class Rex_Product_Metabox {
                 foreach ($active_languages as $key => $value){
                     $option_array[$key] = $value['display_name'];
                 }
-
                 $box->add_field( array(
                     'name'          => __( 'WPML Language', 'rex-product-feed' ),
                     'desc'          => __( 'WPML Language', 'rex-product-feed' ),
@@ -190,6 +185,92 @@ class Rex_Product_Metabox {
      * @author RexTheme
      **/
     private function feed_config(){
+
+        $_merchants = array(
+            'custom'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Custom'
+            ),
+            'google'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Google'
+            ),
+            'google_Ad'    => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Google AD'
+            ),
+            'facebook'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Facebook'
+            ),
+            'amazon'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Amazon'
+            ),
+            'ebay'         => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'eBay'
+            ),
+            'adroll'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'AdRoll'
+            ),
+            'nextag'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Nextag'
+            ),
+            'pricegrabber' => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Pricegrabber'
+            ),
+            'bing'         => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Bing'
+            ),
+            'kelkoo'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Kelkoo'
+            ),
+            'become'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Become'
+            ),
+            'shopzilla'    => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'ShopZilla'
+            ),
+            'shopping'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Shopping'
+            )
+        );
+        $merchants = get_option('rex_wpfm_merchant_status');
+        if($merchants) {
+            $_merchants = array_merge($_merchants, $merchants);
+        }
+        $merchant_lists = [];
+        foreach ($_merchants as $key => $merchant) {
+            if($merchant['status'])
+                $merchant_lists[$key] = $merchant['name'];
+        }
+        reset($merchant_lists);
+        $default_merchant = key($merchant_lists);
+
+
         $box = new_cmb2_box( array(
             'id'            => $this->prefix . 'conf',
             'title'         => esc_html__( 'Feed Configuration', 'rex-product-feed' ),
@@ -202,36 +283,25 @@ class Rex_Product_Metabox {
             'id'               => $this->prefix . 'merchant',
             'type'             => 'select',
             'show_option_none' => false,
-            'default'          => 'all',
-            'options'          => array(
-                'custom'       => __( 'Custom', 'rex-product-feed' ),
-                'google'       => __( 'Google Shopping', 'rex-product-feed' ),
-                'google_Ad'    => __( 'Google Adwords', 'rex-product-feed' ),
-                'facebook'     => __( 'Facebook', 'rex-product-feed' ),
-                'amazon'       => __( 'Amazon Ads', 'rex-product-feed' ),
-                'ebay'         => __( 'eBay(Shopping.com)', 'rex-product-feed' ),
-                'adroll'       => __( 'Adroll.com', 'rex-product-feed' ),
-                'nextag'       => __( 'Nextag', 'rex-product-feed' ),
-                'pricegrabber' => __( 'Price Grabber', 'rex-product-feed' ),
-                'bing'         => __( 'Bing', 'rex-product-feed' ),
-                'kelkoo'       => __( 'Kelkoo', 'rex-product-feed' ),
-                'become'       => __( 'Become', 'rex-product-feed' ),
-                'shopzilla'    => __( 'ShopZilla.com', 'rex-product-feed' ),
-                'shopping'     => __( 'Shopping.com', 'rex-product-feed' ),
-            ),
+            'default'          => $default_merchant,
+            'options'          => $merchant_lists,
         ) );
+
+        do_action('wpfm_merchant_settings_field', $box, $this->prefix);
 
         $box->add_field( array(
             'name'             => __('File Format', 'rex-product-feed' ),
             'desc'             => __('Select Format of the Feed.', 'rex-product-feed' ),
             'id'               => $this->prefix . 'feed_format',
             'type'             => 'select',
-            'show_option_none' => false,
-            'default'          => 'all',
             'options'          => array(
-                'xml'       => __( 'XML', 'rex-product-feed' ),
-                'text'      => __( 'TEXT', 'rex-product-feed' ),
-                'csv'       => __( 'CSV', 'rex-product-feed' ),
+                'xml'          => __( 'XML', 'rex-product-feed' ),
+                'text'         => __( 'TEXT', 'rex-product-feed' ),
+                'csv'          => __( 'CSV', 'rex-product-feed' ),
+            ),
+            'attributes' => array(
+                'data-conditional-id'    => $this->prefix . 'merchant',
+                'data-conditional-value' => wp_json_encode(apply_filters('wpfm_merchant_fixed_format', array( 'custom', 'facebook', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll'))),
             ),
         ) );
 
@@ -304,7 +374,6 @@ class Rex_Product_Metabox {
      **/
     private function feed_file(){
 
-
         $box = new_cmb2_box( array(
             'id'            => $this->prefix . 'file_link',
             'title'         => esc_html__( 'Feed URL', 'rex-product-feed' ),
@@ -331,6 +400,43 @@ class Rex_Product_Metabox {
 
 
 
+    private function upgrade_notice(){
+
+        $box = new_cmb2_box( array(
+            'id'            => $this->prefix . 'upgrade_notice',
+            'title'         => esc_html__( 'Why upgrade to Premium Version?', 'rex-product-feed' ),
+            'object_types'  => array( 'product-feed' ), // Post type
+            'context'       => 'side',
+            'priority'      => 'low'
+        ) );
+
+        $box->add_field( array(
+            'name' => '',
+            'type' => 'title',
+            'id'   => $this->prefix . 'features_text',
+            'after_field'      => array($this, 'after_field_upgrade_notice_cb'),
+        ) );
+    }
+
+
+    /**
+     * @param $field_args
+     * @param $field
+     */
+    public function after_field_upgrade_notice_cb ($field_args, $field) {
+
+        echo '<ol class="parent">';
+        echo '<li class="item">Supports more than 50 products.</li>';
+        echo '<li class="item">Access to a elite support team.</li>';
+        echo '<li class="item">Supports YITH brand attributes.</li>';
+        echo '<li class="item">Custom Filtering.</li>';
+        echo '<li class="item">Dynamic Attribute.</li>';
+        echo '<li class="item">Custom field support - Brand,GTIN,MPN,UPC And EAN.</li>';
+        echo '<li class="item">Fix WooCommerce\'s (JSON-LD) structure data bug</li>';
+        echo '</ol>';
+
+        echo '<a class="waves-effect waves-light btn" target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro">Upgrade to pro</a>';
+    }
 
 
     /**
@@ -513,5 +619,183 @@ class Rex_Product_Metabox {
             $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.csv";
         }
         return esc_url( $path );
+    }
+
+
+    /**
+     * @param $args
+     * @param $defaults
+     * @param $field_object
+     * @param $field_types_object
+     * @return mixed
+     */
+    public function wpfm_merchant_dropdown( $args, $defaults, $field_object, $field_types_object ) {
+
+        $is_premium = apply_filters('wpfm_is_premium', false);
+        if ($is_premium)
+            return $args;
+
+        // Only do this for the field we want (vs all select fields)
+        if ( 'rex_feed_merchant' != $field_types_object->_id() ) {
+            return $args;
+        }
+
+        // free vs pro merchants
+        $merchants = apply_filters('wpfm_available_merchants_status', get_option('rex_wpfm_merchant_status'));
+        $_merchants = array(
+            'custom'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Custom'
+            ),
+            'google'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Google'
+            ),
+            'google_Ad'    => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Google AD'
+            ),
+            'facebook'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Facebook'
+            ),
+            'amazon'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Amazon'
+            ),
+            'ebay'         => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'eBay'
+            ),
+            'adroll'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'AdRoll'
+            ),
+            'nextag'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Nextag'
+            ),
+            'pricegrabber' => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Pricegrabber'
+            ),
+            'bing'         => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Bing'
+            ),
+            'kelkoo'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Kelkoo'
+            ),
+            'become'       => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Become'
+            ),
+            'shopzilla'    => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'ShopZilla'
+            ),
+            'shopping'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Shopping'
+            )
+        );
+        if($merchants) {
+            $_merchants = array_merge($_merchants, $merchants);
+        }
+        $_pro_merchants = array(
+            'ebay_mip'     => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'eBay (MIP)'
+            ),
+            'ebay_seller'     => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'eBay Seller Center'
+            ),
+            'bol'       => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'Bol.com'
+            ),
+            'wish'       => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'Wish.com'
+            ),
+            'fruugo'       => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'Fruugo'
+            ),
+            'leguide'       => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'Leguide'
+            ),
+            'connexity'       => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'Connexity'
+            ),
+            'drm'     => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'Google Remarketing (DRM)'
+            )
+
+        );
+        $_merchants = array_merge($_merchants, $_pro_merchants);
+
+        if(!$is_premium) {
+            $_merchants = array_merge($_merchants, $_pro_merchants);
+        }
+
+        $saved_value = $field_object->escaped_value();
+        $value       = $saved_value ? $saved_value : $field_object->args( 'default' );
+        $options_string = '';
+        $options_string .= $field_types_object->select_option( array(
+            'label'		=> __( 'Select an option' ),
+            'value'		=> '',
+            'checked'	=> ! $value,
+            'disabled'  => false
+        ));
+
+        if(array_key_exists($value, $_pro_merchants)) {
+            $value = array_keys($_merchants)[1];
+        }
+
+        foreach ($_merchants as $key => $merchant) {
+            if($merchant['free']) {
+                if($merchant['status']) {
+                    $options_string .= sprintf( "\t" . '<option value="%s" %s>%s</option>', $key, selected($value, $key, false ), $merchant['name'] ) . "\n";
+                }
+            }
+            else
+                $options_string .= sprintf( "\t" . '<option class="pro-merchants" value="%s"  disabled>%s</option>', $key, $merchant['name'] ) . "\n";
+        }
+
+        reset($_merchants);
+        $default_merchant = key($_merchants);
+
+        $defaults['options'] = $options_string;
+        $defaults['default'] = $default_merchant;
+
+        return $defaults;
     }
 }

@@ -246,7 +246,7 @@ class Item
     public function google_product_category($googleProductCategory)
     {
         $node = new Node('google_product_category');
-        $this->nodes['google_product_category'] = $node->value($googleProductCategory)->_namespace($this->namespace)->addCdata();
+        $this->nodes['google_product_category'] = $node->value($googleProductCategory)->_namespace($this->namespace);
     }
 
     /**
@@ -486,4 +486,5 @@ class Item
             array('&#8226;', '&#8221;', '&#8220;', '&#8217;', '&#8216;', '&trade;', '&reg;', '&deg;'),
             $string);
     }
+
 }

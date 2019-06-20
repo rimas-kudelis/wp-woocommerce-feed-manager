@@ -61,15 +61,8 @@ class Rex_Product_Feed_Cron_Handler {
      * @since    2.0.0
      */
     public function rex_feed_cron_handler() {
-
-        if ( !rex_is_woocommerce_active() ) {
-            write_log('WooCommerce is not installed');
-            exit;
-        }
-
         $this->feed_ids = $this->get_feeds();
         $this->process_handler($this->feed_ids);
-
     }
 
 

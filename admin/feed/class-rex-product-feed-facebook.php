@@ -26,6 +26,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     public function make_feed() {
 
         GoogleShopping::$container = null;
+
         GoogleShopping::title($this->title);
         GoogleShopping::link($this->link);
         GoogleShopping::description($this->desc);
@@ -34,8 +35,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         $this->generate_simple_product_feed();
         $this->generate_grouped_product_feed();
         $this->generate_variable_product_feed();
-
-        $this->feed = $this->returnFinalProduct();
+        $this->feed = GoogleShopping::asRss();
 
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
@@ -66,13 +66,11 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 $atts = $this->get_product_data( $product );
                 $item = GoogleShopping::createItem();
 
-
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
             }
-
 
         }
     }
@@ -118,12 +116,15 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
             // add all variants into feed
             foreach ($children as $child) {
+
                 $pr = wc_get_product($child);
+
                 if($this->product_scope == 'all') {
                     $this->allowed = true;
                 }else {
                     $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
                 }
+
                 if ($this->allowed) {
                     $item = GoogleShopping::createItem();
                     $atts = $this->get_product_data( $child );
@@ -135,26 +136,11 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
                     $item->item_group_id( $product->get_id() );
                 }
+
+
+
             }
         }
-    }
-
-
-    /**
-     * Return Feed
-     *
-     * @return array|bool|string
-     */
-    public function returnFinalProduct()
-    {
-        if ($this->feed_format == 'xml') {
-            return GoogleShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
-            return GoogleShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
-            return GoogleShopping::asCsv();
-        }
-        return false;
     }
 
 }
