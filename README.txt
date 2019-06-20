@@ -189,6 +189,23 @@ WP Dashboard > Product Feed > Upgrade.
 * Added shipping_class support
 * Improved category mapping
 
+= 2.2.7 (2019-05-30) =
+* Fixed: Custom attribute mapping for Facebook
+* Bug Fix: Some notices and warnings on feed generation
+* Compatibility Checked : WordPress 5.2.1
+* Compatibility Checked : WooCommerce 3.6.4
+
+
+= 2.2.6 (2019-05-16) =
+* Fixed: UI loading conflict with themify builder
+* Added: Missing google categories
+* Added: CSV format for Facebook
+
+
+= 2.2.5 (2019-05-02) =
+* Bug Fix: Fix feed schedule update for variation product settings
+* Added CSV format
+
 = 2.2.4 (2019-04-18) =
 * Improve category mapping UI
 * Added CSV format
