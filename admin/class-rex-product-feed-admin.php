@@ -191,13 +191,9 @@ class Rex_Product_Feed_Admin {
             wp_enqueue_style( 'materialize-css', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'easy-auto', plugin_dir_url( __FILE__ ) . 'css/easy-autocomplete.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css', array(), $this->version, 'all' );
-
             wp_enqueue_style( 'jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
-
             wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rex-product-feed-admin.css', array(), $this->version, 'all' );
         }
-
-
     }
 
     /**
@@ -219,13 +215,17 @@ class Rex_Product_Feed_Admin {
          * class.
          */
 
-        wp_enqueue_script( 'rex-wpfm-global-js', plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-global-admin.js', array( 'jquery'), $this->version, false );
-        wp_localize_script( 'rex-wpfm-global-js', 'rex_wpfm_ajax',
-            array(
-                'ajax_url' => admin_url( 'admin-ajax.php' ),
-                'ajax_nonce' => wp_create_nonce('rex-wpfm-ajax'),
-            )
-        );
+        $db_version = get_option('rex_wpfm_db_version');
+        if($db_version < 3) {
+            wp_enqueue_script( 'rex-wpfm-global-js', plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-global-admin.js', array( 'jquery'), $this->version, false );
+            wp_localize_script( 'rex-wpfm-global-js', 'rex_wpfm_ajax',
+                array(
+                    'ajax_url' => admin_url( 'admin-ajax.php' ),
+                    'ajax_nonce' => wp_create_nonce('rex-wpfm-ajax'),
+                )
+            );
+        }
+
         $screen = get_current_screen();
         if( ($hook === 'edit.php' ) ){
             return;
@@ -245,11 +245,11 @@ class Rex_Product_Feed_Admin {
                 plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-admin.js',
                 array( 'jquery' ),
                 $this->version,
-                false
+                true
             );
 
-            wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, false );
-            wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery', 'jquery-ui-autocomplete' ), $this->version, false );
+            wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, true );
+            wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery', 'jquery-ui-autocomplete' ), $this->version, true );
         }
 
 
@@ -374,7 +374,7 @@ class Rex_Product_Feed_Admin {
         add_submenu_page('product-feed',  __( 'Add New Feed', 'rex-product-feed' ), __( 'Add New Feed', 'rex-product-feed' ), 'manage_options', 'post-new.php?post_type=product-feed');
         $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_options', 'category_mapping',  __CLASS__ .'::category_mapping');
         $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_options', 'merchant_settings',  __CLASS__ .'::merchant_settings');
-        $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Dashboard', 'rex-product-feed'), __('Dashboard', 'rex-product-feed'), 'manage_options', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
+        $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_options', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
         $this->wpfm_support_menu = add_submenu_page('product-feed', '', __('Support', 'rex-product-feed'), 'manage_options', 'wpfm_support',  __CLASS__ .'::wpfm_support');
 
 

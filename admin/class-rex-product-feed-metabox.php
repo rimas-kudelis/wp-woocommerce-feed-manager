@@ -26,8 +26,6 @@ class Rex_Product_Metabox {
         $this->feed_file();
         $this->google_merchant();
 
-
-
         add_filter( 'cmb2_select_attributes', array($this, 'wpfm_merchant_dropdown'), 10, 4 );
     }
 
@@ -90,7 +88,7 @@ class Rex_Product_Metabox {
             'name'           => 'Product Tag',
             'desc'           => 'Select Tag',
             'id'             => $this->prefix . 'tags',
-            'taxonomy'       => 'product_tag', //Enter Taxonomy Slug
+            'taxonomy'       => 'product_tag',
             'type'           => 'taxonomy_multicheck_inline',
             'text'           => array(
                 'no_terms_text' => 'Sorry, no product tags could be found.'
@@ -100,6 +98,7 @@ class Rex_Product_Metabox {
                 'data-conditional-value' => 'product_tag',
             ),
         ) );
+
 
 
         /*

@@ -14,6 +14,7 @@
 $is_premium = apply_filters('wpfm_is_premium', false);
 $is_premium_activated = apply_filters('wpfm_is_premium_activate', false);
 $custom_field = get_option('rex-wpfm-product-custom-field');
+$pa_field = get_option('rex-wpfm-product-pa-field');
 $structured_data = get_option('rex-wpfm-product-structured-data');
 $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
 
@@ -37,7 +38,7 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                     <ul class="tabs tabs-icon rex-tabs">
                         <li class="tab"><a href="#tab1" class="active"><i class="material-icons">settings</i>General</a></li>
                         <li class="tab"><a href="#merchant"><i class="material-icons">shopping_cart</i>Merchants</a></li>
-                        <li class="tab"><a href="#settings"><i class="material-icons">settings</i>Settings</a></li>
+                        <li class="tab"><a href="#settings"><i class="material-icons">settings</i>Controls</a></li>
                         <li class="tab"><a href="#tab2"><i class="material-icons">perm_media</i>Video Tutorials</a></li>
                         <li class="tab"><a href="#system_status"><i class="material-icons">report</i>System Status</a></li>
                         <?php
@@ -385,7 +386,7 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                         </div>
 
                         <div class="single-merchant">
-                            <span class="title"><?php echo __('Add Brand,GTIN,MPN,UPC and EAN to product', 'rex-product-feed'); ?></span>
+                            <span class="title"><?php echo __('Add Unique Product Identifiers (Brand,GTIN,MPN,UPC and EAN) to product', 'rex-product-feed'); ?></span>
                             <div class="switch">
                                 <?php
                                     if(!$is_premium) {
@@ -403,6 +404,24 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                             </div>
                         </div>
 
+                        <div class="single-merchant">
+                            <span class="title"><?php echo __('Add Detailed Product Attributes (size, pattern, material, age group, gender) to product', 'rex-product-feed'); ?></span>
+                            <div class="switch">
+                                <?php
+                                if(!$is_premium) {
+                                    $disabled = 'disabled';
+                                    $checked = '';
+                                }else {
+                                    $disabled = '';
+                                    $checked = $pa_field === 'yes' ? 'checked': '';
+                                }
+                                ?>
+                                <label>
+                                    <input type="checkbox" id="rex-product-pa-field" <?php echo $checked; ?> <?php echo $disabled; ?>>
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </div>
 
 
                     </div>

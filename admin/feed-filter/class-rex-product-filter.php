@@ -499,7 +499,12 @@ class Rex_Product_Filter {
                 break;
 
             case 'product_cats':
-                $terms = get_the_terms( $product, 'product_cat' );
+
+                if($product->post->post_parent) {
+                    $terms = get_the_terms( $product->get_parent_id(), 'product_cat' );
+                }else {
+                    $terms = get_the_terms( $product->get_id(), 'product_cat' );
+                }
                 if ( empty( $terms ) || is_wp_error( $terms ) ){
                     return '';
                 }
@@ -512,7 +517,11 @@ class Rex_Product_Filter {
                 break;
 
             case 'product_tags':
-                $terms = get_the_terms( $product, 'product_tag' );
+                if($product->post->post_parent) {
+                    $terms = get_the_terms( $product->get_parent_id(), 'product_tag' );
+                }else {
+                    $terms = get_the_terms( $product->get_id(), 'product_tag' );
+                }
                 if ( empty( $terms ) || is_wp_error( $terms ) ){
                     return '';
                 }

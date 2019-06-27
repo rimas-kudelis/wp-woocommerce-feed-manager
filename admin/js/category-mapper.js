@@ -16,7 +16,7 @@ jQuery(document).ready(function($){
                 }
                 $('.category-suggest').autocomplete({
                     data: dataCountry,
-                    limit: 5,
+                    minLength: 3
                 });
             })
             .error( function( res ) {
