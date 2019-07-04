@@ -67,6 +67,14 @@ class Rex_Product_Data_Retriever {
     protected $additional_images = array();
 
 
+    /**
+     * Append variation
+     *
+     * @since    3.2
+     * @access   private
+     * @var      object    $append_variation
+     */
+    protected $append_variation;
 
     /**
      * Initialize the class and set its properties.
@@ -75,13 +83,15 @@ class Rex_Product_Data_Retriever {
      * @param      string    $plugin_name       The name of this plugin.
      * @param      string    $version    The version of this plugin.
      */
-    public function __construct( $product, $feed_rules, $wpml = null ) {
+    public function __construct( $product, $feed_rules, $wpml = null, $append_variation = 'no' ) {
+
         $this->product           = wc_get_product( $product );
 
 //        $this->allowed = Rex_Product_Filter::allowedProduct($this->product, $feed_filter_rules);
 
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        $this->append_variation = $append_variation;
 
 
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
@@ -192,6 +202,7 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function set_pr_att( $key ) {
+
         switch ( $key ) {
             case 'id':
                 return $this->product->get_id(); break;
@@ -200,7 +211,27 @@ class Rex_Product_Data_Retriever {
                 return $this->product->get_sku(); break;
 
             case 'title':
-                return $this->product->get_name(); break;
+                if($this->append_variation === 'no') {
+                    return $this->product->get_name();
+                }else {
+                    if ($this->is_children()) {
+                        $_product = wc_get_product( $this->product );
+                        $_variations = $_product->get_attributes();
+                        if(count($_variations) > 2) {
+                            $_title = $this->product->get_title() . " - ";
+                            foreach($_variations as $key => $value){
+                                $_title = $_title . " " . ucfirst($value);
+                            }
+                            return $_title;
+                        }else {
+                            return $this->product->get_name();
+                        }
+                    }else {
+                        return $this->product->get_name();
+                    }
+
+                }
+                break;
 
             case 'price':
                 if ($this->product->is_type( 'grouped' ))

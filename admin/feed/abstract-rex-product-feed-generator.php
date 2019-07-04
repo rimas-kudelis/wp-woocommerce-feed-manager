@@ -240,6 +240,17 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 
     /**
+     * Append variation
+     * product name
+     *
+     * @since    3.2
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $append_variation
+     */
+    protected $append_variation;
+
+
+    /**
      * wpml enable
      *
      * @since    2.2.2
@@ -277,12 +288,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->setup_feed_filter_rules($config['feed_config']);
             $this->variations = $this->include_product_variations($config['feed_config']);
             $this->parent_product = $this->include_parent_product($config['feed_config']);
+            $this->append_variation = $this->append_variation_product_name($config['feed_config']) ? 'yes' : 'no';
         }else {
             $this->feed_rules = $config['feed_config'];
             $this->feed_rules_filter = $config['feed_filter'];
             $this->variations   = $config['include_variations'];
             $this->parent_product   = $config['include_variations'];
+            $this->append_variation   = $config['append_variation_name'];
         }
+
+
 
         $this->setup_products();
         $this->setup_variable_products();
@@ -368,6 +383,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $feed_rules       = array();
         parse_str( $info, $feed_rules );
         $include_variations       = $feed_rules['rex_feed_variations'];
+        if ($include_variations === 'yes') {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Append product variation
+     * name
+     * @param $info
+     * @return bool
+     */
+    protected function append_variation_product_name( $info ){
+        $feed_rules       = array();
+        parse_str( $info, $feed_rules );
+        $include_variations       = $feed_rules['rex_feed_variation_product_name'];
         if ($include_variations === 'yes') {
             return true;
         }
@@ -531,23 +563,21 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return array
      */
     protected function get_product_data( $product_id = false ){
-
         if ( function_exists('icl_object_id') ) {
             if($this->wpml_language) {
                 global $sitepress;
                 $original = apply_filters( 'wpml_element_trid', NULL, $product_id, 'post_product' );
                 if($original == $product_id) {
                     $sitepress->switch_lang($sitepress->get_default_language());
-                    $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
+                    $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
                 }else {
                     $sitepress->switch_lang($this->wpml_language);
-                    $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
+                    $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
                 }
             }
         }else{
-            $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules);
+            $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
         }
-
         return $data->get_all_data();
     }
 

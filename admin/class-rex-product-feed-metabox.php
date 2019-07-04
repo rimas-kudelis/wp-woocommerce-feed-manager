@@ -134,6 +134,23 @@ class Rex_Product_Metabox {
         ) );
 
 
+        /**
+         * Variation product name
+         * with variation
+         */
+        $box->add_field( array(
+            'name'           => __( 'Include variation product name', 'rex-product-feed' ),
+            'desc'           => __( 'It will add the all the variation name on product title. Will be applicable if there are more than two variations of a product.', 'rex-product-feed' ),
+            'id'             => $this->prefix . 'variation_product_name',
+            'type'           => 'radio_inline',
+            'options' => array(
+                'yes'       => __( 'Yes', 'rex-product-feed' ),
+                'no'        => __( 'No', 'rex-product-feed' ),
+            ),
+            'default' => 'no',
+        ) );
+
+
         /*
          * Exclude parent product (group product)
          */
@@ -148,6 +165,8 @@ class Rex_Product_Metabox {
             ),
             'default' => 'yes',
         ) );
+
+
 
 
         /*
