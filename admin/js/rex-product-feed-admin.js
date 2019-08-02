@@ -301,7 +301,7 @@
             feed_config : $('form').serialize(),
         };
 
-        var batches = Math.ceil( product/100 );
+        var batches = Math.ceil( product/50 );
         console.log('Total Batch: '+ batches);
         console.log('Total Product(s): '+ product);
         console.log('Processing Batch Number: '+ batch);
@@ -323,7 +323,6 @@
                 console.log( 'Woohoo!' );
                 console.log(response);
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-
                 if(response == 'false' || response == ''){
                     generate_feed(product, offset, batch);
                 }else if (response.msg == 'finish') {
@@ -333,8 +332,9 @@
                     $('#publish').trigger( 'click' );
                 } else {
                     if ( batch < batches ) {
+
                         setTimeout(function(){
-                            offset = offset + 100;
+                            offset = offset + 50;
                             batch++;
                             feed_progressBar(progressWidth);
                             generate_feed(product, offset, batch);

@@ -197,41 +197,6 @@ jQuery(document).ready(function($){
 
 
 
-    /**
-     * Stop Notices
-     *
-     */
-    function stop_notice(event) {
-        event.preventDefault();
-        var $payload = {};
-        var link = $(this).attr('href');
-        var cls = $(this).attr('class');
-
-        wpAjaxHelperRequest( 'stop-notices', $payload )
-            .success( function( response ) {
-                console.log( 'Woohoo!' );
-                // 'response' will be the response from the handle's callback function, as either a string or JSON.
-                console.log( response );
-                $(".bwfm-review-notice").hide();
-
-                console.log(cls);
-
-                // if(cls == 'bwfm-dismiss-notice') {
-                //     window.open(link,'_blank');
-                // }
-
-
-            })
-            .error( function( response ) {
-
-            });
-
-    }
-    $(document).on('click', '.stop-bwfm-notice, .bwfm-dismiss-notice', stop_notice);
-
-
-
-
     function category_mapper_accordion(event) {
         $(this).slideDown(500);
         $(this).toggleClass('selected');

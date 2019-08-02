@@ -4,7 +4,7 @@ Donate link: https://rextheme.com/best-woocommerce-product-feed/
 Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll
 Requires at least: 3.0.1
 Tested up to:  5.2.2
-Stable tag: 3.2
+Stable tag: 3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,10 +62,9 @@ Also add your own dynamic attributes or custom taxonomy where required.
 WooCommerce Product Feed manager is completely compatible with WPML. You can choose to save products in different languages and then generate feed for each language using this plugin.
 
 
-= Features: =  
-
-*  Generate Product Feed in a few clicks 
-*  13 pre built templates of Merchant Shop feed
+= Features =
+* Generate Product Feed in a few clicks 
+* 13 pre built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
@@ -196,6 +195,9 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 3.3 (2019-08-02) =
+* Bug Fix: Review notices
 
 = 3.2 (2019-07-04) =
 * Add option to add product variation name on title if more than two variation

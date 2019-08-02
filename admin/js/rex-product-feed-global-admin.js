@@ -65,6 +65,31 @@
     $(document).on('click', '#rex-wpfm-update-db', wpfm_update_database);
 
 
+    /**
+     * Stop Notices
+     *
+     */
+    function stop_notice(event) {
+        event.preventDefault();
+        var $payload = {};
+        var link = $(this).attr('href');
+        var cls = $(this).attr('class');
+
+        wpAjaxHelperRequest( 'stop-notices', $payload )
+            .success( function( response ) {
+                console.log( 'Woohoo!' );
+                // 'response' will be the response from the handle's callback function, as either a string or JSON.
+                console.log( response );
+                $(".bwfm-review-notice").hide();
+            })
+            .error( function( response ) {
+
+            });
+
+    }
+    $(document).on('click', '.stop-bwfm-notice, .bwfm-dismiss-notice', stop_notice);
+
+
 
 })( jQuery );
 
