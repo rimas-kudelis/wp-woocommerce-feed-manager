@@ -155,9 +155,8 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                                             <li class="items">Supports unlimited products.</li>
                                             <li class="items">Access to a elite support team.</li>
                                             <li class="items">Supports YITH brand attributes.</li>
-                                            <li class="items">Custom Filtering.</li>
                                             <li class="items">Dynamic Attribute.</li>
-                                            <li class="items">Custom field support - Brand,GTIN,MPN,UPC And EAN </li>
+                                            <li class="items">Custom field support - Brand,GTIN,MPN,UPC,EAN,Size, Pattern, Material, Age Group, Gender </li>
                                             <li class="items">Fix WooCommerce's (JSON-LD) structure data bug </li>
                                         </ol>
                                     </div>
@@ -562,9 +561,8 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                                     <li class="item">Supports unlimited products.</li>
                                     <li class="item">Access to a elite support team.</li>
                                     <li class="item">Supports YITH brand attributes.</li>
-                                    <li class="item">Custom Filtering.</li>
                                     <li class="item">Dynamic Attribute.</li>
-                                    <li class="item">Custom field support - Brand,GTIN,MPN,UPC And EAN </li>
+                                    <li class="item">Custom field support - Brand,GTIN,MPN,UPC,EAN,Size, Pattern, Material, Age Group, Gender </li>
                                     <li class="item">Fix WooCommerce's (JSON-LD) structure data bug </li>
                                 </ul>
                                 <a href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro" target="_blank" class="waves-effect waves-light btn bwf-btn">Get Premium Version</a>

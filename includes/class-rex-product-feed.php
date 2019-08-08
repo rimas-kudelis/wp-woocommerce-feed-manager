@@ -158,7 +158,7 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages');
-        $this->loader->add_action('admin_footer', $plugin_admin, 'rex_admin_footer_style');
+        $this->loader->add_action( 'admin_footer', $plugin_admin, 'rex_admin_footer_style');
 
         // remove bulk edit and quick edit for our feed cpt.
         $this->loader->add_filter( 'bulk_actions-edit-product-feed', $plugin_admin, 'remove_bulk_edit' );
@@ -190,8 +190,7 @@ class Rex_Product_Feed {
      */
     public function run() {
         $this->loader->run();
-        $client = new Appsero\Client( '859b0b74-d740-4bba-9e7a-b7c71d0a2db6', 'WooCommerce Product Feed', __FILE__ );
-        $client->insights()->init();
+
     }
 
     /**

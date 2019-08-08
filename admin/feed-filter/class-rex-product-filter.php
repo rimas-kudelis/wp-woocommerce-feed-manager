@@ -115,6 +115,7 @@ class Rex_Product_Filter {
                 'title'                     => 'Product Title',
                 'description'               => 'Product Description',
                 'short_description'         => 'Product Short Description',
+                'featured_image'            => 'Featured Image',
                 'product_cats'              => 'Product Categories',
                 'link'                      => 'Product URL',
                 'condition'                 => 'Condition',
@@ -471,6 +472,9 @@ class Rex_Product_Filter {
             case 'price':
                 return number_format((float)$product->get_regular_price(), 2, '.', '');
                 break;
+
+            case 'featured_image':
+                return wp_get_attachment_url(  $product->get_image_id() ); break;
 
             case 'sale_price':
                 if ($product->get_sale_price()) {
