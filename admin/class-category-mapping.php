@@ -20,8 +20,10 @@ class CategoryMapping{
         $args = array(
             'taxonomy'   => "product_cat",
             'hide_empty' => false,
+            'no_found_rows' => true,
         );
         $product_categories = get_terms($args);
+
         return $product_categories;
     }
 }

@@ -16,14 +16,14 @@
  * Plugin Name:       WooCommerce Product Feed Manager
  * Plugin URI:        https://rextheme.com
  * Description:       WooCommerce Product Feed Manager helps you to sell more by uploading products to Google merchant, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
- * Version:           3.4
+ * Version:           3.5
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       rex-product-feed
  * WC requires at least: 3.0.0
- * WC tested up to: 3.6.5
+ * WC tested up to: 3.7.0
  * Domain Path:       /languages
  */
 
@@ -155,13 +155,18 @@ run_rex_product_feed();
 
 
 /**
- * Appsero Init
+ * Initialize the tracker
+ *
+ * @return void
  */
-add_action( 'admin_init', 'wpfm_appsero_init' );
-function wpfm_appsero_init() {
+function appsero_init_tracker_bwfm() {
     $client = new Appsero\Client( '859b0b74-d740-4bba-9e7a-b7c71d0a2db6', 'WooCommerce Product Feed', __FILE__ );
+    // Active insights
     $client->insights()->init();
 }
+
+appsero_init_tracker_bwfm();
+
 
 /**
  * is_edit_page

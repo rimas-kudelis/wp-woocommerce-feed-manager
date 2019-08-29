@@ -1246,3 +1246,35 @@ input[type="radio"],
 
 }
 
+.no-padding-margin {
+  padding: 0;
+  margin: 0;
+}
+
+.no-padding-margin .input-field {
+  padding: 0;
+  margin: 0;
+}
+
+.cmb-row input[type="checkbox"], input[type="radio"], [type="radio"]:not(:checked), [type="radio"]:checked {
+  position: relative !important;
+  opacity: 1 !important;
+}
+
+.cmb-row [type="radio"]:not(:checked)+span, [type="radio"]:checked+span {
+  padding-left: 0 !important;
+}
+
+.cmb-row [type="radio"]+span:before, [type="radio"]+span:after {
+  content: '' !important;
+  display: none;
+}
+
+.cmb-row [type="checkbox"]+span:not(.lever):before, [type="checkbox"]:not(.filled-in)+span:not(.lever):after {
+  content: '' !important;
+  display: none;
+}
+
+.cmb-row [type="checkbox"]+span:not(.lever) {
+  padding-left: 0 !important;
+}

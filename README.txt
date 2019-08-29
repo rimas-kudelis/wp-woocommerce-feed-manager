@@ -196,6 +196,11 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 3.5 (2019-08-29) =
+* Design Fix: Show hierarchical category mapping
+* Bug Fix: Optin message
+* Compatibility Checked : WooCommerce 3.7.0
+
 = 3.4 (2019-08-08) =
 * Added new filter rules for products with no featured image
 
