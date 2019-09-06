@@ -26,7 +26,7 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
             <div class="alert-box">
                 <i class="material-icons close">close</i>
                 <i class="material-icons warning">warning</i>
-                <h3>Go Premium</h3>
+                <h3><?php echo __('Go Premium', 'rex-product-feed')?></h3>
                 <p>Purchase our <a href="">premium version</a> to unlock these pro components!</p>
                 <button type="button" class="close">ok</button>
             </div>
@@ -62,15 +62,15 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
 
                                     <div class="header">
                                         <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Document.png'?>" class="title-icon" alt="bwf-documentation">
-                                        <h4>Documentation</h4>
+                                        <h4><?php echo __('Documentation', 'rex-product-feed')?></h4>
                                     </div>
 
                                     <div class="body">
                                         <p>
-                                            Before You start, you can check our Documentation to get familiar with WooCommerce Product Feed Manager.
+                                            <?php echo __('Before You start, you can check our Documentation to get familiar with WooCommerce Product Feed Manager.', 'rex-product-feed')?>
                                         </p>
 
-                                        <a class="waves-effect waves-light btn bwf-btn" href="https://www.youtube.com/channel/UCf-NabV2v7DGN8MxQNrxkmw" target="_blank">View Documentation</a>
+                                        <a class="waves-effect waves-light btn bwf-btn" href="https://www.youtube.com/channel/UCf-NabV2v7DGN8MxQNrxkmw" target="_blank"><?php echo __('View Documentation', 'rex-product-feed')?></a>
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
 
                                     <div class="body">
                                         <p>
-                                            Can't find solution on with our documentation? Just Post a ticket on Support forum. We are to solve your issue.
+                                            <?php echo __('Can\'t find solution on with our documentation? Just Post a ticket on Support forum. We are to solve your issue.', 'rex-product-feed')?>
                                         </p>
 
                                         <a class="waves-effect waves-light btn bwf-btn" href="<?php echo apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed'); ?>" target="_blank">Post a Ticket</a>
@@ -97,15 +97,15 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                                 <div class="onboarding-block">
                                     <div class="header">
                                         <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Feedback.png'?>" class="title-icon" alt="bwf-documentation">
-                                        <h4>Share Your Thoughts</h4>
+                                        <h4><?php echo __('Share Your Thoughts', 'rex-product-feed')?></h4>
                                     </div>
 
                                     <div class="body">
                                         <p>
-                                            Your suggestions are valubale to us. It can help to make BWFM even better.
+                                            <?php echo __('Your suggestions are valubale to us. It can help to make WPFM even better.', 'rex-product-feed')?>
                                         </p>
 
-                                        <a class="waves-effect waves-light btn bwf-btn" href="http://openvoyce.com/products/bwf" target="_blank">Suggest</a>
+                                        <a class="waves-effect waves-light btn bwf-btn" href="http://openvoyce.com/products/bwf" target="_blank"><?php echo __('Suggest', 'rex-product-feed')?></a>
                                     </div>
                                 </div>
                             </div>
@@ -114,15 +114,16 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                                 <div class="onboarding-block">
                                     <div class="header">
                                         <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Rating.png'?>" class="title-icon" alt="bwf-documentation">
-                                        <h4>Make WPFM Popular</h4>
+                                        <h4><?php echo __('Make WPFM Popular', 'rex-product-feed')?></h4>
                                     </div>
 
                                     <div class="body">
                                         <p>
-                                            Your rating and feedback matters to us. If you are happy with WooCommerce Product Feed Manager give us a rating.
+                                            <?php echo __('Your rating and feedback matters to us. If you are happy with WooCommerce Product Feed Manager give us a rating.', 'rex-product-feed')?>
+
                                         </p>
 
-                                        <a class="waves-effect waves-light btn bwf-btn" href="<?php echo apply_filters('wpfm_review_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post') ?>" target="_blank">Rate Us! </a>
+                                        <a class="waves-effect waves-light btn bwf-btn" href="<?php echo apply_filters('wpfm_review_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post') ?>" target="_blank"><?php echo __('Rate Us!', 'rex-product-feed')?> </a>
                                     </div>
                                 </div>
                             </div>
@@ -136,10 +137,10 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
 
                                     <div class="body">
                                         <ul class="social">
-                                            <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank">Share on Facebook</a></li>
-                                            <li><a href="https://twitter.com/home?status=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank">Share on Twitter</a></li>
-                                            <li><a href="https://plus.google.com/share?url=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank">Share on Google+</a></li>
-                                            <li><a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//wordpress.org/plugins/best-woocommerce-feed/&title=Best%20WooCommerce%20Product%20Feed%20Manager&summary=&source=" target="_blank">Share on LinkedIn</a></li>
+                                            <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank"><?php echo __('Share on Facebook', 'rex-product-feed')?></a></li>
+                                            <li><a href="https://twitter.com/home?status=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank"><?php echo __('Share on Twitter', 'rex-product-feed')?></a></li>
+                                            <li><a href="https://plus.google.com/share?url=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank"><?php echo __('Share on Google+', 'rex-product-feed')?></a></li>
+                                            <li><a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//wordpress.org/plugins/best-woocommerce-feed/&title=Best%20WooCommerce%20Product%20Feed%20Manager&summary=&source=" target="_blank"><?php echo __('Share on LinkedIn', 'rex-product-feed')?></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -170,7 +171,7 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
 
                 <div id="merchant" class="block-wrapper">
                     <div class="rex-merchant">
-                        <h3 class="merchant-title">Available Merchants</h3>
+                        <h3 class="merchant-title"><?php echo __('Available Merchants', 'rex-product-feed')?></h3>
                         <?php
                             // free vs pro merchants
                             $_merchants = array(

@@ -256,23 +256,26 @@
 
     function get_product_number(event) {
         event.preventDefault();
-        var $payload = {};
-        $('#publishing-action span.spinner').addClass('is-active');
-        $(this).addClass('disabled');
-        $('.bwfm-progressbar, .progress-msg').fadeIn();
-        $('.progress-msg span').html('Calculating products.....')
+        $('#wpfm-feed-clock').stopwatch().stopwatch('start');
+        setTimeout(function() {
+            var $payload = {};
+            $('#publishing-action span.spinner').addClass('is-active');
+            $(this).addClass('disabled');
+            $('.bwfm-progressbar, .progress-msg').fadeIn();
+            $('.progress-msg span').html('Calculating products.....');
+            wpAjaxHelperRequest( 'my-handle', $payload )
+                .success( function( response ) {
+                    // console.log('Total Number of Products: ' + response.products);
+                    generate_feed(response.products, 0, 1);
+                })
+                .error( function( response ) {
+                    $('#publishing-action span.spinner').removeClass('is-active');
+                    $('#publish').removeClass('disabled');
+                    console.log( 'Uh, oh!' );
+                    console.log( response.statusText );
+                });
+        }, 800);
 
-        wpAjaxHelperRequest( 'my-handle', $payload )
-            .success( function( response ) {
-                // console.log('Total Number of Products: ' + response.products);
-                generate_feed(response.products, 0, 1);
-            })
-            .error( function( response ) {
-                $('#publishing-action span.spinner').removeClass('is-active');
-                $('#publish').removeClass('disabled');
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
-            });
     }
     $(document).on('click', '#publish', get_product_number);
 
@@ -327,12 +330,15 @@
                     generate_feed(product, offset, batch);
                 }else if (response.msg == 'finish') {
                     feed_progressBar(progressWidth);
-                    $('#publish').removeClass('disabled');
-                    $(document).off( 'click', '#publish', get_product_number );
-                    $('#publish').trigger( 'click' );
+                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
+                    setTimeout(function() {
+                        $('#publish').removeClass('disabled');
+                        $(document).off( 'click', '#publish', get_product_number );
+                        $('#publish').trigger( 'click' );
+                    }, 1000);
+
                 } else {
                     if ( batch < batches ) {
-
                         setTimeout(function(){
                             offset = offset + 50;
                             batch++;

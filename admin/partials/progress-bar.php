@@ -21,5 +21,9 @@
 </div>
 
 <div class="progress-msg" style="display: none">
-    <i class="fa fa-cog fa-spin" style="font-size:24px"></i> <span>You feed is generating....</span>
+    <div class="feed-msg">
+        <i class="fa fa-cog fa-spin" style="font-size:24px"></i> <span>You feed is generating....</span>
+    </div>
+
+    <div class="wpfm-time-container" id="wpfm-feed-clock"></div>
 </div>

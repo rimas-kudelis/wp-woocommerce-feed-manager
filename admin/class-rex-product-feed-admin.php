@@ -241,6 +241,13 @@ class Rex_Product_Feed_Admin {
                 true
             );
             wp_enqueue_script(
+                'jquery-stop-watch',
+                plugin_dir_url( __FILE__ ) . 'js/jquery.stopwatch.js',
+                array( 'jquery' ),
+                $this->version,
+                true
+            );
+            wp_enqueue_script(
                 $this->plugin_name,
                 plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-admin.js',
                 array( 'jquery' ),
@@ -262,16 +269,11 @@ class Rex_Product_Feed_Admin {
      * @since    1.0.0
      */
     public function dequeue_scripts($hook) {
-
         $screen = get_current_screen();
         if ( $screen->post_type != 'product-feed' ) {
-
             wp_dequeue_script( 'cmb2-scripts' );
             wp_dequeue_script( 'cmb2-conditionals' );
-            // wp_dequeue_script( 'wp-ajax-helper' );
-
         }
-
     }
     
 

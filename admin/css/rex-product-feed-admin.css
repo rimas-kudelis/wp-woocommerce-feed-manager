@@ -690,6 +690,7 @@ Easy Auto Complete
 .progress-msg span{
   font-size: 16px !important;
   color: #20BAFC;
+  font-weight: bold;
 }
 
 
@@ -1277,4 +1278,17 @@ input[type="radio"],
 
 .cmb-row [type="checkbox"]+span:not(.lever) {
   padding-left: 0 !important;
+}
+
+.wpfm-time-container {
+  color: #20BAFC;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.progress-msg {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
 }

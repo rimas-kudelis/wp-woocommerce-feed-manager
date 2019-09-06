@@ -243,7 +243,7 @@ class Rex_Product_Data_Retriever {
 
                 if ($this->product->is_type( 'grouped' ))
                     return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
-                return number_format((float)$this->product->get_sale_price(), 2, '.', '');
+                return $this->product->get_sale_price() ? number_format((float)$this->product->get_sale_price(), 2, '.', ''): '';
                 break;
 
 
@@ -688,11 +688,11 @@ class Rex_Product_Data_Retriever {
         $suffix =  $rule['suffix'];
 
         if ( !empty( $prefix ) ) {
-            $val = $prefix . $val;
+            $val = $val ? $prefix . $val : '';
         }
 
         if ( !empty( $suffix ) ) {
-            $val = $val . $suffix;
+            $val = $val ? $val . $suffix : '';
         }
 
         return $val;
