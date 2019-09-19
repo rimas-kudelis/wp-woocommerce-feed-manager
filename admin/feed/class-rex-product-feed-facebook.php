@@ -35,7 +35,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         $this->generate_simple_product_feed();
         $this->generate_grouped_product_feed();
         $this->generate_variable_product_feed();
-        $this->feed = GoogleShopping::asRss();
+        $this->feed = $this->returnFinalProduct();
 
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
@@ -141,6 +141,24 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
             }
         }
+    }
+
+
+    /**
+     * Return Feed
+     *
+     * @return array|bool|string
+     */
+    public function returnFinalProduct()
+    {
+        if ($this->feed_format == 'xml') {
+            return GoogleShopping::asRss();
+        } elseif ($this->feed_format == 'text') {
+            return GoogleShopping::asTxt();
+        } elseif ($this->feed_format == 'csv') {
+            return GoogleShopping::asCsv();
+        }
+        return false;
     }
 
 }

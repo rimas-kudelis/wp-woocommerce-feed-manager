@@ -344,7 +344,7 @@ class Rex_Product_Metabox {
         echo '<div id="rex-feed-config" class="rex-feed-config">';
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
-        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>'.__('Add New Attribute','rex-product-feed').'</a>';
+        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="fa fa-plus-circle"></i>'.__('Add New Attribute','rex-product-feed').'</a>';
         echo '</div>';
     }
 
@@ -378,7 +378,7 @@ class Rex_Product_Metabox {
         echo '<div id="rex-feed-config-filter" class="rex-feed-config-filter">';
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display-filter.php';
-        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="material-icons left">add</i>'.__('Add New Filter', 'rex-product-feed').'</a>';
+        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="fa fa-plus-circle"></i>'.__('Add New Filter', 'rex-product-feed').'</a>';
         echo '</div>';
     }
 
@@ -466,10 +466,10 @@ class Rex_Product_Metabox {
         // Only show feed url not empty.
         if ( strlen($feed_url) > 0 ){
             $url = esc_url( get_post_meta( $field->object_id, 'rex_feed_xml_file', true ) );
-            echo '<a target="_blank" class="btn waves-effect waves-light" href="' . $url . '">
-              <i class="material-icons">open_in_new</i>'.__('View Feed', 'rex-product-feed').'</a> ';
-            echo '<a target="_blank" class="btn waves-effect waves-light" href="' . $url . '" download>
-            <i class="material-icons">system_update_alt</i>'.__('Download Feed', 'rex-product-feed').'</a>';
+            echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $url . '">
+              <i class="fa fa-external-link" aria-hidden="true"></i>'.__('View Feed', 'rex-product-feed').'</a> ';
+            echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $url . '" download>
+            <i class="fa fa-download" aria-hidden="true"></i>'.__('Download Feed', 'rex-product-feed').'</a>';
         }
     }
 

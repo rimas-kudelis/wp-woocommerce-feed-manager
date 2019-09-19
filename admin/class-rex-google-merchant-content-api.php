@@ -74,9 +74,9 @@ class Rex_Google_Merchant_Settings_Api {
         $loginUrl = $client->createAuthurl();
         $btn_html = '<a class="btn waves-effect waves-light" href="'.$loginUrl.'">Authenticate</a>';
         $html = '<div class="col s12 merchant-action">
-                    <div id="card-alert" class="card rex-card" style="min-width: 100%">
+                    <div id="card-alert" class="card rex-card">
                         <div class="card-content">
-                            <span class="card-title rex-card-title">'. __('You are not authorized.', 'rex-product-feed') .'</span>
+                            <span class="card-title rex-card-title">'. __('You are not authorized.', 'rex-product-feed') .' <i class="fa fa-exclamation-triangle"></i></span>
                             <p class="rex-p">'.  __('Your access token has expired. This application uses OAuth 2.0 to Access Google APIs. Please insert the information below and authenticate token for Google Merchant Shop. Generated access token expires after 3600 sec.', 'rex-product-feed').'</p>
                         </div>
                         <div class="card-action">'.$btn_html.'</div>
@@ -86,7 +86,7 @@ class Rex_Google_Merchant_Settings_Api {
     }
 
     public function authorization_success_html() {
-        return '<div id="card-alert" class="card cyan lighten-5" style="min-width: 100%">
+        return '<div id="card-alert" class="card rex-card auth-success">
                   <div class="card-content">
                     <span class="card-title rex-card-title">'. __('You are authorized.', 'rex-product-feed') .'</span>
                     <p class="rex-p">'.  __('You are now ready to send feed from WooCommerce Product Feed Manager to your Google Merchant Center. 🚀', 'rex-product-feed').'</p>
@@ -113,9 +113,9 @@ class Rex_Google_Merchant_Settings_Api {
         $btn_html = '<a class="btn waves-effect waves-light" href="'.$loginUrl.'">Authenticate</a>';
         return array(
             'html'  => '<div class="col s12 merchant-action">
-                    <div id="card-alert" class="card rex-card" style="min-width: 100%">
+                    <div id="card-alert" class="card rex-card">
                         <div class="card-content">
-                            <span class="card-title rex-card-title">'. __('You are not authorized.', 'rex-product-feed') .'</span>
+                            <span class="card-title rex-card-title">'. __('You are not authorized.', 'rex-product-feed') .' <i class="fa fa-exclamation-triangle"></i></span>
                             <p class="rex-p">'.  __('Your access token has expired. This application uses OAuth 2.0 to Access Google APIs. Please insert the information below and authenticate token for Google Merchant Shop. Generated access token expires after 3600 sec.', 'rex-product-feed').'</p>
                         </div>
                         <div class="card-action">'.$btn_html.'</div>

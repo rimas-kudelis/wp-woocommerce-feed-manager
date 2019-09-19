@@ -88,8 +88,8 @@ $db_version = get_option('rex_wpfm_db_version');
                                     </tbody>
                                 </table>
                                 <div class="cat-map-actions">
-                                    <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat">Update</button>
-                                    <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat">Delete</button>
+                                    <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat"><i class="fa fa-pencil-square-o"></i> Update</button>
+                                    <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat"><i class="fa fa-trash-o"></i> Delete</button>
                                 </div>
                             </form>
                         </div>
@@ -140,7 +140,7 @@ $db_version = get_option('rex_wpfm_db_version');
                     </tbody>
                 </table>
                 <div class="cat-map-actions">
-                    <button type="submit" class="waves-effect waves-light btn-large green" id="save_mapping_cat">Save</button>
+                    <button type="submit" class="waves-effect waves-light btn-large green" id="save_mapping_cat"><i class="fa fa-floppy-o"></i> Save</button>
                 </div>
             </form>
         </div>

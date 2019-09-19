@@ -22,19 +22,20 @@ if (!($rex_google_merchant->is_authenticate())){
 }else{
     $html = $rex_google_merchant->authorization_success_html();
 }
-
 if($client_id && $client_secret && $merchant_id)
-    $disable = 'disabled'
-
+    $disable = 'disabled';
 
 ?>
 
 
 <div class="row merchant-settings">
     <div class="col s12 m6" >
+
         <div class="merchant-action">
             <?php echo $html; ?>
         </div>
+
+        <h2 class="title is-2"><?php echo __('Configure your google merchant', 'rex-product-feed'); ?></h2>
 
         <form class="col s12 rex-google-merchant" id="rex-google-merchant">
             <div class="row">
@@ -57,11 +58,11 @@ if($client_id && $client_secret && $merchant_id)
                 </div>
 
                 <button class="btn waves-effect waves-light rex-reset-btn" type="button" style="margin-right: 10px;"><?php echo __('Reset', 'rex-product-feed'); ?>
-                    <i class="material-icons right"><?php echo __('replay', 'rex-product-feed'); ?></i>
+                    <i class="fa fa-repeat"></i>
                 </button>
 
                 <button class="btn waves-effect waves-light" type="submit" name="action" <?php echo $disable; ?>><?php echo __('Submit', 'rex-product-feed'); ?>
-                    <i class="material-icons right"><?php echo __('send', 'rex-product-feed'); ?></i>
+                    <i class="fa fa-paper-plane-o"></i>
                 </button>
             </div>
         </form>

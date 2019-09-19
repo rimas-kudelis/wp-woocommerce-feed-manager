@@ -136,7 +136,6 @@ class Rex_Product_Data_Retriever {
         foreach ($this->feed_rules as $key => $rule) {
             $this->data[ $rule['attr'] ] = $this->set_val( $rule );
         }
-
     }
 
 
@@ -204,6 +203,7 @@ class Rex_Product_Data_Retriever {
     protected function set_pr_att( $key ) {
 
         switch ( $key ) {
+
             case 'id':
                 return $this->product->get_id(); break;
 
@@ -722,7 +722,7 @@ class Rex_Product_Data_Retriever {
             case 'remove_special':
                 return filter_var($val, FILTER_SANITIZE_STRING);;
             case 'cdata':
-                return "<![CDATA [$val]]>";
+                return $val ? "<![CDATA [$val]]>" : $val;
             default: return $val; break;
         }
     }

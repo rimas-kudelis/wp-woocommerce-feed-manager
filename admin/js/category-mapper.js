@@ -11,11 +11,14 @@ jQuery(document).ready(function($){
             .success( function( data ) {
                 var googleCatArray = $.parseJSON(data);
                 var dataCountry = {};
-                for (var i = 0; i < googleCatArray.length; i++) {
-                    dataCountry[googleCatArray[i]]= null;
-                }
+                // for (var i = 0; i < googleCatArray.length; i++) {
+                //     dataCountry[googleCatArray[i]]= null;
+                // }
                 $('.category-suggest').autocomplete({
-                    data: dataCountry,
+                    source: googleCatArray,
+                    classes: {
+                        "ui-autocomplete": "category-map"
+                    },
                     minLength: 3
                 });
             })
@@ -58,11 +61,11 @@ jQuery(document).ready(function($){
             cat_map: $('.add_cat_map').serialize(),
         };
         if ($('#map_name').val().length != 0){
-            $('.rex-loading-spinner').slideDown('fast');
+            $('.rex-loading-spinner').css('display', 'flex');
             wpAjaxHelperRequest( 'category-mapping', $payload )
                 .success( function( response ) {
                     console.log(response);
-                    $('.rex-loading-spinner').fadeOut('fast');
+                    $('.rex-loading-spinner').css('display', 'none');
                     setTimeout(function(){// wait for 5 secs(2)
                         location.reload(); // then reload the page.(3)
                     }, 1000);
@@ -94,13 +97,14 @@ jQuery(document).ready(function($){
             cat_map: form.serialize(),
             map_key: map_name.attr('data-id')
         };
-        $('.rex-loading-spinner').slideDown('fast');
+        $('.rex-loading-spinner').css('display', 'flex');
         wpAjaxHelperRequest( 'category-mapping-update', $payload )
             .success( function( response ) {
-                $('.rex-loading-spinner').fadeOut('fast');
+                $('.rex-loading-spinner').css('display', 'none');
                 console.log( 'Woohoo!' );
             })
             .error( function( response ) {
+                $('.rex-loading-spinner').css('display', 'none');
                 console.log( 'Uh, oh!' );
                 console.log( response.statusText );
             });
@@ -119,13 +123,14 @@ jQuery(document).ready(function($){
         var $payload = {
             map_key: map_name.attr('data-id')
         };
-        $('.rex-loading-spinner').slideDown('fast');
+        $('.rex-loading-spinner').css('display', 'flex');
         wpAjaxHelperRequest( 'category-mapping-delete', $payload )
             .success( function( response ) {
-                $('.rex-loading-spinner').fadeOut('fast');
+                $('.rex-loading-spinner').css('display', 'none');
                 container.fadeOut();
             })
             .error( function( response ) {
+                $('.rex-loading-spinner').css('display', 'none');
                 console.log( 'Uh, oh!' );
                 console.log( response.statusText );
             });
@@ -199,13 +204,14 @@ jQuery(document).ready(function($){
 
     function category_mapper_accordion(event) {
         $(this).slideDown(500);
+        var this_a = $(this);
+        $('.acordion-item h6 a').not(this_a).removeClass('selected');
         $(this).toggleClass('selected');
 
         var this_inner = $(this).parent().next();
-        var this_a = $(this);
+
 
         $(this).parent().next().slideToggle(function() {
-            $('.accordion > h2 > a').not(this_a).removeClass('selected');
             $(".inner").not(this_inner).slideUp();
         });
         return false;

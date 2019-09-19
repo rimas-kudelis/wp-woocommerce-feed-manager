@@ -30,8 +30,8 @@ if ( ! isset($feed_template) ) {
         <th class="large-col">Value</th>
         <th class="small-col">Prefix</th>
         <th class="small-col">Suffix</th>
-        <th class="small-col">Output Sanitization</th>
-        <th class="small-col">Output Limit</th>
+        <th class="large-col">Output Sanitization</th>
+        <th colspan="2" class="small-col">Output Limit</th>
     </tr>
     </thead>
 
@@ -43,9 +43,9 @@ if ( ! isset($feed_template) ) {
         $hideMetaInput   = $item['type'] == 'static' ? 'style="display:none;"' : '';
         ?>
         <tr data-row-id="<?php echo $key; ?>">
-            <td><?php $feed_template->printSelectDropdown( $key, 'attr', $item['attr'] ); ?></td>
-            <td><?php $feed_template->printAttType( $key, $item['type'] ); ?></td>
-            <td>
+            <td data-title="Attributes : "><?php $feed_template->printSelectDropdown( $key, 'attr', $item['attr'] ); ?></td>
+            <td data-title="Type : "><?php $feed_template->printAttType( $key, $item['type'] ); ?></td>
+            <td data-title="Value : ">
 
                 <div class="meta-dropdown" <?php echo $hideMetaInput; ?>>
                     <?php $feed_template->printSelectDropdown( $key, 'meta_key', $item['meta_key'] ); ?>
@@ -56,13 +56,13 @@ if ( ! isset($feed_template) ) {
                 </div>
 
             </td>
-            <td><?php $feed_template->printInput( $key, 'prefix', $item['prefix'] ); ?></td>
-            <td><?php $feed_template->printInput( $key, 'suffix', $item['suffix'] ); ?></td>
-            <td><?php $feed_template->printSelectDropdown( $key, 'escape', $item['escape'] ); ?></td>
-            <td><?php $feed_template->printInput( $key, 'limit', $item['limit'] ); ?></td>
+            <td data-title="Prefix : "><?php $feed_template->printInput( $key, 'prefix', $item['prefix'] ); ?></td>
+            <td data-title="Suffix : "><?php $feed_template->printInput( $key, 'suffix', $item['suffix'] ); ?></td>
+            <td data-title="Output Sanitization : "><?php $feed_template->printSelectDropdown( $key, 'escape', $item['escape'] ); ?></td>
+            <td data-title="Output Limit : "><?php $feed_template->printInput( $key, 'limit', $item['limit'] ); ?></td>
             <td>
-                <a class="btn-floating waves-effect waves-light red delete">
-                    <i class="material-icons">delete</i>
+                <a class="delete-row" title="Delete">
+                    <i class="fa fa-trash"></i>
                 </a>
             </td>
         </tr>

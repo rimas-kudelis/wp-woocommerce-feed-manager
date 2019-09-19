@@ -110,9 +110,10 @@ abstract class Rex_Feed_Abstract_Template {
         echo '<select  name="fc['.$key.'][' . esc_attr( $name ) . ']" >';
         echo "<option value=''>Please Select</option>";
 
+        $i = 1;
         foreach ($items as $groupLabel => $group) {
             if ( !empty($groupLabel)) {
-                echo "<optgroup label='$groupLabel'>";
+                echo "<optgroup label='$groupLabel' data-i='$i'>";
             }
 
             foreach ($group as $key => $item) {
@@ -126,6 +127,7 @@ abstract class Rex_Feed_Abstract_Template {
             if ( !empty($groupLabel)) {
                 echo "</optgroup>";
             }
+            $i = $i + 1;
         }
 
         echo "</select>";

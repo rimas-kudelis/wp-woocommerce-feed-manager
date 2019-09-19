@@ -187,12 +187,12 @@ class Rex_Product_Feed_Admin {
         }
 
         if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)))) {
-            wp_enqueue_style( 'materialize-icons', plugin_dir_url( __FILE__ ) . 'css/material-icon.css', array(), $this->version, 'all' );
-            wp_enqueue_style( 'materialize-css', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
+            wp_enqueue_style( 'bulma-css', plugin_dir_url( __FILE__ ) . 'css/bulma.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'easy-auto', plugin_dir_url( __FILE__ ) . 'css/easy-autocomplete.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css', array(), $this->version, 'all' );
+            wp_enqueue_style( 'nice-select', plugin_dir_url( __FILE__ ) . 'css/nice-select.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
-            wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rex-product-feed-admin.css', array(), $this->version, 'all' );
+            wp_enqueue_style( 'style-css', plugin_dir_url( __FILE__ ) . 'css/style.css', array(), $this->version, 'all' );
         }
     }
 
@@ -234,15 +234,15 @@ class Rex_Product_Feed_Admin {
         if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)))) {
             wp_enqueue_script( 'jquery-ui-autocomplete' );
             wp_enqueue_script(
-                'materialize-js',
-                plugin_dir_url( __FILE__ ) . 'js/materialize.min.js',
+                'jquery-stop-watch',
+                plugin_dir_url( __FILE__ ) . 'js/jquery.stopwatch.js',
                 array( 'jquery' ),
                 $this->version,
                 true
             );
             wp_enqueue_script(
-                'jquery-stop-watch',
-                plugin_dir_url( __FILE__ ) . 'js/jquery.stopwatch.js',
+                'jquery-nice-select',
+                plugin_dir_url( __FILE__ ) . 'js/jquery.nice-select.min.js',
                 array( 'jquery' ),
                 $this->version,
                 true
@@ -255,7 +255,7 @@ class Rex_Product_Feed_Admin {
                 true
             );
 
-            wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, true );
+//            wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, true );
             wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery', 'jquery-ui-autocomplete' ), $this->version, true );
         }
 

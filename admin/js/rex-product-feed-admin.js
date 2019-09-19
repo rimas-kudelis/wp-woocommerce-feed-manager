@@ -45,17 +45,17 @@
      */
 
     $(document).ready(function() {
-        $('select').formSelect();
-        $('.ui-timepicker-select').formSelect('destroy');
+        $('#rex_feed_conf select, #rex_feed_products select').niceSelect();
+        //$('.ui-timepicker-select').formSelect('destroy');
 
         if ( $('#rex_feed_xml_file').val() == '' ) {
             $('#rex_feed_file_link').slideUp('fast');
         }
 
-        $('.rex-tabs').tabs();
+        //$('.rex-tabs').tabs();
 
         //---------popup when click disabled input-------
-        $( ".single-merchant > .disabled .lever" ).on("click", function(){
+        $( ".single-merchant > .disabled .lever, .single-merchant .wpfm-switcher.disabled .lever" ).on("click", function(){
             $(".premium-merchant-alert").addClass("show-alert");
         });
 
@@ -66,6 +66,7 @@
         $(".premium-merchant-alert .alert-box").on("click", function (e) {
             e.stopPropagation();
         });
+        
 
     });
 
@@ -96,7 +97,7 @@
         $row.find('input, select').val('');
 
         updateFormNameAtts( $row, rowId, filter);
-        $row.find('select').formSelect();
+        $row.find('select').niceSelect();
 
 
     });
@@ -106,7 +107,7 @@
      * Delete a table-row and update all row-id
      * beneath it and their input attributes names.
      */
-    $(document).on('click', '#config-table .delete', function () {
+    $(document).on('click', '#config-table .delete-row', function () {
         var $nextRows, rowId;
 
         var table = $(this).closest('table');
@@ -213,7 +214,7 @@
 
         var $confBox = $('.rex-feed-config');
 
-        $confBox.find('.rex-loading-spinner').slideDown('fast');
+        $confBox.find('.rex-loading-spinner').css('display', 'flex');
 
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
@@ -226,11 +227,12 @@
             .success( function( response ) {
                 $confBox.fadeOut();
                 $confBox.find('#config-table').html( response );
-                $('select').formSelect();
-                $('.rex-loading-spinner').fadeOut('fast');
+                $('#rex_feed_conf select, #rex_feed_products select').niceSelect();
+                $('.rex-loading-spinner').css('display', 'none');
                 $confBox.fadeIn();
             })
             .error( function( response ) {
+                $('.rex-loading-spinner').css('display', 'none');
                 console.log( 'Uh, oh! Merchant change returned error!' );
                 console.log( response.statusText );
             });
@@ -363,7 +365,6 @@
             width:width + '%'
         },1000);
         $('.progressbar-bar-percent').html(width+ '%');
-
     }
 
 
@@ -372,7 +373,7 @@
      */
     function save_google_merchant_settings(event) {
         event.preventDefault();
-        $('.rex-loading-spinner').slideDown('fast');
+        $('.rex-loading-spinner').css('display', 'flex');
         var payload = {
             client_id : $(this).find('#client_id').val(),
             client_secret : $(this).find('#client_secret').val(),
@@ -383,10 +384,11 @@
             .success( function( response ) {
                 console.log('Woohoo!');
                 $('.merchant-action').html(response.html);
-                $('.rex-loading-spinner').fadeOut('fast');
+                $('.rex-loading-spinner').css('display', 'none');
             })
             .error( function( response ) {
                 console.log( 'Uh, oh!' );
+                $('.rex-loading-spinner').css('display', 'none');
                 console.log( response.statusText );
             });
 
@@ -403,7 +405,7 @@
      */
     function send_to_google(event) {
         event.preventDefault();
-        $('.rex-loading-spinner').slideDown('fast');
+        $('.rex-loading-spinner').css('display', 'flex');
         var payload = {
             feed_id     : $('#post_ID').val(),
             schedule    : $('#rex_feed_google_schedule option:selected').val(),
@@ -430,11 +432,11 @@
             .success( function( response ) {
                 console.log('Woohoo!');
                 console.log(response);
-                $('.rex-loading-spinner').fadeOut('fast');
+                $('.rex-loading-spinner').css('display', 'none');
                 location.reload();
             })
             .error( function( response ) {
-                $('.rex-loading-spinner').fadeOut('fast');
+                $('.rex-loading-spinner').css('display', 'none');
                 $('.rex-google-status').html('<div class="rex-error">Something is wrong! Please try again</div>');
                 console.log( 'Uh, oh!' );
                 console.log( response.statusText );
@@ -482,7 +484,22 @@
                 console.log( response.statusText );
             });
     }
-    $(document).on('change', '#rex-product-feed-merchant', product_feed_change_merchant_status);
+    $(document).on('change', '.switch-input', product_feed_change_merchant_status);
+    
+    
+    //----------setting tab-------
+    $(document).ready(function(){
+        $('ul.rex-settings-tabs li').click(function(){
+            var tab_id = $(this).attr('data-tab');
+
+            $('ul.rex-settings-tabs li').removeClass('active');
+            $('.rex-settings-tab-content .tab-content').removeClass('active');
+
+            $(this).addClass('active');
+            $("#"+tab_id).addClass('active');
+        });
+
+    });
 
 
 

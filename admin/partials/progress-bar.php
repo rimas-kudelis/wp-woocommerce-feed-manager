@@ -20,6 +20,8 @@
     <div class="progressbar-bar-percent">0</div>
 </div>
 
+
+
 <div class="progress-msg" style="display: none">
     <div class="feed-msg">
         <i class="fa fa-cog fa-spin" style="font-size:24px"></i> <span>You feed is generating....</span>

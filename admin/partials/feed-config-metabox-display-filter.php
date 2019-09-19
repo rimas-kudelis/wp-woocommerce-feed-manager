@@ -34,20 +34,20 @@ unset($feed_filter->getFilterMappings()['Primary Attributes']['product_tags']);
             <th class="large-col">If</th>
             <th class="large-col">Condition</th>
             <th class="large-col">Value</th>
-            <th class="small-col">Then</th>
+            <th colspan="2" class="small-col">Then</th>
         </tr>
     </thead>
 
     <tbody>
         <?php foreach ( $feed_filter->getFilterMappings() as $key => $item): ?>
             <tr data-row-id="<?php echo $key; ?>">
-                <td><?php $feed_filter->printSelectDropdown( $key, 'if', $item['if'] ); ?></td>
-                <td><?php $feed_filter->printSelectDropdown( $key, 'condition', $item['condition'] ); ?></td>
-                <td><?php $feed_filter->printInput( $key, 'value', $item['value'] ); ?></td>
-                <td><?php $feed_filter->printSelectDropdown( $key, 'then', $item['then'] ); ?></td>
+                <td data-title="If : "><?php $feed_filter->printSelectDropdown( $key, 'if', $item['if'] ); ?></td>
+                <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $key, 'condition', $item['condition'] ); ?></td>
+                <td data-title="value : "><?php $feed_filter->printInput( $key, 'value', $item['value'] ); ?></td>
+                <td data-title="then : "><?php $feed_filter->printSelectDropdown( $key, 'then', $item['then'] ); ?></td>
                 <td>
-                    <a class="btn-floating waves-effect waves-light red delete">
-                        <i class="material-icons">delete</i>
+                    <a class="delete-row" title="Delete">
+                        <i class="fa fa-trash"></i>
                     </a>
                 </td>
             </tr>
