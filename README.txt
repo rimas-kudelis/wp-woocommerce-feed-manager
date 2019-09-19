@@ -16,9 +16,9 @@ Do you wish to increase your WooCommerce store sales? One way is to promote on p
 
 You can easily do it by generating WooCommerce product feed and uploading it on those sites.
 
-WooCommerce Prodcut feed Manager will help you generate product feed in seconds.
+WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 16 Merchant major merchant shops with pre-defined templates for every merchant, so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 16 major merchant shops with pre-defined templates for every merchant, so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -42,7 +42,7 @@ Any changes you make to product data, you can set a schedule for your product fe
 **Advanced Custom Fields**
 WooCommerce doesn't provide certain fields such as Brand, GTIN, UPC, Age-group, Genter, etc. Many merchant shops require these data. Hence, WooCommerce Product Feed Manager creates these custom fields for you so that you can generate accurate product feed without any extra coding or plugins.
 
-You will many more features to help you generate product feed at ease.
+You will have many more features to help you generate product feed at ease.
 
 You should use this plugin because it will save you time and create clean quality product feed to promote through other merchant shopping channels.
 
@@ -139,7 +139,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently we support 13 major merchant shops:
+Currently we support 16 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Amazon Seller Ad
@@ -154,6 +154,11 @@ Currently we support 13 major merchant shops:
 - Become
 - Shopzilla
 - Shopping
+- Become
+- Shopzilla
+- Pricerunner
+- Billiger
+- Vergelijk
 = Is there a product limit? =
 There is no limit to the number of products when generating feed. You can decide on the products you want to generate feed for, and no matter how many, the feed will be generated. However, this limitless product feed is only available for pro-users.
 In the free version, you can generate product feed for up to 50 products per feed. If you are satisfied with the result, you can upgrade to the pro version and use it to the full extent.
