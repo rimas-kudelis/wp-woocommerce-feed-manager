@@ -1,7 +1,7 @@
 === WooCommerce Product Feed Manager ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll, WooCommerce
+Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll, WooCommerce, Pricerunner, Billiger, vergelijk
 Requires at least: 3.0.1
 Tested up to:  5.2.3
 Requires PHP: 5.6
@@ -99,6 +99,9 @@ WooCommerce Product Feed manager is completely compatible with WPML. You can cho
 - WooCommerce to [Become](http://www.become.com/)
 - WooCommerce to [Shopzilla](http://www.shopzilla.com/)
 - WooCommerce to [Shopping](http://www.shopping.com/)
+- WooCommerce to [Pricerunner](https://www.pricerunner.com/)
+- WooCommerce to [Billiger.de](https://www.billiger.de/)
+- WooCommerce to [vergelijk.ne](https://www.vergelijk.nl/)
 
 
 == Pro Features: ==
@@ -383,3 +386,4 @@ WP Dashboard > Product Feed > Upgrade.
 
 = 1.0.0 (2017-02-07) =
 * Initial version with support for Google Merchant
+
