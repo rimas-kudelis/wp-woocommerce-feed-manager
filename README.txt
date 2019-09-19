@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Prodcut feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 13 Merchant major merchant shops with pre-defined templates for every merchant, so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 16 Merchant major merchant shops with pre-defined templates for every merchant, so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
