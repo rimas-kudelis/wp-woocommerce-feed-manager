@@ -66,7 +66,7 @@ WooCommerce Product Feed manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 13 pre built templates of Merchant Shop feed
+* 17 pre built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
