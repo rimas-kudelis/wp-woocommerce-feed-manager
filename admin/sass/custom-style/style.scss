@@ -336,7 +336,6 @@
                 border-radius: 3px;
                 border: 1px solid rgba(0,0,0, .05);
                 box-shadow: 0px 6px 20px 0px rgba(194,204,222,0.3);
-                text-transform: capitalize;
                 margin-bottom: 20px;
                 width: calc(100% / 4 - 20px);
                 margin-left: 20px;
@@ -377,6 +376,45 @@
                 
                 .title {
                     line-height: 1.4;
+                }
+
+                .wpfm-per-batch{
+                    display: flex;
+                    flex-flow: row;
+                    align-items: center;
+                    width: 180px;
+
+                    input{
+                        height: 36px;
+                        border: 1px solid #eee;
+                        box-shadow: none;
+                        padding: 5px 10px;
+                        width: 80px;
+                        margin-right: 10px;
+                        border-radius: 4px;
+                    }
+                    button{
+                        border: none;
+                        background: $primary-color;
+                        color: #fff;
+                        height:36px;
+                        line-height: 36px;
+                        padding: 0 10px;
+                        border-radius: 4px;
+                        text-transform: capitalize;
+                        font-size: 15px;
+                        display: flex;
+                        flex-flow: row;
+                        align-items: center;
+                        width: 90px;
+                        justify-content: center;
+                        text-align: center;
+
+                        i{
+                            margin-left: 4px;
+                            display: none;
+                        }
+                    }
                 }
             }
         }

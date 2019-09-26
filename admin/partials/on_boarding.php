@@ -17,6 +17,7 @@ $custom_field = get_option('rex-wpfm-product-custom-field');
 $pa_field = get_option('rex-wpfm-product-pa-field');
 $structured_data = get_option('rex-wpfm-product-structured-data');
 $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
+$per_batch = get_option('rex-wpfm-product-per-batch', 50);
 
 ?>
 
@@ -37,8 +38,8 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                 <ul class="rex-settings-tabs">
                     <li class="tab-link active" data-tab="tab1"><i class="fa fa-cog"></i>General</li>
                     <li class="tab-link" data-tab="tab2"><i class="fa fa-shopping-cart"></i>Merchants</li>
-                    <li class="tab-link" data-tab="tab3"><i class="fa fa-video-camera"></i>Video Tutorials</li>
                     <li class="tab-link" data-tab="tab4"><i class="fa fa-cogs"></i>Controls</li>
+                    <li class="tab-link" data-tab="tab3"><i class="fa fa-video-camera"></i>Video Tutorials</li>
                     <li class="tab-link" data-tab="tab5"><i class="fa fa-info-circle"></i>System Status</li>
                     <?php
                     if ( !$is_premium_activated ) {?>
@@ -259,6 +260,26 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Vergelijk'
+                                ),
+                                'marktplaats'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Marktplaats'
+                                ),
+                                'beslist'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Beslist'
+                                ),
+                                'daisycon'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Daisycon'
+                                ),
+                                'twenga'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Twenga'
                                 )
                             );
                             $_pro_merchants = array(
@@ -355,6 +376,17 @@ $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
                     <div id="tab4" class="tab-content block-wrapper">
                         <div class="rex-merchant feed-settings">
                             <h3 class="merchant-title"><?php echo __('Controls', 'rex-product-feed'); ?> </h3>
+
+                            <div class="single-merchant">
+                                <span class="title"><?php echo __('Product(s) per batch', 'rex-product-feed'); ?></span>
+                                <div class="switch">
+                                    <form id="wpfm-per-batch" class="wpfm-per-batch">
+                                        <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch" value="<?php echo $per_batch; ?>" min="1" <?php echo !$is_premium ?  "max='50'" : ''?>>
+                                        <button type="submit" class="save-batch"><span>save</span> <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+
                             <div class="single-merchant">
                                 <span class="title">
                                     <?php echo __('Increase the number of products that will be approved in Google\'s Merchant Center:

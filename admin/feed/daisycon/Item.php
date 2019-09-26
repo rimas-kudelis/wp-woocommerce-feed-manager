@@ -1,10 +1,11 @@
 <?php
 
-namespace LukeSnowden\GoogleShoppingFeed;
+namespace RexTheme\DaisyConShoppingFeed;
 
-use LukeSnowden\GoogleShoppingFeed\Node;
-use LukeSnowden\GoogleShoppingFeed\Containers\GoogleShopping;
+use RexTheme\DaisyConShoppingFeed\Node;
+use RexTheme\DaisyConShoppingFeed\Containers\DaisyConShopping;
 use LukeSnowden\GoogleShoppingFeed\Exceptions\MissingIdentifierException;
+
 
 class Item
 {
@@ -83,7 +84,7 @@ class Item
     public function id($id)
     {
         $node = new Node('id');
-        $this->nodes['id'] = $node->value($id)->_namespace($this->namespace);
+        $this->nodes['id'] = $node->value($id);
     }
 
     /**
@@ -93,7 +94,7 @@ class Item
     {
         $node = new Node('title');
         $title = $this->safeCharEncodeText($title);
-        $this->nodes['title'] = $node->value($title)->addCdata()->_namespace($this->namespace);
+        $this->nodes['title'] = $node->value($title)->addCdata();
     }
 
     /**
@@ -103,7 +104,7 @@ class Item
     {
         $node = new Node('link');
         $link = $this->safeCharEncodeURL($link);
-        $this->nodes['link'] = $node->value($link)->addCdata()->_namespace($this->namespace);
+        $this->nodes['link'] = $node->value($link)->addCdata();
     }
 
     /**
@@ -115,7 +116,7 @@ class Item
 
 
         $node = new Node('price');
-        $this->nodes['price'] = $node->value($price)->_namespace($this->namespace);
+        $this->nodes['price'] = $node->value($price);
     }
 
     /**
@@ -131,7 +132,7 @@ class Item
 //        $this->nodes['sale_price'] = $node->value( $salePrice . " {$code}" )->_namespace($this->namespace);
 
         $node = new Node('sale_price');
-        $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+        $this->nodes['sale_price'] = $node->value($salePrice);
 
 
     }
@@ -144,7 +145,7 @@ class Item
         $description = preg_replace( "#<iframe[^>]+>[^<]?</iframe>#is", '', $description );
         $node = new Node('description');
         $description = $this->safeCharEncodeText($description);
-        $this->nodes['description'] = $node->value(substr($description, 0, 5000))->_namespace($this->namespace)->addCdata();
+        $this->nodes['description'] = $node->value(substr($description, 0, 5000))->addCdata();
     }
 
     /**
@@ -153,7 +154,7 @@ class Item
     public function condition($condition)
     {
         $node = new Node('condition');
-        $this->nodes['condition'] = $node->value($condition)->_namespace($this->namespace)->addCdata();
+        $this->nodes['condition'] = $node->value($condition)->addCdata();
     }
 
     /**
@@ -162,7 +163,7 @@ class Item
     public function expiration_date($expirationDate)
     {
         $node = new Node('expiration_date');
-        $this->nodes['expiration_date'] = $node->value($expirationDate)->_namespace($this->namespace)->addCdata();
+        $this->nodes['expiration_date'] = $node->value($expirationDate)->addCdata();
     }
 
     /**
@@ -172,7 +173,7 @@ class Item
     {
         $node = new Node('image_link');
         $imageLink = $this->safeCharEncodeURL(urldecode($imageLink));
-        $this->nodes['image_link'] = $node->value($imageLink)->_namespace($this->namespace)->addCdata();
+        $this->nodes['image_link'] = $node->value($imageLink)->addCdata();
     }
 
     /**
@@ -182,7 +183,7 @@ class Item
     {
         $node = new Node('brand');
         $brand = $this->safeCharEncodeText($brand);
-        $this->nodes['brand'] = $node->value($brand)->_namespace($this->namespace)->addCdata();
+        $this->nodes['brand'] = $node->value($brand)->addCdata();
     }
 
     /**
@@ -191,7 +192,7 @@ class Item
     public function mpn($mpn)
     {
         $node = new Node('mpn');
-        $this->nodes['mpn'] = $node->value($mpn)->_namespace($this->namespace)->addCdata();
+        $this->nodes['mpn'] = $node->value($mpn)->addCdata();
     }
 
     /**
@@ -200,7 +201,7 @@ class Item
     public function gtin($gtin)
     {
         $node = new Node('gtin');
-        $this->nodes['gtin'] = $node->value($gtin)->_namespace($this->namespace)->addCdata();
+        $this->nodes['gtin'] = $node->value($gtin)->addCdata();
     }
 
     /**
@@ -209,7 +210,7 @@ class Item
     public function is_bundle($bundle)
     {
         $node = new Node('is_bundle');
-        $this->nodes['is_bundle'] = $node->value($bundle)->_namespace($this->namespace);
+        $this->nodes['is_bundle'] = $node->value($bundle);
     }
 
     /**
@@ -218,7 +219,7 @@ class Item
     public function identifier_exists($identifier)
     {
         $node = new Node('identifier_exists');
-        $this->nodes['identifier_exists'] = $node->value($identifier)->_namespace($this->namespace);
+        $this->nodes['identifier_exists'] = $node->value($identifier);
     }
 
     /**
@@ -228,7 +229,7 @@ class Item
     {
         $node = new Node('product_type');
         $productType = $this->safeCharEncodeText($productType);
-        $this->nodes['product_type'] = $node->value($productType)->_namespace($this->namespace)->addCdata();
+        $this->nodes['product_type'] = $node->value($productType)->addCdata();
     }
 
     /**
@@ -237,7 +238,7 @@ class Item
     public function google_product_category($googleProductCategory)
     {
         $node = new Node('google_product_category');
-        $this->nodes['google_product_category'] = $node->value($googleProductCategory)->_namespace($this->namespace);
+        $this->nodes['google_product_category'] = $node->value($googleProductCategory);
     }
 
     /**
@@ -246,7 +247,7 @@ class Item
     public function availability($availability)
     {
         $node = new Node('availability');
-        $this->nodes['availability'] = $node->value($availability)->_namespace($this->namespace);
+        $this->nodes['availability'] = $node->value($availability);
     }
 
     /**
@@ -255,7 +256,7 @@ class Item
     public function availability_date($availabilityDate)
     {
         $node = new Node('availability_date');
-        $this->nodes['availability_date'] = $node->value($availabilityDate)->_namespace($this->namespace)->addCdata();
+        $this->nodes['availability_date'] = $node->value($availabilityDate)->addCdata();
     }
 
     /**
@@ -270,13 +271,13 @@ class Item
         $value = "<g:country>{$code}</g:country><g:service><![CDATA[{$service}]]></g:service><g:price>{$cost}</g:price>";
 
         if($region) {
-          $value .= "<g:region>{$region}</g:region>";
+            $value .= "<g:region>{$region}</g:region>";
         }
 
         if (! isset($this->nodes['shipping'])) {
             $this->nodes['shipping'] = array();
         }
-        $this->nodes['shipping'][] = $node->value($value)->_namespace($this->namespace);
+        $this->nodes['shipping'][] = $node->value($value);
     }
 
     /**
@@ -286,7 +287,7 @@ class Item
     {
         $node = new Node('shipping_weight');
         $weight = $this->safeCharEncodeText($weight);
-        $this->nodes['shipping_weight'] = $node->value($weight)->_namespace($this->namespace)->addCdata();
+        $this->nodes['shipping_weight'] = $node->value($weight)->addCdata();
     }
 
     /**
@@ -295,7 +296,7 @@ class Item
     public function size($size)
     {
         $node = new Node('size');
-        $this->nodes['size'] = $node->value($size)->_namespace($this->namespace)->addCdata();
+        $this->nodes['size'] = $node->value($size)->addCdata();
     }
 
     /**
@@ -304,7 +305,7 @@ class Item
     public function gender($gender)
     {
         $node = new Node('gender');
-        $this->nodes['gender'] = $node->value($gender)->_namespace($this->namespace)->addCdata();
+        $this->nodes['gender'] = $node->value($gender)->addCdata();
     }
 
     /**
@@ -313,7 +314,7 @@ class Item
     public function age_group($ageGroup)
     {
         $node = new Node('age_group');
-        $this->nodes['age_group'] = $node->value($ageGroup)->_namespace($this->namespace)->addCdata();
+        $this->nodes['age_group'] = $node->value($ageGroup)->addCdata();
     }
 
     /**
@@ -322,7 +323,7 @@ class Item
     public function color($color)
     {
         $node = new Node('color');
-        $this->nodes['color'] = $node->value($color)->_namespace($this->namespace)->addCdata();
+        $this->nodes['color'] = $node->value($color)->addCdata();
     }
 
     /**
@@ -331,7 +332,7 @@ class Item
     public function item_group_id($id)
     {
         $node = new Node('item_group_id');
-        $this->nodes['item_group_id'] = $node->value($id)->_namespace($this->namespace);
+        $this->nodes['item_group_id'] = $node->value($id);
     }
 
     /**
@@ -340,7 +341,7 @@ class Item
     public function custom_label_0($customLabel)
     {
         $node = new Node('custom_label_0');
-        $this->nodes['custom_label_0'] = $node->value($customLabel)->_namespace($this->namespace);
+        $this->nodes['custom_label_0'] = $node->value($customLabel);
     }
 
     /**
@@ -349,7 +350,7 @@ class Item
     public function custom_label_1($customLabel)
     {
         $node = new Node('custom_label_1');
-        $this->nodes['custom_label_1'] = $node->value($customLabel)->_namespace($this->namespace);
+        $this->nodes['custom_label_1'] = $node->value($customLabel);
     }
 
     /**
@@ -358,7 +359,7 @@ class Item
     public function custom_label_2($customLabel)
     {
         $node = new Node('custom_label_2');
-        $this->nodes['custom_label_2'] = $node->value($customLabel)->_namespace($this->namespace);
+        $this->nodes['custom_label_2'] = $node->value($customLabel);
     }
 
     /**
@@ -367,7 +368,7 @@ class Item
     public function custom_label_3($customLabel)
     {
         $node = new Node('custom_label_3');
-        $this->nodes['custom_label_3'] = $node->value($customLabel)->_namespace($this->namespace);
+        $this->nodes['custom_label_3'] = $node->value($customLabel);
     }
 
     /**
@@ -376,7 +377,7 @@ class Item
     public function custom_label_4($customLabel)
     {
         $node = new Node('custom_label_4');
-        $this->nodes['custom_label_4'] = $node->value($customLabel)->_namespace($this->namespace);
+        $this->nodes['custom_label_4'] = $node->value($customLabel);
     }
 
     /**
@@ -400,7 +401,7 @@ class Item
     public function customWithNamespace($name, $value)
     {
         $node = new Node($name);
-        $this->nodes[$name] = $node->value($value)->_namespace($this->namespace);
+        $this->nodes[$name] = $node->value($value);
     }
 
     /**
@@ -448,7 +449,7 @@ class Item
      */
     public function cloneIt()
     {
-       $groupIdentifiers = $this->getGroupIdentifier();
+        $groupIdentifiers = $this->getGroupIdentifier();
         /** @var Item $item */
         $item = $this->googleShoppingFeed->createItem();
         $this->item_group_id( $groupIdentifiers );
@@ -493,7 +494,7 @@ class Item
         return str_replace(
             array('%', '[', ']', '{', '}', '|', ' ', '"', '<', '>', '#', '\\', '^', '~', '`'),
             array('%25', '%5b', '%5d', '%7b', '%7d', '%7c', '%20', '%22', '%3c', '%3e', '%23', '%5c', '%5e', '%7e', '%60'),
-        $string);
+            $string);
     }
 
     /**
@@ -505,7 +506,7 @@ class Item
         return str_replace(
             array('•', '”', '“', '’', '‘', '™', '®', '°', "\n"),
             array('&#8226;', '&#8221;', '&#8220;', '&#8217;', '&#8216;', '&trade;', '&reg;', '&deg;', ''),
-        $string);
+            $string);
     }
 
     /**
@@ -514,16 +515,16 @@ class Item
     public function material($material)
     {
         $node = new Node('material');
-        $this->nodes['material'] = $node->value($material)->_namespace($this->namespace);
+        $this->nodes['material'] = $node->value($material);
     }
 
-     /**
+    /**
      * @param $pattern
      */
     public function pattern($pattern)
     {
         $node = new Node('pattern');
-        $this->nodes['pattern'] = $node->value($pattern)->_namespace($this->namespace);
+        $this->nodes['pattern'] = $node->value($pattern);
     }
 
     /**
@@ -538,12 +539,12 @@ class Item
             foreach ($imagesLink as $imageLink) {
                 $node = new Node('additional_image_link');
                 $imageLink = $this->safeCharEncodeURL(urldecode($imageLink));
-                array_push($this->nodes['additional_image_link'], $node->value($imageLink)->_namespace($this->namespace)->addCdata());
+                array_push($this->nodes['additional_image_link'], $node->value($imageLink)->addCdata());
             }
         } else {
             $node = new Node('additional_image_link');
             $imageLink = $this->safeCharEncodeURL(urldecode($imagesLink));
-            array_push($this->nodes['additional_image_link'], $node->value($imagesLink)->_namespace($this->namespace)->addCdata());
+            array_push($this->nodes['additional_image_link'], $node->value($imagesLink)->addCdata());
         }
     }
 
@@ -558,10 +559,10 @@ class Item
         if ( 0 === strpos( $name, 'additional_image_link_' ) ) {
             $name = 'additional_image_link';
             $node = new Node($name);
-            $this->nodes[$name][] = $node->value($arguments[0])->_namespace($this->namespace);
+            $this->nodes[$name][] = $node->value($arguments[0]);
         }else{ // other attributes
             $node = new Node($name);
-            $this->nodes[$name] = $node->value($arguments[0])->_namespace($this->namespace);
+            $this->nodes[$name] = $node->value($arguments[0]);
         }
 
     }

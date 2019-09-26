@@ -126,6 +126,11 @@ class Rex_Product_Data_Retriever {
 
     }
 
+
+    public function get_random_key() {
+        return md5(uniqid(rand(), true));
+    }
+
     /**
      * Retrive and setup all data for every feed rules.
      *
@@ -133,9 +138,18 @@ class Rex_Product_Data_Retriever {
      */
     public function set_all_value() {
         $this->data = array();
+
         foreach ($this->feed_rules as $key => $rule) {
-            $this->data[ $rule['attr'] ] = $this->set_val( $rule );
+            if($rule['attr'] === 'attributes') {
+                $this->data[ $rule['attr']][] = array(
+                    'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
+                    'value' => $this->set_val( $rule )
+                );
+            }else {
+                $this->data[ $rule['attr'] ] = $this->set_val( $rule );
+            }
         }
+
     }
 
 
@@ -149,23 +163,16 @@ class Rex_Product_Data_Retriever {
 
         if ( 'static' === $rule['type'] ) {
             $val = $rule['st_value'];
-
         }elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
             $val = $this->set_pr_att( $rule['meta_key']  );
-
         }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
-
             $val = $this->set_image_att( $rule['meta_key']  );
-
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
-
             $val = $this->set_product_att( $rule['meta_key']  );
-
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_dynamic_att( $rule['meta_key']  );
-
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_custom_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_custom_att( $rule['meta_key']  );
@@ -173,6 +180,8 @@ class Rex_Product_Data_Retriever {
         elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
             $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
+
+
 
 
         // maybe add prefix/suffix
@@ -192,6 +201,7 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     public function get_all_data() {
+
         return $this->data;
     }
 
@@ -203,13 +213,10 @@ class Rex_Product_Data_Retriever {
     protected function set_pr_att( $key ) {
 
         switch ( $key ) {
-
             case 'id':
                 return $this->product->get_id(); break;
-
             case 'sku':
                 return $this->product->get_sku(); break;
-
             case 'title':
                 if($this->append_variation === 'no') {
                     return $this->product->get_name();
@@ -240,7 +247,6 @@ class Rex_Product_Data_Retriever {
                 break;
 
             case 'sale_price':
-
                 if ($this->product->is_type( 'grouped' ))
                     return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
                 return $this->product->get_sale_price() ? number_format((float)$this->product->get_sale_price(), 2, '.', ''): '';
@@ -303,6 +309,9 @@ class Rex_Product_Data_Retriever {
             case 'type':
                 return $this->product->get_type(); break;
 
+            case 'in_stock':
+                return $this->get_stock(); break;
+
             case 'rating_average':
                 return $this->product->get_average_rating(); break;
 
@@ -348,7 +357,6 @@ class Rex_Product_Data_Retriever {
         switch ( $key ) {
             case 'featured_image':
                 return wp_get_attachment_url(  $this->product->get_image_id() ); break;
-
             default: return $this->get_additional_image( $key ); break;
         }
     }
@@ -675,6 +683,18 @@ class Rex_Product_Data_Retriever {
             return 'in stock';
         } else {
             return 'out of stock';
+        }
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function get_stock( ) {
+        if ( $this->product->is_in_stock() == TRUE ) {
+            return 'Y';
+        } else {
+            return 'N';
         }
     }
 

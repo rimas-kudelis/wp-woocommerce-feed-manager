@@ -1,10 +1,9 @@
 <?php
 
-namespace LukeSnowden\GoogleShoppingFeed;
+namespace RexTheme\MarktPlaatsShoppingFeed;
 
-use LukeSnowden\GoogleShoppingFeed\Node;
-use LukeSnowden\GoogleShoppingFeed\Containers\GoogleShopping;
-use LukeSnowden\GoogleShoppingFeed\Exceptions\MissingIdentifierException;
+use RexTheme\MarktPlaatsShoppingFeed\Node;
+use RexTheme\MarktPlaatsShoppingFeed\Containers\MarktPlaatsShopping;
 
 class Item
 {
@@ -51,7 +50,7 @@ class Item
 
     /**
      * Stores all of the product nodes
-     * @var Node
+     * @var Node[]
      */
     private $nodes = array();
 
@@ -62,23 +61,23 @@ class Item
     private $index = null;
 
     /**
-     * @var Feed
-     */
-    private $googleShoppingFeed = null;
-
-    /**
      * [$namespace - (g:) namespace definition]
      * @var string
      */
-    protected $namespace = 'http://base.google.com/ns/1.0';
+    protected $namespace;
 
-    public function __construct($googleShoppingFeed)
+    /**
+     * [__construct]
+     */
+    public function __construct( $namespace = null )
     {
-        $this->googleShoppingFeed = $googleShoppingFeed;
+        $this->namespace = $namespace;
     }
 
     /**
-     * @param $id
+     * [id - Set the ID of the product]
+     * @param  [type] $id [description]
+     * @return [type]     [description]
      */
     public function id($id)
     {
@@ -87,7 +86,9 @@ class Item
     }
 
     /**
-     * @param $title
+     * [title - Set the title of the product]
+     * @param  [type] $title [description]
+     * @return [type]        [description]
      */
     public function title($title)
     {
@@ -97,58 +98,59 @@ class Item
     }
 
     /**
-     * @param $link
+     * [link - Set the link/URL of the product]
+     * @param  [type] $link [description]
+     * @return [type]       [description]
      */
     public function link($link)
     {
         $node = new Node('link');
         $link = $this->safeCharEncodeURL($link);
-        $this->nodes['link'] = $node->value($link)->addCdata()->_namespace($this->namespace);
+        $this->nodes['link'] = $node->value($link)->addCdata();
     }
 
     /**
-     * @param $price
+     * [price - Set the price of the product, do not format before passing]
+     * @param  [type] $price [description]
+     * @return [type]        [description]
      */
     public function price($price)
     {
-        /** @var $price - Added hack in for when the variants are being created it passes over the new ISO currency code which breaks number_format */
-
-
         $node = new Node('price');
         $this->nodes['price'] = $node->value($price)->_namespace($this->namespace);
     }
 
     /**
-     * @param $salePrice
+     * [sale_price - set the sale price, do not format before passing]
+     * @param  [type] $salePrice [description]
+     * @return [type] [description]
      */
     public function sale_price($salePrice)
     {
-        /** @var $salePrice - Added hack in for when the variants are being created it passes over the new ISO currency code which breaks number_format */
-//        $salePrice = (float) preg_replace( "/^([0-9]+\.?[0-9]*)(\s[A-Z]{3})$/", "$1", $salePrice );
-//        $node = new Node('sale_price');
-//        $salePrice = number_format($salePrice, 2, '.', '');
-//        $code = $this->googleShoppingFeed->getIso4217CountryCode();
-//        $this->nodes['sale_price'] = $node->value( $salePrice . " {$code}" )->_namespace($this->namespace);
 
-        $node = new Node('sale_price');
-        $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
-
+        if ($salePrice) {
+            $node = new Node('sale_price');
+            $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+        }
 
     }
 
     /**
-     * @param $description
+     * [description - Set the description of the product]
+     * @param  [type] $description [description]
+     * @return [type]              [description]
      */
     public function description($description)
     {
-        $description = preg_replace( "#<iframe[^>]+>[^<]?</iframe>#is", '', $description );
         $node = new Node('description');
         $description = $this->safeCharEncodeText($description);
         $this->nodes['description'] = $node->value(substr($description, 0, 5000))->_namespace($this->namespace)->addCdata();
     }
 
     /**
-     * @param $condition
+     * [condition - Set the condition of the product (pass in the constants above to standardise the values)]
+     * @param  [type] $condition [description]
+     * @return [type]            [description]
      */
     public function condition($condition)
     {
@@ -157,7 +159,9 @@ class Item
     }
 
     /**
-     * @param $expirationDate
+     * [expiration_date description]
+     * @param  [type] $expirationDate [description]
+     * @return [type]                 [description]
      */
     public function expiration_date($expirationDate)
     {
@@ -166,17 +170,21 @@ class Item
     }
 
     /**
-     * @param $imageLink
+     * [image_link description]
+     * @param  [type] $imageLink [description]
+     * @return [type]            [description]
      */
     public function image_link($imageLink)
     {
         $node = new Node('image_link');
-        $imageLink = $this->safeCharEncodeURL(urldecode($imageLink));
+        $imageLink = $this->safeCharEncodeURL($imageLink);
         $this->nodes['image_link'] = $node->value($imageLink)->_namespace($this->namespace)->addCdata();
     }
 
     /**
-     * @param $brand
+     * [brand description]
+     * @param  [type] $brand [description]
+     * @return [type]        [description]
      */
     public function brand($brand)
     {
@@ -186,7 +194,9 @@ class Item
     }
 
     /**
-     * @param $mpn
+     * [mpn description]
+     * @param  [type] $mnp [description]
+     * @return [type]      [description]
      */
     public function mpn($mpn)
     {
@@ -195,7 +205,9 @@ class Item
     }
 
     /**
-     * @param $gtin
+     * [gtin description]
+     * @param  [type] $gtin [description]
+     * @return [type]       [description]
      */
     public function gtin($gtin)
     {
@@ -204,35 +216,32 @@ class Item
     }
 
     /**
-     * @param $bundle
+     * [$identifier_exists description]
+     * @param  [type] $identifier_exists [description]
+     * @return [type]       [description]
      */
-    public function is_bundle($bundle)
-    {
-        $node = new Node('is_bundle');
-        $this->nodes['is_bundle'] = $node->value($bundle)->_namespace($this->namespace);
-    }
-
-    /**
-     * @param $identifier
-     */
-    public function identifier_exists($identifier)
+    public function identifier_exists($identifier_exists)
     {
         $node = new Node('identifier_exists');
-        $this->nodes['identifier_exists'] = $node->value($identifier)->_namespace($this->namespace);
+        $this->nodes['identifier_exists'] = $node->value($identifier_exists)->_namespace($this->namespace)->addCdata();
     }
 
     /**
-     * @param $productType
+     * [product_type description]
+     * @param  [type] $productType [description]
+     * @return [type]              [description]
      */
     public function product_type($productType)
     {
         $node = new Node('product_type');
-        $productType = $this->safeCharEncodeText($productType);
+        $brand = $this->safeCharEncodeText($productType);
         $this->nodes['product_type'] = $node->value($productType)->_namespace($this->namespace)->addCdata();
     }
 
     /**
-     * @param $googleProductCategory
+     * [google_product_category description]
+     * @param  [type] $googleProductCategory [description]
+     * @return [type]                        [description]
      */
     public function google_product_category($googleProductCategory)
     {
@@ -241,7 +250,9 @@ class Item
     }
 
     /**
-     * @param $availability
+     * [availability description]
+     * @param  [type] $availability [description]
+     * @return [type]               [description]
      */
     public function availability($availability)
     {
@@ -250,29 +261,16 @@ class Item
     }
 
     /**
-     * @param $availabilityDate
+     * [shipping description]
+     * @param  [type] $code    [description]
+     * @param  [type] $service [description]
+     * @param  [type] $cost    [description]
+     * @return [type]          [description]
      */
-    public function availability_date($availabilityDate)
-    {
-        $node = new Node('availability_date');
-        $this->nodes['availability_date'] = $node->value($availabilityDate)->_namespace($this->namespace)->addCdata();
-    }
-
-    /**
-     * @param $code
-     * @param $service
-     * @param $cost
-     * @param null $region
-     */
-    public function shipping($code, $service, $cost, $region = null)
+    public function shipping($code, $service, $cost)
     {
         $node = new Node('shipping');
-        $value = "<g:country>{$code}</g:country><g:service><![CDATA[{$service}]]></g:service><g:price>{$cost}</g:price>";
-
-        if($region) {
-          $value .= "<g:region>{$region}</g:region>";
-        }
-
+        $value = "<g:country>{$code}</g:country><g:service>{$service}</g:service><g:price>{$cost}</g:price>";
         if (! isset($this->nodes['shipping'])) {
             $this->nodes['shipping'] = array();
         }
@@ -280,54 +278,55 @@ class Item
     }
 
     /**
-     * @param $weight
-     */
-    public function shipping_weight($weight)
-    {
-        $node = new Node('shipping_weight');
-        $weight = $this->safeCharEncodeText($weight);
-        $this->nodes['shipping_weight'] = $node->value($weight)->_namespace($this->namespace)->addCdata();
-    }
-
-    /**
-     * @param $size
+     * [size description]
+     * @param  [type] $size [description]
+     * @return [type]       [description]
      */
     public function size($size)
     {
         $node = new Node('size');
-        $this->nodes['size'] = $node->value($size)->_namespace($this->namespace)->addCdata();
+        $this->nodes['size'] = $node->value($size)->_namespace($this->namespace);
     }
 
     /**
-     * @param $gender
+     * [gender description]
+     * @param  [type] $gender [description]
+     * @return [type]         [description]
      */
     public function gender($gender)
     {
         $node = new Node('gender');
-        $this->nodes['gender'] = $node->value($gender)->_namespace($this->namespace)->addCdata();
+        $this->nodes['gender'] = $node->value($gender)->_namespace($this->namespace);
     }
 
     /**
-     * @param $ageGroup
+     * [age_group description]
+     * @param  [type] $ageGroup [description]
+     * @return [type]           [description]
      */
     public function age_group($ageGroup)
     {
         $node = new Node('age_group');
-        $this->nodes['age_group'] = $node->value($ageGroup)->_namespace($this->namespace)->addCdata();
+        $this->nodes['age_group'] = $node->value($ageGroup)->_namespace($this->namespace);
     }
 
     /**
-     * @param $color
+     * [color description]
+     * @param  [type] $color [description]
+     * @return [type]        [description]
      */
     public function color($color)
     {
         $node = new Node('color');
-        $this->nodes['color'] = $node->value($color)->_namespace($this->namespace)->addCdata();
+        $this->nodes['color'] = $node->value($color)->_namespace($this->namespace);
     }
 
     /**
-     * @param $id
+     * [item_group_id description]
+     * @param  [type] $id [description]
+     * @return [type]     [description]
      */
+
     public function item_group_id($id)
     {
         $node = new Node('item_group_id');
@@ -380,27 +379,21 @@ class Item
     }
 
     /**
-     * Adds a custom attribute to the shopping feed.
-     *
      * @param string $name
-     * @param string $value
+     * @param array $arguments
      */
-    public function custom($name, $value)
+    public function __call($name, $arguments)
     {
-        $node = new Node($name);
-        $this->nodes[$name] = $node->value($value);
-    }
+        // check if additional_image_link attributes
+        if ( 0 === strpos( $name, 'additional_image_link_' ) ) {
+            $name = 'additional_image_link';
+            $node = new Node($name);
+            $this->nodes[$name][] = $node->value($arguments[0])->_namespace($this->namespace);
+        }else{ // other attributes
+            $node = new Node($name);
+            $this->nodes[$name] = $node->value($arguments[0])->_namespace($this->namespace);
+        }
 
-    /**
-     * Adds a custom attribute to the shopping feed with namespace.
-     *
-     * @param string $name
-     * @param string $value
-     */
-    public function customWithNamespace($name, $value)
-    {
-        $node = new Node($name);
-        $this->nodes[$name] = $node->value($value)->_namespace($this->namespace);
     }
 
     /**
@@ -426,20 +419,7 @@ class Item
      */
     public function delete()
     {
-        $this->googleShoppingFeed->removeItemByIndex($this->index);
-    }
-
-    /**
-     * @return string
-     * @throws MissingIdentifierException
-     */
-    protected function getGroupIdentifier()
-    {
-        if( ! isset( $this->nodes['mpn'] ) && ! isset( $this->nodes['gtin'] ) ) {
-            throw new MissingIdentifierException("Please define a GTIN or MPN value before creating a variant.");
-        }
-        if( isset( $this->nodes['mpn'] ) ) return $this->nodes['mpn']->get('value') . '_group';
-        return $this->nodes['gtin']->get('value') . '_group';
+        RexShopping::removeItemByIndex($this->index);
     }
 
     /**
@@ -448,10 +428,9 @@ class Item
      */
     public function cloneIt()
     {
-       $groupIdentifiers = $this->getGroupIdentifier();
         /** @var Item $item */
-        $item = $this->googleShoppingFeed->createItem();
-        $this->item_group_id( $groupIdentifiers );
+        $item = RexShopping::createItem();
+        $this->item_group_id($this->nodes['mpn']->get('value') . '_group');
         foreach ($this->nodes as $node) {
             if (is_array($node)) {
                 // multiple accepted values..
@@ -480,7 +459,7 @@ class Item
     {
         /** @var Item $item */
         $item = $this->cloneIt();
-        $item->item_group_id( $this->getGroupIdentifier() );
+        $item->item_group_id($this->nodes['mpn']->get('value') . '_group');
         return $item;
     }
 
@@ -493,7 +472,7 @@ class Item
         return str_replace(
             array('%', '[', ']', '{', '}', '|', ' ', '"', '<', '>', '#', '\\', '^', '~', '`'),
             array('%25', '%5b', '%5d', '%7b', '%7d', '%7c', '%20', '%22', '%3c', '%3e', '%23', '%5c', '%5e', '%7e', '%60'),
-        $string);
+            $string);
     }
 
     /**
@@ -503,66 +482,9 @@ class Item
     private function safeCharEncodeText($string)
     {
         return str_replace(
-            array('•', '”', '“', '’', '‘', '™', '®', '°', "\n"),
-            array('&#8226;', '&#8221;', '&#8220;', '&#8217;', '&#8216;', '&trade;', '&reg;', '&deg;', ''),
-        $string);
+            array('•', '”', '“', '’', '‘', '™', '®', '°'),
+            array('&#8226;', '&#8221;', '&#8220;', '&#8217;', '&#8216;', '&trade;', '&reg;', '&deg;'),
+            $string);
     }
 
-    /**
-     * @param $material
-     */
-    public function material($material)
-    {
-        $node = new Node('material');
-        $this->nodes['material'] = $node->value($material)->_namespace($this->namespace);
-    }
-
-     /**
-     * @param $pattern
-     */
-    public function pattern($pattern)
-    {
-        $node = new Node('pattern');
-        $this->nodes['pattern'] = $node->value($pattern)->_namespace($this->namespace);
-    }
-
-    /**
-     * Add one additional image (string) or multiple images (array).
-     *
-     * @param $imagesLink
-     */
-    public function additional_image_link($imagesLink)
-    {
-        $this->nodes['additional_image_link'] = [];
-        if (is_array($imagesLink)) {
-            foreach ($imagesLink as $imageLink) {
-                $node = new Node('additional_image_link');
-                $imageLink = $this->safeCharEncodeURL(urldecode($imageLink));
-                array_push($this->nodes['additional_image_link'], $node->value($imageLink)->_namespace($this->namespace)->addCdata());
-            }
-        } else {
-            $node = new Node('additional_image_link');
-            $imageLink = $this->safeCharEncodeURL(urldecode($imagesLink));
-            array_push($this->nodes['additional_image_link'], $node->value($imagesLink)->_namespace($this->namespace)->addCdata());
-        }
-    }
-
-
-    /**
-     * @param string $name
-     * @param array $arguments
-     */
-    public function __call($name, $arguments)
-    {
-        // check if additional_image_link attributes
-        if ( 0 === strpos( $name, 'additional_image_link_' ) ) {
-            $name = 'additional_image_link';
-            $node = new Node($name);
-            $this->nodes[$name][] = $node->value($arguments[0])->_namespace($this->namespace);
-        }else{ // other attributes
-            $node = new Node($name);
-            $this->nodes[$name] = $node->value($arguments[0])->_namespace($this->namespace);
-        }
-
-    }
 }

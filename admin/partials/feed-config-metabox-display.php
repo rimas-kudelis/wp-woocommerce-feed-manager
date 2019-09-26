@@ -55,6 +55,7 @@ if ( ! isset($feed_template) ) {
                     <?php $feed_template->printInput( $key, 'st_value', $item['st_value'] ); ?>
                 </div>
 
+
             </td>
             <td data-title="Prefix : "><?php $feed_template->printInput( $key, 'prefix', $item['prefix'] ); ?></td>
             <td data-title="Suffix : "><?php $feed_template->printInput( $key, 'suffix', $item['suffix'] ); ?></td>

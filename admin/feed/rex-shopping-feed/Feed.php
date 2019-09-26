@@ -37,6 +37,12 @@ class Feed
      * [$channelCreated description]
      * @var boolean
      */
+    protected $wrapper;
+
+    /**
+     * [$channelCreated description]
+     * @var boolean
+     */
     protected $channelName;
 
 
@@ -83,23 +89,35 @@ class Feed
     protected $link = '';
 
 
+    /**
+     * [$datetime]
+     * @var string
+     */
+    protected $datetime = '';
+
+
     protected $rss = 'rss';
+
+
+    protected $stand_alone = false;
 
     /**
      * Feed constructor
      */
-    public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss')
+    public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss', $stand_alone = false, $wrapperel = '')
     {
         $this->namespace   = $namespace;
         $this->version     = $version;
-        $this->channelName = $wrapper;
+        $this->wrapper     = $wrapper;
+        $this->channelName = $wrapperel;
         $this->itemlName   = $itemlName;
-        $this->rss          = $rss;
+        $this->rss         = $rss;
 
         $namespace = $this->namespace && !empty($this->namespace) ? " xmlns:f='$this->namespace'" : '';
         $version   = $this->version && !empty($this->version) ? " version='$this->version'" : '';
+        $stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
 
-        $this->feed = new SimpleXMLElement("<$rss $namespace $version ></$rss>");
+        $this->feed = new SimpleXMLElement("<$rss $namespace $stand_alone_text $version ></$rss>");
     }
 
     /**
@@ -126,20 +144,30 @@ class Feed
         $this->link = (string)$link;
     }
 
+
+    /**
+     * @param string $link
+     */
+    public function datetime($datetime)
+    {
+        $this->datetime = (string)$datetime;
+    }
+
     /**
      * [channel description]
      */
     private function channel()
     {
-        if (! $this->channelName) {
+        if (! $this->wrapper) {
             $this->channelCreated = true;
             return;
         }
         if (! $this->channelCreated ) {
-            $channel = $this->feed->addChild($this->channelName);
+            $channel = $this->channelName ? $this->feed->addChild($this->channelName) : $this->feed;
             ! $this->title       ?: $channel->addChild('title', $this->title);
             ! $this->link        ?: $channel->addChild('link', $this->link);
             ! $this->description ?: $channel->addChild('description', $this->description);
+            ! $this->datetime ?: $channel->addChild('datetime', $this->datetime);
             $this->channelCreated = true;
         }
     }
@@ -338,8 +366,9 @@ class Feed
      */
     public function asTxt($output = false)
     {
-        ob_end_clean();
-        $data = $this->addItemsToFeedText();
+        if (ob_get_contents()) ob_end_clean();
+        $this->addItemsToFeedText();
+        $data = html_entity_decode($this->feed->asXml());
         if ($output) {
             die($data);
         }

@@ -276,7 +276,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     {
 
         $this->config = $config;
-        $this->posts_per_page = 50;
+        $is_premium = apply_filters('wpfm_is_premium', false);
+        $per_page = get_option('rex-wpfm-product-per-batch', 50);
+        $this->posts_per_page = $is_premium ? (int)$per_page : ((int)$per_page >= 50 ? 50 : (int)$per_page);
         $this->bypass = $bypass;
 
         $this->setup_feed_data($config['info']);
@@ -349,7 +351,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_feed_data( $info ){
         $totalProducts  =   apply_filters('wpfm_get_total_number_of_products_for_batch', 50);
-        $this->tbatch   =   ceil($totalProducts/50);
+        $per_batch      =   get_option('rex-wpfm-product-per-batch', 50);
+        $this->tbatch   =   ceil($totalProducts/(int)$per_batch);
         $this->id       =   $info['post_id'];
         $this->title    =   $info['title'];
         $this->desc     =   $info['desc'];

@@ -21,11 +21,10 @@ class Rex_Product_Metabox {
     public function register() {
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
         $this->products();
-        if(!$is_premium) $this->upgrade_notice();
         $this->feed_config();
         $this->feed_file();
         $this->google_merchant();
-
+        if(!$is_premium) $this->upgrade_notice();
         add_filter( 'cmb2_select_attributes', array($this, 'wpfm_merchant_dropdown'), 10, 4 );
     }
 

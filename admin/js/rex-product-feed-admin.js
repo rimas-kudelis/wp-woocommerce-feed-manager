@@ -268,7 +268,8 @@
             wpAjaxHelperRequest( 'my-handle', $payload )
                 .success( function( response ) {
                     // console.log('Total Number of Products: ' + response.products);
-                    generate_feed(response.products, 0, 1);
+                    var per_batch = response.perBatch ? parseInt(response.perBatch) : 50;
+                    generate_feed(response.products, 0, 1, per_batch);
                 })
                 .error( function( response ) {
                     $('#publishing-action span.spinner').removeClass('is-active');
@@ -282,7 +283,9 @@
     $(document).on('click', '#publish', get_product_number);
 
 
-    function generate_feed( product, offset, batch ) {
+    function generate_feed( product, offset, batch, per_batch ) {
+
+        per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
 
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
@@ -306,7 +309,7 @@
             feed_config : $('form').serialize(),
         };
 
-        var batches = Math.ceil( product/50 );
+        var batches = Math.ceil( product/per_batch );
         console.log('Total Batch: '+ batches);
         console.log('Total Product(s): '+ product);
         console.log('Processing Batch Number: '+ batch);
@@ -329,7 +332,7 @@
                 console.log(response);
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if(response == 'false' || response == ''){
-                    generate_feed(product, offset, batch);
+                    generate_feed(product, offset, batch, per_batch);
                 }else if (response.msg == 'finish') {
                     feed_progressBar(progressWidth);
                     $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
@@ -342,10 +345,10 @@
                 } else {
                     if ( batch < batches ) {
                         setTimeout(function(){
-                            offset = offset + 50;
+                            offset = offset + per_batch;
                             batch++;
                             feed_progressBar(progressWidth);
-                            generate_feed(product, offset, batch);
+                            generate_feed(product, offset, batch, per_batch);
                         }, 2000);
                     }
                 }
@@ -362,9 +365,9 @@
     function feed_progressBar(width) {
 
         $('.progressbar-bar').animate({
-            width:width + '%'
+            width: Math.ceil(width) + '%'
         },1000);
-        $('.progressbar-bar-percent').html(width+ '%');
+        $('.progressbar-bar-percent').html(Math.ceil(width)+ '%');
     }
 
 
@@ -485,6 +488,38 @@
             });
     }
     $(document).on('change', '.switch-input', product_feed_change_merchant_status);
+
+
+    /**
+     * Update product per batch
+     * @param e
+     */
+    function update_per_batch(e) {
+        e.preventDefault();
+        var $form = $(this);
+        $form.find("button.save-batch span").text("");
+        $form.find("button.save-batch i").show();
+        var per_batch = $form.find('#wpfm_product_per_batch').val();
+        wpAjaxHelperRequest( 'rex-product-update-batch-size', per_batch )
+            .success( function( response ) {
+                $form.find("button.save-batch i").hide();
+                $form.find("button.save-batch span").text("saved");
+                setTimeout(function(){
+                    $form.find("button.save-batch span").text("save");
+                }, 1000);
+                console.log('woohoo!');
+            })
+            .error( function( response ) {
+                $form.find("button.save-batch i").hide();
+                $form.find("button.save-batch span").text("failed");
+                setTimeout(function(){
+                    $form.find("button.save-batch span").text("save");
+                }, 1000);
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on("submit", "#wpfm-per-batch", update_per_batch);
     
     
     //----------setting tab-------

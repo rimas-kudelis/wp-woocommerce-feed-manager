@@ -16,7 +16,25 @@ class Rex_Product_Feed_Factory {
     public static function build( $config, $bypass = false ){
 
         self::$other_merchants = apply_filters('wpfm_merchant_custom',
-            array( 'custom', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll', 'admarkt', 'pricerunner', 'billiger', 'vergelijk')
+            array(
+                'custom',
+                'nextag',
+                'pricegrabber',
+                'bing',
+                'kelkoo',
+                'amazon',
+                'ebay',
+                'become' ,
+                'shopzilla',
+                'shopping',
+                'google_Ad',
+                'adroll',
+                'admarkt',
+                'pricerunner',
+                'billiger',
+                'vergelijk',
+                'twenga',
+            )
         );
 
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {

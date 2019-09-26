@@ -109,6 +109,15 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
+
+        /*
+        * update batch
+        */
+        wp_ajax_helper()->handle( 'rex-product-update-batch-size' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'update_batch_size' ) )
+            ->with_validation( $validations );
+
+
     }
 
 
@@ -121,11 +130,9 @@ class Rex_Product_Feed_Ajax {
      * @since    2.0.0
      */
     public static function get_product_number($payload) {
-        $totalProducts = 50;
-        $products = array(
-            'products'  => $totalProducts,
-        );
-        return apply_filters('wpfm_get_total_number_of_products', $products);
+        $products = apply_filters('wpfm_get_total_number_of_products', array('products'  => 50));
+        $products['perBatch'] = get_option('rex-wpfm-product-per-batch', 50);
+        return $products;
     }
 
 
@@ -269,7 +276,7 @@ class Rex_Product_Feed_Ajax {
      * @param $payload
      * @return string
      */
-    function rex_product_change_merchant_status($payload) {
+    public static function rex_product_change_merchant_status($payload) {
         $merchants = get_option('rex_wpfm_merchant_status');
         if(!$merchants) {
             $latest_merchants = $payload;
@@ -410,6 +417,14 @@ class Rex_Product_Feed_Ajax {
         }
         fclose($handle);
         return json_encode($matches, JSON_PRETTY_PRINT);
+    }
+
+
+
+    public static function update_batch_size($payload) {
+        update_option('rex-wpfm-product-per-batch', $payload);
+        wp_send_json_success('success');
+        wp_die();
     }
 
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace LukeSnowden\GoogleShoppingFeed;
+namespace RexTheme\MarktPlaatsShoppingFeed;
 
 use SimpleXMLElement;
-use LukeSnowden\GoogleShoppingFeed\Item;
+use RexTheme\MarktPlaatsShoppingFeed\Item;
 use Gregwar\Cache\Cache;
 
 class Feed
@@ -13,61 +13,93 @@ class Feed
      * Define Google Namespace url
      * @var string
      */
-    protected $namespace = 'http://base.google.com/ns/1.0';
+    protected $namespace ;
 
     /**
+     * [$version description]
      * @var string
      */
-    protected $version = '2.0';
-
-    /**
-     * @var string
-     */
-    protected $iso4217CountryCode = 'GBP';
+    protected $version;
 
     /**
      * Stores the list of items for the feed
      * @var Item[]
      */
-    private $items = array();
+    protected $items = array();
 
     /**
-     * @var bool
+     * Stores the list of items for the feed
+     * @var Item[]
      */
-    private $channelCreated = false;
+    protected $items_row = array();
+
+    /**
+     * [$channelCreated description]
+     * @var boolean
+     */
+    protected $channelName;
+
+
+    /**
+     * [$channelCreated description]
+     * @var boolean
+     */
+    protected $itemlName;
+
+    /**
+     * [$channelCreated description]
+     * @var boolean
+     */
+    protected $channelCreated = false;
 
     /**
      * The base for the feed
      * @var SimpleXMLElement
      */
-    private $feed = null;
+    protected $feed = null;
 
     /**
+     * [$title description]
      * @var string
      */
-    private $title = '';
+    protected $title = '';
 
     /**
+     * [$cacheDir description]
      * @var string
      */
-    private $cacheDir = 'cache';
+    protected $cacheDir = 'cache';
 
     /**
+     * [$description description]
      * @var string
      */
-    private $description = '';
+    protected $description = '';
 
     /**
+     * [$link description]
      * @var string
      */
-    private $link = '';
+    protected $link = '';
+
+
+    protected $rss = 'rss';
 
     /**
      * Feed constructor
      */
-    public function __construct()
+    public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss')
     {
-        $this->feed = new SimpleXMLElement('<rss xmlns:g="' . $this->namespace . '" version="' . $this->version . '"></rss>');
+
+        $this->namespace   = $namespace;
+        $this->version     = $version;
+        $this->channelName = $wrapper;
+        $this->itemlName   = $itemlName;
+        $this->rss          = $rss;
+
+        $namespace = $this->namespace && !empty($this->namespace) ? " xmlns:admarkt='$this->namespace'" : '';
+
+        $this->feed = new SimpleXMLElement("<$rss $namespace ></$rss>");
     }
 
     /**
@@ -95,31 +127,19 @@ class Feed
     }
 
     /**
-     * @param $code
-     */
-    public function setIso4217CountryCode( $code )
-    {
-        $this->iso4217CountryCode = $code;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIso4217CountryCode()
-    {
-        return $this->iso4217CountryCode;
-    }
-
-    /**
      * [channel description]
      */
     private function channel()
     {
-        if (! $this->channelCreated) {
-            $channel = $this->feed->addChild('channel');
-            $channel->addChild('title', htmlspecialchars($this->title));
-            $channel->addChild('link', htmlspecialchars($this->link));
-            $channel->addChild('description', htmlspecialchars($this->description));
+        if (! $this->channelName) {
+            $this->channelCreated = true;
+            return;
+        }
+        if (! $this->channelCreated ) {
+            $channel = $this->feed->addChild($this->channelName);
+            ! $this->title       ?: $channel->addChild('title', $this->title);
+            ! $this->link        ?: $channel->addChild('link', $this->link);
+            ! $this->description ?: $channel->addChild('description', $this->description);
             $this->channelCreated = true;
         }
     }
@@ -129,8 +149,9 @@ class Feed
      */
     public function createItem()
     {
+
         $this->channel();
-        $item = new Item($this);
+        $item = new Item($this->namespace);
         $index = 'index_' . md5(microtime());
         $this->items[$index] = $item;
         $item->setIndex($index);
@@ -187,21 +208,35 @@ class Feed
     private function addItemsToFeed()
     {
 
+
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
-            $feedItemNode = $this->feed->channel->addChild('item');
+            if ( $this->channelName && !empty($this->channelName) ) {
+                $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);
+            }else{
+                $feedItemNode = $this->feed->addChild($this->itemlName);
+            }
             foreach ($item->nodes() as $itemNode) {
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {
-                        $feedItemNode->addChild($node->get('name'), $node->get('value'), $node->get('_namespace'));
+                        $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
                     }
                 } else {
-                    $itemNode->attachNodeTo($feedItemNode);
+                    if(preg_match("/^attribute(.*)/i", $itemNode->get('name')) > 0) {
+                        $attributesNode = $feedItemNode->addChild('attributes');
+                        foreach ($itemNode->get('value') as $value) {
+                            $attributesChild = $attributesNode->addChild('attribute');
+                            $attributesChild->addChild('attributeName', $value['name']);
+                            $attributesChild->addChild('attributeValue', $value['value']);
+                        }
+                    }else {
+                        $itemNode->attachNodeTo($feedItemNode);
+                    }
+
                 }
             }
         }
     }
-
 
     private function addItemsToFeedText() {
         $str = '';
@@ -257,58 +292,26 @@ class Feed
 
     /**
      * Retrieve Google product categories from internet and cache the result
-     * @param string $languageISO639
      * @return array
      */
-    public function categories($languageISO639 = 'gb')
+    public function categories()
     {
-        //map two letter language to culture
-        $languageMap = array(
-            'au' => 'en-AU',
-            'br' => 'pt-BR',
-            'cn' => 'zh-CN',
-            'cz' => 'cs-CZ',
-            'de' => 'de-DE',
-            'dk' => 'da-DK',
-            'es' => 'es-ES',
-            'fr' => 'fr-FR',
-            'gb' => 'en-GB',
-            'it' => 'it-IT',
-            'jp' => 'ja-JP',
-            'nl' => 'nl-NL',
-            'no' => 'no-NO',
-            'pl' => 'pl-PL',
-            'ru' => 'ru-RU',
-            'sw' => 'sv-SE',
-            'tr' => 'tr-TR',
-            'us' => 'en-US'
-        );
-        //set default language to gb for backward compatibility
-        $languageCulture = $languageMap['gb'];
-        if (array_key_exists($languageISO639, $languageMap)) {
-            $languageCulture = $languageMap[$languageISO639];
-        }
-
         $cache = new Cache;
         $cache->setCacheDirectory($this->cacheDir);
-        $data = $cache->getOrCreate('google-feed-taxonomy.'.$languageISO639.'.txt', array('max-age' => '86400'),
-            function () use ($languageCulture) {
-                return file_get_contents("http://www.google.com/basepages/producttype/taxonomy." . $languageCulture . ".txt");
-            }
-        );
-
+        $data = $cache->getOrCreate('google-feed-taxonomy.txt', array( 'max-age' => '86400' ), function () {
+            return file_get_contents("http://www.google.com/basepages/producttype/taxonomy.en-GB.txt");
+        });
         return explode("\n", trim($data));
     }
 
     /**
      * Build an HTML select containing Google taxonomy categories
      * @param string $selected
-     * @param string $languageISO639
      * @return string
      */
-    public function categoriesAsSelect($selected = '', $languageISO639 = 'gb')
+    public function categoriesAsSelect($selected = '')
     {
-        $categories = $this->categories($languageISO639);
+        $categories = $this->categories();
         unset($categories[0]);
         $select = '<select name="google_category">';
         $select .= '<option value="">Please select a Google Category</option>';
@@ -320,34 +323,24 @@ class Feed
     }
 
     /**
-     * @param string $languageISO639
-     * @return array
-     */
-    public function categoriesAsNameAssociativeArray( $languageISO639 = 'gb' )
-    {
-        $categories = $this->categories($languageISO639);
-        unset($categories[0]);
-        $return = [];
-        foreach( $categories as $key => $value ) {
-            $return[$value] = $value;
-        }
-        return $return;
-    }
-
-    /**
      * Generate RSS feed
      * @param bool $output
+     * @param string/bool $merchant
      * @return string
      */
     public function asRss($output = false)
     {
-        if (ob_get_contents()) ob_end_clean();
+        ob_end_clean();
         $this->addItemsToFeed();
-        $data = html_entity_decode($this->feed->asXml());
+
+//        $data = html_entity_decode($this->feed->asXml());
+        $data = $this->feed->asXml();
+
         if ($output) {
             header('Content-Type: application/xml; charset=utf-8');
             die($data);
         }
+
         return $data;
     }
 

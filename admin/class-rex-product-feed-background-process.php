@@ -73,7 +73,8 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
         sleep(5);
 
         $this->product_no = Rex_Product_Feed_Ajax::get_product_number(array());
-        $this->total_batches = ceil($this->product_no['products']/50);
+        $per_batch = get_option('rex-wpfm-product-per-batch', 50);
+        $this->total_batches = ceil($this->product_no['products']/(int) $per_batch);
         $this->offset = 0;
         $this->batch = 1;
         $this->do_task($item, $this->batch, $this->offset);
@@ -87,6 +88,7 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
 
         $this->batch = $batch_no;
         $this->offset = $offset;
+        $per_batch = get_option('rex-wpfm-product-per-batch', 50);
         for ($i = 1; $i<=$this->total_batches; $i++) {
 
             $cats_array = $tags_array = array();
@@ -145,7 +147,7 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                 return $e->getMessage();
             }
             $this->batch++;
-            $this->offset = (int)$this->offset + 100;
+            $this->offset = (int)$this->offset + (int) $per_batch;
             $merchant->make_feed();
         }
 
