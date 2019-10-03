@@ -22,6 +22,10 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         array (
             'phpseclib\\' => 10,
         ),
+        'W' => 
+        array (
+            'WPFM\\GOOGLE\\' => 12,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -58,6 +62,10 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         'phpseclib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'WPFM\\GOOGLE\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google',
         ),
         'Psr\\Log\\' => 
         array (
@@ -150,6 +158,14 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         'RexTheme\\RexShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Feed.php',
         'RexTheme\\RexShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Item.php',
         'RexTheme\\RexShoppingFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Node.php',
+        'RexTheme\\RexSpartooShoppingFeed\\Containers\\RexShopping' => __DIR__ . '/../..' . '/admin/feed/spartoo/Containers/RexShopping.php',
+        'RexTheme\\RexSpartooShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/spartoo/Feed.php',
+        'RexTheme\\RexSpartooShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/spartoo/Item.php',
+        'RexTheme\\RexSpartooShoppingFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/spartoo/Node.php',
+        'RexTheme\\RexYandexShoppingFeed\\Containers\\RexShopping' => __DIR__ . '/../..' . '/admin/feed/yandex/Containers/RexShopping.php',
+        'RexTheme\\RexYandexShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/yandex/Feed.php',
+        'RexTheme\\RexYandexShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/yandex/Item.php',
+        'RexTheme\\RexYandexShoppingFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/yandex/Node.php',
         'Rex_Feed_Abstract_Template' => __DIR__ . '/../..' . '/admin/feed-templates/abstract-rex-feed-template.php',
         'Rex_Feed_Attributes' => __DIR__ . '/../..' . '/admin/class-rex-feed-attributes.php',
         'Rex_Feed_Template_Adroll' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-adroll.php',
@@ -166,15 +182,20 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         'Rex_Feed_Template_Google' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-google.php',
         'Rex_Feed_Template_Google_Ad' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-google-ad.php',
         'Rex_Feed_Template_Kelkoo' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-Kelkoo.php',
+        'Rex_Feed_Template_Kieskeurig' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-kieskeurig.php',
         'Rex_Feed_Template_Marktplaats' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-marktplaats.php',
         'Rex_Feed_Template_Nextag' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-nextag.php',
         'Rex_Feed_Template_Pricegrabber' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-pricegrabber.php',
         'Rex_Feed_Template_Pricerunner' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-pricerunner.php',
         'Rex_Feed_Template_Shopping' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopping.php',
         'Rex_Feed_Template_Shopzilla' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopzilla.php',
+        'Rex_Feed_Template_Spartoo' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-spartoo.php',
+        'Rex_Feed_Template_Tweakers' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-tweakers.php',
         'Rex_Feed_Template_Twenga' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-twenga.php',
         'Rex_Feed_Template_Vergelijk' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-vergelijk.php',
+        'Rex_Feed_Template_Yandex' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-yandex.php',
         'Rex_Google_Merchant_Settings_Api' => __DIR__ . '/../..' . '/admin/class-rex-google-merchant-content-api.php',
+        'Rex_Kieskeurig_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/kieskeurig/class-rex-kieskeurig-product-data-retriever.php',
         'Rex_Product_CPT' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-cpt.php',
         'Rex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/class-rex-product-data-retriever.php',
         'Rex_Product_Feed_Abstract_Generator' => __DIR__ . '/../..' . '/admin/feed/abstract-rex-product-feed-generator.php',
@@ -189,11 +210,16 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         'Rex_Product_Feed_Facebook' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-facebook.php',
         'Rex_Product_Feed_Factory' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-factory.php',
         'Rex_Product_Feed_Google' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-google.php',
+        'Rex_Product_Feed_Kieskeurig' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-kieskeurig.php',
         'Rex_Product_Feed_Marktplaats' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-marktplaats.php',
         'Rex_Product_Feed_Notices' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-notices.php',
         'Rex_Product_Feed_Other' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-other.php',
+        'Rex_Product_Feed_Spartoo' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-spartoo.php',
+        'Rex_Product_Feed_Yandex' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-yandex.php',
         'Rex_Product_Filter' => __DIR__ . '/../..' . '/admin/feed-filter/class-rex-product-filter.php',
         'Rex_Product_Metabox' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-metabox.php',
+        'Rex_Spartoo_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/spartoo/class-rex-spartoo-product-data-retriever.php',
+        'Rex_Yandex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/yandex/class-rex-yandex-product-data-retriever.php',
         'WP_Async_Request' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
         'WP_Background_Process' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
     );

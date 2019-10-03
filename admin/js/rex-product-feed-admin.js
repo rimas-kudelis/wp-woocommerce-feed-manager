@@ -45,7 +45,7 @@
      */
 
     $(document).ready(function() {
-        $('#rex_feed_conf select, #rex_feed_products select').niceSelect();
+        $('#rex_feed_conf select, #rex_feed_products select, #cmb2-metabox-rex_feed_google_merchant select').niceSelect();
         //$('.ui-timepicker-select').formSelect('destroy');
 
         if ( $('#rex_feed_xml_file').val() == '' ) {
@@ -88,7 +88,7 @@
         $(this).siblings('#config-table').find('tbody tr:first')
             .clone()
             .insertAfter(lastrow)
-            .attr('data-row-id', rowId)
+            .attr('data-row-id', rowId);
 
 
         var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");

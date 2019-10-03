@@ -13,6 +13,6 @@
             "vendor/johnbillion/extended-cpts/extended-cpts.php",
             "includes/cmb2/init.php",
             "includes/cmb2-conditionals/cmb2-conditionals.php"
-        ]
+        ],
     }
 }

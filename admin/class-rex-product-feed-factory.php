@@ -34,6 +34,7 @@ class Rex_Product_Feed_Factory {
                 'billiger',
                 'vergelijk',
                 'twenga',
+                'tweakers',
             )
         );
 

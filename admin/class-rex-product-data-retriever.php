@@ -92,10 +92,10 @@ class Rex_Product_Data_Retriever {
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $this->append_variation = $append_variation;
-
+        $this->set_all_value();
 
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
-        $this->set_all_value();
+
 //        $this->maybe_set_variation_data();
     }
 
@@ -247,9 +247,50 @@ class Rex_Product_Data_Retriever {
                 break;
 
             case 'sale_price':
-                if ($this->product->is_type( 'grouped' ))
-                    return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
-                return $this->product->get_sale_price() ? number_format((float)$this->product->get_sale_price(), 2, '.', ''): '';
+
+//                if ($this->product->is_type( 'grouped' ))
+//                    return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
+//                return $this->product->get_sale_price() ? number_format((float)$this->product->get_sale_price(), 2, '.', ''): '';
+
+
+
+                if (!defined('WAD_INITIALIZED') ) {
+                    if ($this->product->is_type( 'grouped' ))
+                        return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
+                    return $this->product->get_sale_price() ? number_format((float)$this->product->get_sale_price(), 2, '.', ''): '';
+                }
+                else {
+                    global $wad_discounts;
+
+                    $all_discounts = wad_get_active_discounts(true);
+                    foreach ($all_discounts as $discount_type => $discounts) {
+                        $wad_discounts[$discount_type] = array();
+                        foreach ($discounts as $discount_id) {
+                            $wad_discounts[$discount_type][$discount_id] = new WAD_Discount($discount_id);
+                        }
+                    }
+                    $sale_price = $this->product->is_type( 'grouped' ) ? number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') : number_format((float)$this->product->get_sale_price(), 2, '.', '');
+
+                    $pid = wad_get_product_id_to_use($this->product);
+                    foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
+                        $o_discount = get_post_meta($discount_id, 'o-discount', true);
+                        $pr_list_id = $o_discount['products-list'];
+                        $product_list = new WAD_Products_List($pr_list_id);
+                        $raw_args = get_post_meta($pr_list_id, "o-list", true);
+                        $args = $product_list->get_args($raw_args);
+                        $products = get_posts( $args );
+                        if (!empty( $products )) {
+                            $to_return = array_map( function($o) {return $o->ID;}, $products );
+                            $variations_ids = $this->get_request_variations( $products );
+                            $products = array_merge( $to_return, $variations_ids );
+                        }
+                        if ($discount_obj->is_applicable($pid) && is_array($products) && in_array($pid, $products)) {
+                            $sale_price = floatval($sale_price) - $discount_obj->get_discount_amount(floatval($sale_price));
+                        }
+                    }
+                    return $sale_price;
+                }
+
                 break;
 
 
@@ -891,6 +932,41 @@ class Rex_Product_Data_Retriever {
     function __call($name, $arguments)
     {
         // TODO: Implement __call() method.
+    }
+
+
+
+    /**
+     * Check if the request contains any variation. If it does not, it adds returns all variations linked to the request
+     * @global type $wpdb
+     * @param type $posts
+     * @return type
+     */
+    private function get_request_variations($posts)
+    {
+        $results=array();
+        $variations = array_filter(
+            $posts,
+            function ($e) {
+                return $e->post_type == "product_variation";
+            }
+        );
+        //If there is no variation in the list, we gather the variations manually and add them to the list
+        if(empty($variations))
+        {
+            global $wpdb;
+            $parents_ids=array_map(function($o){ $p=wc_get_product($o->ID); if($p->get_type()=="variable") return $o->ID;}, $posts);
+            $clean_parents_ids=array_filter($parents_ids);
+            $parents_ids_str= implode(",", $clean_parents_ids);
+            if(!empty($parents_ids_str))
+            {
+                $request="select distinct id from $wpdb->posts where post_parent in($parents_ids_str) and post_type='product_variation'";
+                $results=$wpdb->get_col($request);
+            }
+
+        }
+
+        return $results;
     }
 
 

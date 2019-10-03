@@ -1548,3 +1548,76 @@
     }
 }
 
+
+//-----07. Review Notice--
+.bwfm-review-notice {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    padding: 20px;
+    .wpfm-logo {
+        width: 80px;
+        img{
+            display: block;
+        }
+    }
+
+    .wpfm-notice-content {
+        width: calc(100% - 80px);
+        padding-left: 30px;
+
+        .wpfm-notice-title {
+            font-size: 24px;
+            color: #222;
+        }
+    }
+}
+
+
+
+#send-to-google {
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+    padding: 0 20px;
+    background: #1fb3fb;
+    color: #fff;
+    display: inline-block;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 20px;
+}
+
+#cmb2-metabox-rex_feed_google_merchant {
+    .cmb-th {
+        padding-bottom: 0;
+    }
+    .nice-select {
+        border: 1px solid #e8e8e8;
+        border-radius: 3px;
+        display: inline-block;
+        float: none;
+        font-size: 14px;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 12px;
+        padding-right: 25px;
+        min-width: 240px;
+
+        .list {
+            border-radius: 3px;
+            box-shadow: none;
+            min-width: 100%;
+            border: 1px solid #e8e8e8;
+            max-height: 250px;
+            overflow: auto;
+
+            .option {
+                font-size: 14px;
+                padding-right: 43px;
+                position: relative;
+            }
+        }
+    }
+}

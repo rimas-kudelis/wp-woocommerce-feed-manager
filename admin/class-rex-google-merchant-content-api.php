@@ -56,7 +56,7 @@ class Rex_Google_Merchant_Settings_Api {
             return false;
         }
         $client = self::get_client();
-        $client->setAccessToken($access_token);
+        $client->setAccessToken(json_decode($access_token, true));
 
         if ( $client->isAccessTokenExpired() ) {
             return false;

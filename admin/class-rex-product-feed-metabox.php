@@ -604,15 +604,18 @@ class Rex_Product_Metabox {
         if ( $feed_merchant === 'google' ){
             $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
             $message = __('Oops!! Access token has expired 😕. Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed');
-            if (!($rex_google_merchant->is_authenticate())){
-                echo sprintf('<p class="google-status">%s <a href="%s">'. __('Authenticate', 'rex-product-feed') .'</a> </p>',
-                    $message,
-                    admin_url( 'admin.php?page=merchant_settings'));
-            }else {
-                echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
+//            if (!($rex_google_merchant->is_authenticate())){
+//                echo sprintf('<p class="google-status">%s <a href="%s">'. __('Authenticate', 'rex-product-feed') .'</a> </p>',
+//                    $message,
+//                    admin_url( 'admin.php?page=merchant_settings'));
+//            }else {
+//                echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
+//                        '. __('Send to google merchant', 'rex-product-feed') .'
+//                      </a> ';
+//            }
+            echo '<a class="btn-default" id="send-to-google" href="#">
                         '. __('Send to google merchant', 'rex-product-feed') .'
                       </a> ';
-            }
             echo '<div class="rex-google-status"></div>';
         }
     }

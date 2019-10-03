@@ -290,28 +290,34 @@ class Rex_Product_Feed_Admin {
 
         $current_time = time();
         $notice_start = 1209600;
-        $interval   = ($current_time - $activation_time)>$notice_start ? true : false;
+        $interval   = ($current_time - $activation_time) > $notice_start ? true : false;
 
         if ($interval AND $show_notice !='no') {?>
             <div class="notice notice-info bwfm-review-notice" style="position: relative; border-left-color: #00b4ff;">
-                <p><strong style="font-weight: bold"><?php echo __( 'Hey, I noticed you are using WC product feed manager for over two weeks – that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.', 'rex-product-feed' ) ?><br>~ Lincoln </strong></p>
-                <ul>
-                    <li style="display: inline;">
-                        <span class="dashicons dashicons-external" style="font-size: 1.4em; padding-left: 10px"></span>
-                        <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="" style="font-weight: bold; padding-left: 10px;"><?php echo __('Ok, you deserve it','rex-product-feed')?></a>
-                    </li>
-                    <li style="display: inline;">
-                        <span class="dashicons dashicons-calendar" style="font-size: 1.4em; padding-left: 10px"></span>
-                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold; padding-left: 10px;"><?php echo __( 'Nope, maybe later.', 'rex-product-feed' ) ?></a>
-                    </li>
-                    <li style="display: inline;">
-                        <span class="dashicons dashicons-smiley" style="font-size: 1.4em; padding-left: 10px"></span>
-                        <a href="#" class="stop-bwfm-notice" style="font-weight: bold; padding-left: 10px;"><?php echo __( 'I already did.', 'rex-product-feed' ) ?></a>
-                    </li>
-                </ul>
-                <button type="button" class="notice-dismiss bwfm-dismiss-notice"><span class="screen-reader-text"><?php echo __( 'Dismiss this notice.', 'rex-product-feed' ) ?></span></button>
-            </div>
+                <div class="wpfm-logo">
+                    <img src="<?php echo WPFM_PLUGIN_DIR_URL.'admin/icon/wpfm-logo.jpg'?>">
+                </div>
 
+                <div class="wpfm-notice-content">
+                    <h2 class="wpfm-notice-title"><?php echo __('Leave a review?', 'rex-product-feed'); ?></h2>
+                    <p><?php echo __( 'Hey, I noticed you are using WC product feed manager for over two weeks – that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.', 'rex-product-feed' ) ?><br>~ Lincoln </p>
+                    <ul>
+                        <li style="display: inline;">
+                            <span class="dashicons dashicons-external" style="font-size: 1.4em; padding-left: 10px"></span>
+                            <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="" style="font-weight: bold; padding-left: 10px;"><?php echo __('Ok, you deserve it','rex-product-feed')?></a>
+                        </li>
+                        <li style="display: inline;">
+                            <span class="dashicons dashicons-calendar" style="font-size: 1.4em; padding-left: 10px"></span>
+                            <a href="#" class="stop-bwfm-notice" style="font-weight: bold; padding-left: 10px;"><?php echo __( 'Nope, maybe later.', 'rex-product-feed' ) ?></a>
+                        </li>
+                        <li style="display: inline;">
+                            <span class="dashicons dashicons-smiley" style="font-size: 1.4em; padding-left: 10px"></span>
+                            <a href="#" class="stop-bwfm-notice" style="font-weight: bold; padding-left: 10px;"><?php echo __( 'I already did.', 'rex-product-feed' ) ?></a>
+                        </li>
+                    </ul>
+                    <button type="button" class="notice-dismiss bwfm-dismiss-notice"><span class="screen-reader-text"><?php echo __( 'Dismiss this notice.', 'rex-product-feed' ) ?></span></button>
+                </div>
+            </div>
         <?php }
     }
 

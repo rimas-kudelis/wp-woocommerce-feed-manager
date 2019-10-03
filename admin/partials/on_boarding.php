@@ -280,7 +280,28 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Twenga'
+                                ),
+                                'kieskeurig'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Kieskeurig.nl'
+                                ),
+                                'yandex'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Yandex'
+                                ),
+                                'spartoo'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Spartoo.nl'
+                                ),
+                                'tweakers'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Tweakers.nl'
                                 )
+
                             );
                             $_pro_merchants = array(
                                 'ebay_mip'     => array(
