@@ -300,6 +300,11 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Tweakers.nl'
+                                ),
+                                'sooqr'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Sooqr'
                                 )
 
                             );

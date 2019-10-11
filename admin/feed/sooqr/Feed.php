@@ -1,9 +1,9 @@
 <?php
 
-namespace RexTheme\RexSpartooShoppingFeed;
+namespace RexTheme\RexSooqrShoppingFeed;
 
 use SimpleXMLElement;
-use RexTheme\RexSpartooShoppingFeed\Item;
+use RexTheme\RexSooqrShoppingFeed\Item;
 use Gregwar\Cache\Cache;
 
 class Feed
@@ -113,6 +113,7 @@ class Feed
         $this->itemlName   = $itemlName;
         $this->rss         = $rss;
 
+
         $namespace = $this->namespace && !empty($this->namespace) ? " xmlns:f='$this->namespace'" : '';
         $version   = $this->version && !empty($this->version) ? " version='$this->version'" : '';
         $stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
@@ -158,13 +159,17 @@ class Feed
      */
     private function channel()
     {
-        if (! $this->channelCreated ) {
-            ! $this->title       ?: $this->feed->addChild('title', $this->title);
-            ! $this->link        ?: $this->feed->addChild('link', $this->link);
-            ! $this->description ?: $this->feed->addChild('description', $this->description);
-            ! $this->datetime ?: $this->feed->addChild('datetime', $this->datetime);
+        if (! $this->wrapper) {
             $this->channelCreated = true;
-
+            return;
+        }
+        if (! $this->channelCreated ) {
+            $channel = $this->channelName ? $this->feed->addChild($this->channelName) : $this->feed;
+            ! $this->title       ?: $channel->addChild('title', $this->title);
+            ! $this->link        ?: $channel->addChild('link', $this->link);
+            ! $this->description ?: $channel->addChild('description', $this->description);
+            ! $this->datetime ?: $channel->addChild('datetime', $this->datetime);
+            $this->channelCreated = true;
         }
     }
 
@@ -239,21 +244,27 @@ class Feed
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
             foreach ($item->nodes() as $itemNode) {
-                if (is_array($itemNode)) {
-                    foreach ($itemNode as $node) {
-                        $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
-                    }
-                } else {
-                    if(is_array($itemNode->get('value'))) {
-                        if($itemNode->get('name') === 'categories') {
-                            $categories = $feedItemNode->addChild($itemNode->get('name'));
-                            foreach ($itemNode->get('value') as $val) {
-                                $categories->addChild('category', $val);
+                if(is_array($itemNode->get('value'))) {
+                    if($itemNode->get('name') === 'categories') {
+                        $categories = $itemNode->get('value');
+
+                        if($categories) {
+                            $category_node = $feedItemNode->addChild('categories');
+                            if(array_key_exists('categories', $categories)) {
+                                foreach ($categories['categories'] as $category) {
+                                    $category_node->addChild('category', $category);
+                                }
+                            }
+                            $sub_category_node = $feedItemNode->addChild('subcategories');
+                            if(array_key_exists('subcategories', $categories)) {
+                                foreach ($categories['subcategories'] as $category) {
+                                    $sub_category_node->addChild('subcategory', $category);
+                                }
                             }
                         }
-                    }else {
-                        $itemNode->attachNodeTo($feedItemNode);
                     }
+                }else {
+                    $itemNode->attachNodeTo($feedItemNode);
                 }
             }
         }
@@ -301,7 +312,7 @@ class Feed
                 }
                 $this->items_row[] = $row;
             }
-
+            
             $str = '';
             foreach ($this->items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
