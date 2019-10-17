@@ -317,6 +317,9 @@ class Rex_Product_Data_Retriever {
             case 'product_cats':
                 return $this->get_product_cats(); break;
 
+            case 'product_cats_path':
+                return $this->get_product_cats_with_seperator(); break;
+
             case 'product_tags':
                 return $this->get_product_tags(); break;
 
@@ -528,6 +531,24 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     protected function get_product_cats( $before = '', $sep = ', ', $after = '' ) {
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            return $this->get_the_term_list( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
+        }else {
+            return $this->get_the_term_list( $this->product->get_id(), 'product_cat', $before, $sep, $after );
+        }
+
+    }
+
+
+    /**
+     * Retrieve a product's categories as a list with specified format.
+     *
+     * @param string $before Optional. Before list.
+     * @param string $sep Optional. Separate items using this.
+     * @param string $after Optional. After list.
+     * @return string|false
+     */
+    protected function get_product_cats_with_seperator( $before = '', $sep = ' > ', $after = '' ) {
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             return $this->get_the_term_list( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
         }else {

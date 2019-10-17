@@ -35,6 +35,8 @@ class Rex_Product_Feed_Factory {
                 'vergelijk',
                 'twenga',
                 'tweakers',
+                'koopkeus',
+                'scoupz',
             )
         );
 

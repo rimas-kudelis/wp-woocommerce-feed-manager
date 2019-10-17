@@ -5,7 +5,7 @@
  *
  * Get the product data based on feed config selected by user.
  *
- * @package    Rex_Kieskeurig_Product_Data_Retriever
+ * @package    Rex_Sooqr_Product_Data_Retriever
  * @subpackage Rex_Product_Feed/admin
  * @author     RexTheme <info@rextheme.com>
  */

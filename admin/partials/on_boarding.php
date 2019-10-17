@@ -184,12 +184,12 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                 'google'       => array(
                                     'free'  => true,
                                     'status'    => 1,
-                                    'name'  => 'Google'
+                                    'name'  => 'Google Shopping'
                                 ),
                                 'google_Ad'    => array(
                                     'free'  => true,
                                     'status'    => 1,
-                                    'name'  => 'Google AD'
+                                    'name'  => 'Google AdWords'
                                 ),
                                 'facebook'     => array(
                                     'free'  => true,
@@ -305,6 +305,26 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Sooqr'
+                                ),
+                                'heureka'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Heureka'
+                                ),
+                                'koopkeus'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Koopkeus'
+                                ),
+                                'scoupz'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Scoupz'
+                                ),
+                                'cdiscount'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Cdiscount'
                                 )
 
                             );
@@ -361,6 +381,16 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                             if(!$is_premium) {
                                 $_merchants = array_merge($_merchants, $_pro_merchants);
                             }
+
+
+                            /**
+                             * result of bad planning
+                             */
+                            $_merchants['google']['name'] = 'Google Shopping';
+                            $_merchants['google_Ad']['name'] = 'Google AdWords';
+
+                            $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
+
 
                             ?>
                             <?php foreach ($_merchants as $key => $merchant): ?>

@@ -212,12 +212,12 @@ class Rex_Product_Metabox {
             'google'       => array(
                 'free'  => true,
                 'status'    => 1,
-                'name'  => 'Google'
+                'name'  => 'Google Shopping'
             ),
             'google_Ad'    => array(
                 'free'  => true,
                 'status'    => 1,
-                'name'  => 'Google AD'
+                'name'  => 'Google AdWords'
             ),
             'facebook'     => array(
                 'free'  => true,
@@ -284,8 +284,18 @@ class Rex_Product_Metabox {
             if($merchant['status'])
                 $merchant_lists[$key] = $merchant['name'];
         }
+
+        /**
+         * result of bad planning
+         */
+        $merchant_lists['google'] = 'Google Shopping';
+        $merchant_lists['google_Ad']= 'Google AdWords';
+        if(array_key_exists('drm', $merchant_lists))
+            $merchant_lists['drm'] = 'Google Remarketing (DRM)';
+
         reset($merchant_lists);
         $default_merchant = key($merchant_lists);
+
 
 
         $box = new_cmb2_box( array(
@@ -604,18 +614,18 @@ class Rex_Product_Metabox {
         if ( $feed_merchant === 'google' ){
             $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
             $message = __('Oops!! Access token has expired 😕. Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed');
-//            if (!($rex_google_merchant->is_authenticate())){
-//                echo sprintf('<p class="google-status">%s <a href="%s">'. __('Authenticate', 'rex-product-feed') .'</a> </p>',
-//                    $message,
-//                    admin_url( 'admin.php?page=merchant_settings'));
-//            }else {
-//                echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
-//                        '. __('Send to google merchant', 'rex-product-feed') .'
-//                      </a> ';
-//            }
-            echo '<a class="btn-default" id="send-to-google" href="#">
+            if (!($rex_google_merchant->is_authenticate())){
+                echo sprintf('<p class="google-status">%s <a href="%s">'. __('Authenticate', 'rex-product-feed') .'</a> </p>',
+                    $message,
+                    admin_url( 'admin.php?page=merchant_settings'));
+            }else {
+                echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
                         '. __('Send to google merchant', 'rex-product-feed') .'
                       </a> ';
+            }
+//            echo '<a class="btn-default" id="send-to-google" href="#">
+//                        '. __('Send to google merchant', 'rex-product-feed') .'
+//                      </a> ';
             echo '<div class="rex-google-status"></div>';
         }
     }
@@ -670,12 +680,12 @@ class Rex_Product_Metabox {
             'google'       => array(
                 'free'  => true,
                 'status'    => 1,
-                'name'  => 'Google'
+                'name'  => 'Google Shopping'
             ),
             'google_Ad'    => array(
                 'free'  => true,
                 'status'    => 1,
-                'name'  => 'Google AD'
+                'name'  => 'Google AdWords'
             ),
             'facebook'     => array(
                 'free'  => true,
@@ -784,6 +794,16 @@ class Rex_Product_Metabox {
         if(!$is_premium) {
             $_merchants = array_merge($_merchants, $_pro_merchants);
         }
+
+
+
+        /**
+         * result of bad planning
+         */
+        $_merchants['google']['name'] = 'Google Shopping';
+        $_merchants['google_Ad']['name'] = 'Google AdWords';
+        if(array_key_exists('drm', $_merchants))
+         $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
 
         $saved_value = $field_object->escaped_value();
         $value       = $saved_value ? $saved_value : $field_object->args( 'default' );

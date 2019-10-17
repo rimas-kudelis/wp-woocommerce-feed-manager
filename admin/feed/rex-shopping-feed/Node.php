@@ -86,7 +86,7 @@ class Node
         if ($this->cdata && ! preg_match("#^<!\[CDATA#is", $this->value)) {
             $this->value = "<![CDATA[{$this->value}]]>";
         }
-        $this->name = strtolower(str_replace(' ', '_', $this->name));
+        $this->name = str_replace(' ', '_', $this->name);
         $parent->addChild($this->name, '', $this->_namespace);
         $parent->{$this->name} = $this->value;
 

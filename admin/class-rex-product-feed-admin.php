@@ -652,6 +652,21 @@ class Rex_Product_Feed_Admin {
                     opacity: .2;
                   }
                 }
+                .bwfm-review-notice {
+                  display: flex;
+                  flex-flow: row wrap;
+                  align-items: center;
+                  padding: 20px; }
+                  .bwfm-review-notice .wpfm-logo {
+                    width: 80px; }
+                    .bwfm-review-notice .wpfm-logo img {
+                      display: block; }
+                  .bwfm-review-notice .wpfm-notice-content {
+                    width: calc(100% - 110px);
+                    padding-left: 30px; }
+                    .bwfm-review-notice .wpfm-notice-content .wpfm-notice-title {
+                      font-size: 24px;
+                      color: #222; }
         </style>';
     }
 
