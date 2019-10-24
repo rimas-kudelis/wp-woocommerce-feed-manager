@@ -241,8 +241,10 @@ WP Dashboard > Product Feed > Upgrade.
 = 4.5 (2019-10-24) =
 * Added: Kelkoo.nl template added
 * Added: Uvinum template added
+* Added language support for Czech, Dutch, Polish, Danish, Finnish & Portuguese (Portugal)
 * Compatibility Added : Conditional Discounts for WooCommerce by Orion
 * Compatibility Checked : WordPress 5.3
+
 
 = 4.4 (2019-10-17) =
 * Added: New feed attribute (product_cats_path) Product Categories with separator (>)

@@ -1,0 +1,386 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Product Feed Manager\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-06 08:53+0000\n"
+"PO-Revision-Date: 2019-10-23 07:12+0000\n"
+"Last-Translator: devadmin <tipu@coderex.co>\n"
+"Language-Team: Dutch\n"
+"Language: nl-NL\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.3.1; wp-5.2.4"
+
+#: admin/class-rex-google-merchant-content-api.php:79 
+#: admin/class-rex-google-merchant-content-api.php:118
+msgid "You are not authorized."
+msgstr "Jij bent niet geautoriseerd."
+
+#: admin/class-rex-google-merchant-content-api.php:80 
+#: admin/class-rex-google-merchant-content-api.php:119
+msgid ""
+"Your access token has expired. This application uses OAuth 2.0 to Access "
+"Google APIs. Please insert the information below and authenticate token for "
+"Google Merchant Shop. Generated access token expires after 3600 sec."
+msgstr ""
+"Uw toegangstoken is verlopen. Deze applicatie gebruikt OAuth 2.0 om toegang "
+"te krijgen tot Google API's. Voer de onderstaande informatie in en verifieer "
+"token voor Google Merchant Shop. Het gegenereerde toegangstoken verloopt na "
+"3600 sec."
+
+#: admin/class-rex-google-merchant-content-api.php:91
+msgid "You are authorized."
+msgstr "U bent geautoriseerd."
+
+#: admin/class-rex-google-merchant-content-api.php:92
+msgid ""
+"You are now ready to send feed from WooCommerce Product Feed Manager to your "
+"Google Merchant Center. 🚀"
+msgstr ""
+"U bent nu klaar om feed van WooCommerce Product Feed Manager naar uw Google "
+"Merchant Center te verzenden. 🚀"
+
+#: admin/class-rex-product-feed-admin.php:204
+msgid ""
+"Hey, I noticed you just created a new feed with 50 products using WC product "
+"feed manager – that’s awesome! Could you please do me a\n"
+"                        BIG favor and give it a 5-star rating on WordPress? "
+"Just to help us spread the word and boost our motivation."
+msgstr ""
+"Hé, ik heb gemerkt dat je zojuist een nieuwe feed met 50 producten hebt "
+"gemaakt met WC Product Feed Manager - dat is geweldig! Kun je me alsjeblieft "
+"een GROTE gunst geven en het een 5-sterrenbeoordeling geven op WordPress? "
+"Gewoon om ons te helpen het woord te verspreiden en onze motivatie te "
+"vergroten."
+
+#: admin/class-rex-product-feed-admin.php:209 
+#: admin/class-rex-product-feed-admin.php:236
+msgid "Ok, you deserve it"
+msgstr "Ok, je verdient het"
+
+#: admin/class-rex-product-feed-admin.php:212 
+#: admin/class-rex-product-feed-admin.php:240
+msgid "Nope, maybe later."
+msgstr "Nee, misschien later."
+
+#: admin/class-rex-product-feed-admin.php:215 
+#: admin/class-rex-product-feed-admin.php:244
+msgid "I already did."
+msgstr "Heb ik al gedaan."
+
+#: admin/class-rex-product-feed-admin.php:218 
+#: admin/class-rex-product-feed-admin.php:247
+msgid "Dismiss this notice."
+msgstr "Wijs deze kennisgeving af."
+
+#: admin/class-rex-product-feed-admin.php:232
+msgid ""
+"Hey, I noticed you are using WC product feed manager for over two weeks – "
+"that’s awesome! Could you please do me a BIG favor and give it a 5-star "
+"rating on WordPress? Just to help us spread the word and boost our "
+"motivation."
+msgstr ""
+"Hé, ik heb gemerkt dat je WC-productfeedmanager al meer dan twee weken "
+"gebruikt - dat is geweldig! Kun je me alsjeblieft een GROTE gunst geven en "
+"het een 5-sterrenbeoordeling geven op WordPress? Gewoon om ons te helpen het "
+"woord te verspreiden en onze motivatie te vergroten."
+
+#: admin/class-rex-product-feed-admin.php:310
+msgid "Product Feed"
+msgstr "Productfeed"
+
+#: admin/class-rex-product-feed-admin.php:311
+msgid "Add New Feed"
+msgstr "Nieuwe feed toevoegen"
+
+#: admin/class-rex-product-feed-admin.php:312
+msgid "Category Mapping"
+msgstr "Categorie in kaart brengen"
+
+#: admin/class-rex-product-feed-admin.php:313
+msgid "Google Merchant Settings"
+msgstr "Google Merchant Instellingen"
+
+#: admin/class-rex-product-feed-admin.php:314
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: admin/class-rex-product-feed-metabox.php:54
+msgid "Products"
+msgstr "producten"
+
+#: admin/class-rex-product-feed-metabox.php:55
+msgid "Select products to create feed for."
+msgstr "Selecteer producten om feed voor te maken."
+
+#: admin/class-rex-product-feed-metabox.php:61
+msgid "All Published Products"
+msgstr "Alle gepubliceerde producten"
+
+#: admin/class-rex-product-feed-metabox.php:62
+msgid "Custom Filter"
+msgstr "Aangepast filter"
+
+#: admin/class-rex-product-feed-metabox.php:63
+msgid "Category Filter"
+msgstr "Categoriefilter"
+
+#: admin/class-rex-product-feed-metabox.php:64
+msgid "Tag Filter"
+msgstr "Tagfilter"
+
+#: admin/class-rex-product-feed-metabox.php:113
+msgid "Refresh Interval"
+msgstr "Vernieuwingsinterval"
+
+#: admin/class-rex-product-feed-metabox.php:114
+msgid "Feed Schedule Update"
+msgstr "Feedschema update"
+
+#: admin/class-rex-product-feed-metabox.php:118
+msgid "No Interval"
+msgstr "Geen interval"
+
+#: admin/class-rex-product-feed-metabox.php:119
+msgid "Daily"
+msgstr ""
+"\n"
+"Dagelijks"
+
+#: admin/class-rex-product-feed-metabox.php:120 
+#: admin/class-rex-product-feed-metabox.php:400
+msgid "Hourly"
+msgstr "ieder uur"
+
+#: admin/class-rex-product-feed-metabox.php:130
+msgid "Include Product Variations"
+msgstr "Productvariaties opnemen"
+
+#: admin/class-rex-product-feed-metabox.php:131
+msgid "Include/Exclude Products Variations"
+msgstr "Varianten van producten opnemen / uitsluiten"
+
+#: admin/class-rex-product-feed-metabox.php:135 
+#: admin/class-rex-product-feed-metabox.php:151
+msgid "Yes"
+msgstr "Ja"
+
+#: admin/class-rex-product-feed-metabox.php:136 
+#: admin/class-rex-product-feed-metabox.php:152
+msgid "No"
+msgstr "Nee"
+
+#: admin/class-rex-product-feed-metabox.php:146
+msgid "Include Parent Product (Grouped Product)"
+msgstr "Bovenliggend product opnemen (gegroepeerd product)"
+
+#: admin/class-rex-product-feed-metabox.php:147
+msgid "Include/Exclude Parent Product"
+msgstr "Ouderproduct opnemen / uitsluiten"
+
+#: admin/class-rex-product-feed-metabox.php:173 
+#: admin/class-rex-product-feed-metabox.php:174
+msgid "WPML Language"
+msgstr "WPML-taal"
+
+#: admin/class-rex-product-feed-metabox.php:199
+msgid "Merchant Type"
+msgstr "Type verkoper"
+
+#: admin/class-rex-product-feed-metabox.php:200
+msgid "Select Merchant Type of the Feed."
+msgstr "Selecteer Handelaarstype van de feed."
+
+#: admin/class-rex-product-feed-metabox.php:206
+msgid "Custom"
+msgstr "Gewoonte"
+
+#: admin/class-rex-product-feed-metabox.php:207
+msgid "Google Shopping"
+msgstr "Google Shopping"
+
+#: admin/class-rex-product-feed-metabox.php:208
+msgid "Google Adwords"
+msgstr "Google Adwords"
+
+#: admin/class-rex-product-feed-metabox.php:209
+msgid "Facebook"
+msgstr "Facebook"
+
+#: admin/class-rex-product-feed-metabox.php:210
+msgid "Amazon Ads"
+msgstr "Amazon Ads"
+
+#: admin/class-rex-product-feed-metabox.php:211
+msgid "eBay(Shopping.com)"
+msgstr "eBay(Shopping.com)"
+
+#: admin/class-rex-product-feed-metabox.php:212
+msgid "Adroll.com"
+msgstr "Adroll.com"
+
+#: admin/class-rex-product-feed-metabox.php:213
+msgid "Nextag"
+msgstr "Nextag"
+
+#: admin/class-rex-product-feed-metabox.php:214
+msgid "Price Grabber"
+msgstr "Price Grabber"
+
+#: admin/class-rex-product-feed-metabox.php:215
+msgid "Bing"
+msgstr "Bing"
+
+#: admin/class-rex-product-feed-metabox.php:216
+msgid "Kelkoo"
+msgstr "Kelkoo"
+
+#: admin/class-rex-product-feed-metabox.php:217
+msgid "Become"
+msgstr "Become"
+
+#: admin/class-rex-product-feed-metabox.php:218
+msgid "ShopZilla.com"
+msgstr "ShopZilla.com"
+
+#: admin/class-rex-product-feed-metabox.php:219
+msgid "Shopping.com"
+msgstr "Shopping.com"
+
+#: admin/class-rex-product-feed-metabox.php:224
+msgid "File Format"
+msgstr "Bestandsformaat"
+
+#: admin/class-rex-product-feed-metabox.php:225
+msgid "Select Format of the Feed."
+msgstr "Selecteer Formaat van de feed."
+
+#: admin/class-rex-product-feed-metabox.php:231
+msgid "XML"
+msgstr "XML"
+
+#: admin/class-rex-product-feed-metabox.php:233
+msgid "TEXT"
+msgstr "TEKST"
+
+#: admin/class-rex-product-feed-metabox.php:258
+msgid "Add New Attribute"
+msgstr "Nieuw kenmerk toevoegen"
+
+#: admin/class-rex-product-feed-metabox.php:292
+msgid "Add New Filter"
+msgstr "Nieuw filter toevoegen"
+
+#: admin/class-rex-product-feed-metabox.php:316
+msgid "Your Feed URL"
+msgstr "Uw feed-URL"
+
+#: admin/class-rex-product-feed-metabox.php:346
+msgid "View Feed"
+msgstr "Feed bekijken"
+
+#: admin/class-rex-product-feed-metabox.php:348
+msgid "Download Feed"
+msgstr "Feed downloaden"
+
+#: admin/class-rex-product-feed-metabox.php:372
+msgid "Target Country"
+msgstr "Doelland"
+
+#: admin/class-rex-product-feed-metabox.php:383
+msgid "Target Language"
+msgstr "Doel taal"
+
+#: admin/class-rex-product-feed-metabox.php:393
+msgid "Schedule"
+msgstr "Schema"
+
+#: admin/class-rex-product-feed-metabox.php:398
+msgid "Monthly"
+msgstr "Maandelijks"
+
+#: admin/class-rex-product-feed-metabox.php:399
+msgid "Weekly"
+msgstr "Wekelijks"
+
+#: admin/class-rex-product-feed-metabox.php:408
+msgid "Select day of month"
+msgstr "Selecteer de dag van de maand"
+
+#: admin/class-rex-product-feed-metabox.php:420
+msgid "Select day of week"
+msgstr "Selecteer dag van de week"
+
+#: admin/class-rex-product-feed-metabox.php:440
+msgid "Select Hour"
+msgstr "Selecteer uur"
+
+#: admin/class-rex-product-feed-metabox.php:456
+msgid ""
+"Please note that Google has fixed abbreviations for Location and Language. "
+"For example, the abbreviation for target location, \n"
+"                United States is US and the abbreviation for language, "
+"English is en."
+msgstr ""
+"Houd er rekening mee dat Google vaste afkortingen heeft voor Locatie en Taal."
+" De afkorting voor doellocatie, Verenigde Staten is VS en de afkorting voor "
+"taal, Engels is en."
+
+#: admin/class-rex-product-feed-metabox.php:457
+msgid "Click here"
+msgstr "Klik hier"
+
+#: admin/class-rex-product-feed-metabox.php:457
+msgid "to see the list of all abbreviations set by Google."
+msgstr "om de lijst met alle afkortingen van Google te bekijken."
+
+#: admin/class-rex-product-feed-metabox.php:483
+msgid ""
+"Oops!! Access token has expired.Please authenticate token for Google "
+"Merchant Shop to be able to send feed."
+msgstr ""
+"Oops !! Toegangstoken is verlopen. Verifieer token zodat Google Merchant "
+"Shop feed kan verzenden."
+
+#: admin/class-rex-product-feed-metabox.php:485
+msgid "Authenticate"
+msgstr "Waarmerken"
+
+#: admin/class-rex-product-feed-metabox.php:490
+msgid "Send to google merchant"
+msgstr "Verzenden naar Google Merchant"
+
+#: admin/partials/merchant_settings.php:43
+msgid "Client ID#: "
+msgstr "Klant identificatie#:"
+
+#: admin/partials/merchant_settings.php:47
+msgid "Client Secret: "
+msgstr "Klantgeheim:"
+
+#: admin/partials/merchant_settings.php:51
+msgid "Merchant ID# : "
+msgstr "Verkoper ID #:"
+
+#: admin/partials/merchant_settings.php:56
+msgid "Redirect URL"
+msgstr "Omleidings-URL"
+
+#: admin/partials/merchant_settings.php:59
+msgid "Reset"
+msgstr "Reset"
+
+#: admin/partials/merchant_settings.php:60
+msgid "replay"
+msgstr "herhaling"
+
+#: admin/partials/merchant_settings.php:63
+msgid "Submit"
+msgstr "voorleggen"
+
+#: admin/partials/merchant_settings.php:64
+msgid "send"
+msgstr "sturen"
