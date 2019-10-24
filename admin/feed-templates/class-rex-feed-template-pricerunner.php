@@ -117,7 +117,7 @@ class Rex_Feed_Template_Pricerunner extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'Graphic_URL',
+                'attr'     => 'Image_URL',
                 'type'     => 'meta',
                 'meta_key' => 'featured_image',
                 'st_value' => '',

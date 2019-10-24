@@ -281,8 +281,12 @@ class Rex_Product_Metabox {
         }
         $merchant_lists = [];
         foreach ($_merchants as $key => $merchant) {
-            if($merchant['status'])
-                $merchant_lists[$key] = $merchant['name'];
+            if($merchant['status']) {
+                if(array_key_exists('name', $merchant)) {
+                    $merchant_lists[$key] = $merchant['name'];
+                }
+            }
+
         }
 
         /**
@@ -804,6 +808,8 @@ class Rex_Product_Metabox {
         $_merchants['google_Ad']['name'] = 'Google AdWords';
         if(array_key_exists('drm', $_merchants))
          $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
+        if(array_key_exists('kelkoonl', $_merchants))
+            $_merchants['kelkoonl']['name'] = 'Kelkoo.nl';
 
         $saved_value = $field_object->escaped_value();
         $value       = $saved_value ? $saved_value : $field_object->args( 'default' );

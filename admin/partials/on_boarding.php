@@ -325,8 +325,17 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Cdiscount'
+                                ),
+                                'kelkoonl'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Kelkoo.nl'
+                                ),
+                                'uvinum'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'uvinum'
                                 )
-
                             );
                             $_pro_merchants = array(
                                 'ebay_mip'     => array(

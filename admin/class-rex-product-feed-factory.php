@@ -37,6 +37,8 @@ class Rex_Product_Feed_Factory {
                 'tweakers',
                 'koopkeus',
                 'scoupz',
+                'kelkoonl',
+                'uvinum',
             )
         );
 

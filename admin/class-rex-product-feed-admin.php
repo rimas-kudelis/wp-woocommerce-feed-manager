@@ -652,6 +652,14 @@ class Rex_Product_Feed_Admin {
                     opacity: .2;
                   }
                 }
+                #woocommerce-product-data ul.wc-tabs li.wpfm_wc_custom_tabs a:before { 
+                    font-family: WooCommerce; 
+                    content: \'\e006\'; 
+                 }
+                 #wpfm_product_meta strong{
+                    color: #1FB3FB;
+                    padding: 10px;
+                 }
                 .bwfm-review-notice {
                   display: flex;
                   flex-flow: row wrap;
