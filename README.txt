@@ -241,7 +241,7 @@ WP Dashboard > Product Feed > Upgrade.
 = 4.6 (2019-10-31) =
 * Added: OR filter
 * Increase feed creation page load speed
-
+* Update google_product_category list
 
 = 4.5 (2019-10-24) =
 * Added: Kelkoo.nl template added
