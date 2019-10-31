@@ -20,7 +20,7 @@ if ( ! isset($feed_filter) ) {
 
 unset($feed_filter->getFilterMappings()['Primary Attributes']['product_cats']);
 unset($feed_filter->getFilterMappings()['Primary Attributes']['product_tags']);
-
+$is_premium = apply_filters('wpfm_is_premium_activate', false);
 ?>
 
 
@@ -28,13 +28,16 @@ unset($feed_filter->getFilterMappings()['Primary Attributes']['product_tags']);
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
+<?php do_action('wpfm_pro_filter_rules') ?>
+
 <table id="config-table" class="filter-config-table responsive-table">
     <thead>
         <tr>
             <th class="large-col">If</th>
             <th class="large-col">Condition</th>
             <th class="large-col">Value</th>
-            <th colspan="2" class="small-col">Then</th>
+            <th class="large-col">Then</th>
+            <th colspan="2" class="small-col">Logic</th>
         </tr>
     </thead>
 
@@ -45,6 +48,7 @@ unset($feed_filter->getFilterMappings()['Primary Attributes']['product_tags']);
                 <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $key, 'condition', $item['condition'] ); ?></td>
                 <td data-title="value : "><?php $feed_filter->printInput( $key, 'value', $item['value'] ); ?></td>
                 <td data-title="then : "><?php $feed_filter->printSelectDropdown( $key, 'then', $item['then'] ); ?></td>
+                <td class="logical-operator" data-title="rules : "><?php $feed_filter->printSelectDropdown( $key, 'rules', $item['rules'] ); ?></td>
                 <td>
                     <a class="delete-row" title="Delete">
                         <i class="fa fa-trash"></i>

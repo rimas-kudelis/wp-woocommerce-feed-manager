@@ -187,12 +187,9 @@ class Rex_Product_Feed_Admin {
         }
 
         if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)))) {
-            wp_enqueue_style( 'bulma-css', plugin_dir_url( __FILE__ ) . 'css/bulma.css', array(), $this->version, 'all' );
-            wp_enqueue_style( 'easy-auto', plugin_dir_url( __FILE__ ) . 'css/easy-autocomplete.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css', array(), $this->version, 'all' );
-            wp_enqueue_style( 'nice-select', plugin_dir_url( __FILE__ ) . 'css/nice-select.min.css', array(), $this->version, 'all' );
-            wp_enqueue_style( 'jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
-            wp_enqueue_style( 'style-css', plugin_dir_url( __FILE__ ) . 'css/style.css', array(), $this->version, 'all' );
+            wp_enqueue_style( 'wpfm-vendor', plugin_dir_url( __FILE__ ) . 'css/vendor.min.css', array(), $this->version, 'all' );
+            wp_enqueue_style( 'style-css', plugin_dir_url( __FILE__ ) . 'css/style.min.css', array(), $this->version, 'all' );
         }
     }
 
@@ -231,7 +228,7 @@ class Rex_Product_Feed_Admin {
             return;
         }
 
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)))) {
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)))) {
             wp_enqueue_script( 'jquery-ui-autocomplete' );
             wp_enqueue_script(
                 'jquery-stop-watch',
@@ -255,11 +252,11 @@ class Rex_Product_Feed_Admin {
                 true
             );
 
-//            wp_enqueue_script( 'easy', plugin_dir_url( __FILE__ ) . 'js/wp-jquery.easy-autocomplete.js', array( 'jquery' ), $this->version, true );
-            wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery', 'jquery-ui-autocomplete' ), $this->version, true );
         }
 
-
+        if ($screen->id == $this->category_mapping_screen_hook_suffix) {
+            wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery', 'jquery-ui-autocomplete' ), $this->version, true );
+        }
     }
 
     /**

@@ -5,7 +5,7 @@ Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, 
 Requires at least: 4.7
 Tested up to:  5.3
 Requires PHP: 5.6
-Stable tag: 4.5
+Stable tag: 4.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -237,6 +237,11 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 4.6 (2019-10-31) =
+* Added: OR filter
+* Increase feed creation page load speed
+
 
 = 4.5 (2019-10-24) =
 * Added: Kelkoo.nl template added

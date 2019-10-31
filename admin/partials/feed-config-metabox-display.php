@@ -17,7 +17,11 @@ if ( ! isset($feed_template) ) {
     return;
 }
 
-
+$items = Rex_Feed_Attributes::get_attributes();
+//echo '<pre>';
+//var_dump($items);
+//echo '</pre>';
+//wp_die();
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -46,16 +50,34 @@ if ( ! isset($feed_template) ) {
             <td data-title="Attributes : "><?php $feed_template->printSelectDropdown( $key, 'attr', $item['attr'] ); ?></td>
             <td data-title="Type : "><?php $feed_template->printAttType( $key, $item['type'] ); ?></td>
             <td data-title="Value : ">
-
                 <div class="meta-dropdown" <?php echo $hideMetaInput; ?>>
-                    <?php $feed_template->printSelectDropdown( $key, 'meta_key', $item['meta_key'] ); ?>
-                </div>
+                    <?php
+                        echo '<select  name="fc['.$key.'][' . esc_attr( 'meta_key' ) . ']" >';
+                            echo "<option value=''>Please Select</option>";
+                            $i = 1;
+                            foreach ($items as $groupLabel => $groups) {
+                                if ( !empty($groupLabel)) {
+                                    echo "<optgroup label='$groupLabel' data-i='$i'>";
+                                }
+                                foreach ($groups as $k => $it) {
+                                    if ( $item['meta_key'] == $k ) {
+                                        echo "<option value='$k' selected='selected'>$it</option>";
+                                    }else{
+                                        echo "<option value='$k'>$it</option>";
+                                    }
+                                }
 
+                                if ( !empty($groupLabel)) {
+                                    echo "</optgroup>";
+                                }
+                                $i = $i + 1;
+                            }
+                        echo "</select>";
+                    ?>
+                </div>
                 <div class="static-input" <?php echo $hideStaticInput; ?>>
                     <?php $feed_template->printInput( $key, 'st_value', $item['st_value'] ); ?>
                 </div>
-
-
             </td>
             <td data-title="Prefix : "><?php $feed_template->printInput( $key, 'prefix', $item['prefix'] ); ?></td>
             <td data-title="Suffix : "><?php $feed_template->printInput( $key, 'suffix', $item['suffix'] ); ?></td>

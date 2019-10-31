@@ -108,21 +108,26 @@ class Rex_Feed_Attributes {
 
         //custom attributes
         $list = array();
-        $sql = "SELECT meta_key as name, meta_value as type FROM " . $wpdb->prefix . "postmeta" . "  group by meta_key";
+        $sql = "SELECT meta_key as name, meta_value as type FROM " . $wpdb->prefix . "postmeta" . "  as postmeta, " . $wpdb->prefix . "posts" . " AS posts WHERE postmeta.post_id = posts.id AND posts.post_type LIKE '%product%' AND postmeta.meta_key NOT LIKE 'pyre%' AND postmeta.meta_key NOT LIKE 'sbg_%' group by meta_key";
+
         $data = $wpdb->get_results($sql);
 
 
         if (count($data)) {
             foreach ($data as $key => $value) {
 //                if (substr($value->name, 0, 1) !== "_") {
-                    if (!preg_match("/pyre|sbg|fusion|rex|woosea/i",$value->name)){
-                        $value_display = str_replace("_", " ",$value->name);
-                        $list["custom_attributes_" . $value->name] = ucfirst($value_display);
+//                    if (!preg_match("/pyre|sbg|fusion|rex|woosea/i",$value->name)){
+//                        $value_display = str_replace("_", " ",$value->name);
+//                        $list["custom_attributes_" . $value->name] = ucfirst($value_display);
 //                    }
-                }
+//                }
+                $value_display = str_replace("_", " ",$value->name);
+                $list["custom_attributes_" . $value->name] = ucfirst($value_display);
             }
         }
         $attributes['Product Custom Attributes'] = $list;
+
+
 
 
 

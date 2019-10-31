@@ -87,6 +87,8 @@ abstract class Rex_Feed_Abstract_Template {
         return $this->template_mappings;
     }
 
+
+
     /**
      * Print attributes as select dropdown.
      *
@@ -106,10 +108,8 @@ abstract class Rex_Feed_Abstract_Template {
         }else{
             return;
         }
-
         echo '<select  name="fc['.$key.'][' . esc_attr( $name ) . ']" >';
         echo "<option value=''>Please Select</option>";
-
         $i = 1;
         foreach ($items as $groupLabel => $group) {
             if ( !empty($groupLabel)) {

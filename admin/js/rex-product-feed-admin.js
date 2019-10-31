@@ -225,6 +225,7 @@
 
         wpAjaxHelperRequest( 'merchant-change', $payload )
             .success( function( response ) {
+                // console.log(response);
                 $confBox.fadeOut();
                 $confBox.find('#config-table').html( response );
                 $('#rex_feed_conf select, #rex_feed_products select').niceSelect();

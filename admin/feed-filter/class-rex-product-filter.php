@@ -56,6 +56,16 @@ class Rex_Product_Filter {
 
 
     /**
+     * The Feed Rules
+     *
+     * @since    3.5
+     * @access   protected
+     * @var      Rex_Product_Filter    then    Feed Condition Then.
+     */
+    protected $rules;
+
+
+    /**
      * The Feed Filter Mappings Attributes and associated value and other constraints.
      *
      * @since    1.1.10
@@ -85,6 +95,7 @@ class Rex_Product_Filter {
         $this->init_product_meta_keys();
         $this->init_product_filter_condition();
         $this->init_product_filter_then();
+        $this->init_product_filter_rules();
     }
 
 
@@ -204,6 +215,21 @@ class Rex_Product_Filter {
 
 
     /**
+     * Initialize Product Filter Then
+     *
+     * @since    1.1.10
+     */
+    protected function init_product_filter_rules(){
+        $this->rules = array(
+            '' => array(
+                'and'  => 'And',
+                'or'   => 'Or',
+            )
+        );
+    }
+
+
+    /**
      * Initialize Default Filter Mappings with Attributes.
      *
      * @since    1.1.10
@@ -215,6 +241,7 @@ class Rex_Product_Filter {
                 'condition' => '',
                 'value'     => '',
                 'then'      => 'exclude',
+                'rules'      => 'and',
             ),
         );
     }
@@ -247,6 +274,8 @@ class Rex_Product_Filter {
             $items = $this->condition;
         }elseif ( $name === 'then' ) {
             $items = $this->then;
+        }elseif ( $name === 'rules' ) {
+            $items = $this->rules;
         }else{
             return;
         }
@@ -297,45 +326,353 @@ class Rex_Product_Filter {
      * @param $filter_mappings
      * @return bool
      */
+//    public static function allowedProduct( WC_Product $product, $filter_mappings ){
+//
+//        $allowed = 0;
+//        $temp = [];
+//        foreach ($filter_mappings as $key=>$value) {
+//            $subject = self::getSubject($value['if'], $product);
+//            switch ($value['condition']){
+//                case($value['condition'] = "contain"):
+//                    $temp[$key]['rules'] = $value['rules'];
+//                    if (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
+//                        $temp[$key]['allowed'] = 0;
+//                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
+//                        $temp[$key]['allowed'] = 1;
+//                    }elseif (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
+//                        $temp[$key]['allowed'] = 1;
+//                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
+//                        $temp[$key]['allowed'] = 0;
+//                    }
+//                    break;
+//                case($value['condition'] = "dn_contain"):
+//                    $temp[$key]['rules'] = $value['rules'];
+//                    if (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
+//                        $allowed = 1;
+//                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
+//                        $allowed = 0;
+//                    }elseif (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
+//                        $allowed = 0;
+//                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
+//                        $allowed = 1;
+//                    }
+//                    break;
+//                case($value['condition'] = "equal_to"):
+//                    $temp[$key]['rules'] = $value['rules'];
+//                    if (($value['value'] == $subject)  && $value['then'] == 'exc') {
+//                        $temp[$key]['allowed'] = 0;
+//                    }elseif (($value['value'] != $subject) && $value['then'] == 'exc') {
+//                        $temp[$key]['allowed'] = 1;
+//                    }elseif (($value['value'] == $subject) && $value['then'] == 'inc') {
+//                        $temp[$key]['allowed'] = 1;
+//                    }elseif (($value['value'] != $subject) && $value['then'] == 'inc') {
+//                        $temp[$key]['allowed'] = 0;
+//                    }
+//                    break;
+//                case($value['condition'] = "nequal_to"):
+//                    $temp[$key]['rules'] = $value['rules'];
+//                    if (($value['value'] == $subject)  && $value['then'] == 'exc') {
+//                        $allowed = 1;
+//                    }elseif (($value['value'] != $subject)  && $value['then'] == 'exc') {
+//                        $allowed = 0;
+//                    }elseif (($value['value'] == $subject) && $value['then'] == 'inc') {
+//                        $allowed = 0;
+//                    }elseif (($value['value'] != $subject) && $value['then'] == 'inc') {
+//                        $allowed = 1;
+//                    }
+//                    break;
+//                case($value['condition'] = "greater_than"):
+//                    $temp[$key]['rules'] = $value['rules'];
+//                    if (is_numeric($value['value']) && is_numeric($subject)) {
+//                        if (((float) $subject > (float) $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 0;
+//                        }elseif (((float) $subject <= (float) $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 1;
+//                        }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 1;
+//                        }elseif (((float)$subject <= (float) $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 0;
+//                        }
+//                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
+//                        if ($subject) {
+//                            if (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'exc') {
+//                                $allowed = 0;
+//                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'exc') {
+//                                $allowed = 1;
+//                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
+//                                $allowed = 1;
+//                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'inc') {
+//                                $allowed = 0;
+//                            }
+//                        }else{
+//                            $allowed = 0;
+//                        }
+//                    }else {
+//                        if (($subject > $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 0;
+//                        }elseif (($subject <= $value['value']) && $value['then'] == 'exc') {
+//                            $allowed = 1;
+//                        }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 1;
+//                        }elseif (($subject <= $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 0;
+//                        }
+//                    }
+//
+//                    break;
+//                case($value['condition'] = "greater_than_equal"):
+//                    $temp[$key]['rules'] = $value['rules'];
+//                    if (is_numeric($value['value']) && is_numeric($subject)) {
+//                        if (((float) $subject >= (float) $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 0;
+//                        }elseif (((float) $subject < (float) $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 1;
+//                        }elseif (((float)$subject >= (float) $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 1;
+//                        }elseif (((float)$subject < (float) $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 0;
+//                        }
+//                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
+//                        if ($subject) {
+//                            if (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'exc') {
+//                                $allowed = 0;
+//                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'exc') {
+//                                $allowed = 1;
+//                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'inc') {
+//                                $allowed = 1;
+//                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'inc') {
+//                                $allowed = 0;
+//                            }
+//                        }else{
+//                            $allowed = 0;
+//                        }
+//                    }else {
+//                        if (($subject >= $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 0;
+//                        }elseif (($subject < $value['value']) && $value['then'] == 'exc') {
+//                            $allowed = 1;
+//                        }elseif (($subject >= $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 1;
+//                        }elseif (($subject < $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 0;
+//                        }
+//                    }
+//
+//                    break;
+//                case($value['condition'] = "less_than"):
+//                    $temp[$key]['rules'] = $value['rules'];
+//                    if (is_numeric($value['value']) && is_numeric($subject)) {
+//                        if (((float) $subject < (float) $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 0;
+//                        }elseif (((float) $subject >= (float) $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 1;
+//                        }elseif (((float)$subject < (float) $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 1;
+//                        }elseif (((float)$subject >= (float) $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 0;
+//                        }
+//                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
+//                        if ($subject) {
+//                            if (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'exc') {
+//                                $allowed = 0;
+//                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'exc') {
+//                                $allowed = 1;
+//                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'inc') {
+//                                $allowed = 1;
+//                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'inc') {
+//                                $allowed = 0;
+//                            }
+//                        }else{
+//                            $allowed = 0;
+//                        }
+//                    }else {
+//                        if (($subject < $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 0;
+//                        }elseif (($subject >= $value['value']) && $value['then'] == 'exc') {
+//                            $allowed = 1;
+//                        }elseif (($subject < $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 1;
+//                        }elseif (($subject >= $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 0;
+//                        }
+//                    }
+//                    break;
+//                case($value['condition'] = "less_than_equal"):
+//                    $temp[$key]['rules'] = $value['rules'];
+//                    if (is_numeric($value['value']) && is_numeric($subject)) {
+//                        if (((float) $subject <= (float) $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 0;
+//                        }elseif (((float) $subject > (float) $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 1;
+//                        }elseif (((float)$subject <= (float) $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 1;
+//                        }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 0;
+//                        }
+//                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
+//                        if ($subject) {
+//                            if (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'exc') {
+//                                $allowed = 0;
+//                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'exc') {
+//                                $allowed = 1;
+//                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'inc') {
+//                                $allowed = 1;
+//                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
+//                                $allowed = 0;
+//                            }
+//                        }else{
+//                            $allowed = 0;
+//                        }
+//                    }else {
+//                        if (($subject <= $value['value'])  && $value['then'] == 'exc') {
+//                            $allowed = 0;
+//                        }elseif (($subject > $value['value']) && $value['then'] == 'exc') {
+//                            $allowed = 1;
+//                        }elseif (($subject <= $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 1;
+//                        }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
+//                            $allowed = 0;
+//                        }
+//                    }
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//
+//
+//        $filter_length = count($temp);
+//
+//
+//        $relation_array = [];
+//        foreach ($temp as $key=>$t) {
+//            if(($key+1) >= $filter_length ) {
+//                if( $filter_length%2 ==! 0) {
+//                    if(!($filter_length > 1)) {
+//                        $relation_array[] = array(
+//                            'relation' => $t['rules'],
+//                            'value' => array($t['allowed']),
+//                        );
+//                    }else if($filter_length == 1) {
+//                        $relation_array[] = array(
+//                            'relation' => $t['rules'],
+//                            'value' => array($t['allowed']),
+//                        );
+//                    }
+//                }
+//            }else {
+//                if(array_key_exists('allowed', $temp[$key+1])) {
+//                    $relation_array[] = array(
+//                        'relation' => $t['rules'],
+//                        'value' => array($t['allowed'], $temp[$key+1]['allowed']),
+//                    );
+//                }
+//
+//            }
+//        }
+//
+//        var_dump($relation_array);
+//        wp_die();
+//
+//
+//        foreach ($relation_array as $key => $relation) {
+//            if($relation['relation'] == 'or') {
+//                if(in_array(1, $relation['value'])) {
+//                    $allowed = 1;
+//                    continue;
+//                }else {
+//                    $allowed = 0;
+//                }
+//
+//            }elseif ($relation['relation'] == 'and') {
+//                if(in_array(0, $relation['value'])) {
+//                    $allowed = 0;
+//                    continue;
+//                }else {
+//                    $allowed = 1;
+//                }
+//            }
+//        }
+//
+//        if ($allowed) {
+//            return true;
+//        }else {
+//            return false;
+//        }
+//
+//    }
+
+
+    /**
+     * Return the  product is allowed or not
+     * @param WC_Product $product
+     * @param $filter_mappings
+     * @return bool
+     */
     public static function allowedProduct( WC_Product $product, $filter_mappings ){
 
-        $allowed = 1;
+        $allowed = 0;
+        $temp = [];
         foreach ($filter_mappings as $key=>$value) {
             $subject = self::getSubject($value['if'], $product);
             switch ($value['condition']){
                 case($value['condition'] = "contain"):
+                    $temp[$key]['rules'] = $value['rules'];
                     if (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-                        $allowed = 0;
+                        $temp[$key]['allowed'] = 0;
+                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
+                        $temp[$key]['allowed'] = 1;
+                    }elseif (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
+                        $temp[$key]['allowed'] = 1;
                     }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-                        $allowed = 0;
+                        $temp[$key]['allowed'] = 0;
                     }
                     break;
                 case($value['condition'] = "dn_contain"):
-                    if (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
+                    $temp[$key]['rules'] = $value['rules'];
+                    if (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
+                        $allowed = 1;
+                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
                         $allowed = 0;
                     }elseif (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
                         $allowed = 0;
+                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
+                        $allowed = 1;
                     }
                     break;
                 case($value['condition'] = "equal_to"):
+                    $temp[$key]['rules'] = $value['rules'];
                     if (($value['value'] == $subject)  && $value['then'] == 'exc') {
-                        $allowed = 0;
+                        $temp[$key]['allowed'] = 0;
+                    }elseif (($value['value'] != $subject) && $value['then'] == 'exc') {
+                        $temp[$key]['allowed'] = 1;
+                    }elseif (($value['value'] == $subject) && $value['then'] == 'inc') {
+                        $temp[$key]['allowed'] = 1;
                     }elseif (($value['value'] != $subject) && $value['then'] == 'inc') {
-                        $allowed = 0;
+                        $temp[$key]['allowed'] = 0;
                     }
                     break;
                 case($value['condition'] = "nequal_to"):
+                    $temp[$key]['rules'] = $value['rules'];
                     if (($value['value'] == $subject)  && $value['then'] == 'exc') {
+                        $allowed = 1;
+                    }elseif (($value['value'] != $subject)  && $value['then'] == 'exc') {
                         $allowed = 0;
                     }elseif (($value['value'] == $subject) && $value['then'] == 'inc') {
                         $allowed = 0;
+                    }elseif (($value['value'] != $subject) && $value['then'] == 'inc') {
+                        $allowed = 1;
                     }
                     break;
                 case($value['condition'] = "greater_than"):
+                    $temp[$key]['rules'] = $value['rules'];
                     if (is_numeric($value['value']) && is_numeric($subject)) {
-
                         if (((float) $subject > (float) $value['value'])  && $value['then'] == 'exc') {
                             $allowed = 0;
+                        }elseif (((float) $subject <= (float) $value['value'])  && $value['then'] == 'exc') {
+                            $allowed = 1;
+                        }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
+                            $allowed = 1;
                         }elseif (((float)$subject <= (float) $value['value']) && $value['then'] == 'inc') {
                             $allowed = 0;
                         }
@@ -343,6 +680,10 @@ class Rex_Product_Filter {
                         if ($subject) {
                             if (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'exc') {
                                 $allowed = 0;
+                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'exc') {
+                                $allowed = 1;
+                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
+                                $allowed = 1;
                             }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'inc') {
                                 $allowed = 0;
                             }
@@ -352,6 +693,10 @@ class Rex_Product_Filter {
                     }else {
                         if (($subject > $value['value'])  && $value['then'] == 'exc') {
                             $allowed = 0;
+                        }elseif (($subject <= $value['value']) && $value['then'] == 'exc') {
+                            $allowed = 1;
+                        }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
+                            $allowed = 1;
                         }elseif (($subject <= $value['value']) && $value['then'] == 'inc') {
                             $allowed = 0;
                         }
@@ -359,9 +704,14 @@ class Rex_Product_Filter {
 
                     break;
                 case($value['condition'] = "greater_than_equal"):
+                    $temp[$key]['rules'] = $value['rules'];
                     if (is_numeric($value['value']) && is_numeric($subject)) {
                         if (((float) $subject >= (float) $value['value'])  && $value['then'] == 'exc') {
                             $allowed = 0;
+                        }elseif (((float) $subject < (float) $value['value'])  && $value['then'] == 'exc') {
+                            $allowed = 1;
+                        }elseif (((float)$subject >= (float) $value['value']) && $value['then'] == 'inc') {
+                            $allowed = 1;
                         }elseif (((float)$subject < (float) $value['value']) && $value['then'] == 'inc') {
                             $allowed = 0;
                         }
@@ -369,6 +719,10 @@ class Rex_Product_Filter {
                         if ($subject) {
                             if (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'exc') {
                                 $allowed = 0;
+                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'exc') {
+                                $allowed = 1;
+                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'inc') {
+                                $allowed = 1;
                             }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'inc') {
                                 $allowed = 0;
                             }
@@ -378,6 +732,10 @@ class Rex_Product_Filter {
                     }else {
                         if (($subject >= $value['value'])  && $value['then'] == 'exc') {
                             $allowed = 0;
+                        }elseif (($subject < $value['value']) && $value['then'] == 'exc') {
+                            $allowed = 1;
+                        }elseif (($subject >= $value['value']) && $value['then'] == 'inc') {
+                            $allowed = 1;
                         }elseif (($subject < $value['value']) && $value['then'] == 'inc') {
                             $allowed = 0;
                         }
@@ -385,44 +743,63 @@ class Rex_Product_Filter {
 
                     break;
                 case($value['condition'] = "less_than"):
+                    $temp[$key]['rules'] = $value['rules'];
                     if (is_numeric($value['value']) && is_numeric($subject)) {
-
                         if (((float) $subject < (float) $value['value'])  && $value['then'] == 'exc') {
                             $allowed = 0;
-                        }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
+                        }elseif (((float) $subject >= (float) $value['value'])  && $value['then'] == 'exc') {
+                            $allowed = 1;
+                        }elseif (((float)$subject < (float) $value['value']) && $value['then'] == 'inc') {
+                            $allowed = 1;
+                        }elseif (((float)$subject >= (float) $value['value']) && $value['then'] == 'inc') {
                             $allowed = 0;
                         }
                     }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-                        if($subject) {
+                        if ($subject) {
                             if (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'exc') {
                                 $allowed = 0;
-                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
+                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'exc') {
+                                $allowed = 1;
+                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'inc') {
+                                $allowed = 1;
+                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'inc') {
                                 $allowed = 0;
                             }
                         }else{
                             $allowed = 0;
                         }
                     }else {
-                        if (( $subject < $value['value'])  && $value['then'] == 'exc') {
+                        if (($subject < $value['value'])  && $value['then'] == 'exc') {
                             $allowed = 0;
-                        }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
+                        }elseif (($subject >= $value['value']) && $value['then'] == 'exc') {
+                            $allowed = 1;
+                        }elseif (($subject < $value['value']) && $value['then'] == 'inc') {
+                            $allowed = 1;
+                        }elseif (($subject >= $value['value']) && $value['then'] == 'inc') {
                             $allowed = 0;
                         }
                     }
                     break;
                 case($value['condition'] = "less_than_equal"):
+                    $temp[$key]['rules'] = $value['rules'];
                     if (is_numeric($value['value']) && is_numeric($subject)) {
-
                         if (((float) $subject <= (float) $value['value'])  && $value['then'] == 'exc') {
                             $allowed = 0;
+                        }elseif (((float) $subject > (float) $value['value'])  && $value['then'] == 'exc') {
+                            $allowed = 1;
+                        }elseif (((float)$subject <= (float) $value['value']) && $value['then'] == 'inc') {
+                            $allowed = 1;
                         }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
                             $allowed = 0;
                         }
                     }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-
                         if ($subject) {
                             if (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'exc') {
                                 $allowed = 0;
+                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'exc') {
+                                $allowed = 1;
+                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'inc') {
+                                $allowed = 1;
                             }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
                                 $allowed = 0;
                             }
@@ -430,8 +807,12 @@ class Rex_Product_Filter {
                             $allowed = 0;
                         }
                     }else {
-                        if (( $subject <= $value['value'])  && $value['then'] == 'exc') {
+                        if (($subject <= $value['value'])  && $value['then'] == 'exc') {
                             $allowed = 0;
+                        }elseif (($subject > $value['value']) && $value['then'] == 'exc') {
+                            $allowed = 1;
+                        }elseif (($subject <= $value['value']) && $value['then'] == 'inc') {
+                            $allowed = 1;
                         }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
                             $allowed = 0;
                         }
@@ -439,6 +820,56 @@ class Rex_Product_Filter {
                     break;
                 default:
                     break;
+            }
+        }
+
+
+        $filter_length = count($temp);
+
+
+        $relation_array = [];
+        foreach ($temp as $key=>$t) {
+            if(($key+1) >= $filter_length ) {
+                if( $filter_length%2 ==! 0) {
+                    if(!($filter_length > 1)) {
+                        $relation_array[] = array(
+                            'relation' => $t['rules'],
+                            'value' => array($t['allowed']),
+                        );
+                    }else if($filter_length == 1) {
+                        $relation_array[] = array(
+                            'relation' => $t['rules'],
+                            'value' => array($t['allowed']),
+                        );
+                    }
+                }
+            }else {
+                if(array_key_exists('allowed', $temp[$key+1])) {
+                    $relation_array[] = array(
+                        'relation' => $t['rules'],
+                        'value' => array($t['allowed'], $temp[$key+1]['allowed']),
+                    );
+                }
+
+            }
+        }
+
+
+        foreach ($relation_array as $key => $relation) {
+            if($relation['relation'] == 'or') {
+                if(in_array(1, $relation['value'])) {
+                    $allowed = 1;
+                    break;
+                }else {
+                    $allowed = 0;
+                }
+            }elseif ($relation['relation'] == 'and') {
+                if(in_array(0, $relation['value'])) {
+                    $allowed = 0;
+                    break;
+                }else {
+                    $allowed = 1;
+                }
             }
         }
 
@@ -477,6 +908,7 @@ class Rex_Product_Filter {
                 return wp_get_attachment_url(  $product->get_image_id() ); break;
 
             case 'sale_price':
+
                 if ($product->get_sale_price()) {
                     return number_format((float)$product->get_sale_price(), 2, '.', '');
                 }
@@ -612,6 +1044,5 @@ class Rex_Product_Filter {
                 break;
         }
     }
-
 
 }

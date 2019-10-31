@@ -25,7 +25,7 @@ class Rex_Product_Metabox {
         $this->feed_file();
         $this->google_merchant();
         if(!$is_premium) $this->upgrade_notice();
-        add_filter( 'cmb2_select_attributes', array($this, 'wpfm_merchant_dropdown'), 10, 4 );
+//
     }
 
 
@@ -296,7 +296,6 @@ class Rex_Product_Metabox {
         $merchant_lists['google_Ad']= 'Google AdWords';
         if(array_key_exists('drm', $merchant_lists))
             $merchant_lists['drm'] = 'Google Remarketing (DRM)';
-
         reset($merchant_lists);
         $default_merchant = key($merchant_lists);
 
@@ -335,7 +334,7 @@ class Rex_Product_Metabox {
                 'data-conditional-value' => wp_json_encode(apply_filters('wpfm_merchant_fixed_format', array( 'custom', 'facebook', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll'))),
             ),
         ) );
-
+//
         $box->add_field( array(
             'id'        => $this->prefix . 'config_heading',
             'name'      => 'Configure Feed Attributes and their values.',

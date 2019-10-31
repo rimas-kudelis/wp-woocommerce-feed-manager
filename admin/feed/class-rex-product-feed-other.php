@@ -79,9 +79,8 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 }
 
             }
-
-
         }
+
     }
 
 
