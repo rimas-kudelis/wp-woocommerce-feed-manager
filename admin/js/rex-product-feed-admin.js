@@ -83,8 +83,6 @@
         }else {
             filter = false;
         }
-
-
         $(this).siblings('#config-table').find('tbody tr:first')
             .clone()
             .insertAfter(lastrow)
@@ -94,12 +92,10 @@
         var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");
         $row.find('ul.dropdown-content.select-dropdown, .caret, .select-dropdown ').remove();
 
-        $row.find('input, select').val('');
+        // $row.find('input, select').val('');
 
         updateFormNameAtts( $row, rowId, filter);
-        $row.find('select').niceSelect();
-
-
+        $row.find('select').niceSelect('update');
     });
 
 
@@ -228,7 +224,7 @@
                 // console.log(response);
                 $confBox.fadeOut();
                 $confBox.find('#config-table').html( response );
-                $('#rex_feed_conf select, #rex_feed_products select').niceSelect();
+                $('#config-table select').niceSelect('update');
                 $('.rex-loading-spinner').css('display', 'none');
                 $confBox.fadeIn();
             })
@@ -256,7 +252,10 @@
     // $(document).on('click', '#publish', save_feed);
 
 
-
+    /**
+     * Start the feed processing
+     * @param event
+     */
     function get_product_number(event) {
         event.preventDefault();
         $('#wpfm-feed-clock').stopwatch().stopwatch('start');
@@ -279,11 +278,17 @@
                     console.log( response.statusText );
                 });
         }, 800);
-
     }
     $(document).on('click', '#publish', get_product_number);
 
 
+    /**
+     * Generate feed
+     * @param product
+     * @param offset
+     * @param batch
+     * @param per_batch
+     */
     function generate_feed( product, offset, batch, per_batch ) {
 
         per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
@@ -310,6 +315,8 @@
             feed_config : $('form').serialize(),
         };
 
+
+
         var batches = Math.ceil( product/per_batch );
         console.log('Total Batch: '+ batches);
         console.log('Total Product(s): '+ product);
@@ -318,13 +325,14 @@
 
         var progressbar = 100/batches;
         progressWidth = progressWidth + progressbar;
+        var titleTag =  $('title').text();
+
         // feed_progressBar(progressWidth);
         if (progressWidth >= 100) {
             $('.progress-msg span').html('Generating feed. Please wait.....');
         }else {
             $('.progress-msg span').html('Processing feed.....');
         }
-
 
 
         wpAjaxHelperRequest( 'generate-feed', $payload )
@@ -479,6 +487,8 @@
                 free: isfree,
             };
         }
+
+
         wpAjaxHelperRequest( 'rex-product-change-merchant-status', payload )
             .success( function( response ) {
                 console.log('woohoo!');

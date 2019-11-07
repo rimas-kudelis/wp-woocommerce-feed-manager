@@ -41,6 +41,7 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
             'additional_image_link_9'  => 'Additional Image 9 [additional_image_link]',
             'additional_image_link_10' => 'Additional Image 10 [additional_image_link]',
             'condition'                => 'Condition [condition]',
+
         ),
 
         'Availability & Price' => array(
@@ -64,6 +65,8 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
             'material'      => 'Material [material]',
             'pattern'       => 'Pattern [pattern]',
             'size'          => 'Size of the item [size]',
+            'offer_price'                => 'Offer price',
+            'offer_price_effective_date' => 'Offer price effective date',
         ),
 
         'Tax & Shipping' => array(

@@ -95,7 +95,6 @@ class Rex_Product_Filter {
         $this->init_product_meta_keys();
         $this->init_product_filter_condition();
         $this->init_product_filter_then();
-        $this->init_product_filter_rules();
     }
 
 
@@ -128,13 +127,11 @@ class Rex_Product_Filter {
                 'short_description'         => 'Product Short Description',
                 'featured_image'            => 'Featured Image',
                 'product_cats'              => 'Product Categories',
-                'link'                      => 'Product URL',
-                'condition'                 => 'Condition',
                 'sku'                       => 'SKU',
                 'availability'              => 'Availability',
                 'quantity'                  => 'Quantity',
-                'price'                     => 'Regular Price',
-                'sale_price'                => 'Sale Price',
+                'price'                     => 'Reguler Price',
+                'sale_price'                => 'Sale price',
                 'weight'                    => 'Weight',
                 'width'                     => 'Width',
                 'height'                    => 'Height',
@@ -146,23 +143,6 @@ class Rex_Product_Filter {
                 'sale_price_dates_to'       => 'Sale End Date',
             ),
         );
-
-        //Get the Product Attributes
-        global $wpdb;
-        //custom attributes
-        $list = array();
-        $sql = "SELECT meta_key as name, meta_value as type FROM " . $wpdb->prefix . "postmeta" . "  group by meta_key";
-        $data = $wpdb->get_results($sql);
-        if (count($data)) {
-            foreach ($data as $key => $value) {
-                if (substr($value->name, 0, 1) !== "_") {
-                    if (!preg_match("/pyre|sbg|fusion|rex/i",$value->name)){
-                        $value_display = str_replace("_", " ",$value->name);
-                        $list["custom_attributes_" . $value->name] = ucfirst($value_display);
-                    }
-                }
-            }
-        }
 
         return $attributes;
     }
@@ -214,19 +194,6 @@ class Rex_Product_Filter {
     }
 
 
-    /**
-     * Initialize Product Filter Then
-     *
-     * @since    1.1.10
-     */
-    protected function init_product_filter_rules(){
-        $this->rules = array(
-            '' => array(
-                'and'  => 'And',
-                'or'   => 'Or',
-            )
-        );
-    }
 
 
     /**
@@ -241,7 +208,6 @@ class Rex_Product_Filter {
                 'condition' => '',
                 'value'     => '',
                 'then'      => 'exclude',
-                'rules'      => 'and',
             ),
         );
     }
@@ -274,14 +240,15 @@ class Rex_Product_Filter {
             $items = $this->condition;
         }elseif ( $name === 'then' ) {
             $items = $this->then;
-        }elseif ( $name === 'rules' ) {
-            $items = $this->rules;
         }else{
             return;
         }
 
-        echo '<select  name="ff['.$key.'][' . esc_attr( $name ) . ']" >';
-        echo "<option value=''>Please Select</option>";
+        echo '<select name="ff['.$key.'][' . esc_attr( $name ) . ']" >';
+        if($name === 'rules')
+            echo "<option value='or'>Please Select</option>";
+        else
+            echo "<option value=''>Please Select</option>";
 
         foreach ($items as $groupLabel => $group) {
             if ( !empty($groupLabel)) {
@@ -318,289 +285,6 @@ class Rex_Product_Filter {
         echo '<input type="text" name="ff['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '"">';
     }
 
-
-
-    /**
-     * Return the  product is allowed or not
-     * @param WC_Product $product
-     * @param $filter_mappings
-     * @return bool
-     */
-//    public static function allowedProduct( WC_Product $product, $filter_mappings ){
-//
-//        $allowed = 0;
-//        $temp = [];
-//        foreach ($filter_mappings as $key=>$value) {
-//            $subject = self::getSubject($value['if'], $product);
-//            switch ($value['condition']){
-//                case($value['condition'] = "contain"):
-//                    $temp[$key]['rules'] = $value['rules'];
-//                    if (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-//                        $temp[$key]['allowed'] = 0;
-//                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-//                        $temp[$key]['allowed'] = 1;
-//                    }elseif (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-//                        $temp[$key]['allowed'] = 1;
-//                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-//                        $temp[$key]['allowed'] = 0;
-//                    }
-//                    break;
-//                case($value['condition'] = "dn_contain"):
-//                    $temp[$key]['rules'] = $value['rules'];
-//                    if (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-//                        $allowed = 1;
-//                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'exc') {
-//                        $allowed = 0;
-//                    }elseif (preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-//                        $allowed = 0;
-//                    }elseif (!preg_match('/'.$value['value'].'/', $subject) && $value['then'] == 'inc') {
-//                        $allowed = 1;
-//                    }
-//                    break;
-//                case($value['condition'] = "equal_to"):
-//                    $temp[$key]['rules'] = $value['rules'];
-//                    if (($value['value'] == $subject)  && $value['then'] == 'exc') {
-//                        $temp[$key]['allowed'] = 0;
-//                    }elseif (($value['value'] != $subject) && $value['then'] == 'exc') {
-//                        $temp[$key]['allowed'] = 1;
-//                    }elseif (($value['value'] == $subject) && $value['then'] == 'inc') {
-//                        $temp[$key]['allowed'] = 1;
-//                    }elseif (($value['value'] != $subject) && $value['then'] == 'inc') {
-//                        $temp[$key]['allowed'] = 0;
-//                    }
-//                    break;
-//                case($value['condition'] = "nequal_to"):
-//                    $temp[$key]['rules'] = $value['rules'];
-//                    if (($value['value'] == $subject)  && $value['then'] == 'exc') {
-//                        $allowed = 1;
-//                    }elseif (($value['value'] != $subject)  && $value['then'] == 'exc') {
-//                        $allowed = 0;
-//                    }elseif (($value['value'] == $subject) && $value['then'] == 'inc') {
-//                        $allowed = 0;
-//                    }elseif (($value['value'] != $subject) && $value['then'] == 'inc') {
-//                        $allowed = 1;
-//                    }
-//                    break;
-//                case($value['condition'] = "greater_than"):
-//                    $temp[$key]['rules'] = $value['rules'];
-//                    if (is_numeric($value['value']) && is_numeric($subject)) {
-//                        if (((float) $subject > (float) $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 0;
-//                        }elseif (((float) $subject <= (float) $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 1;
-//                        }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 1;
-//                        }elseif (((float)$subject <= (float) $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 0;
-//                        }
-//                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-//                        if ($subject) {
-//                            if (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'exc') {
-//                                $allowed = 0;
-//                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'exc') {
-//                                $allowed = 1;
-//                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
-//                                $allowed = 1;
-//                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'inc') {
-//                                $allowed = 0;
-//                            }
-//                        }else{
-//                            $allowed = 0;
-//                        }
-//                    }else {
-//                        if (($subject > $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 0;
-//                        }elseif (($subject <= $value['value']) && $value['then'] == 'exc') {
-//                            $allowed = 1;
-//                        }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 1;
-//                        }elseif (($subject <= $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 0;
-//                        }
-//                    }
-//
-//                    break;
-//                case($value['condition'] = "greater_than_equal"):
-//                    $temp[$key]['rules'] = $value['rules'];
-//                    if (is_numeric($value['value']) && is_numeric($subject)) {
-//                        if (((float) $subject >= (float) $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 0;
-//                        }elseif (((float) $subject < (float) $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 1;
-//                        }elseif (((float)$subject >= (float) $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 1;
-//                        }elseif (((float)$subject < (float) $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 0;
-//                        }
-//                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-//                        if ($subject) {
-//                            if (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'exc') {
-//                                $allowed = 0;
-//                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'exc') {
-//                                $allowed = 1;
-//                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'inc') {
-//                                $allowed = 1;
-//                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'inc') {
-//                                $allowed = 0;
-//                            }
-//                        }else{
-//                            $allowed = 0;
-//                        }
-//                    }else {
-//                        if (($subject >= $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 0;
-//                        }elseif (($subject < $value['value']) && $value['then'] == 'exc') {
-//                            $allowed = 1;
-//                        }elseif (($subject >= $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 1;
-//                        }elseif (($subject < $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 0;
-//                        }
-//                    }
-//
-//                    break;
-//                case($value['condition'] = "less_than"):
-//                    $temp[$key]['rules'] = $value['rules'];
-//                    if (is_numeric($value['value']) && is_numeric($subject)) {
-//                        if (((float) $subject < (float) $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 0;
-//                        }elseif (((float) $subject >= (float) $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 1;
-//                        }elseif (((float)$subject < (float) $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 1;
-//                        }elseif (((float)$subject >= (float) $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 0;
-//                        }
-//                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-//                        if ($subject) {
-//                            if (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'exc') {
-//                                $allowed = 0;
-//                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'exc') {
-//                                $allowed = 1;
-//                            }elseif (strtotime($subject) < strtotime($value['value']) && $value['then'] == 'inc') {
-//                                $allowed = 1;
-//                            }elseif (strtotime($subject) >= strtotime($value['value']) && $value['then'] == 'inc') {
-//                                $allowed = 0;
-//                            }
-//                        }else{
-//                            $allowed = 0;
-//                        }
-//                    }else {
-//                        if (($subject < $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 0;
-//                        }elseif (($subject >= $value['value']) && $value['then'] == 'exc') {
-//                            $allowed = 1;
-//                        }elseif (($subject < $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 1;
-//                        }elseif (($subject >= $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 0;
-//                        }
-//                    }
-//                    break;
-//                case($value['condition'] = "less_than_equal"):
-//                    $temp[$key]['rules'] = $value['rules'];
-//                    if (is_numeric($value['value']) && is_numeric($subject)) {
-//                        if (((float) $subject <= (float) $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 0;
-//                        }elseif (((float) $subject > (float) $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 1;
-//                        }elseif (((float)$subject <= (float) $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 1;
-//                        }elseif (((float)$subject > (float) $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 0;
-//                        }
-//                    }elseif ($value['if'] == 'sale_price_dates_from' || $value['if'] == 'sale_price_dates_to'){
-//                        if ($subject) {
-//                            if (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'exc') {
-//                                $allowed = 0;
-//                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'exc') {
-//                                $allowed = 1;
-//                            }elseif (strtotime($subject) <= strtotime($value['value']) && $value['then'] == 'inc') {
-//                                $allowed = 1;
-//                            }elseif (strtotime($subject) > strtotime($value['value']) && $value['then'] == 'inc') {
-//                                $allowed = 0;
-//                            }
-//                        }else{
-//                            $allowed = 0;
-//                        }
-//                    }else {
-//                        if (($subject <= $value['value'])  && $value['then'] == 'exc') {
-//                            $allowed = 0;
-//                        }elseif (($subject > $value['value']) && $value['then'] == 'exc') {
-//                            $allowed = 1;
-//                        }elseif (($subject <= $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 1;
-//                        }elseif (($subject > $value['value']) && $value['then'] == 'inc') {
-//                            $allowed = 0;
-//                        }
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//
-//
-//        $filter_length = count($temp);
-//
-//
-//        $relation_array = [];
-//        foreach ($temp as $key=>$t) {
-//            if(($key+1) >= $filter_length ) {
-//                if( $filter_length%2 ==! 0) {
-//                    if(!($filter_length > 1)) {
-//                        $relation_array[] = array(
-//                            'relation' => $t['rules'],
-//                            'value' => array($t['allowed']),
-//                        );
-//                    }else if($filter_length == 1) {
-//                        $relation_array[] = array(
-//                            'relation' => $t['rules'],
-//                            'value' => array($t['allowed']),
-//                        );
-//                    }
-//                }
-//            }else {
-//                if(array_key_exists('allowed', $temp[$key+1])) {
-//                    $relation_array[] = array(
-//                        'relation' => $t['rules'],
-//                        'value' => array($t['allowed'], $temp[$key+1]['allowed']),
-//                    );
-//                }
-//
-//            }
-//        }
-//
-//        var_dump($relation_array);
-//        wp_die();
-//
-//
-//        foreach ($relation_array as $key => $relation) {
-//            if($relation['relation'] == 'or') {
-//                if(in_array(1, $relation['value'])) {
-//                    $allowed = 1;
-//                    continue;
-//                }else {
-//                    $allowed = 0;
-//                }
-//
-//            }elseif ($relation['relation'] == 'and') {
-//                if(in_array(0, $relation['value'])) {
-//                    $allowed = 0;
-//                    continue;
-//                }else {
-//                    $allowed = 1;
-//                }
-//            }
-//        }
-//
-//        if ($allowed) {
-//            return true;
-//        }else {
-//            return false;
-//        }
-//
-//    }
 
 
     /**
@@ -880,6 +564,2111 @@ class Rex_Product_Filter {
             return false;
         }
 
+    }
+
+
+
+    public static function createFilterQueryParams($filter_mappings) {
+        global $wpdb;
+        $prefix = $wpdb->prefix;
+        $filter_args = array();
+        $sql = '';
+        $tax_query = array();
+
+        foreach ($filter_mappings as $key => $filter) {
+
+            $if = $filter['if'];
+            $then = $filter['then'];
+            $condition = $filter['condition'];
+            $value = $filter['value'];
+
+            switch ($if) {
+
+                //PRODUCT ID
+                case 'id':
+                    if($then == 'inc') {
+                        if($condition == 'equal_to' ) {
+                            $filter_args['post__in'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['post__not_in'][] = $value;
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'equal_to' ) {
+                            $filter_args['post__not_in'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['post__in'][] = $value;
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT TITLE
+                case 'title':
+                    if($then == 'inc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['title_contain'][] = $value;
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['title_dn_contain'][] = $value;
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['title_equal_to'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['title_nequal_to'][] = $value;
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['title_dn_contain'][] = $value;
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['title_contain'][] = $value;
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['title_nequal_to'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['title_equal_to'][] = $value;
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT DESCRIPTION
+                case 'description':
+                    if($then == 'inc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['description_contain'][] = $value;
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['description_dn_contain'][] = $value;
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['description_equal_to'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['description_nequal_to'][] = $value;
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['description_dn_contain'][] = $value;
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['description_contain'][] = $value;
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['description_nequal_to'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['description_equal_to'][] = $value;
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT SHORT DESCRIPTION
+                case 'short_description':
+                    if($then == 'inc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['sdescription_contain'][] = $value;
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['sdescription_dn_contain'][] = $value;
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['sdescription_equal_to'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['sdescription_nequal_to'][] = $value;
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['sdescription_dn_contain'][] = $value;
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['sdescription_contain'][] = $value;
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['sdescription_nequal_to'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['sdescription_equal_to'][] = $value;
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT FEATURED IMAGE ID
+                case 'featured_image':
+                    if($then == 'inc') {
+                        if($condition == 'equal_to' ) {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_thumbnail_id',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_thumbnail_id',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'equal_to' ) {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_thumbnail_id',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_thumbnail_id',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT AVAILABILITY
+                case 'availability':
+                    if($then == 'inc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_stock_status',
+                                    'value'     => $value,
+                                    'compare'   => 'LIKE',
+                                ),
+                            );
+
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['meta_query'][] = array(
+
+                                array(
+                                    'key'       => '_stock_status',
+                                    'value'     => $value,
+                                    'compare'   => 'NOT LIKE',
+                                ),
+                            );
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+
+                                array(
+                                    'key'       => '_stock_status',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+
+                                array(
+                                    'key'       => '_stock_status',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock_status',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key' => '_stock_status',
+                                    'value' => $value,
+                                    'compare'   => 'NOT LIKE',
+                                )
+
+                            );
+
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock_status',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key' => '_stock_status',
+                                    'value' => $value,
+                                    'compare'   => 'LIKE',
+                                )
+                            );
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock_status',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key' => '_stock_status',
+                                    'value' => $value,
+                                    'compare'   => '!=',
+                                )
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock_status',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key' => '_stock_status',
+                                    'value' => $value,
+                                    'compare'   => '=',
+                                )
+                            );
+                        }
+                    }
+                    break;
+
+                //PRODUCT AVAILABILITY
+                case 'sku':
+                    if($then == 'inc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sku',
+                                    'value'     => $value,
+                                    'compare'   => 'LIKE',
+                                ),
+                            );
+
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sku',
+                                    'value'     => $value,
+                                    'compare'   => 'NOT LIKE',
+                                ),
+                            );
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sku',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sku',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sku',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key' => '_sku',
+                                    'value' => $value,
+                                    'compare'   => 'NOT LIKE',
+                                )
+
+                            );
+
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sku',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key' => '_sku',
+                                    'value' => $value,
+                                    'compare'   => 'LIKE',
+                                )
+                            );
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sku',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key' => '_sku',
+                                    'value' => $value,
+                                    'compare'   => '!=',
+                                )
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sku',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key' => '_sku',
+                                    'value' => $value,
+                                    'compare'   => '=',
+                                )
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT QUANTITY
+                case 'quantity':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_stock',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_stock',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT PRICE
+                case 'price':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_price',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT SALE PRICE
+                case 'sale_price':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_regular_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_regular_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_regular_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_regular_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_regular_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_regular_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_regular_price',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT WEIGHT
+                case 'weight':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_weight',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_weight',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_weight',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_weight',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_weight',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_weight',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT WIDTH
+                case 'width':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_width',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_width',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_width',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_width',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_weight',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_width',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_width',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT HEIGHT
+                case 'height':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_height',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_height',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_height',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_height',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_height',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_width',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_height',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_height',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT LENGTH
+                case 'length':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_length',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_length',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_length',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_length',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_length',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_length',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_length',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT RATTING TOTAL
+                case 'rating_total':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_review_count',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_review_count',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_review_count',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_review_count',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_review_count',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_review_count',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_review_count',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+
+                //PRODUCT RATTING AVERAGE
+                case 'rating_average':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_average_rating',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_average_rating',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_average_rating',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_average_rating',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_average_rating',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_wc_average_rating',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_wc_average_rating',
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT SALE PRICE DATE FROM
+                case 'sale_price_dates_from':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_from',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_from',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_from',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_from',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_from',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_from',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_from',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT SALE PRICE DATE TO
+                case 'sale_price_dates_to':
+                    if($then == 'inc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ($then == 'exc') {
+                        if ($condition == 'equal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_to',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_to',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_to',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '>',
+                                ),
+                            );
+                        }elseif ($condition == 'greater_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_to',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '>=',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_to',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '<',
+                                ),
+                            );
+                        }elseif ($condition == 'less_than_equal') {
+                            $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_sale_price_dates_to',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => ''
+                                ),
+                                array(
+                                    'key'       => '_sale_price_dates_to',
+                                    'value'     => strtotime($value),
+                                    'compare'   => '<=',
+                                ),
+                            );
+                        }
+                    }
+                    break;
+
+
+                //PRODUCT CATEGORIES
+                case 'product_cats':
+                    if($then == 'inc') {
+                        if($condition == 'contain' ) {
+                            $tax_contain_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $tax_contain_query,
+                                'operator'       =>   'IN',
+                            );
+                        }elseif ($condition == 'dn_contain') {
+                            $tax_not_contain_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $tax_not_contain_query,
+                                'operator'       =>   'NOT IN',
+                            );
+                        }elseif ($condition == 'equal_to') {
+                            $tax_equal_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $tax_equal_query,
+                                'operator'       =>   'IN',
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $tax_not_equal_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $tax_not_equal_query,
+                                'operator'       =>   'NOT IN',
+                            );
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $tax_not_contain_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $tax_not_contain_query,
+                                'operator'       =>   'NOT IN',
+                            );
+                        }elseif ($condition == 'dn_contain') {
+                            $tax_contain_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $tax_contain_query,
+                                'operator'       =>   'IN',
+                            );
+                        }elseif ($condition == 'equal_to') {
+                            $tax_not_equal_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $tax_not_equal_query,
+                                'operator'       =>   'NOT IN',
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $tax_equal_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $tax_equal_query,
+                                'operator'       =>   'IN',
+                            );
+                        }
+                    }
+
+
+
+                    break;
+
+
+                //PRODUCT TAGS
+                case 'product_tags':
+                    if($then == 'inc') {
+                        if($condition == 'contain' ) {
+                            $tag_contain_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $tag_contain_query,
+                                'operator'       =>   'IN',
+                            );
+                        }elseif ($condition == 'dn_contain') {
+                            $tag_not_contain_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $tag_not_contain_query,
+                                'operator'       =>   'NOT IN',
+                            );
+                        }elseif ($condition == 'equal_to') {
+                            $tag_equal_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $tag_equal_query,
+                                'operator'       =>   'IN',
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $tag_not_equal_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $tag_not_equal_query,
+                                'operator'       =>   'NOT IN',
+                            );
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $tag_not_contain_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $tag_not_contain_query,
+                                'operator'       =>   'NOT IN',
+                            );
+                        }elseif ($condition == 'dn_contain') {
+                            $tag_contain_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $tag_contain_query,
+                                'operator'       =>   'IN',
+                            );
+                        }elseif ($condition == 'equal_to') {
+                            $tag_not_equal_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $tag_not_equal_query,
+                                'operator'       =>   'NOT IN',
+                            );
+                        }elseif ($condition == 'nequal_to') {
+                            $tag_equal_query[] = $value;
+                            $filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $tag_equal_query,
+                                'operator'       =>   'IN',
+                            );
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return array(
+            'args' => $filter_args
+        );
     }
 
 

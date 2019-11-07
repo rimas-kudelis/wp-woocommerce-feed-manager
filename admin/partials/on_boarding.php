@@ -334,7 +334,27 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                 'uvinum'     => array(
                                     'free'  => true,
                                     'status'    => 0,
-                                    'name'  => 'uvinum'
+                                    'name'  => 'Uvinum'
+                                ),
+                                'idealo'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Idealo'
+                                ),
+                                'rakuten'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Rakuten'
+                                ),
+                                'pricesearcher'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Pricesearcher'
+                                ),
+                                'pricemasher'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Pricemasher'
                                 )
                             );
                             $_pro_merchants = array(
@@ -377,6 +397,11 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => false,
                                     'status'    => 0,
                                     'name'  => 'Google Remarketing (DRM)'
+                                ),
+                                'google_review'     => array(
+                                    'free'  => false,
+                                    'status'    => 0,
+                                    'name'  => 'Google Review'
                                 )
 
                             );
@@ -403,30 +428,32 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
 
                             ?>
                             <?php foreach ($_merchants as $key => $merchant): ?>
-                                <div class="single-merchant">
-                                    <span class="title"><?php echo $merchant['name']; ?></span>
-                                    <?php
-                                    $checked = $merchant['status'] ? 'checked' : '';
-                                    $is_free = $merchant['free'] ? true : false;
-                                    $name = $merchant['name'] ;
-                                    if($is_premium) {
-                                        $disabled = '';
-                                    }else {
-                                        if( $merchant['free']) {
+                                <?php if($key && $key != 'undefined'): ?>
+                                    <div class="single-merchant">
+                                        <span class="title"><?php echo $merchant['name']; ?></span>
+                                        <?php
+                                        $checked = $merchant['status'] ? 'checked' : '';
+                                        $is_free = $merchant['free'] ? true : false;
+                                        $name = $merchant['name'] ;
+                                        if($is_premium) {
                                             $disabled = '';
                                         }else {
-                                            $disabled = 'disabled';
-                                        }
+                                            if( $merchant['free']) {
+                                                $disabled = '';
+                                            }else {
+                                                $disabled = 'disabled';
+                                            }
 
-                                    }
-                                    ?>
-                                    <div class="switch <?php echo $disabled; ?>" >
-                                        <div class="wpfm-switcher">
-                                            <input class="switch-input" type="checkbox" <?php echo $checked; ?> <?php echo $disabled; ?> id="switcher-<?php echo strtolower($key); ?>" data-value="<?php echo $key; ?>" data-is-free="<?php echo $is_free; ?>" data-name="<?php echo ucfirst($key); ?>">
-                                            <label class="lever" for="switcher-<?php echo strtolower($key); ?>"></label>
+                                        }
+                                        ?>
+                                        <div class="switch <?php echo $disabled; ?>" >
+                                            <div class="wpfm-switcher">
+                                                <input class="switch-input" type="checkbox" <?php echo $checked; ?> <?php echo $disabled; ?> id="switcher-<?php echo strtolower($key); ?>" data-value="<?php echo $key; ?>" data-is-free="<?php echo $is_free; ?>" data-name="<?php echo ucfirst($name); ?>">
+                                                <label class="lever" for="switcher-<?php echo strtolower($key); ?>"></label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -497,7 +524,7 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                             </div>
 
                             <div class="single-merchant">
-                                <span class="title"><?php echo __('Add Unique Product Identifiers (Brand,GTIN,MPN,UPC and EAN) to product', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date ) to product', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <?php
                                     if(!$is_premium) {
@@ -516,7 +543,7 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                             </div>
 
                             <div class="single-merchant">
-                                <span class="title"><?php echo __('Add Detailed Product Attributes (size, pattern, material, age group, gender) to product', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Add Detailed Product Attributes ( Size, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <?php
                                     if(!$is_premium) {

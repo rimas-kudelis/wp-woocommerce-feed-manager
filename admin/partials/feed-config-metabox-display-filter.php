@@ -36,8 +36,7 @@ $is_premium = apply_filters('wpfm_is_premium_activate', false);
             <th class="large-col">If</th>
             <th class="large-col">Condition</th>
             <th class="large-col">Value</th>
-            <th class="large-col">Then</th>
-            <th colspan="2" class="small-col">Logic</th>
+            <th class="2">Then</th>
         </tr>
     </thead>
 
@@ -48,7 +47,6 @@ $is_premium = apply_filters('wpfm_is_premium_activate', false);
                 <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $key, 'condition', $item['condition'] ); ?></td>
                 <td data-title="value : "><?php $feed_filter->printInput( $key, 'value', $item['value'] ); ?></td>
                 <td data-title="then : "><?php $feed_filter->printSelectDropdown( $key, 'then', $item['then'] ); ?></td>
-                <td class="logical-operator" data-title="rules : "><?php $feed_filter->printSelectDropdown( $key, 'rules', $item['rules'] ); ?></td>
                 <td>
                     <a class="delete-row" title="Delete">
                         <i class="fa fa-trash"></i>

@@ -39,6 +39,10 @@ class Rex_Product_Feed_Factory {
                 'scoupz',
                 'kelkoonl',
                 'uvinum',
+                'idealo',
+                'rakuten',
+                'pricesearcher',
+                'pricemasher',
             )
         );
 

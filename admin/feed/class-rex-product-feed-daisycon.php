@@ -57,20 +57,12 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
         foreach( $this->products as $product ) {
             $pr = wc_get_product($product);
 
-            if($this->product_scope == 'all') {
-                $this->allowed = true;
-            }else {
-                $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
-            }
+            $atts = $this->get_product_data( $product );
+            $item = DaisyConShopping::createItem();
 
-            if ($this->allowed) {
-                $atts = $this->get_product_data( $product );
-                $item = DaisyConShopping::createItem();
-
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
-                }
+            // add all attributes for each product.
+            foreach ($atts as $key => $value) {
+                $item->$key($value); // invoke $key as method of $item object.
             }
         }
     }
@@ -89,22 +81,14 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
 
                 $pr = wc_get_product($child);
 
-                if($this->product_scope == 'all') {
-                    $this->allowed = true;
-                }else {
-                    $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
-                }
+                $item = DaisyConShopping::createItem();
+                $atts = $this->get_product_data( $child );
 
-                if ($this->allowed) {
-                    $item = DaisyConShopping::createItem();
-                    $atts = $this->get_product_data( $child );
-
-                    // add all attributes for each product.
-                    foreach ($atts as $key => $value) {
-                        $item->$key($value); // invoke $key as method of $item object.
-                    }
-                    $item->item_group_id( $product->get_id() );
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
                 }
+                $item->item_group_id( $product->get_id() );
             }
         }
     }
@@ -120,19 +104,11 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
 
             $pr  = new WC_Product_Grouped( $product );
 
-            if($this->product_scope == 'all') {
-                $this->allowed = true;
-            }else {
-                $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
-            }
-
-            if ($this->allowed) {
-                $item = DaisyConShopping::createItem();
-                $atts = $this->get_product_data( $product );
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
-                }
+            $item = DaisyConShopping::createItem();
+            $atts = $this->get_product_data( $product );
+            // add all attributes for each product.
+            foreach ($atts as $key => $value) {
+                $item->$key($value); // invoke $key as method of $item object.
             }
         }
     }

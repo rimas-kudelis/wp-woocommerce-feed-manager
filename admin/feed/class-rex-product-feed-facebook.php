@@ -56,20 +56,12 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
             $pr = wc_get_product($product);
 
-            if($this->product_scope == 'all') {
-                $this->allowed = true;
-            }else {
-                $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
-            }
+            $atts = $this->get_product_data( $product );
+            $item = GoogleShopping::createItem();
 
-            if ($this->allowed) {
-                $atts = $this->get_product_data( $product );
-                $item = GoogleShopping::createItem();
-
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
-                }
+            // add all attributes for each product.
+            foreach ($atts as $key => $value) {
+                $item->$key($value); // invoke $key as method of $item object.
             }
 
         }
@@ -85,19 +77,11 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
             $pr  = new WC_Product_Grouped( $product );
 
-            if($this->product_scope == 'all') {
-                $this->allowed = true;
-            }else {
-                $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
-            }
-
-            if ($this->allowed) {
-                $item = GoogleShopping::createItem();
-                $atts = $this->get_product_data( $product );
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
-                }
+            $item = GoogleShopping::createItem();
+            $atts = $this->get_product_data( $product );
+            // add all attributes for each product.
+            foreach ($atts as $key => $value) {
+                $item->$key($value); // invoke $key as method of $item object.
             }
         }
     }
@@ -119,23 +103,15 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
                 $pr = wc_get_product($child);
 
-                if($this->product_scope == 'all') {
-                    $this->allowed = true;
-                }else {
-                    $this->allowed = Rex_Product_Filter::allowedProduct($pr, $this->feed_rules_filter);
+                $item = GoogleShopping::createItem();
+                $atts = $this->get_product_data( $child );
+
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
                 }
 
-                if ($this->allowed) {
-                    $item = GoogleShopping::createItem();
-                    $atts = $this->get_product_data( $child );
-
-                    // add all attributes for each product.
-                    foreach ($atts as $key => $value) {
-                        $item->$key($value); // invoke $key as method of $item object.
-                    }
-
-                    $item->item_group_id( $product->get_id() );
-                }
+                $item->item_group_id( $product->get_id() );
 
 
 

@@ -141,6 +141,8 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                 'append_variations' => $append_variations,
             );
 
+
+
             try {
                 $merchant = Rex_Product_Feed_Factory::build( $payload, true );
             } catch (Exception $e) {
@@ -148,6 +150,9 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
             }
             $this->batch++;
             $this->offset = (int)$this->offset + (int) $per_batch;
+
+
+
             $merchant->make_feed();
         }
 

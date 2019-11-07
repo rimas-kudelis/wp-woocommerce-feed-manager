@@ -274,6 +274,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     public function __construct( $config, $bypass = false )
     {
+        $this->products = [];
+        $this->variable_products= [];
+        $this->grouped_products = [];
 
         $this->config = $config;
         $is_premium = apply_filters('wpfm_is_premium', false);
@@ -283,6 +286,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         $this->setup_feed_data($config['info']);
         $this->prepare_products_args($config['products']);
+
 
 
         if (!$this->bypass){
@@ -296,14 +300,14 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->feed_rules_filter = $config['feed_filter'];
             $this->variations   = $config['include_variations'];
             $this->parent_product   = $config['include_variations'];
-            $this->append_variation   = $config['append_variation_name'];
+            $this->append_variation   = $config['append_variations'];
         }
 
 
 
         $this->setup_products();
-        $this->setup_variable_products();
-        $this->setup_group_products();
+//        $this->setup_variable_products();
+//        $this->setup_group_products();
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
 
@@ -321,18 +325,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $this->products_args = array(
             'post_type'              => 'product',
             'fields'                 => 'ids',
+            'post_status'            => 'publish',
             'posts_per_page'         => $this->posts_per_page,
             'offset'                 => $this->offset,
             'update_post_term_cache' => true,
             'update_post_meta_cache' => true,
             'cache_results'          => false,
-            'suppress_filters'       => false
+            'suppress_filters'       => false,
         );
 
-
-        if ( $args['products_scope'] === 'custom'){
-            $this->products_args['post__in'] = $args['items'];
-        } elseif ( $args['products_scope'] !== 'all' && $args['products_scope'] !== 'filter') {
+        if ( $args['products_scope'] === 'product_cat' || $args['products_scope'] === 'product_tag') {
 
             $terms = $args['products_scope'] === 'product_tag' ? 'tags' : 'cats';
 
@@ -342,7 +344,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 'terms'    => $args[$terms]
             );
         }
-
     }
 
     /**
@@ -368,7 +369,15 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_feed_rules( $info ){
         $feed_rules       = array();
         parse_str( $info, $feed_rules );
-        $this->wpml_language = array_key_exists('rex_feed_wpml_language', $feed_rules) ? $feed_rules['rex_feed_wpml_language'] : get_post_meta($this->id, 'rex_feed_wpml_language', true);
+
+        if ( function_exists('icl_object_id') ) {
+            update_post_meta( $this->id, 'rex_feed_wpml_language', ICL_LANGUAGE_CODE );
+            $this->wpml_language = ICL_LANGUAGE_CODE;
+        }
+        else {
+            $this->wpml_language = false;
+        }
+
         $feed_rules       = $feed_rules['fc'];
         $this->feed_rules = $feed_rules;
         // save the feed_rules into feed post_meta.
@@ -445,50 +454,200 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * Get the products to generate feed
      */
     protected function setup_products() {
+
         if ( function_exists('icl_object_id') ) {
             global $sitepress;
-            $sitepress->switch_lang($sitepress->get_default_language());
+            $current_language = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
+            $sitepress->switch_lang($current_language);
         }
-        $products = get_posts( $this->products_args );
-        if ( function_exists('icl_object_id') ) {
-            if($this->wpml_language) {
-                global $sitepress;
-                $this->products = array_map(function($id){
-                    $product_id = apply_filters( 'wpml_object_id', $id, 'product', TRUE, $this->wpml_language );
-                    return $product_id;
-                }, $products);
 
+        if($this->product_scope === 'filter') {
+
+            $filter_args = Rex_Product_Filter::createFilterQueryParams($this->feed_rules_filter);
+            add_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
+            foreach ($filter_args['args'] as $key => $value) {
+                $this->products_args[$key] = $value;
             }
-        }else{
-            $this->products = $products;
+
+            if(array_key_exists('meta_query', $this->products_args)) {
+                $this->products_args['meta_query']['relation'] = 'OR';
+            }
+
+            if(array_key_exists('tax_query', $this->products_args)) {
+                $this->products_args['tax_query']['relation'] = 'OR';
+            }
+
+        }
+
+        $result = new WP_Query($this->products_args);
+        remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10 );
+
+        $products = $result->posts;
+        if($products) {
+            foreach ($products as $product) {
+                if($this->is_variable_product($product)) {
+                    $this->variable_products[] = $product;
+                }elseif ($this->is_grouped_product($product)){
+                    $this->grouped_products[] = $product;
+                }else {
+                    $this->products[] = $product;
+                }
+            }
         }
     }
 
 
     /**
-     * Setup the variable products from products array.
+     * product serach by title
+     * @param $where
+     * @param $wp_query
+     * @return string
      */
-    protected function setup_variable_products() {
+    function wpfm_post_title_filter($where, &$wp_query) {
+        global $wpdb;
+        if($wp_query->get('title_contain')) {
+            $title_contain = $wp_query->get('title_contain');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'AND' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_title LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('title_dn_contain')) {
+            $title_dn_contain = $wp_query->get('title_dn_contain');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'AND' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_title NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('title_equal_to')) {
+            $title_dn_contain = $wp_query->get('title_equal_to');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'AND' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_title = \'' . $wpdb->esc_like( $title ) . '\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('title_nequal_to')) {
+            $title_dn_contain = $wp_query->get('title_nequal_to');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'AND' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_title <> \'' . $wpdb->esc_like( $title ) . '\'';
+            };
+            $where .= ' )';
 
-        $this->variable_products = array();
-
-        // Loop through all products and separate the variable products.
-        foreach( $this->products as $product_id ) {
-            if( $this->is_variable_product( $product_id ) ){
-                $this->variable_products[] = $product_id;
-            }
         }
 
-        // remove variable products from products array
-        if ( !empty( $this->variable_products ) ) {
-            $this->products = array_diff( $this->products, $this->variable_products );
+
+        if($wp_query->get('description_contain')) {
+            $title_contain = $wp_query->get('title_contain');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'OR' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_content LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('description_dn_contain')) {
+            $title_dn_contain = $wp_query->get('title_dn_contain');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'OR' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_content NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('description_equal_to')) {
+            $title_dn_contain = $wp_query->get('title_equal_to');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'OR' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_content = \'' . $wpdb->esc_like( $title ) . '\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('description_nequal_to')) {
+            $title_dn_contain = $wp_query->get('title_nequal_to');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'OR' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_content <> \'' . $wpdb->esc_like( $title ) . '\'';
+            };
+            $where .= ' )';
+
         }
 
-        // remove all variable product if product variations is exclude
-        if (!$this->variations) {
-            $this->variable_products = array();
+
+        if($wp_query->get('sdescription_contain')) {
+            $title_contain = $wp_query->get('title_contain');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'OR' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_excerpt LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
+            };
+            $where .= ' )';
         }
+        if($wp_query->get('sdescription_dn_contain')) {
+            $title_dn_contain = $wp_query->get('title_dn_contain');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'OR' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_excerpt NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('sdescription_equal_to')) {
+            $title_dn_contain = $wp_query->get('title_equal_to');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'OR' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_excerpt = \'' . $wpdb->esc_like( $title ) . '\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('sdescription_nequal_to')) {
+            $title_dn_contain = $wp_query->get('title_nequal_to');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_dn_contain as $title) {
+                $i = $i + 1;
+                $op = ($i > 1)? 'OR' : '';
+                $where .= ' '. $op. ' '. $wpdb->posts . '.post_excerpt <> \'' . $wpdb->esc_like( $title ) . '\'';
+            };
+            $where .= ' )';
+
+        }
+
+        return $where;
     }
+
 
 
 
@@ -567,16 +726,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function get_product_data( $product_id = false ){
         if ( function_exists('icl_object_id') ) {
-            if($this->wpml_language) {
-                global $sitepress;
-                $original = apply_filters( 'wpml_element_trid', NULL, $product_id, 'post_product' );
-                if($original == $product_id) {
-                    $sitepress->switch_lang($sitepress->get_default_language());
-                    $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
-                }else {
-                    $sitepress->switch_lang($this->wpml_language);
-                    $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
-                }
+            global $sitepress;
+            $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
+            if($wpml) {
+                $sitepress->switch_lang($wpml);
+                $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
             }
         }else{
             $data = new Rex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
@@ -695,6 +849,22 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         return $orgdoc->saveXML();
 
+    }
+
+
+    function cleanString($string)
+    {
+        // allow only letters
+        $res = preg_replace("/[^a-zA-Z]/", "", $string);
+
+        // trim what's left to 8 chars
+        $res = substr($res, 0, 8);
+
+        // make lowercase
+        $res = strtolower($res);
+
+        // return
+        return $res;
     }
 
 
