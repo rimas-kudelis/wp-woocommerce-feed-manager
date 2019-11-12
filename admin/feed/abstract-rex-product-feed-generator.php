@@ -810,6 +810,19 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 return 'true';
             }
         }
+        else{
+            $file = trailingslashit($path) . "feed-{$this->id}.xml";
+            if( file_exists($file) ) {
+                if($this->batch == 1) {
+                    return file_put_contents($file, $this->feed) ? 'true' : 'false';
+                }else {
+                    $feed = $this->merge_feeds($file);
+                    return file_put_contents($file, $feed) ? 'true' : 'false';
+                }
+            }else{
+                return file_put_contents($file, $this->feed) ? 'true' : 'false';
+            }
+        }
     }
 
 
