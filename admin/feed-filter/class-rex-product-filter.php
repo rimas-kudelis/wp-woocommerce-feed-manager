@@ -950,7 +950,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_stock',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -958,7 +958,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_stock',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -966,7 +966,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_stock',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -974,7 +974,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_stock',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -1020,7 +1020,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_stock',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1034,7 +1034,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_stock',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1048,7 +1048,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_stock',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1062,7 +1062,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_stock',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }
@@ -1094,7 +1094,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1102,7 +1102,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1110,7 +1110,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1118,7 +1118,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -1164,7 +1164,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1178,7 +1178,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1192,7 +1192,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1206,7 +1206,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }
@@ -1220,7 +1220,7 @@ class Rex_Product_Filter {
                         if ($condition == 'equal_to') {
                             $filter_args['meta_query'][] = array(
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
                                     'compare'   => '=',
                                 ),
@@ -1228,7 +1228,7 @@ class Rex_Product_Filter {
                         }elseif ($condition == 'nequal_to') {
                             $filter_args['meta_query'][] = array(
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
                                     'compare'   => '!=',
                                 ),
@@ -1236,33 +1236,33 @@ class Rex_Product_Filter {
                         }elseif ($condition == 'greater_than') {
                             $filter_args['meta_query'][] = array(
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
                             $filter_args['meta_query'][] = array(
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
                             $filter_args['meta_query'][] = array(
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
                             $filter_args['meta_query'][] = array(
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -1273,12 +1273,12 @@ class Rex_Product_Filter {
                             $filter_args['meta_query'][] = array(
                                 'relation' => 'OR',
                                 array(
-                                    'key' => '_regular_price',
+                                    'key' => '_sale_price',
                                     'compare' => 'NOT EXISTS',
                                     'value' => ''
                                 ),
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_price',
                                     'value'     => $value,
                                     'compare'   => '!=',
                                 ),
@@ -1287,12 +1287,12 @@ class Rex_Product_Filter {
                             $filter_args['meta_query'][] = array(
                                 'relation' => 'OR',
                                 array(
-                                    'key' => '_regular_price',
+                                    'key' => '_sale_price',
                                     'compare' => 'NOT EXISTS',
                                     'value' => ''
                                 ),
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_price',
                                     'value'     => $value,
                                     'compare'   => '=',
                                 ),
@@ -1301,56 +1301,56 @@ class Rex_Product_Filter {
                             $filter_args['meta_query'][] = array(
                                 'relation' => 'OR',
                                 array(
-                                    'key' => '_regular_price',
+                                    'key' => '_sale_price',
                                     'compare' => 'NOT EXISTS',
                                     'value' => ''
                                 ),
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
                             $filter_args['meta_query'][] = array(
                                 'relation' => 'OR',
                                 array(
-                                    'key' => '_regular_price',
+                                    'key' => '_sale_price',
                                     'compare' => 'NOT EXISTS',
                                     'value' => ''
                                 ),
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
                             $filter_args['meta_query'][] = array(
                                 'relation' => 'OR',
                                 array(
-                                    'key' => '_regular_price',
+                                    'key' => '_sale_price',
                                     'compare' => 'NOT EXISTS',
                                     'value' => ''
                                 ),
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_sale_price',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
                             $filter_args['meta_query'][] = array(
                                 'relation' => 'OR',
                                 array(
-                                    'key' => '_regular_price',
+                                    'key' => '_sale_price',
                                     'compare' => 'NOT EXISTS',
                                     'value' => ''
                                 ),
                                 array(
-                                    'key'       => '_regular_price',
+                                    'key'       => '_price',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }
@@ -1382,7 +1382,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1390,7 +1390,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1398,7 +1398,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1406,7 +1406,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -1453,7 +1453,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1467,7 +1467,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1481,7 +1481,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1495,7 +1495,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }
@@ -1527,7 +1527,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_width',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1535,7 +1535,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_width',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1543,7 +1543,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_width',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1551,7 +1551,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -1597,7 +1597,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_width',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1611,7 +1611,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_weight',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1625,7 +1625,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_width',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1639,7 +1639,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_width',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }
@@ -1671,7 +1671,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_height',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1679,7 +1679,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_height',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1687,7 +1687,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_height',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1695,7 +1695,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_height',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -1741,7 +1741,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_height',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1755,7 +1755,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_height',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1769,7 +1769,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_width',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1783,7 +1783,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_height',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }
@@ -1815,7 +1815,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_length',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1823,7 +1823,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_length',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1831,7 +1831,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_length',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1839,7 +1839,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_length',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -1885,7 +1885,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_length',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1899,7 +1899,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_length',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1913,7 +1913,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_length',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1927,7 +1927,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_length',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }
@@ -1959,7 +1959,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_review_count',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -1967,7 +1967,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_review_count',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -1975,7 +1975,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_review_count',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -1983,7 +1983,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_review_count',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -2029,7 +2029,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_review_count',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -2057,7 +2057,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_review_count',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -2071,7 +2071,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_review_count',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }
@@ -2104,7 +2104,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_average_rating',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -2112,7 +2112,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_average_rating',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -2120,7 +2120,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_average_rating',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -2128,7 +2128,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_average_rating',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }
@@ -2174,7 +2174,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_average_rating',
                                     'value'     => $value,
-                                    'compare'   => '>',
+                                    'compare'   => '<',
                                 ),
                             );
                         }elseif ($condition == 'greater_than_equal') {
@@ -2188,7 +2188,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_average_rating',
                                     'value'     => $value,
-                                    'compare'   => '>=',
+                                    'compare'   => '<=',
                                 ),
                             );
                         }elseif ($condition == 'less_than') {
@@ -2202,7 +2202,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_average_rating',
                                     'value'     => $value,
-                                    'compare'   => '<',
+                                    'compare'   => '>',
                                 ),
                             );
                         }elseif ($condition == 'less_than_equal') {
@@ -2216,7 +2216,7 @@ class Rex_Product_Filter {
                                 array(
                                     'key'       => '_wc_average_rating',
                                     'value'     => $value,
-                                    'compare'   => '<=',
+                                    'compare'   => '>=',
                                 ),
                             );
                         }

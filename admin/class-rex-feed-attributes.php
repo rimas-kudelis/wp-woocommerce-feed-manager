@@ -36,10 +36,8 @@ class Rex_Feed_Attributes {
                 'availability'              => 'Availability',
                 'quantity'                  => 'Quantity',
                 'price'                     => 'Regular Price',
+                'current_price'             => 'Price',
                 'sale_price'                => 'Sale Price',
-
-
-
                 'weight'                    => 'Weight',
                 'width'                     => 'Width',
                 'height'                    => 'Height',

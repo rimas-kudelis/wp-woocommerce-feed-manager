@@ -246,6 +246,12 @@ class Rex_Product_Data_Retriever {
                 return number_format((float)$this->product->get_regular_price(), 2, '.', '');
                 break;
 
+            case 'current_price':
+                if ($this->product->is_type( 'grouped' ))
+                    return number_format((float)$this->get_grouped_price($this->product, 'price'), 2, '.', '');
+                return number_format((float)$this->product->get_price(), 2, '.', '');
+                break;
+
             case 'sale_price':
 
 //                if ($this->product->is_type( 'grouped' ))

@@ -12,6 +12,9 @@
  */
 
 $is_premium = apply_filters('wpfm_is_premium', false);
+
+
+
 $is_premium_activated = apply_filters('wpfm_is_premium_activate', false);
 $custom_field = get_option('rex-wpfm-product-custom-field');
 $pa_field = get_option('rex-wpfm-product-pa-field');
