@@ -287,8 +287,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $this->setup_feed_data($config['info']);
         $this->prepare_products_args($config['products']);
 
-
-
         if (!$this->bypass){
             $this->setup_feed_rules($config['feed_config']);
             $this->setup_feed_filter_rules($config['feed_config']);
@@ -304,12 +302,34 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
 
-
         $this->setup_products();
-//        $this->setup_variable_products();
-//        $this->setup_group_products();
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
+
+        /**
+         * log for feed
+         */
+        $log = wc_get_logger();
+
+        if($this->bypass) {
+            if($this->batch == 1) {
+                $log->info(__( 'Start feed processing job by cron', 'rex-product-feed' ), array('source' => 'WPFM',));
+                $log->info('Feed ID: '.$config['info']['post_id'], array('source' => 'WPFM',));
+                $log->info('Feed Name: '.$config['info']['title'], array('source' => 'WPFM',));
+                $log->info('Merchant Type: '.$this->merchant, array('source' => 'WPFM',));
+            }
+            $log->info('Total Batches: '.$this->batch, array('source' => 'WPFM',));
+            $log->info('Current Batch: '.$this->tbatch, array('source' => 'WPFM',));
+        }else {
+            if($this->batch == 1) {
+                $log->info(__( 'Start feed processing job.', 'rex-product-feed' ), array('source' => 'WPFM',));
+                $log->info('Feed ID: '.$config['info']['post_id'], array('source' => 'WPFM',));
+                $log->info('Feed Name: '.$config['info']['title'], array('source' => 'WPFM',));
+                $log->info('Merchant Type: '.$this->merchant, array('source' => 'WPFM',));
+            }
+            $log->info('Total Batches: '.$this->batch, array('source' => 'WPFM',));
+            $log->info('Current Batch: '.$this->tbatch, array('source' => 'WPFM',));
+        }
 
     }
 
@@ -474,13 +494,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
 
             if(array_key_exists('tax_query', $this->products_args)) {
-                $this->products_args['tax_query']['relation'] = 'OR';
+                $this->products_args['tax_query']['relation'] = 'AND';
             }
 
         }
 
         $result = new WP_Query($this->products_args);
         remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10 );
+
+//        var_dump($result->request);
+//        wp_die();
 
         $products = $result->posts;
         if($products) {
@@ -748,10 +771,18 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         $path  = wp_upload_dir();
         $path  = $path['basedir'] . '/rex-feed';
+
         // make directory if not exist
         if ( !file_exists($path) ) {
             wp_mkdir_p($path);
         }
+
+        $log = wc_get_logger();
+        if($this->batch == $this->tbatch) {
+            $log->info(__( 'Completed feed generation job.', 'rex-product-feed' ), array('source' => 'WPFM',));
+            $log->info(__( '**************************************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+        }
+
         if($format == 'xml'){
 
             $file = trailingslashit($path) . "feed-{$this->id}.xml";

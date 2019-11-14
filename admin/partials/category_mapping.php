@@ -62,7 +62,10 @@ $db_version = get_option('rex_wpfm_db_version');
                                     <thead>
                                         <tr>
                                             <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
-                                            <th><?php echo __('Google Merchant Category', 'rex-product-feed'); ?></th>
+                                            <th>
+                                                <?php echo __('Google Merchant Category', 'rex-product-feed'); ?>
+
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>

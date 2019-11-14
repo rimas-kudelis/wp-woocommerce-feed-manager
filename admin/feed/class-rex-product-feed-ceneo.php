@@ -8,14 +8,21 @@
  * @link       https://rextheme.com
  * @since      1.0.0
  *
- * @package    Rex_Product_Feed_Google
- * @subpackage Rex_Product_Feed_Google/includes
+ * @package    Rex_Product_Feed_Ceneo
+ * @subpackage Rex_Product_Feed_Ceneo/includes
  * @author     RexTheme <info@rextheme.com>
  */
 
-use RexTheme\MarktPlaatsShoppingFeed\Containers\MarktPlaatsShopping;
+use RexTheme\RexShoppingCeneo\Containers\RexShoppingCeneo;
 
-class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
+class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
+
+    private $feed_merchants = array(
+        "nextag" => array(
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+        ),
+    );
 
     /**
      * Create Feed
@@ -24,11 +31,11 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
      * @author
      **/
     public function make_feed() {
-        MarktPlaatsShopping::$container = null;
-        MarktPlaatsShopping::init(false, $this->setItemWrapper(), 'http://admarkt.marktplaats.nl/schemas/1.0', '', $this->setItemsWrapper());
-        MarktPlaatsShopping::title($this->title);
-        MarktPlaatsShopping::link($this->link);
-        MarktPlaatsShopping::description($this->desc);
+        RexShoppingCeneo::$container = null;
+        RexShoppingCeneo::init(false, $this->setItemWrapper(), null, '1', $this->setItemsWrapper());
+        RexShoppingCeneo::title($this->title);
+        RexShoppingCeneo::link($this->link);
+        RexShoppingCeneo::description($this->desc);
 
         // Generate feed for both simple and variable products.
         $this->generate_simple_product_feed();
@@ -38,7 +45,6 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
         $this->feed = $this->returnFinalProduct();
 
         if ($this->batch >= $this->tbatch ) {
-
             $this->save_feed($this->feed_format);
             return array(
                 'msg' => 'finish'
@@ -58,7 +64,7 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
             $pr = wc_get_product($product);
 
             $atts = $this->get_product_data( $product );
-            $item = MarktPlaatsShopping::createItem();
+            $item = RexShoppingCeneo::createItem();
 
             // add all attributes for each product.
             foreach ($atts as $key => $value) {
@@ -77,7 +83,7 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
 
             $pr  = new WC_Product_Grouped( $product );
 
-            $item = MarktPlaatsShopping::createItem();
+            $item = RexShoppingCeneo::createItem();
             $atts = $this->get_product_data( $product );
             // add all attributes for each product.
             foreach ($atts as $key => $value) {
@@ -101,13 +107,14 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
 
                 $pr = wc_get_product($child);
 
-                $item = MarktPlaatsShopping::createItem();
+                $item = RexShoppingCeneo::createItem();
                 $atts = $this->get_product_data( $child );
 
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
+
 
 
             }
@@ -121,7 +128,7 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
      * @return bool
      */
     public function is_valid_merchant(){
-        return true;
+        return array_key_exists($this->merchant, $this->feed_merchants)? true : false;
     }
 
 
@@ -130,12 +137,12 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
      */
     public function setItemWrapper()
     {
-        return 'admarkt:ad';
+        return 'o';
     }
 
     public function setItemsWrapper()
     {
-        return 'admarkt:ads';
+        return 'offers';
     }
 
     /**
@@ -146,11 +153,11 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
     public function returnFinalProduct()
     {
         if ($this->feed_format == 'xml') {
-            return MarktPlaatsShopping::asRss();
+            return RexShoppingCeneo::asRss();
         } elseif ($this->feed_format == 'text') {
-            return MarktPlaatsShopping::asTxt();
+            return RexShoppingCeneo::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            return MarktPlaatsShopping::asCsv();
+            return RexShoppingCeneo::asCsv();
         }
         return false;
     }

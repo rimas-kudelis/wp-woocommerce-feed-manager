@@ -13,8 +13,6 @@
 
 $is_premium = apply_filters('wpfm_is_premium', false);
 
-
-
 $is_premium_activated = apply_filters('wpfm_is_premium_activate', false);
 $custom_field = get_option('rex-wpfm-product-custom-field');
 $pa_field = get_option('rex-wpfm-product-pa-field');
@@ -49,6 +47,7 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                         <li class="tab-link" data-tab="tab6"><i class="fa fa-gift"></i>Go Premium</li>
                     <?php }
                     ?>
+                    <li class="tab-link" data-tab="tab7"><i class="fa fa-question-circle"></i>Logs</li>
                 </ul>
 
                 <div class="rex-settings-tab-content">
@@ -194,20 +193,25 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 1,
                                     'name'  => 'Google AdWords'
                                 ),
+                                'google_dsa'    => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Google Dynamic Search Ads'
+                                ),
                                 'facebook'     => array(
                                     'free'  => true,
                                     'status'    => 1,
                                     'name'  => 'Facebook'
                                 ),
+                                'instagram'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Instagram (by Facebook)'
+                                ),
                                 'amazon'       => array(
                                     'free'  => true,
                                     'status'    => 1,
                                     'name'  => 'Amazon'
-                                ),
-                                'ebay'         => array(
-                                    'free'  => true,
-                                    'status'    => 1,
-                                    'name'  => 'eBay'
                                 ),
                                 'adroll'       => array(
                                     'free'  => true,
@@ -337,7 +341,7 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                 'uvinum'     => array(
                                     'free'  => true,
                                     'status'    => 0,
-                                    'name'  => 'Uvinum'
+                                    'name'  => 'Uvinum / DrinsksAndCo'
                                 ),
                                 'idealo'     => array(
                                     'free'  => true,
@@ -358,6 +362,26 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Pricemasher'
+                                ),
+                                'pinterest'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Pinterest'
+                                ),
+                                'fashionchick'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Fashionchick'
+                                ),
+                                'ceneo'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Ceneo'
+                                ),
+                                'choozen'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Choozen'
                                 )
                             );
                             $_pro_merchants = array(
@@ -713,6 +737,33 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                         </div>
                     <?php }
                     ?>
+                    <div id="tab7" class="tab-content active block-wrapper">
+                        <?php
+                            $logs = WC_Admin_Status::scan_log_files();
+                            $wpfm_logs = array();
+                            $pattern = '/^wpfm|fatal/';
+                            foreach($logs as $key => $value) {
+                                if (preg_match($pattern,$key)){
+                                    $wpfm_logs[$key] = $value;
+                                }
+                            }
+                            echo '<form id="wpfm-error-log-form" action="'.esc_url( admin_url( 'admin.php?page=wpfm_dashboard' ) ).'" method="post">';
+                                echo '<select id="wpfm-error-log" name="wpfm-error-log">';
+                                    echo '<option value="">Please Select</option>';
+                                    foreach($wpfm_logs as $key => $value) {
+                                        echo '<option value="'.$value.'">'.$value.'</option>';
+                                    }
+                                echo '<select>';
+                                echo '<button type="submit" class="btn-default">'.__('View log', 'rex-product-feed').'</button>';
+                            echo '</form>';
+
+                            echo '<div id="log-viewer">';
+                            echo '<button id="wpfm-log-copy" class="btn-default" style="display: none"> <i class="fa fa-files-o"></i>'.__('Copy log', 'rex-product-feed').'</button>';
+                            echo '<pre id="wpfm-log-content"></pre>';
+                            echo '</div>';
+
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>

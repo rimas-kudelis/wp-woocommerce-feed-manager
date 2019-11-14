@@ -175,6 +175,14 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
+        /*
+        * Show log
+        */
+        wp_ajax_helper()->handle( 'rex-product-feed-show-log' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_wpfm_log' ) )
+            ->with_validation( $validations );
+
+
     }
 
 
@@ -637,6 +645,26 @@ class Rex_Product_Feed_Ajax {
         update_option('rex-wpfm-product-per-batch', $payload);
         wp_send_json_success('success');
         wp_die();
+    }
+
+
+    /**
+     * WPFM log
+     * @param $payload
+     */
+    public static function show_wpfm_log($payload) {
+
+        $key = $payload['logKey'];
+        $log_content = esc_html( file_get_contents( WC_LOG_DIR . $key ));
+        $upload_dir = wp_upload_dir();
+        $url = $upload_dir['baseurl'];
+
+        return array(
+            'success' => true,
+            'content' => $log_content,
+            'file_url' => $url . '/wc-logs/'. $key
+        );
+
     }
 
 }

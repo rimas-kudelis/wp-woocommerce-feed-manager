@@ -14,7 +14,8 @@ class Rex_Product_Feed_Factory {
     private static $other_merchants;
 
     public static function build( $config, $bypass = false ){
-
+        $log = wc_get_logger();
+        $context = array( 'source' => 'WPFM' );
         self::$other_merchants = apply_filters('wpfm_merchant_custom',
             array(
                 'custom',
@@ -43,8 +44,14 @@ class Rex_Product_Feed_Factory {
                 'rakuten',
                 'pricesearcher',
                 'pricemasher',
+                'pinterest',
+                'google_dsa',
+                'fashionchick',
+                'choozen',
             )
         );
+
+
 
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {
             $className = 'Rex_Product_Feed_Other';
@@ -52,7 +59,9 @@ class Rex_Product_Feed_Factory {
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
         }
 
+
         if( $config == '' || ! class_exists( $className ) ) {
+            $log->critical(__( 'Invalid Merchant.', 'rex-product-feed' ), array('source' => 'WPFM-Critical',));
             throw new Exception('Invalid Merchant.');
         } else {
             return new $className( $config, $bypass );

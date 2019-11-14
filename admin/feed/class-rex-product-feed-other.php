@@ -71,7 +71,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 $item->$key($value); // invoke $key as method of $item object.
             }
         }
-
     }
 
 

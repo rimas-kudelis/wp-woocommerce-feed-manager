@@ -548,6 +548,61 @@
     });
 
 
+    /**
+     * WPFM error log
+     */
+    function show_wpfm_error_log(e) {
+        e.preventDefault();
+        var $form = $(this);
+        var log_key = $form.find('#wpfm-error-log option:selected').val();
+        var payload = {
+            'logKey' : log_key
+        };
+        if(!log_key) {
+            $("#wpfm-log-copy").hide();
+            $('#log-viewer pre').html('');
+        }else {
+            wpAjaxHelperRequest( 'rex-product-feed-show-log', payload )
+                .success( function( response ) {
+                    console.log('woohoo!');
+                    $('#log-viewer pre').html(response.content);
+                    if(log_key) {
+                        $("#wpfm-log-copy").show();
+                    }
+                    $('#log-download').attr('href',response.file_url);
+                })
+                .error( function( response ) {
+
+                    console.log( 'uh, oh!' );
+                    console.log( response.statusText );
+                });
+        }
+
+    }
+    $(document).on("submit", "#wpfm-error-log-form", show_wpfm_error_log);
+
+
+    $(document).on("click", "#wpfm-log-copy", wpfm_copy_log);
+    function wpfm_copy_log(event) {
+        event.preventDefault();
+        var elm = document.getElementById("wpfm-log-content");
+        if(document.body.createTextRange) {
+            var range = document.body.createTextRange();
+            range.moveToElementText(elm);
+            range.select();
+            document.execCommand("Copy");
+            alert("Copied div content to clipboard");
+        }
+        else if(window.getSelection) {
+            var selection = window.getSelection();
+            var range = document.createRange();
+            range.selectNodeContents(elm);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand("Copy");
+            alert("Copied div content to clipboard");
+        }
+    }
 
 
 })( jQuery );

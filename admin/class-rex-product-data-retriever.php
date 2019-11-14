@@ -87,12 +87,21 @@ class Rex_Product_Data_Retriever {
 
         $this->product           = wc_get_product( $product );
 
-//        $this->allowed = Rex_Product_Filter::allowedProduct($this->product, $feed_filter_rules);
+        $log = wc_get_logger();
+        $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+        $log->info(__( 'Start product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
+        $log->info('Product ID: '.$this->product->get_id(), array('source' => 'WPFM',));
+        $log->info('Product Name: '.$this->product->get_title(), array('source' => 'WPFM',));
+
 
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $this->append_variation = $append_variation;
         $this->set_all_value();
+
+
+        $log->info(__( 'End product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
+        $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
 
         // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
 
@@ -301,6 +310,7 @@ class Rex_Product_Data_Retriever {
 
 
             case 'description':
+
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->get_parent_id() );
                     $_product_desc =  $this->remove_short_codes($_product->get_description());
@@ -325,6 +335,9 @@ class Rex_Product_Data_Retriever {
 
             case 'product_cats_path':
                 return $this->get_product_cats_with_seperator(); break;
+
+            case 'product_subcategory':
+                return $this->get_product_subcategory(); break;
 
             case 'product_tags':
                 return $this->get_product_tags(); break;
@@ -491,16 +504,27 @@ class Rex_Product_Data_Retriever {
             $first_cat = reset($cat_lists);
         }
 
+        $term_ids = array();
+        foreach ( $cat_lists as $term ) {
+            $term_ids[] = $term->term_id;
+        }
+
         $wpfm_category_map = get_option('rex-wpfm-category-mapping');
         if($wpfm_category_map) {
             $map = $wpfm_category_map[$key];
             $map_config = $map['map-config'];
             if($first_cat){
                 foreach ($map_config as $key => $value){
-                    if( $first_cat->term_id == $value['map-key']){
+//                    if( $first_cat->term_id == $value['map-key']){
+                    if( in_array($value['map-key'], $term_ids) ){
                         $map_value = $value['map-value'];
                         preg_match("~^(\d+)~", $map_value, $m);
-                        return utf8_decode(urldecode($m[1]));
+                        if(count($m) > 1) {
+                            if($m[1]) {
+                                return utf8_decode(urldecode($m[1]));
+                            }
+                        }
+                        return $map_value;
                     }
                 }
             }
@@ -559,6 +583,44 @@ class Rex_Product_Data_Retriever {
             return $this->get_the_term_list( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
         }else {
             return $this->get_the_term_list( $this->product->get_id(), 'product_cat', $before, $sep, $after );
+        }
+
+    }
+
+    /**
+     * Retrieve a product's sub categories as a list with specified format.
+     *
+     * @param string $sep Optional. Separate items using this.
+     * @return string|false
+     */
+    protected function get_product_subcategory( $sep = ' > ') {
+
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            $terms = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
+            if ( empty( $terms ) || is_wp_error( $terms ) ){
+                return '';
+            }
+            $term_names = array();
+            foreach($terms as $term) {
+                if($term->parent) {
+                    $term_names[] = $term->name;
+                }
+            }
+            ksort($term_names);
+            return '' . join( $sep, $term_names ) . '';
+        }else {
+            $terms = get_the_terms( $this->product->get_id(), 'product_cat' );
+            if ( empty( $terms ) || is_wp_error( $terms ) ){
+                return '';
+            }
+            $term_names = array();
+            foreach($terms as $term) {
+                if($term->parent) {
+                    $term_names[] = $term->name;
+                }
+            }
+            ksort($term_names);
+            return '' . join( $sep, $term_names ) . '';
         }
 
     }

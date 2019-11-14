@@ -41,7 +41,6 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
             'additional_image_link_9'  => 'Additional Image 9 [additional_image_link]',
             'additional_image_link_10' => 'Additional Image 10 [additional_image_link]',
             'condition'                => 'Condition [condition]',
-
         ),
 
         'Availability & Price' => array(

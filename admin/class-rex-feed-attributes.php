@@ -30,6 +30,7 @@ class Rex_Feed_Attributes {
                 'short_description'         => 'Product Short Description',
                 'product_cats'              => 'Product Categories',
                 'product_cats_path'         => 'Product Categories Path (with separator ">")',
+                'product_subcategory'       => 'Product Sub Categories Path (with separator ">")',
                 'link'                      => 'Product URL',
                 'condition'                 => 'Condition',
                 'sku'                       => 'SKU',
