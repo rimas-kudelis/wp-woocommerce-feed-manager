@@ -613,6 +613,28 @@ class Rex_Product_Feed_Admin {
      */
     function rex_admin_footer_style() {
         echo '<style>
+                
+                .wpfm-black-friday-notice {
+                    position: relative;
+                    padding: 0;
+                    margin: 0!important;
+                    border: none;
+                    background: transparent;
+                    box-shadow: none;
+                }
+                .wpfm-black-friday-notice img{
+                    display: block;
+                    max-width: 100%;
+                }
+                .wpfm-black-friday-notice .notice-dismiss {
+                    top: 8px;
+                    right: 10px;
+                    padding: 0;
+                }
+                .wpfm-black-friday-notice .notice-dismiss:before {
+                    color: #fff;
+                    font-size: 22px;
+                }
                 .wpfm-db-update-loader {
                   display: none;
                   width: 20px;

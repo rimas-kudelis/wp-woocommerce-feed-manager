@@ -51,17 +51,14 @@ class Rex_Product_Feed_Factory {
             )
         );
 
-
-
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {
             $className = 'Rex_Product_Feed_Other';
         }else{
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
         }
 
-
         if( $config == '' || ! class_exists( $className ) ) {
-            $log->critical(__( 'Invalid Merchant.', 'rex-product-feed' ), array('source' => 'WPFM-Critical',));
+            $log->critical(__( 'Invalid Merchant.', 'rex-product-feed' ), array('source' => 'WPFM-Critical'));
             throw new Exception('Invalid Merchant.');
         } else {
             return new $className( $config, $bypass );

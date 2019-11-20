@@ -138,7 +138,7 @@ class Rex_Google_Merchant_Settings_Api {
         if ( !$this->is_authenticate() ) {
             $client->authenticate( $code );
             $access_token = $client->getAccessToken();
-            update_option('rex_google_access_token', $access_token);
+            update_option('rex_google_access_token', json_encode($access_token));
         }
     }
 

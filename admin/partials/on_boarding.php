@@ -11,7 +11,9 @@
  * @subpackage Rex_Product_Feed/admin/partials
  */
 
+
 $is_premium = apply_filters('wpfm_is_premium', false);
+
 
 $is_premium_activated = apply_filters('wpfm_is_premium_activate', false);
 $custom_field = get_option('rex-wpfm-product-custom-field');
@@ -192,6 +194,11 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 1,
                                     'name'  => 'Google AdWords'
+                                ),
+                                'google_local_products'    => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Google Local Products'
                                 ),
                                 'google_dsa'    => array(
                                     'free'  => true,
@@ -382,6 +389,16 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Choozen'
+                                ),
+                                'rss'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'RSS'
+                                ),
+                                'ciao'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Ciao'
                                 )
                             );
                             $_pro_merchants = array(
@@ -503,6 +520,13 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                         <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch" value="<?php echo $per_batch; ?>" min="1" <?php echo !$is_premium ?  "max='50'" : ''?>>
                                         <button type="submit" class="save-batch"><span>save</span> <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                     </form>
+                                </div>
+                            </div>
+
+                            <div class="single-merchant">
+                                <span class="title"><?php echo __('Clear batch', 'rex-product-feed'); ?></span>
+                                <div class="switch">
+                                    <button class="wpfm-clear-batch" id="wpfm-clear-batch"><span>Clear</span> <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                 </div>
                             </div>
 
@@ -737,7 +761,7 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                         </div>
                     <?php }
                     ?>
-                    <div id="tab7" class="tab-content active block-wrapper">
+                    <div id="tab7" class="tab-content block-wrapper">
                         <?php
                             $logs = WC_Admin_Status::scan_log_files();
                             $wpfm_logs = array();

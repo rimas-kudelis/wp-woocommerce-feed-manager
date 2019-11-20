@@ -1,79 +1,79 @@
 <?php
 /**
- * CMB2 Helper Functions
+ * WPFM_CMB2 Helper Functions
  *
  * @category  WordPress_Plugin
- * @package   CMB2
- * @author    CMB2 team
+ * @package   WPFM_CMB2
+ * @author    WPFM_CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  */
 
 /**
- * Helper function to provide directory path to CMB2
+ * Helper function to provide directory path to WPFM_CMB2
  *
  * @since  2.0.0
  * @param  string $path Path to append
  * @return string        Directory with optional path appended
  */
-function cmb2_dir( $path = '' ) {
-	return CMB2_DIR . $path;
+function wpfm_cmb2_dir( $path = '' ) {
+	return WPFM_CMB2_DIR . $path;
 }
 
 /**
- * Autoloads files with CMB2 classes when needed
+ * Autoloads files with WPFM_CMB2 classes when needed
  *
  * @since  1.0.0
  * @param  string $class_name Name of the class being requested
  */
-function cmb2_autoload_classes( $class_name ) {
-	if ( 0 !== strpos( $class_name, 'CMB2' ) ) {
+function wpfm_cmb2_autoload_classes( $class_name ) {
+	if ( 0 !== strpos( $class_name, 'WPFM_CMB2' ) ) {
 		return;
 	}
 
 	$path = 'includes';
 
-	if ( 'CMB2_Type' === $class_name || 0 === strpos( $class_name, 'CMB2_Type_' ) ) {
+	if ( 'WPFM_CMB2_Type' === $class_name || 0 === strpos( $class_name, 'WPFM_CMB2_Type_' ) ) {
 		$path .= '/types';
 	}
 
-	if ( 'CMB2_REST' === $class_name || 0 === strpos( $class_name, 'CMB2_REST_' ) ) {
+	if ( 'WPFM_CMB2_REST' === $class_name || 0 === strpos( $class_name, 'WPFM_CMB2_REST_' ) ) {
 		$path .= '/rest-api';
 	}
 
-	include_once( cmb2_dir( "$path/{$class_name}.php" ) );
+	include_once( wpfm_cmb2_dir( "$path/{$class_name}.php" ) );
 }
 
 /**
- * Get instance of the CMB2_Utils class
+ * Get instance of the WPFM_CMB2_Utils class
  *
  * @since  2.0.0
- * @return CMB2_Utils object CMB2 utilities class
+ * @return WPFM_CMB2_Utils object WPFM_CMB2 utilities class
  */
-function cmb2_utils() {
-	static $cmb2_utils;
-	$cmb2_utils = $cmb2_utils ? $cmb2_utils : new CMB2_Utils();
-	return $cmb2_utils;
+function wpfm_cmb2_utils() {
+	static $wpfm_cmb2_utils;
+	$wpfm_cmb2_utils = $wpfm_cmb2_utils ? $wpfm_cmb2_utils : new WPFM_CMB2_Utils();
+	return $wpfm_cmb2_utils;
 }
 
 /**
- * Get instance of the CMB2_Ajax class
+ * Get instance of the WPFM_CMB2_Ajax class
  *
  * @since  2.0.0
- * @return CMB2_Ajax object CMB2 ajax class
+ * @return WPFM_CMB2_Ajax object WPFM_CMB2 ajax class
  */
-function cmb2_ajax() {
-	return CMB2_Ajax::get_instance();
+function wpfm_cmb2_ajax() {
+	return WPFM_CMB2_Ajax::get_instance();
 }
 
 /**
- * Get instance of the CMB2_Option class for the passed metabox ID
+ * Get instance of the WPFM_CMB2_Option class for the passed metabox ID
  *
  * @since  2.0.0
- * @return CMB2_Option object Options class for setting/getting options for metabox
+ * @return WPFM_CMB2_Option object Options class for setting/getting options for metabox
  */
-function cmb2_options( $key ) {
-	return CMB2_Options::get( $key );
+function wpfm_cmb2_options( $key ) {
+	return WPFM_CMB2_Options::get( $key );
 }
 
 /**
@@ -92,8 +92,8 @@ function cmb2_options( $key ) {
  *
  * @return string        oEmbed string
  */
-function cmb2_get_oembed( $args = array() ) {
-	$oembed = cmb2_ajax()->get_oembed_no_edit( $args );
+function wpfm_cmb2_get_oembed( $args = array() ) {
+	$oembed = wpfm_cmb2_ajax()->get_oembed_no_edit( $args );
 
 	// Send back our embed
 	if ( $oembed['embed'] && $oembed['embed'] != $oembed['fallback'] ) {
@@ -108,7 +108,7 @@ function cmb2_get_oembed( $args = array() ) {
 	);
 
 	if ( isset( $args['wp_error'] ) && $args['wp_error'] ) {
-		return new WP_Error( 'cmb2_get_oembed_result', $error, compact( 'oembed', 'args' ) );
+		return new WP_Error( 'wpfm_cmb2_get_oembed_result', $error, compact( 'oembed', 'args' ) );
 	}
 
 	// Otherwise, send back error info that no oEmbeds were found
@@ -116,18 +116,18 @@ function cmb2_get_oembed( $args = array() ) {
 }
 
 /**
- * Outputs the return of cmb2_get_oembed.
+ * Outputs the return of wpfm_cmb2_get_oembed.
  *
  * @since  2.2.2
- * @see cmb2_get_oembed
+ * @see wpfm_cmb2_get_oembed
  */
-function cmb2_do_oembed( $args = array() ) {
-	echo cmb2_get_oembed( $args );
+function wpfm_cmb2_do_oembed( $args = array() ) {
+	echo wpfm_cmb2_get_oembed( $args );
 }
-add_action( 'cmb2_do_oembed', 'cmb2_do_oembed' );
+add_action( 'wpfm_cmb2_do_oembed', 'wpfm_cmb2_do_oembed' );
 
 /**
- * A helper function to get an option from a CMB2 options array
+ * A helper function to get an option from a WPFM_CMB2 options array
  *
  * @since  1.0.1
  * @param  string $option_key Option key
@@ -135,12 +135,12 @@ add_action( 'cmb2_do_oembed', 'cmb2_do_oembed' );
  * @param  mixed  $default    Optional default fallback value
  * @return array               Options array or specific field
  */
-function cmb2_get_option( $option_key, $field_id = '', $default = false ) {
-	return cmb2_options( $option_key )->get( $field_id, $default );
+function wpfm_cmb2_get_option( $option_key, $field_id = '', $default = false ) {
+	return wpfm_cmb2_options( $option_key )->get( $field_id, $default );
 }
 
 /**
- * A helper function to update an option in a CMB2 options array
+ * A helper function to update an option in a WPFM_CMB2 options array
  *
  * @since  2.0.0
  * @param  string  $option_key Option key
@@ -149,16 +149,16 @@ function cmb2_get_option( $option_key, $field_id = '', $default = false ) {
  * @param  boolean $single     Whether data should not be an array
  * @return boolean             Success/Failure
  */
-function cmb2_update_option( $option_key, $field_id, $value, $single = true ) {
-	if ( cmb2_options( $option_key )->update( $field_id, $value, false, $single ) ) {
-		return cmb2_options( $option_key )->set();
+function wpfm_cmb2_update_option( $option_key, $field_id, $value, $single = true ) {
+	if ( wpfm_cmb2_options( $option_key )->update( $field_id, $value, false, $single ) ) {
+		return wpfm_cmb2_options( $option_key )->set();
 	}
 
 	return false;
 }
 
 /**
- * Get a CMB2 field object.
+ * Get a WPFM_CMB2 field object.
  *
  * @since  1.1.0
  * @param  array  $meta_box    Metabox ID or Metabox config array
@@ -166,12 +166,12 @@ function cmb2_update_option( $option_key, $field_id, $value, $single = true ) {
  * @param  int    $object_id   Object ID
  * @param  string $object_type Type of object being saved. (e.g., post, user, comment, or options-page).
  *                             Defaults to metabox object type.
- * @return CMB2_Field|null     CMB2_Field object unless metabox config cannot be found
+ * @return WPFM_CMB2_Field|null     WPFM_CMB2_Field object unless metabox config cannot be found
  */
-function cmb2_get_field( $meta_box, $field_id, $object_id = 0, $object_type = '' ) {
+function wpfm_cmb2_get_field( $meta_box, $field_id, $object_id = 0, $object_type = '' ) {
 
 	$object_id = $object_id ? $object_id : get_the_ID();
-	$cmb = $meta_box instanceof CMB2 ? $meta_box : cmb2_get_metabox( $meta_box, $object_id );
+	$cmb = $meta_box instanceof WPFM_CMB2 ? $meta_box : cmb2_get_metabox( $meta_box, $object_id );
 
 	if ( ! $cmb ) {
 		return;
@@ -193,8 +193,8 @@ function cmb2_get_field( $meta_box, $field_id, $object_id = 0, $object_type = ''
  *                             Defaults to metabox object type.
  * @return mixed               Maybe escaped value
  */
-function cmb2_get_field_value( $meta_box, $field_id, $object_id = 0, $object_type = '' ) {
-	$field = cmb2_get_field( $meta_box, $field_id, $object_id, $object_type );
+function wpfm_cmb2_get_field_value( $meta_box, $field_id, $object_id = 0, $object_type = '' ) {
+	$field = wpfm_cmb2_get_field( $meta_box, $field_id, $object_id, $object_type );
 	return $field->escaped_value();
 }
 
@@ -203,36 +203,39 @@ function cmb2_get_field_value( $meta_box, $field_id, $object_id = 0, $object_typ
  *
  * @since  2.0.2
  * @param  array $meta_box_config Metabox Config array
- * @return CMB2 object            Instantiated CMB2 object
+ * @return WPFM_CMB2 object            Instantiated WPFM_CMB2 object
  */
-function new_cmb2_box( array $meta_box_config ) {
-	return cmb2_get_metabox( $meta_box_config );
+function wpfm_new_cmb2_box( array $meta_box_config ) {
+	return wpfm_cmb2_get_metabox( $meta_box_config );
 }
 
 /**
- * Retrieve a CMB2 instance by the metabox ID
+ * Retrieve a WPFM_CMB2 instance by the metabox ID
  *
  * @since  2.0.0
  * @param  mixed  $meta_box    Metabox ID or Metabox config array
  * @param  int    $object_id   Object ID
  * @param  string $object_type Type of object being saved. (e.g., post, user, comment, or options-page).
  *                             Defaults to metabox object type.
- * @return CMB2 object
+ * @return WPFM_CMB2 object
  */
-function cmb2_get_metabox( $meta_box, $object_id = 0, $object_type = '' ) {
+function wpfm_cmb2_get_metabox( $meta_box, $object_id = 0, $object_type = '' ) {
 
-	if ( $meta_box instanceof CMB2 ) {
+
+	if ( $meta_box instanceof WPFM_CMB2 ) {
 		return $meta_box;
 	}
 
 	if ( is_string( $meta_box ) ) {
-		$cmb = CMB2_Boxes::get( $meta_box );
+		$cmb = WPFM_CMB2_Boxes::get( $meta_box );
 	} else {
 		// See if we already have an instance of this metabox
-		$cmb = CMB2_Boxes::get( $meta_box['id'] );
+		$cmb = WPFM_CMB2_Boxes::get( $meta_box['id'] );
 		// If not, we'll initate a new metabox
-		$cmb = $cmb ? $cmb : new CMB2( $meta_box, $object_id );
+		$cmb = $cmb ? $cmb : new WPFM_CMB2( $meta_box, $object_id );
 	}
+
+
 
 	if ( $cmb && $object_id ) {
 		$cmb->object_id( $object_id );
@@ -251,10 +254,10 @@ function cmb2_get_metabox( $meta_box, $object_id = 0, $object_type = '' ) {
  * @since  2.0.3
  * @param  mixed $meta_box         Metabox ID or Metabox config array
  * @param  array $data_to_sanitize Array of field_id => value data for sanitizing (likely $_POST data).
- * @return mixed                   Array of sanitized values or false if no CMB2 object found
+ * @return mixed                   Array of sanitized values or false if no WPFM_CMB2 object found
  */
-function cmb2_get_metabox_sanitized_values( $meta_box, array $data_to_sanitize ) {
-	$cmb = cmb2_get_metabox( $meta_box );
+function wpfm_cmb2_get_metabox_sanitized_values( $meta_box, array $data_to_sanitize ) {
+	$cmb = wpfm_cmb2_get_metabox( $meta_box );
 	return $cmb ? $cmb->get_sanitized_values( $data_to_sanitize ) : false;
 }
 
@@ -265,16 +268,16 @@ function cmb2_get_metabox_sanitized_values( $meta_box, array $data_to_sanitize )
  * @param  mixed $meta_box  Metabox config array or Metabox ID
  * @param  int   $object_id Object ID
  * @param  array $args      Optional arguments array
- * @return string             CMB2 html form markup
+ * @return string             WPFM_CMB2 html form markup
  */
-function cmb2_get_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
+function wpfm_cmb2_get_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
 
 	$object_id = $object_id ? $object_id : get_the_ID();
-	$cmb       = cmb2_get_metabox( $meta_box, $object_id );
+	$cmb       = wpfm_cmb2_get_metabox( $meta_box, $object_id );
 
 	ob_start();
 	// Get cmb form
-	cmb2_print_metabox_form( $cmb, $object_id, $args );
+    wpfm_cmb2_print_metabox_form( $cmb, $object_id, $args );
 	$form = ob_get_clean();
 
 	return apply_filters( 'cmb2_get_metabox_form', $form, $object_id, $cmb );
@@ -288,7 +291,7 @@ function cmb2_get_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
  * @param  int   $object_id Object ID
  * @param  array $args      Optional arguments array
  */
-function cmb2_print_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
+function wpfm_cmb2_print_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
 
 	$object_id = $object_id ? $object_id : get_the_ID();
 	$cmb = cmb2_get_metabox( $meta_box, $object_id );
@@ -324,11 +327,11 @@ function cmb2_print_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
 
 	// Enqueue JS/CSS
 	if ( $args['cmb_styles'] ) {
-		CMB2_hookup::enqueue_cmb_css();
+		WPFM_CMB2_hookup::enqueue_cmb_css();
 	}
 
 	if ( $args['enqueue_js'] ) {
-		CMB2_hookup::enqueue_cmb_js();
+		WPFM_CMB2_hookup::enqueue_cmb_js();
 	}
 
 	$form_format = apply_filters( 'cmb2_get_metabox_form_format', $args['form_format'], $object_id, $cmb );
@@ -353,15 +356,15 @@ function cmb2_print_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
  * @param  int   $object_id Object ID
  * @param  array $args      Optional arguments array
  */
-function cmb2_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
+function wpfm_cmb2_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
 	if ( ! isset( $args['echo'] ) || $args['echo'] ) {
-		cmb2_print_metabox_form( $meta_box, $object_id, $args );
+        wpfm_cmb2_print_metabox_form( $meta_box, $object_id, $args );
 	} else {
-		return cmb2_get_metabox_form( $meta_box, $object_id, $args );
+		return wpfm_cmb2_get_metabox_form( $meta_box, $object_id, $args );
 	}
 }
 
-if ( ! function_exists( 'date_create_from_format' ) ) {
+if ( ! function_exists( 'wpfm_date_create_from_format' ) ) {
 
 	/**
 	 * Reimplementation of DateTime::createFromFormat for PHP < 5.3. :(
@@ -372,7 +375,7 @@ if ( ! function_exists( 'date_create_from_format' ) ) {
 	 *
 	 * @return DateTime
 	 */
-	function date_create_from_format( $date_format, $date_value ) {
+	function wpfm_date_create_from_format( $date_format, $date_value ) {
 
 		$schedule_format = str_replace(
 			array( 'M', 'Y', 'm', 'd', 'H', 'i', 'a' ),
@@ -405,7 +408,7 @@ if ( ! function_exists( 'date_create_from_format' ) ) {
 	}
 }// End if().
 
-if ( ! function_exists( 'date_timestamp_get' ) ) {
+if ( ! function_exists( 'wpfm_date_timestamp_get' ) ) {
 
 	/**
 	 * Returns the Unix timestamp representing the date.
@@ -415,7 +418,7 @@ if ( ! function_exists( 'date_timestamp_get' ) ) {
 	 *
 	 * @return int
 	 */
-	function date_timestamp_get( DateTime $date ) {
+	function wpfm_date_timestamp_get( DateTime $date ) {
 		return $date->format( 'U' );
 	}
 }// End if().

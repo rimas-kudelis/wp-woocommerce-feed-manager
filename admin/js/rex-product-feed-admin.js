@@ -531,6 +531,26 @@
             });
     }
     $(document).on("submit", "#wpfm-per-batch", update_per_batch);
+
+
+    /**
+     *
+     * @param e
+     */
+    function wpfm_clear_batch(e) {
+        e.preventDefault();
+        var payload = {};
+        $(this).find("i").show();
+        wpAjaxHelperRequest( 'rex-product-clear-batch', payload )
+            .success( function( response ) {
+                $("#wpfm-clear-batch").find("i").hide();
+            })
+            .error( function( response ) {
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on("click", "#wpfm-clear-batch", wpfm_clear_batch);
     
     
     //----------setting tab-------

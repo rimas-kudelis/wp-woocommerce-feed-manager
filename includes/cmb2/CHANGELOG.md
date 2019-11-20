@@ -108,7 +108,7 @@ All notable changes to this project will be documented in this file.
 
 ### Enhancements
 
-* Update to instead initate CMB2 hookup via `"cmb2_init_hookup_{$cmb_id}"` hook. Allows plugins to unhook/rehook/etc.
+* Update to instead initate CMB2 hookup via `"wpfm_cmb2_init_hookup_{$cmb_id}"` hook. Allows plugins to unhook/rehook/etc.
 
 ### Bug Fixes
 
@@ -232,7 +232,7 @@ All notable changes to this project will be documented in this file.
 
 * Use quotes for `label[for=""]` selector. Fixed `Syntax error, unrecognized expression`. Props [@anhskohbo](https://github.com/anhskohbo) ([#789](https://github.com/CMB2/CMB2/pull/789)).
 * Fix `ReferenceError: tinyMCE is not defined` javascript errors (happening when trying to remove a repeatable field/group). Fixes [#790](https://github.com/CMB2/CMB2/issues/790), and [#730](https://github.com/CMB2/CMB2/issues/730).
-* Fix REST API `'show_in_rest'` examples in `example-functions.php`. Any REST API boxes/fields must use the `'cmb2_init'` hook (as opposed to the `'cmb2_admin_init'` hook).
+* Fix REST API `'show_in_rest'` examples in `example-functions.php`. Any REST API boxes/fields must use the `'wpfm_cmb2_init'` hook (as opposed to the `'wpfm_cmb2_admin_init'` hook).
 
 ## [2.2.3 - 2016-10-25](https://github.com/CMB2/CMB2/releases/tag/v2.2.3)
 
@@ -350,7 +350,7 @@ All notable changes to this project will be documented in this file.
 
 * Make all CMB2::save_fields arguments optional to fall-back to `$_POST` data. Props [JPry](https://github.com/JPry).
 * New filter, `cmb2_non_repeatable_fields` for adding additional fields to the blacklist of repeatable field-types. Props [JPry](https://github.com/JPry) ([#430](https://github.com/CMB2/CMB2/pull/430)).
-* New recommended hook for adding metaboxes, `cmb2_admin_init`. Most metabox registration only needs to happen if in wp-admin, so there is no reason to register them when loading the front-end (and increase the memory usage). `cmb2_init` still exists to register metaboxes that will be used on the front-end or used on both the front and back-end. Instances of `cmb2_init` in example-functions.php have been switched to `cmb2_admin_init`.
+* New recommended hook for adding metaboxes, `wpfm_cmb2_admin_init`. Most metabox registration only needs to happen if in wp-admin, so there is no reason to register them when loading the front-end (and increase the memory usage). `wpfm_cmb2_init` still exists to register metaboxes that will be used on the front-end or used on both the front and back-end. Instances of `wpfm_cmb2_init` in example-functions.php have been switched to `wpfm_cmb2_admin_init`.
 * Add `'render_row_cb'` field parameter for overriding the field render method.
 * Add `'label_cb'` field parameter for overriding the field label render method.
 * Allow `CMB2_Types::checkbox()` method to be more flexible for extending by taking an args array and an `$is_checked` second argument.
@@ -469,7 +469,7 @@ All notable changes to this project will be documented in this file.
 
 ### Enhancements
 
-* New constant, `CMB2_DIR`, which stores the file-path to the CMB2 directory.
+* New constant, `WPFM_CMB2_DIR`, which stores the file-path to the CMB2 directory.
 * `text_date`, `text_time`, `text_date_timestamp`, `text_datetime_timestamp`, and ` text_datetime_timestamp_timezone` field types now take an arguments array so they can be extended by custom field types.
 * Removed auto-scroll when adding groups. To re-add the feature, use the [snippet/plugin here](https://github.com/CMB2/CMB2-Snippet-Library/blob/master/javascript/cmb2-auto-scroll-to-new-group.php). ([#205](https://github.com/CMB2/CMB2/issues/205))
 * Updated Timepicker utilizing the [@trentrichardson](https://github.com/trentrichardson) jQuery Timepicker add-on (https://github.com/trentrichardson/jQuery-Timepicker-Addon), and updated Datepicker styles. Props [JonMasterson](https://github.com/JonMasterson). ([#204](https://github.com/CMB2/CMB2/issues/204), [#206](https://github.com/CMB2/CMB2/issues/206), [#45](https://github.com/CMB2/CMB2/issues/45)).
@@ -491,10 +491,10 @@ All notable changes to this project will be documented in this file.
 * Use the more appropriate `add_meta_boxes` hook for hooking in metaboxes to post-edit screen. Thanks [@inspiraaz](https://github.com/inspiraaz) for reporting. ([#161](https://github.com/CMB2/CMB2/issues/161))
 * Add a `row_classes` field param which allows you to add additional classes to the cmb-row wrap. This parameter can take a string, or array, or can take a callback that returns a string or array. The callback will receive `$field_args` as the first argument, and the CMB2_Field `$field` object as the second argument. Reported/requested in [#68](https://github.com/CMB2/CMB2/issues/68).
 * New constant, `CMB2_LOADED`, which you can use to check if CMB2 is loaded for your plugins/themes with CMB2 dependency.
-* New hooks, [`cmb2_init_before_hookup` and `cmb2_after_init`](https://github.com/CMB2/CMB2-Snippet-Library/blob/master/filters-and-actions).
-* New API for adding metaboxes and fields, demonstrated in [`example-functions.php`](https://github.com/CMB2/CMB2/blob/master/example-functions.php). In keeping with backwards-compatibility, the `cmb2_meta_boxes` filter method will still work, but is not recommended. New API includes `new_cmb2_box` helper function to generate a new metabox, and returns a `$cmb` object to add new fields (via the `CMB2::add_field()` and `CMB2::add_group_field()` methods).
+* New hooks, [`wpfm_cmb2_init_before_hookup` and `wpfm_cmb2_after_init`](https://github.com/CMB2/CMB2-Snippet-Library/blob/master/filters-and-actions).
+* New API for adding metaboxes and fields, demonstrated in [`example-functions.php`](https://github.com/CMB2/CMB2/blob/master/example-functions.php). In keeping with backwards-compatibility, the `wpfm_cmb2_meta_boxes` filter method will still work, but is not recommended. New API includes `new_cmb2_box` helper function to generate a new metabox, and returns a `$cmb` object to add new fields (via the `CMB2::add_field()` and `CMB2::add_group_field()` methods).
 * New CMB2 method, [`CMB2::remove_field()`](https://github.com/CMB2/CMB2-Snippet-Library/blob/master/filters-and-actions/cmb2_init_%24cmb_id-remove-field.php).
-* New CMB2_Boxes method, [`CMB2_Boxes::remove()`](https://github.com/CMB2/CMB2-Snippet-Library/blob/master/filters-and-actions/cmb2_init_before_hookup-remove-cmb2-metabox.php).
+* New CMB2_Boxes method, [`CMB2_Boxes::remove()`](https://github.com/CMB2/CMB2-Snippet-Library/blob/master/filters-and-actions/wpfm_cmb2_init_before_hookup-remove-cmb2-metabox.php).
 * When clicking on a file/image in the `file`, or `file_list` type, the media modal will open with that image selected. Props [johnsonpaul1014](https://github.com/johnsonpaul1014), ([#120](https://github.com/CMB2/CMB2/pull/120)).
 
 
@@ -531,7 +531,7 @@ All notable changes to this project will be documented in this file.
 * Added helper function to update an option. Props [mAAdhaTTah](https://github.com/mAAdhaTTah), ([#110](https://github.com/CMB2/CMB2/pull/110)).
 * More JS hooks during repeat group shifting. Props [AlchemyUnited](https://github.com/AlchemyUnited), ([#125](https://github.com/CMB2/CMB2/pull/125)). 
 * [New metabox config option for defaulting to closed](https://github.com/CMB2/CMB2/wiki/Tips-&-Tricks#setting-a-metabox-to-closed-by-default).
-* New hooks, [`cmb2_init`](https://github.com/CMB2/CMB2/wiki/Tips-&-Tricks#using-cmb2-helper-functions-and-cmb2_init) and `cmb2_init_{$cmb_id}`.
+* New hooks, [`wpfm_cmb2_init`](https://github.com/CMB2/CMB2/wiki/Tips-&-Tricks#using-cmb2-helper-functions-and-wpfm_cmb2_init) and `cmb2_init_{$cmb_id}`.
 
 ### Bug Fixes
 

@@ -170,17 +170,13 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
      * @return array
      */
     protected function get_product_data( $product_id = false ){
+
         if ( function_exists('icl_object_id') ) {
-            if($this->wpml_language) {
-                global $sitepress;
-                $original = apply_filters( 'wpml_element_trid', NULL, $product_id, 'post_product' );
-                if($original == $product_id) {
-                    $sitepress->switch_lang($sitepress->get_default_language());
-                    $data = new Rex_Yandex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
-                }else {
-                    $sitepress->switch_lang($this->wpml_language);
-                    $data = new Rex_Yandex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
-                }
+            global $sitepress;
+            $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
+            if($wpml) {
+                $sitepress->switch_lang($wpml);
+                $data = new Rex_Yandex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
             }
         }else{
             $data = new Rex_Yandex_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);

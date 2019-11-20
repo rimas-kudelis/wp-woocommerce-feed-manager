@@ -39,12 +39,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-if ( ! class_exists( 'CMB2_Conditionals' ) ) {
+if ( ! class_exists( 'WPFM_CMB2_Conditionals' ) ) {
 
 	/**
 	 * CMB2_Conditionals Plugin.
 	 */
-	class CMB2_Conditionals {
+	class WPFM_CMB2_Conditionals {
 
 		/**
 		 * Priority on which our actions are hooked in.
@@ -84,7 +84,7 @@ if ( ! class_exists( 'CMB2_Conditionals' ) ) {
 		 * Constructor - Set up the actions for the plugin.
 		 */
 		public function __construct() {
-			if ( ! defined( 'CMB2_LOADED' ) || false === CMB2_LOADED ) {
+			if ( ! defined( 'WPMF_CMB2_LOADED' ) || false === WPMF_CMB2_LOADED ) {
 				return;
 			}
 
@@ -139,7 +139,7 @@ if ( ! class_exists( 'CMB2_Conditionals' ) ) {
 		 * Hook in the filtering of the data being saved.
 		 */
 		public function admin_init() {
-			$cmb2_boxes = CMB2_Boxes::get_all();
+			$cmb2_boxes = WPFM_CMB2_Boxes::get_all();
 
 			foreach ( $cmb2_boxes as $cmb_id => $cmb2_box ) {
 				add_action(
@@ -161,7 +161,7 @@ if ( ! class_exists( 'CMB2_Conditionals' ) ) {
 		 *
 		 * The potentially adjusted array is returned via reference $cmb2.
 		 */
-		public function filter_data_to_save( CMB2 $cmb2, $object_id ) {
+		public function filter_data_to_save( WPFM_CMB2 $cmb2, $object_id ) {
 			foreach ( $cmb2->prop( 'fields' ) as $field_args ) {
 				if ( ! ( 'group' === $field_args['type'] || ( array_key_exists( 'attributes', $field_args ) && array_key_exists( 'data-conditional-id', $field_args['attributes'] ) ) ) ) {
 					continue;
@@ -253,15 +253,15 @@ if ( ! class_exists( 'CMB2_Conditionals' ) ) {
 	 * check can be removed once the min version for this plugin has been upped to 4.4.}}
 	 */
 	if ( ( function_exists( 'wp_installing' ) && wp_installing() === false ) || ( ! function_exists( 'wp_installing' ) && ( ! defined( 'WP_INSTALLING' ) || WP_INSTALLING === false ) ) ) {
-		add_action( 'plugins_loaded', 'cmb2_conditionals_init' );
+		add_action( 'plugins_loaded', 'wpfm_cmb2_conditionals_init' );
 	}
 
-	if ( ! function_exists( 'cmb2_conditionals_init' ) ) {
+	if ( ! function_exists( 'wpfm_cmb2_conditionals_init' ) ) {
 		/**
 		 * Initialize the class.
 		 */
-		function cmb2_conditionals_init() {
-			$cmb2_conditionals = new CMB2_Conditionals();
+		function wpfm_cmb2_conditionals_init() {
+			$cmb2_conditionals = new WPFM_CMB2_Conditionals();
 		}
 	}
 } /* End of class-exists wrapper. */

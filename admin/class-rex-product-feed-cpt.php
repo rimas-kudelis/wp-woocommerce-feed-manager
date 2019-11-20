@@ -94,6 +94,27 @@ class Rex_Product_CPT {
                     }
                 ),
 
+                'total_products' => array(
+                    'title'         => 'Total products',
+                    'meta_key'      => 'rex_feed_total_products',
+                    'function'    => function (){
+                        $total_products = get_post_meta( get_the_id(), 'rex_feed_total_products', true ) ? get_post_meta( get_the_id(), 'rex_feed_total_products', true ) : array(
+                            'total' => 0,
+                            'simple' => 0,
+                            'variable' => 0,
+                            'group' => 0,
+                        );
+
+
+                        echo '<ul style="margin: 0;">';
+                        echo '<li><b>' . __('Total products : ', 'rex-product-feed'). $total_products['total'] . '</b></li>';
+                        echo '<li><b>' . __('Simple products : ', 'rex-product-feed'). $total_products['simple'] . '</b></li>';
+                        echo '<li><b>' . __('Variable products : ', 'rex-product-feed'). $total_products['variable'] . '</b></li>';
+                        echo '<li><b>' . __('Group products : ', 'rex-product-feed'). $total_products['group'] . '</b></li>';
+                        echo '</ul><b>';
+                    }
+                ),
+
                 'date'
             ),
         ));

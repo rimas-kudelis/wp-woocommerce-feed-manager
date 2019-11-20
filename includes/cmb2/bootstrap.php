@@ -15,7 +15,7 @@
  * @since  2.2.0
  * @return void
  */
-function cmb2_bootstrap() {
+function wpfm_cmb2_bootstrap() {
 
 	if ( is_admin() ) {
 		/**
@@ -23,7 +23,7 @@ function cmb2_bootstrap() {
 		 *
 		 * In most cases, this should be used to add metaboxes. See example-functions.php
 		 */
-		do_action( 'cmb2_admin_init' );
+		do_action( 'wpfm_cmb2_admin_init' );
 	}
 
 	/**
@@ -31,23 +31,23 @@ function cmb2_bootstrap() {
 	 *
 	 * Can be used to add metaboxes if needed on the front-end or WP-API (or the front and backend).
 	 */
-	do_action( 'cmb2_init' );
+	do_action( 'wpfm_cmb2_init' );
 
 	/**
 	 * For back-compat. Does the dirty-work of instantiating all the
-	 * CMB2 instances for the cmb2_meta_boxes filter
+	 * CMB2 instances for the wpfm_cmb2_meta_boxes filter
 	 *
 	 * @since  2.0.2
 	 */
-	$cmb_config_arrays = apply_filters( 'cmb2_meta_boxes', array() );
+	$cmb_config_arrays = apply_filters( 'wpfm_cmb2_meta_boxes', array() );
 	foreach ( (array) $cmb_config_arrays as $cmb_config ) {
-		new CMB2( $cmb_config );
+		new WPFM_CMB2( $cmb_config );
 	}
 
 	/**
 	 * Fires after all CMB2 instances are created
 	 */
-	do_action( 'cmb2_init_before_hookup' );
+	do_action( 'wpfm_cmb2_init_before_hookup' );
 
 	/**
 	 * Get all created metaboxes, and instantiate CMB2_hookup
@@ -55,7 +55,7 @@ function cmb2_bootstrap() {
 	 *
 	 * @since  2.0.2
 	 */
-	foreach ( CMB2_Boxes::get_all() as $cmb ) {
+	foreach ( WPFM_CMB2_Boxes::get_all() as $cmb ) {
 
 		/**
 		 * Initiates the box "hookup" into WordPress.
@@ -72,13 +72,13 @@ function cmb2_bootstrap() {
 		 *
 		 * @param array $cmb The CMB2 object to hookup.
 		 */
-		do_action( "cmb2_init_hookup_{$cmb->cmb_id}", $cmb );
+		do_action( "wpfm_cmb2_init_hookup_{$cmb->cmb_id}", $cmb );
 	}
 
 	/**
 	 * Fires after CMB2 initiation process has been completed
 	 */
-	do_action( 'cmb2_after_init' );
+	do_action( 'wpfm_cmb2_after_init' );
 }
 
 /* End. That's it, folks! */

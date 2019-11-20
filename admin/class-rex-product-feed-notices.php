@@ -90,4 +90,25 @@ class Rex_Product_Feed_Notices {
         }
     }
 
+
+    /**
+     * Black friday notice
+     */
+    public static function wpfm_black_friday_notice() {
+        $wpfm_bf_notice = get_option('wpfm_bf_notice', array(
+            'show_notice' => 'yes',
+            'updated_at' => time(),
+        ));
+        $time = time();
+        if(is_string($wpfm_bf_notice)) $wpfm_bf_notice = json_decode($wpfm_bf_notice, true);
+        if($wpfm_bf_notice['show_notice'] === 'yes') {
+            require_once plugin_dir_path( __FILE__ ) . 'partials/wpmf-black-friday-notice.php';
+        } elseif ($wpfm_bf_notice['show_notice'] === 'no') {
+            $date_now = date("Y-m-d", $time);
+            if($date_now == '2019-11-29' || $date_now == '2019-11-28') {
+                require_once plugin_dir_path( __FILE__ ) . 'partials/wpmf-black-friday-notice.php';
+            }
+        }
+    }
+
 }

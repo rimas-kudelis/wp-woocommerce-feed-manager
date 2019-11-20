@@ -72,14 +72,19 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
     protected function task( $item ) {
         sleep(5);
 
-        $this->product_no = Rex_Product_Feed_Ajax::get_product_number(array());
+//        $this->product_no = Rex_Product_Feed_Ajax::get_product_number(array());
+        $this->product_no = apply_filters('wpfm_get_total_number_of_products',
+            array('products'  => 50)
+        );
         $per_batch = get_option('rex-wpfm-product-per-batch', 50);
+
         $this->total_batches = ceil($this->product_no['products']/(int) $per_batch);
         $this->offset = 0;
         $this->batch = 1;
         $this->do_task($item, $this->batch, $this->offset);
         Rex_Product_Feed_Controller::remove_id_from_feed_queue($item);
         Rex_Product_Feed_Controller::update_feed_status($item, 'completed');
+
         return false;
     }
 
@@ -96,27 +101,62 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
             $feed_config = get_post_meta($item_id, 'rex_feed_feed_config', true);
             $feed_filter = get_post_meta($item_id, 'rex_feed_feed_config_filter', true);
             $feed_products = get_post_meta($item_id, 'rex_feed_products', true);
-            $include_variations = get_post_meta($item_id, 'rex_feed_variations', true) === 'yes' ? true : false ;
-            $append_variations = get_post_meta($item_id, 'rex_feed_variation_product_name', true) === 'yes' ? true : false ;
-
+            $include_variations = get_post_meta($item_id, 'rex_feed_variations', true) === 'yes' ? true : false;
+            $append_variations = get_post_meta($item_id, 'rex_feed_variation_product_name', true) === 'yes' ? true : false;
+            $wpml = get_post_meta($item_id, 'rex_feed_wpml_language', true) ? get_post_meta($item_id, 'rex_feed_wpml_language', true) : '';
 
             if ( $feed_products !== 'all' && $feed_products !== 'filter') {
                 $terms = $feed_products === 'product_tag' ? 'tags' : 'cats';
-                if($terms == 'tags' ) {
-                    $tags = wp_get_post_terms($item_id, 'product_tag');
-                    if($tags) {
-                        foreach($tags as $tag) {
-                            $tags_array[] = $tag->slug;
+
+                if ( function_exists('icl_object_id') ) {
+                    if($terms == 'tags' ) {
+                        $tags = wp_get_post_terms($item_id, 'product_tag');
+                        if($tags) {
+                            foreach($tags as $tag) {
+                                global $wpdb;
+                                $translated_term = icl_object_id( $tag->term_id, 'product_tag', true, $wpml );
+                                $term_slug = $wpdb->get_row("SELECT * FROM $wpdb->terms WHERE term_id = $translated_term");
+                                if($term_slug) {
+                                    $tags_array[] = $term_slug->slug;
+                                }
+                            }
+                        }
+                    }elseif ($terms == 'cats'){
+                        $cats = wp_get_post_terms($item_id, 'product_cat');
+                        if($cats) {
+                            foreach($cats as $cat) {
+                                global $wpdb;
+                                $translated_term = icl_object_id( $cat->term_id, 'product_cat', true, $wpml );
+                                $term_slug = $wpdb->get_row("SELECT * FROM $wpdb->terms WHERE term_id = $translated_term");
+                                if($term_slug) {
+                                    $cats_array[] = $term_slug->slug;
+                                }
+
+                            }
                         }
                     }
-                }elseif ($terms == 'cats'){
-                    $cats = wp_get_post_terms($item_id, 'product_cat');
-                    if($cats) {
-                        foreach($cats as $cat) {
-                            $cats_array[] = $cat->slug;
+
+                }else {
+                    if($terms == 'tags' ) {
+                        $tags = wp_get_post_terms($item_id, 'product_tag');
+                        if($tags) {
+                            foreach($tags as $tag) {
+                                $tags_array[] = $tag->slug;
+                            }
+                        }
+                    }elseif ($terms == 'cats'){
+                        $cats = wp_get_post_terms($item_id, 'product_cat');
+                        if($cats) {
+                            foreach($cats as $cat) {
+                                $cats_array[] = $cat->slug;
+                            }
                         }
                     }
                 }
+
+
+
+
             }
 
             $feed_format = get_post_meta($item_id, 'rex_feed_feed_format', true);
@@ -139,8 +179,8 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                 'feed_filter'    => $feed_filter,
                 'include_variations' => $include_variations,
                 'append_variations' => $append_variations,
+                'wpml_language' => $wpml,
             );
-
 
 
             try {
@@ -150,9 +190,6 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
             }
             $this->batch++;
             $this->offset = (int)$this->offset + (int) $per_batch;
-
-
-
             $merchant->make_feed();
         }
 

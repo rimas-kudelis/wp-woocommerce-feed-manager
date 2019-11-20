@@ -25,7 +25,6 @@ class Rex_Product_Metabox {
         $this->feed_file();
         $this->google_merchant();
         if(!$is_premium) $this->upgrade_notice();
-//
     }
 
 
@@ -36,11 +35,12 @@ class Rex_Product_Metabox {
      */
     private function products(){
 
-        $box = new_cmb2_box( array(
+        $box = wpfm_new_cmb2_box( array(
             'id'            => $this->prefix . 'products',
             'title'         => esc_html__( 'Products', 'rex-product-feed' ),
             'object_types'  => array( 'product-feed' ), // Post type
         ) );
+
 
 
         $box->add_field( array(
@@ -301,7 +301,7 @@ class Rex_Product_Metabox {
 
 
 
-        $box = new_cmb2_box( array(
+        $box = wpfm_new_cmb2_box( array(
             'id'            => $this->prefix . 'conf',
             'title'         => esc_html__( 'Feed Configuration', 'rex-product-feed' ),
             'object_types'  => array( 'product-feed' ), // Post type
@@ -404,7 +404,7 @@ class Rex_Product_Metabox {
      **/
     private function feed_file(){
 
-        $box = new_cmb2_box( array(
+        $box = wpfm_new_cmb2_box( array(
             'id'            => $this->prefix . 'file_link',
             'title'         => esc_html__( 'Feed URL', 'rex-product-feed' ),
             'object_types'  => array( 'product-feed' ), // Post type
@@ -432,7 +432,7 @@ class Rex_Product_Metabox {
 
     private function upgrade_notice(){
 
-        $box = new_cmb2_box( array(
+        $box = wpfm_new_cmb2_box( array(
             'id'            => $this->prefix . 'upgrade_notice',
             'title'         => esc_html__( 'Why upgrade to Premium Version?', 'rex-product-feed' ),
             'object_types'  => array( 'product-feed' ), // Post type
@@ -495,7 +495,7 @@ class Rex_Product_Metabox {
      **/
     private function google_merchant(){
 
-        $box = new_cmb2_box( array(
+        $box = wpfm_new_cmb2_box( array(
             'id'            => $this->prefix . 'google_merchant',
             'title'         => esc_html__( 'Send to Google Merchant', 'rex-product-feed' ),
             'object_types'  => array( 'product-feed' ), // Post type

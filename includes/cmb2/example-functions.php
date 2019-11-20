@@ -102,9 +102,9 @@ function yourprefix_before_row_if_2( $field_args, $field ) {
 	}
 }
 
-add_action( 'cmb2_admin_init', 'yourprefix_register_demo_metabox' );
+add_action( 'wpfm_cmb2_admin_init', 'yourprefix_register_demo_metabox' );
 /**
- * Hook in and add a demo metabox. Can only happen on the 'cmb2_admin_init' or 'cmb2_init' hook.
+ * Hook in and add a demo metabox. Can only happen on the 'wpfm_cmb2_admin_init' or 'wpfm_cmb2_init' hook.
  */
 function yourprefix_register_demo_metabox() {
 	$prefix = 'yourprefix_demo_';
@@ -444,7 +444,7 @@ function yourprefix_register_demo_metabox() {
 
 }
 
-add_action( 'cmb2_admin_init', 'yourprefix_register_about_page_metabox' );
+add_action( 'wpfm_cmb2_admin_init', 'yourprefix_register_about_page_metabox' );
 /**
  * Hook in and add a metabox that only appears on the 'About' page
  */
@@ -475,7 +475,7 @@ function yourprefix_register_about_page_metabox() {
 
 }
 
-add_action( 'cmb2_admin_init', 'yourprefix_register_repeatable_group_field_metabox' );
+add_action( 'wpfm_cmb2_admin_init', 'yourprefix_register_repeatable_group_field_metabox' );
 /**
  * Hook in and add a metabox to demonstrate repeatable grouped fields
  */
@@ -539,7 +539,7 @@ function yourprefix_register_repeatable_group_field_metabox() {
 
 }
 
-add_action( 'cmb2_admin_init', 'yourprefix_register_user_profile_metabox' );
+add_action( 'wpfm_cmb2_admin_init', 'yourprefix_register_user_profile_metabox' );
 /**
  * Hook in and add a metabox to add fields to the user profile pages
  */
@@ -609,7 +609,7 @@ function yourprefix_register_user_profile_metabox() {
 
 }
 
-add_action( 'cmb2_admin_init', 'yourprefix_register_taxonomy_metabox' );
+add_action( 'wpfm_cmb2_admin_init', 'yourprefix_register_taxonomy_metabox' );
 /**
  * Hook in and add a metabox to add fields to taxonomy terms
  */
@@ -651,7 +651,7 @@ function yourprefix_register_taxonomy_metabox() {
 
 }
 
-add_action( 'cmb2_admin_init', 'yourprefix_register_theme_options_metabox' );
+add_action( 'wpfm_cmb2_admin_init', 'yourprefix_register_theme_options_metabox' );
 /**
  * Hook in and register a metabox to handle a theme options page and adds a menu item.
  */
@@ -753,9 +753,9 @@ function yourprefix_limit_rest_view_to_logged_in_users( $is_allowed, $cmb_contro
 	return $is_allowed;
 }
 
-add_action( 'cmb2_init', 'yourprefix_register_rest_api_box' );
+add_action( 'wpfm_cmb2_init', 'yourprefix_register_rest_api_box' );
 /**
- * Hook in and add a box to be available in the CMB2 REST API. Can only happen on the 'cmb2_init' hook.
+ * Hook in and add a box to be available in the CMB2 REST API. Can only happen on the 'wpfm_cmb2_init' hook.
  * More info: https://github.com/CMB2/CMB2/wiki/REST-API
  */
 function yourprefix_register_rest_api_box() {

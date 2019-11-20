@@ -176,10 +176,26 @@ class Rex_Product_Feed_Ajax {
 
 
         /*
+        * clear batch
+        */
+        wp_ajax_helper()->handle( 'rex-product-clear-batch' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'clear_batch' ) )
+            ->with_validation( $validations );
+
+
+        /*
         * Show log
         */
         wp_ajax_helper()->handle( 'rex-product-feed-show-log' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_wpfm_log' ) )
+            ->with_validation( $validations );
+
+
+        /*
+        * Show black friday notices
+        */
+        wp_ajax_helper()->handle( 'wpfm_bf_notice_dismiss' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_bf_notice_dismiss' ) )
             ->with_validation( $validations );
 
 
@@ -590,6 +606,8 @@ class Rex_Product_Feed_Ajax {
                 $service->datafeeds->fetchnow($merchant_id, $datafeedID);
             }
             catch(Exception $e) {
+                $log = wc_get_logger();
+                $log->info($e->getMessage(), array('source' => 'WPFM-google',));
                 error_log(print_r($e->getMessage(), 1));
                 echo 'Message: ' .$e->getMessage();
             }
@@ -640,7 +658,52 @@ class Rex_Product_Feed_Ajax {
     }
 
 
+    /**
+     * Clear current batch
+     * @param $payload
+     */
+    public static function clear_batch($payload) {
+        delete_option('rex_wpfm_feed_queue');
+        $args = array(
+            'posts_per_page' => -1,
+            'post_type'      => 'product-feed',
+            'post_status'    => 'publish',
+            'fields'         => 'ids',
+        );
 
+        $feeds = get_posts($args);
+        foreach($feeds as $feedID) {
+            update_post_meta($feedID, 'rex_feed_status', 'completed');
+        }
+
+        /**
+         * https://stackoverflow.com/questions/55952451/wordpress-stop-process-for-wp-background-processing
+         */
+        global $wpdb;
+        $sql = "SELECT `option_name` AS `name`, `option_value` AS `value`
+            FROM  $wpdb->options
+            WHERE `option_name` LIKE %s
+            ORDER BY `option_name`";
+
+        $wild = '%';
+        $find = 'wp_rex_product_feed_background_process_cron';
+        $like = $wild . $wpdb->esc_like( $find ) . $wild;
+        $results = $wpdb->get_results( $wpdb->prepare($sql,$like) );
+
+        foreach ( $results as $result ){
+            delete_option($result->name);
+        }
+
+        $WP_Background_Process = new Rex_Product_Feed_Background_Process();
+        $cancel_process = $WP_Background_Process->cancel_process();
+        wp_send_json_success('success');
+        wp_die();
+    }
+
+    /**
+     * Update batch size
+     * @param $payload
+     */
     public static function update_batch_size($payload) {
         update_option('rex-wpfm-product-per-batch', $payload);
         wp_send_json_success('success');
@@ -665,6 +728,33 @@ class Rex_Product_Feed_Ajax {
             'file_url' => $url . '/wc-logs/'. $key
         );
 
+    }
+
+
+    /**
+     * Black friday notice dismiss
+     * @param $payload
+     * @return array
+     */
+    public static function wpfm_bf_notice_dismiss($payload) {
+
+        $current_time = time();
+        $date_now = date("Y-m-d", $current_time);
+        if( $date_now == '2019-11-29' ) {
+            $wpfm_bf_notice = array(
+                'show_notice' => 'never',
+                'updated_at' => time(),
+            );
+        }else {
+            $wpfm_bf_notice = array(
+                'show_notice' => 'no',
+                'updated_at' => time(),
+            );
+        }
+        update_option('wpfm_bf_notice', json_encode($wpfm_bf_notice));
+        return array(
+            'success' => true,
+        );
     }
 
 }

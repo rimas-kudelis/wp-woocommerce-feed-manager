@@ -91,6 +91,24 @@
 
 
 
+    function wpfm_bf_notice_dismiss(event) {
+        event.preventDefault();
+        var $payload = {};
+        var link = $(this).attr('href');
+        var cls = $(this).attr('class');
+        $("#wpfm-black-friday-notice").hide();
+        wpAjaxHelperRequest( 'wpfm_bf_notice_dismiss', $payload )
+            .success( function( response ) {
+                console.log( 'Woohoo!' );
+                console.log( response );
+            })
+            .error( function( response ) {
+
+            });
+
+    }
+    $(document).on('click', '.wpfm-bf-notice-dismiss', wpfm_bf_notice_dismiss);
+
 })( jQuery );
 
 

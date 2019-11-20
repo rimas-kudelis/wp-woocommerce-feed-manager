@@ -299,6 +299,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->variations   = $config['include_variations'];
             $this->parent_product   = $config['include_variations'];
             $this->append_variation   = $config['append_variations'];
+            $this->wpml_language   = $config['wpml_language'];
         }
 
 
@@ -320,7 +321,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
             $log->info('Total Batches: '.$this->batch, array('source' => 'WPFM',));
             $log->info('Current Batch: '.$this->tbatch, array('source' => 'WPFM',));
-        }else {
+        }
+        else {
             if($this->batch == 1) {
                 $log->info(__( 'Start feed processing job.', 'rex-product-feed' ), array('source' => 'WPFM',));
                 $log->info('Feed ID: '.$config['info']['post_id'], array('source' => 'WPFM',));
@@ -355,9 +357,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         );
 
         if ( $args['products_scope'] === 'product_cat' || $args['products_scope'] === 'product_tag') {
-
             $terms = $args['products_scope'] === 'product_tag' ? 'tags' : 'cats';
-
             $this->products_args['tax_query'][] = array(
                 'taxonomy' => $args['products_scope'],
                 'field'    => 'slug',
@@ -391,8 +391,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         parse_str( $info, $feed_rules );
 
         if ( function_exists('icl_object_id') ) {
-            update_post_meta( $this->id, 'rex_feed_wpml_language', ICL_LANGUAGE_CODE );
-            $this->wpml_language = ICL_LANGUAGE_CODE;
+            $this->wpml_language = array_key_exists('rex_feed_wpml_language', $feed_rules) ?
+                $feed_rules['rex_feed_wpml_language'] :
+                get_post_meta($this->id, 'rex_feed_wpml_language', true);
+            update_post_meta( $this->id, 'rex_feed_wpml_language', $this->wpml_language );
+//            $this->wpml_language = ICL_LANGUAGE_CODE;
         }
         else {
             $this->wpml_language = false;
@@ -477,8 +480,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         if ( function_exists('icl_object_id') ) {
             global $sitepress;
-            $current_language = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
-            $sitepress->switch_lang($current_language);
+//            $current_language = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
+            $sitepress->switch_lang($this->wpml_language);
         }
 
         if($this->product_scope === 'filter') {
@@ -502,20 +505,46 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $result = new WP_Query($this->products_args);
         remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10 );
 
-//        var_dump($result->request);
-//        wp_die();
+
 
         $products = $result->posts;
         if($products) {
+            $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+                'total' => 0,
+                'simple' => 0,
+                'variable' => 0,
+                'group' => 0,
+            );
+
+            if($this->batch == 1) {
+                $total_products = array(
+                    'total' => 0,
+                    'simple' => 0,
+                    'variable' => 0,
+                    'group' => 0,
+                );
+            }
+
+
             foreach ($products as $product) {
                 if($this->is_variable_product($product)) {
-                    $this->variable_products[] = $product;
+                    if($this->variations) $this->variable_products[] = $product;
                 }elseif ($this->is_grouped_product($product)){
                     $this->grouped_products[] = $product;
                 }else {
                     $this->products[] = $product;
                 }
             }
+
+
+            $total_products = array(
+                'total' => $total_products['total'] + $result->found_posts,
+                'simple' => $total_products['simple'] + count($this->products),
+                'variable' => $total_products['variable'] + count($this->variable_products),
+                'group' => $total_products['group'] + count($this->grouped_products),
+            );
+
+            update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
         }
     }
 
