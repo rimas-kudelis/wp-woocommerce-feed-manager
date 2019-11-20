@@ -174,7 +174,7 @@ Currently, we support 42 major merchant shops:
 - Google Adwords
 - Google Dynamic Search Ads
 - Google Local Products
-- RSS
+- RSS Feed
 - Amazon Seller Ad
 - Marktplaats
 - Facebook Dynamic Product Ads
