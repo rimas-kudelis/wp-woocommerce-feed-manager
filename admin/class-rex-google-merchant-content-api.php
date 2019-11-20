@@ -49,7 +49,7 @@ class Rex_Google_Merchant_Settings_Api {
         return $access_token;
     }
 
-    public function is_authenticate() {
+   public function is_authenticate() {
         $access_token = get_option('rex_google_access_token');
 
         if ( empty( $access_token ) ) {
@@ -59,13 +59,19 @@ class Rex_Google_Merchant_Settings_Api {
             return false;
         }
         $client = self::get_client();
-        $client->setAccessToken(json_decode($access_token, true));
+
+        if(is_array($access_token)) {
+            $client->setAccessToken($access_token);
+        }else {
+            $client->setAccessToken(json_decode($access_token, true));
+        }
 
         if ( $client->isAccessTokenExpired() ) {
             return false;
         }
         return true;
     }
+
 
     public function get_access_token_html() {
         $client = self::get_client();
