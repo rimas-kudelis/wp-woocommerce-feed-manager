@@ -368,13 +368,10 @@ class Feed
      */
     public function asTxt($output = false)
     {
+
         if (ob_get_contents()) ob_end_clean();
-        $this->addItemsToFeedText();
-        $data = html_entity_decode($this->feed->asXml());
-        if ($output) {
-            die($data);
-        }
-        return $data;
+        $str = $this->addItemsToFeedText();
+        return $str;
     }
 
     /**

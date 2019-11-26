@@ -35,7 +35,17 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         $this->generate_simple_product_feed();
         $this->generate_grouped_product_feed();
         $this->generate_variable_product_feed();
-        $this->feed = $this->returnFinalProduct();
+//        $this->feed = $this->returnFinalProduct();
+
+        if ($this->feed_format == 'xml') {
+            $this->feed = GoogleShopping::asRss();
+        }elseif ($this->feed_format == 'text') {
+            $this->feed = GoogleShopping::asTxt();
+        } elseif ($this->feed_format == 'csv') {
+            $this->feed = GoogleShopping::asCsv();
+        }else {
+            $this->feed = GoogleShopping::asRss();
+        }
 
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
@@ -95,27 +105,16 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         // Loop through all variable products.
         foreach( $this->variable_products as $product ) {
 
-            $product  = wc_get_product( $product );
-            $children =  $product->get_children();
+            $pr = wc_get_product($product);
 
-            // add all variants into feed
-            foreach ($children as $child) {
+            $item = GoogleShopping::createItem();
+            $atts = $this->get_product_data( $pr );
 
-                $pr = wc_get_product($child);
-
-                $item = GoogleShopping::createItem();
-                $atts = $this->get_product_data( $child );
-
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
-                }
-
-                $item->item_group_id( $product->get_id() );
-
-
-
+            // add all attributes for each product.
+            foreach ($atts as $key => $value) {
+                $item->$key($value); // invoke $key as method of $item object.
             }
+            $item->item_group_id( $pr->get_parent_id() );
         }
     }
 

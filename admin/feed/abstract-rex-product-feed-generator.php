@@ -345,7 +345,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         $this->product_scope = $args['products_scope'];
         $this->products_args = array(
-            'post_type'              => 'product',
+            'post_type'              => array('product', 'product_variation'),
             'fields'                 => 'ids',
             'post_status'            => 'publish',
             'posts_per_page'         => $this->posts_per_page,
@@ -505,8 +505,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $result = new WP_Query($this->products_args);
         remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10 );
 
-
-
         $products = $result->posts;
         if($products) {
             $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
@@ -527,21 +525,25 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 
             foreach ($products as $product) {
-                if($this->is_variable_product($product)) {
+                if($this->is_variation_product($product)) {
                     if($this->variations) $this->variable_products[] = $product;
-                }elseif ($this->is_grouped_product($product)){
+                    continue;
+                }
+                elseif ($this->is_grouped_product($product)){
                     $this->grouped_products[] = $product;
-                }else {
+                    continue;
+                }
+                else if ($this->is_simple_product($product)) {
                     $this->products[] = $product;
                 }
             }
-
+            
 
             $total_products = array(
-                'total' => $total_products['total'] + $result->found_posts,
-                'simple' => $total_products['simple'] + count($this->products),
-                'variable' => $total_products['variable'] + count($this->variable_products),
-                'group' => $total_products['group'] + count($this->grouped_products),
+                'total' => (int) $total_products['total'] + (int) count($this->products) + (int) count($this->variable_products) + (int) count($this->grouped_products),
+                'simple' => (int) $total_products['simple'] + (int) count($this->products),
+                'variable' => (int) $total_products['variable'] + (int) count($this->variable_products),
+                'group' => (int) $total_products['group'] + (int) count($this->grouped_products),
             );
 
             update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
@@ -747,6 +749,55 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         return false;
     }
+
+
+    /**
+     * Check if simple product
+     * or not
+     * @param bool $product_id
+     * @return bool
+     */
+    protected function is_simple_product( $product_id = false ) {
+
+        if ( false === $product_id ) {
+            return false;
+        }
+        $product = wc_get_product( $product_id );
+        if( $product->is_type( 'simple' ) ){
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Check if this is child product
+     * @param bool $product_id
+     * @return bool
+     */
+    protected function is_variation_product( $product_id = false ) {
+
+        if ( false === $product_id ) {
+            return false;
+        }
+
+        $product = wc_get_product( $product_id );
+        $type = get_post_type($product_id);
+        if($type) {
+            if($type === 'product_variation') {
+                $parent_post_status = get_post_status($product->get_parent_id());
+                if($parent_post_status === 'publish') {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
+
+        return false;
+    }
+
 
 
 

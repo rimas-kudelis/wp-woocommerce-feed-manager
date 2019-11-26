@@ -73,23 +73,16 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
     private function generate_variable_product_feed(){
         // Loop through all variable products.
         foreach( $this->variable_products as $product ) {
-            $product  = wc_get_product( $product );
-            $children =  $product->get_children();
+            $pr = wc_get_product($product);
 
-            // add all variants into feed
-            foreach ($children as $child) {
+            $item = DaisyConShopping::createItem();
+            $atts = $this->get_product_data( $pr );
 
-                $pr = wc_get_product($child);
-
-                $item = DaisyConShopping::createItem();
-                $atts = $this->get_product_data( $child );
-
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
-                }
-                $item->item_group_id( $product->get_id() );
+            // add all attributes for each product.
+            foreach ($atts as $key => $value) {
+                $item->$key($value); // invoke $key as method of $item object.
             }
+            $item->item_group_id( $pr->get_parent_id() );
         }
     }
 

@@ -1,22 +1,28 @@
 <?php
 
 /**
- * The file that generates xml feed for Instagram.
+ * The file that generates xml feed for Google Local Products Inventory.
  *
  * A class definition that includes functions used for generating xml feed.
  *
  * @link       https://rextheme.com
  * @since      1.0.0
  *
- * @package    Rex_Product_Feed_Instagram
- * @subpackage Rex_Product_Feed_Instagram/includes
+ * @package    Rex_Product_Feed_Google_local_products_inventory
+ * @subpackage Rex_Product_Feed_Google_local_products_inventory/includes
  * @author     RexTheme <info@rextheme.com>
  */
 
-use LukeSnowden\GoogleShoppingFeed\Containers\GoogleShopping;
+use RexTheme\RexShoppingFeed\Containers\RexShopping;
 
-class Rex_Product_Feed_Instagram extends Rex_Product_Feed_Abstract_Generator {
+class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_Abstract_Generator {
 
+    private $feed_merchants = array(
+        "nextag" => array(
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+        ),
+    );
     /**
      * Create Feed for Google
      *
@@ -25,20 +31,20 @@ class Rex_Product_Feed_Instagram extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
 
-        GoogleShopping::$container = null;
-
-        GoogleShopping::title($this->title);
-        GoogleShopping::link($this->link);
-        GoogleShopping::description($this->desc);
+        RexShopping::$container = null;
+        RexShopping::init(true, $this->setItemWrapper(), null, '1.0', $this->setItemsWrapper(), true, '');
+        RexShopping::title($this->title);
+        RexShopping::link($this->link);
+        RexShopping::datetime(date("Y-m-d h:i:s"));
 
         // Generate feed for both simple and variable products.
         $this->generate_simple_product_feed();
         $this->generate_grouped_product_feed();
         $this->generate_variable_product_feed();
+
         $this->feed = $this->returnFinalProduct();
 
         if ($this->batch >= $this->tbatch ) {
-
             $this->save_feed($this->feed_format);
             return array(
                 'msg' => 'finish'
@@ -46,6 +52,7 @@ class Rex_Product_Feed_Instagram extends Rex_Product_Feed_Abstract_Generator {
         }else {
             return $this->save_feed($this->feed_format);
         }
+
     }
 
     /**
@@ -54,40 +61,17 @@ class Rex_Product_Feed_Instagram extends Rex_Product_Feed_Abstract_Generator {
     private function generate_simple_product_feed(){
         // Loop through all products.
         foreach( $this->products as $product ) {
-
             $pr = wc_get_product($product);
 
             $atts = $this->get_product_data( $product );
-            $item = GoogleShopping::createItem();
+            $item = RexShopping::createItem();
 
-            // add all attributes for each product.
-            foreach ($atts as $key => $value) {
-                $item->$key($value); // invoke $key as method of $item object.
-            }
-
-        }
-    }
-
-
-    /**
-     * Generate Feed data for Grouped Products
-     **/
-    private function generate_grouped_product_feed(){
-        // Loop through all variable products.
-        foreach( $this->grouped_products as $product ) {
-
-            $pr  = new WC_Product_Grouped( $product );
-
-            $item = GoogleShopping::createItem();
-            $atts = $this->get_product_data( $product );
             // add all attributes for each product.
             foreach ($atts as $key => $value) {
                 $item->$key($value); // invoke $key as method of $item object.
             }
         }
     }
-
-
 
     /**
      * Generate Feed data for Variable Products
@@ -95,7 +79,6 @@ class Rex_Product_Feed_Instagram extends Rex_Product_Feed_Abstract_Generator {
     private function generate_variable_product_feed(){
         // Loop through all variable products.
         foreach( $this->variable_products as $product ) {
-
             $pr = wc_get_product($product);
 
             $item = GoogleShopping::createItem();
@@ -110,6 +93,48 @@ class Rex_Product_Feed_Instagram extends Rex_Product_Feed_Abstract_Generator {
     }
 
 
+
+    /**
+     * Generate Feed data for Grouped Products
+     **/
+    private function generate_grouped_product_feed(){
+        // Loop through all variable products.
+        foreach( $this->grouped_products as $product ) {
+
+            $pr  = new WC_Product_Grouped( $product );
+
+            $item = RexShopping::createItem();
+            $atts = $this->get_product_data( $product );
+            // add all attributes for each product.
+            foreach ($atts as $key => $value) {
+                $item->$key($value); // invoke $key as method of $item object.
+            }
+        }
+    }
+
+    /**
+     * Check if the merchants is valid or not
+     * @param $feed_merchants
+     * @return bool
+     */
+    public function is_valid_merchant(){
+        return array_key_exists($this->merchant, $this->feed_merchants)? true : false;
+    }
+
+    /**
+     * @return string
+     */
+    public function setItemWrapper()
+    {
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['item_wrapper'] : 'product';
+    }
+
+    public function setItemsWrapper()
+    {
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['items_wrapper'] : 'products';
+    }
+
+
     /**
      * Return Feed
      *
@@ -117,14 +142,14 @@ class Rex_Product_Feed_Instagram extends Rex_Product_Feed_Abstract_Generator {
      */
     public function returnFinalProduct()
     {
+
         if ($this->feed_format == 'xml') {
-            return GoogleShopping::asRss();
+            return RexShopping::asRss();
         } elseif ($this->feed_format == 'text') {
-            return GoogleShopping::asTxt();
+            return RexShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            return GoogleShopping::asCsv();
+            return RexShopping::asCsv();
         }
         return false;
     }
-
 }

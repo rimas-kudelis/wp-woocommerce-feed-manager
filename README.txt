@@ -5,7 +5,7 @@ Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, 
 Requires at least: 4.7
 Tested up to:  5.3
 Requires PHP: 5.6
-Stable tag: 5.3
+Stable tag: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -265,6 +265,10 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.4 (2019-11-26) =
+* Bug Fix: Product count issue
+* Bug Fix: Custom filter for variable product
 
 = 5.3 (2019-11-20) =
 * Bug Fix: Google Merchant authorization issue

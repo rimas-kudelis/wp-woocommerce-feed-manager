@@ -101,22 +101,16 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
         // Loop through all variable products.
         foreach( $this->variable_products as $product ) {
 
-            $product  = wc_get_product( $product );
-            $children =  $product->get_children();
+            $pr = wc_get_product($product);
 
-            // add all variants into feed
-            foreach ($children as $child) {
+            $item = RexShopping::createItem();
+            $atts = $this->get_product_data( $pr );
 
-                $pr = wc_get_product($child);
-
-                $item = RexShopping::createItem();
-                $atts = $this->get_product_data( $child );
-
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
-                }
+            // add all attributes for each product.
+            foreach ($atts as $key => $value) {
+                $item->$key($value); // invoke $key as method of $item object.
             }
+//            $item->item_group_id( $pr->get_id() );
         }
     }
 
