@@ -139,7 +139,7 @@ class Rex_Product_Metabox {
          */
         $box->add_field( array(
             'name'           => __( 'Include variation product name', 'rex-product-feed' ),
-            'desc'           => __( 'It will add the all the variation name on product title. Will be applicable if there are more than two variations of a product.', 'rex-product-feed' ),
+            'desc'           => __( 'It will add the all the variation name on product title. Will be applicable if there are more than two variation atrributes of a product.', 'rex-product-feed' ),
             'id'             => $this->prefix . 'variation_product_name',
             'type'           => 'radio_inline',
             'options' => array(
@@ -283,7 +283,16 @@ class Rex_Product_Metabox {
         foreach ($_merchants as $key => $merchant) {
             if($merchant['status']) {
                 if(array_key_exists('name', $merchant)) {
-                    $merchant_lists[$key] = $merchant['name'];
+
+                    if($key === 'google') {
+                        $merchant_lists[$key] = 'Google Shopping';
+                    }elseif ($key === 'google_Ad') {
+                        $merchant_lists[$key] = 'Google AdWords';
+                    }elseif ($key === 'drm') {
+                        $merchant_lists[$key] = 'Google Remarketing (DRM)';
+                    }else {
+                        $merchant_lists[$key] = $merchant['name'];
+                    }
                 }
             }
 
@@ -291,14 +300,14 @@ class Rex_Product_Metabox {
 
         /**
          * result of bad planning
-         */
-        $merchant_lists['google'] = 'Google Shopping';
-        $merchant_lists['google_Ad']= 'Google AdWords';
-        if(array_key_exists('drm', $merchant_lists))
-            $merchant_lists['drm'] = 'Google Remarketing (DRM)';
+//         */
+//        $merchant_lists['google'] = 'Google Shopping';
+//        $merchant_lists['google_Ad']= 'Google AdWords';
+//        if(array_key_exists('drm', $merchant_lists))
+//            $merchant_lists['drm'] = 'Google Remarketing (DRM)';
+
         reset($merchant_lists);
         $default_merchant = key($merchant_lists);
-
 
 
         $box = wpfm_new_cmb2_box( array(
@@ -331,7 +340,7 @@ class Rex_Product_Metabox {
             ),
             'attributes' => array(
                 'data-conditional-id'    => $this->prefix . 'merchant',
-                'data-conditional-value' => wp_json_encode(apply_filters('wpfm_merchant_fixed_format', array( 'custom', 'facebook', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll', 'idealo', 'rakuten', 'pinterest', 'google_dsa', 'fashionchick'))),
+                'data-conditional-value' => wp_json_encode(apply_filters('wpfm_merchant_fixed_format', array( 'custom', 'facebook', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll', 'idealo', 'rakuten', 'pinterest', 'google_dsa', 'fashionchick', 'google_local_products_inventory', 'prisjkat', 'crowdfox', 'powerreviews', 'trovaprezzi', 'zbozi', 'liveintent'))),
             ),
         ) );
 //
@@ -357,6 +366,7 @@ class Rex_Product_Metabox {
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="fa fa-plus-circle"></i>'.__('Add New Attribute','rex-product-feed').'</a>';
+        echo '<a id="rex-new-custom-attr" class="waves-effect waves-light btn-large "><i class="fa fa-plus-circle"></i>'.__('Add New Custom Attribute','rex-product-feed').'</a>';
         echo '</div>';
     }
 
@@ -809,6 +819,8 @@ class Rex_Product_Metabox {
          $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
         if(array_key_exists('kelkoonl', $_merchants))
             $_merchants['kelkoonl']['name'] = 'Kelkoo.nl';
+
+
 
         $saved_value = $field_object->escaped_value();
         $value       = $saved_value ? $saved_value : $field_object->args( 'default' );

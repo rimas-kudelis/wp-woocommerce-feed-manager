@@ -47,6 +47,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             $this->feed = GoogleShopping::asRss();
         }
 
+
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(
@@ -115,6 +116,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 $item->$key($value); // invoke $key as method of $item object.
             }
             $item->item_group_id( $pr->get_parent_id() );
+
         }
     }
 

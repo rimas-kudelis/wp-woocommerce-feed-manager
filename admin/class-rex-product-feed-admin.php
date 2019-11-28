@@ -613,6 +613,56 @@ class Rex_Product_Feed_Admin {
      */
     function rex_admin_footer_style() {
         echo '<style>
+
+                .wpfm-bf-wrapper {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    max-width: 1510px;
+                    margin: 0 auto;
+                }
+                .wpfm-bf-wrapper .wpfm-logo,
+                .wpfm-bf-wrapper .wpfm-bf-button{
+                    flex: 0 0 25%;
+                    margin: 10px;
+                }
+                .wpfm-bf-wrapper .wpfm-bf-text{
+                    flex: 0 0 40%;
+                }
+                .wpfm-bf-text p,
+                .wpfm-bf-text h3{
+                    color: #fff;
+                    
+                }
+                .wpfm-bf-text p{
+                    font-size: 18px;
+                    margin: 0;
+                }
+                
+                .wpfm-bf-text h3{
+                    font-size: 32px;
+                    font-weight: 700;
+                    margin: 15px 0;
+                    line-height: 1.1;
+                }
+                .wpfm-bf-button p {
+                    font-size: 18px;
+                    color: #fff;
+                    margin-bottom: 25px;
+                } 
+                .wpfm-bf-button a {
+                    background-color: #fff;
+                    padding: 10px 20px;
+                    color: #00b4ff;
+                    font-size: 30px;
+                    border-radius: 4px;
+                    margin: 15px 0;
+                    text-decoration: none;
+                }
+                p.wpfm-bf-coupon {
+                    margin-top: 25px;
+                }
+                
                 
                 .wpfm-black-friday-notice {
                     position: relative;
@@ -634,6 +684,20 @@ class Rex_Product_Feed_Admin {
                 .wpfm-black-friday-notice .notice-dismiss:before {
                     color: #fff;
                     font-size: 22px;
+                }
+                @media  (max-width: 1199px) {
+                    .wpfm-bf-wrapper {
+                        flex-direction: column;
+                        text-align: center;
+                        padding-top: 20px;
+                    }
+                  .wpfm-bf-wrapper .wpfm-logo,
+                    .wpfm-bf-wrapper .wpfm-bf-button{
+                        flex: 0 0 100%;
+                    }
+                    .wpfm-bf-wrapper .wpfm-bf-text{
+                        flex: 0 0 100%;
+                    }
                 }
                 .wpfm-db-update-loader {
                   display: none;

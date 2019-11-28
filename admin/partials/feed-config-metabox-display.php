@@ -17,11 +17,12 @@ if ( ! isset($feed_template) ) {
     return;
 }
 
-$items = Rex_Feed_Attributes::get_attributes();
 //echo '<pre>';
-//var_dump($items);
-//echo '</pre>';
+//var_dump($feed_template);
 //wp_die();
+
+$items = Rex_Feed_Attributes::get_attributes();
+
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -45,9 +46,19 @@ $items = Rex_Feed_Attributes::get_attributes();
         <?php
         $hideStaticInput = $item['type'] != 'static' ? 'style="display:none;"' : '';
         $hideMetaInput   = $item['type'] == 'static' ? 'style="display:none;"' : '';
+
         ?>
         <tr data-row-id="<?php echo $key; ?>">
-            <td data-title="Attributes : "><?php $feed_template->printSelectDropdown( $key, 'attr', $item['attr'] ); ?></td>
+            <td data-title="Attributes : ">
+                <?php
+                    if(array_key_exists('attr', $item)) {
+                        $feed_template->printSelectDropdown( $key, 'attr', $item['attr'] );
+                    }else {
+                        $feed_template->printInput( $key, 'cust_attr', $item['cust_attr'] );
+                    }
+
+                ?>
+            </td>
             <td data-title="Type : "><?php $feed_template->printAttType( $key, $item['type'] ); ?></td>
             <td data-title="Value : ">
                 <div class="meta-dropdown" <?php echo $hideMetaInput; ?>>

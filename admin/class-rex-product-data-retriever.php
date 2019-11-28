@@ -122,6 +122,7 @@ class Rex_Product_Data_Retriever {
             foreach ($attrs as $key => $attr) {
                 $this->feed_rules[] = array(
                     'attr'     => $key,
+                    'cust_attr'=> $key,
                     'type'     => 'meta',
                     'meta_key' => $key,
                     'st_value' => '',
@@ -147,18 +148,22 @@ class Rex_Product_Data_Retriever {
      */
     public function set_all_value() {
         $this->data = array();
-
         foreach ($this->feed_rules as $key => $rule) {
-            if($rule['attr'] === 'attributes') {
-                $this->data[ $rule['attr']][] = array(
-                    'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
-                    'value' => $this->set_val( $rule )
-                );
+            if(array_key_exists('attr', $rule)) {
+                if($rule['attr'] === 'attributes') {
+                    $this->data[ $rule['attr']][] = array(
+                        'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
+                        'value' => $this->set_val( $rule )
+                    );
+                }else {
+                    $this->data[ $rule['attr'] ] = $this->set_val( $rule );
+                }
+            }elseif (array_key_exists('cust_attr', $rule)) {
+                $this->data[ preg_replace('/\s+/', '_', $rule['cust_attr']) ] = $this->set_val( $rule );
             }else {
                 $this->data[ $rule['attr'] ] = $this->set_val( $rule );
             }
         }
-
     }
 
 
@@ -233,11 +238,14 @@ class Rex_Product_Data_Retriever {
                     if ($this->is_children()) {
                         $_product = wc_get_product( $this->product );
                         $_variations = $_product->get_attributes();
+
                         if(count($_variations) > 2) {
                             $_title = $this->product->get_title() . " - ";
+                            $title_arr = array();
                             foreach($_variations as $key => $value){
-                                $_title = $_title . " " . ucfirst($value);
+                                $title_arr[] = ucfirst($value);
                             }
+                            $_title = $_title . implode(', ', $title_arr);
                             return $_title;
                         }else {
                             return $this->product->get_name();

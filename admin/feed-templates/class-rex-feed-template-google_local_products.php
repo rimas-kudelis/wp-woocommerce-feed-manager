@@ -43,14 +43,14 @@ class Rex_Feed_Template_Google_local_products extends Rex_Feed_Abstract_Template
             ),
             'Optional pricing attributes' => array(
                 'price'                     => 'Regular Price [price]',
-                'sale price'                => 'Sale Price [sale_price]',
-                'sale price effective date' => 'Sale Price Effective Date [sale_price_effective_date]',
+                'sale_price'                => 'Sale Price [sale_price]',
+                'sale_price_effective_date' => 'Sale Price Effective Date [sale_price_effective_date]',
                 'unit_pricing_measure' => 'Unit pricing measure',
                 'unit_pricing_base_measure' => 'Unit pricing base measure',
             ),
             'Optional' => array(
-                'pickup method' => 'Pickup method',
-                'pickup SLA' => 'Pickup SLA',
+                'pickup_method' => 'Pickup method',
+                'pickup_SLA' => 'Pickup SLA',
                 'pickup_link_template' => 'Pickup link template',
                 'mobile_pickup_link_template' => 'Mobile pickup link template',
                 'link_template' => 'Link template',

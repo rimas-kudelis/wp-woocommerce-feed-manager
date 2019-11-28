@@ -100,6 +100,37 @@
 
 
     /**
+     * add new custom attributes
+     */
+    $(document).on('click', '#rex-new-custom-attr', function () {
+        var rowId = $(this).siblings('#config-table').find('tbody tr').length;
+        var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
+        var parent = $(this).siblings('#config-table').parent();
+
+        if(parent.hasClass('rex-feed-config-filter')) {
+            var filter = true;
+        }else {
+            filter = false;
+        }
+        $(this).siblings('#config-table').find('tbody tr:first')
+            .clone()
+            .insertAfter(lastrow)
+            .attr('data-row-id', rowId);
+
+
+        var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");
+        $row.find('ul.dropdown-content.select-dropdown, .caret, .select-dropdown ').remove();
+
+        $row.find('td:eq(0)').empty();
+        $row.find('td:eq(0)').append('<input type="text" name="fc[0][cust_attr]" value="">');
+        // $row.find('input, select').val('');
+
+        updateFormNameAtts( $row, rowId, filter);
+        $row.find('select').niceSelect('update');
+    });
+
+
+    /**
      * Delete a table-row and update all row-id
      * beneath it and their input attributes names.
      */

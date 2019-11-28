@@ -88,7 +88,6 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
             foreach ($atts as $key => $value) {
                 $item->$key($value); // invoke $key as method of $item object.
             }
-//            $item->item_group_id( $pr->get_id() );
         }
     }
 

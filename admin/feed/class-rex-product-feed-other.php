@@ -44,6 +44,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 
         $this->feed = $this->returnFinalProduct();
 
+
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(
@@ -107,7 +108,9 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             foreach ($atts as $key => $value) {
                 $item->$key($value); // invoke $key as method of $item object.
             }
-//            $item->item_group_id( $pr->get_parent_id() );
+
+//          $item->item_group_id( $pr->get_parent_id() );
+
         }
     }
 

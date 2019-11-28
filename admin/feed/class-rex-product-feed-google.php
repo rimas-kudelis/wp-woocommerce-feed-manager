@@ -83,6 +83,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 $item->$key($value); // invoke $key as method of $item object.
             }
             $item->item_group_id( $pr->get_parent_id() );
+
         }
     }
 

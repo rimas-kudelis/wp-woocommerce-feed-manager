@@ -107,7 +107,7 @@
             });
 
     }
-    $(document).on('click', '.wpfm-bf-notice-dismiss', wpfm_bf_notice_dismiss);
+    $(document).on('click', '#wpfm-black-friday-notice .notice-dismiss', wpfm_bf_notice_dismiss);
 
 })( jQuery );
 

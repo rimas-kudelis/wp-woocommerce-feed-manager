@@ -107,7 +107,6 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
             foreach ($atts as $key => $value) {
                 $item->$key($value); // invoke $key as method of $item object.
             }
-//            $item->item_group_id( $pr->get_parent_id() );
         }
     }
 

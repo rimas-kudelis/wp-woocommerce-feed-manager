@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The file that generates xml feed for any merchant with custom configuration.
+ * The file that generates xml feed for Google.
  *
  * A class definition that includes functions used for generating xml feed.
  *
@@ -13,9 +13,9 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
-use RexTheme\DaisyConShoppingFeed\Containers\DaisyConShopping;
+use LukeSnowden\GoogleShoppingFeed\Containers\GoogleShopping;
 
-class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
+class Rex_Product_Feed_Liveintent extends Rex_Product_Feed_Abstract_Generator {
 
     /**
      * Create Feed for Google
@@ -25,18 +25,18 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
 
-        DaisyConShopping::$container = null;
+        GoogleShopping::$container = null;
 
-        DaisyConShopping::title($this->title);
-        DaisyConShopping::link($this->link);
-        DaisyConShopping::description($this->desc);
+        GoogleShopping::title($this->title);
+        GoogleShopping::link($this->link);
+        GoogleShopping::description($this->desc);
 
         // Generate feed for both simple and variable products.
         $this->generate_simple_product_feed();
         $this->generate_grouped_product_feed();
         $this->generate_variable_product_feed();
 
-        $this->feed = DaisyConShopping::asRss();
+        $this->feed = GoogleShopping::asRss();
 
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
@@ -58,7 +58,7 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
             $pr = wc_get_product($product);
 
             $atts = $this->get_product_data( $product );
-            $item = DaisyConShopping::createItem();
+            $item = GoogleShopping::createItem();
 
             // add all attributes for each product.
             foreach ($atts as $key => $value) {
@@ -75,13 +75,14 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
         foreach( $this->variable_products as $product ) {
             $pr = wc_get_product($product);
 
-            $item = DaisyConShopping::createItem();
+            $item = GoogleShopping::createItem();
             $atts = $this->get_product_data( $pr );
 
             // add all attributes for each product.
             foreach ($atts as $key => $value) {
                 $item->$key($value); // invoke $key as method of $item object.
             }
+            $item->item_group_id( $pr->get_parent_id() );
 
         }
     }
@@ -97,7 +98,7 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
 
             $pr  = new WC_Product_Grouped( $product );
 
-            $item = DaisyConShopping::createItem();
+            $item = GoogleShopping::createItem();
             $atts = $this->get_product_data( $product );
             // add all attributes for each product.
             foreach ($atts as $key => $value) {

@@ -287,25 +287,29 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $this->setup_feed_data($config['info']);
         $this->prepare_products_args($config['products']);
 
-        if (!$this->bypass){
+
+
+        if ($this->bypass){
+            $this->feed_rules = $config['feed_config'];
+            $this->feed_rules_filter = $config['feed_filter'];
+            $this->variations   = $config['include_variations'];
+            $this->parent_product   = $config['parent_product'];
+            $this->append_variation   = $config['append_variations'];
+            $this->wpml_language   = $config['wpml_language'];
+        }else {
             $this->setup_feed_rules($config['feed_config']);
             $this->setup_feed_filter_rules($config['feed_config']);
             $this->variations = $this->include_product_variations($config['feed_config']);
             $this->parent_product = $this->include_parent_product($config['feed_config']);
             $this->append_variation = $this->append_variation_product_name($config['feed_config']) ? 'yes' : 'no';
-        }else {
-            $this->feed_rules = $config['feed_config'];
-            $this->feed_rules_filter = $config['feed_filter'];
-            $this->variations   = $config['include_variations'];
-            $this->parent_product   = $config['include_variations'];
-            $this->append_variation   = $config['append_variations'];
-            $this->wpml_language   = $config['wpml_language'];
         }
 
 
         $this->setup_products();
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
+
+
 
         /**
          * log for feed
@@ -530,7 +534,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     continue;
                 }
                 elseif ($this->is_grouped_product($product)){
-                    $this->grouped_products[] = $product;
+                    if ($this->parent_product) $this->grouped_products[] = $product;
                     continue;
                 }
                 else if ($this->is_simple_product($product)) {
@@ -751,6 +755,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     }
 
 
+
+
+
     /**
      * Check if simple product
      * or not
@@ -852,6 +859,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $path  = wp_upload_dir();
         $path  = $path['basedir'] . '/rex-feed';
 
+
         // make directory if not exist
         if ( !file_exists($path) ) {
             wp_mkdir_p($path);
@@ -863,8 +871,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $log->info(__( '**************************************************', 'rex-product-feed' ), array('source' => 'WPFM',));
         }
 
-        if($format == 'xml'){
 
+        if($format == 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
             if( file_exists($file) ) {
                 if($this->batch == 1) {
@@ -883,13 +891,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
                 }else {
-                    $feed = $this->merge_feeds($file);
+                    $feed = preg_replace('/^.+\n/', '', $this->feed);
                     return file_put_contents($file, $feed, FILE_APPEND) ? 'true' : 'false';
                 }
             }else{
                 return file_put_contents($file, $this->feed) ? 'true' : 'false';
             }
-
         }
         elseif ($format == 'csv'){
             $file = trailingslashit($path) . "feed-{$this->id}.csv";
@@ -947,8 +954,26 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $orgdoc = new DOMDocument;
         $orgdoc->loadXML($xml_str);
 
-        if($this->merchant === 'google' || $this->merchant === 'facebook') {
+        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'ciao' || $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss') {
             $parent = $orgdoc->getElementsByTagName('channel')->item(0);
+        }elseif ($this->merchant === 'ebay_mip') {
+            $parent = $orgdoc->getElementsByTagName('productRequest')->item(0);
+        }elseif ($this->merchant === 'ceneo') {
+            $parent = $orgdoc->getElementsByTagName('offers')->item(0);
+        }elseif ($this->merchant === 'heureka') {
+            $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+        }elseif ($this->merchant === 'marktplaats') {
+            $parent = $orgdoc->getElementsByTagName('admarkt:ads');
+        }elseif ($this->merchant === 'pinterest') {
+            $parent = $orgdoc->getElementsByTagName('items')->item(0);
+        }elseif ($this->merchant === 'yandex') {
+            $parent = $orgdoc->getElementsByTagName('offers')->item(0);
+        }elseif ($this->merchant === 'zbozi') {
+            $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+        }elseif ($this->merchant === 'skroutz') {
+            $parent = $orgdoc->getElementsByTagName('mywebstore')->item(0);
+        }elseif ($this->merchant === 'google_review') {
+            $parent = $orgdoc->getElementsByTagName('reviews')->item(0);
         }else {
             $parent = $orgdoc->getElementsByTagName('products')->item(0);
         }
@@ -959,17 +984,45 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         // The node we want to import to a new document
 
-        if($this->merchant === 'google' || $this->merchant === 'facebook') {
+        if($this->merchant === 'google' || $this->merchant === 'facebook'|| $this->merchant === 'ciao' || $this->merchant === 'daisycon'|| $this->merchant === 'instagram'|| $this->merchant === 'liveintent'|| $this->merchant === 'rss') {
             $node = $newdoc->getElementsByTagName("item");
+        }elseif ($this->merchant === 'ebay_mip') {
+            if($newdoc->getElementsByTagName("product")) {
+                $node = $newdoc->getElementsByTagName("product");
+            }
+            else {
+                $node = $newdoc->getElementsByTagName("productVariationGroup");
+            }
+        }elseif ($this->merchant === 'ceneo') {
+            $node = $newdoc->getElementsByTagName("o");
+        }elseif ($this->merchant === 'heureka') {
+            $node = $newdoc->getElementsByTagName("SHOPITEM");
+        }elseif ($this->merchant === 'marktplaats') {
+            $node = $newdoc->getElementsByTagName("admarkt:ad");
+        }elseif ($this->merchant === 'pinterest') {
+            $node = $newdoc->getElementsByTagName("item");
+        }elseif ($this->merchant === 'trovaprezzi') {
+            $node = $newdoc->getElementsByTagName("Offer");
+        }elseif ($this->merchant === 'yandex') {
+            $node = $newdoc->getElementsByTagName("offer");
+        }elseif ($this->merchant === 'zbozi') {
+            $node = $newdoc->getElementsByTagName("SHOPITEM");
+        }elseif ($this->merchant === 'skroutz') {
+            $node = $newdoc->getElementsByTagName("product");
+        }elseif ($this->merchant === 'google_review') {
+            $node = $newdoc->getElementsByTagName("feed");
         }else {
             $node = $newdoc->getElementsByTagName("product");
         }
 
+
+
         for ($i = 0; $i < $node->length; $i ++) {
+
             $item = $node->item($i);
-            // Import the node, and all its children, to the document
             $item = $orgdoc->importNode($item, true);
             $parent->appendChild($item);
+
         }
         return $orgdoc->saveXML();
 

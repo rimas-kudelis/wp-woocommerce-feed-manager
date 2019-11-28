@@ -740,7 +740,7 @@ class Rex_Product_Feed_Ajax {
 
         $current_time = time();
         $date_now = date("Y-m-d", $current_time);
-        if( $date_now == '2019-11-29' ) {
+        if( $date_now == '2019-11-29' || $date_now == '2019-11-28') {
             $wpfm_bf_notice = array(
                 'show_notice' => 'never',
                 'updated_at' => time(),

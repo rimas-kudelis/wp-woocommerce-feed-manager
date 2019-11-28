@@ -1,11 +1,11 @@
 === WooCommerce Product Feed Manager ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll, WooCommerce, Pricerunner, Billiger.de, Vergelijk.nl, Twenga.nl, Marktplaats, Beslist, Daisycon, Yandex, Tweakers, Spartoo, Kieskeurig, Sooqr, Scoupz, Koopkeus, Heureka, CDiscount, Kelkoo, Uvinum, Rakuteen, Idealo, Pricemasher, Pricesearcher, Fashionchick, Ceneo, Pinterest, Google Dynamic Search Ads, Instagram, Choozen, RSS, Ciao, Google Local Products
+Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll, WooCommerce, Pricerunner, Billiger.de, Vergelijk.nl, Twenga.nl, Marktplaats, Beslist, Daisycon, Yandex, Tweakers, Spartoo, Kieskeurig, Sooqr, Scoupz, Koopkeus, Heureka, CDiscount, Kelkoo, Uvinum, Rakuteen, Idealo, Pricemasher, Pricesearcher, Fashionchick, Ceneo, Pinterest, Google Dynamic Search Ads, Instagram, Choozen, RSS, Ciao, Google Local Products, Google Local Products Inventory, Pricespy/Prisjkat, Crowdfox, Powerreviews, Trovaprezzi, Zbozi, Liveintent, Skroutz
 Requires at least: 4.7
 Tested up to:  5.3
 Requires PHP: 5.6
-Stable tag: 5.4
+Stable tag: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 42 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 50 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -66,7 +66,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 42 pre-built templates of Merchant Shop feed
+* 50 pre-built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
@@ -91,6 +91,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Google Adwords](https://www.google.com/adwords/)
 - WooCommerce to [Google Dynamic Search Ads](https://support.google.com/google-ads/answer/2471185?hl=en)
 - WooCommerce to [Google Local Products](https://support.google.com/merchants/answer/3061198?hl=en#:~:targetText=Local%20products%20feed%20specification,successful%20ads%20for%20your%20products)
+- WooCommerce to [Google Local Products Inventory](https://support.google.com/merchants/answer/3061342?hl=en)
 - RSS Feed
 - WooCommerce to [Amazon Seller Ad](https://advertising.amazon.com/)
 - WooCommerce to [Facebook Catalog Feed](https://www.facebook.com/business/a/online-sales/dynamic-product-ads/)
@@ -130,6 +131,13 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Ceneo](https://www.ceneo.pl/)
 - WooCommerce to [Choozen](https://www.choozen.co.uk/)
 - WooCommerce to [Ciao](https://www.ciao.fr/)
+- WooCommerce to [Pricespy/Prisjkat](https://pricespy.co.uk/)
+- WooCommerce to [Crowdfox](https://www.crowdfox.com/)
+- WooCommerce to [Powerreviews](https://www.powerreviews.com/)
+- WooCommerce to [Trovaprezzi](https://www.trovaprezzi.it/)
+- WooCommerce to [Zbozi](https://www.zbozi.cz/)
+- WooCommerce to [Liveintent](https://www.liveintent.com/)
+- WooCommerce to [Skroutz](https://www.skroutz.gr/)
 
 == Pro Features: ==
 
@@ -169,11 +177,12 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 42 major merchant shops:
+Currently, we support 50 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
 - Google Local Products
+- Google Local Products Inventory
 - RSS Feed
 - Amazon Seller Ad
 - Marktplaats
@@ -216,6 +225,13 @@ Currently, we support 42 major merchant shops:
 - Ceneo
 - Choozen
 - Ciao
+- Pricespy/Prisjkat
+- Crowdfox
+- Powerreviews
+- Trovaprezzi
+- Zbozi
+- Liveintent
+- Skroutz
 
 
 = Is there a product limit? =
@@ -266,9 +282,24 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 5.5 (2019-11-28) =
+* Bug Fix: Feed format TXT (unexpected string)
+* Feature: Add dynamic custom attribute field
+* Added: Google Local Products Inventory template
+* Added: Pricespy/Prisjkat template
+* Added: Crowdfox template
+* Added: Powerreviews template
+* Added: Trovaprezzi template
+* Added: Zbozi template
+* Added: Liveintent template
+* Added: Skroutz template
+* Compatibility Checked : WooCommerce 3.8.1
+
+
 = 5.4 (2019-11-26) =
 * Bug Fix: Product count issue
 * Bug Fix: Custom filter for variable product
+
 
 = 5.3 (2019-11-20) =
 * Bug Fix: Google Merchant authorization issue

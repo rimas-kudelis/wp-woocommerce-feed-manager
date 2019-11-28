@@ -48,6 +48,9 @@ class Rex_Product_Feed_Factory {
                 'google_dsa',
                 'fashionchick',
                 'choozen',
+                'prisjkat',
+                'crowdfox',
+                'powerreviews',
             )
         );
 

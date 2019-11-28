@@ -200,6 +200,11 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Google Local Products'
                                 ),
+                                'google_local_products_inventory'    => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Google Local Products Inventory'
+                                ),
                                 'google_dsa'    => array(
                                     'free'  => true,
                                     'status'    => 0,
@@ -399,6 +404,41 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Ciao'
+                                ),
+                                'prisjkat'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Pricespy/Prisjkat'
+                                ),
+                                'crowdfox'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Crowdfox'
+                                ),
+                                'powerreviews'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'PowerReviews'
+                                ),
+                                'trovaprezzi'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Trovaprezzi'
+                                ),
+                                'zbozi'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Zbozi'
+                                ),
+                                'liveintent'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'LiveIntent'
+                                ),
+                                'skroutz'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Skroutz'
                                 )
                             );
                             $_pro_merchants = array(

@@ -13,9 +13,9 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
-use RexTheme\RexCdiscountShoppingFeed\Containers\RexShopping;
+use RexTheme\RexShoppingFeed\Containers\RexShopping;
 
-class Rex_Product_Feed_Cdiscount extends Rex_Product_Feed_Abstract_Generator {
+class Rex_Product_Feed_Skroutz extends Rex_Product_Feed_Abstract_Generator {
 
     private $feed_merchants = array(
         "nextag" => array(
@@ -32,10 +32,10 @@ class Rex_Product_Feed_Cdiscount extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
         RexShopping::$container = null;
-        RexShopping::init(true, $this->setItemWrapper(), null, '1.0', $this->setItemsWrapper(), true, '');
-        RexShopping::title($this->title);
-        RexShopping::link($this->link);
-        RexShopping::datetime(date("Y-m-d h:i:s"));
+        RexShopping::init(true, $this->setItemWrapper(), null, '', $this->setItemsWrapper(), false, 'products');
+//        RexShopping::title($this->title);
+//        RexShopping::link($this->link);
+//        RexShopping::description($this->desc);
 
         // Generate feed for both simple and variable products.
         $this->generate_simple_product_feed();
@@ -43,6 +43,7 @@ class Rex_Product_Feed_Cdiscount extends Rex_Product_Feed_Abstract_Generator {
         $this->generate_variable_product_feed();
 
         $this->feed = $this->returnFinalProduct();
+
 
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
@@ -70,8 +71,6 @@ class Rex_Product_Feed_Cdiscount extends Rex_Product_Feed_Abstract_Generator {
             foreach ($atts as $key => $value) {
                 $item->$key($value); // invoke $key as method of $item object.
             }
-
-
         }
     }
 
@@ -110,6 +109,8 @@ class Rex_Product_Feed_Cdiscount extends Rex_Product_Feed_Abstract_Generator {
                 $item->$key($value); // invoke $key as method of $item object.
             }
 
+//          $item->item_group_id( $pr->get_parent_id() );
+
         }
     }
 
@@ -134,7 +135,7 @@ class Rex_Product_Feed_Cdiscount extends Rex_Product_Feed_Abstract_Generator {
 
     public function setItemsWrapper()
     {
-        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['items_wrapper'] : 'products';
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['items_wrapper'] : 'mywebstore';
     }
 
     /**
@@ -152,28 +153,6 @@ class Rex_Product_Feed_Cdiscount extends Rex_Product_Feed_Abstract_Generator {
             return RexShopping::asCsv();
         }
         return false;
-    }
-
-
-    /**
-     * Get Product data.
-     * @param bool $id
-     *
-     * @return array
-     */
-    protected function get_product_data( $product_id = false ){
-
-        if ( function_exists('icl_object_id') ) {
-            global $sitepress;
-            $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
-            if($wpml) {
-                $sitepress->switch_lang($wpml);
-                $data = new Rex_Cdiscount_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
-            }
-        }else{
-            $data = new Rex_Cdiscount_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation);
-        }
-        return $data->get_all_data();
     }
 
 }
