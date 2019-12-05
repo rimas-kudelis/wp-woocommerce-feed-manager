@@ -27,7 +27,7 @@ $items = Rex_Feed_Attributes::get_attributes();
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<table id="config-table" class="responsive-table">
+<table id="config-table" class="responsive-table wpfm-field-mappings">
     <thead>
     <tr>
         <th class="large-col">Attributes</th>
@@ -41,6 +41,48 @@ $items = Rex_Feed_Attributes::get_attributes();
     </thead>
 
     <tbody>
+
+    <?php $keyy = rand(999, 3000); ?>
+    <tr data-row-id="<?php echo $keyy; ?>" style="display: none; ">
+        <td data-title="Attributes : "><?php $feed_template->printSelectDropdown( $keyy, 'attr', '' );?>
+        </td>
+        <td data-title="Type : "><?php $feed_template->printAttType( $keyy, '' ); ?></td>
+        <td data-title="Value : ">
+            <div class="meta-dropdown">
+                <?php
+                echo '<select  name="fc['.$keyy.'][' . esc_attr( 'meta_key' ) . ']" >';
+                echo "<option value=''>Please Select</option>";
+                $i = 1;
+                foreach ($items as $groupLabel => $groups) {
+                    if ( !empty($groupLabel)) {
+                        echo "<optgroup label='$groupLabel' data-i='$i'>";
+                    }
+                    foreach ($groups as $k => $it) {
+                        echo "<option value='$k'>$it</option>";
+                    }
+
+                    if ( !empty($groupLabel)) {
+                        echo "</optgroup>";
+                    }
+                    $i = $i + 1;
+                }
+                echo "</select>";
+                ?>
+            </div>
+            <div class="static-input">
+                <?php $feed_template->printInput( $keyy, 'st_value', '' ); ?>
+            </div>
+        </td>
+        <td data-title="Prefix : "><?php $feed_template->printInput( $keyy, 'prefix', '' ); ?></td>
+        <td data-title="Suffix : "><?php $feed_template->printInput( $keyy, 'suffix', '' ); ?></td>
+        <td data-title="Output Sanitization : "><?php $feed_template->printSelectDropdown( $keyy, 'escape', '' ); ?></td>
+        <td data-title="Output Limit : "><?php $feed_template->printInput( $keyy, 'limit', '' ); ?></td>
+        <td>
+            <a class="delete-row" title="Delete">
+                <i class="fa fa-trash"></i>
+            </a>
+        </td>
+    </tr>
 
     <?php foreach ( $feed_template->getTemplateMappings() as $key => $item): ?>
         <?php

@@ -16,7 +16,7 @@ class WPFM_CMB2_JS {
 	 * @var   string
 	 * @since 2.0.7
 	 */
-	protected static $handle = 'cmb2-scripts';
+	protected static $handle = 'wpfm-cmb2-scripts';
 
 	/**
 	 * The WPFM_CMB2 JS variable name

@@ -140,7 +140,6 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
-
         /*
          * Add custom field
          * to product
@@ -197,7 +196,6 @@ class Rex_Product_Feed_Ajax {
         wp_ajax_helper()->handle( 'wpfm_bf_notice_dismiss' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_bf_notice_dismiss' ) )
             ->with_validation( $validations );
-
 
     }
 
@@ -756,5 +754,4 @@ class Rex_Product_Feed_Ajax {
             'success' => true,
         );
     }
-
 }

@@ -44,13 +44,19 @@ class Rex_Product_Feed_Factory {
                 'rakuten',
                 'pricesearcher',
                 'pricemasher',
-                'pinterest',
                 'google_dsa',
                 'fashionchick',
                 'choozen',
                 'prisjkat',
                 'crowdfox',
                 'powerreviews',
+                'otto',
+                'sears',
+                'ammoseek',
+                'fnac',
+                'pixmania',
+                'coolblue',
+                'shopmania',
             )
         );
 

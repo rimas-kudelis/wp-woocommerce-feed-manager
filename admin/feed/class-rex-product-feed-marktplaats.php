@@ -95,7 +95,7 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
 
             $pr = wc_get_product($product);
 
-            $item = RexShopping::createItem();
+            $item = MarktPlaatsShopping::createItem();
             $atts = $this->get_product_data( $pr );
 
             // add all attributes for each product.

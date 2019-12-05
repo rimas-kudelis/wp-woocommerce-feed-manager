@@ -128,10 +128,13 @@ class Item
     public function sale_price($salePrice)
     {
 
-        if ($salePrice) {
-            $node = new Node('sale_price');
-            $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
-        }
+//        if ($salePrice) {
+//            $node = new Node('sale_price');
+//            $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+//        }
+
+        $node = new Node('sale_price');
+        $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
 
     }
 
@@ -267,14 +270,20 @@ class Item
      * @param  [type] $cost    [description]
      * @return [type]          [description]
      */
-    public function shipping($code, $service, $cost)
+//    public function shipping($code, $service, $cost)
+//    {
+//        $node = new Node('shipping');
+//        $value = "<g:country>{$code}</g:country><g:service>{$service}</g:service><g:price>{$cost}</g:price>";
+//        if (! isset($this->nodes['shipping'])) {
+//            $this->nodes['shipping'] = array();
+//        }
+//        $this->nodes['shipping'][] = $node->value($value)->_namespace($this->namespace);
+//    }
+
+    public function shipping($shipping)
     {
         $node = new Node('shipping');
-        $value = "<g:country>{$code}</g:country><g:service>{$service}</g:service><g:price>{$cost}</g:price>";
-        if (! isset($this->nodes['shipping'])) {
-            $this->nodes['shipping'] = array();
-        }
-        $this->nodes['shipping'][] = $node->value($value)->_namespace($this->namespace);
+        $this->nodes['shipping'] = $node->value($shipping)->_namespace($this->namespace);
     }
 
     /**

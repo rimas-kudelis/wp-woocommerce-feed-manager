@@ -398,8 +398,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->wpml_language = array_key_exists('rex_feed_wpml_language', $feed_rules) ?
                 $feed_rules['rex_feed_wpml_language'] :
                 get_post_meta($this->id, 'rex_feed_wpml_language', true);
-            update_post_meta( $this->id, 'rex_feed_wpml_language', $this->wpml_language );
-//            $this->wpml_language = ICL_LANGUAGE_CODE;
+                update_post_meta( $this->id, 'rex_feed_wpml_language', $this->wpml_language );
         }
         else {
             $this->wpml_language = false;
@@ -469,6 +468,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_feed_filter_rules( $info ){
         $feed_rules_filter       = array();
         parse_str( $info, $feed_rules_filter );
+
         $feed_rules_filter          = $feed_rules_filter['ff'];
         $this->feed_rules_filter    = $feed_rules_filter;
 
@@ -507,9 +507,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         $result = new WP_Query($this->products_args);
-        remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10 );
-
+        remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
         $products = $result->posts;
+
+
+
         if($products) {
             $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
                 'total' => 0,
@@ -530,7 +532,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
             foreach ($products as $product) {
                 if($this->is_variation_product($product)) {
-                    if($this->variations) $this->variable_products[] = $product;
+                    if($this->variations) {
+                        $this->variable_products[] = $product;
+                    }
                     continue;
                 }
                 elseif ($this->is_grouped_product($product)){
@@ -540,8 +544,35 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 else if ($this->is_simple_product($product)) {
                     $this->products[] = $product;
                 }
+
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                    $variation_query = new WP_Query(array(
+                        'post_type'              => array('product_variation'),
+                        'fields'                 => 'ids',
+                        'post_status'            => 'publish',
+                        'post_parent__in'        => array($product),
+                        'update_post_term_cache' => true,
+                        'update_post_meta_cache' => true,
+                        'cache_results'          => false,
+                        'suppress_filters'       => false,
+                    ));
+                    $variation_products = $variation_query->posts;
+                    if($variation_products) {
+                        foreach ($variation_products as $variation) {
+                            if($this->variations) {
+                                $this->variable_products[] = $variation;
+                            }
+                        }
+                    }
+
+                }
             }
-            
+
+            $log = wc_get_logger();
+            $log->info( wc_print_r( $this->products, true ),  array('source' => 'WPFM-test') );
+            $log->info( wc_print_r( $this->variable_products, true ),  array('source' => 'WPFM-test') );
+            $log->info( wc_print_r( $this->grouped_products, true ),  array('source' => 'WPFM-test') );
+
 
             $total_products = array(
                 'total' => (int) $total_products['total'] + (int) count($this->products) + (int) count($this->variable_products) + (int) count($this->grouped_products),

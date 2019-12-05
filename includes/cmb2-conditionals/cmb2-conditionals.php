@@ -105,9 +105,9 @@ if ( ! class_exists( 'WPFM_CMB2_Conditionals' ) ) {
 		    }
 
 			wp_enqueue_script(
-				'cmb2-conditionals',
+				'wpfm-cmb2-conditionals',
 				plugins_url( '/cmb2-conditionals.js', __FILE__ ),
-				array( 'jquery', 'cmb2-scripts' ),
+				array( 'jquery', 'wpfm-cmb2-scripts' ),
 				self::VERSION,
 				true
 			);

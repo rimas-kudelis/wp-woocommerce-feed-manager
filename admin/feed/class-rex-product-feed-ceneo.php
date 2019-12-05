@@ -100,7 +100,7 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
         foreach( $this->variable_products as $product ) {
             $pr = wc_get_product($product);
 
-            $item = RexShopping::createItem();
+            $item = RexShoppingCeneo::createItem();
             $atts = $this->get_product_data( $pr );
 
             // add all attributes for each product.

@@ -439,6 +439,46 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Skroutz'
+                                ),
+                                'otto'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Otto'
+                                ),
+                                'sears'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Sears'
+                                ),
+                                'ammoseek'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'AmmoSeek'
+                                ),
+                                'fnac'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Fnac'
+                                ),
+                                'zalando'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Zalando'
+                                ),
+                                'pixmania'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Pixmania'
+                                ),
+                                'coolblue'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Coolblue'
+                                ),
+                                'shopmania'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'ShopMania'
                                 )
                             );
                             $_pro_merchants = array(

@@ -133,6 +133,7 @@ abstract class Rex_Feed_Abstract_Template {
         echo "</select>";
     }
 
+
     /**
      * Print attributes Type.
      *

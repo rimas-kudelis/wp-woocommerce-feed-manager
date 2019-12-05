@@ -86,7 +86,8 @@
         $(this).siblings('#config-table').find('tbody tr:first')
             .clone()
             .insertAfter(lastrow)
-            .attr('data-row-id', rowId);
+            .attr('data-row-id', rowId)
+            .show();
 
 
         var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");
@@ -112,10 +113,12 @@
         }else {
             filter = false;
         }
+
         $(this).siblings('#config-table').find('tbody tr:first')
             .clone()
             .insertAfter(lastrow)
-            .attr('data-row-id', rowId);
+            .attr('data-row-id', rowId)
+            .show();
 
 
         var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");
@@ -137,6 +140,8 @@
     $(document).on('click', '#config-table .delete-row', function () {
         var $nextRows, rowId;
 
+
+
         var table = $(this).closest('table');
         var parent = table.parent();
 
@@ -149,6 +154,8 @@
             filter = false;
         }
 
+
+
         // Gell the next rows
         if ( rowId == 0) {
             $nextRows = $('#config-table tbody').children();
@@ -158,9 +165,12 @@
 
         // Update their row-id and name attributes
         $nextRows.each( function (index, el) {
-            $(el).attr( 'data-row-id', rowId);
-            updateFormNameAtts( $(el), rowId, filter);
-            rowId++;
+            if(!$(el).css('display') == 'none') {
+                $(el).attr( 'data-row-id', rowId);
+                updateFormNameAtts( $(el), rowId, filter);
+                rowId++;
+            }
+
         });
     });
 
@@ -173,7 +183,9 @@
         $el = $row.find('input, select');
         $el.each(function(index, item) {
             name = $(item).attr('name');
-
+            if( $(item).parent().hasClass('static-input') ) {
+                $(item).parent().hide();
+            }
             if ( name != undefined ) {
                 // get new name via regex
                 if (filter) {
@@ -185,7 +197,6 @@
                 }
 
             }
-
         });
     }
 
@@ -289,6 +300,11 @@
      */
     function get_product_number(event) {
         event.preventDefault();
+
+        if($('.wpfm-field-mappings').find('tbody tr:first').css('display') == 'none') {
+            $('.wpfm-field-mappings').find('tbody tr:first').remove();
+        }
+
         $('#wpfm-feed-clock').stopwatch().stopwatch('start');
         setTimeout(function() {
             var $payload = {};

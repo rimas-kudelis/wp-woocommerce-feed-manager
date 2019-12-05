@@ -268,6 +268,11 @@ class Rex_Product_Feed_Admin {
     public function dequeue_scripts($hook) {
         $screen = get_current_screen();
         if ( $screen->post_type != 'product-feed' ) {
+            wp_dequeue_script( 'wpfm-cmb2-scripts' );
+            wp_dequeue_script( 'wpfm-cmb2-conditionals' );
+        }
+
+        if ( $screen->post_type == 'product-feed' ) {
             wp_dequeue_script( 'cmb2-scripts' );
             wp_dequeue_script( 'cmb2-conditionals' );
         }
