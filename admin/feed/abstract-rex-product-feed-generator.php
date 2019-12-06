@@ -550,6 +550,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                         'post_type'              => array('product_variation'),
                         'fields'                 => 'ids',
                         'post_status'            => 'publish',
+                        'posts_per_page'         => -1,
                         'post_parent__in'        => array($product),
                         'update_post_term_cache' => true,
                         'update_post_meta_cache' => true,
@@ -568,11 +569,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            $log = wc_get_logger();
-            $log->info( wc_print_r( $this->products, true ),  array('source' => 'WPFM-test') );
-            $log->info( wc_print_r( $this->variable_products, true ),  array('source' => 'WPFM-test') );
-            $log->info( wc_print_r( $this->grouped_products, true ),  array('source' => 'WPFM-test') );
-
+          
 
             $total_products = array(
                 'total' => (int) $total_products['total'] + (int) count($this->products) + (int) count($this->variable_products) + (int) count($this->grouped_products),
