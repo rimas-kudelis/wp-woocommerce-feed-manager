@@ -57,6 +57,7 @@ class Rex_Product_Feed_Factory {
                 'pixmania',
                 'coolblue',
                 'shopmania',
+                'preis',
             )
         );
 

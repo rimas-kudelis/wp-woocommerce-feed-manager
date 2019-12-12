@@ -479,6 +479,26 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'ShopMania'
+                                ),
+                                'kleding'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Kleding'
+                                ),
+                                'ladenzeile'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Ladenzeile'
+                                ),
+                                'preis'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Preis'
+                                ),
+                                'winesearcher'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Winesearcher'
                                 )
                             );
                             $_pro_merchants = array(

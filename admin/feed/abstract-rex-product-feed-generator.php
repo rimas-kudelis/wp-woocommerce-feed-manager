@@ -545,6 +545,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     $this->products[] = $product;
                 }
 
+
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
                     $variation_query = new WP_Query(array(
                         'post_type'              => array('product_variation'),
