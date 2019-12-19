@@ -762,7 +762,8 @@ class Rex_Product_Filter {
                                 ),
                             );
                         }
-                    }elseif ($then == 'exc') {
+                    }
+                    elseif ($then == 'exc') {
                         if($condition == 'contain' ) {
                             $filter_args['meta_query'][] = array(
                                 'relation' => 'OR',

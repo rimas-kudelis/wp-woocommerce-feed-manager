@@ -92,6 +92,11 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
+        wp_ajax_helper()->handle( 'generate-promotion-feed' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_promotion_feed' ) )
+            ->with_validation( $validations );
+
+
         wp_ajax_helper()->handle( 'save-feed' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_feed' ) )
             ->with_validation( $validations );
@@ -217,161 +222,6 @@ class Rex_Product_Feed_Ajax {
 
 
 
-
-    /**
-     * product serach by title
-     * @param $where
-     * @param $wp_query
-     * @return string
-     */
-    function wpfm_post_title_filter($where, &$wp_query) {
-        global $wpdb;
-        if($wp_query->get('title_contain')) {
-            $title_contain = $wp_query->get('title_contain');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_title LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('title_dn_contain')) {
-            $title_dn_contain = $wp_query->get('title_dn_contain');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_title NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('title_equal_to')) {
-            $title_dn_contain = $wp_query->get('title_equal_to');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_title = \'' . $wpdb->esc_like( $title ) . '\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('title_nequal_to')) {
-            $title_dn_contain = $wp_query->get('title_nequal_to');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_title <> \'' . $wpdb->esc_like( $title ) . '\'';
-            };
-            $where .= ' )';
-
-        }
-
-
-        if($wp_query->get('description_contain')) {
-            $title_contain = $wp_query->get('title_contain');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_content LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('description_dn_contain')) {
-            $title_dn_contain = $wp_query->get('title_dn_contain');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_content NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('description_equal_to')) {
-            $title_dn_contain = $wp_query->get('title_equal_to');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_content = \'' . $wpdb->esc_like( $title ) . '\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('description_nequal_to')) {
-            $title_dn_contain = $wp_query->get('title_nequal_to');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_content <> \'' . $wpdb->esc_like( $title ) . '\'';
-            };
-            $where .= ' )';
-
-        }
-
-
-        if($wp_query->get('sdescription_contain')) {
-            $title_contain = $wp_query->get('title_contain');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_excerpt LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('sdescription_dn_contain')) {
-            $title_dn_contain = $wp_query->get('title_dn_contain');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_excerpt NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('sdescription_equal_to')) {
-            $title_dn_contain = $wp_query->get('title_equal_to');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_excerpt = \'' . $wpdb->esc_like( $title ) . '\'';
-            };
-            $where .= ' )';
-        }
-        if($wp_query->get('sdescription_nequal_to')) {
-            $title_dn_contain = $wp_query->get('title_nequal_to');
-            $i = 0;
-            $where .= ' AND (';
-            foreach ($title_dn_contain as $title) {
-                $i = $i + 1;
-                $op = ($i > 1)? 'OR' : '';
-                $where .= ' '. $op. ' '. $wpdb->posts . '.post_excerpt <> \'' . $wpdb->esc_like( $title ) . '\'';
-            };
-            $where .= ' )';
-
-        }
-
-        return $where;
-    }
-
-
-
-
     /**
      * Generate feed
      * @param $config
@@ -384,6 +234,17 @@ class Rex_Product_Feed_Ajax {
             return $e->getMessage();
         }
         return $merchant->make_feed();
+    }
+
+
+    /**
+     * Generate google promotion feed
+     * @param $config
+     * @return string
+     */
+    public static function generate_promotion_feed($config) {
+        $merchant = new Rex_Product_Feed_Google_merchant_promotion();
+        return $merchant->make_feed($config);
     }
 
 

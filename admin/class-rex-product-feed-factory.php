@@ -58,6 +58,7 @@ class Rex_Product_Feed_Factory {
                 'coolblue',
                 'shopmania',
                 'preis',
+                'walmart',
             )
         );
 

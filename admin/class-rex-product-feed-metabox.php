@@ -340,7 +340,7 @@ class Rex_Product_Metabox {
             ),
             'attributes' => array(
                 'data-conditional-id'    => $this->prefix . 'merchant',
-                'data-conditional-value' => wp_json_encode(apply_filters('wpfm_merchant_fixed_format', array( 'custom', 'facebook', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll', 'idealo', 'rakuten', 'pinterest', 'google_dsa', 'fashionchick', 'google_local_products_inventory', 'prisjkat', 'crowdfox', 'powerreviews', 'trovaprezzi', 'zbozi', 'liveintent', 'pixmania', 'coolblue', 'preis'))),
+                'data-conditional-value' => wp_json_encode(apply_filters('wpfm_merchant_fixed_format', array( 'custom', 'facebook', 'nextag', 'pricegrabber', 'bing', 'kelkoo', 'amazon', 'ebay', 'become' , 'shopzilla', 'shopping', 'google_Ad', 'adroll', 'idealo', 'rakuten', 'pinterest', 'google_dsa', 'fashionchick', 'google_local_products_inventory', 'prisjkat', 'crowdfox', 'powerreviews', 'trovaprezzi', 'zbozi', 'liveintent', 'pixmania', 'coolblue', 'preis', 'google_merchant_promotion', 'walmart'))),
             ),
         ) );
 //

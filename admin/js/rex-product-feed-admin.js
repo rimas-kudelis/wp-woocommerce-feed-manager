@@ -304,8 +304,9 @@
         if($('.wpfm-field-mappings').find('tbody tr:first').css('display') == 'none') {
             $('.wpfm-field-mappings').find('tbody tr:first').remove();
         }
-
         $('#wpfm-feed-clock').stopwatch().stopwatch('start');
+        var merchant = $('#rex_feed_merchant').find(':selected').val();
+
         setTimeout(function() {
             var $payload = {};
             $('#publishing-action span.spinner').addClass('is-active');
@@ -314,9 +315,13 @@
             $('.progress-msg span').html('Calculating products.....');
             wpAjaxHelperRequest( 'my-handle', $payload )
                 .success( function( response ) {
-                    // console.log('Total Number of Products: ' + response.products);
                     var per_batch = response.perBatch ? parseInt(response.perBatch) : 50;
-                    generate_feed(response.products, 0, 1, per_batch);
+                    if(merchant !== 'google_merchant_promotion') {
+                        generate_feed(response.products, 0, 1, per_batch);
+                    }else {
+                        generate_promotion_feed();
+                    }
+
                 })
                 .error( function( response ) {
                     $('#publishing-action span.spinner').removeClass('is-active');
@@ -324,10 +329,50 @@
                     console.log( 'Uh, oh!' );
                     console.log( response.statusText );
                 });
-        }, 800);
+        }, 500);
     }
     $(document).on('click', '#publish', get_product_number);
 
+
+    /**
+     * generate promotion feed
+     */
+    function generate_promotion_feed() {
+        var $payload = {
+            merchant: $('#rex_feed_merchant').find(':selected').val(),
+            feed_format: $('#rex_feed_feed_format').find(':selected').val(),
+            localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
+            ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
+            info : {
+                post_id     : $('#post_ID').val(),
+                title       : $('#title').val(),
+                desc        : $('#title').val(),
+            },
+
+            products: {
+                products_scope: $('#rex_feed_products').find(':selected').val(),
+                tags: get_checkbox_val('tags'),
+                cats: get_checkbox_val('cats'),
+            },
+
+            feed_config : $('form').serialize(),
+        };
+
+        wpAjaxHelperRequest( 'generate-promotion-feed', $payload )
+            .success( function( response ) {
+                console.log( 'Woohoo!' );
+                console.log(response);
+                $('#publish').removeClass('disabled');
+                $(document).off( 'click', '#publish', get_product_number );
+                $('#publish').trigger( 'click' );
+            })
+            .error( function( response ) {
+                $('#publishing-action span.spinner').removeClass('is-active');
+                $('#publish').removeClass('disabled');
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
 
     /**
      * Generate feed
@@ -362,8 +407,6 @@
             feed_config : $('form').serialize(),
         };
 
-
-
         var batches = Math.ceil( product/per_batch );
         console.log('Total Batch: '+ batches);
         console.log('Total Product(s): '+ product);
@@ -396,7 +439,7 @@
                         $('#publish').removeClass('disabled');
                         $(document).off( 'click', '#publish', get_product_number );
                         $('#publish').trigger( 'click' );
-                    }, 1000);
+                    }, 300);
 
                 } else {
                     if ( batch < batches ) {
@@ -405,7 +448,7 @@
                             batch++;
                             feed_progressBar(progressWidth);
                             generate_feed(product, offset, batch, per_batch);
-                        }, 2000);
+                        }, 600);
                     }
                 }
             })
@@ -415,7 +458,6 @@
                 console.log( 'Uh, oh!' );
                 console.log( response.statusText );
             });
-
     }
 
     function feed_progressBar(width) {

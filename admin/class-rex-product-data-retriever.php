@@ -196,8 +196,6 @@ class Rex_Product_Data_Retriever {
         }
 
 
-
-
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix($val, $rule);
         // maybe escape
@@ -229,8 +227,10 @@ class Rex_Product_Data_Retriever {
         switch ( $key ) {
             case 'id':
                 return $this->product->get_id(); break;
+
             case 'sku':
                 return $this->product->get_sku(); break;
+
             case 'title':
                 if($this->append_variation === 'no') {
                     return $this->product->get_name();
@@ -315,7 +315,6 @@ class Rex_Product_Data_Retriever {
                 }
 
                 break;
-
 
             case 'description':
 

@@ -900,17 +900,22 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $log->info(__( '**************************************************', 'rex-product-feed' ), array('source' => 'WPFM',));
         }
 
-
         if($format == 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
             if( file_exists($file) ) {
                 if($this->batch == 1) {
+//                    update_post_meta($this->id, 'rex-feed', $this->feed);
+//                    return 'true';
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
                 }else {
                     $feed = $this->merge_feeds($file);
+//                    update_post_meta($this->id, 'rex-feed', $feed);
+//                    return 'true';
                     return file_put_contents($file, $feed) ? 'true' : 'false';
                 }
             }else{
+//                update_post_meta($this->id, 'rex-feed', $this->feed);
+//                return 'true';
                 return file_put_contents($file, $this->feed) ? 'true' : 'false';
             }
         }

@@ -1,15 +1,15 @@
 === WooCommerce Product Feed Manager ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll, WooCommerce, Pricerunner, Billiger.de, Vergelijk.nl, Twenga.nl, Marktplaats, Beslist, Daisycon, Yandex, Tweakers, Spartoo, Kieskeurig, Sooqr, Scoupz, Koopkeus, Heureka, CDiscount, Kelkoo, Uvinum, Rakuteen, Idealo, Pricemasher, Pricesearcher, Fashionchick, Ceneo, Pinterest, Google Dynamic Search Ads, Instagram, Choozen, RSS, Ciao, Google Local Products, Google Local Products Inventory, Pricespy/Prisjakt, Crowdfox, Powerreviews, Trovaprezzi, Zbozi, Liveintent, Skroutz, Otto, Sears, Ammoseek, Fnac, Zalando, Pixmania, Coolblue, Shopmania, Kleding, Ladenzeile, Preis, Winesearcher
+Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll, WooCommerce, Pricerunner, Billiger.de, Vergelijk.nl, Twenga.nl, Marktplaats, Beslist, Daisycon, Yandex, Tweakers, Spartoo, Kieskeurig, Sooqr, Scoupz, Koopkeus, Heureka, CDiscount, Kelkoo, Uvinum, Rakuteen, Idealo, Pricemasher, Pricesearcher, Fashionchick, Ceneo, Pinterest, Google Dynamic Search Ads, Instagram, Choozen, RSS, Ciao, Google Local Products, Google Local Products Inventory, Pricespy/Prisjakt, Crowdfox, Powerreviews, Trovaprezzi, Zbozi, Liveintent, Skroutz, Otto, Sears, Ammoseek, Fnac, Zalando, Pixmania, Coolblue, Shopmania, Kleding, Ladenzeile, Preis, Winesearcher, Google Merchant Promotions feed, Walmart
 Requires at least: 4.7
-Tested up to:  5.3
+Tested up to:  5.3.1
 Requires PHP: 5.6
-Stable tag: 5.8
+Stable tag: 5.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce Product Feed Manager helps you to sell more by uploading product feed to Google shopping, Amazon, Ebay, Nextag, Pricegrabber and acquiring real buyer.
+WooCommerce Product Feed Manager helps you to sell more by uploading product feed to Google shopping, Amazon, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
 Do you wish to increase your WooCommerce store sales? One way is to promote on popular merchant shops such as Google Shopping, Facebook Dynamics, eBay, Amazon, etc.
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 63 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 65 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -66,7 +66,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 63 pre-built templates of Merchant Shop feed
+* 65 pre-built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
@@ -92,6 +92,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Google Dynamic Search Ads](https://support.google.com/google-ads/answer/2471185?hl=en)
 - WooCommerce to [Google Local Products](https://support.google.com/merchants/answer/3061198?hl=en#:~:targetText=Local%20products%20feed%20specification,successful%20ads%20for%20your%20products)
 - WooCommerce to [Google Local Products Inventory](https://support.google.com/merchants/answer/3061342?hl=en)
+- WooCommerce to [Google Merchant Promotions](https://support.google.com/merchants/answer/2906014?hl=en)
 - RSS Feed
 - WooCommerce to [Amazon Seller Ad](https://advertising.amazon.com/)
 - WooCommerce to [Facebook Catalog Feed](https://www.facebook.com/business/a/online-sales/dynamic-product-ads/)
@@ -151,6 +152,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Ladenzeile](https://www.ladenzeile.de/)
 - WooCommerce to [Preis](https://www.preis.de/)
 - WooCommerce to [Winesearcher](https://www.wine-searcher.com/)
+- WooCommerce to [Walmart](https://www.walmart.com/)
 
 == Pro Features: ==
 
@@ -190,12 +192,13 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 63 major merchant shops:
+Currently, we support 65 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
 - Google Local Products
 - Google Local Products Inventory
+- Google Merchant Promotions
 - RSS Feed
 - Amazon Seller Ad
 - Facebook Catalog Feed
@@ -255,6 +258,7 @@ Currently, we support 63 major merchant shops:
 - Ladenzeile
 - Preis
 - Winesearcher
+- Walmart
 
 
 
@@ -305,6 +309,10 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.9 (2019-12-19) =
+* Added: Google Merchant Promotions template
+* Added: Walmart template
 
 = 5.8 (2019-12-12) =
 * Added: Kleding template

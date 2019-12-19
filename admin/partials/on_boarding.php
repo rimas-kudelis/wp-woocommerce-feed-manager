@@ -205,6 +205,11 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Google Local Products Inventory'
                                 ),
+                                'google_merchant_promotion'    => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Google Merchant Promotion Feed'
+                                ),
                                 'google_dsa'    => array(
                                     'free'  => true,
                                     'status'    => 0,
@@ -499,6 +504,11 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Winesearcher'
+                                ),
+                                'walmart'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Walmart'
                                 )
                             );
                             $_pro_merchants = array(

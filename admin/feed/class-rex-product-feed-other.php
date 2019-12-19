@@ -45,6 +45,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         $this->feed = $this->returnFinalProduct();
 
 
+
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(

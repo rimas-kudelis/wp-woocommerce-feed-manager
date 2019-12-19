@@ -52,6 +52,7 @@ class Rex_Feed_Attributes {
                 'sale_price_effective_date' => 'Sale Price Effective Date',
                 'identifier_exists'         => 'Identifier Exists Calculator',
                 'in_stock'                  => 'In Stock (Y/N)',
+                'promotion_id'              => 'Promotion ID',
             ),
 
             'Image Attributes' => array(
