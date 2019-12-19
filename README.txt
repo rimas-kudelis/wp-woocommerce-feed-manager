@@ -12,7 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooCommerce Product Feed Manager helps you to sell more by uploading product feed to Google shopping, Amazon, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
-Do you wish to increase your WooCommerce store sales? One way is to promote on popular merchant shops such as Google Shopping, Facebook Dynamics, eBay, Amazon, etc.
+Do you wish to increase your WooCommerce store sales? One way is to promote on popular merchant shops such as Google Shopping, Facebook Dynamics, eBay, Amazon, Walmart etc.
 
 You can easily do it by generating WooCommerce product feed and uploading it on those sites.
 
@@ -98,6 +98,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Facebook Catalog Feed](https://www.facebook.com/business/a/online-sales/dynamic-product-ads/)
 - WooCommerce to [Pinterest](https://www.pinterest.com/)
 - WooCommerce to [Instagram](https://www.instagram.com/)
+- WooCommerce to [Walmart Marketplace](https://www.walmart.com/)
 - WooCommerce to [AdRoll.com](https://www.adroll.com/)
 - WooCommerce to [Nextag](http://www.nextag.com/)
 - WooCommerce to [Pricegrabber](http://www.pricegrabber.com/)
@@ -152,7 +153,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Ladenzeile](https://www.ladenzeile.de/)
 - WooCommerce to [Preis](https://www.preis.de/)
 - WooCommerce to [Winesearcher](https://www.wine-searcher.com/)
-- WooCommerce to [Walmart](https://www.walmart.com/)
+
 
 == Pro Features: ==
 
@@ -204,6 +205,7 @@ Currently, we support 65 major merchant shops:
 - Facebook Catalog Feed
 - Instagram
 - Pinterest
+- Walmart
 - AdRoll.com
 - Nextag
 - Pricegrabber
@@ -258,7 +260,7 @@ Currently, we support 65 major merchant shops:
 - Ladenzeile
 - Preis
 - Winesearcher
-- Walmart
+
 
 
 
