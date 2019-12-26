@@ -509,7 +509,32 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'free'  => true,
                                     'status'    => 0,
                                     'name'  => 'Walmart'
-                                )
+                                ),
+                                'snapchat'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Snapchat'
+                                ),
+                                'verizon'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Yahoo/Verizon Dynamic Product Ads'
+                                ),
+                                'kelkoo_group'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Kelkoo Group'
+                                ),
+                                'target'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Target'
+                                ),
+                                'pepperjam'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Pepperjam'
+                                ),
                             );
                             $_pro_merchants = array(
                                 'ebay_mip'     => array(

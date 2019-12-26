@@ -59,6 +59,11 @@ class Rex_Product_Feed_Factory {
                 'shopmania',
                 'preis',
                 'walmart',
+                'snapchat',
+                'verizon',
+                'kelkoo_group',
+                'target',
+                'pepperjam',
             )
         );
 
