@@ -64,6 +64,10 @@ class Rex_Product_Feed_Factory {
                 'kelkoo_group',
                 'target',
                 'pepperjam',
+                'cj_affiliate',
+                'guenstiger',
+                'hood',
+                'livingo',
             )
         );
 

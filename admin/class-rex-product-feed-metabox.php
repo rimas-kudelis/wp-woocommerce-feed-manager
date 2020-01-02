@@ -375,6 +375,9 @@ class Rex_Product_Metabox {
                     'verizon',
                     'target',
                     'pepperjam',
+                    'guenstiger',
+                    'hood',
+                    'livingo',
                 ))),
             ),
         ) );

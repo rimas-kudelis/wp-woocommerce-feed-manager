@@ -535,6 +535,26 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Pepperjam'
                                 ),
+                                'cj_affiliate'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'CJ Affiliate'
+                                ),
+                                'guenstiger'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Guenstiger'
+                                ),
+                                'hood'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Hood'
+                                ),
+                                'livingo'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Livingo'
+                                ),
                             );
                             $_pro_merchants = array(
                                 'ebay_mip'     => array(
