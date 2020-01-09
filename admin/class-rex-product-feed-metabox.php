@@ -378,6 +378,11 @@ class Rex_Product_Metabox {
                     'guenstiger',
                     'hood',
                     'livingo',
+                    'jet',
+                    'bonanza',
+                    'adcell',
+                    'stylefruits',
+                    'medizinfuchs',
                 ))),
             ),
         ) );

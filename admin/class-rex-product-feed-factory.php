@@ -68,6 +68,11 @@ class Rex_Product_Feed_Factory {
                 'guenstiger',
                 'hood',
                 'livingo',
+                'jet',
+                'bonanza',
+                'adcell',
+                'stylefruits',
+                'medizinfuchs',
             )
         );
 

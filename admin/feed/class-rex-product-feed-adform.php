@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The file that generates xml feed for adform
+ * The file that generates xml feed for Kleding
  *
  * A class definition that includes functions used for generating xml feed.
  *
@@ -15,7 +15,7 @@
 
 use RexTheme\RexShoppingFeed\Containers\RexShopping;
 
-class Rex_Product_Feed_Adform extends Rex_Product_Feed_Other {
+class Rex_Product_Feed_Kleding extends Rex_Product_Feed_Other {
     private $feed_merchants = array(
         "nextag" => array(
             'item_wrapper'  => 'product',

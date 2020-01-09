@@ -555,6 +555,36 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Livingo'
                                 ),
+                                'jet'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Jet'
+                                ),
+                                'bonanza'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Bonanza'
+                                ),
+                                'adcell'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Adcell'
+                                ),
+                                'adform'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Adform'
+                                ),
+                                'stylefruits'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Stylefruits'
+                                ),
+                                'medizinfuchs'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Medizinfuchs'
+                                ),
                             );
                             $_pro_merchants = array(
                                 'ebay_mip'     => array(
