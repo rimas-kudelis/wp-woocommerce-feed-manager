@@ -585,6 +585,26 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Medizinfuchs'
                                 ),
+                                'moebel'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Moebel'
+                                ),
+                                'restposten'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Restposten'
+                                ),
+                                'sparmedo'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Sparmedo'
+                                ),
+                                'whiskymarketplace'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Whiskymarketplace'
+                                ),
                             );
                             $_pro_merchants = array(
                                 'ebay_mip'     => array(

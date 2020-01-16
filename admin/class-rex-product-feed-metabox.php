@@ -383,6 +383,10 @@ class Rex_Product_Metabox {
                     'adcell',
                     'stylefruits',
                     'medizinfuchs',
+                    'moebel',
+                    'restposten',
+                    'sparmedo',
+                    'whiskymarketplace',
                 ))),
             ),
         ) );

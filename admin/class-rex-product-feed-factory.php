@@ -73,6 +73,9 @@ class Rex_Product_Feed_Factory {
                 'adcell',
                 'stylefruits',
                 'medizinfuchs',
+                'moebel',
+                'restposten',
+                'sparmedo',
             )
         );
 
