@@ -76,6 +76,13 @@ class Rex_Product_Feed_Factory {
                 'moebel',
                 'restposten',
                 'sparmedo',
+                'newegg',
+                '123i',
+                'bikeexchange',
+                'cenowarka',
+                'cezigue',
+                'check24',
+                'clang',
             )
         );
 

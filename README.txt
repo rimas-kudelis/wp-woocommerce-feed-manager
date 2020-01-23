@@ -1,11 +1,11 @@
 === WooCommerce Product Feed Manager ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll, WooCommerce, Pricerunner, Billiger.de, Vergelijk.nl, Twenga.nl, Marktplaats, Beslist, Daisycon, Yandex, Tweakers, Spartoo, Kieskeurig, Sooqr, Scoupz, Koopkeus, Heureka, CDiscount, Kelkoo, Uvinum, Rakuteen, Idealo, Pricemasher, Pricesearcher, Fashionchick, Ceneo, Pinterest, Google Dynamic Search Ads, Instagram, Choozen, RSS, Ciao, Google Local Products, Google Local Products Inventory, Pricespy/Prisjakt, Crowdfox, Powerreviews, Trovaprezzi, Zbozi, Liveintent, Skroutz, Otto, Sears, Ammoseek, Fnac, Zalando, Pixmania, Coolblue, Shopmania, Kleding, Ladenzeile, Preis, Winesearcher, Google Merchant Promotions feed, Walmart, SnapChat, Yahoo/Verizon Dynamic Product Ads, Kelkoo Group Network, Target, Pepperjam, CJ Affiliate, Guenstiger, Hood, Livingo, Jet, Bonanza, Medizinfuchs, Adcell, Adform, Stylefruits, Moebel, Restposten, Sparmedo, Whiskymarketplace
+Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, Google Shopping, Google Shopping Feed, Amazon Product Feed, Bing Shopping, Bing Product Feed, Bing Remarking, Google Merchant Feed, Google Merchant Product Feed, Google DRM Feed, Google Dynamic Remarketing Feed, Facebook feed, Google feed, Amazon feed, Bing feed, Facebook Product Feed, Facebook Dynamic Remarketing Feed, Data Feed, WooCommerce Feed, XML product feed, TXT product feed, comparison shopping engines, comparison shopping websites, Pricegrabber, Kelkoo, Become, Shopzilla, Shopping, Google Adwords, AdRoll, WooCommerce, Pricerunner, Billiger.de, Vergelijk.nl, Twenga.nl, Marktplaats, Beslist, Daisycon, Yandex, Tweakers, Spartoo, Kieskeurig, Sooqr, Scoupz, Koopkeus, Heureka, CDiscount, Kelkoo, Uvinum, Rakuteen, Idealo, Pricemasher, Pricesearcher, Fashionchick, Ceneo, Pinterest, Google Dynamic Search Ads, Instagram, Choozen, RSS, Ciao, Google Local Products, Google Local Products Inventory, Pricespy/Prisjakt, Crowdfox, Powerreviews, Trovaprezzi, Zbozi, Liveintent, Skroutz, Otto, Sears, Ammoseek, Fnac, Zalando, Pixmania, Coolblue, Shopmania, Kleding, Ladenzeile, Preis, Winesearcher, Google Merchant Promotions feed, Walmart, SnapChat, Yahoo/Verizon Dynamic Product Ads, Kelkoo Group Network, Target, Pepperjam, CJ Affiliate, Guenstiger, Hood, Livingo, Jet, Bonanza, Medizinfuchs, Adcell, Adform, Stylefruits, Moebel, Restposten, Sparmedo, Whiskymarketplace, newegg, bikeexchange, cenowarka, cezigue, check24, clang
 Requires at least: 4.7
 Tested up to:  5.3.2
 Requires PHP: 5.6
-Stable tag: 5.13
+Stable tag: 5.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 84 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 90 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -66,7 +66,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 84 pre-built templates of Merchant Shop feed
+* 90 pre-built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
@@ -172,6 +172,12 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Restposten](https://www.restposten.de/)
 - WooCommerce to [Sparmedo](https://www.sparmedo.de/)
 - WooCommerce to [Whiskymarketplace](https://www.whiskymarketplace.com/)
+- WooCommerce to [NewEgg](https://www.newegg.com/)
+- WooCommerce to [Bike Exchange](https://www.bikeexchange.com.au/)
+- WooCommerce to [Cenowarka](https://cenowarka.pl/)
+- WooCommerce to [Cezigue](https://www.cezigue.fr/)
+- WooCommerce to [Check24](https://www.check24.de/)
+- WooCommerce to [Clang](https://www.e-village.nl/clang/)
 
 
 == Pro Features: ==
@@ -221,7 +227,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 84 major merchant shops:
+Currently, we support 90 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
@@ -307,6 +313,12 @@ Currently, we support 84 major merchant shops:
 - Restposten
 - Sparmedo
 - Whiskymarketplace
+- NewEgg
+- Bike Exchange
+- Cenowarka
+- Cezigue
+- Check24
+- Clang
 
 
 = Is there a product limit? =
@@ -356,6 +368,15 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.14 (2020-01-23) =
+* Added: NewEgg template
+* Added: Bike Exchange template
+* Added: Cenowarka template
+* Added: Cezigue template
+* Added: Check24 template
+* Added: Clang template
+* Compatibility Checked : WooCommerce 3.9.0
 
 = 5.13 (2020-01-16) =
 * Added: Moebel template

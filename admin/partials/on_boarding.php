@@ -605,7 +605,48 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Whiskymarketplace'
                                 ),
+                                'newegg'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'NewEgg'
+                                ),
+//                                '123i'     => array(
+//                                    'free'  => true,
+//                                    'status'    => 0,
+//                                    'name'  => '123I'
+//                                ),
+//                                'adcrowd'     => array(
+//                                    'free'  => true,
+//                                    'status'    => 0,
+//                                    'name'  => 'Adcrowd'
+//                                ),
+                                'bikeexchange'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Bike Exchange'
+                                ),
+                                'cenowarka'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Cenowarka'
+                                ),
+                                'cezigue'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Cezigue'
+                                ),
+                                'check24'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Check24'
+                                ),
+                                'clang'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Clang'
+                                ),
                             );
+                                
                             $_pro_merchants = array(
                                 'ebay_mip'     => array(
                                     'free'  => false,

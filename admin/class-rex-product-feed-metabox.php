@@ -387,6 +387,11 @@ class Rex_Product_Metabox {
                     'restposten',
                     'sparmedo',
                     'whiskymarketplace',
+                    'newegg',
+                    'bikeexchange',
+                    'cenowarka',
+                    'cezigue',
+                    'check24',
                 ))),
             ),
         ) );
