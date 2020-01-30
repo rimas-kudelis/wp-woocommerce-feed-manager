@@ -392,6 +392,11 @@ class Rex_Product_Metabox {
                     'cenowarka',
                     'cezigue',
                     'check24',
+                    'converto',
+                    'coolshop',
+                    'commerce_connector',
+                    'everysize',
+                    'encuentraprecios',
                 ))),
             ),
         ) );

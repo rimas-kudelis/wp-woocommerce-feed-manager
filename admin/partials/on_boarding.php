@@ -645,6 +645,46 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Clang'
                                 ),
+                                'cherchons'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Cherchons'
+                                ),
+                                'boetiek'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Boetiek B.V'
+                                ),
+                                'comparer'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Comparer'
+                                ),
+                                'converto'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Converto'
+                                ),
+                                'coolshop'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Coolshop'
+                                ),
+                                'commerce_connector'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Commerce Connector'
+                                ),
+                                'everysize'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Everysize'
+                                ),
+                                'encuentraprecios'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Encuentraprecios'
+                                ),
                             );
                                 
                             $_pro_merchants = array(

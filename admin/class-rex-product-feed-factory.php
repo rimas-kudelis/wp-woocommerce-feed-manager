@@ -83,6 +83,14 @@ class Rex_Product_Feed_Factory {
                 'cezigue',
                 'check24',
                 'clang',
+                'cherchons',
+                'boetiek',
+                'comparer',
+                'converto',
+                'coolshop',
+                'commerce_connector',
+                'everysize',
+                'encuentraprecios',
             )
         );
 
