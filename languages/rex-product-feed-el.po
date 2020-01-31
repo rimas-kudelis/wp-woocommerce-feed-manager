@@ -3,12 +3,11 @@ msgstr ""
 "Project-Id-Version: WooCommerce Product Feed Manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-06 08:53+0000\n"
-"PO-Revision-Date: 2020-01-29 09:39+0000\n"
+"PO-Revision-Date: 2020-01-29 09:38+0000\n"
 "Last-Translator: devadmin <farshid@coderex.co>\n"
-"Language-Team: Czech\n"
-"Language: cs_CZ\n"
-"Plural-Forms: nplurals=3; plural=( n == 1 ) ? 0 : ( n >= 2 && n <= 4 ) ? 1 : "
-"2;\n"
+"Language-Team: Greek\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +17,7 @@ msgstr ""
 #: admin/class-rex-google-merchant-content-api.php:79
 #: admin/class-rex-google-merchant-content-api.php:118
 msgid "You are not authorized."
-msgstr "Nejste oprávněni."
+msgstr "Δεν είστε εξουσιοδοτημένοι."
 
 #: admin/class-rex-google-merchant-content-api.php:80
 #: admin/class-rex-google-merchant-content-api.php:119
@@ -27,22 +26,22 @@ msgid ""
 "Google APIs. Please insert the information below and authenticate token for "
 "Google Merchant Shop. Generated access token expires after 3600 sec."
 msgstr ""
-"Platnost vašeho přístupového tokenu vypršela. Tato aplikace používá pro "
-"přístup k API Google OAuth 2.0. Vložte níže uvedené informace a ověřte token "
-"pro službu Google Merchant Shop. Vygenerovaný přístupový token vyprší po "
-"3600 sekundách."
+"Το αναγνωριστικό πρόσβασης έχει λήξει. Αυτή η εφαρμογή χρησιμοποιεί το OAuth "
+"2.0 για πρόσβαση στα API της Google. Εισαγάγετε τις παρακάτω πληροφορίες και "
+"το διακριτικό ελέγχου ταυτότητας για το Google Merchant Shop. Το "
+"αναγνωριστικό πρόσβασης δημιουργείται μετά από 3600 δευτερόλεπτα."
 
 #: admin/class-rex-google-merchant-content-api.php:91
 msgid "You are authorized."
-msgstr "Jste oprávněni."
+msgstr "Είστε εξουσιοδοτημένοι."
 
 #: admin/class-rex-google-merchant-content-api.php:92
 msgid ""
 "You are now ready to send feed from WooCommerce Product Feed Manager to your "
 "Google Merchant Center. 🚀"
 msgstr ""
-"Nyní jste připraveni poslat zdroj ze Správce zdrojů produktů WooCommerce do "
-"svého Google Merchant Center. 🚀"
+"Τώρα είστε έτοιμοι να στείλετε τη ροή από τον Διαχειριστή Feed προϊόντων "
+"WooCommerce στο Google Merchant Center. 🚀"
 
 #: admin/class-rex-product-feed-admin.php:204
 msgid ""
@@ -51,30 +50,31 @@ msgid ""
 "                        BIG favor and give it a 5-star rating on WordPress? "
 "Just to help us spread the word and boost our motivation."
 msgstr ""
-"Hej, všiml jsem si, že jste právě vytvořili nový zdroj s 50 produkty pomocí "
-"Správce zdrojů WC produktů - to je úžasné! Mohl byste mi prosím udělat? BIG "
-"laskavost a dát mu na WordPress 5 hvězdiček? Jen abychom nám pomohli šířit "
-"slovo a posílit naši motivaci."
+"Γεια σου, παρατήρησα ότι μόλις δημιουργήσατε μια νέα τροφή με 50 προϊόντα "
+"που χρησιμοποιούν το διαχειριστή τροφοδοσίας προϊόντων WC - αυτό είναι "
+"εκπληκτικό! Θα μπορούσατε να μου κάνετε ένα μεγάλο χάρισμα και να του δώσετε "
+"μια βαθμολογία 5 αστέρων στο WordPress; Ακριβώς για να μας βοηθήσει να "
+"διαδώσουμε τη λέξη και να ενισχύσουμε τα κίνητρά μας."
 
 #: admin/class-rex-product-feed-admin.php:209
 #: admin/class-rex-product-feed-admin.php:236
 msgid "Ok, you deserve it"
-msgstr "Dobře, zasloužíš si to"
+msgstr "Εντάξει, το αξίζετε"
 
 #: admin/class-rex-product-feed-admin.php:212
 #: admin/class-rex-product-feed-admin.php:240
 msgid "Nope, maybe later."
-msgstr "Ne, možná později."
+msgstr "Όχι, ίσως αργότερα."
 
 #: admin/class-rex-product-feed-admin.php:215
 #: admin/class-rex-product-feed-admin.php:244
 msgid "I already did."
-msgstr "Už se stalo."
+msgstr "Εκανα ήδη."
 
 #: admin/class-rex-product-feed-admin.php:218
 #: admin/class-rex-product-feed-admin.php:247
 msgid "Dismiss this notice."
-msgstr "Toto oznámení zrušit."
+msgstr "Απορρίψτε την παρούσα ειδοποίηση."
 
 #: admin/class-rex-product-feed-admin.php:232
 msgid ""
@@ -83,118 +83,119 @@ msgid ""
 "rating on WordPress? Just to help us spread the word and boost our "
 "motivation."
 msgstr ""
-"Hej, všiml jsem si, že používáte správce krmiv pro produkty WC více než dva "
-"týdny - to je úžasné! Mohl byste mi prosím udělat velkou laskavost a dát mu "
-"na WordPress 5 hvězdiček? Jen abychom nám pomohli šířit slovo a posílit naši "
-"motivaci."
+"Γεια σου, παρατήρησα ότι χρησιμοποιείτε διαχειριστή τροφοδοσίας προϊόντων WC "
+"για πάνω από δύο εβδομάδες - αυτό είναι εκπληκτικό! Θα μπορούσατε να μου "
+"κάνετε ένα μεγάλο χάρισμα και να του δώσετε μια βαθμολογία 5 αστέρων στο "
+"WordPress; Ακριβώς για να μας βοηθήσει να διαδώσουμε τη λέξη και να "
+"ενισχύσουμε τα κίνητρά μας."
 
 #: admin/class-rex-product-feed-admin.php:310
 msgid "Product Feed"
-msgstr "Krmení produktu"
+msgstr "Τροφοδοσία προϊόντος"
 
 #: admin/class-rex-product-feed-admin.php:311
 msgid "Add New Feed"
-msgstr "Přidat nový zdroj"
+msgstr "Προσθήκη νέας ροής"
 
 #: admin/class-rex-product-feed-admin.php:312
 msgid "Category Mapping"
-msgstr "Mapování kategorií"
+msgstr "Χαρτογράφηση κατηγοριών"
 
 #: admin/class-rex-product-feed-admin.php:313
 msgid "Google Merchant Settings"
-msgstr "Nastavení obchodníka Google"
+msgstr "Ρυθμίσεις Εμπόρου Google"
 
 #: admin/class-rex-product-feed-admin.php:314
 msgid "Dashboard"
-msgstr "Přístrojová deska"
+msgstr "Ταμπλό"
 
 #: admin/class-rex-product-feed-metabox.php:54
 msgid "Products"
-msgstr "produkty"
+msgstr "Προϊόντα"
 
 #: admin/class-rex-product-feed-metabox.php:55
 msgid "Select products to create feed for."
-msgstr "Vyberte produkty, pro které chcete vytvořit zdroj."
+msgstr "Επιλέξτε προϊόντα για να δημιουργήσετε ροή δεδομένων για."
 
 #: admin/class-rex-product-feed-metabox.php:61
 msgid "All Published Products"
-msgstr "Všechny publikované produkty"
+msgstr "Όλα τα δημοσιευμένα προϊόντα"
 
 #: admin/class-rex-product-feed-metabox.php:62
 msgid "Custom Filter"
-msgstr "Vlastní filtr"
+msgstr "Φιλτράρισμα προσαρμοσμένων"
 
 #: admin/class-rex-product-feed-metabox.php:63
 msgid "Category Filter"
-msgstr "Filtr kategorií"
+msgstr "Φίλτρο κατηγοριών"
 
 #: admin/class-rex-product-feed-metabox.php:64
 msgid "Tag Filter"
-msgstr "Filtr značek"
+msgstr "Φίλτρο ετικετών"
 
 #: admin/class-rex-product-feed-metabox.php:113
 msgid "Refresh Interval"
-msgstr "Interval obnovení"
+msgstr "διάστημα ανανέωσης"
 
 #: admin/class-rex-product-feed-metabox.php:114
 msgid "Feed Schedule Update"
-msgstr "Aktualizace plánu zdroje"
+msgstr "Ενημέρωση χρονοδιαγράμματος ροής"
 
 #: admin/class-rex-product-feed-metabox.php:118
 msgid "No Interval"
-msgstr "Žádný interval"
+msgstr "Δεν υπάρχει διάστημα"
 
 #: admin/class-rex-product-feed-metabox.php:119
 msgid "Daily"
-msgstr "Denně"
+msgstr "Καθημερινά"
 
 #: admin/class-rex-product-feed-metabox.php:120
 #: admin/class-rex-product-feed-metabox.php:400
 msgid "Hourly"
-msgstr "Hodinově"
+msgstr "Ωριαίος"
 
 #: admin/class-rex-product-feed-metabox.php:130
 msgid "Include Product Variations"
-msgstr "Zahrnout varianty produktu"
+msgstr "Συμπεριλάβετε παραλλαγές προϊόντων"
 
 #: admin/class-rex-product-feed-metabox.php:131
 msgid "Include/Exclude Products Variations"
-msgstr "Zahrnout / vyloučit varianty produktů"
+msgstr "Συμπεριλάβετε / Εξαιρέστε Παραλλαγές Προϊόντα"
 
 #: admin/class-rex-product-feed-metabox.php:135
 #: admin/class-rex-product-feed-metabox.php:151
 msgid "Yes"
-msgstr "Ano"
+msgstr "Ναί"
 
 #: admin/class-rex-product-feed-metabox.php:136
 #: admin/class-rex-product-feed-metabox.php:152
 msgid "No"
-msgstr "Ne"
+msgstr "Οχι"
 
 #: admin/class-rex-product-feed-metabox.php:146
 msgid "Include Parent Product (Grouped Product)"
-msgstr "Zahrnout nadřazený produkt (seskupený produkt)"
+msgstr "Συμπεριλάβετε το γονικό προϊόν (ομαδοποιημένο προϊόν)"
 
 #: admin/class-rex-product-feed-metabox.php:147
 msgid "Include/Exclude Parent Product"
-msgstr "Zahrnout / vyloučit nadřazený produkt"
+msgstr "Συμπεριλάβετε / Εξαίρεση του γονικού προϊόντος"
 
 #: admin/class-rex-product-feed-metabox.php:173
 #: admin/class-rex-product-feed-metabox.php:174
 msgid "WPML Language"
-msgstr "Jazyk WPML"
+msgstr "Γλώσσα WPML"
 
 #: admin/class-rex-product-feed-metabox.php:199
 msgid "Merchant Type"
-msgstr "Typ obchodníka"
+msgstr "Τύπος Εμπορικής"
 
 #: admin/class-rex-product-feed-metabox.php:200
 msgid "Select Merchant Type of the Feed."
-msgstr "Vyberte Typ obchodníka zdroje."
+msgstr "Επιλέξτε Εμπορικός τύπος της ροής."
 
 #: admin/class-rex-product-feed-metabox.php:206
 msgid "Custom"
-msgstr "Zvyk"
+msgstr "Εθιμο"
 
 #: admin/class-rex-product-feed-metabox.php:207
 msgid "Google Shopping"
@@ -250,11 +251,11 @@ msgstr "Shopping.com"
 
 #: admin/class-rex-product-feed-metabox.php:224
 msgid "File Format"
-msgstr "Formát souboru"
+msgstr "Μορφή αρχείου"
 
 #: admin/class-rex-product-feed-metabox.php:225
 msgid "Select Format of the Feed."
-msgstr "Vyberte Formát zdroje."
+msgstr "Επιλέξτε Μορφή της ροής."
 
 #: admin/class-rex-product-feed-metabox.php:231
 msgid "XML"
@@ -262,59 +263,59 @@ msgstr "XML"
 
 #: admin/class-rex-product-feed-metabox.php:233
 msgid "TEXT"
-msgstr "TEXT"
+msgstr "Κείμενο"
 
 #: admin/class-rex-product-feed-metabox.php:258
 msgid "Add New Attribute"
-msgstr "Přidat nový atribut"
+msgstr "Προσθήκη νέου χαρακτηριστικού"
 
 #: admin/class-rex-product-feed-metabox.php:292
 msgid "Add New Filter"
-msgstr "Přidat nový filtr"
+msgstr "Προσθήκη νέου φίλτρου"
 
 #: admin/class-rex-product-feed-metabox.php:316
 msgid "Your Feed URL"
-msgstr "Adresa URL zdroje"
+msgstr "Η διεύθυνση URL της ροής σας"
 
 #: admin/class-rex-product-feed-metabox.php:346
 msgid "View Feed"
-msgstr "Zobrazit zdroj"
+msgstr "Προβολή τροφής"
 
 #: admin/class-rex-product-feed-metabox.php:348
 msgid "Download Feed"
-msgstr "Stáhněte si zdroj"
+msgstr "Λήψη τροφής"
 
 #: admin/class-rex-product-feed-metabox.php:372
 msgid "Target Country"
-msgstr "Cílová země"
+msgstr "Χώρα προορισμού"
 
 #: admin/class-rex-product-feed-metabox.php:383
 msgid "Target Language"
-msgstr "Cílový jazyk"
+msgstr "Γλώσσα στόχου"
 
 #: admin/class-rex-product-feed-metabox.php:393
 msgid "Schedule"
-msgstr "Plán"
+msgstr "Πρόγραμμα"
 
 #: admin/class-rex-product-feed-metabox.php:398
 msgid "Monthly"
-msgstr "Měsíční"
+msgstr "Μηνιαίο"
 
 #: admin/class-rex-product-feed-metabox.php:399
 msgid "Weekly"
-msgstr "Týdně"
+msgstr "Εβδομαδιαίος"
 
 #: admin/class-rex-product-feed-metabox.php:408
 msgid "Select day of month"
-msgstr "Vyberte den v měsíci"
+msgstr "Επιλέξτε ημέρα του μήνα"
 
 #: admin/class-rex-product-feed-metabox.php:420
 msgid "Select day of week"
-msgstr "Vyberte den v týdnu"
+msgstr "Επιλέξτε την ημέρα της εβδομάδας"
 
 #: admin/class-rex-product-feed-metabox.php:440
 msgid "Select Hour"
-msgstr "Vyberte hodinu"
+msgstr "Επιλέξτε ώρα"
 
 #: admin/class-rex-product-feed-metabox.php:456
 msgid ""
@@ -323,62 +324,65 @@ msgid ""
 "                United States is US and the abbreviation for language, "
 "English is en."
 msgstr ""
-"Vezměte prosím na vědomí, že Google má pevné zkratky pro umístění a jazyk. "
-"Například zkratka pro cílové umístění, Spojené státy americké jsou USA a "
-"zkratka jazyka, angličtina je en."
+"Λάβετε υπόψη ότι η Google έχει καθορισμένες συντομεύσεις για την τοποθεσία "
+"και τη γλώσσα. Για παράδειγμα, η συντομογραφία για τη θέση προορισμού, οι "
+"Ηνωμένες Πολιτείες είναι οι ΗΠΑ και η συντομογραφία για τη γλώσσα, τα "
+"αγγλικά είναι en."
 
 #: admin/class-rex-product-feed-metabox.php:457
 msgid "Click here"
-msgstr "Klikněte zde"
+msgstr "Κάντε κλικ ΕΔΩ"
 
 #: admin/class-rex-product-feed-metabox.php:457
 msgid "to see the list of all abbreviations set by Google."
-msgstr "zobrazte seznam všech zkratek nastavených společností Google."
+msgstr ""
+"Για να δείτε τη λίστα με όλες τις συντομεύσεις που έχει ορίσει η Google."
 
 #: admin/class-rex-product-feed-metabox.php:483
 msgid ""
 "Oops!! Access token has expired.Please authenticate token for Google "
 "Merchant Shop to be able to send feed."
 msgstr ""
-"Jejda !! Platnost přístupového tokenu vypršela. Ověřte token, aby mohl "
-"obchod Google Merchant Shop posílat zdroj."
+"Ωχ! Το διακριτικό πρόσβασης έχει λήξει.Παρακαλώτε το διακριτικό ελέγχου "
+"ταυτότητας για το Google Merchant Shop για να μπορείτε να στέλνετε ροή "
+"δεδομένων."
 
 #: admin/class-rex-product-feed-metabox.php:485
 msgid "Authenticate"
-msgstr "Ověřit"
+msgstr "Πιστοποιώ την αυθεντικότητα"
 
 #: admin/class-rex-product-feed-metabox.php:490
 msgid "Send to google merchant"
-msgstr "Odeslat obchodníkovi Google"
+msgstr "Αποστολή στο Google Merchant"
 
 #: admin/partials/merchant_settings.php:43
 msgid "Client ID#: "
-msgstr "ID klienta:"
+msgstr "Ταυτότητα πελάτη#:"
 
 #: admin/partials/merchant_settings.php:47
 msgid "Client Secret: "
-msgstr "Tajemství klienta:"
+msgstr "Κλειδί πελάτη:"
 
 #: admin/partials/merchant_settings.php:51
 msgid "Merchant ID# : "
-msgstr "ID obchodníka:"
+msgstr "Merchant ID# : "
 
 #: admin/partials/merchant_settings.php:56
 msgid "Redirect URL"
-msgstr "Adresa URL přesměrování"
+msgstr "Ανακατεύθυνση διεύθυνσης URL"
 
 #: admin/partials/merchant_settings.php:59
 msgid "Reset"
-msgstr "Resetovat"
+msgstr "Επαναφορά"
 
 #: admin/partials/merchant_settings.php:60
 msgid "replay"
-msgstr "Přehrát"
+msgstr "Επανάληψη"
 
 #: admin/partials/merchant_settings.php:63
 msgid "Submit"
-msgstr "Předložit"
+msgstr "υποβάλλουν"
 
 #: admin/partials/merchant_settings.php:64
 msgid "send"
-msgstr "poslat"
+msgstr "Στείλετε"

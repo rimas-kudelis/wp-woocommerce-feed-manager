@@ -5,7 +5,7 @@ Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, 
 Requires at least: 4.7
 Tested up to:  5.3.2
 Requires PHP: 5.6
-Stable tag: 5.15
+Stable tag: 5.15.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -384,6 +384,11 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.15.1 (2020-01-31) =
+* Added: Translation support added for Greek
+* Updated: Other translation updated
+
 
 = 5.15 (2020-01-30) =
 * Added: Cherchons template
