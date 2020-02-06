@@ -83,7 +83,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
  * Include/Exclude variable products 
 * Supports YITH brand attributes
 * Custom Batch configuration
-* Flexibility to remove ‘out of stock
+* Flexibility to remove 'out of stock'
 
 
 **Supported Merchants:**
