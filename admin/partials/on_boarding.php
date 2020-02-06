@@ -685,6 +685,36 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Encuentraprecios'
                                 ),
+                                'geizhals'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Geizhals'
+                                ),
+                                'geizkragen'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Geizkragen'
+                                ),
+                                'giftboxx'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Giftboxx'
+                                ),
+                                'go_banana'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Go Banana'
+                                ),
+                                'goed_geplaatst'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Goed Geplaatst'
+                                ),
+                                'grosshandel'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Grosshandel'
+                                ),
                             );
                                 
                             $_pro_merchants = array(

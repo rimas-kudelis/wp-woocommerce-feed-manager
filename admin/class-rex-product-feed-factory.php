@@ -91,6 +91,12 @@ class Rex_Product_Feed_Factory {
                 'commerce_connector',
                 'everysize',
                 'encuentraprecios',
+                'geizhals',
+                'geizkragen',
+                'giftboxx',
+                'go_banana',
+                'goed_geplaatst',
+                'grosshandel',
             )
         );
 

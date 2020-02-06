@@ -397,6 +397,11 @@ class Rex_Product_Metabox {
                     'commerce_connector',
                     'everysize',
                     'encuentraprecios',
+                    'geizhals',
+                    'geizkragen',
+                    'go_banana',
+                    'goed_geplaatst',
+                    'grosshandel',
                 ))),
             ),
         ) );
