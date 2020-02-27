@@ -402,10 +402,13 @@ class Rex_Product_Metabox {
                     'go_banana',
                     'goed_geplaatst',
                     'grosshandel',
+                    'hardware',
+                    'hatch',
+                    'hintaopas',
                 ))),
             ),
         ) );
-//
+
         $box->add_field( array(
             'id'        => $this->prefix . 'config_heading',
             'name'      => 'Configure Feed Attributes and their values.',
@@ -662,7 +665,7 @@ class Rex_Product_Metabox {
      */
     function google_merchant_desc( $field_args, $field ) {
        echo __('<p class="google-desc">'.__('Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, 
-                United States is US and the abbreviation for language, English is en.', 'rex-product-feed').' <a href="http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml" target="_blank">'.__('Click here', 'rex-product-feed').'</a> '.__('to see the list of all abbreviations set by Google.', 'rex-product-feed').'</p>', 'rex-product-feed');
+                United States is US and the abbreviation for language, English is en.', 'rex-product-feed').' <a href="https://rextheme.com/google-country-codes-list/" target="_blank">'.__('Click here', 'rex-product-feed').'</a> '.__('to see the list of all abbreviations set by Google.', 'rex-product-feed').'</p>', 'rex-product-feed');
     }
 
 

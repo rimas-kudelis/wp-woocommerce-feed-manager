@@ -715,6 +715,21 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Grosshandel'
                                 ),
+                                'hardware'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Hardware.info'
+                                ),
+                                'hatch'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Hatch'
+                                ),
+                                'hintaopas'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Hintaopas'
+                                ),
                             );
                                 
                             $_pro_merchants = array(

@@ -275,8 +275,6 @@ class Rex_Product_Data_Retriever {
 //                    return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
 //                return $this->product->get_sale_price() ? number_format((float)$this->product->get_sale_price(), 2, '.', ''): '';
 
-
-
                 if (!defined('WAD_INITIALIZED') ) {
                     if ($this->product->is_type( 'grouped' ))
                         return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
@@ -292,7 +290,9 @@ class Rex_Product_Data_Retriever {
                             $wad_discounts[$discount_type][$discount_id] = new WAD_Discount($discount_id);
                         }
                     }
-                    $sale_price = $this->product->is_type( 'grouped' ) ? number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') : number_format((float)$this->product->get_sale_price(), 2, '.', '');
+                    $sale_price = $this->product->is_type( 'grouped' ) ?
+                        number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') :
+                        number_format((float)$this->product->get_sale_price(), 2, '.', '');
 
                     $pid = wad_get_product_id_to_use($this->product);
                     foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
@@ -675,7 +675,7 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
-        $terms = get_the_terms( $id, $taxonomy );
+        $terms = wp_get_post_terms( $id, $taxonomy , array( 'orderby' => 'term_id' ));
 
         if ( empty( $terms ) || is_wp_error( $terms ) ){
             return '';

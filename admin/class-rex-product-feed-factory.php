@@ -97,6 +97,9 @@ class Rex_Product_Feed_Factory {
                 'go_banana',
                 'goed_geplaatst',
                 'grosshandel',
+                'hardware',
+                'hatch',
+                'hintaopas',
             )
         );
 

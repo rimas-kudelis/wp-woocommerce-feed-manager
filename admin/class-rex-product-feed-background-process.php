@@ -154,10 +154,6 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                         }
                     }
                 }
-
-
-
-
             }
 
             $feed_format = get_post_meta($item_id, 'rex_feed_feed_format', true);
