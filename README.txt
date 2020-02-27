@@ -405,7 +405,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 5.17 (2020-02-25) =
+= 5.17 (2020-02-27) =
 * Bug Fix: Update category path
 * Added: Hardware template
 * Added: Hatch template
