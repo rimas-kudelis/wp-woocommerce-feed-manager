@@ -730,6 +730,26 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Hintaopas'
                                 ),
+                                'fyndiq'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Fyndiq.se'
+                                ),
+                                'fasha'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Fasha'
+                                ),
+                                'realde'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Real.de'
+                                ),
+                                'hintaseuranta'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Hintaseuranta'
+                                ),
                             );
                                 
                             $_pro_merchants = array(

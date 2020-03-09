@@ -466,9 +466,14 @@ class Rex_Product_Feed_Ajax {
             }
             catch(Exception $e) {
                 $log = wc_get_logger();
-                $log->info($e->getMessage(), array('source' => 'WPFM-google',));
-                error_log(print_r($e->getMessage(), 1));
-                echo 'Message: ' .$e->getMessage();
+                $log->info($e->getMessage(), array('source' => 'WPFM-google'));
+                $error = json_decode($e->getMessage());
+                $reason = $error->error->errors;
+                return array(
+                    'success' => false,
+                    'message' => $error->error->message,
+                    'reason'  => $reason[0]->reason
+                );
             }
         }
 

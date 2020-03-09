@@ -405,6 +405,10 @@ class Rex_Product_Metabox {
                     'hardware',
                     'hatch',
                     'hintaopas',
+                    'fyndiq',
+                    'fasha',
+                    'realde',
+                    'hintaseuranta',
                 ))),
             ),
         ) );

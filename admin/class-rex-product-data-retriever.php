@@ -223,7 +223,6 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function set_pr_att( $key ) {
-
         switch ( $key ) {
             case 'id':
                 return $this->product->get_id(); break;
@@ -264,9 +263,47 @@ class Rex_Product_Data_Retriever {
                 break;
 
             case 'current_price':
-                if ($this->product->is_type( 'grouped' ))
-                    return number_format((float)$this->get_grouped_price($this->product, 'price'), 2, '.', '');
-                return number_format((float)$this->product->get_price(), 2, '.', '');
+                if (!defined('WAD_INITIALIZED') ) {
+                    if ($this->product->is_type( 'grouped' ))
+                        return number_format((float)$this->get_grouped_price($this->product, 'price'), 2, '.', '');
+                    return number_format((float)$this->product->get_price(), 2, '.', '');
+                }
+                else {
+                    global $wad_discounts;
+
+                    $all_discounts = wad_get_active_discounts(true);
+                    foreach ($all_discounts as $discount_type => $discounts) {
+                        $wad_discounts[$discount_type] = array();
+                        foreach ($discounts as $discount_id) {
+                            $wad_discounts[$discount_type][$discount_id] = new WAD_Discount($discount_id);
+                        }
+                    }
+                    $sale_price = $this->product->is_type( 'grouped' ) ?
+                        number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') :
+                        number_format((float)$this->product->get_price(), 2, '.', '');
+
+                    $pid = wad_get_product_id_to_use($this->product);
+                    foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
+                        $o_discount = get_post_meta($discount_id, 'o-discount', true);
+                        $pr_list_id = $o_discount['products-list'];
+                        $product_list = new WAD_Products_List($pr_list_id);
+                        $raw_args = get_post_meta($pr_list_id, "o-list", true);
+                        $args = $product_list->get_args($raw_args);
+                        $products = get_posts( $args );
+                        if (!empty( $products )) {
+                            $to_return = array_map( function($o) {return $o->ID;}, $products );
+                            $variations_ids = $this->get_request_variations( $products );
+                            $products = array_merge( $to_return, $variations_ids );
+                        }
+
+                        if ($discount_obj->is_applicable($pid) && is_array($products) && in_array($pid, $products)) {
+                            $sale_price = floatval($sale_price) - $discount_obj->get_discount_amount(floatval($sale_price));
+                        }
+                    }
+
+
+                    return $sale_price;
+                }
                 break;
 
             case 'sale_price':

@@ -531,15 +531,20 @@
         $('.rex-google-status').html('<p>Sending......</p>');
         wpAjaxHelperRequest( 'send-to-google', payload )
             .success( function( response ) {
-                console.log('Woohoo!');
-                console.log(response);
-                $('.rex-loading-spinner').css('display', 'none');
-                location.reload();
+                if(response.success) {
+                    console.log('Woohoo!');
+                    console.log(response);
+                    $('.rex-loading-spinner').css('display', 'none');
+                    location.reload();
+                }else {
+                    console.log(response)
+                }
             })
             .error( function( response ) {
                 $('.rex-loading-spinner').css('display', 'none');
                 $('.rex-google-status').html('<div class="rex-error">Something is wrong! Please try again</div>');
                 console.log( 'Uh, oh!' );
+                console.log( response );
                 console.log( response.statusText );
             });
     }

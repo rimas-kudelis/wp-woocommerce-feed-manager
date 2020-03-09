@@ -100,6 +100,10 @@ class Rex_Product_Feed_Factory {
                 'hardware',
                 'hatch',
                 'hintaopas',
+                'fyndiq',
+                'fasha',
+                'realde',
+                'hintaseuranta',
             )
         );
 
