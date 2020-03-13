@@ -409,6 +409,10 @@ class Rex_Product_Metabox {
                     'fasha',
                     'realde',
                     'hintaseuranta',
+                    'family_blend',
+                    'hitmeister',
+                    'lazada',
+                    'get_price',
                 ))),
             ),
         ) );

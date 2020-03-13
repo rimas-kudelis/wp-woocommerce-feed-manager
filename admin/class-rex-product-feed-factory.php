@@ -104,6 +104,10 @@ class Rex_Product_Feed_Factory {
                 'fasha',
                 'realde',
                 'hintaseuranta',
+                'family_blend',
+                'hitmeister',
+                'lazada',
+                'get_price',
             )
         );
 

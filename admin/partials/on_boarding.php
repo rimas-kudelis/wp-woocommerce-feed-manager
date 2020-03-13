@@ -750,6 +750,26 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Hintaseuranta'
                                 ),
+                                'family_blend'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Family Blend'
+                                ),
+                                'hitmeister'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Hitmeister'
+                                ),
+                                'lazada'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Lazada'
+                                ),
+                                'get_price'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'GetPrice.com.au'
+                                ),
                             );
                                 
                             $_pro_merchants = array(
