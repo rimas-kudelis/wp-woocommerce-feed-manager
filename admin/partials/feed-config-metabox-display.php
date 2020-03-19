@@ -17,9 +17,6 @@ if ( ! isset($feed_template) ) {
     return;
 }
 
-//echo '<pre>';
-//var_dump($feed_template);
-//wp_die();
 
 $items = Rex_Feed_Attributes::get_attributes();
 

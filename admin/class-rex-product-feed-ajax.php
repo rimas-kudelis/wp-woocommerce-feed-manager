@@ -214,9 +214,21 @@ class Rex_Product_Feed_Ajax {
      * @since    2.0.0
      */
     public static function get_product_number($payload) {
-        $products = apply_filters('wpfm_get_total_number_of_products', array('products'  => 50));
-        $products['perBatch'] = get_option('rex-wpfm-product-per-batch', 50);
-        return $products;
+        $is_premium = apply_filters('wpfm_is_premium', false);
+        $info = [];
+        $products = apply_filters('wpfm_get_total_number_of_products',
+            array('products'  => 50)
+        );
+        $per_page = get_option('rex-wpfm-product-per-batch', 50);
+        $posts_per_page = $is_premium ? (int)$per_page : ((int)$per_page >= 50 ? 50 : (int)$per_page);
+
+        $info = array(
+            'products' => $products['products'],
+            'per_batch' => $posts_per_page,
+            'total_batch' => ceil($products['products']/(int)$posts_per_page)
+        );
+
+        return $info;
     }
 
 
@@ -412,21 +424,31 @@ class Rex_Product_Feed_Ajax {
              */
             $service = new Google_Service_ShoppingContent($client);
             $datafeed = new Google_Service_ShoppingContent_Datafeed();
+            $target = new Google_Service_ShoppingContent_DatafeedTarget();
+
+
 
             $name = $feed_title;
             $filename = $name.uniqid();
+
+            $target->setLanguage($payload['language']);
+            $target->setCountry($payload['country']);
+            $target->setIncludedDestinations(array('Shopping'));
+
             $datafeed->setName($name);
             $datafeed->setContentType('products');
             $datafeed->setAttributeLanguage($payload['language']);
-            $datafeed->setContentLanguage($payload['language']);
-            $datafeed->setIntendedDestinations(array('Shopping'));
+            $datafeed->setTargets([$target]);
+
+//            $datafeed->setContentLanguage($payload['language']);
+//            $datafeed->setIntendedDestinations(array('Shopping'));
+//            $datafeed->setTargetCountry($payload['country']);
             if (!$rex_google_merchant->feed_exists($feed_id)){
                 $datafeed->setFileName($filename);
             }else {
                 $datafeed->setFileName(get_post_meta($feed_id, 'rex_feed_google_data_feed_file_name', true));
             }
 
-            $datafeed->setTargetCountry($payload['country']);
 
             /*
              * Initialize Schedule

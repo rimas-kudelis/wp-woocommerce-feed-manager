@@ -20,7 +20,7 @@ class Rex_Product_Feed_Controller {
      *
      * @return array
      */
-    protected static function get_feed_queue() {
+    public static function get_feed_queue() {
 
         return null != get_option('rex_wpfm_feed_queue') ? get_option('rex_wpfm_feed_queue') : array();
     }

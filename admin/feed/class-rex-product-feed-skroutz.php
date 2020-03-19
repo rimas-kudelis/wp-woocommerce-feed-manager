@@ -33,14 +33,10 @@ class Rex_Product_Feed_Skroutz extends Rex_Product_Feed_Abstract_Generator {
     public function make_feed() {
         RexShopping::$container = null;
         RexShopping::init(true, $this->setItemWrapper(), null, '', $this->setItemsWrapper(), false, 'products');
-//        RexShopping::title($this->title);
-//        RexShopping::link($this->link);
-//        RexShopping::description($this->desc);
 
-        // Generate feed for both simple and variable products.
-        $this->generate_simple_product_feed();
-        $this->generate_grouped_product_feed();
-        $this->generate_variable_product_feed();
+
+
+        $this->generate_product_feed();
 
         $this->feed = $this->returnFinalProduct();
 
@@ -55,64 +51,99 @@ class Rex_Product_Feed_Skroutz extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-    /**
-     * Generate Feed data for Simple Products
-     **/
-    private function generate_simple_product_feed(){
-        // Loop through all products.
-        foreach( $this->products as $product ) {
 
-            $pr = wc_get_product($product);
+    private function generate_product_feed(){
+        $product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        $simple_products = [];
+        $variable_products = [];
+        $group_products = [];
+        $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+            'total' => 0,
+            'simple' => 0,
+            'variable' => 0,
+            'group' => 0,
+        );
 
-            $atts = $this->get_product_data( $product );
-            $item = RexShopping::createItem();
+        if($this->batch == 1) {
+            $total_products = array(
+                'total' => 0,
+                'simple' => 0,
+                'variable' => 0,
+                'group' => 0,
+            );
+        }
+        foreach( $this->products as $productId ) {
+            $product = wc_get_product( $productId );
 
-            // add all attributes for each product.
-            foreach ($atts as $key => $value) {
-                $item->$key($value); // invoke $key as method of $item object.
+            if ( ! is_object( $product ) ) {
+                continue;
+            }
+
+            if ( ! $product->is_visible() ) {
+                continue;
+            }
+
+            if ( $product->is_type( 'variable' ) && $product->has_child() ) {
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                    $variations = $product->get_visible_children();
+                    if($variations) {
+                        foreach ($variations as $variation) {
+                            if($this->variations) {
+                                $variable_products[] = $variation;
+                                $item = RexShopping::createItem();
+                                $variation_product = wc_get_product( $variation );
+                                $atts = $this->get_product_data( $variation_product, $product_meta_keys );
+                                foreach ($atts as $key => $value) {
+                                    $item->$key($value); // invoke $key as method of $item object.
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ( $product->is_type( 'simple' )) {
+                $simple_products[] = $productId;
+                $atts = $this->get_product_data( $product, $product_meta_keys );
+                $item = RexShopping::createItem();
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+                continue;
+            }
+
+            if ($product->get_type() == 'variation') {
+                $variable_products[] = $productId;
+                $item = RexShopping::createItem();
+                $atts = $this->get_product_data( $product, $product_meta_keys );
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+                continue;
+            }
+
+            if( $product->is_type( 'grouped' ) ){
+                $group_products[] = $productId;
+                $item = RexShopping::createItem();
+                $atts = $this->get_product_data( $product, $product_meta_keys );
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
             }
         }
+
+        $total_products = array(
+            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variable_products) + (int) count($group_products),
+            'simple' => (int) $total_products['simple'] + (int) count($simple_products),
+            'variable' => (int) $total_products['variable'] + (int) count($variable_products),
+            'group' => (int) $total_products['group'] + (int) count($group_products),
+        );
+
+        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
     }
 
 
-    /**
-     * Generate Feed data for Grouped Products
-     **/
-    private function generate_grouped_product_feed(){
-        // Loop through all variable products.
-        foreach( $this->grouped_products as $product ) {
-
-            $pr  = new WC_Product_Grouped( $product );
-
-            $item = RexShopping::createItem();
-            $atts = $this->get_product_data( $product );
-            // add all attributes for each product.
-            foreach ($atts as $key => $value) {
-                $item->$key($value); // invoke $key as method of $item object.
-            }
-        }
-    }
-
-    /**
-     * Generate Feed data for Variable Products
-     **/
-    private function generate_variable_product_feed(){
-        // Loop through all variable products.
-        foreach( $this->variable_products as $product ) {
-            $pr = wc_get_product($product);
-
-            $item = RexShopping::createItem();
-            $atts = $this->get_product_data( $pr );
-
-            // add all attributes for each product.
-            foreach ($atts as $key => $value) {
-                $item->$key($value); // invoke $key as method of $item object.
-            }
-
-//          $item->item_group_id( $pr->get_parent_id() );
-
-        }
-    }
 
 
     /**
@@ -152,7 +183,7 @@ class Rex_Product_Feed_Skroutz extends Rex_Product_Feed_Abstract_Generator {
         } elseif ($this->feed_format == 'csv') {
             return RexShopping::asCsv();
         }
-        return false;
+        return RexShopping::asRss();
     }
 
 }

@@ -83,10 +83,9 @@ class Rex_Product_Data_Retriever {
      * @param      string    $plugin_name       The name of this plugin.
      * @param      string    $version    The version of this plugin.
      */
-    public function __construct( $product, $feed_rules, $wpml = null, $append_variation = 'no' ) {
+    public function __construct( WC_Product $product, $feed_rules, $wpml = null, $append_variation = 'no', $product_meta_keys ) {
 
-        $this->product           = wc_get_product( $product );
-
+        $this->product           = $product;
         $log = wc_get_logger();
         $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
         $log->info(__( 'Start product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
@@ -95,17 +94,14 @@ class Rex_Product_Data_Retriever {
 
 
         $this->feed_rules        = $feed_rules;
-        $this->product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        $this->product_meta_keys = $product_meta_keys;
+
         $this->append_variation = $append_variation;
         $this->set_all_value();
-
 
         $log->info(__( 'End product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
         $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
 
-        // $this->set_test_feed_rules(); // only for testing purpose of all atts values;
-
-//        $this->maybe_set_variation_data();
     }
 
 
@@ -148,21 +144,24 @@ class Rex_Product_Data_Retriever {
      */
     public function set_all_value() {
         $this->data = array();
-        foreach ($this->feed_rules as $key => $rule) {
-            if(array_key_exists('attr', $rule)) {
-                if($rule['attr'] === 'attributes') {
-                    $this->data[ $rule['attr']][] = array(
-                        'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
-                        'value' => $this->set_val( $rule )
-                    );
+        foreach ( $this->feed_rules as $key => $rule ) {
+            if($key) {
+                if(array_key_exists('attr', $rule)) {
+                    if($rule['attr'] === 'attributes') {
+                        $this->data[ $rule['attr']][] = array(
+                            'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
+                            'value' => $this->set_val( $rule )
+                        );
+                    }else {
+                        $this->data[ $rule['attr'] ] = $this->set_val( $rule );
+                    }
+                }elseif (array_key_exists('cust_attr', $rule)) {
+                    $this->data[ preg_replace('/\s+/', '_', $rule['cust_attr']) ] = $this->set_val( $rule );
                 }else {
                     $this->data[ $rule['attr'] ] = $this->set_val( $rule );
                 }
-            }elseif (array_key_exists('cust_attr', $rule)) {
-                $this->data[ preg_replace('/\s+/', '_', $rule['cust_attr']) ] = $this->set_val( $rule );
-            }else {
-                $this->data[ $rule['attr'] ] = $this->set_val( $rule );
             }
+
         }
     }
 
@@ -174,12 +173,13 @@ class Rex_Product_Data_Retriever {
      */
     public function set_val( $rule ) {
         $val = '';
-
         if ( 'static' === $rule['type'] ) {
             $val = $rule['st_value'];
-        }elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
             $val = $this->set_pr_att( $rule['meta_key']  );
-        }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
             $val = $this->set_image_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
@@ -194,8 +194,6 @@ class Rex_Product_Data_Retriever {
         elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
             $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
-
-
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix($val, $rule);
         // maybe escape
@@ -213,7 +211,6 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     public function get_all_data() {
-
         return $this->data;
     }
 
@@ -392,6 +389,9 @@ class Rex_Product_Data_Retriever {
             case 'condition':
                 return $this->get_condition(); break;
 
+            case 'item_group_id':
+                return $this->get_item_group_id(); break;
+
             case 'availability':
                 return $this->get_availability(); break;
 
@@ -538,30 +538,21 @@ class Rex_Product_Data_Retriever {
      * @since    3.0
      */
     protected function set_cat_mapper_att( $key ) {
-        $first_cat = array();
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             $cat_lists = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
         } else{
             $cat_lists = get_the_terms( $this->product->get_id(), 'product_cat' );
         }
-        if($cat_lists){
-            $first_cat = reset($cat_lists);
-        }
-
-        $term_ids = array();
-        foreach ( $cat_lists as $term ) {
-            $term_ids[] = $term->term_id;
-        }
-
         $wpfm_category_map = get_option('rex-wpfm-category-mapping');
         if($wpfm_category_map) {
             $map = $wpfm_category_map[$key];
             $map_config = $map['map-config'];
-            if($first_cat){
-                foreach ($map_config as $key => $value){
-//                    if( $first_cat->term_id == $value['map-key']){
-                    if( in_array($value['map-key'], $term_ids) ){
-                        $map_value = $value['map-value'];
+            if($cat_lists) {
+                foreach ( $cat_lists as $term ) {
+                    $map_key = array_search($term->term_id, array_column($map_config, 'map-key'));
+                    if($map_key) {
+                        $map_array = $map_config[$map_key];
+                        $map_value = $map_array['map-value'];
                         preg_match("~^(\d+)~", $map_value, $m);
                         if(count($m) > 1) {
                             if($m[1]) {
@@ -572,6 +563,20 @@ class Rex_Product_Data_Retriever {
                     }
                 }
             }
+//            if($first_cat){
+//                foreach ($map_config as $key => $value){
+//                    if( in_array($value['map-key'], $term_ids) ){
+//                        $map_value = $value['map-value'];
+//                        preg_match("~^(\d+)~", $map_value, $m);
+//                        if(count($m) > 1) {
+//                            if($m[1]) {
+//                                return utf8_decode(urldecode($m[1]));
+//                            }
+//                        }
+//                        return $map_value;
+//                    }
+//                }
+//            }
         }
         return '';
     }
@@ -811,12 +816,26 @@ class Rex_Product_Data_Retriever {
 
 
     /**
-     * Helper to get condtion of a product.
+     * Helper to get condition of a product.
      *
      * @since    1.0.0
      */
     protected function get_condition( ) {
         return 'New';
+    }
+
+
+    /**
+     * Helper to get parent product id of a product.
+     *
+     * @return int
+     */
+    protected function get_item_group_id() {
+        $id = $this->product->get_id();
+        if($this->product->is_type('variation')) {
+            $id = $this->product->get_parent_id();
+        }
+        return $id;
     }
 
 

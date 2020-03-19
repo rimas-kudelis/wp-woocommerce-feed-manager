@@ -164,35 +164,6 @@ class Rex_Product_Metabox {
             ),
             'default' => 'yes',
         ) );
-
-
-
-
-        /*
-         * WPML Support
-         */
-        if ( function_exists('icl_object_id') ) {
-            global $sitepress;
-            $active_languages = $sitepress->get_active_languages();
-            $no_of_languages = count($active_languages);
-            $option_array = array();
-
-            if($no_of_languages>0) {
-                foreach ($active_languages as $key => $value){
-                    $option_array[$key] = $value['display_name'];
-                }
-                $box->add_field( array(
-                    'name'          => __( 'WPML Language', 'rex-product-feed' ),
-                    'desc'          => __( 'WPML Language', 'rex-product-feed' ),
-                    'id'            => $this->prefix . 'wpml_language',
-                    'type'          => 'radio_inline',
-                    'options'       => $option_array,
-                    'default'       => array_keys($option_array)[0],
-                ) );
-            }
-
-        }
-
     }
 
     /**
@@ -413,6 +384,10 @@ class Rex_Product_Metabox {
                     'hitmeister',
                     'lazada',
                     'get_price',
+                    'home_tiger',
+                    'jurkjes',
+                    'kiesproduct',
+                    'kompario',
                 ))),
             ),
         ) );

@@ -109,13 +109,20 @@ class Rex_Product_CPT {
                         echo '<ul style="margin: 0;">';
                         echo '<li><b>' . __('Total products : ', 'rex-product-feed'). $total_products['total'] . '</b></li>';
                         echo '<li><b>' . __('Simple products : ', 'rex-product-feed'). $total_products['simple'] . '</b></li>';
-                        echo '<li><b>' . __('Variable products : ', 'rex-product-feed'). $total_products['variable'] . '</b></li>';
+                        echo '<li><b>' . __('Variations : ', 'rex-product-feed'). $total_products['variable'] . '</b></li>';
                         echo '<li><b>' . __('Group products : ', 'rex-product-feed'). $total_products['group'] . '</b></li>';
                         echo '</ul><b>';
                     }
                 ),
 
-                'date'
+                'date',
+
+                'updated' => array(
+                    'title_icon'  => 'dashicons-calendar-alt',
+                    'title'         => 'Updated',
+                    'meta_key'    => 'updated',
+                    'date_format' => 'Y/m/d g:i:s A'
+                ),
             ),
         ));
     }

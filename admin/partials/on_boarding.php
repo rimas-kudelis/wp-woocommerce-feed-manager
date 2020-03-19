@@ -770,6 +770,31 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'GetPrice.com.au'
                                 ),
+                                'home_tiger'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'HomeTiger'
+                                ),
+                                'jurkjes'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Jurkjes.nl'
+                                ),
+                                'kiesproduct'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Kiesproduct'
+                                ),
+                                'kiyoh'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Kiyoh'
+                                ),
+                                'kompario'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Kompario'
+                                ),
                             );
                                 
                             $_pro_merchants = array(

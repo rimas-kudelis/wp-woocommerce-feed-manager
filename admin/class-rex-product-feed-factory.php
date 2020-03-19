@@ -108,6 +108,11 @@ class Rex_Product_Feed_Factory {
                 'hitmeister',
                 'lazada',
                 'get_price',
+                'home_tiger',
+                'jurkjes',
+                'kiesproduct',
+                'kiyoh',
+                'kompario',
             )
         );
 

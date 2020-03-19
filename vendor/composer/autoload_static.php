@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
+class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
 {
     public static $files = array (
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
@@ -39,10 +39,6 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
             'Google\\Auth\\' => 12,
-        ),
-        'F' => 
-        array (
-            'Firebase\\JWT\\' => 13,
         ),
         'C' => 
         array (
@@ -94,10 +90,6 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         'Google\\Auth\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/auth/src',
-        ),
-        'Firebase\\JWT\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Composer\\Installers\\' => 
         array (
@@ -248,15 +240,20 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
         'Rex_Feed_Template_Hintaopas' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hintaopas.php',
         'Rex_Feed_Template_Hintaseuranta' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hintaseuranta.php',
         'Rex_Feed_Template_Hitmeister' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hitmeister.php',
+        'Rex_Feed_Template_Home_tiger' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-home_tiger.php',
         'Rex_Feed_Template_Hood' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hood.php',
         'Rex_Feed_Template_Idealo' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-idealo.php',
         'Rex_Feed_Template_Instagram' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-instagram.php',
         'Rex_Feed_Template_Jet' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-jet.php',
+        'Rex_Feed_Template_Jurkjes' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-jurkjes.php',
         'Rex_Feed_Template_Kelkoo' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-Kelkoo.php',
         'Rex_Feed_Template_Kelkoo_group' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-kelkoo_group.php',
         'Rex_Feed_Template_Kelkoonl' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-kelkoonl.php',
         'Rex_Feed_Template_Kieskeurig' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-kieskeurig.php',
+        'Rex_Feed_Template_Kiesproduct' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-kiesproduct.php',
+        'Rex_Feed_Template_Kiyoh' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-kiyoh.php',
         'Rex_Feed_Template_Kleding' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-kleding.php',
+        'Rex_Feed_Template_Kompario' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-kompario.php',
         'Rex_Feed_Template_Koopkeus' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-koopkeus.php',
         'Rex_Feed_Template_Ladenzeile' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-ladenzeile.php',
         'Rex_Feed_Template_Lazada' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-lazada.php',
@@ -362,10 +359,10 @@ class ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitcf67f821fe2fbf7e71106efa4bcf6118::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit24813f5830a2a5fc5057bd03aa642494::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit24813f5830a2a5fc5057bd03aa642494::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit24813f5830a2a5fc5057bd03aa642494::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit24813f5830a2a5fc5057bd03aa642494::$classMap;
 
         }, null, ClassLoader::class);
     }

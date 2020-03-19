@@ -33,6 +33,7 @@ class Rex_Feed_Attributes {
                 'product_subcategory'       => 'Product Sub Categories Path (with separator ">")',
                 'link'                      => 'Product URL',
                 'condition'                 => 'Condition',
+                'item_group_id'             => 'Parent ID (Group ID)',
                 'sku'                       => 'SKU',
                 'availability'              => 'Availability',
                 'quantity'                  => 'Quantity',
@@ -54,7 +55,6 @@ class Rex_Feed_Attributes {
                 'in_stock'                  => 'In Stock (Y/N)',
                 'promotion_id'              => 'Promotion ID',
             ),
-
             'Image Attributes' => array(
                 'featured_image' => 'Featured Image',
                 'image_1'        => 'Additional Image 1',
@@ -74,12 +74,13 @@ class Rex_Feed_Attributes {
         global $wpdb;
         $sql = 'SELECT attribute_name as name, attribute_type as type FROM ' . $wpdb->prefix . 'woocommerce_attribute_taxonomies';
         $data = $wpdb->get_results($sql);
+        $attr=[];
         if (count($data)) {
             foreach ($data as $key => $value) {
                 $attr["bwf_attr_pa_" . $value->name] = $value->name;
             }
-            $attributes['Product Attributes'] = $attr;
         }
+        $attributes['Product Attributes'] = $attr;
 
 
         //Product Dynamic Attributes
@@ -118,36 +119,11 @@ class Rex_Feed_Attributes {
 
         if (count($data)) {
             foreach ($data as $key => $value) {
-//                if (substr($value->name, 0, 1) !== "_") {
-//                    if (!preg_match("/pyre|sbg|fusion|rex|woosea/i",$value->name)){
-//                        $value_display = str_replace("_", " ",$value->name);
-//                        $list["custom_attributes_" . $value->name] = ucfirst($value_display);
-//                    }
-//                }
                 $value_display = str_replace("_", " ",$value->name);
                 $list["custom_attributes_" . $value->name] = ucfirst($value_display);
             }
+            $attributes['Product Custom Attributes'] = $list;
         }
-        $attributes['Product Custom Attributes'] = $list;
-
-
-
-
-
-
-        //Category Mapping
-//        $cat_maps_array = array();
-//        $pattern = '/^rex_cat_map_[a-z]+$/';
-//        $cat_maps = preg_grep($pattern, array_keys(wp_load_alloptions()));
-//        if($cat_maps){
-//            foreach ($cat_maps as $cat_map){
-//                $option = get_option($cat_map);
-//                $cat_maps_array["$cat_map"] = $option['map-name'];
-//            }
-//        }
-//        $attributes['Category Map'] = $cat_maps_array;
-//        return $attributes;
-
 
         $cat_maps_array = array();
         $cat_maps = get_option('rex-wpfm-category-mapping');

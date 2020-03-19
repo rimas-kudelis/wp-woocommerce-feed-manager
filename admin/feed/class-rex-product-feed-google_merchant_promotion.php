@@ -141,6 +141,8 @@ class Rex_Product_Feed_Google_merchant_promotion {
             $this->feed = GoogleShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
             $this->feed = GoogleShopping::asCsv();
+        }else {
+            $this->feed = GoogleShopping::asRss();
         }
 
         return $this->save_feed($this->feed_format);

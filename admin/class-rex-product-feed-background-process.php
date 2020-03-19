@@ -69,21 +69,24 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
      *
      * @return mixed
      */
-    protected function task( $item ) {
+    protected function task( $merchant ) {
         sleep(5);
 
-//        $this->product_no = Rex_Product_Feed_Ajax::get_product_number(array());
-        $this->product_no = apply_filters('wpfm_get_total_number_of_products',
-            array('products'  => 50)
-        );
-        $per_batch = get_option('rex-wpfm-product-per-batch', 50);
+        $merchant->make_feed();
 
-        $this->total_batches = ceil($this->product_no['products']/(int) $per_batch);
-        $this->offset = 0;
-        $this->batch = 1;
-        $this->do_task($item, $this->batch, $this->offset);
-        Rex_Product_Feed_Controller::remove_id_from_feed_queue($item);
-        Rex_Product_Feed_Controller::update_feed_status($item, 'completed');
+
+
+////        $this->product_no = Rex_Product_Feed_Ajax::get_product_number(array());
+//        $this->product_no = apply_filters('wpfm_get_total_number_of_products',
+//            array('products'  => 50)
+//        );
+//        $per_batch = get_option('rex-wpfm-product-per-batch', 50);
+//
+//        $this->total_batches = ceil($this->product_no['products']/(int) $per_batch);
+//        $this->offset = 0;
+//        $this->batch = 1;
+//        $this->do_task($item, $this->batch, $this->offset);
+
 
         return false;
     }
@@ -156,7 +159,7 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                 }
             }
 
-            $feed_format = get_post_meta($item_id, 'rex_feed_feed_format', true);
+            $feed_format = get_post_meta($item_id, 'rex_feed_feed_format', true) ? get_post_meta($item_id, 'rex_feed_feed_format', true) : 'xml';
             $payload = array(
                 'merchant' => $merchant,
                 'feed_format' => $feed_format,
@@ -166,6 +169,8 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                     'desc'      => get_the_title($item_id),
                     'offset'    => $this->offset,
                     'batch'     => $this->batch,
+                    'total_batch' => $this->total_batches,
+                    'per_batch' => $per_batch
                 ),
                 'products'   => array(
                     'products_scope'    => $feed_products,
@@ -179,7 +184,6 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                 'parent_product' => $parent_product,
                 'wpml_language' => $wpml,
             );
-
 
             try {
                 $merchant = Rex_Product_Feed_Factory::build( $payload, true );
@@ -202,7 +206,11 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
      * performed, or, call parent::complete().
      */
     protected function complete() {
-
+        $feed_queue_ids = Rex_Product_Feed_Controller::get_feed_queue();
+        foreach ($feed_queue_ids as $feed_id) {
+            Rex_Product_Feed_Controller::remove_id_from_feed_queue($feed_id);
+            Rex_Product_Feed_Controller::update_feed_status($feed_id, 'completed');
+        }
         parent::complete();
     }
 }

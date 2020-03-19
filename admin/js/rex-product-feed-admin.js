@@ -307,29 +307,27 @@
         $('#wpfm-feed-clock').stopwatch().stopwatch('start');
         var merchant = $('#rex_feed_merchant').find(':selected').val();
 
-        setTimeout(function() {
-            var $payload = {};
-            $('#publishing-action span.spinner').addClass('is-active');
-            $(this).addClass('disabled');
-            $('.bwfm-progressbar, .progress-msg').fadeIn();
-            $('.progress-msg span').html('Calculating products.....');
-            wpAjaxHelperRequest( 'my-handle', $payload )
-                .success( function( response ) {
-                    var per_batch = response.perBatch ? parseInt(response.perBatch) : 50;
-                    if(merchant !== 'google_merchant_promotion') {
-                        generate_feed(response.products, 0, 1, per_batch);
-                    }else {
-                        generate_promotion_feed();
-                    }
+        var $payload = {};
+        $('#publishing-action span.spinner').addClass('is-active');
+        $(this).addClass('disabled');
+        $('.bwfm-progressbar, .progress-msg').fadeIn();
+        $('.progress-msg span').html('Calculating products.....');
+        wpAjaxHelperRequest( 'my-handle', $payload )
+            .success( function( response ) {
+                var per_batch = response.per_batch ? parseInt(response.per_batch) : 50;
+                if(merchant !== 'google_merchant_promotion') {
+                    generate_feed(response.products, 0, 1, per_batch, response.total_batch);
+                }else {
+                    generate_promotion_feed();
+                }
 
-                })
-                .error( function( response ) {
-                    $('#publishing-action span.spinner').removeClass('is-active');
-                    $('#publish').removeClass('disabled');
-                    console.log( 'Uh, oh!' );
-                    console.log( response.statusText );
-                });
-        }, 500);
+            })
+            .error( function( response ) {
+                $('#publishing-action span.spinner').removeClass('is-active');
+                $('#publish').removeClass('disabled');
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
     }
     $(document).on('click', '#publish', get_product_number);
 
@@ -348,7 +346,6 @@
                 title       : $('#title').val(),
                 desc        : $('#title').val(),
             },
-
             products: {
                 products_scope: $('#rex_feed_products').find(':selected').val(),
                 tags: get_checkbox_val('tags'),
@@ -381,7 +378,7 @@
      * @param batch
      * @param per_batch
      */
-    function generate_feed( product, offset, batch, per_batch ) {
+    function generate_feed( product, offset, batch, per_batch, total_batch ) {
 
         per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
 
@@ -395,7 +392,9 @@
                 title       : $('#title').val(),
                 desc        : $('#title').val(),
                 offset      : offset,
-                batch       : batch
+                batch       : batch,
+                total_batch : total_batch,
+                per_batch   : per_batch,
             },
 
             products: {
@@ -407,7 +406,7 @@
             feed_config : $('form').serialize(),
         };
 
-        var batches = Math.ceil( product/per_batch );
+        var batches = total_batch;
         console.log('Total Batch: '+ batches);
         console.log('Total Product(s): '+ product);
         console.log('Processing Batch Number: '+ batch);
@@ -415,7 +414,9 @@
 
         var progressbar = 100/batches;
         progressWidth = progressWidth + progressbar;
-        var titleTag =  $('title').text();
+        if(progressWidth > 100) {
+            progressWidth = 100;
+        }
 
         // feed_progressBar(progressWidth);
         if (progressWidth >= 100) {
@@ -424,37 +425,37 @@
             $('.progress-msg span').html('Processing feed.....');
         }
 
-
         wpAjaxHelperRequest( 'generate-feed', $payload )
             .success( function( response ) {
                 console.log( 'Woohoo!' );
                 console.log(response);
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if(response == 'false' || response == ''){
-                    generate_feed(product, offset, batch, per_batch);
+                    generate_feed(product, offset, batch, per_batch, total_batch);
                 }else if (response.msg == 'finish') {
                     feed_progressBar(progressWidth);
                     $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                    setTimeout(function() {
-                        $('#publish').removeClass('disabled');
-                        $(document).off( 'click', '#publish', get_product_number );
-                        $('#publish').trigger( 'click' );
-                    }, 300);
-
+                    $('#publish').removeClass('disabled');
+                    $(document).off( 'click', '#publish', get_product_number );
+                    $('#publish').trigger( 'click' );
                 } else {
                     if ( batch < batches ) {
-                        setTimeout(function(){
-                            offset = offset + per_batch;
-                            batch++;
-                            feed_progressBar(progressWidth);
-                            generate_feed(product, offset, batch, per_batch);
-                        }, 600);
+                        offset = offset + per_batch;
+                        batch++;
+                        feed_progressBar(progressWidth);
+                        generate_feed(product, offset, batch, per_batch, total_batch);
                     }
                 }
             })
             .error( function( response ) {
+                $(".progressbar-bar").css('background', '#ff0000');
+                $(".progressbar-bar").css('border-color', '#ff0000');
+                $(".progress-msg span").css('color', '#ff0000');
+                $(".progress-msg i").css('color', '#ff0000');
+                $(".progress-msg span").html(response.statusText);
                 $('#publishing-action span.spinner').removeClass('is-active');
                 $('#publish').removeClass('disabled');
+                $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
                 console.log( 'Uh, oh!' );
                 console.log( response.statusText );
             });
@@ -525,24 +526,45 @@
             payload['month'] = '';
             payload['day'] = '';
         }
-
-        console.log(payload);
-
-        $('.rex-google-status').html('<p>Sending......</p>');
+        $('.rex-google-status').removeClass('info');
+        $('.rex-google-status').removeClass('success');
+        $('.rex-google-status').removeClass('warning');
+        $('.rex-google-status').removeClass('error');
+        $('.rex-google-status').addClass('info');
+        $('.rex-google-status').show();
+        $('.rex-google-status').html('<p>Feed is sending. Please wait...</p>');
         wpAjaxHelperRequest( 'send-to-google', payload )
             .success( function( response ) {
                 if(response.success) {
+                    $('.rex-google-status').removeClass('info');
+                    $('.rex-google-status').removeClass('success');
+                    $('.rex-google-status').removeClass('warning');
+                    $('.rex-google-status').removeClass('error');
+                    $('.rex-google-status').addClass('success');
+                    $('.rex-google-status').show();
+                    $('.rex-google-status').html('<p>Feed sent to google successfully.</p>');
                     console.log('Woohoo!');
                     console.log(response);
-                    $('.rex-loading-spinner').css('display', 'none');
                     location.reload();
                 }else {
+                    $('.rex-google-status').removeClass('info');
+                    $('.rex-google-status').removeClass('success');
+                    $('.rex-google-status').removeClass('warning');
+                    $('.rex-google-status').removeClass('error');
+                    $('.rex-google-status').addClass('warning');
+                    $('.rex-google-status').show();
+                    $('.rex-google-status').html('<p>Feed not sent to google. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>');
                     console.log(response)
                 }
             })
             .error( function( response ) {
-                $('.rex-loading-spinner').css('display', 'none');
-                $('.rex-google-status').html('<div class="rex-error">Something is wrong! Please try again</div>');
+                $('.rex-google-status').removeClass('info');
+                $('.rex-google-status').removeClass('success');
+                $('.rex-google-status').removeClass('warning');
+                $('.rex-google-status').removeClass('error');
+                $('.rex-google-status').addClass('error');
+                $('.rex-google-status').show();
+                $('.rex-google-status').html('<p>Something wrong happened. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>');
                 console.log( 'Uh, oh!' );
                 console.log( response );
                 console.log( response.statusText );
