@@ -52,7 +52,11 @@ class Rex_Google_Merchant_Settings_Api {
     public function is_authenticate() {
         $access_token = get_option('rex_google_access_token');
 
-        if(isset($access_token)) {
+        if($access_token == 'null') {
+            return false;
+        }
+
+        if(!isset($access_token)) {
             return false;
         }
 
