@@ -5,7 +5,7 @@ Tags: Product Feed, WooCommerce Product Feed, WooCommerce Product Feed Manager, 
 Requires at least: 4.7
 Tested up to:  5.3.2
 Requires PHP: 5.6
-Stable tag: 5.20
+Stable tag: 5.21
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -430,6 +430,10 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.21 (2020-03-20) =
+* Bug fixed: Missing g:id on Google merchant
+
 
 = 5.20 (2020-03-19) =
 * Added: HomeTiger template

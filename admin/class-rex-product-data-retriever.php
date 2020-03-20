@@ -144,8 +144,9 @@ class Rex_Product_Data_Retriever {
      */
     public function set_all_value() {
         $this->data = array();
+
         foreach ( $this->feed_rules as $key => $rule ) {
-            if($key) {
+            if($rule['attr']) {
                 if(array_key_exists('attr', $rule)) {
                     if($rule['attr'] === 'attributes') {
                         $this->data[ $rule['attr']][] = array(

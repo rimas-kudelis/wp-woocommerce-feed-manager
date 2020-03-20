@@ -16,8 +16,6 @@
 if ( ! isset($feed_template) ) {
     return;
 }
-
-
 $items = Rex_Feed_Attributes::get_attributes();
 
 ?>

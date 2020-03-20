@@ -94,6 +94,8 @@ class Feed
         $this->link = (string)$link;
     }
 
+
+
     /**
      * @param $code
      */
@@ -186,6 +188,7 @@ class Feed
      */
     private function addItemsToFeed()
     {
+
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
             $feedItemNode = $this->feed->channel->addChild('item');
@@ -199,6 +202,59 @@ class Feed
                 }
             }
         }
+    }
+
+
+    private function addItemsToFeedText() {
+        $str = '';
+        if(count($this->items)){
+            $this->items_row[] = array_keys(end($this->items)->nodes());
+            foreach ($this->items as $item) {
+                $row = array();
+                foreach ($item->nodes() as $itemNode) {
+                    if (is_array($itemNode)) {
+                        foreach ($itemNode as $node) {
+                            $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $node->get('value'));
+                        }
+                    } else {
+                        $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $itemNode->get('value'));
+                    }
+                }
+                $this->items_row[] = $row;
+            }
+            foreach ($this->items_row as $fields) {
+                $str .= implode("\t", $fields) . "\n";
+            }
+        }
+        return $str;
+    }
+
+    private function addItemsToFeedCSV(){
+
+        if(count($this->items)){
+
+            $this->items_row[] = array_keys(end($this->items)->nodes());
+            foreach ($this->items as $item) {
+                $row = array();
+                foreach ($item->nodes() as $itemNode) {
+                    if (is_array($itemNode)) {
+                        foreach ($itemNode as $node) {
+                            $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $node->get('value'));
+                        }
+                    } else {
+                        $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $itemNode->get('value'));
+                    }
+                }
+                $this->items_row[] = $row;
+            }
+
+            $str = '';
+            foreach ($this->items_row as $fields) {
+                $str .= implode("\t", $fields) . "\n";
+            }
+        }
+
+        return $this->items_row;
     }
 
     /**
@@ -296,6 +352,38 @@ class Feed
         }
         return $data;
     }
+
+    /**
+     * Generate Txt feed
+     * @param bool $output
+     * @return string
+     */
+    public function asTxt($output = false)
+    {
+        ob_end_clean();
+        $data = $this->addItemsToFeedText();
+        if ($output) {
+            die($data);
+        }
+        return $data;
+    }
+
+    /**
+     * Generate CSV feed
+     * @param bool $output
+     * @return string
+     */
+    public function asCsv($output = false)
+    {
+
+        ob_end_clean();
+        $data = $this->addItemsToFeedCSV();
+        if ($output) {
+            die($data);
+        }
+        return $data;
+    }
+
 
     /**
      * Remove last inserted item

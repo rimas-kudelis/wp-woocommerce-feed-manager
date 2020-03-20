@@ -83,20 +83,20 @@ class Rex_Product_Metabox {
             ),
         ) );
 
-        $box->add_field( array(
-            'name'           => 'Product Tag',
-            'desc'           => 'Select Tag',
-            'id'             => $this->prefix . 'tags',
-            'taxonomy'       => 'product_tag',
-            'type'           => 'taxonomy_multicheck_inline',
-            'text'           => array(
-                'no_terms_text' => 'Sorry, no product tags could be found.'
-            ),
-            'attributes' => array(
-                'data-conditional-id'    => $this->prefix . 'products',
-                'data-conditional-value' => 'product_tag',
-            ),
-        ) );
+//        $box->add_field( array(
+//            'name'           => 'Product Tag',
+//            'desc'           => 'Select Tag',
+//            'id'             => $this->prefix . 'tags',
+//            'taxonomy'       => 'product_tag',
+//            'type'           => 'taxonomy_multicheck_inline',
+//            'text'           => array(
+//                'no_terms_text' => 'Sorry, no product tags could be found.'
+//            ),
+//            'attributes' => array(
+//                'data-conditional-id'    => $this->prefix . 'products',
+//                'data-conditional-value' => 'product_tag',
+//            ),
+//        ) );
 
 
 

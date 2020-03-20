@@ -110,7 +110,6 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
-                continue;
             }
 
             if ($product->get_type() == 'variation') {
@@ -120,7 +119,6 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
-                continue;
             }
 
             if( $product->is_type( 'grouped' ) ){
