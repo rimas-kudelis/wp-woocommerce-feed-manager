@@ -153,7 +153,6 @@ class Rex_Product_Feed_Admin {
      * @param      string    $version    The version of this plugin.
      */
     public function __construct( $plugin_name, $version ) {
-
         $this->plugin_name = $plugin_name;
         $this->plugin_basename      = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_name . '.php' );
         $this->version     = $version;
@@ -764,6 +763,89 @@ class Rex_Product_Feed_Admin {
                       font-size: 24px;
                       color: #222; }
         </style>';
+    }
+
+
+    /**
+     * render cmb2 analytics param fields
+     * @param $field
+     * @param $value
+     * @param $object_id
+     * @param $object_type
+     * @param $field_type
+     */
+    public function cmb2_render_analytics_params_callback($field, $value, $object_id, $object_type, $field_type) {
+        $value = wp_parse_args( $value, array(
+            'utm_source'    => '',
+            'utm_medium'    => '',
+            'utm_campaign'  => '',
+            'utm_term'      => '',
+            'utm_content'   => '',
+        ) );
+        ?>
+
+        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_source' ); ?>"><?php echo __( 'Referrer', 'rex-product-feed' ); ?></label></p>
+            <?php echo $field_type->input( array(
+                'class' => 'cmb_text_small',
+                'name'  => $field_type->_name( '[utm_source]' ),
+                'id'    => $field_type->_id( '_utm_source' ),
+                'type'  => 'text',
+                'value' => $value['utm_source'],
+            ) ); ?>
+            <p class="cmb2-metabox-description"><?php echo __('The referrer: (e.g. google, newsletter)', 'rex-product-feed'); ?></p>
+        </div>
+
+        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_medium' ); ?>"><?php echo __( 'Medium', 'rex-product-feed' ); ?></label></p>
+            <?php echo $field_type->input( array(
+                'class' => 'cmb_text_small',
+                'name'  => $field_type->_name( '[utm_medium]' ),
+                'id'    => $field_type->_id( '_utm_medium' ),
+                'type'  => 'text',
+                'value' => $value['utm_medium'],
+            ) ); ?>
+            <p class="cmb2-metabox-description"><?php echo __('Marketing medium: (e.g. cpc, banner, email)', 'rex-product-feed'); ?></p>
+        </div>
+
+
+        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_campaign' ); ?>"><?php echo __( 'Campaign', 'rex-product-feed' ); ?></label></p>
+            <?php echo $field_type->input( array(
+                'class' => 'cmb_text_small',
+                'name'  => $field_type->_name( '[utm_campaign]' ),
+                'id'    => $field_type->_id( '_utm_campaign' ),
+                'type'  => 'text',
+                'value' => $value['utm_campaign'],
+            ) ); ?>
+            <p class="cmb2-metabox-description"><?php echo __('Product, promo code, or slogan (e.g. spring_sale)', 'rex-product-feed'); ?></p>
+        </div>
+
+        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_term' ); ?>"><?php echo __( 'Campaign term', 'rex-product-feed' ); ?></label></p>
+            <?php echo $field_type->input( array(
+                'class' => 'cmb_text_small',
+                'name'  => $field_type->_name( '[utm_term]' ),
+                'id'    => $field_type->_id( '_utm_term' ),
+                'type'  => 'text',
+                'value' => $value['utm_term'],
+            ) ); ?>
+            <p class="cmb2-metabox-description"><?php echo __('Identify the paid keywords', 'rex-product-feed'); ?></p>
+        </div>
+
+
+        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_content' ); ?>"><?php echo __( 'Campaign content', 'rex-product-feed' ); ?></label></p>
+            <?php echo $field_type->input( array(
+                'class' => 'cmb_text_small',
+                'name'  => $field_type->_name( '[utm_content]' ),
+                'id'    => $field_type->_id( '_utm_content' ),
+                'type'  => 'text',
+                'value' => $value['utm_content'],
+            ) ); ?>
+            <p class="cmb2-metabox-description"><?php echo __('Use to differentiate ads', 'rex-product-feed'); ?></p>
+        </div>
+
+        <p class="clear">
+            <?php echo $field_type->_desc(true);?>
+        </p>
+
+        <?php
     }
 
 }

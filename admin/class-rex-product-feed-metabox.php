@@ -83,20 +83,20 @@ class Rex_Product_Metabox {
             ),
         ) );
 
-//        $box->add_field( array(
-//            'name'           => 'Product Tag',
-//            'desc'           => 'Select Tag',
-//            'id'             => $this->prefix . 'tags',
-//            'taxonomy'       => 'product_tag',
-//            'type'           => 'taxonomy_multicheck_inline',
-//            'text'           => array(
-//                'no_terms_text' => 'Sorry, no product tags could be found.'
-//            ),
-//            'attributes' => array(
-//                'data-conditional-id'    => $this->prefix . 'products',
-//                'data-conditional-value' => 'product_tag',
-//            ),
-//        ) );
+        $box->add_field( array(
+            'name'           => 'Product Tag',
+            'desc'           => 'Select Tag',
+            'id'             => $this->prefix . 'tags',
+            'taxonomy'       => 'product_tag',
+            'type'           => 'taxonomy_multicheck_inline',
+            'text'           => array(
+                'no_terms_text' => 'Sorry, no product tags could be found.'
+            ),
+            'attributes' => array(
+                'data-conditional-id'    => $this->prefix . 'products',
+                'data-conditional-value' => 'product_tag',
+            ),
+        ) );
 
 
 
@@ -163,6 +163,27 @@ class Rex_Product_Metabox {
                 'no'        => __( 'No', 'rex-product-feed' ),
             ),
             'default' => 'yes',
+        ) );
+
+        /**
+         * Analytics parameters
+         */
+        $box->add_field( array(
+            'name' => __( 'Analytics parameters', 'rex-product-feed' ),
+            'desc' => __( 'Check to activate utm params', 'rex-product-feed' ),
+            'id'   => $this->prefix . 'analytics_params_options',
+            'type' => 'checkbox',
+        ) );
+
+        $box->add_field( array(
+            'name' => __( 'Parameters', 'rex-product-feed' ),
+            'desc' => '',
+            'id'   => $this->prefix . 'analytics_params',
+            'type' => 'analytics_params',
+            'attributes' => array(
+                'data-conditional-id'    => $this->prefix . 'analytics_params_options',
+                'data-conditional-value' => 'on',
+            ),
         ) );
     }
 
@@ -251,10 +272,10 @@ class Rex_Product_Metabox {
             $_merchants = array_merge($_merchants, $merchants);
         }
         $merchant_lists = [];
+        $merchant_lists['-1'] = __('Please select merchant', 'rex-product-feed');
         foreach ($_merchants as $key => $merchant) {
             if($merchant['status']) {
                 if(array_key_exists('name', $merchant)) {
-
                     if($key === 'google') {
                         $merchant_lists[$key] = 'Google Shopping';
                     }elseif ($key === 'google_Ad') {
@@ -266,12 +287,11 @@ class Rex_Product_Metabox {
                     }
                 }
             }
-
         }
 
         /**
          * result of bad planning
-//         */
+//       */
 //        $merchant_lists['google'] = 'Google Shopping';
 //        $merchant_lists['google_Ad']= 'Google AdWords';
 //        if(array_key_exists('drm', $merchant_lists))
@@ -388,6 +408,11 @@ class Rex_Product_Metabox {
                     'jurkjes',
                     'kiesproduct',
                     'kompario',
+                    'kwanko',
+                    'ledenicheur',
+                    'les_bonnes_bouilles',
+                    'lions_home',
+                    'locamo',
                 ))),
             ),
         ) );
@@ -408,13 +433,13 @@ class Rex_Product_Metabox {
      * @author RexTheme
      **/
     public function atts_config_cb($field_args, $field){
-        $feed_rules    = get_post_meta( $field->object_id, $this->prefix . 'feed_config', true );
-        $feed_template = new Rex_Feed_Template_Google($feed_rules);
         echo '<div id="rex-feed-config" class="rex-feed-config">';
+        echo '<table id="config-table" class="responsive-table wpfm-field-mappings">';
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
-        require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
-        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="fa fa-plus-circle"></i>'.__('Add New Attribute','rex-product-feed').'</a>';
-        echo '<a id="rex-new-custom-attr" class="waves-effect waves-light btn-large "><i class="fa fa-plus-circle"></i>'.__('Add New Custom Attribute','rex-product-feed').'</a>';
+//        require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
+        echo '</table>';
+        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large"><i class="fa fa-plus-circle"></i>'.__('Add New Attribute','rex-product-feed').'</a>';
+        echo '<a id="rex-new-custom-attr" class="waves-effect waves-light btn-large"><i class="fa fa-plus-circle"></i>'.__('Add New Custom Attribute','rex-product-feed').'</a>';
         echo '</div>';
     }
 
@@ -443,8 +468,6 @@ class Rex_Product_Metabox {
     public function atts_filter_cb($field_args, $field){
         $feed_filter_rules      = get_post_meta( $field->object_id, $this->prefix . 'feed_config_filter', true );
         $feed_filter            = new Rex_Product_Filter($feed_filter_rules);
-
-
         echo '<div id="rex-feed-config-filter" class="rex-feed-config-filter">';
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display-filter.php';

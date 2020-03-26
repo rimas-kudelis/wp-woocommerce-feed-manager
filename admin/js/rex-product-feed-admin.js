@@ -251,30 +251,32 @@
     $(document).on('change', '#rex_feed_merchant', function () {
 
         var $confBox = $('.rex-feed-config');
+        var merchant_name = $('#rex_feed_merchant').find(':selected').val();
+        if(merchant_name !== '-1') {
+            $confBox.find('.rex-loading-spinner').css('display', 'flex');
+            var $payload = {
+                merchant: $('#rex_feed_merchant').find(':selected').val(),
+                post_id: $('#post_ID').val()
+                // feed_format: $('#rex_feed_feed_format').find(':selected').val()
+            };
+            wpAjaxHelperRequest( 'merchant-change', $payload )
+                .success( function( response ) {
+                    // console.log(response);
+                    $confBox.fadeOut();
+                    $confBox.find('#config-table').html( response );
+                    $('#config-table select').niceSelect('update');
+                    $confBox.fadeIn();
+                    $('.rex-loading-spinner').css('display', 'none');
+                    $('#rex_feed_conf .cmb2-id-rex-feed-config-heading').css('display', 'block');
+                    $('#rex-new-attr, #rex-new-custom-attr').css('display', 'inline-block');
+                })
+                .error( function( response ) {
+                    $('.rex-loading-spinner').css('display', 'none');
+                    console.log( 'Uh, oh! Merchant change returned error!' );
+                    console.log( response.statusText );
+                });
+        }
 
-        $confBox.find('.rex-loading-spinner').css('display', 'flex');
-
-        var $payload = {
-            merchant: $('#rex_feed_merchant').find(':selected').val(),
-            post_id: $('#post_ID').val()
-            // feed_format: $('#rex_feed_feed_format').find(':selected').val()
-        };
-
-
-        wpAjaxHelperRequest( 'merchant-change', $payload )
-            .success( function( response ) {
-                // console.log(response);
-                $confBox.fadeOut();
-                $confBox.find('#config-table').html( response );
-                $('#config-table select').niceSelect('update');
-                $('.rex-loading-spinner').css('display', 'none');
-                $confBox.fadeIn();
-            })
-            .error( function( response ) {
-                $('.rex-loading-spinner').css('display', 'none');
-                console.log( 'Uh, oh! Merchant change returned error!' );
-                console.log( response.statusText );
-            });
     });
 
     function get_checkbox_val( name ){
@@ -300,6 +302,12 @@
      */
     function get_product_number(event) {
         event.preventDefault();
+
+        var merchant_name = $('#rex_feed_merchant').find(':selected').val();
+        if(merchant_name == '-1') {
+            alert('Please choose a merchant!');
+            return;
+        }
 
         if($('.wpfm-field-mappings').find('tbody tr:first').css('display') == 'none') {
             $('.wpfm-field-mappings').find('tbody tr:first').remove();

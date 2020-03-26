@@ -88,6 +88,33 @@ abstract class Rex_Feed_Abstract_Template {
     }
 
 
+    public function printProductAttributes($selected = '') {
+        $product_attribute_dropdown = wp_cache_get( 'rex_wpfm_product_attribute_dropdown' );
+        if(false == $product_attribute_dropdown) {
+            $items = Rex_Feed_Attributes::get_attributes();
+            $i = 1;
+            foreach ($items as $groupLabel => $groups) {
+                if ( !empty($groupLabel)) {
+                    $product_attribute_dropdown .= "<optgroup label='$groupLabel' data-i='$i'>";
+                }
+                foreach ($groups as $k => $it) {
+                    $product_attribute_dropdown .= "<option value='$k'>$it</option>";
+                }
+
+                if ( !empty($groupLabel)) {
+                    $product_attribute_dropdown .= "</optgroup>";
+                }
+                $i = $i + 1;
+            }
+            wp_cache_add( 'rex_wpfm_product_attribute_dropdown', $product_attribute_dropdown, '', WEEK_IN_SECONDS );
+        }
+        if ( $selected && strpos( $product_attribute_dropdown, "value='" . $selected . "'" ) !== false ) {
+            $product_attribute_dropdown = str_replace( "value='" . $selected . "'", 'value="' . $selected . '"' . ' selected', $product_attribute_dropdown );
+        }
+        return $product_attribute_dropdown;
+    }
+
+
 
     /**
      * Print attributes as select dropdown.
@@ -210,6 +237,7 @@ abstract class Rex_Feed_Abstract_Template {
         }
     }
 
+
     /**
      * Initialize Attributes
      *
@@ -223,5 +251,6 @@ abstract class Rex_Feed_Abstract_Template {
      * @since    1.0.0
      */
     abstract protected function init_default_template_mappings();
+
 
 }

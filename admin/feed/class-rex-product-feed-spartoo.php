@@ -83,7 +83,7 @@ class Rex_Product_Feed_Spartoo extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     $variations = $product->get_visible_children();
                     if($variations) {
                         foreach ($variations as $variation) {
@@ -186,17 +186,24 @@ class Rex_Product_Feed_Spartoo extends Rex_Product_Feed_Abstract_Generator {
      * @param bool $product_id
      * @return string
      */
-    protected function get_product_data( $product_id = false, $product_meta_keys ){
+    protected function get_product_data(  WC_Product $product, $product_meta_keys ){
+        $include_analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params_options', true);
+
+        if($include_analytics_params == 'on') {
+            $analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params', true);
+        }else {
+            $analytics_params = null;
+        }
 
         if ( function_exists('icl_object_id') ) {
             global $sitepress;
             $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
             if($wpml) {
                 $sitepress->switch_lang($wpml);
-                $data = new Rex_Spartoo_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation, $product_meta_keys);
+                $data = new Rex_Spartoo_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
             }
         }else{
-            $data = new Rex_Spartoo_Product_Data_Retriever( $product_id, $this->feed_rules, null, $this->append_variation, $product_meta_keys);
+            $data = new Rex_Spartoo_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
         }
         return $data->get_all_data();
 

@@ -16,129 +16,97 @@
 if ( ! isset($feed_template) ) {
     return;
 }
-$items = Rex_Feed_Attributes::get_attributes();
+
 
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<table id="config-table" class="responsive-table wpfm-field-mappings">
-    <thead>
-    <tr>
-        <th class="large-col">Attributes</th>
-        <th class="large-col">Type</th>
-        <th class="large-col">Value</th>
-        <th class="small-col">Prefix</th>
-        <th class="small-col">Suffix</th>
-        <th class="large-col">Output Sanitization</th>
-        <th colspan="2" class="small-col">Output Limit</th>
-    </tr>
-    </thead>
+<thead>
+<tr>
+    <th class="large-col">Attributes</th>
+    <th class="large-col">Type</th>
+    <th class="large-col">Value</th>
+    <th class="small-col">Prefix</th>
+    <th class="small-col">Suffix</th>
+    <th class="large-col">Output Sanitization</th>
+    <th colspan="2" class="small-col">Output Limit</th>
+</tr>
+</thead>
 
-    <tbody>
+<tbody>
 
-    <?php $keyy = rand(999, 3000); ?>
-    <tr data-row-id="<?php echo $keyy; ?>" style="display: none; ">
-        <td data-title="Attributes : "><?php $feed_template->printSelectDropdown( $keyy, 'attr', '' );?>
-        </td>
-        <td data-title="Type : "><?php $feed_template->printAttType( $keyy, '' ); ?></td>
-        <td data-title="Value : ">
-            <div class="meta-dropdown">
-                <?php
+<?php
+$keyy = rand(999, 3000); ?>
+<tr data-row-id="<?php echo $keyy; ?>" style="display: none; ">
+    <td data-title="Attributes : "><?php $feed_template->printSelectDropdown( $keyy, 'attr', '' );?>
+    </td>
+    <td data-title="Type : "><?php $feed_template->printAttType( $keyy, '' ); ?></td>
+    <td data-title="Value : ">
+        <div class="meta-dropdown">
+            <?php
                 echo '<select  name="fc['.$keyy.'][' . esc_attr( 'meta_key' ) . ']" >';
                 echo "<option value=''>Please Select</option>";
-                $i = 1;
-                foreach ($items as $groupLabel => $groups) {
-                    if ( !empty($groupLabel)) {
-                        echo "<optgroup label='$groupLabel' data-i='$i'>";
-                    }
-                    foreach ($groups as $k => $it) {
-                        echo "<option value='$k'>$it</option>";
-                    }
-
-                    if ( !empty($groupLabel)) {
-                        echo "</optgroup>";
-                    }
-                    $i = $i + 1;
-                }
+                echo $feed_template->printProductAttributes();
                 echo "</select>";
+            ?>
+        </div>
+        <div class="static-input">
+            <?php $feed_template->printInput( $keyy, 'st_value', '' ); ?>
+        </div>
+    </td>
+    <td data-title="Prefix : "><?php $feed_template->printInput( $keyy, 'prefix', '' ); ?></td>
+    <td data-title="Suffix : "><?php $feed_template->printInput( $keyy, 'suffix', '' ); ?></td>
+    <td data-title="Output Sanitization : "><?php $feed_template->printSelectDropdown( $keyy, 'escape', '' ); ?></td>
+    <td data-title="Output Limit : "><?php $feed_template->printInput( $keyy, 'limit', '' ); ?></td>
+    <td>
+        <a class="delete-row" title="Delete">
+            <i class="fa fa-trash"></i>
+        </a>
+    </td>
+</tr>
+
+<?php foreach ( $feed_template->getTemplateMappings() as $key => $item): ?>
+    <?php
+    $hideStaticInput = $item['type'] != 'static' ? 'style="display:none;"' : '';
+    $hideMetaInput   = $item['type'] == 'static' ? 'style="display:none;"' : '';
+
+    ?>
+    <tr data-row-id="<?php echo $key; ?>">
+        <td data-title="Attributes : ">
+            <?php
+            if(array_key_exists('attr', $item)) {
+                $feed_template->printSelectDropdown( $key, 'attr', $item['attr'] );
+            }else {
+                $feed_template->printInput( $key, 'cust_attr', $item['cust_attr'] );
+            }
+
+            ?>
+        </td>
+        <td data-title="Type : "><?php $feed_template->printAttType( $key, $item['type'] ); ?></td>
+        <td data-title="Value : ">
+            <div class="meta-dropdown" <?php echo $hideMetaInput; ?>>
+                <?php
+                    echo '<select  name="fc['.$key.'][' . esc_attr( 'meta_key' ) . ']" >';
+                    echo "<option value=''>Please Select</option>";
+                    echo $feed_template->printProductAttributes($item['meta_key']);
+                    echo "</select>";
                 ?>
             </div>
-            <div class="static-input">
-                <?php $feed_template->printInput( $keyy, 'st_value', '' ); ?>
+            <div class="static-input" <?php echo $hideStaticInput; ?>>
+                <?php $feed_template->printInput( $key, 'st_value', $item['st_value'] ); ?>
             </div>
         </td>
-        <td data-title="Prefix : "><?php $feed_template->printInput( $keyy, 'prefix', '' ); ?></td>
-        <td data-title="Suffix : "><?php $feed_template->printInput( $keyy, 'suffix', '' ); ?></td>
-        <td data-title="Output Sanitization : "><?php $feed_template->printSelectDropdown( $keyy, 'escape', '' ); ?></td>
-        <td data-title="Output Limit : "><?php $feed_template->printInput( $keyy, 'limit', '' ); ?></td>
+        <td data-title="Prefix : "><?php $feed_template->printInput( $key, 'prefix', $item['prefix'] ); ?></td>
+        <td data-title="Suffix : "><?php $feed_template->printInput( $key, 'suffix', $item['suffix'] ); ?></td>
+        <td data-title="Output Sanitization : "><?php $feed_template->printSelectDropdown( $key, 'escape', $item['escape'] ); ?></td>
+        <td data-title="Output Limit : "><?php $feed_template->printInput( $key, 'limit', $item['limit'] ); ?></td>
         <td>
             <a class="delete-row" title="Delete">
                 <i class="fa fa-trash"></i>
             </a>
         </td>
     </tr>
+<?php endforeach ?>
 
-    <?php foreach ( $feed_template->getTemplateMappings() as $key => $item): ?>
-        <?php
-        $hideStaticInput = $item['type'] != 'static' ? 'style="display:none;"' : '';
-        $hideMetaInput   = $item['type'] == 'static' ? 'style="display:none;"' : '';
-
-        ?>
-        <tr data-row-id="<?php echo $key; ?>">
-            <td data-title="Attributes : ">
-                <?php
-                    if(array_key_exists('attr', $item)) {
-                        $feed_template->printSelectDropdown( $key, 'attr', $item['attr'] );
-                    }else {
-                        $feed_template->printInput( $key, 'cust_attr', $item['cust_attr'] );
-                    }
-
-                ?>
-            </td>
-            <td data-title="Type : "><?php $feed_template->printAttType( $key, $item['type'] ); ?></td>
-            <td data-title="Value : ">
-                <div class="meta-dropdown" <?php echo $hideMetaInput; ?>>
-                    <?php
-                        echo '<select  name="fc['.$key.'][' . esc_attr( 'meta_key' ) . ']" >';
-                            echo "<option value=''>Please Select</option>";
-                            $i = 1;
-                            foreach ($items as $groupLabel => $groups) {
-                                if ( !empty($groupLabel)) {
-                                    echo "<optgroup label='$groupLabel' data-i='$i'>";
-                                }
-                                foreach ($groups as $k => $it) {
-                                    if ( $item['meta_key'] == $k ) {
-                                        echo "<option value='$k' selected='selected'>$it</option>";
-                                    }else{
-                                        echo "<option value='$k'>$it</option>";
-                                    }
-                                }
-
-                                if ( !empty($groupLabel)) {
-                                    echo "</optgroup>";
-                                }
-                                $i = $i + 1;
-                            }
-                        echo "</select>";
-                    ?>
-                </div>
-                <div class="static-input" <?php echo $hideStaticInput; ?>>
-                    <?php $feed_template->printInput( $key, 'st_value', $item['st_value'] ); ?>
-                </div>
-            </td>
-            <td data-title="Prefix : "><?php $feed_template->printInput( $key, 'prefix', $item['prefix'] ); ?></td>
-            <td data-title="Suffix : "><?php $feed_template->printInput( $key, 'suffix', $item['suffix'] ); ?></td>
-            <td data-title="Output Sanitization : "><?php $feed_template->printSelectDropdown( $key, 'escape', $item['escape'] ); ?></td>
-            <td data-title="Output Limit : "><?php $feed_template->printInput( $key, 'limit', $item['limit'] ); ?></td>
-            <td>
-                <a class="delete-row" title="Delete">
-                    <i class="fa fa-trash"></i>
-                </a>
-            </td>
-        </tr>
-    <?php endforeach ?>
-
-    </tbody>
-
-</table>
+</tbody>

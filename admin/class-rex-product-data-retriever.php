@@ -20,6 +20,12 @@ class Rex_Product_Data_Retriever {
      */
     protected $feed_rules;
 
+
+    /**
+     * @var string $feed_id The id of the feed
+     */
+    protected $analytics_params;
+
     /**
      * Contains all available meta keys for products.
      *
@@ -83,9 +89,10 @@ class Rex_Product_Data_Retriever {
      * @param      string    $plugin_name       The name of this plugin.
      * @param      string    $version    The version of this plugin.
      */
-    public function __construct( WC_Product $product, $feed_rules, $wpml = null, $append_variation = 'no', $product_meta_keys ) {
+    public function __construct( WC_Product $product, $feed_rules, $wpml = null, $append_variation = 'no', $product_meta_keys, $analytics_params = null ) {
 
         $this->product           = $product;
+        $this->analytics_params = $analytics_params;
         $log = wc_get_logger();
         $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
         $log->info(__( 'Start product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
@@ -103,6 +110,7 @@ class Rex_Product_Data_Retriever {
         $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
 
     }
+
 
 
     /**
@@ -144,10 +152,9 @@ class Rex_Product_Data_Retriever {
      */
     public function set_all_value() {
         $this->data = array();
-
         foreach ( $this->feed_rules as $key => $rule ) {
-            if($rule['attr']) {
-                if(array_key_exists('attr', $rule)) {
+            if(array_key_exists('attr', $rule)) {
+                if($rule['attr']) {
                     if($rule['attr'] === 'attributes') {
                         $this->data[ $rule['attr']][] = array(
                             'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
@@ -156,11 +163,13 @@ class Rex_Product_Data_Retriever {
                     }else {
                         $this->data[ $rule['attr'] ] = $this->set_val( $rule );
                     }
-                }elseif (array_key_exists('cust_attr', $rule)) {
-                    $this->data[ preg_replace('/\s+/', '_', $rule['cust_attr']) ] = $this->set_val( $rule );
-                }else {
-                    $this->data[ $rule['attr'] ] = $this->set_val( $rule );
                 }
+            }elseif (array_key_exists('cust_attr', $rule)) {
+                if($rule['cust_attr']) {
+                    $this->data[ preg_replace('/\s+/', '_', $rule['cust_attr']) ] = $this->set_val( $rule );
+                }
+            }else {
+                $this->data[ $rule['attr'] ] = $this->set_val( $rule );
             }
 
         }
@@ -186,15 +195,16 @@ class Rex_Product_Data_Retriever {
         elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_att( $rule['meta_key']  );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_product_dynamic_att( $rule['meta_key']  );
-        }
+//        elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
+//            $val = $this->set_product_dynamic_att( $rule['meta_key']  );
+//        }
         elseif ( 'meta' === $rule['type'] && $this->is_product_custom_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_custom_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
             $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
+
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix($val, $rule);
         // maybe escape
@@ -280,26 +290,29 @@ class Rex_Product_Data_Retriever {
                         number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') :
                         number_format((float)$this->product->get_price(), 2, '.', '');
 
-                    $pid = wad_get_product_id_to_use($this->product);
+                    $_pid = wad_get_product_id_to_use($this->product);
+                    $_product = wc_get_product($_pid);
+                    if( $_product->is_type( 'variation' ) ) {
+                        $_pid = $_product->get_parent_id();
+                    }
                     foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
                         $o_discount = get_post_meta($discount_id, 'o-discount', true);
                         $pr_list_id = $o_discount['products-list'];
                         $product_list = new WAD_Products_List($pr_list_id);
                         $raw_args = get_post_meta($pr_list_id, "o-list", true);
                         $args = $product_list->get_args($raw_args);
+                        $args['fields'] = 'ids';
                         $products = get_posts( $args );
-                        if (!empty( $products )) {
-                            $to_return = array_map( function($o) {return $o->ID;}, $products );
-                            $variations_ids = $this->get_request_variations( $products );
-                            $products = array_merge( $to_return, $variations_ids );
-                        }
 
-                        if ($discount_obj->is_applicable($pid) && is_array($products) && in_array($pid, $products)) {
+                        if (
+                            $discount_obj->is_applicable($_pid) &&
+                            in_array($_pid, $products)
+                        )
+                        {
                             $sale_price = floatval($sale_price) - $discount_obj->get_discount_amount(floatval($sale_price));
+                            return $sale_price;
                         }
                     }
-
-
                     return $sale_price;
                 }
                 break;
@@ -329,21 +342,26 @@ class Rex_Product_Data_Retriever {
                         number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') :
                         number_format((float)$this->product->get_sale_price(), 2, '.', '');
 
-                    $pid = wad_get_product_id_to_use($this->product);
+                    $_pid = wad_get_product_id_to_use($this->product);
+                    $_product = wc_get_product($_pid);
+                    if( $_product->is_type( 'variation' ) ) {
+                        $_pid = $_product->get_parent_id();
+                    }
                     foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
                         $o_discount = get_post_meta($discount_id, 'o-discount', true);
                         $pr_list_id = $o_discount['products-list'];
                         $product_list = new WAD_Products_List($pr_list_id);
                         $raw_args = get_post_meta($pr_list_id, "o-list", true);
                         $args = $product_list->get_args($raw_args);
+                        $args['fields'] = 'ids';
                         $products = get_posts( $args );
-                        if (!empty( $products )) {
-                            $to_return = array_map( function($o) {return $o->ID;}, $products );
-                            $variations_ids = $this->get_request_variations( $products );
-                            $products = array_merge( $to_return, $variations_ids );
-                        }
-                        if ($discount_obj->is_applicable($pid) && is_array($products) && in_array($pid, $products)) {
+                        if (
+                            $discount_obj->is_applicable($_pid) &&
+                            in_array($_pid, $products)
+                        )
+                        {
                             $sale_price = floatval($sale_price) - $discount_obj->get_discount_amount(floatval($sale_price));
+                            return $sale_price;
                         }
                     }
                     return $sale_price;
@@ -385,6 +403,17 @@ class Rex_Product_Data_Retriever {
                 return $this->get_product_tags(); break;
 
             case 'link':
+
+                if($this->analytics_params) {
+                    if ( ! empty( $this->analytics_params['utm_source'] ) &&
+                        ! empty( $this->analytics_params['utm_medium'] ) &&
+                        ! empty( $this->analytics_params['utm_campaign'] )
+                    ) {
+                        return add_query_arg( array_filter( $this->analytics_params ), $this->product->get_permalink() ); break;
+                    }
+                    return $this->product->get_permalink(); break;
+                }
+
                 return $this->product->get_permalink(); break;
 
             case 'condition':
@@ -792,8 +821,8 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function is_product_dynamic_attr( $key ) {
-
-        return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
+//        return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
+        return true;
     }
 
 
@@ -1089,36 +1118,81 @@ class Rex_Product_Data_Retriever {
 
 
 
+
+    public function get_args($raw_args = false) {
+        if(!$raw_args)
+            $raw_args=  $this->args;
+
+        $args = array(
+            "post_type"=>array("product", "product_variation")
+        );
+        if(isset($raw_args["type"])&&$raw_args["type"]=="by-id")
+        {
+            $args['post__in'] = explode(",",$raw_args["ids"]);
+        }
+        else
+        {
+            //Tax queries
+            if (isset($raw_args["tax_query"]["queries"])) {
+                $args["tax_query"] = array();
+                $args["tax_query"]["relation"] = $raw_args["tax_query"]["relation"];
+                foreach ($raw_args["tax_query"]["queries"] as $query) {
+                    array_push($args["tax_query"], $query);
+                }
+            }
+
+            //Metas
+            if (isset($raw_args["meta_query"]["queries"])) {
+                $args["meta_query"] = array();
+                $args["meta_query"]["relation"] = $raw_args["meta_query"]["relation"];
+                foreach ($raw_args["meta_query"]["queries"] as $query) {
+                    //Some operators expect an array as value
+                    $array_operators = array('IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN');
+                    if (in_array($query["compare"], $array_operators))
+                        $query["value"] = explode(",", $query["value"]);
+                    array_push($args["meta_query"], $query);
+                }
+            }
+
+            //Other parameters
+            $other_parameters = array("author__in", "post__not_in");
+            foreach ($other_parameters as $parameter) {
+                if (!isset($raw_args[$parameter]))
+                    continue;
+                if ($parameter == "post__not_in")
+                    $args[$parameter] = explode(",", $raw_args[$parameter]);
+                else if ($parameter == "author__in" && $raw_args[$parameter] == array(""))
+                    continue;
+                else
+                    $args[$parameter] = $raw_args[$parameter];
+            }
+        }
+
+        $args["nopaging"]=true;
+
+        return $args;
+    }
+
+
+
     /**
      * Check if the request contains any variation. If it does not, it adds returns all variations linked to the request
      * @global type $wpdb
      * @param type $posts
      * @return type
      */
-    private function get_request_variations($posts)
+    private function get_final_products($products)
     {
         $results=array();
-        $variations = array_filter(
-            $posts,
-            function ($e) {
-                return $e->post_type == "product_variation";
-            }
-        );
-        //If there is no variation in the list, we gather the variations manually and add them to the list
-        if(empty($variations))
-        {
-            global $wpdb;
-            $parents_ids=array_map(function($o){ $p=wc_get_product($o->ID); if($p->get_type()=="variable") return $o->ID;}, $posts);
-            $clean_parents_ids=array_filter($parents_ids);
-            $parents_ids_str= implode(",", $clean_parents_ids);
-            if(!empty($parents_ids_str))
-            {
-                $request="select distinct id from $wpdb->posts where post_parent in($parents_ids_str) and post_type='product_variation'";
-                $results=$wpdb->get_col($request);
-            }
-
-        }
-
+//        global $wpdb;
+        $parents_ids=array_map(function($o){ $p=wc_get_product($o); if($p->get_type()=="variable") return $o;}, $products);
+//        $clean_parents_ids=array_filter($parents_ids);
+//        $parents_ids_str= implode(",", $clean_parents_ids);
+//        if(!empty($parents_ids_str))
+//        {
+//            $request="select distinct id from $wpdb->posts where post_parent in($parents_ids_str) and post_type='product_variation'";
+//            $results=$wpdb->get_col($request);
+//        }
         return $results;
     }
 

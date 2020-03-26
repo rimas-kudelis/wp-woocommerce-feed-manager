@@ -39,7 +39,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
-
         $this->feed = $this->returnFinalProduct();
 
         if ($this->batch >= $this->tbatch ) {
@@ -84,7 +83,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     $variations = $product->get_visible_children();
                     if($variations) {
                         foreach ($variations as $variation) {
@@ -129,6 +128,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
             }
+
         }
 
         $total_products = array(
@@ -137,7 +137,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'variable' => (int) $total_products['variable'] + (int) count($variable_products),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
-
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
     }
 

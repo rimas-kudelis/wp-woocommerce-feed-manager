@@ -113,6 +113,11 @@ class Rex_Product_Feed_Factory {
                 'kiesproduct',
                 'kiyoh',
                 'kompario',
+                'kwanko',
+                'ledenicheur',
+                'les_bonnes_bouilles',
+                'lions_home',
+                'locamo',
             )
         );
 

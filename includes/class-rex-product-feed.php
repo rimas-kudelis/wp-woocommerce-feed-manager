@@ -183,6 +183,8 @@ class Rex_Product_Feed {
          */
         $this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update' );
 
+
+        $this->loader->add_filter( 'cmb2_render_analytics_params', $plugin_admin, 'cmb2_render_analytics_params_callback', 10, 5 );
     }
 
     /**

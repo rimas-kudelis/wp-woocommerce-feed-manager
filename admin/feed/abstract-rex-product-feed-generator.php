@@ -285,7 +285,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $this->setup_feed_data($config['info']);
 
         if ($this->bypass){
+
             $this->feed_rules = $config['feed_config'];
+            $this->product_scope = $config['product_scope'];
             $this->feed_rules_filter = $config['feed_filter'];
             $this->variations   = $config['include_variations'];
             $this->parent_product   = $config['parent_product'];
@@ -353,6 +355,20 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $post_types[] =  'product_variation';
         }
 
+       if($this->product_scope == 'filter') {
+           foreach ($this->feed_rules_filter as $filter) {
+               $if = $filter['if'];
+
+               if($if == 'product_cats') {
+                   unset($post_types[1]);
+               }
+
+               if($if == 'product_tags') {
+                   unset($post_types[1]);
+               }
+           }
+       }
+
         $this->products_args = array(
             'post_type'              => $post_types,
             'fields'                 => 'ids',
@@ -364,8 +380,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             'cache_results'          => false,
             'suppress_filters'       => false,
         );
-
-
 
         if ( $args['products_scope'] === 'product_cat' || $args['products_scope'] === 'product_tag') {
             $terms = $args['products_scope'] === 'product_tag' ? 'tags' : 'cats';
@@ -380,8 +394,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $this->products_args['tax_query']['relation'] = 'OR';
             }
         }
-
-
     }
 
     /**
@@ -407,6 +419,19 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_feed_rules( $info ){
         $feed_rules       = array();
         parse_str( $info, $feed_rules );
+        $this->product_scope = $feed_rules['rex_feed_products'];
+        if($this->batch == 1) {
+            if(array_key_exists('rex_feed_analytics_params_options', $feed_rules)) {
+                $analytics_on = $feed_rules['rex_feed_analytics_params_options'];
+                if($analytics_on) {
+                    update_post_meta($this->id, 'rex_feed_analytics_params_options', $analytics_on);
+                    if($analytics_on == 'on') {
+                        $analytics_params = $feed_rules['rex_feed_analytics_params'];
+                        update_post_meta($this->id, 'rex_feed_analytics_params', $analytics_params);
+                    }
+                }
+            }
+        }
 
         if ( function_exists('icl_object_id') ) {
             $this->wpml_language = array_key_exists('rex_feed_wpml_language', $feed_rules) ?
@@ -482,16 +507,18 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $info
      */
     protected function setup_feed_filter_rules( $info ){
-        $feed_rules_filter       = array();
-        parse_str( $info, $feed_rules_filter );
 
-        $feed_rules_filter          = $feed_rules_filter['ff'];
-        $this->feed_rules_filter    = $feed_rules_filter;
-
-        // save the feed_rules_filter into feed post_meta.
-        if($this->batch == 1) {
-            update_post_meta($this->id, 'rex_feed_feed_config_filter', $this->feed_rules_filter);
+        if($this->product_scope === 'filter') {
+            $feed_rules_filter       = array();
+            parse_str( $info, $feed_rules_filter );
+            $feed_rules_filter          = $feed_rules_filter['ff'];
+            $this->feed_rules_filter    = $feed_rules_filter;
+            // save the feed_rules_filter into feed post_meta.
+            if($this->batch == 1) {
+                update_post_meta($this->id, 'rex_feed_feed_config_filter', $this->feed_rules_filter);
+            }
         }
+
     }
 
 
@@ -520,9 +547,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
 
         }
+
         $result = new WP_Query($this->products_args);
-        remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
         $this->products = $result->get_posts();
+        remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
     }
 
 
@@ -674,6 +702,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         }
 
+        if($wp_query->get('post__greater_than')) {
+            $post_greater_than_id = $wp_query->get('post__greater_than');
+            $where .= ' AND (ID > '. $post_greater_than_id . ')';
+        }
+        if($wp_query->get('post__greater_than_equal')) {
+            $post_greater_than_equal_id = $wp_query->get('post__greater_than_equal');
+            $where .= ' AND (ID >= '. $post_greater_than_equal_id . ')';
+        }
+        if($wp_query->get('post__less_than')) {
+            $post_less_than_id = $wp_query->get('post__less_than');
+            $where .= ' AND (ID < '. $post_less_than_id . ')';
+        }
+        if($wp_query->get('post__less_than_equal')) {
+            $post_less_than_equal_id = $wp_query->get('post__less_than_equal');
+            $where .= ' AND (ID <= '. $post_less_than_equal_id . ')';
+        }
+
         return $where;
     }
 
@@ -802,15 +847,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return string
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys ){
+        $include_analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params_options', true);
+
+        if($include_analytics_params == 'on') {
+            $analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params', true);
+        }else {
+            $analytics_params = null;
+        }
+
         if ( function_exists('icl_object_id') ) {
             global $sitepress;
             $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
             if($wpml) {
                 $sitepress->switch_lang($wpml);
-                $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys);
+                $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
             }
         }else{
-            $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys);
+            $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
         }
         return $data->get_all_data();
     }

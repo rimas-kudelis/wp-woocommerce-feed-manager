@@ -132,8 +132,6 @@ class Item
 
         $node = new Node('sale_price');
         $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
-
-
     }
 
     /**
@@ -277,6 +275,28 @@ class Item
             $this->nodes['shipping'] = array();
         }
         $this->nodes['shipping'][] = $node->value($value)->_namespace($this->namespace);
+    }
+
+
+    /**
+     * @param $code
+     * @param $service
+     * @param $cost
+     * @param null $region
+     */
+    public function tax($code, $ship, $rate, $region = null)
+    {
+        $node = new Node('tax');
+        $value = "<g:country>{$code}</g:country><g:tax_ship><![CDATA[{$ship}]]></g:tax_ship><g:rate>{$rate}</g:rate>";
+
+        if($region) {
+            $value .= "<g:region>{$region}</g:region>";
+        }
+
+        if (! isset($this->nodes['tax'])) {
+            $this->nodes['tax'] = array();
+        }
+        $this->nodes['tax'][] = $node->value($value)->_namespace($this->namespace);
     }
 
     /**

@@ -795,6 +795,31 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Kompario'
                                 ),
+                                'kwanko'     => array(
+                                    'free'   => true,
+                                    'status' => 0,
+                                    'name'   => 'Kwanko'
+                                ),
+                                'ledenicheur' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Le Dénicheur'
+                                ),
+                                'les_bonnes_bouilles' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Les Bonnes Bouilles'
+                                ),
+                                'lions_home' => array(
+                                    'free'   => true,
+                                    'status' => 0,
+                                    'name'   => 'Lions Home'
+                                ),
+                                'locamo'      => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Locamo'
+                                ),
                             );
                                 
                             $_pro_merchants = array(

@@ -85,7 +85,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
             }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     $variations = $product->get_visible_children();
                     if($variations) {
                         foreach ($variations as $variation) {

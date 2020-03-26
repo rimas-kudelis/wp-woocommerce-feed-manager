@@ -589,14 +589,40 @@ class Rex_Product_Filter {
                     if($then == 'inc') {
                         if($condition == 'equal_to' ) {
                             $filter_args['post__in'][] = $value;
-                        }elseif ($condition == 'nequal_to') {
+                        }
+                        elseif ($condition == 'nequal_to') {
                             $filter_args['post__not_in'][] = $value;
+                        }
+                        elseif ($condition == 'greater_than') {
+                            $filter_args['post__greater_than'] = $value;
+                        }
+                        elseif ($condition == 'greater_than_equal') {
+                            $filter_args['post__greater_than_equal'] = $value;
+                        }
+                        elseif ($condition == 'less_than') {
+                            $filter_args['post__less_than'] = $value;
+                        }
+                        elseif ($condition == 'less_than_equal') {
+                            $filter_args['post__less_than_equal'] = $value;
                         }
                     }elseif ($then == 'exc') {
                         if($condition == 'equal_to' ) {
                             $filter_args['post__not_in'][] = $value;
-                        }elseif ($condition == 'nequal_to') {
+                        }
+                        elseif ($condition == 'nequal_to') {
                             $filter_args['post__in'][] = $value;
+                        }
+                        elseif ($condition == 'greater_than') {
+                            $filter_args['post__less_than'] = $value;
+                        }
+                        elseif ($condition == 'greater_than_equal') {
+                            $filter_args['post__less_than_equal'] = $value;
+                        }
+                        elseif ($condition == 'less_than') {
+                            $filter_args['post__greater_than'] = $value;
+                        }
+                        elseif ($condition == 'less_than_equal') {
+                            $filter_args['post__greater_than_equal'] = $value;
                         }
                     }
                     break;

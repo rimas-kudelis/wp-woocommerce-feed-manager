@@ -174,6 +174,7 @@ class Rex_Product_Feed_Cron_Handler {
                                 'include_variations' => $include_variations,
                                 'append_variations' => $append_variations,
                                 'parent_product' => $parent_product,
+                                'product_scope' => $feed_products,
                                 'wpml_language' => $wpml,
                             );
                             try {
@@ -271,6 +272,7 @@ class Rex_Product_Feed_Cron_Handler {
                                     'include_variations' => $include_variations,
                                     'append_variations' => $append_variations,
                                     'parent_product' => $parent_product,
+                                    'product_scope' => $feed_products,
                                     'wpml_language' => $wpml,
                                 );
                                 try {

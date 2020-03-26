@@ -263,16 +263,15 @@ class Rex_Product_Feed_Ajax {
     /**
      * Show feed template
      * @param $merchant
-     * @return string
+     * @return false|string
+     * @throws Exception
      */
     public static function show_feed_template( $merchant ){
         $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
         if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
             $feed_rules = false;
         }
-
         $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
-
         ob_start();
         if( in_array($merchant['merchant'], apply_filters('wpfm_has_custom_feed_config', array()))) {
             do_action('wpfm_custom_metabox_display_'. $merchant['merchant'], $merchant['merchant'], $feed_template);
@@ -280,7 +279,6 @@ class Rex_Product_Feed_Ajax {
             include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         }
         return ob_get_clean();
-
     }
 
 
