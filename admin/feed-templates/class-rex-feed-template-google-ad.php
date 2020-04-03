@@ -22,27 +22,38 @@ class Rex_Feed_Template_Google_Ad extends Rex_Feed_Abstract_Template {
 
     protected function init_atts(){
         $this->attributes = array(
-            'Basic Information' =>  array(
-                'id'                       => 'ID',
-                'id2'                      => 'ID2',
-                'Item_title'               => 'Item Title',
-                'Final_URL'                => 'Final URL',
-                'Image_URL'                => 'Image URL',
-                'Item_subtitle'            => 'Item subtitle',
-                'Item_description'         => 'Item description',
-                'Item_category'            => 'Item category',
-                'Price'                    => 'Price',
-                'Sale_price'               => 'Sale price',
-                'Contextual_keywords'      => 'Contextual keywords',
-                'Item_address'             => 'Item address',
+            'Required Information' =>  array(
+                'ID'               => 'ID',
+                'Item title'       => 'Product Title',
+                'Final URL'        => 'Final URL',
             ),
+
+            'Additional Information' => array(
+                'ID2'                => 'ID2',
+                'Item address'       => 'Item address',
+                'Tracking template'  => 'Tracking template',
+                'Custom parameter'   => 'Custom parameter',
+            ),
+
+            'Recommended Information' => array(
+                'Image URL'           => 'Image URL',
+                'Item subtitle'       => 'Item subtitle',
+                'Item description'    => 'Item description',
+                'Item Category'       => 'Item Category',
+                'Price'               => 'Price',
+                'Sale Price'          => 'Sale Price',
+                'Formatted price'     => 'Formatted price',
+                'Formatted sale price'=> 'Formatted sale price',
+                'Contextual keywords' => 'Contextual keywords',
+            ),
+
         );
     }
 
     protected function init_default_template_mappings(){
         $this->template_mappings = array(
             array(
-                'attr'     => 'id',
+                'attr'     => 'ID',
                 'type'     => 'meta',
                 'meta_key' => 'id',
                 'st_value' => '',
@@ -52,9 +63,9 @@ class Rex_Feed_Template_Google_Ad extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'id2',
+                'attr'     => 'Item title',
                 'type'     => 'meta',
-                'meta_key' => 'sku',
+                'meta_key' => 'title',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
@@ -62,7 +73,7 @@ class Rex_Feed_Template_Google_Ad extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'Final_URL',
+                'attr'     => 'Final URL',
                 'type'     => 'meta',
                 'meta_key' => 'link',
                 'st_value' => '',
@@ -71,86 +82,7 @@ class Rex_Feed_Template_Google_Ad extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-            array(
-                'attr'     => 'Image_URL',
-                'type'     => 'meta',
-                'meta_key' => 'featured_image',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'Item_subtitle',
-                'type'     => 'meta',
-                'meta_key' => 'short_description',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'Item_description',
-                'type'     => 'meta',
-                'meta_key' => 'description',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'Item_category',
-                'type'     => 'meta',
-                'meta_key' => 'product_cats',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'Price',
-                'type'     => 'meta',
-                'meta_key' => 'price',
-                'st_value' => '',
-                'prefix'   => ' '.get_option('woocommerce_currency'),
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'Sale_price',
-                'type'     => 'meta',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => ' '.get_option('woocommerce_currency'),
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'Contextual_keywords',
-                'type'     => 'meta',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'Item_address',
-                'type'     => 'meta',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
+
         );
     }
 

@@ -21,6 +21,11 @@ $pa_field = get_option('rex-wpfm-product-pa-field');
 $structured_data = get_option('rex-wpfm-product-structured-data');
 $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
 $per_batch = get_option('rex-wpfm-product-per-batch', 50);
+$wpfm_fb_pixel_enabled = get_option('wpfm_drm_pixel_enabled', 'no');
+$wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
+
+//$wpfm_drm_pixel_enabled = get_option('wpfm_drm_pixel_enabled', 'no');
+//$wpfm_drm_pixel_data = get_option('wpfm_drm_pixel_value');
 
 ?>
 
@@ -193,7 +198,7 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                 'google_Ad'    => array(
                                     'free'  => true,
                                     'status'    => 1,
-                                    'name'  => 'Google AdWords'
+                                    'name'  => 'Google Dynamic Display Ads'
                                 ),
                                 'google_local_products'    => array(
                                     'free'  => true,
@@ -205,6 +210,7 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'    => 0,
                                     'name'  => 'Google Local Products Inventory'
                                 ),
+
                                 'google_merchant_promotion'    => array(
                                     'free'  => true,
                                     'status'    => 0,
@@ -820,6 +826,26 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                     'status'  => 0,
                                     'name'    => 'Locamo'
                                 ),
+                                'logicsale'      => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Logicsale'
+                                ),
+                                'google_manufacturer_center'      => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Google Manufacturer Center'
+                                ),
+                                'pronto'      => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Pronto'
+                                ),
+                                'awin'      => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Awin'
+                                )
                             );
                                 
                             $_pro_merchants = array(
@@ -882,14 +908,14 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                             }
 
 
+//                            unset();
+
                             /**
                              * result of bad planning
                              */
                             $_merchants['google']['name'] = 'Google Shopping';
                             $_merchants['google_Ad']['name'] = 'Google AdWords';
-
                             $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
-
 
                             ?>
                             <?php foreach ($_merchants as $key => $merchant): ?>
@@ -913,7 +939,7 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                         ?>
                                         <div class="switch <?php echo $disabled; ?>" >
                                             <div class="wpfm-switcher">
-                                                <input class="switch-input" type="checkbox" <?php echo $checked; ?> <?php echo $disabled; ?> id="switcher-<?php echo strtolower($key); ?>" data-value="<?php echo $key; ?>" data-is-free="<?php echo $is_free; ?>" data-name="<?php echo ucfirst($name); ?>">
+                                                <input class="switch-input merchant-change" type="checkbox" <?php echo $checked; ?> <?php echo $disabled; ?> id="switcher-<?php echo strtolower($key); ?>" data-value="<?php echo $key; ?>" data-is-free="<?php echo $is_free; ?>" data-name="<?php echo ucfirst($name); ?>">
                                                 <label class="lever" for="switcher-<?php echo strtolower($key); ?>"></label>
                                             </div>
                                         </div>
@@ -948,6 +974,32 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
                                 <span class="title"><?php echo __('Clear batch', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <button class="wpfm-clear-batch" id="wpfm-clear-batch"><span>Clear</span> <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="single-merchant">
+                                <span class="title">
+                                    <?php echo __('Enable facebook pixel', 'rex-product-feed'); ?>
+                                </span>
+                                <div class="switch">
+                                    <?php
+                                        $checked = $wpfm_fb_pixel_enabled === 'yes' ? 'checked': '';
+                                        $hidden_class = $wpfm_fb_pixel_enabled === 'yes' ? '': 'is-hidden';
+                                    ?>
+                                    <div class="wpfm-switcher">
+                                        <input class="switch-input" type="checkbox" id="wpfm_fb_pixel" <?php echo $checked; ?>>
+                                        <label class="lever" for="wpfm_fb_pixel"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="single-merchant wpfm-fb-pixel-field <?php echo $hidden_class; ?>">
+                                <span class="title"><?php echo __('Facebook pixel id', 'rex-product-feed'); ?></span>
+                                <div class="switch">
+                                    <form id="wpfm-fb-pixel" class="wpfm-fb-pixel">
+                                        <input id="wpfm_fb_pixel" type="text" name="wpfm_fb_pixel" value="<?php echo $wpfm_fb_pixel_data; ?>">
+                                        <button type="submit" class="save-fb-pixel"><span>save</span> <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                    </form>
                                 </div>
                             </div>
 

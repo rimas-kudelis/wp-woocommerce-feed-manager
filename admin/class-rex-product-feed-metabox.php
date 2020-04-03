@@ -221,11 +221,6 @@ class Rex_Product_Metabox {
                 'status'    => 1,
                 'name'  => 'Amazon'
             ),
-            'ebay'         => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'eBay'
-            ),
             'adroll'       => array(
                 'free'  => true,
                 'status'    => 1,
@@ -339,7 +334,6 @@ class Rex_Product_Metabox {
                     'bing',
                     'kelkoo',
                     'amazon',
-                    'ebay',
                     'become' ,
                     'shopzilla',
                     'shopping',
@@ -413,6 +407,11 @@ class Rex_Product_Metabox {
                     'les_bonnes_bouilles',
                     'lions_home',
                     'locamo',
+                    'logicsale',
+                    'google_manufacturer_center',
+                    'pronto',
+                    'awin',
+                    'google_dynamic_display_ads',
                 ))),
             ),
         ) );

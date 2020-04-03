@@ -202,6 +202,16 @@ class Rex_Product_Feed_Ajax {
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_bf_notice_dismiss' ) )
             ->with_validation( $validations );
 
+
+        wp_ajax_helper()->handle( 'wpfm-enable-fb-pixel' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_fb_pixel' ) )
+            ->with_validation( $validations );
+
+
+        wp_ajax_helper()->handle( 'save-fb-pixel-value' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_fb_pixel_value' ) )
+            ->with_validation( $validations );
+
     }
 
 
@@ -636,6 +646,39 @@ class Rex_Product_Feed_Ajax {
             );
         }
         update_option('wpfm_bf_notice', json_encode($wpfm_bf_notice));
+        return array(
+            'success' => true,
+        );
+    }
+
+
+    /**
+     * @param $payload
+     * @return array
+     */
+    public static function wpfm_enable_fb_pixel($payload) {
+        if($payload['wpfm_fb_pixel_enabled'] == 'yes') {
+            update_option('wpfm_fb_pixel_enabled', 'yes');
+            return array(
+                'success' => true,
+                'data'  => 'enabled'
+            );
+        }else if ($payload['wpfm_fb_pixel_enabled'] == 'no') {
+            update_option('wpfm_fb_pixel_enabled', 'no');
+            return array(
+                'success' => true,
+                'data'  => 'disabled'
+            );
+        }
+    }
+
+
+    /**
+     * @param $payload
+     * @return array
+     */
+    public static function save_fb_pixel_value($payload) {
+        update_option('wpfm_fb_pixel_value', $payload);
         return array(
             'success' => true,
         );

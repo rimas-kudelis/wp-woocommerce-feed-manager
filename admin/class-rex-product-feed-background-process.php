@@ -185,9 +185,7 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
                 'product_scope' => $feed_products,
                 'wpml_language' => $wpml,
             );
-
-            error_log(print_r($payload, 1));
-
+            
             try {
                 $merchant = Rex_Product_Feed_Factory::build( $payload, true );
             } catch (Exception $e) {

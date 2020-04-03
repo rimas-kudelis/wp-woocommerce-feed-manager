@@ -45,15 +45,21 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
 
         'Availability & Price' => array(
             'availability'              => 'Stock Status [availability]',
+            "availability_date"         => "Availability Date[availability_date]",
             'price'                     => 'Regular Price [price]',
             'sale_price'                => 'Sale Price [sale_price]',
             'sale_price_effective_date' => 'Sale Price Effective Date [sale_price_effective_date]',
+            "cost_of_goods_sold"        => "Cost of Goods Sold[cost_of_goods_sold]",
+            "expiration_date"           => "Expiration Date[expiration_date]",
+            "inventory"                 => "Facebook Inventory[inventory]",
+            "override"                  => "Facebook Override[override]",
         ),
 
         'Unique Product Identifiers' => array(
             'brand'             => 'Manufacturer [brand]',
-            'upc'               => 'GTIN [gtin]',
+            'gtin'              => 'GTIN [gtin]',
             'mpn'               => 'MPN [mpn]',
+            'identifier_exists' => 'Identifier Exist [identifier_exists]',
         ),
 
         'Detailed Product Attributes' => array(
@@ -70,10 +76,20 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
 
         'Tax & Shipping' => array(
             'tax'              => 'Tax [tax]',
-            'weight'           => 'Shipping Weight [shipping_weight]',
-            'length'           => 'Shipping Length [shipping_length]',
-            'width'            => 'Shipping Width [shipping_width]',
-            'height'           => 'Shipping Height [shipping_height]',
+            "tax_country"      => "Tax Country[tax_country]",
+            "tax_region"       => "Tax Region[tax_region]",
+            "tax_rate"         => "Tax Rate[tax_rate]",
+            "tax_ship"         => "Tax Ship[tax_ship]",
+            "tax_category"     => "Tax[tax_category]",
+            'shipping_country' => 'Shipping Country',
+            'shipping_region'  => 'Shipping Region',
+            'shipping_service' => 'Shipping Service',
+            'shipping_price'   => 'Shipping Price',
+            'shipping_weight'  => 'Shipping Weight [shipping_weight]',
+            'shipping_length'  => 'Shipping Length [shipping_length]',
+            'shipping_width'   => 'Shipping Width [shipping_width]',
+            'shipping_height'  => 'Shipping Height [shipping_height]',
+            'shipping_label'   => 'Shipping Label [shipping_label]',
         ),
 
 

@@ -622,7 +622,7 @@
                 console.log( response.statusText );
             });
     }
-    $(document).on('change', '.switch-input', product_feed_change_merchant_status);
+    $(document).on('change', '.merchant-change', product_feed_change_merchant_status);
 
 
     /**
@@ -747,6 +747,71 @@
             alert("Copied div content to clipboard");
         }
     }
+
+
+    /**
+     * Enable/disable facebook pixel
+     * @param event
+     */
+    function enable_fb_pixel(event) {
+        event.preventDefault();
+        var payload = {};
+        if($(this).is(":checked")) {
+            payload = {
+                wpfm_fb_pixel_enabled : 'yes',
+            };
+        }else {
+            payload = {
+                wpfm_fb_pixel_enabled : 'no',
+            };
+        }
+        wpAjaxHelperRequest( 'wpfm-enable-fb-pixel', payload )
+            .success( function( response ) {
+                if(response.data == 'enabled') {
+                    $('.wpfm-fb-pixel-field').removeClass('is-hidden');
+                }else {
+                    $('.wpfm-fb-pixel-field').addClass('is-hidden');
+                }
+
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on('change', '#wpfm_fb_pixel', enable_fb_pixel);
+
+
+    /**
+     * Save FB pixel ID
+     * @param e
+     */
+    function save_fb_pixel_id(e) {
+        e.preventDefault();
+        var $form = $(this);
+        $form.find("button.save-fb-pixel span").text("");
+        $form.find("button.save-fb-pixel i").show();
+        var value = $form.find('#wpfm_fb_pixel').val();
+        wpAjaxHelperRequest( 'save-fb-pixel-value', value )
+            .success( function( response ) {
+                $form.find("button.save-fb-pixel i").hide();
+                $form.find("button.save-fb-pixel span").text("saved");
+                setTimeout(function(){
+                    $form.find("button.save-fb-pixel span").text("save");
+                }, 1000);
+                console.log('woohoo!');
+            })
+            .error( function( response ) {
+                $form.find("button.ssave-fb-pixel i").hide();
+                $form.find("button.save-fb-pixel span").text("failed");
+                setTimeout(function(){
+                    $form.find("button.save-fb-pixel span").text("save");
+                }, 1000);
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on("submit", "#wpfm-fb-pixel", save_fb_pixel_id);
 
 
 })( jQuery );

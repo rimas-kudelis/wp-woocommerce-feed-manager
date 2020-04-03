@@ -118,6 +118,11 @@ class Rex_Product_Feed_Factory {
                 'les_bonnes_bouilles',
                 'lions_home',
                 'locamo',
+                'logicsale',
+                'google_manufacturer_center',
+                'pronto',
+                'awin',
+                'google_dynamic_display_ads',
             )
         );
 

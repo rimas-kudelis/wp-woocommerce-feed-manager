@@ -65,14 +65,10 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         foreach( $this->products as $productId ) {
             $product = wc_get_product( $productId );
 
-
             if ( ! is_object( $product ) ) {
                 continue;
             }
 
-            if ( ! $product->is_visible() ) {
-                continue;
-            }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
@@ -87,7 +83,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                                 $atts = $this->process_attributes_for_shipping_tax($atts);
                                 foreach ($atts as $key => $value) {
                                     if($key == 'shipping') {
-                                        $item->$key($value['shipping_country'], $value[''], $value[2], $value[3]); // invoke $key as method of $item object.
+                                        $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
                                     }
                                     elseif ($key == 'tax') {
                                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.

@@ -74,7 +74,7 @@ class Rex_Product_Feed {
         $this->load_dependencies();
         $this->set_locale();
         $this->define_admin_hooks();
-
+        $this->define_public_hooks();
     }
 
     /**
@@ -116,6 +116,13 @@ class Rex_Product_Feed {
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rex-product-feed-i18n.php';
 
+
+        /**
+         * The class responsible for defining all actions that occur in the public-facing
+         * side of the site.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-rex-product-feed-public.php';
+
         $this->loader = new Rex_Product_Feed_Loader();
 
     }
@@ -132,7 +139,6 @@ class Rex_Product_Feed {
     private function set_locale() {
 
         $plugin_i18n = new Rex_Product_Feed_i18n();
-
         $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
     }
@@ -149,6 +155,7 @@ class Rex_Product_Feed {
         global $rex_product_feed_database_update;
         $rex_product_feed_database_update = new Rex_Product_Feed_Database_Update();
 
+        $plugin_admin = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
         $plugin_admin = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -185,6 +192,24 @@ class Rex_Product_Feed {
 
 
         $this->loader->add_filter( 'cmb2_render_analytics_params', $plugin_admin, 'cmb2_render_analytics_params_callback', 10, 5 );
+
+        $this->loader->add_action( 'wp_footer', $plugin_admin, 'wpfm_enable_facebook_pixel' );
+
+    }
+
+
+    /**
+     * Register all of the hooks related to the public-facing functionality
+     * of the plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     */
+    private function define_public_hooks() {
+        $plugin_public = new Rex_Product_Feed_Public( $this->get_plugin_name(), $this->get_version() );
+        $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+        $this->loader->add_action( 'wp_ajax_wpfm_add_to_cart', $plugin_public, 'wpfm_add_to_cart' );
+        $this->loader->add_action( 'wp_ajax_nopriv_wpfm_add_to_cart', $plugin_public, 'wpfm_add_to_cart' );
     }
 
     /**

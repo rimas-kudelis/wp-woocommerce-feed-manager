@@ -355,19 +355,19 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $post_types[] =  'product_variation';
         }
 
-       if($this->product_scope == 'filter') {
-           foreach ($this->feed_rules_filter as $filter) {
-               $if = $filter['if'];
+        if($this->product_scope == 'filter') {
+            foreach ($this->feed_rules_filter as $filter) {
+                $if = $filter['if'];
 
-               if($if == 'product_cats') {
-                   unset($post_types[1]);
-               }
+                if($if == 'product_cats') {
+                    unset($post_types[1]);
+                }
 
-               if($if == 'product_tags') {
-                   unset($post_types[1]);
-               }
-           }
-       }
+                if($if == 'product_tags') {
+                    unset($post_types[1]);
+                }
+            }
+        }
 
         $this->products_args = array(
             'post_type'              => $post_types,
@@ -437,7 +437,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->wpml_language = array_key_exists('rex_feed_wpml_language', $feed_rules) ?
                 $feed_rules['rex_feed_wpml_language'] :
                 get_post_meta($this->id, 'rex_feed_wpml_language', true);
-                update_post_meta( $this->id, 'rex_feed_wpml_language', ICL_LANGUAGE_CODE );
+            update_post_meta( $this->id, 'rex_feed_wpml_language', ICL_LANGUAGE_CODE );
         }
         else {
             $this->wpml_language = false;
@@ -877,6 +877,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function save_feed($format){
 
         $path  = wp_upload_dir();
+        $baseurl = $path['baseurl'];
         $path  = $path['basedir'] . '/rex-feed';
 
 
@@ -893,6 +894,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         if($format == 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
+            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
+            update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if( file_exists($file) ) {
                 if($this->batch == 1) {
 //                    update_post_meta($this->id, 'rex-feed', $this->feed);
@@ -912,6 +915,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         elseif ($format == 'text'){
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
+            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
+            update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if( file_exists($file) ) {
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
@@ -925,6 +930,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         elseif ($format == 'csv'){
             $file = trailingslashit($path) . "feed-{$this->id}.csv";
+            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
+            update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if($this->batch == 1) {
                 if(file_exists($file)){
                     unlink($file);
@@ -955,6 +962,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         else{
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
+            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
+            update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if( file_exists($file) ) {
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
@@ -980,7 +989,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $orgdoc = new DOMDocument;
         $orgdoc->loadXML($xml_str);
 
-        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'ciao' || $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss') {
+        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest' || $this->merchant === 'instagram'  || $this->merchant === 'ciao' || $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss') {
             $parent = $orgdoc->getElementsByTagName('channel')->item(0);
         }elseif ($this->merchant === 'ebay_mip') {
             $parent = $orgdoc->getElementsByTagName('productRequest')->item(0);
@@ -1023,7 +1032,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         elseif ($this->merchant === 'ceneo') {
             $node = $newdoc->getElementsByTagName("o");
-        }elseif ($this->merchant === 'heureka') {
+        }
+        elseif ($this->merchant === 'heureka') {
             $node = $newdoc->getElementsByTagName("SHOPITEM");
         }elseif ($this->merchant === 'marktplaats') {
             $node = $newdoc->getElementsByTagName("admarkt:ad");
@@ -1042,8 +1052,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }else {
             $node = $newdoc->getElementsByTagName("product");
         }
-
-
 
         for ($i = 0; $i < $node->length; $i ++) {
             $item = $node->item($i);

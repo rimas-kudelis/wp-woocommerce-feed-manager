@@ -304,12 +304,18 @@ class Rex_Product_Data_Retriever {
                         $args['fields'] = 'ids';
                         $products = get_posts( $args );
 
-                        if (
-                            $discount_obj->is_applicable($_pid) &&
-                            in_array($_pid, $products)
-                        )
-                        {
-                            $sale_price = floatval($sale_price) - $discount_obj->get_discount_amount(floatval($sale_price));
+                        if ($discount_obj->is_applicable($_pid) && in_array($_pid, $products)) {
+                            $to_widthdraw = 0;
+                            if (in_array($discount_obj->settings["action"], array("percentage-off-pprice", "percentage-off-osubtotal")))
+                                $to_widthdraw = floatval (floatval($sale_price)) * floatval ($discount_obj->settings["percentage-or-fixed-amount"]) / 100;
+                            //Fixed discount
+                            else if (in_array($discount_obj->settings["action"], array("fixed-amount-off-pprice", "fixed-amount-off-osubtotal"))) {
+                                $to_widthdraw = $discount_obj->settings["percentage-or-fixed-amount"];
+                            } else if ($discount_obj->settings["action"] == "fixed-pprice")
+                                $to_widthdraw = floatval(floatval($sale_price)) - floatval($discount_obj->settings["percentage-or-fixed-amount"]);
+                            $decimals = wc_get_price_decimals();
+                            $discount = round( $to_widthdraw, $decimals );
+                            $sale_price = floatval($sale_price) - $discount;
                             return $sale_price;
                         }
                     }
@@ -355,12 +361,18 @@ class Rex_Product_Data_Retriever {
                         $args = $product_list->get_args($raw_args);
                         $args['fields'] = 'ids';
                         $products = get_posts( $args );
-                        if (
-                            $discount_obj->is_applicable($_pid) &&
-                            in_array($_pid, $products)
-                        )
-                        {
-                            $sale_price = floatval($sale_price) - $discount_obj->get_discount_amount(floatval($sale_price));
+                        if ($discount_obj->is_applicable($_pid) && in_array($_pid, $products)) {
+                            $to_widthdraw = 0;
+                            if (in_array($discount_obj->settings["action"], array("percentage-off-pprice", "percentage-off-osubtotal")))
+                                $to_widthdraw = floatval (floatval($sale_price)) * floatval ($discount_obj->settings["percentage-or-fixed-amount"]) / 100;
+                            //Fixed discount
+                            else if (in_array($discount_obj->settings["action"], array("fixed-amount-off-pprice", "fixed-amount-off-osubtotal"))) {
+                                $to_widthdraw = $discount_obj->settings["percentage-or-fixed-amount"];
+                            } else if ($discount_obj->settings["action"] == "fixed-pprice")
+                                $to_widthdraw = floatval(floatval($sale_price)) - floatval($discount_obj->settings["percentage-or-fixed-amount"]);
+                            $decimals = wc_get_price_decimals();
+                            $discount = round( $to_widthdraw, $decimals );
+                            $sale_price = floatval($sale_price) - $discount;
                             return $sale_price;
                         }
                     }

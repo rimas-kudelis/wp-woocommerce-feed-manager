@@ -22,16 +22,26 @@ class Rex_Feed_Template_Pinterest extends Rex_Feed_Abstract_Template {
 
     protected function init_atts(){
         $this->attributes = array(
-
-            'Required Information'  =>  array(
-                'id'            => 'Product ID',
-                'title'         => 'Product Title',
-                'price'         => 'Product Price',
-                'description'   => 'Description',
-                'link'          => 'Product URL',
-                'image_link'    => 'Primary Image URL',
-                'google_product_category'         => 'Google Product Category',
-                'item_group_id'    => 'Item group id',
+            'Basic Information' =>  array(
+                'id'                       => 'Product Id [id]',
+                'title'                    => 'Product Title [title]',
+                'description'              => 'Product Description [description]',
+                'link'                     => 'Product URL [link]',
+                'mobile_link'              => 'Product URL [mobile_link]',
+                'product_type'             => 'Product Categories [product_type] ',
+                'google_product_category'  => 'Google Product Category [google_product_category]',
+                'image_link'               => 'Main Image [image_link]',
+                'additional_image_link_1'  => 'Additional Image 1 [additional_image_link]',
+                'additional_image_link_2'  => 'Additional Image 2 [additional_image_link]',
+                'additional_image_link_3'  => 'Additional Image 3 [additional_image_link]',
+                'additional_image_link_4'  => 'Additional Image 4 [additional_image_link]',
+                'additional_image_link_5'  => 'Additional Image 5 [additional_image_link]',
+                'additional_image_link_6'  => 'Additional Image 6 [additional_image_link]',
+                'additional_image_link_7'  => 'Additional Image 7 [additional_image_link]',
+                'additional_image_link_8'  => 'Additional Image 8 [additional_image_link]',
+                'additional_image_link_9'  => 'Additional Image 9 [additional_image_link]',
+                'additional_image_link_10' => 'Additional Image 10 [additional_image_link]',
+                'condition'                => 'Condition [condition]',
             ),
 
             'Availability & Price' => array(
@@ -76,10 +86,10 @@ class Rex_Feed_Template_Pinterest extends Rex_Feed_Abstract_Template {
                 'shipping_region'  => 'Shipping Region',
                 'shipping_service' => 'Shipping Service',
                 'shipping_price'   => 'Shipping Price',
-                'weight'           => 'Shipping Weight [shipping_weight]',
-                'length'           => 'Shipping Length [shipping_length]',
-                'width'            => 'Shipping Width [shipping_width]',
-                'height'           => 'Shipping Height [shipping_height]',
+                'shipping_weight'  => 'Shipping Weight [shipping_weight]',
+                'shipping_length'  => 'Shipping Length [shipping_length]',
+                'shipping_width'   => 'Shipping Width [shipping_width]',
+                'shipping_height'  => 'Shipping Height [shipping_height]',
                 'shipping_label'   => 'Shipping Label [shipping_label]',
             ),
 
@@ -130,7 +140,6 @@ class Rex_Feed_Template_Pinterest extends Rex_Feed_Abstract_Template {
             'Merchant Promotions Attribute' => array(
                 'promotion_id' => 'Promotion Id [promotion_id]',
             )
-
         );
     }
 
@@ -146,7 +155,6 @@ class Rex_Feed_Template_Pinterest extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
             array(
                 'attr'     => 'title',
                 'type'     => 'meta',
@@ -178,12 +186,22 @@ class Rex_Feed_Template_Pinterest extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'price',
+                'attr'     => 'product_type',
                 'type'     => 'meta',
-                'meta_key' => 'price',
+                'meta_key' => 'product_cats',
                 'st_value' => '',
                 'prefix'   => '',
-                'suffix'   => ' '.get_option('woocommerce_currency'),
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'google_product_category',
+                'type'     => 'meta',
+                'meta_key' => '',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
@@ -197,10 +215,39 @@ class Rex_Feed_Template_Pinterest extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
             array(
-                'attr'     => 'google_product_category',
-                'type'     => 'static',
+                'attr'     => 'condition',
+                'type'     => 'meta',
+                'meta_key' => 'condition',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'availability',
+                'type'     => 'meta',
+                'meta_key' => 'availability',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'price',
+                'type'     => 'meta',
+                'meta_key' => 'price',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => ' '.get_option('woocommerce_currency'),
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'brand',
+                'type'     => 'meta',
                 'meta_key' => '',
                 'st_value' => '',
                 'prefix'   => '',
@@ -208,19 +255,16 @@ class Rex_Feed_Template_Pinterest extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
             array(
-                'attr'     => 'item_group_id',
+                'attr'     => 'mpn',
                 'type'     => 'meta',
-                'meta_key' => 'id',
+                'meta_key' => 'sku',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
         );
     }
-
 }

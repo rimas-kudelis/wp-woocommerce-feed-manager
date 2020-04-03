@@ -276,7 +276,7 @@ class Rex_Product_Feed_Admin {
             wp_dequeue_script( 'cmb2-conditionals' );
         }
     }
-    
+
 
     /**
      * Admin Notices
@@ -846,6 +846,254 @@ class Rex_Product_Feed_Admin {
         </p>
 
         <?php
+    }
+
+
+    /**
+     * Add Pixel to WC pages
+     * @throws Exception
+     */
+    public function wpfm_enable_facebook_pixel() {
+        global $product;
+        $currency = get_woocommerce_currency();
+        $wpfm_fb_pixel_enabled = get_option('wpfm_fb_pixel_enabled', 'no');
+        $viewContent = "";
+        if($wpfm_fb_pixel_enabled == 'yes') {
+            $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
+            if(isset($wpfm_fb_pixel_data)) {
+                if(is_product()){
+                    $product_id = $product->get_id();
+                    $price = $product->get_price();
+                    $product_title = $product->get_name();
+                    $cats = '';
+                    $terms = wp_get_post_terms( $product_id, 'product_cat' , array( 'orderby' => 'term_id' ));
+
+                    if ( empty( $terms ) || is_wp_error( $terms ) ){
+                        $cats = '';
+                    }else {
+                        foreach ( $terms as $term ) {
+                            $cats .= $term->name . ',';
+                        }
+                        $cats = rtrim($cats, ",");
+                        $cats = str_replace("&amp;","&", $cats);
+                    }
+
+                    if($product->is_type('variable')) {
+                        $variation_id = $this->wpfm_find_matching_product_variation( $product, $_GET );
+                        $total_get = count($_GET);
+                        if($total_get>0 && $variation_id > 0) {
+                            $product_id = $variation_id;
+                            $variable_product = wc_get_product($variation_id);
+                            $content_type = 'product';
+                            if(is_object($variable_product)) {
+                                $formatted_price = wc_format_decimal( $variable_product->get_price(), wc_get_price_decimals());
+                            }else {
+                                $prices  = $product->get_variation_prices();
+                                $lowest  = reset( $prices['price'] );
+                                $formatted_price = wc_format_decimal( $lowest, wc_get_price_decimals());
+                            }
+                        }
+                        else {
+                            $variation_ids = $product->get_visible_children();
+                            $prices  = $product->get_variation_prices();
+                            $lowest  = reset( $prices['price'] );
+                            $formatted_price = wc_format_decimal( $lowest, wc_get_price_decimals());
+                            $product_ids = '';
+                            foreach ($variation_ids as $variation) {
+                                $product_ids .= "'" .$variation. "'" . ',';
+                            }
+                            $product_id = rtrim($product_ids, ",");
+                            $content_type = 'product_group';
+                        }
+                    }
+                    else {
+                        $formatted_price = wc_format_decimal( $price, wc_get_price_decimals() );
+                        $content_type = 'product';
+                    }
+                    $viewContent = "fbq(\"track\",\"ViewContent\",{content_category:\"$cats\", content_name:\"$product_title\", content_type:\"$content_type\", content_ids:[\"$product_id\"],value:\"$formatted_price\",currency:\"$currency\"});";
+                    ?>
+
+                <?php }
+                elseif (is_product_category()) {
+                    global $wp_query;
+                    $product_ids = wp_list_pluck( $wp_query->posts, "ID" );
+                    $term = get_queried_object();
+
+                    $product_id = '';
+
+                    foreach ($product_ids as $id) {
+                        $product = wc_get_product($id);
+                        if ( ! is_object( $product ) ) {
+                            continue;
+                        }
+
+                        if ( ! $product->is_visible() ) {
+                            continue;
+                        }
+
+                        if($product->is_type('simple')){
+                            $product_id .= $id.',';;
+                        }elseif ($product->is_type('variable')) {
+                            $variations = $product->get_visible_children();
+                            foreach ($variations as $variation) {
+                                $product_id .= $variation. ',';
+                            }
+                        }
+                    }
+                    $product_id = rtrim($product_id, ",");
+                    $category_name = $term->name;
+                    $category_path = $this->get_the_term_path($term->term_id, 'product_cat', ' > ');
+                    $viewContent = "fbq(\"trackCustom\",\"ViewCategory\",{content_category:\"$category_path\", content_name:\"$category_name\", content_type:\"product\", content_ids:\"[$product_id]\"});";
+                }
+                elseif (is_search()) {
+                    $term = get_queried_object();
+                    $search_term = sanitize_text_field($_GET['s']);
+                    global $wp_query;
+                    $product_ids = wp_list_pluck( $wp_query->posts, "ID" );
+
+                    $product_id = '';
+
+                    foreach ($product_ids as $id) {
+                        $product = wc_get_product($id);
+                        if ( ! is_object( $product ) ) {
+                            continue;
+                        }
+
+                        if ( ! $product->is_visible() ) {
+                            continue;
+                        }
+
+                        if($product->is_type('simple')){
+                            $product_id .= $id.',';;
+                        }elseif ($product->is_type('variable')) {
+                            $variations = $product->get_visible_children();
+                            foreach ($variations as $variation) {
+                                $product_id .= $variation. ',';
+                            }
+                        }
+                    }
+                    $product_id = rtrim($product_id, ",");
+                    $viewContent = "fbq(\"trackCustom\",\"Search\",{search_string:\"$search_term\", content_type:\"product\", content_ids:\"[$product_id]\"});";
+                }
+                elseif (is_cart() || is_checkout()) {
+                    if ( is_checkout() && !empty( is_wc_endpoint_url('order-received') ) ) {
+                        $order_key = sanitize_text_field($_GET['key']);
+                        if(!empty($order_key)) {
+                            $order_id = wc_get_order_id_by_order_key($order_key);
+                            $order = wc_get_order($order_id);
+                            $order_items = $order->get_items();
+                            $order_real = 0;
+                            $contents = "";
+                            if (!is_wp_error($order_items)) {
+                                foreach ($order_items as $item_id => $order_item) {
+                                    $prod_id = $order_item->get_product_id();
+                                    $prod_quantity = $order_item->get_quantity();
+                                    $order_subtotal = $order_item->get_subtotal();
+                                    $order_subtotal_tax = $order_item->get_subtotal_tax();
+                                    $order_real += number_format(($order_subtotal + $order_subtotal_tax), 2);
+                                    $contents .= "{'id': '$prod_id', 'quantity': $prod_quantity},";
+                                }
+                            }
+                            $contents = rtrim($contents, ",");
+                            $viewContent = "fbq(\"trackCustom\",\"Purchase\",{content_type:\"product\", value:\"$order_real\", currency:\"$currency\", contents:\"[$contents]\"});";
+                        }
+                    }else {
+                        $cart_real = 0;
+                        $contents = "";
+                        foreach( WC()->cart->get_cart() as $cart_item ){
+                            $product_id = $cart_item['product_id'];
+                            if ($cart_item['variation_id'] > 0) {
+                                $product_id = $cart_item['variation_id'];
+                            }$contents .= "'" .$product_id. "'" . ',';
+                            $line_total = $cart_item['line_total'];
+                            $line_tax = $cart_item['line_tax'];
+                            $cart_real += number_format(($line_total + $line_tax), 2);
+                        }
+                        $contents = rtrim($contents, ",");
+                        if(is_cart()) {
+                            $viewContent = "fbq(\"trackCustom\",\"AddToCart\",{ content_type:\"product\", value:\"$cart_real\", currency:\"$currency\", content_ids:\"[$contents]\"});";
+                        }elseif (is_checkout()) {
+                            $viewContent = "fbq(\"trackCustom\",\"InitiateCheckout\",{content_type:\"product\", value:\"$cart_real\", currency:\"$currency\", content_ids:\"[$contents]\"});";
+                        }
+                    }
+                }
+            }
+
+            ?>
+            <!-- Facebook pixel code - added by RexTheme.com -->
+            <script type="text/javascript">
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                    n.queue=[];t=b.createElement(e);t.async=!0;
+                    t.src=v;s=b.getElementsByTagName(e)[0];
+                    s.parentNode.insertBefore(t,s)}(window, document,'script',
+                    'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '<?php print"$wpfm_fb_pixel_data";?>');
+                fbq('track', 'PageView');
+                <?php
+                if(strlen($viewContent) > 2){
+                    print"$viewContent";
+                }
+                ?>
+            </script>
+            <noscript>
+                <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=<?php echo  "$wpfm_fb_pixel_data";?>&ev=PageView&noscript=1"/>
+            </noscript>
+            <!-- End Facebook Pixel Code -->
+        <?php }
+    }
+
+
+    /**
+     * @param $id
+     * @param $taxonomy
+     * @param string $sep
+     * @param bool $is_visited
+     * @return array|string|WP_Error|WP_Term|null
+     */
+    protected function get_the_term_path( $id, $taxonomy, $sep = '', $is_visited =  false) {
+        $term = get_term( $id, $taxonomy );
+        if ( is_wp_error( $term ) )
+            return $term;
+        $name = $term->name;
+        if($is_visited) {
+            $path = '';
+        }else {
+            $path = 'Home';
+        }
+        if($term->parent && ( $term->parent != $term->term_id )) {
+            $path .= $this->get_the_term_path($term->parent, $taxonomy, $sep, true);
+        }
+        $path .= $sep.$name;
+        return $path;
+    }
+
+
+    /**
+     * Find matching product variation
+     *
+     * @param WC_Product $product
+     * @param array $attributes
+     * @return int Matching variation ID or 0.
+     * @throws Exception
+     */
+    protected function wpfm_find_matching_product_variation( $product, $attributes ) {
+        foreach( $attributes as $key => $value ) {
+            if( strpos( $key, 'attribute_' ) === 0 ) {
+                continue;
+            }
+            unset( $attributes[ $key ] );
+            $attributes[ sprintf( 'attribute_%s', $key ) ] = $value;
+        }
+        if( class_exists('WC_Data_Store') ) {
+            $data_store = WC_Data_Store::load( 'product' );
+            return $data_store->find_matching_product_variation( $product, $attributes );
+
+        } else {
+            return $product->get_matching_variation( $attributes );
+        }
     }
 
 }

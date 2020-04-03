@@ -42,6 +42,7 @@ class Rex_Product_Feed_Activator {
             wp_schedule_event(time(), 'hourly', 'rex_feed_schedule_update');
         }
 
+
         /*
          * add merchant status
          */
@@ -59,7 +60,7 @@ class Rex_Product_Feed_Activator {
             'google_Ad'    => array(
                 'free'  => true,
                 'status'    => 1,
-                'name'  => 'Google AD'
+                'name'  => 'Google Dynamic Display Ads'
             ),
             'facebook'     => array(
                 'free'  => true,

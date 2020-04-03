@@ -80,9 +80,6 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
                 continue;
             }
 
-            if ( ! $product->is_visible() ) {
-                continue;
-            }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
