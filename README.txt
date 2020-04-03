@@ -464,7 +464,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 5.23 (2020-04-02) =
+= 5.23 (2020-04-03) =
 * Feature: Facebook pixel support
 * Updated: Google Manufacturer Center attributes
 * Updated: Instagram feed attributes
