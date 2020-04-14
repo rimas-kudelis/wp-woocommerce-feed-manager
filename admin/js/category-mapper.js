@@ -60,11 +60,11 @@ jQuery(document).ready(function($){
             map_name: $('#map_name').val(),
             cat_map: $('.add_cat_map').serialize(),
         };
+        console.log($('.add_cat_map').serialize())
         if ($('#map_name').val().length != 0){
             $('.rex-loading-spinner').css('display', 'flex');
             wpAjaxHelperRequest( 'category-mapping', $payload )
                 .success( function( response ) {
-                    console.log(response);
                     $('.rex-loading-spinner').css('display', 'none');
                     setTimeout(function(){// wait for 5 secs(2)
                         location.reload(); // then reload the page.(3)

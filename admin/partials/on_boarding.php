@@ -24,6 +24,9 @@ $per_batch = get_option('rex-wpfm-product-per-batch', 50);
 $wpfm_fb_pixel_enabled = get_option('wpfm_drm_pixel_enabled', 'no');
 $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
 
+
+$wpfm_enable_log = get_option('wpfm_enable_log');
+
 //$wpfm_drm_pixel_enabled = get_option('wpfm_drm_pixel_enabled', 'no');
 //$wpfm_drm_pixel_data = get_option('wpfm_drm_pixel_value');
 
@@ -621,11 +624,11 @@ $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
 //                                    'status'    => 0,
 //                                    'name'  => '123I'
 //                                ),
-//                                'adcrowd'     => array(
-//                                    'free'  => true,
-//                                    'status'    => 0,
-//                                    'name'  => 'Adcrowd'
-//                                ),
+                                'adcrowd'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Adcrowd'
+                                ),
                                 'bikeexchange'     => array(
                                     'free'  => true,
                                     'status'    => 0,
@@ -816,10 +819,10 @@ $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
                                     'status'  => 0,
                                     'name'    => 'Les Bonnes Bouilles'
                                 ),
-                                'lions_home' => array(
-                                    'free'   => true,
-                                    'status' => 0,
-                                    'name'   => 'Lions Home'
+                                'lions_home'  => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Lions Home'
                                 ),
                                 'locamo'      => array(
                                     'free'    => true,
@@ -845,9 +848,50 @@ $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
                                     'free'    => true,
                                     'status'  => 0,
                                     'name'    => 'Awin'
-                                )
+                                ),
+                                'indeed'      => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Indeed'
+                                ),
+                                'incurvy'     => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Incurvy'
+                                ),
+                                'jobbird' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Jobbird'
+                                ),
+                                'job_board_io' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'JobBoard IO'
+                                ),
+                                'joblift' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Joblift'
+                                ),
+                                'kuantokusta' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'KuantoKusta'
+                                ),
+                                'kauftipp' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Kauftipp'
+                                ),
+                                'vivino' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Vivino'
+                                ),
+
                             );
-                                
+
                             $_pro_merchants = array(
                                 'ebay_mip'     => array(
                                     'free'  => false,
@@ -979,7 +1023,7 @@ $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
 
                             <div class="single-merchant">
                                 <span class="title">
-                                    <?php echo __('Enable facebook pixel', 'rex-product-feed'); ?>
+                                    <?php echo __('Enable Facebook Pixel', 'rex-product-feed'); ?>
                                 </span>
                                 <div class="switch">
                                     <?php
@@ -994,12 +1038,27 @@ $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
                             </div>
 
                             <div class="single-merchant wpfm-fb-pixel-field <?php echo $hidden_class; ?>">
-                                <span class="title"><?php echo __('Facebook pixel id', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Facebook Pixel id', 'rex-product-feed'); ?></span>
                                 <div class="switch">
-                                    <form id="wpfm-fb-pixel" class="wpfm-fb-pixel">
-                                        <input id="wpfm_fb_pixel" type="text" name="wpfm_fb_pixel" value="<?php echo $wpfm_fb_pixel_data; ?>">
+                                    <form id="wpfm-fb-pixel" class="wpfm-fb-pixel" style="width: 300px;">
+                                        <input id="wpfm_fb_pixel" type="text" name="wpfm_fb_pixel" value="<?php echo $wpfm_fb_pixel_data; ?>" style="width: 200px;">
                                         <button type="submit" class="save-fb-pixel"><span>save</span> <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                     </form>
+                                </div>
+                            </div>
+
+                            <div class="single-merchant enable-log">
+                                <span class="title">
+                                    <?php echo __('Enable log', 'rex-product-feed'); ?>
+                                </span>
+                                <div class="switch">
+                                    <?php
+                                    $checked = $wpfm_enable_log === 'yes' ? 'checked': '';
+                                    ?>
+                                    <div class="wpfm-switcher">
+                                        <input class="switch-input" type="checkbox" id="wpfm_enable_log" <?php echo $checked; ?>>
+                                        <label class="lever" for="wpfm_enable_log"></label>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1024,7 +1083,6 @@ $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
                                     </div>
                                 </div>
                             </div>
-
 
                             <div class="single-merchant">
                                 <span class="title">

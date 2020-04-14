@@ -76,6 +76,7 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
                 continue;
             }
 
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     $variations = $product->get_visible_children();
@@ -95,7 +96,7 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
                 }
             }
 
-            if ( $product->is_type( 'simple' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = GoogleShopping::createItem();

@@ -31,7 +31,17 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         GoogleShopping::description($this->desc);
 
         $this->generate_product_feed();
-        $this->feed = GoogleShopping::asRss();
+
+        if ($this->feed_format == 'xml') {
+            $this->feed = GoogleShopping::asRss();
+        }elseif ($this->feed_format == 'text') {
+            $this->feed = GoogleShopping::asTxt();
+        } elseif ($this->feed_format == 'csv') {
+            $this->feed = GoogleShopping::asCsv();
+        }else {
+            $this->feed = GoogleShopping::asRss();
+        }
+
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(
@@ -42,7 +52,11 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-    private function generate_product_feed(){
+
+    /**
+     * Generate feed
+     */
+    protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variable_products = [];
@@ -99,7 +113,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ( $product->is_type( 'simple' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = GoogleShopping::createItem();
@@ -206,6 +220,24 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             $atts['tax'] += $default_tax_values;
         }
         return $atts;
+    }
+
+
+    /**
+     * Return Feed
+     *
+     * @return array|bool|string
+     */
+    public function returnFinalProduct()
+    {
+        if ($this->feed_format == 'xml') {
+            return GoogleShopping::asRss();
+        } elseif ($this->feed_format == 'text') {
+            return GoogleShopping::asTxt();
+        } elseif ($this->feed_format == 'csv') {
+            return GoogleShopping::asCsv();
+        }
+        return GoogleShopping::asRss();
     }
 
 }

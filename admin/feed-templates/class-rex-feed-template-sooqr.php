@@ -80,7 +80,7 @@ class Rex_Feed_Template_Sooqr extends Rex_Feed_Abstract_Template {
             array(
                 'attr'     => 'categories',
                 'type'     => 'meta',
-                'meta_key' => 'product_cats',
+                'meta_key' => 'sooqr_cats',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',

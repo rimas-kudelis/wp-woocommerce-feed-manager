@@ -1,43 +1,45 @@
 <?php
 
 /**
- * The Become Feed Template class.
+ * The kuantokusta marketplace Feed Template class.
  *
  * @link       https://rextheme.com
- * @since      1.1.7
+ * @since      1.1.4
  *
  * @package    Rex_Product_Feed
  * @subpackage Rex_Product_Feed/admin/feed-templates/
  */
-
 /**
  *
- * Defines the attributes and template for cdiscount feed.
+ * Defines the attributes and template for git marketplace feed.
  *
  * @package    Rex_Product_Feed
- * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_Cdiscount
+ * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_Kuantokusta
  * @author     RexTheme <info@rextheme.com>
  */
-class Rex_Feed_Template_Cdiscount extends Rex_Feed_Abstract_Template {
+class Rex_Feed_Template_Kuantokusta extends Rex_Feed_Abstract_Template {
 
     protected function init_atts(){
         $this->attributes = array(
-            'Product Information'      =>  array(
-                'categories'         => 'Product category',
-                'title'         => 'Product title',
-                'brand'         => 'Product Brand',
-                'description'         => 'Product description',
-                'price'         => 'Product price',
-                'identifier'         => 'Product identifier',
-                'condition'         => 'Product condition',
-                'color'         => 'Product color',
-                'size'         => 'Product size',
-                'images'         => 'Product images',
-                'eco_tax'         => 'Eco tax',
-                'furniture_eco_tax'         => 'Furniture eco tax',
-                'vat'         => 'VAT',
-                'align_price'         => 'align_price',
-                'shipping'         => 'Shipping',
+            'Required Information' =>  array(
+                'name'             => 'Name',
+                'brand'            => 'Brand',
+                'url'              => 'Url',
+                'price'            => 'Price',
+                'category'         => 'Category',
+                'picture_url'      => 'Picture Url',
+                'shipping_cost'    => 'Shipping Cost',
+            ),
+
+            'Recommended Information' => array(
+                'EAN'          => 'EAN',
+                'MPN'          => 'MPN',
+            ),
+
+            'Optional Information' => array(
+                'description'       => 'Description',
+                'product_id'        => 'Product Id',
+                'store_pickup_rate' => 'Store Pickup Rate',
             ),
 
         );
@@ -46,19 +48,9 @@ class Rex_Feed_Template_Cdiscount extends Rex_Feed_Abstract_Template {
     protected function init_default_template_mappings(){
         $this->template_mappings = array(
             array(
-                'attr'     => 'title',
+                'attr'     => 'name',
                 'type'     => 'meta',
                 'meta_key' => 'title',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'categories',
-                'type'     => 'meta',
-                'meta_key' => 'product_cats_path',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
@@ -75,16 +67,18 @@ class Rex_Feed_Template_Cdiscount extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
+
             array(
-                'attr'     => 'description',
+                'attr'     => 'url',
                 'type'     => 'meta',
-                'meta_key' => 'description',
+                'meta_key' => 'link',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
+
             array(
                 'attr'     => 'price',
                 'type'     => 'meta',
@@ -96,9 +90,9 @@ class Rex_Feed_Template_Cdiscount extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'condition',
+                'attr'     => 'category',
                 'type'     => 'meta',
-                'meta_key' => 'condition',
+                'meta_key' => 'category',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
@@ -106,9 +100,20 @@ class Rex_Feed_Template_Cdiscount extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'images',
-                'type'     => 'meta',
-                'meta_key' => 'featured_image',
+                'attr'     => 'picture_url',
+                'type'     => 'static',
+                'meta_key' => '',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+
+            array(
+                'attr'     => 'shipping_cost',
+                'type'     => 'static',
+                'meta_key' => '',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',

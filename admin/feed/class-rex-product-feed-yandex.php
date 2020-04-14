@@ -53,7 +53,7 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-    private function generate_product_feed(){
+    protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variable_products = [];
@@ -100,7 +100,7 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ( $product->is_type( 'simple' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = RexShopping::createItem();

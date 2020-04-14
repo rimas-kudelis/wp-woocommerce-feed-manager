@@ -15,7 +15,7 @@
 
 use RexTheme\RexSpartooShoppingFeed\Containers\RexShopping;
 
-class Rex_Product_Feed_Spartoo extends Rex_Product_Feed_Abstract_Generator {
+class Rex_Product_Feed_Spartoo extends Rex_Product_Feed_Other {
 
     private $feed_merchants = array(
         "nextag" => array(
@@ -51,7 +51,8 @@ class Rex_Product_Feed_Spartoo extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-    private function generate_product_feed(){
+
+    protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variable_products = [];
@@ -78,6 +79,7 @@ class Rex_Product_Feed_Spartoo extends Rex_Product_Feed_Abstract_Generator {
                 continue;
             }
 
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     $variations = $product->get_visible_children();
@@ -97,7 +99,7 @@ class Rex_Product_Feed_Spartoo extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ( $product->is_type( 'simple' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = RexShopping::createItem();
@@ -202,9 +204,6 @@ class Rex_Product_Feed_Spartoo extends Rex_Product_Feed_Abstract_Generator {
             $data = new Rex_Spartoo_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
         }
         return $data->get_all_data();
-
-
-
     }
 
 }

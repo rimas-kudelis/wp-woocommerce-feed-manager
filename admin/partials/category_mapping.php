@@ -11,40 +11,15 @@
  * @subpackage Rex_Product_Feed/admin/partials
  */
 
-
-$product_category = new CategoryMapping();
-$categories = $product_category->get_category();
-
-
-function bwfm_hierarchical_product_category_tree( $cat ) {
-    $args = array(
-        'parent' 	=> $cat,
-        'hide_empty'    => false,
-        'no_found_rows' => true,
-    );
-
-    $next = get_terms('product_cat', $args);
-    $separator = '';
-    if( $next ) :
-        foreach( $next as $cat ) :
-            if($cat->parent !== 0){
-                $separator = '--';
-            }
-            echo "<tr class='no-padding-margin'>";
-                echo "<td><strong>{$separator}{$cat->name} ({$cat->count})</strong></td>";
-                echo "<td><div class='input-field'><input class='autocomplete category-suggest' type='text' name='category-{$cat->term_id}'></div></td>";
-            echo "</tr>";
-            $separator = '';
-            bwfm_hierarchical_product_category_tree( $cat->term_id );
-        endforeach;
-    endif;
-}
-
-
-
 $category_map = get_option('rex-wpfm-category-mapping');
 require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
 $db_version = get_option('rex_wpfm_db_version');
+
+
+//foreach ($category_map as $key => $value) {
+//    wpfm_hierarchical_product_category_tree(0, $value['map-config']);
+//}
+//wp_die();
 ?>
 
 
@@ -63,8 +38,7 @@ $db_version = get_option('rex_wpfm_db_version');
                                         <tr>
                                             <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
                                             <th>
-                                                <?php echo __('Google Merchant Category', 'rex-product-feed'); ?>
-
+                                                <?php echo __('Google Merchant Category', 'rex-product-feed');?>
                                             </th>
                                         </tr>
                                     </thead>
@@ -72,22 +46,8 @@ $db_version = get_option('rex_wpfm_db_version');
                                         <?php
                                             $separator = '';
                                             $sub_cat = [];
-                                            foreach ($value['map-config'] as $index => $cat_value){
-                                                $args = array(
-                                                    'parent' 	=> $cat_value['map-key'],
-                                                    'hide_empty'    => false,
-                                                    'no_found_rows' => true,
-                                                );
-                                                $next = get_terms('product_cat', $args);
-                                                echo "<tr class='no-padding-margin'>";
-                                                echo "<td>{$cat_value['cat-name']}</td>";
-                                                echo "<td><div class='input-field'><input class='category-suggest' type='text' name='category-{$cat_value['map-key']}' value='{$cat_value['map-value']}'></div></td>";
-                                                echo "</tr>";
-
-                                            }
-
+                                            wpfm_hierarchical_product_category_tree(0, $value['map-config']);
                                         ?>
-
                                     </tbody>
                                 </table>
                                 <div class="cat-map-actions">
@@ -139,7 +99,7 @@ $db_version = get_option('rex_wpfm_db_version');
                     </thead>
 
                     <tbody>
-                        <?php bwfm_hierarchical_product_category_tree(0); ?>
+                        <?php wpfm_hierarchical_product_category_tree(0); ?>
                     </tbody>
                 </table>
                 <div class="cat-map-actions">

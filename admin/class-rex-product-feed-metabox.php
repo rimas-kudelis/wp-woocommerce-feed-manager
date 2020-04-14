@@ -286,7 +286,7 @@ class Rex_Product_Metabox {
 
         /**
          * result of bad planning
-//       */
+        //       */
 //        $merchant_lists['google'] = 'Google Shopping';
 //        $merchant_lists['google_Ad']= 'Google AdWords';
 //        if(array_key_exists('drm', $merchant_lists))
@@ -412,6 +412,9 @@ class Rex_Product_Metabox {
                     'pronto',
                     'awin',
                     'google_dynamic_display_ads',
+                    'kuantokusta',
+                    'kauftipp',
+                    'vivino',
                 ))),
             ),
         ) );
@@ -669,7 +672,7 @@ class Rex_Product_Metabox {
      * @param  object $field      Current field object
      */
     function google_merchant_desc( $field_args, $field ) {
-       echo __('<p class="google-desc">'.__('Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, 
+        echo __('<p class="google-desc">'.__('Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, 
                 United States is US and the abbreviation for language, English is en.', 'rex-product-feed').' <a href="https://rextheme.com/google-country-codes-list/" target="_blank">'.__('Click here', 'rex-product-feed').'</a> '.__('to see the list of all abbreviations set by Google.', 'rex-product-feed').'</p>', 'rex-product-feed');
     }
 
@@ -886,7 +889,7 @@ class Rex_Product_Metabox {
         $_merchants['google']['name'] = 'Google Shopping';
         $_merchants['google_Ad']['name'] = 'Google AdWords';
         if(array_key_exists('drm', $_merchants))
-         $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
+            $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
         if(array_key_exists('kelkoonl', $_merchants))
             $_merchants['kelkoonl']['name'] = 'Kelkoo.nl';
 

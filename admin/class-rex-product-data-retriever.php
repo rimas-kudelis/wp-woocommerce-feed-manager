@@ -82,6 +82,14 @@ class Rex_Product_Data_Retriever {
      */
     protected $append_variation;
 
+
+    /**
+     * check if debug is enabled
+     *
+     * @var Rex_Product_Data_Retriever $enable_log
+     */
+    protected $is_logging_enabled;
+
     /**
      * Initialize the class and set its properties.
      *
@@ -91,14 +99,18 @@ class Rex_Product_Data_Retriever {
      */
     public function __construct( WC_Product $product, $feed_rules, $wpml = null, $append_variation = 'no', $product_meta_keys, $analytics_params = null ) {
 
+        $this->is_logging_enabled = is_wpfm_logging_enabled();
+
         $this->product           = $product;
         $this->analytics_params = $analytics_params;
-        $log = wc_get_logger();
-        $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
-        $log->info(__( 'Start product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
-        $log->info('Product ID: '.$this->product->get_id(), array('source' => 'WPFM',));
-        $log->info('Product Name: '.$this->product->get_title(), array('source' => 'WPFM',));
 
+        if($this->is_logging_enabled) {
+            $log = wc_get_logger();
+            $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+            $log->info(__( 'Start product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
+            $log->info('Product ID: '.$this->product->get_id(), array('source' => 'WPFM',));
+            $log->info('Product Name: '.$this->product->get_title(), array('source' => 'WPFM',));
+        }
 
         $this->feed_rules        = $feed_rules;
         $this->product_meta_keys = $product_meta_keys;
@@ -106,9 +118,10 @@ class Rex_Product_Data_Retriever {
         $this->append_variation = $append_variation;
         $this->set_all_value();
 
-        $log->info(__( 'End product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
-        $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
-
+        if($this->is_logging_enabled) {
+            $log->info(__( 'End product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
+            $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+        }
     }
 
 
@@ -187,23 +200,28 @@ class Rex_Product_Data_Retriever {
             $val = $rule['st_value'];
         }
         elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
+
             $val = $this->set_pr_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
+
             $val = $this->set_image_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
+
             $val = $this->set_product_att( $rule['meta_key']  );
         }
-//        elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
-//            $val = $this->set_product_dynamic_att( $rule['meta_key']  );
-//        }
+        elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_product_dynamic_att( $rule['meta_key']  );
+        }
         elseif ( 'meta' === $rule['type'] && $this->is_product_custom_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_custom_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
             $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
+
+
 
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix($val, $rule);
@@ -241,7 +259,8 @@ class Rex_Product_Data_Retriever {
             case 'title':
                 if($this->append_variation === 'no') {
                     return $this->product->get_name();
-                }else {
+                }
+                else {
                     if ($this->is_children()) {
                         $_product = wc_get_product( $this->product );
                         $_variations = $_product->get_attributes();
@@ -264,17 +283,28 @@ class Rex_Product_Data_Retriever {
                 }
                 break;
 
+            case 'yoast_title':
+                return $this->get_yoast_seo_title(); break;
+
             case 'price':
                 if ($this->product->is_type( 'grouped' ))
                     return number_format((float)$this->get_grouped_price($this->product, 'regular'), 2, '.', '');
-                return number_format((float)$this->product->get_regular_price(), 2, '.', '');
+                elseif ($this->product->is_type( 'composite' )) {
+                    $_pr  = new WC_Product_Composite($this->product->get_id());
+                    return  wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals());
+                }
+                return  wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals());
                 break;
 
             case 'current_price':
                 if (!defined('WAD_INITIALIZED') ) {
                     if ($this->product->is_type( 'grouped' ))
                         return number_format((float)$this->get_grouped_price($this->product, 'price'), 2, '.', '');
-                    return number_format((float)$this->product->get_price(), 2, '.', '');
+                    elseif ($this->product->is_type( 'composite' )) {
+                        $_pr  = new WC_Product_Composite($this->product->get_id());
+                        return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
+                    }
+                    return  wc_format_decimal( $this->product->get_price(), wc_get_price_decimals());
                 }
                 else {
                     global $wad_discounts;
@@ -286,9 +316,14 @@ class Rex_Product_Data_Retriever {
                             $wad_discounts[$discount_type][$discount_id] = new WAD_Discount($discount_id);
                         }
                     }
-                    $sale_price = $this->product->is_type( 'grouped' ) ?
-                        number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') :
-                        number_format((float)$this->product->get_price(), 2, '.', '');
+                    if ($this->product->is_type( 'grouped' ))
+                        $sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') ;
+                    elseif ($this->product->is_type( 'composite' )) {
+                        $_pr  = new WC_Product_Composite($this->product->get_id());
+                        return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
+                    }
+                    else
+                        $sale_price = number_format((float)$this->product->get_price(), 2, '.', '');
 
                     $_pid = wad_get_product_id_to_use($this->product);
                     $_product = wc_get_product($_pid);
@@ -316,23 +351,23 @@ class Rex_Product_Data_Retriever {
                             $decimals = wc_get_price_decimals();
                             $discount = round( $to_widthdraw, $decimals );
                             $sale_price = floatval($sale_price) - $discount;
-                            return $sale_price;
+
+                            return  wc_format_decimal( $sale_price, wc_get_price_decimals());;
                         }
                     }
-                    return $sale_price;
+                    return  wc_format_decimal( $sale_price, wc_get_price_decimals());;
                 }
                 break;
 
             case 'sale_price':
 
-//                if ($this->product->is_type( 'grouped' ))
-//                    return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
-//                return $this->product->get_sale_price() ? number_format((float)$this->product->get_sale_price(), 2, '.', ''): '';
-
                 if (!defined('WAD_INITIALIZED') ) {
                     if ($this->product->is_type( 'grouped' ))
                         return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
-                    return $this->product->get_sale_price() ? number_format((float)$this->product->get_sale_price(), 2, '.', ''): '';
+                    elseif ($this->product->is_type( 'composite' )) {
+                        return  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
+                    }
+                    return  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
                 }
                 else {
                     global $wad_discounts;
@@ -344,9 +379,16 @@ class Rex_Product_Data_Retriever {
                             $wad_discounts[$discount_type][$discount_id] = new WAD_Discount($discount_id);
                         }
                     }
-                    $sale_price = $this->product->is_type( 'grouped' ) ?
-                        number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') :
-                        number_format((float)$this->product->get_sale_price(), 2, '.', '');
+
+                    if ($this->product->is_type( 'grouped' ))
+                        $sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') ;
+                    elseif ($this->product->is_type( 'composite' )) {
+                        $_pr  = new WC_Product_Composite($this->product->get_id());
+                        return  wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals());
+                    }
+                    else
+                        $sale_price = number_format((float)$this->product->get_sale_price(), 2, '.', '');
+
 
                     $_pid = wad_get_product_id_to_use($this->product);
                     $_product = wc_get_product($_pid);
@@ -373,16 +415,44 @@ class Rex_Product_Data_Retriever {
                             $decimals = wc_get_price_decimals();
                             $discount = round( $to_widthdraw, $decimals );
                             $sale_price = floatval($sale_price) - $discount;
-                            return $sale_price;
+                            return  wc_format_decimal( $sale_price, wc_get_price_decimals());;
                         }
                     }
-                    return $sale_price;
-                }
+                    return  wc_format_decimal( $sale_price, wc_get_price_decimals());;                }
 
                 break;
 
-            case 'description':
+            case 'price_with_tax':
+                if ($this->product->is_type( 'grouped' ))
+                    return wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'regular') ) );
+                elseif ($this->product->is_type( 'composite' )) {
+                    $_pr  = new WC_Product_Composite($this->product->get_id());
+                    return  wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals());
+                }
+                return  wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals());
+                break;
 
+            case 'current_price_with_tax':
+                if ($this->product->is_type( 'grouped' ))
+                    return wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'price') ) );
+                elseif ($this->product->is_type( 'composite' )) {
+                    $_pr  = new WC_Product_Composite($this->product->get_id());
+                    return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
+                }
+                return wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals());
+                break;
+
+            case 'sale_price_with_tax':
+                if ($this->product->is_type( 'grouped' ))
+                    return wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) );
+                elseif ($this->product->is_type( 'composite' )) {
+                    $_pr  = new WC_Product_Composite($this->product->get_id());
+                    return  wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals());
+                }
+                return  wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals());
+                break;
+
+            case 'description':
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->get_parent_id() );
                     $_product_desc =  $this->remove_short_codes($_product->get_description());
@@ -402,6 +472,9 @@ class Rex_Product_Data_Retriever {
                 endif;
                 break;
 
+            case 'yoast_meta_desc':
+                return $this->get_yoast_meta_description(); break;
+
             case 'product_cats':
                 return $this->get_product_cats(); break;
 
@@ -413,6 +486,15 @@ class Rex_Product_Data_Retriever {
 
             case 'product_tags':
                 return $this->get_product_tags(); break;
+
+            case 'yoast_primary_cat':
+                return $this->get_yoast_primary_cat(); break;
+
+            case 'spartoo_product_cats':
+                return $this->get_spartoo_product_cats(); break;
+
+            case 'sooqr_cats':
+                return $this->get_product_cats_for_sooqr(); break;
 
             case 'link':
 
@@ -585,6 +667,7 @@ class Rex_Product_Data_Retriever {
         } else{
             $cat_lists = get_the_terms( $this->product->get_id(), 'product_cat' );
         }
+
         $wpfm_category_map = get_option('rex-wpfm-category-mapping');
         if($wpfm_category_map) {
             $map = $wpfm_category_map[$key];
@@ -600,27 +683,52 @@ class Rex_Product_Data_Retriever {
                             if($m[1]) {
                                 return utf8_decode(urldecode($m[1]));
                             }
+                        }else {
+
                         }
                         return $map_value;
                     }
                 }
             }
-//            if($first_cat){
-//                foreach ($map_config as $key => $value){
-//                    if( in_array($value['map-key'], $term_ids) ){
-//                        $map_value = $value['map-value'];
-//                        preg_match("~^(\d+)~", $map_value, $m);
-//                        if(count($m) > 1) {
-//                            if($m[1]) {
-//                                return utf8_decode(urldecode($m[1]));
-//                            }
-//                        }
-//                        return $map_value;
-//                    }
-//                }
-//            }
         }
         return '';
+    }
+
+
+    /**
+     * Get yoast seo title
+     * @return string
+     */
+    public function get_yoast_seo_title() {
+        $title = '';
+        if ( class_exists( 'WPSEO_Frontend' ) ) {
+            $title = WPSEO_Frontend::get_instance()->get_seo_title( get_post( $this->product->get_id() ) );
+        }
+        if ( ! empty( $title ) ) {
+            return $title;
+        }
+        else {
+            return $this->product->get_title();
+        }
+    }
+
+
+    /**
+     * Get yoast meta descriptions
+     * @return string
+     */
+    public function get_yoast_meta_description() {
+        $description = '';
+        if ( class_exists( 'WPSEO_Frontend' ) ) {
+            $description = wpseo_replace_vars( WPSEO_Meta::get_value( 'metadesc', $this->product->get_id() ),
+                get_post( $this->product->get_id() ) );
+        }
+        if ( ! empty( $description ) ) {
+            return $description;
+        }
+        else {
+            return $this->product->get_description();
+        }
     }
 
 
@@ -634,6 +742,7 @@ class Rex_Product_Data_Retriever {
         if ( empty( $this->additional_images ) ) {
             $this->set_additional_images();
         }
+
 
         if ( array_key_exists( $key, $this->additional_images ) ) {
             return $this->additional_images[$key];
@@ -658,6 +767,31 @@ class Rex_Product_Data_Retriever {
             return $this->get_the_term_list( $this->product->get_id(), 'product_cat', $before, $sep, $after );
         }
 
+    }
+
+
+    /**
+     * @param string $before
+     * @param string $sep
+     * @param string $after
+     * @return array
+     */
+    protected function get_spartoo_product_cats( $before = '', $sep = ', ', $after = '' ) {
+        $term_array = array();
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            $terms = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
+        }else {
+            $terms = get_the_terms( $this->product->get_id(), 'product_cat' );
+        }
+
+        $count = 0;
+        if($terms) $count = count($terms);
+        if($count > 1) {
+            foreach ($terms as $term) {
+                $term_array[] = $term->name;
+            }
+        }
+        return $term_array;
     }
 
 
@@ -734,6 +868,53 @@ class Rex_Product_Data_Retriever {
         }
     }
 
+
+    /**
+     * get yoast primary category
+     * @return string
+     */
+    public function get_yoast_primary_cat() {
+        $primary_cat_id=get_post_meta($this->product->get_id(),'_yoast_wpseo_primary_product_cat',true);
+        if($primary_cat_id){
+            $product_cat = get_term($primary_cat_id, 'product_cat');
+            if(isset($product_cat->name))
+                return $product_cat->name;
+        }
+        return $this->get_product_cats();
+    }
+
+
+    /**
+     * @param string $before
+     * @param string $sep
+     * @param string $after
+     * @return array
+     */
+    public function get_product_cats_for_sooqr($before = '', $sep = ' > ', $after = '') {
+        $categories = [];
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            $term_list = wp_get_post_terms($this->product->get_parent_id(), 'product_cat');
+            foreach ($term_list as $term) {
+                if($term->parent) {
+                    $categories['subcategories'][] = $term->name;
+                }else {
+                    $categories['categories'][] = $term->name;
+                }
+            }
+            return $categories;
+        }else {
+            $term_list = wp_get_post_terms($this->product->get_id(), 'product_cat');
+            foreach ($term_list as $term) {
+                if($term->parent) {
+                    $categories['subcategories'][] = $term->name;
+                }else {
+                    $categories['categories'][] = $term->name;
+                }
+            }
+            return $categories;
+        }
+    }
+
     /**
      * Retrieve a product's dynamic attributes as a list with specified format.
      *
@@ -783,16 +964,19 @@ class Rex_Product_Data_Retriever {
      */
     protected function set_additional_images() {
 
-        $img_ids = $this->product->get_gallery_image_ids();
+        $_product = $this->product;
+        if($this->product->is_type('variation')) {
+            $_product = wc_get_product($this->product->get_parent_id());
+        }
+
+        $img_ids = $_product->get_gallery_image_ids();
 
         $images = array();
         if ( ! empty( $img_ids ) ) {
-
             foreach ($img_ids as $key => $img_id) {
                 $img_key = 'image_' . ($key+1);
                 $images[$img_key] = wp_get_attachment_url($img_id);
             }
-
             // set images to the property
             $this->additional_images = $images;
         }
@@ -833,8 +1017,7 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function is_product_dynamic_attr( $key ) {
-//        return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
-        return true;
+        return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
     }
 
 
@@ -853,6 +1036,7 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function is_product_category_mapper_attr( $key ) {
+
         return array_key_exists( $key, $this->product_meta_keys['Category Map'] );
     }
 

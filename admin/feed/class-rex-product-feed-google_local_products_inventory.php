@@ -100,7 +100,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
                 }
             }
 
-            if ( $product->is_type( 'simple' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = RexShopping::createItem();

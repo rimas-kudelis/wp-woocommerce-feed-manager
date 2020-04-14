@@ -13,12 +13,29 @@ class Rex_Product_Feed_Factory {
 
     private static $other_merchants;
 
-    public static function build( $config, $bypass = false ){
+    private static $google_format;
+
+    private static $facebook_format;
+
+    public static function build( $config, $bypass = false , $product_ids = array()){
         $log = wc_get_logger();
         $context = array( 'source' => 'WPFM' );
         self::$other_merchants = apply_filters('wpfm_merchant_custom',
             array(
+                'adform',
+                'adcrowd',
+                'beslist',
+                'cdiscount',
                 'custom',
+                'heureka',
+                'kieskeurig',
+                'kleding',
+                'ladenzeile',
+                'skroutz',
+                'winesearcher',
+                'whiskymarketplace',
+                'trovaprezzi',
+                'rss',
                 'nextag',
                 'pricegrabber',
                 'bing',
@@ -71,6 +88,7 @@ class Rex_Product_Feed_Factory {
                 'jet',
                 'bonanza',
                 'adcell',
+                'zbozi',
                 'stylefruits',
                 'medizinfuchs',
                 'moebel',
@@ -123,20 +141,48 @@ class Rex_Product_Feed_Factory {
                 'pronto',
                 'awin',
                 'google_dynamic_display_ads',
+                'indeed',
+                'incurvy',
+                'jobbird',
+                'job_board_io',
+                'joblift',
+                'kuantokusta',
+                'kauftipp',
+                'vivino',
             )
+        );
+
+        self::$google_format = array(
+            'google',
+            'ciao',
+            'liveintent',
+            'pinterest',
+        );
+
+        self::$facebook_format = array(
+            'instagram',
         );
 
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {
             $className = 'Rex_Product_Feed_Other';
-        }else{
+        }
+        elseif (in_array( $config['merchant'], self::$google_format )) {
+            $className = 'Rex_Product_Feed_Google';
+        }
+        elseif (in_array( $config['merchant'], self::$facebook_format )) {
+            $className = 'Rex_Product_Feed_Facebook';
+        }
+        else{
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
         }
 
         if( $config == '' || ! class_exists( $className ) ) {
-            $log->critical(__( 'Invalid Merchant.', 'rex-product-feed' ), array('source' => 'WPFM-Critical'));
+            if(is_wpfm_logging_enabled()) {
+                $log->critical(__( 'Invalid Merchant.', 'rex-product-feed' ), array('source' => 'WPFM-Critical'));
+            }
             throw new Exception('Invalid Merchant.');
         } else {
-            return new $className( $config, $bypass );
+            return new $className( $config, $bypass, $product_ids );
         }
 
         return false;

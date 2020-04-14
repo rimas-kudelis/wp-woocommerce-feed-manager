@@ -26,7 +26,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     public function make_feed() {
 
         GoogleShopping::$container = null;
-
         GoogleShopping::title($this->title);
         GoogleShopping::link($this->link);
         GoogleShopping::description($this->desc);
@@ -57,7 +56,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-    private function generate_product_feed(){
+    protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variable_products = [];
@@ -78,12 +77,12 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             );
         }
         foreach( $this->products as $productId ) {
+
             $product = wc_get_product( $productId );
 
             if ( ! is_object( $product ) ) {
                 continue;
             }
-
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
@@ -114,11 +113,11 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ( $product->is_type( 'simple' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
+                $item = GoogleShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $atts = $this->process_attributes_for_shipping_tax($atts);
-                $item = GoogleShopping::createItem();
                 foreach ($atts as $key => $value) {
                     if($key == 'shipping') {
                         $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
@@ -156,7 +155,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 $item = GoogleShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $atts = $this->process_attributes_for_shipping_tax($atts);
-                // add all attributes for each product.
                 foreach ($atts as $key => $value) {
                     if($key == 'shipping') {
                         $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
@@ -177,7 +175,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             'variable' => (int) $total_products['variable'] + (int) count($variable_products),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
-
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
     }
 
@@ -223,8 +220,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         return $atts;
     }
 
-
-
     /**
      * Return Feed
      *
@@ -241,6 +236,5 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         }
         return GoogleShopping::asRss();
     }
-
 
 }

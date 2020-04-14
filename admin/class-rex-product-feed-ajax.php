@@ -212,6 +212,11 @@ class Rex_Product_Feed_Ajax {
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_fb_pixel_value' ) )
             ->with_validation( $validations );
 
+
+        wp_ajax_helper()->handle( 'rex-enable-log' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_log' ) )
+            ->with_validation( $validations );
+
     }
 
 
@@ -495,8 +500,11 @@ class Rex_Product_Feed_Ajax {
                 $service->datafeeds->fetchnow($merchant_id, $datafeedID);
             }
             catch(Exception $e) {
-                $log = wc_get_logger();
-                $log->info($e->getMessage(), array('source' => 'WPFM-google'));
+                if(is_wpfm_logging_enabled()) {
+                    $log = wc_get_logger();
+                    $log->info($e->getMessage(), array('source' => 'WPFM-google'));
+                }
+
                 $error = json_decode($e->getMessage());
                 $reason = $error->error->errors;
                 return array(
@@ -682,5 +690,27 @@ class Rex_Product_Feed_Ajax {
         return array(
             'success' => true,
         );
+    }
+
+
+    /**
+     * Enable logging
+     * @param $payload
+     * @return array
+     */
+    public static function wpfm_enable_log($payload) {
+        if($payload['wpfm_enable_log'] == 'yes') {
+            update_option('wpfm_enable_log', 'yes');
+            return array(
+                'success' => true,
+                'data'  => 'enabled'
+            );
+        }else if ($payload['wpfm_enable_log'] == 'no') {
+            update_option('wpfm_enable_log', 'no');
+            return array(
+                'success' => true,
+                'data'  => 'disabled'
+            );
+        }
     }
 }

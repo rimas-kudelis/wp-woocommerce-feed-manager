@@ -12,7 +12,6 @@
  */
 
 
-
 class Rex_Product_Feed_Activator {
 
     /**
@@ -25,7 +24,6 @@ class Rex_Product_Feed_Activator {
             'wpfm_update_category_mapping',
         ),
     );
-
 
 	/**
 	 * on Plugin activation

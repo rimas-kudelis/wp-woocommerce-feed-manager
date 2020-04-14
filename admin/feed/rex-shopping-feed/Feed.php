@@ -104,7 +104,7 @@ class Feed
     /**
      * Feed constructor
      */
-    public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss', $stand_alone = false, $wrapperel = '')
+    public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss', $stand_alone = false, $wrapperel = '', $namespace_prefix = '')
     {
         $this->namespace   = $namespace;
         $this->version     = $version;
@@ -113,7 +113,7 @@ class Feed
         $this->itemlName   = $itemlName;
         $this->rss         = $rss;
 
-        $namespace = $this->namespace && !empty($this->namespace) ? " xmlns:f='$this->namespace'" : '';
+        $namespace = $this->namespace && !empty($this->namespace) ? " xmlns{$namespace_prefix}='$this->namespace'" : '';
         $version   = $this->version && !empty($this->version) ? " version='$this->version'" : '';
         $stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
 

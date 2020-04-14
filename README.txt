@@ -1,11 +1,11 @@
 === WooCommerce Product Feed Manager ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: Product Feed,WooCommerce Product Feed,Google Shopping,Google Shopping Feed,WooCommerce Product Feed Manager,Amazon,eBay,Facebook Ads,Facebook feed,Google feed,Data Feed,XML product feed,Google Adwords,Kelkoo,Marktplaats,Rakuteen,Skroutz,Walmart 
+Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart
 Requires at least: 4.7
 Tested up to:  5.4
 Requires PHP: 5.6
-Stable tag: 5.23
+Stable tag: 5.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 129 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 138 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -48,21 +48,21 @@ You should use this plugin because it will save you time and create clean qualit
 
 >  You will get a **reliable support team** to help you out at all times and detailed [documentation](https://rextheme.com/docs/WooCommerce-product-feed/) and [video tutorials](https://www.youtube.com/watch?v=WYRgnMFQGH8&list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq).
 
-**GOOGLE ANALYTICS SUPPORT**
+**Google Analytics Support**
 You can add and configure Google Analytics UTM tracking-codes to your product URLs. It will allow you to measure the effectiveness of marketing channels in Google Analytics.
 
 
 **Track Products With Facebook Pixel**
 You can now add Facebook pixel code to your store and track the performance for every product you upload on Facebook dynamic shop using this plugin.
 
-You can track
-* simple product pages
-* variable product and variations pages
-* category pages
-* search result pages
-* cart page
-* add to cart button
-* thank you page
+You can track:
+- Simple product pages
+- Variable product and variations pages
+- Category pages
+- Search result pages
+- Cart page
+- Add to cart button
+- Thank you page
 
 
 == Other Advantages ==
@@ -81,7 +81,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 129 pre-built templates of Merchant Shop feed
+* 138 pre-built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
@@ -92,6 +92,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
  * Use Shipping Class As Attribute 
 * Custom Taxonomy 
 * WPML support 
+* Yoast: SEO title, Meta description & Primary category support 
 * Generate feed in XML, CSV or Text file format 
 * Compatible with both http and https sites 
 * Exclude/Include parent product of grouped products
@@ -233,6 +234,15 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Logicsale](https://www.logicsale.cn/)
 - WooCommerce to [Pronto](https://www.pronto.com/)
 - WooCommerce to [Awin](https://www.awin.com/gb)
+- WooCommerce to [Incurvy](https://www.incurvy.de/)
+- WooCommerce to [Indeed](https://www.indeed.com/)
+- WooCommerce to [Jobbrid](https://www.jobbird.com/nl)
+- WooCommerce to [Joblift](https://joblift.com/)
+- WooCommerce to [Jobboard](https://www.jobboard.io/)
+- WooCommerce to [Adcrowd](https://www.adcrowd.com/nl)
+- WooCommerce to [KuantoKusta](https://www.kuantokusta.pt/)
+- WooCommerce to [Kauftipp](https://www.kauftipp.ch/)
+- WooCommerce to [Vivino](https://www.vivino.com/)
 
 
 
@@ -283,7 +293,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 129 major merchant shops:
+Currently, we support 138 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
@@ -414,6 +424,15 @@ Currently, we support 129 major merchant shops:
 - Logicsale
 - Pronto
 - Awin
+- Incurvy
+- Indeed
+- Jobbrid
+- Joblift
+- Jobboard
+- Adcrowd
+- KuantoKusta
+- Kauftipp
+- Vivino
 
 
 = Is there a product limit? =
@@ -448,7 +467,6 @@ To upgrade to PRO, you may purchase a license key from:
 WP Dashboard > Product Feed > Upgrade.
 
 
-
 == Screenshots ==
 1. Select "Product Feeds" from the Admin Menu
 2. Click ‘Add New’ for Creating New Feed
@@ -463,6 +481,24 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.24 (2020-04-14) =
+* Fixed: Category mapping bug while adding new category
+* Fixed: Pinterest CSV feed generation
+* Feature: WooCommerce Composite product support
+* Feature: WooCommerce Bundle product support
+* Feature: Custom category mapping
+* Feature: Yoast - SEO title, Meta description & Primary category support
+* Added: Incurvy template
+* Added: Adcrowd template
+* Added: Indeed template
+* Added: Jobbrid template
+* Added: Joblift template
+* Added: Jobboard template
+* Added: Vivino template
+* Added: Kauftipp template
+* Added: KuantoKusta template
+
 
 = 5.23 (2020-04-03) =
 * Feature: Facebook pixel support

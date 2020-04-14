@@ -46,3 +46,4 @@ class Rex_Sooqr_Product_Data_Retriever extends Rex_Product_Data_Retriever {
 
     }
 }
+

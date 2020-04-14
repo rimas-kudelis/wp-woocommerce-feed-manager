@@ -18,11 +18,393 @@ use RexTheme\RexShoppingFeed\Containers\RexShopping;
 class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 
     private $feed_merchants = array(
-        "nextag" => array(
+        "adcrowd" => array(
+            'container'  => true,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'rss',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '2.0',
+            'wrapper_el'   => 'channel',
+            'wrapper'   => true,
+            'datetime'   => false,
+        ),
+        "adform" => array(
+            'container'  => true,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "beslist" => array(
+            'container'  => true,
             'item_wrapper'  => 'product',
             'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => true,
+            'version' => '1.0',
+            'wrapper_el'   => '',
+            'wrapper'   => true,
+            'datetime'   => true,
+        ),
+        "cdiscount" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "custom" => array(
+            'container'  => true,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => true,
+            'version' => '1.0',
+            'wrapper_el'   => '',
+            'wrapper'   => true,
+            'datetime'   => true,
+        ),
+        "heureka" => array(
+            'container'  => false,
+            'item_wrapper'  => 'SHOPITEM',
+            'items_wrapper' => 'SHOP',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "incurvy" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'produkte',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "indeed" => array(
+            'container'  => false,
+            'item_wrapper'  => 'job',
+            'items_wrapper' => 'source',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+
+        "jobbird" => array(
+            'container'  => false,
+            'item_wrapper'  => 'job',
+            'items_wrapper' => 'jobs',
+            'version'       => '1.0',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+
+        ),
+        "joblift" => array(
+            'container'  => false,
+            'item_wrapper'  => 'job',
+            'items_wrapper' => 'feed',
+            'version'       => '1',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "job_board_io" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "kieskeurig" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "kauftipp" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "kuantokusta" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "kleding" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "ladenzeile" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "prisjkat" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "nextag" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "rss" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "skroutz" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'mywebstore',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => 'products',
+            'wrapper'   => true,
+            'datetime'   => false,
+        ),
+        "trovaprezzi" => array(
+            'container'  => false,
+            'item_wrapper'  => 'Offer',
+            'items_wrapper' => 'Products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "vivino" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'vivino-product-list',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "winesearcher" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "whiskymarketplace" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "zbozi" => array(
+            'container'  => false,
+            'item_wrapper'  => 'SHOPITEM',
+            'items_wrapper' => 'SHOP',
+            'namespace' => 'http://www.zbozi.cz/ns/offer/1.0',
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
         ),
     );
+
+
+    /**
+     * Check if the merchants is valid or not
+     * @param $feed_merchants
+     * @return bool
+     */
+    public function is_valid_merchant(){
+        return array_key_exists($this->merchant, $this->feed_merchants)? true : false;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string
+     */
+    public function get_version() {
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['version'] : '';
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_item_wrapper(){
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['item_wrapper'] : 'product';
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_items_wrapper(){
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['items_wrapper'] : 'products';
+    }
+
+    /**
+     * @return |null
+     */
+    public function get_namespace() {
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['namespace'] : null;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function get_stand_alone() {
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['stand_alone'] : false;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_wrapper_el() {
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['wrapper_el'] : '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function get_wrapper() {
+        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['wrapper'] : true;
+    }
+
+
+    /**
+     * check if date is true/false
+     *
+     * @return bool
+     */
+    public function is_datetime() {
+        return $this->feed_merchants[$this->merchant]['datetime'];
+    }
+
+
+    /**
+     * Get namespace prefix
+     *
+     * @return string
+     */
+    public function get_namespace_prefix() {
+        return $this->feed_merchants[$this->merchant]['namespace_prefix'];
+    }
 
     /**
      * Create Feed
@@ -32,11 +414,15 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
         RexShopping::$container = null;
-        RexShopping::init(false, $this->setItemWrapper(), null, '', $this->setItemsWrapper());
+        RexShopping::init($this->get_wrapper(), $this->get_item_wrapper(), $this->get_namespace(),  $this->get_version(), $this->get_items_wrapper(), $this->get_stand_alone(), $this->get_wrapper_el(), $this->get_namespace_prefix() );
         RexShopping::title($this->title);
         RexShopping::link($this->link);
         RexShopping::description($this->desc);
-        
+
+        if($this->is_datetime()) {
+            RexShopping::datetime(date("Y-m-d h:i:s"));
+        }
+
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
         $this->feed = $this->returnFinalProduct();
@@ -51,7 +437,10 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-    private function generate_product_feed(){
+    /**
+     * Generate feed
+     */
+    protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variable_products = [];
@@ -97,7 +486,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ( $product->is_type( 'simple' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = RexShopping::createItem();
@@ -138,35 +527,11 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 
 
     /**
-     * Check if the merchants is valid or not
-     * @param $feed_merchants
-     * @return bool
-     */
-    public function is_valid_merchant(){
-        return array_key_exists($this->merchant, $this->feed_merchants)? true : false;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function setItemWrapper()
-    {
-        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['item_wrapper'] : 'product';
-    }
-
-    public function setItemsWrapper()
-    {
-        return $this->is_valid_merchant()? $this->feed_merchants[$this->merchant]['items_wrapper'] : 'products';
-    }
-
-    /**
      * Return Feed
      *
      * @return array|bool|string
      */
-    public function returnFinalProduct()
-    {
+    public function returnFinalProduct(){
 
         if ($this->feed_format == 'xml') {
             return RexShopping::asRss();

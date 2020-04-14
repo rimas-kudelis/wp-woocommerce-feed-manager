@@ -1090,7 +1090,6 @@ class Rex_Product_Feed_Admin {
         if( class_exists('WC_Data_Store') ) {
             $data_store = WC_Data_Store::load( 'product' );
             return $data_store->find_matching_product_variation( $product, $attributes );
-
         } else {
             return $product->get_matching_variation( $attributes );
         }

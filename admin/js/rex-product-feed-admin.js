@@ -814,5 +814,31 @@
     $(document).on("submit", "#wpfm-fb-pixel", save_fb_pixel_id);
 
 
+    /**
+     * Log settings
+     */
+    function wpfm_enable_log() {
+        var payload = {};
+        if($(this).is(":checked")) {
+            payload = {
+                wpfm_enable_log : 'yes',
+            };
+        }else {
+            payload = {
+                wpfm_enable_log : 'no',
+            };
+        }
+        wpAjaxHelperRequest( 'rex-enable-log', payload )
+            .success( function( response ) {
+                console.log('Woohoo!');
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on('change', '#wpfm_enable_log', wpfm_enable_log);
+
+
 })( jQuery );
 

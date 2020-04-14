@@ -43,6 +43,8 @@ class RexShopping
 
     public static $wrapperel = '';
 
+    public static $namespace_prefix = '';
+
     /**
      * Return feed container
      * @return Feed
@@ -50,7 +52,7 @@ class RexShopping
     public static function container()
     {
         if (is_null(static::$container)) {
-            static::$container = new Feed( static::$wrapper, static::$itemName, static::$namespace, static::$version , static::$rss, static::$stand_alone, static::$wrapperel );
+            static::$container = new Feed( static::$wrapper, static::$itemName, static::$namespace, static::$version , static::$rss, static::$stand_alone, static::$wrapperel, static::$namespace_prefix );
         }
 
         return static::$container;

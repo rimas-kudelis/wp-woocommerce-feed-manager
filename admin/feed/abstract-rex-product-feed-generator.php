@@ -260,6 +260,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected $wpml_language;
 
 
+    /**
+     * enable logging
+     *
+     * @var Rex_Product_Feed_Abstract_Generator $is_logging_enabled
+     */
+    protected $is_logging_enabled;
 
 
     /**
@@ -272,7 +278,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $bypass
      * @since    1.0.0
      */
-    public function __construct( $config, $bypass = false )
+    public function __construct( $config, $bypass = false, $product_ids = array())
     {
 
         $this->products = [];
@@ -281,64 +287,83 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         $this->config = $config;
 
+        $this->is_logging_enabled = is_wpfm_logging_enabled();
+
         $this->bypass = $bypass;
-        $this->setup_feed_data($config['info']);
-
         if ($this->bypass){
+            if(!empty($product_ids)) {
+                $this->id       =   $config['info']['post_id'];
+                $this->title    =   $config['info']['title'];
+                $this->desc     =   $config['info']['desc'];
+                $this->batch    =   (int) $config['info']['batch'];
+                $this->append_variation   = $config['append_variations'];
+                $this->feed_rules = $config['feed_config'];
+                $this->products= $product_ids;
+            }
+            else {
 
-            $this->feed_rules = $config['feed_config'];
-            $this->product_scope = $config['product_scope'];
-            $this->feed_rules_filter = $config['feed_filter'];
-            $this->variations   = $config['include_variations'];
-            $this->parent_product   = $config['parent_product'];
-            $this->append_variation   = $config['append_variations'];
-            $this->wpml_language   = $config['wpml_language'];
-        }else {
+                /**
+                 * legacy code
+                 * will be removed on
+                 * future major release
+                 */
+                $this->setup_feed_data($config['info']);
+                $this->feed_rules = $config['feed_config'];
+                $this->product_scope = $config['product_scope'];
+                $this->feed_rules_filter = $config['feed_filter'];
+                $this->variations   = $config['include_variations'];
+                $this->parent_product   = $config['parent_product'];
+                $this->append_variation   = $config['append_variations'];
+                $this->wpml_language   = $config['wpml_language'];
+                $this->prepare_products_args($config['products']);
+                $this->setup_products();
+            }
+        }
+        else {
+            $this->setup_feed_data($config['info']);
             $this->setup_feed_rules($config['feed_config']);
             $this->setup_feed_filter_rules($config['feed_config']);
             $this->variations = $this->include_product_variations($config['feed_config']);
             $this->parent_product = $this->include_parent_product($config['feed_config']);
             $this->append_variation = $this->append_variation_product_name($config['feed_config']) ? 'yes' : 'no';
+            $this->prepare_products_args($config['products']);
+            $this->setup_products();
         }
 
-        $this->prepare_products_args($config['products']);
-        $this->setup_products();
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
-
 
         /**
          * log for feed
          */
-        $log = wc_get_logger();
-
-        if($this->bypass) {
-            if($this->batch == 1) {
-                $log->info(__( 'Start feed processing job by cron', 'rex-product-feed' ), array('source' => 'WPFM',));
-                $log->info('Feed ID: '.$config['info']['post_id'], array('source' => 'WPFM',));
-                $log->info('Feed Name: '.$config['info']['title'], array('source' => 'WPFM',));
-                $log->info('Merchant Type: '.$this->merchant, array('source' => 'WPFM',));
+        if($this->is_logging_enabled) {
+            $log = wc_get_logger();
+            if($this->bypass) {
+                if($this->batch == 1) {
+                    $log->info(__( 'Start feed processing job by cron', 'rex-product-feed' ), array('source' => 'WPFM',));
+                    $log->info('Feed ID: '.$config['info']['post_id'], array('source' => 'WPFM',));
+                    $log->info('Feed Name: '.$config['info']['title'], array('source' => 'WPFM',));
+                    $log->info('Merchant Type: '.$this->merchant, array('source' => 'WPFM',));
+                }
+                $log->info('Total Batches: '.$this->batch, array('source' => 'WPFM',));
+                $log->info('Current Batch: '.$this->tbatch, array('source' => 'WPFM',));
             }
-            $log->info('Total Batches: '.$this->batch, array('source' => 'WPFM',));
-            $log->info('Current Batch: '.$this->tbatch, array('source' => 'WPFM',));
-        }
-        else {
-            if($this->batch == 1) {
-                $log->info(__( 'Start feed processing job.', 'rex-product-feed' ), array('source' => 'WPFM',));
-                $log->info('Feed ID: '.$config['info']['post_id'], array('source' => 'WPFM',));
-                $log->info('Feed Name: '.$config['info']['title'], array('source' => 'WPFM',));
-                $log->info('Merchant Type: '.$this->merchant, array('source' => 'WPFM',));
+            else {
+                if($this->batch == 1) {
+                    $log->info(__( 'Start feed processing job.', 'rex-product-feed' ), array('source' => 'WPFM',));
+                    $log->info('Feed ID: '.$config['info']['post_id'], array('source' => 'WPFM',));
+                    $log->info('Feed Name: '.$config['info']['title'], array('source' => 'WPFM',));
+                    $log->info('Merchant Type: '.$this->merchant, array('source' => 'WPFM',));
+                }
+                $log->info('Total Batches: '.$this->batch, array('source' => 'WPFM',));
+                $log->info('Current Batch: '.$this->tbatch, array('source' => 'WPFM',));
             }
-            $log->info('Total Batches: '.$this->batch, array('source' => 'WPFM',));
-            $log->info('Current Batch: '.$this->tbatch, array('source' => 'WPFM',));
         }
-
         if($this->tbatch == $this->batch) {
             update_post_meta($this->id, 'updated', date("Y-m-d g:i:s"));
         }
 
     }
-
 
 
     /**
@@ -382,6 +407,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         );
 
         if ( $args['products_scope'] === 'product_cat' || $args['products_scope'] === 'product_tag') {
+            $this->products_args['post_type'] = 'product';
             $terms = $args['products_scope'] === 'product_tag' ? 'tags' : 'cats';
             if(is_array($args[$terms])) {
                 foreach ($args[$terms] as $term) {
@@ -445,6 +471,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         $feed_rules       = $feed_rules['fc'];
         $this->feed_rules = $feed_rules;
+
         // save the feed_rules into feed post_meta.
         if($this->batch == 1) {
             update_post_meta($this->id, 'rex_feed_feed_config', $this->feed_rules);
@@ -550,7 +577,21 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         $result = new WP_Query($this->products_args);
         $this->products = $result->get_posts();
-        remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
+        if(is_array($this->products)) {
+            $this->products = array_unique($this->products);
+            if($this->batch == 1) {
+                update_post_meta($this->id, 'rex_feed_product_ids', $this->products);
+            }else {
+                if(get_post_meta($this->id, 'rex_feed_product_ids', true)) {
+                    $prev_product_ids = get_post_meta($this->id, 'rex_feed_product_ids', true);
+                    $product_ids = array_merge($prev_product_ids, $this->products);
+                    update_post_meta($this->id, 'rex_feed_product_ids', $product_ids);
+                }else {
+                    update_post_meta($this->id, 'rex_feed_product_ids', $this->products);
+                }
+            }
+            remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
+        }
     }
 
 
@@ -560,7 +601,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $wp_query
      * @return string
      */
-    function wpfm_post_title_filter($where, &$wp_query) {
+    function wpfm_post_title_filter($where, $wp_query) {
         global $wpdb;
         if($wp_query->get('title_contain')) {
             $title_contain = $wp_query->get('title_contain');
@@ -885,11 +926,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if ( !file_exists($path) ) {
             wp_mkdir_p($path);
         }
-
-        $log = wc_get_logger();
-        if($this->batch == $this->tbatch) {
-            $log->info(__( 'Completed feed generation job.', 'rex-product-feed' ), array('source' => 'WPFM',));
-            $log->info(__( '**************************************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+        if($this->is_logging_enabled) {
+            $log = wc_get_logger();
+            if($this->batch == $this->tbatch) {
+                $log->info(__( 'Completed feed generation job.', 'rex-product-feed' ), array('source' => 'WPFM',));
+                $log->info(__( '**************************************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+            }
         }
 
         if($format == 'xml'){
@@ -922,7 +964,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
                 }else {
                     $feed = preg_replace('/^.+\n/', '', $this->feed);
-                    return file_put_contents($file, $feed, FILE_APPEND) ? 'true' : 'false';
+                    if($feed)
+                        return file_put_contents($file, $feed, FILE_APPEND) ? 'true' : 'false';
+                    return 'true';
                 }
             }else{
                 return file_put_contents($file, $this->feed) ? 'true' : 'false';
@@ -989,7 +1033,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $orgdoc = new DOMDocument;
         $orgdoc->loadXML($xml_str);
 
-        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest' || $this->merchant === 'instagram'  || $this->merchant === 'ciao' || $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss') {
+        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' || $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss') {
             $parent = $orgdoc->getElementsByTagName('channel')->item(0);
         }elseif ($this->merchant === 'ebay_mip') {
             $parent = $orgdoc->getElementsByTagName('productRequest')->item(0);
@@ -999,8 +1043,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
         }elseif ($this->merchant === 'marktplaats') {
             $parent = $orgdoc->getElementsByTagName('admarkt:ads');
-        }elseif ($this->merchant === 'pinterest') {
-            $parent = $orgdoc->getElementsByTagName('items')->item(0);
         }elseif ($this->merchant === 'yandex') {
             $parent = $orgdoc->getElementsByTagName('offers')->item(0);
         }elseif ($this->merchant === 'zbozi') {
@@ -1019,7 +1061,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         // The node we want to import to a new document
 
-        if($this->merchant === 'google' || $this->merchant === 'facebook'|| $this->merchant === 'ciao' || $this->merchant === 'daisycon'|| $this->merchant === 'instagram'|| $this->merchant === 'liveintent'|| $this->merchant === 'rss') {
+        if($this->merchant === 'google' || $this->merchant === 'facebook'|| $this->merchant === 'pinterest'|| $this->merchant === 'ciao' || $this->merchant === 'daisycon'|| $this->merchant === 'instagram'|| $this->merchant === 'liveintent'|| $this->merchant === 'rss') {
             $node = $newdoc->getElementsByTagName("item");
         }
         elseif ($this->merchant === 'ebay_mip') {
@@ -1032,13 +1074,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         elseif ($this->merchant === 'ceneo') {
             $node = $newdoc->getElementsByTagName("o");
-        }
-        elseif ($this->merchant === 'heureka') {
+        }elseif ($this->merchant === 'heureka') {
             $node = $newdoc->getElementsByTagName("SHOPITEM");
         }elseif ($this->merchant === 'marktplaats') {
             $node = $newdoc->getElementsByTagName("admarkt:ad");
-        }elseif ($this->merchant === 'pinterest') {
-            $node = $newdoc->getElementsByTagName("item");
         }elseif ($this->merchant === 'trovaprezzi') {
             $node = $newdoc->getElementsByTagName("Offer");
         }elseif ($this->merchant === 'yandex') {
