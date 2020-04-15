@@ -350,6 +350,7 @@ class Rex_Product_Metabox {
                     'powerreviews',
                     'trovaprezzi',
                     'zbozi',
+                    'zalando',
                     'liveintent',
                     'pixmania',
                     'coolblue',

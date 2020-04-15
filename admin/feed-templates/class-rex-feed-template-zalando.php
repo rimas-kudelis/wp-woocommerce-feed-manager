@@ -22,6 +22,8 @@ class Rex_Feed_Template_Zalando extends Rex_Feed_Abstract_Template {
                 'size_chart'   => 'Size chart',
                 'gender'   => 'Gender',
                 'main_color'   => 'Main color',
+                'color'   => 'color',
+                'material'   => 'Material',
                 'supplier_color'   => 'Supplier color',
                 'supplier_SKU'   => 'Supplier SKU',
                 'season'   => 'Season',
@@ -32,6 +34,9 @@ class Rex_Feed_Template_Zalando extends Rex_Feed_Abstract_Template {
                 'partner_SKU'   => 'Partner SKU',
                 'size'   => 'size',
                 'VAT_type'   => 'VAT type',
+                'ageGroup'   => 'Age group',
+                'sizeGrid'   => 'Size Grid',
+                'lengthGrid'   => 'Length Grid',
             )
         );
     }

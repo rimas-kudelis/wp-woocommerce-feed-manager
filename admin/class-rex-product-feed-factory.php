@@ -100,6 +100,7 @@ class Rex_Product_Feed_Factory {
                 'cenowarka',
                 'cezigue',
                 'check24',
+                'zalando',
                 'clang',
                 'cherchons',
                 'boetiek',
