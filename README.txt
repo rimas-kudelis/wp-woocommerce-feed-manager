@@ -93,6 +93,8 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 * Custom Taxonomy 
 * WPML support 
 * Yoast: SEO title, Meta description & Primary category support 
+* Composite product support
+* Bundle product support
 * Generate feed in XML, CSV or Text file format 
 * Compatible with both http and https sites 
 * Exclude/Include parent product of grouped products
