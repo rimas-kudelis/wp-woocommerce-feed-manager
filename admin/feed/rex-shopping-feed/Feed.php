@@ -382,7 +382,7 @@ class Feed
     public function asCsv($output = false)
     {
 
-        ob_end_clean();
+//        ob_end_clean();
         $data = $this->addItemsToFeedCSV();
         if ($output) {
             die($data);

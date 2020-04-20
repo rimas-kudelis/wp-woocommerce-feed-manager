@@ -121,7 +121,12 @@ class Rex_Product_Feed_Cron_Handler {
                         $i = $i+1;
                         $merchant = get_post_meta($feed_id, 'rex_feed_merchant', true);
                         $feed_config = get_post_meta($feed_id, 'rex_feed_feed_config', true);
+                        $feed_filter = get_post_meta($feed_id, 'rex_feed_feed_config_filter', true);
+                        $feed_products = get_post_meta($feed_id, 'rex_feed_products', true);
+                        $include_variations = get_post_meta($feed_id, 'rex_feed_variations', true) === 'yes' ? true : false;
+                        $parent_product = get_post_meta($feed_id, 'rex_feed_parent_product', true) === 'yes' ? true : false;
                         $append_variations = get_post_meta($feed_id, 'rex_feed_variation_product_name', true) === 'yes' ? true : false;
+                        $wpml = get_post_meta($feed_id, 'rex_feed_wpml_language', true) ? get_post_meta($feed_id, 'rex_feed_wpml_language', true) : '';
                         $feed_format = get_post_meta($feed_id, 'rex_feed_feed_format', true) ?
                             get_post_meta($feed_id, 'rex_feed_feed_format', true) : 'xml';
                         $payload = array(
@@ -134,7 +139,12 @@ class Rex_Product_Feed_Cron_Handler {
                                 'title'     => get_the_title($feed_id),
                                 'desc'      => get_the_title($feed_id),
                                 'batch'     => $i,
-                            )
+                            ),
+                            'feed_filter'    => $feed_filter,
+                            'include_variations' => $include_variations,
+                            'parent_product' => $parent_product,
+                            'product_scope' => $feed_products,
+                            'wpml_language' => $wpml,
                         );
                         try {
                             $merchant = Rex_Product_Feed_Factory::build( $payload, true, $product_id_chunk );

@@ -280,7 +280,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     public function __construct( $config, $bypass = false, $product_ids = array())
     {
-
         $this->products = [];
         $this->variable_products= [];
         $this->grouped_products = [];
@@ -298,6 +297,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $this->batch    =   (int) $config['info']['batch'];
                 $this->append_variation   = $config['append_variations'];
                 $this->feed_rules = $config['feed_config'];
+                $this->feed_rules_filter = $config['feed_filter'];
+                $this->variations   = $config['include_variations'];
+                $this->parent_product   = $config['parent_product'];
+                $this->append_variation   = $config['append_variations'];
+                $this->wpml_language   = $config['wpml_language'];
+                $this->product_scope   = $config['product_scope'];
                 $this->products= $product_ids;
             }
             else {
@@ -934,6 +939,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }
 
+
         if($format == 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
@@ -974,7 +980,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         elseif ($format == 'csv'){
             $file = trailingslashit($path) . "feed-{$this->id}.csv";
-            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
+            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.csv");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if($this->batch == 1) {
                 if(file_exists($file)){
