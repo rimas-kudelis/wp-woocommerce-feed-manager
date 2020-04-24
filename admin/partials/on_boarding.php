@@ -224,6 +224,11 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'    => 0,
                                     'name'  => 'Google Dynamic Search Ads'
                                 ),
+                                'google_shopping_actions' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Google Shopping Actions'
+                                ),
                                 'facebook'     => array(
                                     'free'  => true,
                                     'status'    => 1,
@@ -889,7 +894,16 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'  => 0,
                                     'name'    => 'Vivino'
                                 ),
-
+                                'rakuten_advertising' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Rakuten Advertising'
+                                ),
+                                'pricefalls' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Pricefalls Feed'
+                                ),
                             );
 
                             $_pro_merchants = array(

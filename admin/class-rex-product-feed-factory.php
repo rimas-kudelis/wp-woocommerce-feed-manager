@@ -150,6 +150,8 @@ class Rex_Product_Feed_Factory {
                 'kuantokusta',
                 'kauftipp',
                 'vivino',
+                'rakuten_advertising',
+                'pricefalls',
             )
         );
 
@@ -158,6 +160,8 @@ class Rex_Product_Feed_Factory {
             'ciao',
             'liveintent',
             'pinterest',
+            'google_shopping_actions',
+            'google_express',
         );
 
         self::$facebook_format = array(

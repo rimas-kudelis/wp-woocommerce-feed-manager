@@ -94,7 +94,7 @@ class Item
     {
         $node = new Node('title');
         $title = $this->safeCharEncodeText($title);
-        $this->nodes['title'] = $node->value($title)->addCdata();
+        $this->nodes['title'] = $node->value($title);
     }
 
     /**
@@ -106,7 +106,7 @@ class Item
     {
         $node = new Node('link');
         $link = $this->safeCharEncodeURL($link);
-        $this->nodes['link'] = $node->value($link)->addCdata();
+        $this->nodes['link'] = $node->value($link);
     }
 
     /**
@@ -147,7 +147,7 @@ class Item
     {
         $node = new Node('description');
         $description = $this->safeCharEncodeText($description);
-        $this->nodes['description'] = $node->value(substr($description, 0, 5000))->_namespace($this->namespace)->addCdata();
+        $this->nodes['description'] = $node->value(substr($description, 0, 5000))->_namespace($this->namespace);
     }
 
     /**
@@ -158,7 +158,7 @@ class Item
     public function condition($condition)
     {
         $node = new Node('condition');
-        $this->nodes['condition'] = $node->value($condition)->_namespace($this->namespace)->addCdata();
+        $this->nodes['condition'] = $node->value($condition)->_namespace($this->namespace);
     }
 
     /**
@@ -169,7 +169,7 @@ class Item
     public function expiration_date($expirationDate)
     {
         $node = new Node('expiration_date');
-        $this->nodes['expiration_date'] = $node->value($expirationDate)->_namespace($this->namespace)->addCdata();
+        $this->nodes['expiration_date'] = $node->value($expirationDate)->_namespace($this->namespace);
     }
 
     /**
@@ -181,7 +181,7 @@ class Item
     {
         $node = new Node('image_link');
         $imageLink = $this->safeCharEncodeURL($imageLink);
-        $this->nodes['image_link'] = $node->value($imageLink)->_namespace($this->namespace)->addCdata();
+        $this->nodes['image_link'] = $node->value($imageLink)->_namespace($this->namespace);
     }
 
     /**
@@ -193,7 +193,7 @@ class Item
     {
         $node = new Node('brand');
         $brand = $this->safeCharEncodeText($brand);
-        $this->nodes['brand'] = $node->value($brand)->_namespace($this->namespace)->addCdata();
+        $this->nodes['brand'] = $node->value($brand)->_namespace($this->namespace);
     }
 
     /**
@@ -204,7 +204,7 @@ class Item
     public function mpn($mpn)
     {
         $node = new Node('mpn');
-        $this->nodes['mpn'] = $node->value($mpn)->_namespace($this->namespace)->addCdata();
+        $this->nodes['mpn'] = $node->value($mpn)->_namespace($this->namespace);
     }
 
     /**
@@ -215,7 +215,7 @@ class Item
     public function gtin($gtin)
     {
         $node = new Node('gtin');
-        $this->nodes['gtin'] = $node->value($gtin)->_namespace($this->namespace)->addCdata();
+        $this->nodes['gtin'] = $node->value($gtin)->_namespace($this->namespace);
     }
 
     /**
@@ -226,7 +226,7 @@ class Item
     public function identifier_exists($identifier_exists)
     {
         $node = new Node('identifier_exists');
-        $this->nodes['identifier_exists'] = $node->value($identifier_exists)->_namespace($this->namespace)->addCdata();
+        $this->nodes['identifier_exists'] = $node->value($identifier_exists)->_namespace($this->namespace);
     }
 
     /**
@@ -238,7 +238,7 @@ class Item
     {
         $node = new Node('product_type');
         $brand = $this->safeCharEncodeText($productType);
-        $this->nodes['product_type'] = $node->value($productType)->_namespace($this->namespace)->addCdata();
+        $this->nodes['product_type'] = $node->value($productType)->_namespace($this->namespace);
     }
 
     /**

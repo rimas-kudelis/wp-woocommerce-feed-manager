@@ -120,7 +120,7 @@ class Rex_Feed_Attributes {
         $sql = "SELECT meta_key as name FROM {$wpdb->prefix}postmeta  as postmeta
                 INNER JOIN {$wpdb->prefix}posts AS posts 
                 ON postmeta.post_id = posts.id 
-                WHERE posts.post_type = 'product' OR posts.post_type = 'product-variation' 
+                WHERE posts.post_type = 'product' OR posts.post_type = 'product_variation' 
                 AND postmeta.meta_key NOT LIKE 'pyre%' 
                 AND postmeta.meta_key NOT LIKE 'sbg_%' 
                 group by meta_key";

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.4
 Requires PHP: 5.6
-Stable tag: 5.26
+Stable tag: 5.27
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 138 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 141 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -81,7 +81,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 138 pre-built templates of Merchant Shop feed
+* 141 pre-built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
@@ -112,6 +112,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Google Local Products](https://support.google.com/merchants/answer/3061198?hl=en#:~:targetText=Local%20products%20feed%20specification,successful%20ads%20for%20your%20products)
 - WooCommerce to [Google Local Products Inventory](https://support.google.com/merchants/answer/3061342?hl=en)
 - WooCommerce to [Google Merchant Promotions](https://support.google.com/merchants/answer/2906014?hl=en)
+- WooCommerce to [Google shopping action](https://support.google.com/merchants/answer/7679273?hl=en)
 - RSS Feed
 - WooCommerce to [Google Manufacturer Center](https://www.google.com/retail/solutions/manufacturer-center/)
 - WooCommerce to [Amazon Seller Ad](https://advertising.amazon.com/)
@@ -245,7 +246,8 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [KuantoKusta](https://www.kuantokusta.pt/)
 - WooCommerce to [Kauftipp](https://www.kauftipp.ch/)
 - WooCommerce to [Vivino](https://www.vivino.com/)
-
+- WooCommerce to [Rakuten marketing](https://rakutenadvertising.com/)
+- WooCommerce to [Pricefalls](http://www.pricefalls.com/)
 
 
 == Pro Features: ==
@@ -295,7 +297,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 138 major merchant shops:
+Currently, we support 141 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
@@ -303,6 +305,7 @@ Currently, we support 138 major merchant shops:
 - Google Local Products Inventory
 - Google Merchant Promotions
 - Google Manufacturer Center
+- Google shopping actions
 - RSS Feed
 - Amazon Seller Ad
 - Facebook Catalog Feed
@@ -435,6 +438,8 @@ Currently, we support 138 major merchant shops:
 - KuantoKusta
 - Kauftipp
 - Vivino
+- Rakuten marketing
+- Pricefalls
 
 
 = Is there a product limit? =
@@ -483,6 +488,14 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.27 (2020-04-24) =
+* Fixed: CDATA Sanitization
+* Fixed: Custom field mapping
+* Fixed: empty sale_price
+* Added: Rakuten marketing template
+* Added: Pricefalls template
+* Added: Google shopping actions template
 
 = 5.26 (2020-04-20) =
 * Fixed: Category filter issue for scheduled feed

@@ -331,6 +331,7 @@ class Rex_Product_Metabox {
                     'facebook',
                     'nextag',
                     'pricegrabber',
+                    'ebay_mip',
                     'bing',
                     'kelkoo',
                     'amazon',
@@ -408,14 +409,27 @@ class Rex_Product_Metabox {
                     'les_bonnes_bouilles',
                     'lions_home',
                     'locamo',
+                    'indeed',
+                    'incurvy',
+                    'jobbird',
+                    'job_board_io',
+                    'joblift',
+                    'kuantokusta',
+                    'kauftipp',
+                    'vivino',
+                    'amazon_seller_ad',
+                    'rakuten_advertising',
+                    'facebook_dynamic_ads',
+                    'pricefalls',
+                    'google_express',
+                    'google_hotel_ads',
+                    'facebook_dynamic_ads_travel',
                     'logicsale',
                     'google_manufacturer_center',
                     'pronto',
                     'awin',
                     'google_dynamic_display_ads',
-                    'kuantokusta',
-                    'kauftipp',
-                    'vivino',
+                    'google_shopping_actions',
                 ))),
             ),
         ) );
@@ -673,7 +687,8 @@ class Rex_Product_Metabox {
      * @param  object $field      Current field object
      */
     function google_merchant_desc( $field_args, $field ) {
-        echo __('<p class="google-desc">'.__('Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, 
+       echo __('<p class="google-desc">'.__('Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location,
+
                 United States is US and the abbreviation for language, English is en.', 'rex-product-feed').' <a href="https://rextheme.com/google-country-codes-list/" target="_blank">'.__('Click here', 'rex-product-feed').'</a> '.__('to see the list of all abbreviations set by Google.', 'rex-product-feed').'</p>', 'rex-product-feed');
     }
 

@@ -363,11 +363,14 @@ class Rex_Product_Data_Retriever {
 
                 if (!defined('WAD_INITIALIZED') ) {
                     if ($this->product->is_type( 'grouped' ))
-                        return number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
+                        $sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
                     elseif ($this->product->is_type( 'composite' )) {
-                        return  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
+                        $sale_price =  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
                     }
-                    return  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
+                    $sale_price = wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
+                    if($sale_price > 0)
+                        return $sale_price;
+                    return '';
                 }
                 else {
                     global $wad_discounts;

@@ -1039,7 +1039,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $orgdoc = new DOMDocument;
         $orgdoc->loadXML($xml_str);
 
-        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' || $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss') {
+        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
+            $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
+            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express'
+        ) {
             $parent = $orgdoc->getElementsByTagName('channel')->item(0);
         }elseif ($this->merchant === 'ebay_mip') {
             $parent = $orgdoc->getElementsByTagName('productRequest')->item(0);
@@ -1057,7 +1060,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $parent = $orgdoc->getElementsByTagName('mywebstore')->item(0);
         }elseif ($this->merchant === 'google_review') {
             $parent = $orgdoc->getElementsByTagName('reviews')->item(0);
-        }else {
+        }elseif ($this->merchant === 'vivino') {
+            $parent = $orgdoc->getElementsByTagName('vivino-product-list')->item(0);
+        }elseif ($this->merchant === 'trovaprezzi') {
+            $parent = $orgdoc->getElementsByTagName('Products')->item(0);
+        }
+        else {
             $parent = $orgdoc->getElementsByTagName('products')->item(0);
         }
 
