@@ -159,6 +159,7 @@ class Rex_Product_Feed_Admin {
         $this->cpt         = new Rex_Product_CPT;
         $this->metabox     = new Rex_Product_Metabox;
         $this->cron        = new Rex_Product_Feed_Cron_Handler();
+
     }
 
     /**

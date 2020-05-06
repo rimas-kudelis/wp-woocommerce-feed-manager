@@ -624,11 +624,11 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'    => 0,
                                     'name'  => 'NewEgg'
                                 ),
-//                                '123i'     => array(
-//                                    'free'  => true,
-//                                    'status'    => 0,
-//                                    'name'  => '123I'
-//                                ),
+                               '123i'     => array(
+                                   'free'  => true,
+                                   'status'    => 0,
+                                   'name'  => '123I'
+                               ),
                                 'adcrowd'     => array(
                                     'free'  => true,
                                     'status'    => 0,
@@ -904,6 +904,41 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'  => 0,
                                     'name'    => 'Pricefalls Feed'
                                 ),
+                                'clubic' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Clubic'
+                                ),
+                                'criteo' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Criteo'
+                                ),
+                                'shopalike' => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Shopalike'
+                                ),
+                                'compartner'     => array(
+                                    'free'       => true,
+                                    'status'     => 0,
+                                    'name'       => 'Compartner'
+                                ),
+                                'adtraction'    => array(
+                                    'free'      => true,
+                                    'status'    => 0,
+                                    'name'      => 'Adtraction'
+                                ),
+                                'admitad'       => array(
+                                    'free'      => true,
+                                    'status'    => 0,
+                                    'name'      => 'Admitad'
+                                ),
+                                'bloomville'     => array(
+                                    'free'       => true,
+                                    'status'     => 0,
+                                    'name'       => 'Bloomville'
+                                )
                             );
 
                             $_pro_merchants = array(
@@ -966,7 +1001,6 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                             }
 
 
-//                            unset();
 
                             /**
                              * result of bad planning
@@ -1139,7 +1173,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                             </div>
 
                             <div class="single-merchant">
-                                <span class="title"><?php echo __('Add Detailed Product Attributes ( Size, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <?php
                                     if(!$is_premium) {

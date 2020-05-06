@@ -266,20 +266,22 @@ class Feed
      */
     private function addItemsToFeed()
     {
-        $this->feed->shop->addChild('offers');
+        if($this->feed->shop) {
+            $this->feed->shop->addChild('offers');
+        }
         foreach ($this->items as $item) {
             $feedItemNode = $this->feed->shop->offers->addChild($this->itemlName);
             foreach ($item->nodes() as $itemNode) {
                 if($itemNode->get('name') === 'id') {
-                    $offer = $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
+                    $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
                 }elseif ($itemNode->get('name') === 'available') {
-                    $offer = $feedItemNode->addAttribute('available', $itemNode->get('value') === 'in stock'? 'true' : 'false');
+                    $feedItemNode->addAttribute('available', $itemNode->get('value') === 'in stock'? 'true' : 'false');
                 }elseif ($itemNode->get('name') === 'bid') {
-                    $offer = $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value') );
+                    $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value') );
                 }elseif ($itemNode->get('name') === 'cbid') {
-                    $offer = $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
+                    $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
                 }elseif ($itemNode->get('name') === 'type') {
-                    $offer = $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
+                    $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
                 }
                 else {
                     if (is_array($itemNode)) {
@@ -393,7 +395,7 @@ class Feed
      */
     public function asRss($output = false)
     {
-        ob_end_clean();
+        if (ob_get_contents()) ob_end_clean();
         $this->addItemsToFeed();
 
 //        $data = html_entity_decode($this->feed->asXml());

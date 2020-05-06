@@ -104,7 +104,9 @@
      * add new custom attributes
      */
     $(document).on('click', '#rex-new-custom-attr', function () {
-        var rowId = $(this).siblings('#config-table').find('tbody tr').length;
+        // var rowId = $(this).siblings('#config-table').find('tbody tr').length;
+        var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
+        rowId = parseInt(rowId)+1;
         var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
         var parent = $(this).siblings('#config-table').parent();
 

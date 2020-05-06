@@ -117,6 +117,23 @@ class Rex_Product_Metabox {
         ) );
 
 
+
+        /*
+         * Include/Exclude Variations
+         */
+        $box->add_field( array(
+            'name'           => __( 'Include Variable Parent Product', 'rex-product-feed' ),
+            'desc'           => __( 'Include/Exclude Parent Variable Product', 'rex-product-feed' ),
+            'id'             => $this->prefix . 'variable_product',
+            'type'           => 'radio_inline',
+            'options' => array(
+                'yes'       => __( 'Yes', 'rex-product-feed' ),
+                'no'        => __( 'No', 'rex-product-feed' ),
+            ),
+            'default' => 'no',
+        ) );
+
+
         /*
          * Include/Exclude Variations
          */
@@ -430,6 +447,16 @@ class Rex_Product_Metabox {
                     'awin',
                     'google_dynamic_display_ads',
                     'google_shopping_actions',
+                    'clubic',
+                    'adcrowd',
+                    'criteo',
+                    'shopalike',
+                    'compartner',
+                    '123i',
+                    'adtraction',
+                    'admitad',
+                    'bloomville',
+                    'bipp',
                 ))),
             ),
         ) );

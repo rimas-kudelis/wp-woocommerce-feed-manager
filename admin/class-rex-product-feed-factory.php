@@ -152,6 +152,14 @@ class Rex_Product_Feed_Factory {
                 'vivino',
                 'rakuten_advertising',
                 'pricefalls',
+                'google_hotel_ads',
+                'facebook_dynamic_ads_travel',
+                'google_shopping_actions',
+                'clubic',
+                'shopalike',
+                'adtraction',
+                'bloomville',
+                'bipp',
             )
         );
 
@@ -162,6 +170,8 @@ class Rex_Product_Feed_Factory {
             'pinterest',
             'google_shopping_actions',
             'google_express',
+            'criteo',
+            'compartner',
         );
 
         self::$facebook_format = array(
@@ -176,6 +186,9 @@ class Rex_Product_Feed_Factory {
         }
         elseif (in_array( $config['merchant'], self::$facebook_format )) {
             $className = 'Rex_Product_Feed_Facebook';
+        }
+        elseif ($config['merchant'] === 'admitad') {
+            $className = 'Rex_Product_Feed_Yandex';
         }
         else{
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );

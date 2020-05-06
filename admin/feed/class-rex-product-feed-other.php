@@ -18,6 +18,18 @@ use RexTheme\RexShoppingFeed\Containers\RexShopping;
 class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 
     private $feed_merchants = array(
+        "123i" => array(
+            'container'  => true,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'Carga',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => 'Imoveis',
+            'wrapper'   => true,
+            'datetime'   => false,
+        ),
         "adcrowd" => array(
             'container'  => true,
             'item_wrapper'  => 'item',
@@ -42,6 +54,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
+        "adtraction" => array(
+            'container'  => true,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'feed',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
         "beslist" => array(
             'container'  => true,
             'item_wrapper'  => 'product',
@@ -54,10 +78,34 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => true,
             'datetime'   => true,
         ),
+        "bloomville" => array(
+            'container'  => true,
+            'item_wrapper'  => 'CourseTemplate',
+            'items_wrapper' => 'CourseTemplates',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
         "cdiscount" => array(
             'container'  => false,
             'item_wrapper'  => 'product',
             'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "clubic" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
             'namespace' => null,
             'namespace_prefix' => '',
             'stand_alone'   => false,
@@ -296,6 +344,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
+        "shopalike" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
         "skroutz" => array(
             'container'  => false,
             'item_wrapper'  => 'product',
@@ -517,6 +577,15 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
+
+                if($this->variable_product) {
+                    $variable_product = new WC_Product_Variable($productId);
+                    $atts = $this->get_product_data( $variable_product, $product_meta_keys );
+                    $item = RexShopping::createItem();
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
 
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     $variations = $product->get_visible_children();

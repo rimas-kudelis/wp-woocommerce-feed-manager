@@ -82,6 +82,14 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
 
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
+                if($this->variable_product) {
+                    $variable_product = new WC_Product_Variable($productId);
+                    $atts = $this->get_product_data( $variable_product, $product_meta_keys );
+                    $item = RexShopping::createItem();
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     $variations = $product->get_visible_children();
                     if($variations) {

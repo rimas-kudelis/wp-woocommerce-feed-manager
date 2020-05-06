@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.4
 Requires PHP: 5.6
-Stable tag: 5.27
+Stable tag: 5.28
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 141 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 150 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -81,7 +81,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 141 pre-built templates of Merchant Shop feed
+* 150 pre-built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
@@ -248,6 +248,14 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Vivino](https://www.vivino.com/)
 - WooCommerce to [Rakuten marketing](https://rakutenadvertising.com/)
 - WooCommerce to [Pricefalls](http://www.pricefalls.com/)
+- WooCommerce to [123i](https://123i.uol.com.br/)
+- WooCommerce to [Clubic](https://www.clubic.com/)
+- WooCommerce to [Criteo](https://www.criteo.com/)
+- WooCommerce to [Shopalike](https://www.shopalike.it/)
+- WooCommerce to [Compartner](https://compartner.nl/)
+- WooCommerce to [Adtraction](https://adtraction.com/)
+- WooCommerce to [Admitad](https://www.admitad.com/)
+- WooCommerce to [Bloomville](https://bloomville.nl/)
 
 
 == Pro Features: ==
@@ -297,7 +305,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 141 major merchant shops:
+Currently, we support 150 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
@@ -440,6 +448,14 @@ Currently, we support 141 major merchant shops:
 - Vivino
 - Rakuten marketing
 - Pricefalls
+- 123i
+- Clubic
+- Criteo
+- Shopalike
+- Compartner
+- Adtraction
+- Admitad
+- Bloomville
 
 
 = Is there a product limit? =
@@ -488,6 +504,20 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.28 (2020-05-06) =
+* Fixed: Yoast seo title and description
+* Fixed: Duplicate product on feed
+* Fixed: Bug on add new attribute event
+* Added: 123i template
+* Added: Clubic template
+* Added: Criteo template
+* Added: Shopalike template
+* Added: Compartner template
+* Added: Adtraction template
+* Added: Admitad template
+* Added: Bloomville template
+
 
 = 5.27 (2020-04-24) =
 * Fixed: CDATA Sanitization

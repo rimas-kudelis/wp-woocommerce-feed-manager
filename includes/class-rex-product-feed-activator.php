@@ -122,7 +122,6 @@ class Rex_Product_Feed_Activator {
 	    update_option('rex_bwfm_first_installation', time());
 	    update_option('rex_bwfm_notification_status', 'yes');
 
-
 	    self::update_notice();
 
 	}

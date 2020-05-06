@@ -292,8 +292,10 @@ class Rex_Product_Data_Retriever {
                 elseif ($this->product->is_type( 'composite' )) {
                     $_pr  = new WC_Product_Composite($this->product->get_id());
                     return  wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals());
+                }elseif ($this->product->is_type( 'variable' )) {
+                    return wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals());
                 }
-                return  wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals());
+                return wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals());
                 break;
 
             case 'current_price':
@@ -303,6 +305,8 @@ class Rex_Product_Data_Retriever {
                     elseif ($this->product->is_type( 'composite' )) {
                         $_pr  = new WC_Product_Composite($this->product->get_id());
                         return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
+                    }elseif ($this->product->is_type( 'variable' )) {
+                        return wc_format_decimal( $this->product->get_variation_price(), wc_get_price_decimals());
                     }
                     return  wc_format_decimal( $this->product->get_price(), wc_get_price_decimals());
                 }
@@ -321,6 +325,8 @@ class Rex_Product_Data_Retriever {
                     elseif ($this->product->is_type( 'composite' )) {
                         $_pr  = new WC_Product_Composite($this->product->get_id());
                         return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
+                    }elseif ($this->product->is_type( 'variable' )) {
+                        $sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '');
                     }
                     else
                         $sale_price = number_format((float)$this->product->get_price(), 2, '.', '');
@@ -366,8 +372,11 @@ class Rex_Product_Data_Retriever {
                         $sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
                     elseif ($this->product->is_type( 'composite' )) {
                         $sale_price =  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
+                    }elseif ($this->product->is_type( 'variable' )) {
+                        $sale_price = wc_format_decimal( $this->product->get_variation_sale_price(), wc_get_price_decimals());
+                    }else {
+                        $sale_price = wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
                     }
-                    $sale_price = wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
                     if($sale_price > 0)
                         return $sale_price;
                     return '';
@@ -385,6 +394,9 @@ class Rex_Product_Data_Retriever {
 
                     if ($this->product->is_type( 'grouped' ))
                         $sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') ;
+                    elseif ($this->product->is_type( 'variable' )) {
+                        $sale_price = number_format( (float)$this->product->get_variation_sale_price(), 2, '.', '');
+                    }
                     elseif ($this->product->is_type( 'composite' )) {
                         $_pr  = new WC_Product_Composite($this->product->get_id());
                         return  wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals());
@@ -421,8 +433,11 @@ class Rex_Product_Data_Retriever {
                             return  wc_format_decimal( $sale_price, wc_get_price_decimals());;
                         }
                     }
-                    return  wc_format_decimal( $sale_price, wc_get_price_decimals());;                }
-
+                    $sale_price = wc_format_decimal( $sale_price, wc_get_price_decimals());
+                    if($sale_price > 0)
+                        return $sale_price;
+                    return '';
+                }
                 break;
 
             case 'price_with_tax':
@@ -704,8 +719,15 @@ class Rex_Product_Data_Retriever {
      */
     public function get_yoast_seo_title() {
         $title = '';
-        if ( class_exists( 'WPSEO_Frontend' ) ) {
-            $title = WPSEO_Frontend::get_instance()->get_seo_title( get_post( $this->product->get_id() ) );
+        if ( function_exists( 'wpseo_replace_vars' ) ) {
+            $wpseo_title = get_post_meta($this->product->get_id(), '_yoast_wpseo_title', true);
+            if($wpseo_title) {
+                $product_title_pattern = $wpseo_title;
+            }else {
+                $wpseo_titles = get_option('wpseo_titles');
+                $product_title_pattern = $wpseo_titles['title-product'];
+            }
+            $title = wpseo_replace_vars($product_title_pattern, get_post($this->product->get_id()));
         }
         if ( ! empty( $title ) ) {
             return $title;
@@ -722,10 +744,17 @@ class Rex_Product_Data_Retriever {
      */
     public function get_yoast_meta_description() {
         $description = '';
-        if ( class_exists( 'WPSEO_Frontend' ) ) {
-            $description = wpseo_replace_vars( WPSEO_Meta::get_value( 'metadesc', $this->product->get_id() ),
-                get_post( $this->product->get_id() ) );
+        if ( function_exists( 'wpseo_replace_vars' ) ) {
+            $wpseo_meta_description = get_post_meta($this->product->get_id(), '_yoast_wpseo_metadesc', true);
+            if($wpseo_meta_description) {
+                $product_meta_desc_pattern = $wpseo_meta_description;
+            }else {
+                $wpseo_titles = get_option('wpseo_titles');
+                $product_meta_desc_pattern = $wpseo_titles['metadesc-product'];
+            }
+            $description = wpseo_replace_vars($product_meta_desc_pattern, get_post($this->product->get_id()));
         }
+
         if ( ! empty( $description ) ) {
             return $description;
         }
@@ -1395,6 +1424,93 @@ class Rex_Product_Data_Retriever {
         return $results;
     }
 
+
+    /**
+     * Parse HTML to an array of meta key/value pairs using \DOMDocument.
+     *
+     * @since 2019.3.0
+     *
+     * @param string $html The HTML as generated by Yoast SEO.
+     *
+     * @return array An array containing all meta key/value pairs.
+     */
+    private function parse_using_domdocument( $html ) {
+        $dom = new \DOMDocument();
+
+        $internal_errors = libxml_use_internal_errors( true );
+        $dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) );
+
+        $metas       = $dom->getElementsByTagName( 'meta' );
+        $yoast_metas = [];
+        foreach ( $metas as $meta ) {
+            if ( $meta->hasAttributes() ) {
+                $yoast_meta = [];
+                foreach ( $meta->attributes as $attr ) {
+                    // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+                    $yoast_meta[ $attr->nodeName ] = esc_html( wp_strip_all_tags( stripslashes( $attr->nodeValue ), true ) );
+                }
+                $yoast_metas[] = $yoast_meta;
+            }
+        }
+
+        $nodes = $dom->getElementsByTagName( 'title' );
+        $title = null;
+        if ( $nodes->length ) {
+            $title = esc_html( wp_strip_all_tags( stripslashes( $nodes[0]->nodeValue ), true ) );
+        }
+
+        $xpath         = new \DOMXPath( $dom );
+        $yoast_json_ld = [];
+        foreach ( $xpath->query( '//script[@type="application/ld+json"]' ) as $node ) {
+            // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+            $yoast_json_ld[] = json_decode( (string) $node->nodeValue, true );
+        }
+        libxml_use_internal_errors( $internal_errors );
+
+        return [
+            'meta'    => $yoast_metas,
+            'title'   => $title,
+            'json_ld' => $yoast_json_ld,
+        ];
+    }
+
+    /**
+     * Parse HTML to an array of meta key/value pairs using simplexml as a fallback if \DOMDocument is unavailable.
+     *
+     * @since 2019.3.0
+     *
+     * @param string $html The HTML as generated by Yoast SEO.
+     *
+     * @return array An array containing all meta key/value pairs.
+     */
+    private function parse_using_simplexml( $html ) {
+        $yoast_metas   = [];
+        $title         = null;
+        $yoast_json_ld = [];
+        $xml           = simplexml_load_string( '<yoast>' . $html . '</yoast>' );
+        if ( $xml ) {
+            foreach ( $xml->meta as $meta ) {
+                $yoast_meta = [];
+                $attributes = $meta->attributes();
+                foreach ( $attributes as $key => $value ) {
+                    $yoast_meta[ (string) $key ] = esc_html( wp_strip_all_tags( stripslashes( (string) $value ), true ) );
+                }
+                $yoast_metas[] = $yoast_meta;
+            }
+
+            $title = isset( $xml->title ) ? esc_html( wp_strip_all_tags( stripslashes( (string) $xml->title ), true ) ) : null;
+
+            foreach ( $xml->xpath( '//script[@type="application/ld+json"]' ) as $node ) {
+                $yoast_json_ld[] = json_decode( (string) $node, true );
+            }
+        }
+
+        return [
+            'meta'    => $yoast_metas,
+            'title'   => $title,
+            'json_ld' => $yoast_json_ld,
+        ];
+    }
 
 
 }

@@ -58,7 +58,7 @@ class Rex_Feed_Template_123i extends Rex_Feed_Abstract_Template {
                 'Numero'              => 'Numero',
                 'TituloImovel'        => 'TituloImovel',
             ),
-            
+
         );
     }
 

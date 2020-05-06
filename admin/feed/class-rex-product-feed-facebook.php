@@ -85,6 +85,23 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
+                if($this->variable_product) {
+                    $variable_product = new WC_Product_Variable($productId);
+                    $item = GoogleShopping::createItem();
+                    $atts = $this->get_product_data( $variable_product, $product_meta_keys );
+                    $atts = $this->process_attributes_for_shipping_tax($atts);
+                    foreach ($atts as $key => $value) {
+                        if($key == 'shipping') {
+                            $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
+                        }
+                        elseif ($key == 'tax') {
+                            $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
+                        }
+                        else {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
+                    }
+                }
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     $variations = $product->get_visible_children();
                     if($variations) {

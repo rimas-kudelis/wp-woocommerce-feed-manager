@@ -62,7 +62,7 @@ class RexShopping
      * Init Feed Configuration
      * @return Feed
      */
-    public static function init( $wrapper = false, $itemName = 'item', $namespace = null, $version = '' , $rss = 'rss', $stand_alone = false, $wrapperel = '')
+    public static function init( $wrapper = false, $itemName = 'item', $namespace = null, $version = '' , $rss = 'rss', $stand_alone = false, $wrapperel = '', $namespace_prefix='')
     {
         static::$namespace = $namespace;
         static::$version   = $version;
@@ -71,6 +71,7 @@ class RexShopping
         static::$rss       = $rss;
         static::$stand_alone = $stand_alone;
         static::$wrapperel = $wrapperel;
+        static::$namespace_prefix = $namespace_prefix;
 
     }
 

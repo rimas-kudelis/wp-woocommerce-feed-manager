@@ -220,6 +220,15 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 
     /**
+     * Variable Product include/exclude
+     *
+     * @since    2.0.1
+     * @access   private
+     * @var      Rex_Product_Feed_Abstract_Generator    $variable_product
+     */
+    protected $variable_product;
+
+    /**
      * Product variations include/exclude
      *
      * @since    2.0.1
@@ -328,9 +337,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->setup_feed_data($config['info']);
             $this->setup_feed_rules($config['feed_config']);
             $this->setup_feed_filter_rules($config['feed_config']);
-            $this->variations = $this->include_product_variations($config['feed_config']);
-            $this->parent_product = $this->include_parent_product($config['feed_config']);
-            $this->append_variation = $this->append_variation_product_name($config['feed_config']) ? 'yes' : 'no';
+            $this->setup_feed_meta($config['feed_config']);
             $this->prepare_products_args($config['products']);
             $this->setup_products();
         }
@@ -405,6 +412,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             'post_status'            => 'publish',
             'posts_per_page'         => $this->posts_per_page,
             'offset'                 => $this->offset,
+            'orderby'                => 'ID',
+            'order'                  => 'ASC',
             'update_post_term_cache' => true,
             'update_post_meta_cache' => true,
             'cache_results'          => false,
@@ -483,6 +492,44 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
     }
 
+
+    /**
+     * Setup the feed meta values
+     *
+     * @param $config
+     */
+    protected function setup_feed_meta( $config ){
+        $feed_rules       = array();
+        parse_str( $config, $feed_rules );
+        $include_variable_product   = $feed_rules['rex_feed_variable_product'];
+        $include_variations         = $feed_rules['rex_feed_variations'];
+        $include_parent             = $feed_rules['rex_feed_parent_product'];
+        $include_variations_name    = $feed_rules['rex_feed_variation_product_name'];
+
+        if ($include_variable_product == 'yes') {
+            $this->variable_product = true;
+        }else {
+            $this->variable_product = false;
+        }
+
+        if ($include_variations == 'yes') {
+            $this->variations = true;
+        }else {
+            $this->variations = false;
+        }
+
+        if ($include_parent == 'yes') {
+            $this->parent_product = true;
+        }else {
+            $this->parent_product = false;
+        }
+
+        if ($include_variations_name == 'yes') {
+            $this->append_variation = 'yes';
+        }else {
+            $this->append_variation = 'no';
+        }
+    }
 
 
     /**
