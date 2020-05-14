@@ -14,7 +14,6 @@ class Rex_Feed_Template_Factory {
 
     public static function build( $merchant, $feed_rules ){
         $className = 'Rex_Feed_Template_'. ucfirst( str_replace(' ', '', $merchant) );
-
         if( $merchant == '' || ! class_exists( $className ) ) {
             throw new Exception('Invalid Merchant.');
         } else {

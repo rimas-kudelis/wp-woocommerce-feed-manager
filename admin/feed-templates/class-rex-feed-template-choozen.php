@@ -135,7 +135,7 @@ class Rex_Feed_Template_Choozen extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'default',
+                'escape'   => 'cdata',
                 'limit'    => 0,
             ),
             array(
@@ -157,17 +157,7 @@ class Rex_Feed_Template_Choozen extends Rex_Feed_Abstract_Template {
                 'suffix'   => ' '.get_option('woocommerce_currency'),
                 'escape'   => 'default',
                 'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'product_URL',
-                'type'     => 'meta',
-                'meta_key' => 'link',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
+            )
         );
     }
 

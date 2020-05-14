@@ -239,11 +239,6 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'    => 0,
                                     'name'  => 'Instagram (by Facebook)'
                                 ),
-                                'amazon'       => array(
-                                    'free'  => true,
-                                    'status'    => 1,
-                                    'name'  => 'Amazon'
-                                ),
                                 'adroll'       => array(
                                     'free'  => true,
                                     'status'    => 1,
@@ -624,11 +619,11 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'    => 0,
                                     'name'  => 'NewEgg'
                                 ),
-                               '123i'     => array(
-                                   'free'  => true,
-                                   'status'    => 0,
-                                   'name'  => '123I'
-                               ),
+                                '123i'     => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => '123I'
+                                ),
                                 'adcrowd'     => array(
                                     'free'  => true,
                                     'status'    => 0,
@@ -938,10 +933,65 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'free'       => true,
                                     'status'     => 0,
                                     'name'       => 'Bloomville'
-                                )
+                                ),
+                                'datatrics'     => array(
+                                    'free'      => true,
+                                    'status'    => 0,
+                                    'name'      => 'Datatrics'
+                                ),
+                                'deltaprojects'  => array(
+                                    'free'       => true,
+                                    'status'     => 0,
+                                    'name'       => 'Delta Projects'
+                                ),
+                                'drezzy'       => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => 'Drezzy'
+                                ),
+                                'domodi'     => array(
+                                    'free'   => true,
+                                    'status' => 0,
+                                    'name'   => 'Domodi'
+                                ),
+                                'doofinder'   => array(
+                                    'free'    => true,
+                                    'status'  => 0,
+                                    'name'    => 'Doofinder'
+                                ),
+                                'homebook'   => array(
+                                    'free'      => true,
+                                    'status'    => 0,
+                                    'name'      => 'Homebook.pl'
+                                ),
+                                'homedeco'     => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => 'Home Deco'
+                                ),
+//                                'imovelweb'     => array(
+//                                    'free'     => true,
+//                                    'status'   => 0,
+//                                    'name'     => 'Imovel Web'
+//                                ),
+//                                'onbuy'     => array(
+//                                    'free'     => true,
+//                                    'status'   => 0,
+//                                    'name'     => 'OnBuy'
+//                                ),
                             );
 
                             $_pro_merchants = array(
+                                'drm'     => array(
+                                    'free'  => false,
+                                    'status'    => 0,
+                                    'name'  => 'Google Remarketing (DRM)'
+                                ),
+                                'google_review'     => array(
+                                    'free'  => false,
+                                    'status'    => 0,
+                                    'name'  => 'Google Review'
+                                ),
                                 'ebay_mip'     => array(
                                     'free'  => false,
                                     'status'    => 0,
@@ -952,6 +1002,16 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'    => 0,
                                     'name'  => 'eBay Seller Center'
                                 ),
+                                'ebay_seller_tickets'  => array(
+                                    'free'  => false,
+                                    'status'    => 0,
+                                    'name'  => 'eBay Seller Center (Event tickets)'
+                                ),
+//                                'amazon_seller'     => array(
+//                                    'free'  => false,
+//                                    'status'    => 0,
+//                                    'name'  => 'Amazon Seller'
+//                                ),
                                 'bol'       => array(
                                     'free'  => false,
                                     'status'    => 0,
@@ -977,17 +1037,6 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'    => 0,
                                     'name'  => 'Connexity'
                                 ),
-                                'drm'     => array(
-                                    'free'  => false,
-                                    'status'    => 0,
-                                    'name'  => 'Google Remarketing (DRM)'
-                                ),
-                                'google_review'     => array(
-                                    'free'  => false,
-                                    'status'    => 0,
-                                    'name'  => 'Google Review'
-                                )
-
                             );
                             $_merchants = array_merge($_merchants, $_pro_merchants);
 
@@ -999,8 +1048,6 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                             if(!$is_premium) {
                                 $_merchants = array_merge($_merchants, $_pro_merchants);
                             }
-
-
 
                             /**
                              * result of bad planning

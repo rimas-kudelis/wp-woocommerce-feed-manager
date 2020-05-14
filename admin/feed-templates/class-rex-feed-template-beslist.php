@@ -86,17 +86,7 @@ class Rex_Feed_Template_Beslist extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'product_url',
-                'type'     => 'meta',
-                'meta_key' => 'link',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
+                'escape'   => 'cdata',
                 'limit'    => 0,
             ),
             array(

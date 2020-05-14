@@ -91,7 +91,7 @@ class Node
             $no=$node->ownerDocument;
             $node->appendChild($no->createCDATASection($this->value));
         }else {
-            $parent->addChild($this->name, $this->value, $this->_namespace);
+            $parent->addChild($this->name, htmlspecialchars($this->value), $this->_namespace);
         }
     }
 }

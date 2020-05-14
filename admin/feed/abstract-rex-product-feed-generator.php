@@ -1088,7 +1088,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
             $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
-            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express'
+            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder'
         ) {
             $parent = $orgdoc->getElementsByTagName('channel')->item(0);
         }elseif ($this->merchant === 'ebay_mip') {
@@ -1111,6 +1111,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $parent = $orgdoc->getElementsByTagName('vivino-product-list')->item(0);
         }elseif ($this->merchant === 'trovaprezzi') {
             $parent = $orgdoc->getElementsByTagName('Products')->item(0);
+        }elseif ($this->merchant === 'datatrics') {
+            $parent = $orgdoc->getElementsByTagName('items')->item(0);
+        }elseif ($this->merchant === 'domodi') {
+            $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+        }elseif ($this->merchant === 'drezzy') {
+            $parent = $orgdoc->getElementsByTagName('items')->item(0);
+        }elseif ($this->merchant === 'homebook') {
+            $parent = $orgdoc->getElementsByTagName('offers')->item(0);
+        }elseif ($this->merchant === 'homedeco') {
+            $parent = $orgdoc->getElementsByTagName('items')->item(0);
         }
         else {
             $parent = $orgdoc->getElementsByTagName('products')->item(0);
@@ -1122,7 +1132,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         // The node we want to import to a new document
 
-        if($this->merchant === 'google' || $this->merchant === 'facebook'|| $this->merchant === 'pinterest'|| $this->merchant === 'ciao' || $this->merchant === 'daisycon'|| $this->merchant === 'instagram'|| $this->merchant === 'liveintent'|| $this->merchant === 'rss') {
+        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
+            $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
+            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder'
+        ) {
             $node = $newdoc->getElementsByTagName("item");
         }
         elseif ($this->merchant === 'ebay_mip') {
@@ -1149,6 +1162,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $node = $newdoc->getElementsByTagName("product");
         }elseif ($this->merchant === 'google_review') {
             $node = $newdoc->getElementsByTagName("feed");
+        }elseif ($this->merchant === 'datatrics') {
+            $node = $newdoc->getElementsByTagName("item");
+        }elseif ($this->merchant === 'domodi') {
+            $node = $newdoc->getElementsByTagName("SHOPITEM");
+        }elseif ($this->merchant === 'drezzy') {
+            $node = $newdoc->getElementsByTagName("item");
+        }elseif ($this->merchant === 'homebook') {
+            $node = $newdoc->getElementsByTagName("offer");
+        }elseif ($this->merchant === 'homedeco') {
+            $node = $newdoc->getElementsByTagName("item");
         }else {
             $node = $newdoc->getElementsByTagName("product");
         }

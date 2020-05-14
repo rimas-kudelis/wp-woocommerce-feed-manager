@@ -244,7 +244,6 @@ class Feed
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
             foreach ($item->nodes() as $itemNode) {
-
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {
                         $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
@@ -256,6 +255,12 @@ class Feed
         }
     }
 
+
+    /**
+     * add items to text feed
+     *
+     * @return string
+     */
     private function addItemsToFeedText() {
         $str = '';
         if(count($this->items)){
@@ -280,6 +285,11 @@ class Feed
         return $str;
     }
 
+    /**
+     * add items to csv feed
+     *
+     * @return Item[]
+     */
     private function addItemsToFeedCSV(){
 
         if(count($this->items)){
@@ -303,6 +313,28 @@ class Feed
             foreach ($this->items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
             }
+        }
+
+        return $this->items_row;
+    }
+
+
+    /**
+     * add items to json feed
+     *
+     * @return Item[]
+     */
+    private function addItemsToFeedJSON(){
+
+        if(count($this->items)){
+            $this->items_row[] = array_keys(end($this->items)->nodes());
+            foreach ($this->items as $item) {
+                $row = array();
+                foreach ($item->nodes() as $itemNode) {
+//                    if($itemNode->get)
+                }
+            }
+
         }
 
         return $this->items_row;
@@ -383,13 +415,31 @@ class Feed
     public function asCsv($output = false)
     {
 
-//        ob_end_clean();
+        if (ob_get_contents()) ob_end_clean();
         $data = $this->addItemsToFeedCSV();
         if ($output) {
             die($data);
         }
         return $data;
     }
+
+
+    /**
+     * Generate CSV feed
+     * @param bool $output
+     * @return string
+     */
+    public function asJSON($output = false)
+    {
+
+        if (ob_get_contents()) ob_end_clean();
+        $data = $this->addItemsToFeedJSON();
+        if ($output) {
+            die($data);
+        }
+        return $data;
+    }
+
 
 
     /**

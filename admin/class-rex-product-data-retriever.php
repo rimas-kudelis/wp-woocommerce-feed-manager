@@ -166,6 +166,7 @@ class Rex_Product_Data_Retriever {
     public function set_all_value() {
         $this->data = array();
         foreach ( $this->feed_rules as $key => $rule ) {
+
             if(array_key_exists('attr', $rule)) {
                 if($rule['attr']) {
                     if($rule['attr'] === 'attributes') {
@@ -208,7 +209,6 @@ class Rex_Product_Data_Retriever {
             $val = $this->set_image_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
-
             $val = $this->set_product_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
@@ -220,8 +220,6 @@ class Rex_Product_Data_Retriever {
         elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
             $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
-
-
 
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix($val, $rule);
@@ -515,7 +513,6 @@ class Rex_Product_Data_Retriever {
                 return $this->get_product_cats_for_sooqr(); break;
 
             case 'link':
-
                 if($this->analytics_params) {
                     if ( ! empty( $this->analytics_params['utm_source'] ) &&
                         ! empty( $this->analytics_params['utm_medium'] ) &&
@@ -619,12 +616,12 @@ class Rex_Product_Data_Retriever {
         if ( 'WC_Product_Variation' != get_class($this->product) ) {
             return;
         }
-        $variant_atts = $this->product->get_variation_attributes();
-        $key = str_replace( 'bwf_attr_pa_', 'attribute_pa_', $key);
-        if(array_key_exists($key, $variant_atts)){
-            return $variant_atts[$key];
+        $key = str_replace( 'bwf_attr_pa_', '', $key);
+        $value = $this->product->get_attribute( $key );
+        if ( ! empty( $value ) ) {
+            $value = trim( $value );
         }
-        return '';
+        return $value;
     }
 
     /**
@@ -973,7 +970,6 @@ class Rex_Product_Data_Retriever {
      */
     protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
         $terms = wp_get_post_terms( $id, $taxonomy , array( 'orderby' => 'term_id' ));
-
         if ( empty( $terms ) || is_wp_error( $terms ) ){
             return '';
         }
@@ -1194,7 +1190,10 @@ class Rex_Product_Data_Retriever {
                 return filter_var($val, FILTER_SANITIZE_STRING);;
             case 'cdata':
                 return $val ? "<![CDATA [$val]]>" : $val;
-            default: return $val; break;
+            default:
+                return $val;
+                break;
+
         }
     }
 
@@ -1510,6 +1509,19 @@ class Rex_Product_Data_Retriever {
             'title'   => $title,
             'json_ld' => $yoast_json_ld,
         ];
+    }
+
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    private function safeCharEncodeURL($string)
+    {
+        return str_replace(
+            array('%', '[', ']', '{', '}', '|', ' ', '"', '<', '>', '#', '\\', '^', '~', '`'),
+            array('%25', '%5b', '%5d', '%7b', '%7d', '%7c', '%20', '%22', '%3c', '%3e', '%23', '%5c', '%5e', '%7e', '%60'),
+            $string);
     }
 
 

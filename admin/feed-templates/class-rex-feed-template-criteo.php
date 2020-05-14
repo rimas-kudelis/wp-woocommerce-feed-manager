@@ -108,16 +108,6 @@ class Rex_Feed_Template_Criteo extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'link',
-                'type'     => 'meta',
-                'meta_key' => 'link',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
                 'attr'     => 'availability',
                 'type'     => 'meta',
                 'meta_key' => 'availability',
@@ -164,7 +154,7 @@ class Rex_Feed_Template_Criteo extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'default',
+                'escape'   => 'cdata',
                 'limit'    => 0,
             ),
             array(

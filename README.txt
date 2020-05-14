@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.4
 Requires PHP: 5.6
-Stable tag: 5.28
+Stable tag: 5.29
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 150 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 157 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -81,7 +81,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 150 pre-built templates of Merchant Shop feed
+* 157 pre-built templates of Merchant Shop feed
 * Auto-sync with Google Shopping Center
  * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
@@ -256,6 +256,13 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Adtraction](https://adtraction.com/)
 - WooCommerce to [Admitad](https://www.admitad.com/)
 - WooCommerce to [Bloomville](https://bloomville.nl/)
+- WooCommerce to [Datatrics](https://www.datatrics.com/)
+- WooCommerce to [Delta Projects](https://deltaprojects.com/)
+- WooCommerce to [Drezzy](https://www.drezzy.it/)
+- WooCommerce to [Domodi](https://domodi.pl/)
+- WooCommerce to [Doofinder](https://www.doofinder.com/en/)
+- WooCommerce to [Homebook.pl](https://www.homebook.pl/)
+- WooCommerce to [Home Deco](https://homedeco.co.uk/)
 
 
 == Pro Features: ==
@@ -305,7 +312,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 150 major merchant shops:
+Currently, we support 157 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
@@ -456,6 +463,13 @@ Currently, we support 150 major merchant shops:
 - Adtraction
 - Admitad
 - Bloomville
+- Datatrics
+- Delta Projects
+- Drezzy
+- Domodi
+- Doofinder
+- Homebook.pl
+- Home Deco
 
 
 = Is there a product limit? =
@@ -504,6 +518,19 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.29 (2020-05-14) =
+* Fixed: Fixed some warning while creating feed
+* Fixed: Zalando template
+* Added: Datatrics template
+* Added: Delta Projects template
+* Added: Drezzy template
+* Added: Domodi template
+* Added: Doofinder template
+* Added: Homebook.pl template
+* Added: Home Deco template
+* Compatibility Checked : WooCommerce 4.1.0
+
 
 = 5.28 (2020-05-06) =
 * Fixed: Yoast seo title and description

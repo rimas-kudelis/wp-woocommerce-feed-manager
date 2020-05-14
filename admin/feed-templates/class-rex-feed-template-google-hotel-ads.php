@@ -45,7 +45,7 @@ class Rex_Feed_Template_Google_hotel_ads extends Rex_Feed_Abstract_Template {
                 'fax'              => 'Fax',
                 'latitude'         => 'Latitude',
                 'longitude'        => 'Longitude',
-                'num_reviews'      => 'Num_reviews',
+                'num_reviews'      => 'Num Reviews',
                 'number_of_rooms'  => 'Number Of Rooms',
                 'photo_link'       => 'Photo link',
                 'photo_title'      => 'Photo title',

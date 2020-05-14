@@ -102,7 +102,7 @@ class Rex_Feed_Template_Amazon_seller_ad extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'default',
+                'escape'   => 'cdata',
                 'limit'    => 0,
             ),
 
@@ -197,7 +197,7 @@ class Rex_Feed_Template_Amazon_seller_ad extends Rex_Feed_Abstract_Template {
             array(
                 'attr'     => 'image_link',
                 'type'     => 'meta',
-                'meta_key' => 'link',
+                'meta_key' => 'featured_image',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',

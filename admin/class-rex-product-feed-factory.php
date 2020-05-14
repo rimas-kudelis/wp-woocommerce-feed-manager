@@ -100,7 +100,6 @@ class Rex_Product_Feed_Factory {
                 'cenowarka',
                 'cezigue',
                 'check24',
-                'zalando',
                 'clang',
                 'cherchons',
                 'boetiek',
@@ -152,6 +151,7 @@ class Rex_Product_Feed_Factory {
                 'vivino',
                 'rakuten_advertising',
                 'pricefalls',
+                'google_express',
                 'google_hotel_ads',
                 'facebook_dynamic_ads_travel',
                 'google_shopping_actions',
@@ -160,6 +160,14 @@ class Rex_Product_Feed_Factory {
                 'adtraction',
                 'bloomville',
                 'bipp',
+                'datatrics',
+                'deltaprojects',
+                'drezzy',
+                'domodi',
+                'homebook',
+                'homedeco',
+                'imovelweb',
+                'onbuy',
             )
         );
 
@@ -172,6 +180,7 @@ class Rex_Product_Feed_Factory {
             'google_express',
             'criteo',
             'compartner',
+            'doofinder',
         );
 
         self::$facebook_format = array(
@@ -193,6 +202,7 @@ class Rex_Product_Feed_Factory {
         else{
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
         }
+
 
         if( $config == '' || ! class_exists( $className ) ) {
             if(is_wpfm_logging_enabled()) {

@@ -94,6 +94,7 @@ class Rex_Feed_Attributes {
         $taxonomies = get_taxonomies();
         $diff_taxonomies = array_diff($taxonomies, $no_taxonomies);
 
+
         foreach($diff_taxonomies as $tax_diff){
             $taxonomy_details = get_taxonomy( $tax_diff );
             foreach($taxonomy_details as $kk => $vv){
@@ -118,11 +119,11 @@ class Rex_Feed_Attributes {
         //custom attributes
         $list = array();
         $sql = "SELECT meta_key as name FROM {$wpdb->prefix}postmeta  as postmeta
-                INNER JOIN {$wpdb->prefix}posts AS posts 
-                ON postmeta.post_id = posts.id 
-                WHERE posts.post_type = 'product' OR posts.post_type = 'product_variation' 
-                AND postmeta.meta_key NOT LIKE 'pyre%' 
-                AND postmeta.meta_key NOT LIKE 'sbg_%' 
+                INNER JOIN {$wpdb->prefix}posts AS posts
+                ON postmeta.post_id = posts.id
+                WHERE posts.post_type = 'product' OR posts.post_type = 'product_variation'
+                AND postmeta.meta_key NOT LIKE 'pyre%'
+                AND postmeta.meta_key NOT LIKE 'sbg_%'
                 group by meta_key";
         $data = $wpdb->get_results($sql);
 

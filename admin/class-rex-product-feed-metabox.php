@@ -340,6 +340,7 @@ class Rex_Product_Metabox {
                 'xml'          => __( 'XML', 'rex-product-feed' ),
                 'text'         => __( 'TEXT', 'rex-product-feed' ),
                 'csv'          => __( 'CSV', 'rex-product-feed' ),
+                'json'         => __( 'JSON (Only for Zalando)', 'rex-product-feed' ),
             ),
             'attributes' => array(
                 'data-conditional-id'    => $this->prefix . 'merchant',
@@ -457,6 +458,14 @@ class Rex_Product_Metabox {
                     'admitad',
                     'bloomville',
                     'bipp',
+                    'datatrics',
+                    'deltaprojects',
+                    'drezzy',
+                    'domodi',
+                    'doofinder',
+                    'homebook.pl',
+                    'homedeco',
+                    'imovelweb',
                 ))),
             ),
         ) );
@@ -775,6 +784,8 @@ class Rex_Product_Metabox {
             $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.txt";
         }elseif ($format == 'csv'){
             $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.csv";
+        }elseif ($format == 'json'){
+            $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.json";
         }
         return esc_url( $path );
     }
@@ -885,6 +896,11 @@ class Rex_Product_Metabox {
                 'free'  => false,
                 'status'    => 0,
                 'name'  => 'eBay Seller Center'
+            ),
+            'ebay_seller_tickets'     => array(
+                'free'  => false,
+                'status'    => 0,
+                'name'  => 'eBay Seller Center (Event tickets)'
             ),
             'bol'       => array(
                 'free'  => false,
