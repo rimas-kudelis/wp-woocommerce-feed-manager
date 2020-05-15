@@ -539,6 +539,7 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Yoast seo title and description
 * Fixed: Duplicate product on feed
 * Fixed: Bug on add new attribute event
+* Added: Ability to add Variable product without variations
 * Added: 123i template
 * Added: Clubic template
 * Added: Criteo template
