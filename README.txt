@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.4
 Requires PHP: 5.6
-Stable tag: 5.29
+Stable tag: 5.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -518,6 +518,9 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.30 (2020-05-15) =
+* Fixed: Remove underscore from custom attributes for CSV
 
 = 5.29 (2020-05-14) =
 * Fixed: Fixed some warning while creating feed

@@ -180,7 +180,7 @@ class Rex_Product_Data_Retriever {
                 }
             }elseif (array_key_exists('cust_attr', $rule)) {
                 if($rule['cust_attr']) {
-                    $this->data[ preg_replace('/\s+/', '_', $rule['cust_attr']) ] = $this->set_val( $rule );
+                    $this->data[$rule['cust_attr']] = $this->set_val( $rule );
                 }
             }else {
                 $this->data[ $rule['attr'] ] = $this->set_val( $rule );

@@ -1220,7 +1220,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                             </div>
 
                             <div class="single-merchant">
-                                <span class="title"><?php echo __('Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender, Additional info ) to product', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <?php
                                     if(!$is_premium) {
