@@ -33,23 +33,23 @@ $db_version = get_option('rex_wpfm_db_version');
                         <h6><a href="#" class="mapper_name_update" data-id="<?php echo $key; ?>"><?php echo $value['map-name'] ?></a></h6>
                         <div class="inner" style="display: none;">
                             <form action="" method="post" class="update_cat_map">
-                                <table class="widefat fixed cat-map highlight" id="cat-map">
-                                    <thead>
+                                <div class="widefat fixed cat-map highlight" id="cat-map">
+                                    <!-- <thead>
                                         <tr>
                                             <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
                                             <th>
                                                 <?php echo __('Google Merchant Category', 'rex-product-feed');?>
                                             </th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
+                                    </thead> -->
+                                    <div class="categories">
                                         <?php
                                             $separator = '';
                                             $sub_cat = [];
                                             wpfm_hierarchical_product_category_tree(0, $value['map-config']);
                                         ?>
-                                    </tbody>
-                                </table>
+                                    </div>
+                                </div>
                                 <div class="cat-map-actions">
                                     <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat"><i class="fa fa-pencil-square-o"></i> Update</button>
                                     <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat"><i class="fa fa-trash-o"></i> Delete</button>
@@ -74,34 +74,28 @@ $db_version = get_option('rex_wpfm_db_version');
 <div class="row">
     <div class="col s12 m12">
         <div class="category-mapper-wrapper card ">
-            <div class="section">
-                <h5><strong>Add New Category Map</strong></h5>
+            <div class="cat-mapper-header">
+                <h5>Add New Category Map</h5>
             </div>
 
-            <table class="widefat fixed highlight">
-                <tbody>
-                <tr>
-                    <td><p>Mapper Name</p></td>
-                    <td><input id="map_name" type="text" name="mapper_name"></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="mapper-name">
+                <p>Mapper Name</p>
+                <input id="map_name" type="text" name="mapper_name">
+            </div>
 
 
             <form action="#" method="post" class="add_cat_map">
 
-                <table class="widefat fixed cat-map highlight" id="cat-map">
-                    <thead>
-                    <tr>
-                        <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
-                        <th><?php echo __('Google Merchant Category', 'rex-product-feed'); ?></th>
-                    </tr>
-                    </thead>
+                <div class="widefat fixed cat-map highlight" id="cat-map">
+                    <!-- <div class="cat-map-header">
+                        <h5><?php echo __('Product Category', 'rex-product-feed'); ?></h5>
+                        <h5><?php echo __('Google Merchant Category', 'rex-product-feed'); ?></h5>
+                    </div> -->
 
-                    <tbody>
+                    <div class="categories">
                         <?php wpfm_hierarchical_product_category_tree(0); ?>
-                    </tbody>
-                </table>
+                    </div>
+                </div>
                 <div class="cat-map-actions">
                     <button type="submit" class="waves-effect waves-light btn-large green" id="save_mapping_cat"><i class="fa fa-floppy-o"></i> Save</button>
                 </div>

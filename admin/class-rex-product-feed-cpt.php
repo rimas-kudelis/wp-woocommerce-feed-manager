@@ -125,6 +125,7 @@ class Rex_Product_CPT {
                 ),
             ),
         ));
+
     }
 
 }

@@ -186,6 +186,42 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => true,
             'datetime'   => true,
         ),
+        "emag" => array(
+            'container'  => true,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'shop',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "fashiola" => array(
+            'container'  => true,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "glami" => array(
+            'container'  => true,
+            'item_wrapper'  => 'SHOPITEM',
+            'items_wrapper' => 'SHOP',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
         "heureka" => array(
             'container'  => false,
             'item_wrapper'  => 'SHOPITEM',
@@ -660,6 +696,12 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 continue;
             }
 
+            if ( $this->exclude_hidden_products ) {
+                if ( !$product->is_visible() ) {
+                    continue;
+                }
+            }
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
 
                 if($this->variable_product) {
@@ -672,7 +714,12 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 }
 
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
-                    $variations = $product->get_visible_children();
+                    if ( $this->exclude_hidden_products ) {
+                        $variations = $product->get_visible_children();
+                    }else {
+                        $variations = $product->get_children();
+                    }
+
                     if($variations) {
                         foreach ($variations as $variation) {
                             if($this->variations) {

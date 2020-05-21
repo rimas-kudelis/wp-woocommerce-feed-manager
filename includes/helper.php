@@ -29,10 +29,10 @@ if ( ! function_exists( 'wpfm_hierarchical_product_category_tree' ) ) {
                         $map_value = $config[$key]['map-value'];
                     }
                 }
-                echo "<tr class='no-padding-margin'>";
-                echo "<td><strong>{$separator}{$cat->name} ({$cat->count})</strong></td>";
-                echo "<td><div class='input-field'><input class='autocomplete category-suggest' type='text' name='category-{$cat->term_id}' value='{$map_value}'></div></td>";
-                echo "</tr>";
+                echo "<div class='single-category'>";
+                echo "<span class='label'>{$separator}{$cat->name} ({$cat->count})</span>";
+                echo "<div class='input-field'><input class='autocomplete category-suggest' type='text' name='category-{$cat->term_id}' value='{$map_value}' placeholder='Google Merchant Category'></div>";
+                echo "</div>";
                 $separator = '';
                 wpfm_hierarchical_product_category_tree( $cat->term_id, $config );
             endforeach;

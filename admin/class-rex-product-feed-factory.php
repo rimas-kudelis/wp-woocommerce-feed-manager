@@ -168,6 +168,9 @@ class Rex_Product_Feed_Factory {
                 'homedeco',
                 'imovelweb',
                 'onbuy',
+                'glami',
+                'fashiola',
+                'emag',
             )
         );
 
@@ -181,6 +184,8 @@ class Rex_Product_Feed_Factory {
             'criteo',
             'compartner',
             'doofinder',
+            'emarts',
+            'epoq',
         );
 
         self::$facebook_format = array(

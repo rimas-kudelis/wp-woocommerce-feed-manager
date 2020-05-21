@@ -278,6 +278,13 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 
     /**
+     *
+     * @var Rex_Product_Feed_Abstract_Generator $exclude_hidden_products
+     */
+    protected $exclude_hidden_products;
+
+
+    /**
      * Define the core functionality of the plugin.
      *
      * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -310,6 +317,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $this->variations   = $config['include_variations'];
                 $this->parent_product   = $config['parent_product'];
                 $this->append_variation   = $config['append_variations'];
+                $this->exclude_hidden_products   = $config['exclude_hidden_products'];
                 $this->wpml_language   = $config['wpml_language'];
                 $this->product_scope   = $config['product_scope'];
                 $this->products= $product_ids;
@@ -329,6 +337,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $this->parent_product   = $config['parent_product'];
                 $this->append_variation   = $config['append_variations'];
                 $this->wpml_language   = $config['wpml_language'];
+                $this->exclude_hidden_products   = $config['exclude_hidden_products'];
                 $this->prepare_products_args($config['products']);
                 $this->setup_products();
             }
@@ -505,6 +514,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $include_variations         = $feed_rules['rex_feed_variations'];
         $include_parent             = $feed_rules['rex_feed_parent_product'];
         $include_variations_name    = $feed_rules['rex_feed_variation_product_name'];
+        $exclude_hidden_products    = $feed_rules['rex_feed_hidden_products'];
 
         if ($include_variable_product == 'yes') {
             $this->variable_product = true;
@@ -528,6 +538,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->append_variation = 'yes';
         }else {
             $this->append_variation = 'no';
+        }
+
+        if ($exclude_hidden_products == 'yes') {
+            $this->exclude_hidden_products = true;
+        }else {
+            $this->exclude_hidden_products = false;
         }
     }
 
@@ -1088,7 +1104,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
             $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
-            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder'
+            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq'
         ) {
             $parent = $orgdoc->getElementsByTagName('channel')->item(0);
         }elseif ($this->merchant === 'ebay_mip') {
@@ -1121,6 +1137,14 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $parent = $orgdoc->getElementsByTagName('offers')->item(0);
         }elseif ($this->merchant === 'homedeco') {
             $parent = $orgdoc->getElementsByTagName('items')->item(0);
+        }elseif ($this->merchant === 'glami') {
+            $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+        }elseif ($this->merchant === 'fashiola') {
+            $parent = $orgdoc->getElementsByTagName('items')->item(0);
+        }elseif ($this->merchant === 'emag') {
+            $parent = $orgdoc->getElementsByTagName('shop')->item(0);
+        }elseif ($this->merchant === 'grupo_zap') {
+            $parent = $orgdoc->getElementsByTagName('Listings')->item(0);
         }
         else {
             $parent = $orgdoc->getElementsByTagName('products')->item(0);
@@ -1134,7 +1158,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
             $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
-            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder'
+            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq'
         ) {
             $node = $newdoc->getElementsByTagName("item");
         }
@@ -1172,6 +1196,14 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $node = $newdoc->getElementsByTagName("offer");
         }elseif ($this->merchant === 'homedeco') {
             $node = $newdoc->getElementsByTagName("item");
+        }elseif ($this->merchant === 'glami') {
+            $node = $newdoc->getElementsByTagName("SHOPITEM");
+        }elseif ($this->merchant === 'fashiola') {
+            $node = $newdoc->getElementsByTagName("item");
+        }elseif ($this->merchant === 'emag') {
+            $node = $newdoc->getElementsByTagName("product");
+        }elseif ($this->merchant === 'grupo_zap') {
+            $node = $newdoc->getElementsByTagName("Listing");
         }else {
             $node = $newdoc->getElementsByTagName("product");
         }

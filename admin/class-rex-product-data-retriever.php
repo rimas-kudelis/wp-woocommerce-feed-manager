@@ -716,15 +716,20 @@ class Rex_Product_Data_Retriever {
      */
     public function get_yoast_seo_title() {
         $title = '';
+        if ($this->product->get_type() == 'variation') {
+            $product_id = $this->product->get_parent_id();
+        }else {
+            $product_id = $this->product->get_id();
+        }
         if ( function_exists( 'wpseo_replace_vars' ) ) {
-            $wpseo_title = get_post_meta($this->product->get_id(), '_yoast_wpseo_title', true);
+            $wpseo_title = get_post_meta($product_id, '_yoast_wpseo_title', true);
             if($wpseo_title) {
                 $product_title_pattern = $wpseo_title;
             }else {
                 $wpseo_titles = get_option('wpseo_titles');
                 $product_title_pattern = $wpseo_titles['title-product'];
             }
-            $title = wpseo_replace_vars($product_title_pattern, get_post($this->product->get_id()));
+            $title = wpseo_replace_vars($product_title_pattern, get_post($product_id));
         }
         if ( ! empty( $title ) ) {
             return $title;
@@ -741,15 +746,20 @@ class Rex_Product_Data_Retriever {
      */
     public function get_yoast_meta_description() {
         $description = '';
+        if ($this->product->get_type() == 'variation') {
+            $product_id = $this->product->get_parent_id();
+        }else {
+            $product_id = $this->product->get_id();
+        }
         if ( function_exists( 'wpseo_replace_vars' ) ) {
-            $wpseo_meta_description = get_post_meta($this->product->get_id(), '_yoast_wpseo_metadesc', true);
+            $wpseo_meta_description = get_post_meta($product_id, '_yoast_wpseo_metadesc', true);
             if($wpseo_meta_description) {
                 $product_meta_desc_pattern = $wpseo_meta_description;
             }else {
                 $wpseo_titles = get_option('wpseo_titles');
                 $product_meta_desc_pattern = $wpseo_titles['metadesc-product'];
             }
-            $description = wpseo_replace_vars($product_meta_desc_pattern, get_post($this->product->get_id()));
+            $description = wpseo_replace_vars($product_meta_desc_pattern, get_post($product_id));
         }
 
         if ( ! empty( $description ) ) {

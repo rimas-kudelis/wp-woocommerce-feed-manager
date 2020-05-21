@@ -73,6 +73,12 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                 continue;
             }
 
+            if ( $this->exclude_hidden_products ) {
+                if ( !$product->is_visible() ) {
+                    continue;
+                }
+            }
+
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
@@ -84,7 +90,11 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                     }
                 }
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
-                    $variations = $product->get_visible_children();
+                    if ( $this->exclude_hidden_products ) {
+                        $variations = $product->get_visible_children();
+                    }else {
+                        $variations = $product->get_children();
+                    }
                     if($variations) {
                         foreach ($variations as $variation) {
                             if($this->variations) {

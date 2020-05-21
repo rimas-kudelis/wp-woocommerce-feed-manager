@@ -182,6 +182,22 @@ class Rex_Product_Metabox {
             'default' => 'yes',
         ) );
 
+
+        /*
+         * include hidden products
+         */
+        $box->add_field( array(
+            'name'           => __( 'Exclude invisible/hidden products', 'rex-product-feed' ),
+            'desc'           => __( 'Exclude invisible/hidden products', 'rex-product-feed' ),
+            'id'             => $this->prefix . 'hidden_products',
+            'type'           => 'radio_inline',
+            'options' => array(
+                'yes'       => __( 'Yes', 'rex-product-feed' ),
+                'no'        => __( 'No', 'rex-product-feed' ),
+            ),
+            'default' => 'yes',
+        ) );
+
         /**
          * Analytics parameters
          */
@@ -350,6 +366,7 @@ class Rex_Product_Metabox {
                     'nextag',
                     'pricegrabber',
                     'ebay_mip',
+                    'amazon_seller',
                     'bing',
                     'kelkoo',
                     'amazon',
@@ -466,6 +483,12 @@ class Rex_Product_Metabox {
                     'homebook.pl',
                     'homedeco',
                     'imovelweb',
+                    'glami',
+                    'fashiola',
+                    'emarts',
+                    'epoq',
+                    'grupo_zap',
+                    'emag',
                 ))),
             ),
         ) );

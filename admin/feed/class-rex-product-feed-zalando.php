@@ -74,10 +74,20 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 continue;
             }
 
+            if ( $this->exclude_hidden_products ) {
+                if ( !$product->is_visible() ) {
+                    continue;
+                }
+            }
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 $parent_atts = $this->get_product_data( $product, $product_meta_keys );
 
-                $variations = $product->get_visible_children();
+                if ( $this->exclude_hidden_products ) {
+                    $variations = $product->get_visible_children();
+                }else {
+                    $variations = $product->get_children();
+                }
                 $atts = array();
                 if($variations) {
                     foreach ($variations as $variation) {

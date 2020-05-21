@@ -3,9 +3,9 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart
 Requires at least: 4.7
-Tested up to:  5.4
+Tested up to:  5.4.1
 Requires PHP: 5.6
-Stable tag: 5.30
+Stable tag: 5.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 157 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 163 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -81,27 +81,30 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 157 pre-built templates of Merchant Shop feed
-* Auto-sync with Google Shopping Center
- * Category Mapping 
-* Extensive Filter Options (filter by category, tag or custom) 
-* Schedule Auto Update of Product Feed 
-* Dynamic Attributes 
-* Add Static attributes if needed
- * Add Prefix, and Suffix
- * Use Shipping Class As Attribute 
-* Custom Taxonomy 
-* WPML support 
-* Yoast: SEO title, Meta description & Primary category support 
-* Composite product support
-* Bundle product support
-* Generate feed in XML, CSV or Text file format 
+* 163 pre-built templates of Merchant Shop feed
+* Generate feed in XML, CSV or Text file format
 * Compatible with both http and https sites 
-* Exclude/Include parent product of grouped products
- * Include/Exclude variable products 
-* Supports YITH brand attributes
+* Auto-sync with Google Shopping Center
+* Schedule Auto Update of Product Feed 
+* Category Mapping 
+* Extensive Filter Options (filter by category, tag or custom) 
+* Dynamic Attributes
+ * Add Static attributes if needed 
+* Add Prefix, and Suffix 
+* Use Shipping Class As Attribute 
+* Custom Taxonomy
+* Include/Exclude parent product of grouped products
+* Include/Exclude variable products
+* Include/Exclude hidden products
+* Exclude “out of stock” products
 * Custom Batch configuration
-* Flexibility to remove 'out of stock' products
+* Add UTM tracking-codes to product URL 
+* WPML support
+* Supports YITH brand attributes 
+* Yoast: SEO title, Meta description & Primary category support 
+* Supports the official “WooCommerce Composite Products” plugin
+* Supports the official “WooCommerce Product Bundles” plugin
+
 
 
 **Supported Merchants:**
@@ -115,7 +118,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Google shopping action](https://support.google.com/merchants/answer/7679273?hl=en)
 - RSS Feed
 - WooCommerce to [Google Manufacturer Center](https://www.google.com/retail/solutions/manufacturer-center/)
-- WooCommerce to [Amazon Seller Ad](https://advertising.amazon.com/)
+- WooCommerce to [Amazon Seller](https://sellercentral.amazon.com/)
 - WooCommerce to [Facebook Catalog Feed](https://www.facebook.com/business/a/online-sales/dynamic-product-ads/)
 - WooCommerce to [Pinterest](https://www.pinterest.com/)
 - WooCommerce to [Instagram](https://www.instagram.com/)
@@ -200,7 +203,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Check24](https://www.check24.de/)
 - WooCommerce to [Clang](https://www.e-village.nl/clang/)
 - WooCommerce to [Cherchons](https://www.cherchons.com/)
-- WooCommerce to [Boetiek B.V]
+- WooCommerce to Boetiek B.V
 - WooCommerce to [Comparer](https://www.comparer.be/)
 - WooCommerce to [Converto](https://www.converto.com/en/converto/)
 - WooCommerce to [Coolshop](https://www.coolshop.com/)
@@ -263,6 +266,12 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Doofinder](https://www.doofinder.com/en/)
 - WooCommerce to [Homebook.pl](https://www.homebook.pl/)
 - WooCommerce to [Home Deco](https://homedeco.co.uk/)
+- WooCommerce to [Glami](https://www.glami.ro/)
+- WooCommerce to [Fashiola](https://www.fashiola.com/)
+- WooCommerce to [Emarts](https://www.emarts.nl/)
+- WooCommerce to [Epoq](https://www.epoq.de/en/)
+- WooCommerce to [Grupo Zap](https://www.grupozap.com/)
+- WooCommerce to [Emag](https://www.grupozap.com/)
 
 
 == Pro Features: ==
@@ -270,15 +279,16 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 * All Free features 
 * Unlimited Product Feed Generated (Free version limited to 50 products)
 * Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date) 
-* Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender) 
+* Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender, Color) 
 * Ability To Exclude Tax From Structured Data Prices 
 * Option To Fix WooCommerce's (Json-Ld) Structured Data Bug
-* 9 more pre-built templates of Merchant Shop feed
+* 9 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)
 
 **Supported Merchants In Pro Version**
 - All merchants feed templates in free version
 - WooCommerce to [eBay MIP](https://developer.ebay.com/products/mip)
 - WooCommerce to [ebay Seller Center](https://pages.ebay.com/seller-center/index.html)
+- WooCommerce to [ebay Seller Center Tickets](https://pages.ebay.com/seller-center/index.html)
 - WooCommerce to [Bol.Com](https://www.bol.com/nl/)
 - WooCommerce to [Wish.Com](https://www.wish.com/)
 - WooCommerce to [Fruugo](https://www.fruugo.com/)
@@ -312,7 +322,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 157 major merchant shops:
+Currently, we support 163 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
@@ -322,7 +332,7 @@ Currently, we support 157 major merchant shops:
 - Google Manufacturer Center
 - Google shopping actions
 - RSS Feed
-- Amazon Seller Ad
+- Amazon Seller
 - Facebook Catalog Feed
 - Instagram
 - Pinterest
@@ -470,6 +480,12 @@ Currently, we support 157 major merchant shops:
 - Doofinder
 - Homebook.pl
 - Home Deco
+- Glami
+- Fashiola
+- Emarts
+- Epoq
+- Grupo Zap
+- Emag
 
 
 = Is there a product limit? =
@@ -519,6 +535,19 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 5.31 (2020-05-21) =
+* Fixed: Updated attribute list for Amazon Seller
+* Fixed: Yoast seo title and description for variation product
+* Added: Option to include/exclude hidden products
+* Added: Glami template
+* Added: Fashiola template
+* Added: Emarts template
+* Added: Epoq template
+* Added: Grupo Zap template
+* Added: Emag template
+* Compatibility Checked : WooCommerce 4.1.1
+
+
 = 5.30 (2020-05-15) =
 * Fixed: Remove underscore from custom attributes for CSV
 
@@ -539,7 +568,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Yoast seo title and description
 * Fixed: Duplicate product on feed
 * Fixed: Bug on add new attribute event
-* Added: Ability to add Variable product without variations
 * Added: 123i template
 * Added: Clubic template
 * Added: Criteo template

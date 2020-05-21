@@ -774,7 +774,6 @@
                 }else {
                     $('.wpfm-fb-pixel-field').addClass('is-hidden');
                 }
-
             })
             .error( function( response ) {
                 console.log( 'Uh, oh!' );
