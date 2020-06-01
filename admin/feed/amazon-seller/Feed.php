@@ -70,7 +70,7 @@ class AmazonSellerFeed extends \RexTheme\RexShoppingFeed\Feed
             'standard_price' => 'Standard Price',
             'quantity' => 'Quantity',
             'main_image_url' => 'Main Image URL',
-            'parentage' => 'Parentage',
+            'parent_child' => 'Parentage',
             'parent_sku' => 'Parent SKU',
             'relationship_type' => 'Relationship Type',
             'variation_theme' => 'Variation Theme',
@@ -109,17 +109,22 @@ class AmazonSellerFeed extends \RexTheme\RexShoppingFeed\Feed
      * @return array|\RexTheme\RexShoppingFeed\Item[]
      */
     private function addItemsToFeedCSV($batch){
+
         if(count($this->items)){
             if($batch === 1) {
                 $this->init_atts();
                 $first_row = array('TemplateType=fptcustom', 'Version=2020.0414', 'TemplateSignature=S0lUQ0hFTixPVVRET09SX1JFQ1JFQVRJT05fUFJPRFVDVCxXSVJFTEVTU19BQ0NFU1NPUlksT1VURVJXRUFSLEhPTUVfQkVEX0FORF9CQVRILFNXRUFURVIsU0hJUlQsU0hPUlRTLEZBU0hJT05ORUNLTEFDRUJSQUNFTEVUQU5LTEVULEZJTkVORUNLTEFDRUJSQUNFTEVUQU5LTEVULFNQT1JUSU5HX0dPT0RTLEhBTkRCQUcsU1dJTVdFQVIsQlJBLEFSVF9TVVBQTElFUyxTT0NLU0hPU0lFUlksQUNDRVNTT1JZLFNFUlZFV0FSRSxQQU5UUyxPVVRET09SX0xJVklORyxIT01F', 'The top 3 rows are for Amazon.com use only. Do not modify or delete the top 3 rows.');
                 $second_row = array();
-                $third_row = array_keys(end($this->items)->nodes());
+                $_third_row = array_keys(end($this->items)->nodes());
+                $third_row = [];
 
-                foreach ($third_row as $key) {
+                foreach ($_third_row as $key) {
                     if(array_key_exists($key, $this->attributes)) {
                         $second_row[] = $this->attributes[$key];
+                    }else {
+                        $second_row[] = ucfirst($key);
                     }
+                    $third_row[] = strtolower(str_replace(' ', '_', $key));
                 }
                 $this->items_row[] = $first_row;
                 $this->items_row[] = $second_row;
@@ -167,5 +172,7 @@ class AmazonSellerFeed extends \RexTheme\RexShoppingFeed\Feed
         }
         return $data;
     }
+
+
 
 }

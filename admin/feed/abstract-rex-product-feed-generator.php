@@ -311,16 +311,19 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $this->title    =   $config['info']['title'];
                 $this->desc     =   $config['info']['desc'];
                 $this->batch    =   (int) $config['info']['batch'];
+                $this->tbatch    =   (int) $config['info']['total_batch'];
                 $this->append_variation   = $config['append_variations'];
                 $this->feed_rules = $config['feed_config'];
                 $this->feed_rules_filter = $config['feed_filter'];
                 $this->variations   = $config['include_variations'];
+                $this->variable_product   = $config['variable_product'];
                 $this->parent_product   = $config['parent_product'];
                 $this->append_variation   = $config['append_variations'];
                 $this->exclude_hidden_products   = $config['exclude_hidden_products'];
                 $this->wpml_language   = $config['wpml_language'];
                 $this->product_scope   = $config['product_scope'];
                 $this->products= $product_ids;
+
             }
             else {
 
@@ -334,6 +337,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $this->product_scope = $config['product_scope'];
                 $this->feed_rules_filter = $config['feed_filter'];
                 $this->variations   = $config['include_variations'];
+                $this->variable_product   = $config['variable_product'];
                 $this->parent_product   = $config['parent_product'];
                 $this->append_variation   = $config['append_variations'];
                 $this->wpml_language   = $config['wpml_language'];
@@ -380,6 +384,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $log->info('Current Batch: '.$this->tbatch, array('source' => 'WPFM',));
             }
         }
+
         if($this->tbatch == $this->batch) {
             update_post_meta($this->id, 'updated', date("Y-m-d g:i:s"));
         }
@@ -1145,6 +1150,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $parent = $orgdoc->getElementsByTagName('shop')->item(0);
         }elseif ($this->merchant === 'grupo_zap') {
             $parent = $orgdoc->getElementsByTagName('Listings')->item(0);
+        }elseif ($this->merchant === 'lyst') {
+            $parent = $orgdoc->getElementsByTagName('channel')->item(0);
+        }elseif ($this->merchant === 'listupp') {
+            $parent = $orgdoc->getElementsByTagName('items')->item(0);
+        }elseif ($this->merchant === 'hertie') {
+            $parent = $orgdoc->getElementsByTagName('Artikel')->item(0);
         }
         else {
             $parent = $orgdoc->getElementsByTagName('products')->item(0);
@@ -1204,6 +1215,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $node = $newdoc->getElementsByTagName("product");
         }elseif ($this->merchant === 'grupo_zap') {
             $node = $newdoc->getElementsByTagName("Listing");
+        }elseif ($this->merchant === 'lyst') {
+            $node = $newdoc->getElementsByTagName("item");
+        }elseif ($this->merchant === 'listupp') {
+            $node = $newdoc->getElementsByTagName("item");
+        }elseif ($this->merchant === 'hertie') {
+            $node = $newdoc->getElementsByTagName("Katalog");
         }else {
             $node = $newdoc->getElementsByTagName("product");
         }

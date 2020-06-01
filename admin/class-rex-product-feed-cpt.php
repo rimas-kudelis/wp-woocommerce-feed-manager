@@ -37,13 +37,13 @@ class Rex_Product_CPT {
      */
     private function post_types(){
         register_extended_post_type( 'product-feed', array(
-            'show_in_menu' => 'product-feed',
+//            'show_in_menu' => 'product-feed',
             'rewrite'            => false,
             'query_var'          => true,
             'publicly_queryable' => false,
             'supports'           => array( 'title' ),
             'enter_title_here'   => 'Enter feed title here',
-//            'menu_icon'           => PLUGIN_DIR_URL . 'admin/icon/icon.png',
+            'menu_icon'           => WPFM_PLUGIN_DIR_URL . 'admin/icon/icon.png',
             'admin_cols' => array(
 
                 'merchant' => array(
@@ -102,30 +102,42 @@ class Rex_Product_CPT {
                             'total' => 0,
                             'simple' => 0,
                             'variable' => 0,
+                            'variable_parent' => 0,
                             'group' => 0,
                         );
+
+                        if(!array_key_exists('variable_parent', $total_products)) {
+                            $total_products['variable_parent'] = 0;
+                        }
 
 
                         echo '<ul style="margin: 0;">';
                         echo '<li><b>' . __('Total products : ', 'rex-product-feed'). $total_products['total'] . '</b></li>';
                         echo '<li><b>' . __('Simple products : ', 'rex-product-feed'). $total_products['simple'] . '</b></li>';
+                        echo '<li><b>' . __('Variable parent : ', 'rex-product-feed'). $total_products['variable_parent'] . '</b></li>';
                         echo '<li><b>' . __('Variations : ', 'rex-product-feed'). $total_products['variable'] . '</b></li>';
                         echo '<li><b>' . __('Group products : ', 'rex-product-feed'). $total_products['group'] . '</b></li>';
                         echo '</ul><b>';
                     }
                 ),
-
                 'date',
-
                 'updated' => array(
                     'title_icon'  => 'dashicons-calendar-alt',
                     'title'         => 'Updated',
                     'meta_key'    => 'updated',
-                    'date_format' => 'Y/m/d g:i:s A'
+                    'date_format' => 'Y/m/d g:i:s A',
+                    'function'    => function (){
+                        $updated_time = '';
+                        if(get_post_meta(get_the_id(), 'updated', true)) {
+                            $updated_time = date('Y/m/d g:i A', strtotime(get_post_meta(get_the_id(), 'updated', true)));
+                        }
+                        echo 'Updated';
+                        echo '<br>';
+                        echo '<span style="text-decoration: dotted underline;" title="'.$updated_time.'">'.$updated_time.'</span>';
+                    }
                 ),
             ),
         ));
-
     }
 
 }

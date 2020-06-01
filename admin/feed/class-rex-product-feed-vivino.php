@@ -1,21 +1,9 @@
 <?php
 
-/**
- * The file that generates xml feed for any merchant with custom configuration.
- *
- * A class definition that includes functions used for generating xml feed.
- *
- * @link       https://rextheme.com
- * @since      1.0.0
- *
- * @package    Rex_Product_Feed_Google
- * @subpackage Rex_Product_Feed_Google/includes
- * @author     RexTheme <info@rextheme.com>
- */
+use RexTheme\RexShoppingVivinoFeed\Containers\RexShopping;
 
-use RexTheme\GrupozapShoppingFeed\Containers\GrupozapShopping;
+class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
 
-class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
 
     /**
      * Create Feed
@@ -24,12 +12,8 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
      * @author
      **/
     public function make_feed() {
-        GrupozapShopping::$container = null;
-
-        // Generate feed for both simple and variable products.
         $this->generate_product_feed();
         $this->feed = $this->returnFinalProduct();
-
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(
@@ -40,6 +24,7 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
+
     /**
      * Generate feed
      */
@@ -47,7 +32,6 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variation_products = [];
-        $variable_parent = [];
         $group_products = [];
         $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
             'total' => 0,
@@ -86,7 +70,7 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
-                    $item = GrupozapShopping::createItem();
+                    $item = RexShopping::createItem();
                     foreach ($atts as $key => $value) {
                         $item->$key($value); // invoke $key as method of $item object.
                     }
@@ -103,7 +87,7 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = GrupozapShopping::createItem();
+                                $item = RexShopping::createItem();
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                                 foreach ($atts as $key => $value) {
@@ -118,7 +102,7 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
             if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
-                $item = GrupozapShopping::createItem();
+                $item = RexShopping::createItem();
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
@@ -126,7 +110,7 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
 
             if ($product->get_type() == 'variation') {
                 $variation_products[] = $productId;
-                $item = GrupozapShopping::createItem();
+                $item = RexShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
@@ -135,7 +119,7 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
 
             if( $product->is_type( 'grouped' ) ){
                 $group_products[] = $productId;
-                $item = GrupozapShopping::createItem();
+                $item = RexShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
@@ -162,15 +146,6 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-
-        if ($this->feed_format == 'xml') {
-            return GrupozapShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
-            return GrupozapShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
-            return GrupozapShopping::asCsv();
-        }
-        return GrupozapShopping::asRss();
+        return RexShopping::asRss();
     }
-
 }

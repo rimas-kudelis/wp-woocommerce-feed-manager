@@ -195,7 +195,7 @@ class Rex_Product_Metabox {
                 'yes'       => __( 'Yes', 'rex-product-feed' ),
                 'no'        => __( 'No', 'rex-product-feed' ),
             ),
-            'default' => 'yes',
+            'default' => 'no',
         ) );
 
         /**
@@ -489,6 +489,13 @@ class Rex_Product_Metabox {
                     'epoq',
                     'grupo_zap',
                     'emag',
+                    'lyst',
+                    'ladenzeile',
+                    'listupp',
+                    'hertie',
+                    'pricepanda',
+                    'eytsy',
+                    'okazii',
                 ))),
             ),
         ) );

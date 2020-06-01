@@ -254,6 +254,13 @@ class Rex_Product_Data_Retriever {
             case 'sku':
                 return $this->product->get_sku(); break;
 
+            case 'parent_sku':
+                $pr_id = $this->product->get_id();
+                if($this->product->is_type('variation')) {
+                    $pr_id = $this->product->get_parent_id();
+                }
+                return get_post_meta($pr_id, '_sku', true); break;
+
             case 'title':
                 if($this->append_variation === 'no') {
                     return $this->product->get_name();
@@ -551,6 +558,9 @@ class Rex_Product_Data_Retriever {
 
             case 'shipping_class':
                 return $this->product->get_shipping_class(); break;
+
+            case 'shipping_cost':
+                return $this->get_shipping_cost(); break;
 
             case 'type':
                 return $this->product->get_type(); break;
@@ -1333,6 +1343,17 @@ class Rex_Product_Data_Retriever {
         }
 
         return $identifier_exists;
+    }
+
+
+    /**
+     * Returns the product shipping cost.
+     *
+     * @return string
+     */
+    public function get_shipping_cost() {
+
+        return '';
     }
 
 

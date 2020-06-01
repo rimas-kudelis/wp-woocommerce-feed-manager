@@ -116,6 +116,7 @@ class Rex_Product_Feed_Cron_Handler {
                 if(is_array($product_ids)) {
                     $per_page = get_option('rex-wpfm-product-per-batch', 50);
                     $product_id_chunks = array_chunk($product_ids, $per_page);
+                    $total_batches = count($product_id_chunks);
                     $i = 0;
                     foreach ($product_id_chunks as $product_id_chunk) {
                         $i = $i+1;
@@ -124,12 +125,14 @@ class Rex_Product_Feed_Cron_Handler {
                         $feed_filter = get_post_meta($feed_id, 'rex_feed_feed_config_filter', true);
                         $feed_products = get_post_meta($feed_id, 'rex_feed_products', true);
                         $include_variations = get_post_meta($feed_id, 'rex_feed_variations', true) === 'yes' ? true : false;
+                        $variable_product = get_post_meta($feed_id, 'rex_feed_variable_product', true) === 'yes' ? true : false;
                         $parent_product = get_post_meta($feed_id, 'rex_feed_parent_product', true) === 'yes' ? true : false;
                         $exclude_hidden_products = get_post_meta($feed_id, 'rex_feed_hidden_products', true) === 'yes' ? true : false;
                         $append_variations = get_post_meta($feed_id, 'rex_feed_variation_product_name', true) === 'yes' ? true : false;
                         $wpml = get_post_meta($feed_id, 'rex_feed_wpml_language', true) ? get_post_meta($feed_id, 'rex_feed_wpml_language', true) : '';
                         $feed_format = get_post_meta($feed_id, 'rex_feed_feed_format', true) ?
                             get_post_meta($feed_id, 'rex_feed_feed_format', true) : 'xml';
+
                         $payload = array(
                             'merchant' => $merchant,
                             'feed_format' => $feed_format,
@@ -139,10 +142,12 @@ class Rex_Product_Feed_Cron_Handler {
                                 'post_id'   => $feed_id,
                                 'title'     => get_the_title($feed_id),
                                 'desc'      => get_the_title($feed_id),
+                                'total_batch' => $total_batches,
                                 'batch'     => $i,
                             ),
                             'feed_filter'    => $feed_filter,
                             'include_variations' => $include_variations,
+                            'variable_product' => $variable_product,
                             'parent_product' => $parent_product,
                             'product_scope' => $feed_products,
                             'exclude_hidden_products' => $exclude_hidden_products,
@@ -173,7 +178,8 @@ class Rex_Product_Feed_Cron_Handler {
                         $feed_filter = get_post_meta($feed_id, 'rex_feed_feed_config_filter', true);
                         $feed_products = get_post_meta($feed_id, 'rex_feed_products', true);
                         $include_variations = get_post_meta($feed_id, 'rex_feed_variations', true) === 'yes' ? true : false;
-                        $parent_product = get_post_meta($feed_id, 'rex_feed_parent_product', true) === 'yes' ? true : false;
+                        $parent_product = get_post_meta($feed_id, 'rex_feed_variable_product', true) === 'yes' ? true : false;
+                        $variable_product = get_post_meta($feed_id, 'rex_feed_parent_product', true) === 'yes' ? true : false;
                         $append_variations = get_post_meta($feed_id, 'rex_feed_variation_product_name', true) === 'yes' ? true : false;
                         $wpml = get_post_meta($feed_id, 'rex_feed_wpml_language', true) ? get_post_meta($feed_id, 'rex_feed_wpml_language', true) : '';
                         if ( $feed_products !== 'all' && $feed_products !== 'filter') {
@@ -248,6 +254,7 @@ class Rex_Product_Feed_Cron_Handler {
                             'feed_filter'    => $feed_filter,
                             'include_variations' => $include_variations,
                             'append_variations' => $append_variations,
+                            'variable_product' => $variable_product,
                             'parent_product' => $parent_product,
                             'product_scope' => $feed_products,
                             'wpml_language' => $wpml,

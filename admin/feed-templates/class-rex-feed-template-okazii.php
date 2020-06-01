@@ -1,59 +1,43 @@
 <?php
 
 /**
- * The Uvinum Feed Template class.
+ * The Okazii marketplace Feed Template class.
  *
  * @link       https://rextheme.com
- * @since      5.5
+ * @since      1.1.4
  *
  * @package    Rex_Product_Feed
  * @subpackage Rex_Product_Feed/admin/feed-templates/
  */
-
 /**
  *
- * Defines the attributes and template for trovaprezzi feed.
+ * Defines the attributes and template for Okazii marketplace feed.
  *
  * @package    Rex_Product_Feed
- * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_Trovaprezzi
+ * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_Okazii
  * @author     RexTheme <info@rextheme.com>
  */
-class Rex_Feed_Template_Trovaprezzi extends Rex_Feed_Abstract_Template {
+class Rex_Feed_Template_Okazii extends Rex_Feed_Abstract_Template {
 
     protected function init_atts(){
         $this->attributes = array(
-            'Required Information'      =>  array(
-                'Categories'            => 'Product Categories',
-                'Image'                 => 'Image Link',
-                'Internal_Code'         => 'Internal Code',
-                'Link'                  => 'Product URL',
-                'Name'                  => 'Product Name',
-                'RetailPrice'           => 'Retail price',
-                'OriginalPrice'         => 'Original Price',
-                'Price'                 => 'Price',
-                'Code'                  => 'Code',
-                'ShippingCost'          => 'Shipping Cost'
+            'Required Information' =>  array(
+                'Product_ID'            => 'Product ID',
+                'Product_title'         => 'Product Title',
+                'Product_category'      => 'Product category',
+                'Product_description'   => 'Product description',
+                'Currency'              => 'Currency',
+                'Product_price'         => 'Product price',
+                'Product_quantity'      => 'Product Quantity',
+                'Product_URL'           => 'Product URL',
             ),
-
-            'Additional Information'    => array(
-                'Additional_Image_Link'  => 'Additional Image Link',
-                'Availability'  => 'Availability',
-                'Brand'  => 'Brand',
-                'Description'  => 'Description',
-                'EanCode'  => 'Ean Code',
-                'PartNumber'  => 'Part Number',
-                'Weight'  => 'Weight',
-                'Manafacturer_Code'  => 'Manafacturer Code',
-                'Stock'  => 'Stock',
-            ),
-
         );
     }
 
     protected function init_default_template_mappings(){
         $this->template_mappings = array(
             array(
-                'attr'     => 'Name',
+                'attr'     => 'Product_title',
                 'type'     => 'meta',
                 'meta_key' => 'title',
                 'st_value' => '',
@@ -63,7 +47,17 @@ class Rex_Feed_Template_Trovaprezzi extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'Internal_Code',
+                'attr'     => 'Product_description',
+                'type'     => 'meta',
+                'meta_key' => 'description',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'Product_ID',
                 'type'     => 'meta',
                 'meta_key' => 'id',
                 'st_value' => '',
@@ -73,9 +67,9 @@ class Rex_Feed_Template_Trovaprezzi extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'Categories',
+                'attr'     => 'Product_category',
                 'type'     => 'meta',
-                'meta_key' => 'product_cats',
+                'meta_key' => 'category',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
@@ -83,9 +77,9 @@ class Rex_Feed_Template_Trovaprezzi extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'Image_Link',
-                'type'     => 'meta',
-                'meta_key' => 'featured_image',
+                'attr'     => 'Currency',
+                'type'     => 'static',
+                'meta_key' => '',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
@@ -93,17 +87,17 @@ class Rex_Feed_Template_Trovaprezzi extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'Link',
+                'attr'     => 'Product_quantity',
                 'type'     => 'meta',
-                'meta_key' => 'link',
+                'meta_key' => 'quantity',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'cdata',
+                'escape'   => 'default',
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'Retail_Price',
+                'attr'     => 'Product_price',
                 'type'     => 'meta',
                 'meta_key' => 'price',
                 'st_value' => '',
@@ -113,9 +107,9 @@ class Rex_Feed_Template_Trovaprezzi extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'Shipping_Cost',
-                'type'     => 'static',
-                'meta_key' => '',
+                'attr'     => 'Product_URL',
+                'type'     => 'meta',
+                'meta_key' => 'Url',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',

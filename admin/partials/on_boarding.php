@@ -1115,16 +1115,6 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'   => 0,
                                     'name'     => 'Home Deco'
                                 ),
-//                                'imovelweb'     => array(
-//                                    'free'     => true,
-//                                    'status'   => 0,
-//                                    'name'     => 'Imovel Web'
-//                                ),
-//                                'onbuy'     => array(
-//                                    'free'     => true,
-//                                    'status'   => 0,
-//                                    'name'     => 'OnBuy'
-//                                ),
                                 'glami'     => array(
                                     'free'     => true,
                                     'status'   => 0,
@@ -1154,6 +1144,26 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'free'     => true,
                                     'status'   => 0,
                                     'name'     => 'Emag'
+                                ),
+                                'lyst'     => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => 'Lyst'
+                                ),
+                                'listupp'     => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => 'Listupp'
+                                ),
+                                'hertie'     => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => 'Hertie'
+                                ),
+                                'etsy'     => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => 'Etsy'
                                 ),
                             );
 

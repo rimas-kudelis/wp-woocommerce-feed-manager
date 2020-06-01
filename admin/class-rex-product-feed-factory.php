@@ -148,7 +148,6 @@ class Rex_Product_Feed_Factory {
                 'joblift',
                 'kuantokusta',
                 'kauftipp',
-                'vivino',
                 'rakuten_advertising',
                 'pricefalls',
                 'google_express',
@@ -171,6 +170,12 @@ class Rex_Product_Feed_Factory {
                 'glami',
                 'fashiola',
                 'emag',
+                'lyst',
+                'listupp',
+                'hertie',
+                'pricepanda',
+                'eytsy',
+                'okazii',
             )
         );
 

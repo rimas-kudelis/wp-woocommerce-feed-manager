@@ -59,12 +59,14 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
-        $variable_products = [];
+        $variation_products = [];
+        $variable_parent = [];
         $group_products = [];
         $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
+            'variable_parent' => 0,
             'group' => 0,
         );
 
@@ -73,6 +75,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 'total' => 0,
                 'simple' => 0,
                 'variable' => 0,
+                'variable_parent' => 0,
                 'group' => 0,
             );
         }
@@ -92,6 +95,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
+                    $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $item = GoogleShopping::createItem();
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
@@ -117,7 +121,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                     if($variations) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
-                                $variable_products[] = $variation;
+                                $variation_products[] = $variation;
                                 $item = GoogleShopping::createItem();
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
@@ -159,7 +163,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if ($product->get_type() == 'variation') {
-                $variable_products[] = $productId;
+                $variation_products[] = $productId;
                 $item = GoogleShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $atts = $this->process_attributes_for_shipping_tax($atts);
@@ -197,9 +201,10 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         }
 
         $total_products = array(
-            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variable_products) + (int) count($group_products),
+            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variation_products) + (int) count($group_products) + (int) count($variable_parent),
             'simple' => (int) $total_products['simple'] + (int) count($simple_products),
-            'variable' => (int) $total_products['variable'] + (int) count($variable_products),
+            'variable' => (int) $total_products['variable'] + (int) count($variation_products),
+            'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );

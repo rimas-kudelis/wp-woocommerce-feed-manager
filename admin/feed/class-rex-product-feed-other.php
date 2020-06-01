@@ -126,6 +126,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => true,
             'datetime'   => true,
         ),
+        "drm" => array(
+            'container'  => true,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
         "datatrics" => array(
             'container'  => true,
             'item_wrapper'  => 'item',
@@ -198,6 +210,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
+        "eytsy" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
         "fashiola" => array(
             'container'  => true,
             'item_wrapper'  => 'item',
@@ -250,6 +274,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'container'  => false,
             'item_wrapper'  => 'item',
             'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "hertie" => array(
+            'container'  => false,
+            'item_wrapper'  => 'Artikel',
+            'items_wrapper' => 'Katalog',
             'namespace' => null,
             'namespace_prefix' => '',
             'stand_alone'   => false,
@@ -357,6 +393,30 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'datetime'   => false,
         ),
         "kleding" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'items',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "lyst" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'channel',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "listupp" => array(
             'container'  => false,
             'item_wrapper'  => 'item',
             'items_wrapper' => 'items',
@@ -671,12 +731,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
-        $variable_products = [];
+        $variation_products = [];
+        $variable_parent = [];
         $group_products = [];
         $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
+            'variable_parent' => 0,
             'group' => 0,
         );
 
@@ -685,6 +747,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 'total' => 0,
                 'simple' => 0,
                 'variable' => 0,
+                'variable_parent' => 0,
                 'group' => 0,
             );
         }
@@ -703,8 +766,8 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-
                 if($this->variable_product) {
+                    $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
                     $item = RexShopping::createItem();
@@ -723,7 +786,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     if($variations) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
-                                $variable_products[] = $variation;
+                                $variation_products[] = $variation;
                                 $item = RexShopping::createItem();
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
@@ -746,7 +809,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if ($product->get_type() == 'variation') {
-                $variable_products[] = $productId;
+                $variation_products[] = $productId;
                 $item = RexShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 foreach ($atts as $key => $value) {
@@ -755,21 +818,23 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if( $product->is_type( 'grouped' ) ){
-                $group_products[] = $productId;
-                $item = RexShopping::createItem();
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+                if($this->parent_product) {
+                    $group_products[] = $productId;
+                    $item = RexShopping::createItem();
+                    $atts = $this->get_product_data( $product, $product_meta_keys );
+                    // add all attributes for each product.
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
                 }
             }
-
         }
 
         $total_products = array(
-            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variable_products) + (int) count($group_products),
+            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variation_products) + (int) count($group_products) + (int) count($variable_parent),
             'simple' => (int) $total_products['simple'] + (int) count($simple_products),
-            'variable' => (int) $total_products['variable'] + (int) count($variable_products),
+            'variable' => (int) $total_products['variable'] + (int) count($variation_products),
+            'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );

@@ -19,6 +19,7 @@ jQuery(document).ready(function($){
                     classes: {
                         "ui-autocomplete": "category-map"
                     },
+                    position: { my : "right top", at: "right bottom", collision: "flip" },
                     minLength: 3
                 });
             })

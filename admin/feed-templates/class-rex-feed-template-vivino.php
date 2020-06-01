@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The vivino marketplace Feed Template class.
  *
@@ -17,84 +16,133 @@
  * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_vivino
  * @author     RexTheme <info@rextheme.com>
  */
-class Rex_Feed_Template_Vivino extends Rex_Feed_Abstract_Template {
+class Rex_Feed_Template_Vivino extends Rex_Feed_Abstract_Template
+{
 
-    protected function init_atts(){
+    protected function init_atts()
+    {
         $this->attributes = array(
-            'Required Information' =>  array(
-                'name'             => 'Name',
-                'price'            => 'Price',
-                'volume'           => 'Volume',
-                'quantity'         => 'Quantity',
-                'product_link'     => 'Product link',
-                'inventory_count'  => 'Inventory Count',
-            ),
+            'Required Information' => array(
+                'bottles-quantity' => 'Bottles quantity',
+                'bottles-size' => 'Bottles size',
+                'inventory-count' => 'Inventory count',
+                'link' => 'Link',
+                'price' => 'Price',
+                'product-name' => 'Product name',
+                'wine-name' => 'Wine name',
+            ) ,
+            'Optional Information' => array(
+                'acidity' => 'acidity',
+                'ageing' => 'ageing',
+                'alcohol' => 'alcohol',
+                'appellation' => 'appellation',
+                'certified-biodynamic' => 'certified-biodynamic',
+                'certified-organic' => 'certified-organic',
+                'closure' => 'closure',
+                'color' => 'color',
+                'contains-added-sulfites' => 'contains-added-sulfites',
+                'contains-egg-allergens' => 'contains-egg-allergens',
+                'contains-milk-allergens' => 'contains-milk-allergens',
+                'country' => 'country',
+                'decant-for' => 'decant-for',
+                'description' => 'description',
+                'drinking-temperature' => 'drinking-temperature',
+                'drinking-years-from' => 'drinking-years-from',
+                'drinking-years-to' => 'drinking-years-to',
+                'importer-address' => 'importer-address',
+                'kosher' => 'kosher',
+                'meshuval' => 'meshuval',
+                'non-alcoholic' => 'non-alcoholic',
+                'ph' => 'ph',
+                'price-discounted-from' => 'price-discounted-from',
+                'price-discounted-until' => 'price-discounted-until',
+                'producer' => 'producer',
+                'producer-address' => 'producer-address',
+                'product-id' => 'product-id',
+                'production-size' => 'production-size',
+                'residual-sugar' => 'residual-sugar',
+                'sweetness' => 'sweetness',
+                'varietal' => 'varietal',
+                'vegan-friendly' => 'vegan-friendly',
+                'vintage' => 'vintage',
+                'winemaker' => 'winemaker',
+            ) ,
         );
     }
 
-    protected function init_default_template_mappings(){
+    protected function init_default_template_mappings()
+    {
         $this->template_mappings = array(
             array(
-                'attr'     => 'name',
-                'type'     => 'meta',
-                'meta_key' => 'title',
+                'attr' => 'bottles-quantity',
+                'type' => 'meta',
+                'meta_key' => 'quantity',
                 'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
+                'prefix' => '',
+                'suffix' => '',
+                'escape' => 'default',
+                'limit' => 0,
+            ) ,
             array(
-                'attr'     => 'price',
-                'type'     => 'meta',
-                'meta_key' => 'price',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => ' '.get_option('woocommerce_currency'),
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'volume',
-                'type'     => 'static',
+                'attr' => 'bottles-size',
+                'type' => 'static',
                 'meta_key' => '',
                 'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
+                'prefix' => '',
+                'suffix' => '',
+                'escape' => 'default',
+                'limit' => 0,
+            ) ,
             array(
-                'attr'     => 'quantity',
-                'type'     => 'static',
-                'meta_key' => '',
+                'attr' => 'inventory-count',
+                'type' => 'meta',
+                'meta_key' => 'quantity',
                 'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
+                'prefix' => '',
+                'suffix' => '',
+                'escape' => 'default',
+                'limit' => 0,
+            ) ,
             array(
-                'attr'     => 'product_link',
-                'type'     => 'meta',
+                'attr' => 'link',
+                'type' => 'meta',
                 'meta_key' => 'link',
                 'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'cdata',
-                'limit'    => 0,
-            ),
+                'prefix' => '',
+                'suffix' => '',
+                'escape' => 'default',
+                'limit' => 0,
+            ) ,
             array(
-                'attr'     => 'inventory_count',
-                'type'     => 'static',
-                'meta_key' => '',
+                'attr' => 'price',
+                'type' => 'meta',
+                'meta_key' => 'price',
                 'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-
+                'prefix' => '',
+                'suffix' => ' ' . get_option('woocommerce_currency') ,
+                'escape' => 'default',
+                'limit' => 0,
+            ) ,
+            array(
+                'attr' => 'product-name',
+                'type' => 'meta',
+                'meta_key' => 'title',
+                'st_value' => '',
+                'prefix' => '',
+                'suffix' => '',
+                'escape' => 'default',
+                'limit' => 0,
+            ) ,
+            array(
+                'attr' => 'wine-name',
+                'type' => 'meta',
+                'meta_key' => 'title',
+                'st_value' => '',
+                'prefix' => '',
+                'suffix' => '',
+                'escape' => 'default',
+                'limit' => 0,
+            )
         );
     }
 
