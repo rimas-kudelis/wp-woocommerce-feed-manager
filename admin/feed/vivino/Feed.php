@@ -17,12 +17,12 @@ class VivinoFeed  extends \RexTheme\RexShoppingFeed\Feed
                 'inventory-count' => 'Inventory count',
                 'link' => 'Link',
                 'bottles-size' => 'Bottles size',
+                'bottles-quantity' => 'Bottles quantity',
                 'price-discounted-from' => 'price-discounted-from',
                 'price-discounted-until' => 'price-discounted-until',
             ),
             'extras' => array(
                 'wine-name' => 'Wine name',
-                'bottles-quantity' => 'Bottles quantity',
                 'acidity' => 'acidity',
                 'ageing' => 'ageing',
                 'alcohol' => 'alcohol',
@@ -74,27 +74,77 @@ class VivinoFeed  extends \RexTheme\RexShoppingFeed\Feed
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
             $i=0;
+            $bottle_quantity = 1;
+            $bottle_size = '750 ml';
+            $drinking_years_from = '';
+            $drinking_years_to = '';
             foreach ($item->nodes() as $itemNode) {
-
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {
                         $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
                     }
                 } else {
                     if(array_key_exists($itemNode->get('name'), $this->attributes['products'])) {
-                        if($itemNode->get('name') === 'bottles-size') {
-                            $bottle_size = $feedItemNode->addChild($itemNode->get('name'));
-                            $bottle_size->addAttribute('size', $itemNode->get('value'));
+                        if($itemNode->get('name') === 'bottles-size' || $itemNode->get('name') === 'bottles-quantity') {
+                            if ($itemNode->get('name') === 'bottles-quantity') {
+                                $bottle_size_node = $feedItemNode->addChild('bottles', $itemNode->get('value'));;
+                            }
+                            else {
+                                $bottle_size = $itemNode->get('value');
+                                $bottle_size_node->addAttribute('size', $bottle_size);
+                            }
                         }else {
-                            $feedItemNode->addChild($itemNode->get('name'));
+                            $itemNode->attachNodeTo($feedItemNode);
                         }
                     }
+
+
                     if(array_key_exists($itemNode->get('name'), $this->attributes['extras'])) {
-                        if( !empty($feedItemNode->extras)){
-                            $feedItemNode->extras->addChild($itemNode->get('name'), $itemNode->get('value'));
-                        }else {
-                            $feedItemNode->addChild('extras');
-                            $feedItemNode->extras->addChild($itemNode->get('name'), $itemNode->get('value'));
+                        if( !empty($feedItemNode->extras)) {
+                            $extrasNode = $feedItemNode->extras;
+                        }
+                        else {
+                            $extrasNode = $feedItemNode->addChild('extras');
+                        }
+
+                        if ($itemNode->get('name') === 'drinking-years-from' || $itemNode->get('name') === 'drinking-years-to') {
+                            if ($itemNode->get('name') === 'drinking-years-from') {
+                                $drinking_years_from = $itemNode->get('value');
+                            }
+                            else {
+                                $drinking_years_to = $itemNode->get('value');
+                            }
+                            if(!isset($extrasNode->{'drinking-years'})) {
+                                $bottle_size_node = $extrasNode->addChild('drinking-years');
+                                $bottle_size_node->addAttribute('from', $drinking_years_from);
+                            }
+                            else {
+                                $bottle_size_node = $extrasNode->{'drinking-years'};
+                                $bottle_size_node->addAttribute('to', $drinking_years_to);
+                            }
+                        }
+                        elseif ($itemNode->get('name') === 'drinking-temperature') {
+                            $drinkingTempNode = $extrasNode->addChild('drinking-temperature', $itemNode->get('value'));
+                            $drinkingTempNode->addAttribute('scale', 'celsius');
+
+                        }
+                        elseif ($itemNode->get('name') === 'production-size') {
+                            $drinkingTempNode = $extrasNode->addChild('production-size', $itemNode->get('value'));
+                            $drinkingTempNode->addAttribute('unit', 'bottles');
+
+                        }
+                        elseif ($itemNode->get('name') === 'residual-sugar' || $itemNode->get('name') === 'acidity') {
+                            $drinkingTempNode = $extrasNode->addChild($itemNode->get('name'), $itemNode->get('value'));
+                            $drinkingTempNode->addAttribute('unit', 'g/l');
+
+                        }
+                        elseif ($itemNode->get('name') === 'decant-for') {
+                            $drinkingTempNode = $extrasNode->addChild($itemNode->get('name'), $itemNode->get('value'));
+                            $drinkingTempNode->addAttribute('unit', 'hours');
+
+                        }
+                        else {
+                            $itemNode->attachNodeTo($extrasNode);
                         }
                     }
                 }

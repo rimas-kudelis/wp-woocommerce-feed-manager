@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.4.1
 Requires PHP: 5.6
-Stable tag: 5.32
+Stable tag: 5.33
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -542,6 +542,10 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.33 (2020-06-03) =
+* Updated: Vivino attribute fields
+* Compatibility Checked : WooCommerce 4.2.0
 
 = 5.32 (2020-06-01) =
 * Fixed: Added extra fields for Amazon seller

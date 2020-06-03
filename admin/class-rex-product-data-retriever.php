@@ -923,7 +923,11 @@ class Rex_Product_Data_Retriever {
      * @return string
      */
     public function get_yoast_primary_cat() {
-        $primary_cat_id=get_post_meta($this->product->get_id(),'_yoast_wpseo_primary_product_cat',true);
+        $pr_id = $this->product->get_id();
+        if($this->product->is_type('variation')) {
+            $pr_id = $this->product->get_parent_id();
+        }
+        $primary_cat_id=get_post_meta($pr_id,'_yoast_wpseo_primary_product_cat',true);
         if($primary_cat_id){
             $product_cat = get_term($primary_cat_id, 'product_cat');
             if(isset($product_cat->name))

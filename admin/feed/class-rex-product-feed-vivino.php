@@ -32,6 +32,7 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variation_products = [];
+        $variable_parent = [];
         $group_products = [];
         $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
             'total' => 0,
@@ -112,6 +113,7 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
                 $variation_products[] = $productId;
                 $item = RexShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
+//                error_log(print_r($atts, 1));
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
@@ -146,6 +148,15 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
      * @return array|bool|string
      */
     public function returnFinalProduct(){
+//        return RexShopping::asRss();
+
+        if ($this->feed_format == 'xml') {
+            return RexShopping::asRss();
+        } elseif ($this->feed_format == 'text') {
+            return RexShopping::asTxt();
+        } elseif ($this->feed_format == 'csv') {
+            return RexShopping::asCsv();
+        }
         return RexShopping::asRss();
     }
 }
