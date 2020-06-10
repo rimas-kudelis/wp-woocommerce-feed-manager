@@ -55,7 +55,8 @@
         //$('.rex-tabs').tabs();
 
         //---------popup when click disabled input-------
-        $( ".single-merchant > .disabled .lever, .single-merchant .wpfm-switcher.disabled .lever" ).on("click", function(){
+        $( ".single-merchant.wpfm-pro .wpfm-pro-cta" ).on("click", function(e){
+            e.preventDefault();
             $(".premium-merchant-alert").addClass("show-alert");
         });
 
@@ -839,7 +840,6 @@
             });
     }
     $(document).on('change', '#wpfm_enable_log', wpfm_enable_log);
-
 
 })( jQuery );
 

@@ -176,6 +176,8 @@ class Rex_Product_Feed_Factory {
                 'pricepanda',
                 'eytsy',
                 'okazii',
+                'webgains',
+                'vidaXL',
             )
         );
 

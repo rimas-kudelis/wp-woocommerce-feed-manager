@@ -106,7 +106,7 @@ class Rex_Product_Data_Retriever {
 
         if($this->is_logging_enabled) {
             $log = wc_get_logger();
-            $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+            $log->info('*************************', array('source' => 'WPFM',));
             $log->info(__( 'Start product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
             $log->info('Product ID: '.$this->product->get_id(), array('source' => 'WPFM',));
             $log->info('Product Name: '.$this->product->get_title(), array('source' => 'WPFM',));
@@ -120,7 +120,7 @@ class Rex_Product_Data_Retriever {
 
         if($this->is_logging_enabled) {
             $log->info(__( 'End product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
-            $log->info(__( '*************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+            $log->info('*************************', array('source' => 'WPFM',));
         }
     }
 
@@ -298,6 +298,15 @@ class Rex_Product_Data_Retriever {
                     $_pr  = new WC_Product_Composite($this->product->get_id());
                     return  wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals());
                 }elseif ($this->product->is_type( 'variable' )) {
+                    $default_attributes = $this->get_default_attributes( $this->product );
+                    if($default_attributes) {
+                        $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                        if($variation_id) {
+                            $_variation_product = wc_get_product($variation_id);
+                            return wc_format_decimal( $_variation_product->get_regular_price(), wc_get_price_decimals());
+                        }
+                        return wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals());
+                    }
                     return wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals());
                 }
                 return wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals());
@@ -311,6 +320,15 @@ class Rex_Product_Data_Retriever {
                         $_pr  = new WC_Product_Composite($this->product->get_id());
                         return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
                     }elseif ($this->product->is_type( 'variable' )) {
+                        $default_attributes = $this->get_default_attributes( $this->product );
+                        if($default_attributes) {
+                            $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                            if($variation_id) {
+                                $_variation_product = wc_get_product($variation_id);
+                                return wc_format_decimal( $_variation_product->get_price(), wc_get_price_decimals());
+                            }
+                            return wc_format_decimal( $this->product->get_variation_price(), wc_get_price_decimals());
+                        }
                         return wc_format_decimal( $this->product->get_variation_price(), wc_get_price_decimals());
                     }
                     return  wc_format_decimal( $this->product->get_price(), wc_get_price_decimals());
@@ -331,7 +349,19 @@ class Rex_Product_Data_Retriever {
                         $_pr  = new WC_Product_Composite($this->product->get_id());
                         return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
                     }elseif ($this->product->is_type( 'variable' )) {
-                        $sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '');
+                        $default_attributes = $this->get_default_attributes( $this->product );
+                        if($default_attributes) {
+                            $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                            if($variation_id) {
+                                $_variation_product = wc_get_product($variation_id);
+                                $sale_price = number_format( (float)$_variation_product->get_price(), 2, '.', '');
+                            }else {
+                                $sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '');
+                            }
+
+                        }else {
+                            $sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '');
+                        }
                     }
                     else
                         $sale_price = number_format((float)$this->product->get_price(), 2, '.', '');
@@ -378,7 +408,18 @@ class Rex_Product_Data_Retriever {
                     elseif ($this->product->is_type( 'composite' )) {
                         $sale_price =  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
                     }elseif ($this->product->is_type( 'variable' )) {
-                        $sale_price = wc_format_decimal( $this->product->get_variation_sale_price(), wc_get_price_decimals());
+                        $default_attributes = $this->get_default_attributes( $this->product );
+                        if($default_attributes) {
+                            $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                            if($variation_id) {
+                                $_variation_product = wc_get_product($variation_id);
+                                $sale_price = wc_format_decimal( $_variation_product->get_sale_price(), wc_get_price_decimals());
+                            }else {
+                                $sale_price = wc_format_decimal( $this->product->get_variation_sale_price(), wc_get_price_decimals());
+                            }
+                        }else {
+                            $sale_price = wc_format_decimal( $this->product->get_variation_sale_price(), wc_get_price_decimals());
+                        }
                     }else {
                         $sale_price = wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
                     }
@@ -400,7 +441,18 @@ class Rex_Product_Data_Retriever {
                     if ($this->product->is_type( 'grouped' ))
                         $sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') ;
                     elseif ($this->product->is_type( 'variable' )) {
-                        $sale_price = number_format( (float)$this->product->get_variation_sale_price(), 2, '.', '');
+                        $default_attributes = $this->get_default_attributes( $this->product );
+                        if($default_attributes) {
+                            $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                            if($variation_id) {
+                                $_variation_product = wc_get_product($variation_id);
+                                $sale_price = number_format( (float)$_variation_product->get_sale_price(), 2, '.', '');
+                            }else {
+                                $sale_price = number_format( (float)$this->product->get_variation_sale_price(), 2, '.', '');
+                            }
+                        }else {
+                            $sale_price = number_format( (float)$this->product->get_variation_sale_price(), 2, '.', '');
+                        }
                     }
                     elseif ($this->product->is_type( 'composite' )) {
                         $_pr  = new WC_Product_Composite($this->product->get_id());
@@ -525,9 +577,9 @@ class Rex_Product_Data_Retriever {
                         ! empty( $this->analytics_params['utm_medium'] ) &&
                         ! empty( $this->analytics_params['utm_campaign'] )
                     ) {
-                        return add_query_arg( array_filter( $this->analytics_params ), $this->product->get_permalink() ); break;
+                        return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), $this->product->get_permalink() )); break;
                     }
-                    return $this->product->get_permalink(); break;
+                    return $this->safeCharEncodeURL($this->product->get_permalink()); break;
                 }
 
                 return $this->product->get_permalink(); break;
@@ -861,6 +913,8 @@ class Rex_Product_Data_Retriever {
 
     }
 
+
+
     /**
      * Retrieve a product's sub categories as a list with specified format.
      *
@@ -968,6 +1022,47 @@ class Rex_Product_Data_Retriever {
         }
     }
 
+
+    /**
+     * get product default attributes
+     *
+     * @param $product
+     * @return mixed
+     */
+    protected function get_default_attributes($product) {
+        if( method_exists( $product, 'get_default_attributes' ) ) {
+            return $product->get_default_attributes();
+        } else {
+            return $product->get_variation_default_attributes();
+        }
+    }
+
+
+    /**
+     * Get matching variation
+     *
+     * @param $product
+     * @param $attributes
+     * @return int Matching variation ID or 0.
+     * @throws Exception
+     */
+    protected function find_matching_product_variation( $product, $attributes ) {
+        foreach( $attributes as $key => $value ) {
+            if( strpos( $key, 'attribute_' ) === 0 ) {
+                continue;
+            }
+            unset( $attributes[ $key ] );
+            $attributes[ sprintf( 'attribute_%s', $key ) ] = $value;
+        }
+        if( class_exists('WC_Data_Store') ) {
+            $data_store = WC_Data_Store::load( 'product' );
+            return $data_store->find_matching_product_variation( $product, $attributes );
+        } else {
+            return $product->get_matching_variation( $attributes );
+        }
+    }
+
+
     /**
      * Retrieve a product's dynamic attributes as a list with specified format.
      *
@@ -1008,6 +1103,7 @@ class Rex_Product_Data_Retriever {
 
         return $before . join( $sep, $term_names ) . $after;
     }
+
 
     /**
      * Set additional images url.
@@ -1114,6 +1210,52 @@ class Rex_Product_Data_Retriever {
             $id = $this->product->get_parent_id();
         }
         return $id;
+    }
+
+
+    /**
+     *
+     * @param $id
+     * @param $taxonomy
+     * @param string $before
+     * @param string $sep
+     * @param string $after
+     * @return string
+     */
+    protected function get_the_term_list_with_path( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
+        $terms = wp_get_post_terms( $id, $taxonomy , array( 'orderby' => 'term_id' ));
+        if ( empty( $terms ) || is_wp_error( $terms ) ){
+            return '';
+        }
+
+
+        foreach( $terms as $term ) {
+            $term_names = [];
+            $ancestors = get_ancestors( $term->term_id, $taxonomy );
+
+            if(is_array($ancestors)) {
+                foreach( get_ancestors( $term->term_id, $taxonomy ) as $ancestor_id ){
+                    $term_names[] = get_term( $ancestor_id, $taxonomy )->name;
+                }
+                $term_names[] = get_term( $term->term_id, $taxonomy )->name;
+                if(count($term_names)>1)
+                    return implode($sep, $term_names);
+            }else {
+                $term_names[] = get_term( $term->term_id, $taxonomy )->name;
+            }
+            $output[] = implode(' > ', $term_names);
+        }
+
+
+        $term_names = array();
+
+        foreach ( $terms as $term ) {
+            $term_names[] = $term->name;
+        }
+
+        ksort($term_names);
+
+        return $before . join( $sep, $term_names ) . $after;
     }
 
 

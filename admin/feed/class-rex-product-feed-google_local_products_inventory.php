@@ -132,12 +132,14 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
                 }
             }
 
-            if ($product->get_type() == 'variation') {
-                $variable_products[] = $productId;
-                $item = RexShopping::createItem();
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+            if( $this->product_scope === 'all' ) {
+                if ($product->get_type() == 'variation') {
+                    $variable_products[] = $productId;
+                    $item = RexShopping::createItem();
+                    $atts = $this->get_product_data($product, $product_meta_keys);
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
                 }
             }
 

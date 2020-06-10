@@ -217,6 +217,7 @@ class Rex_Product_Feed_Ajax {
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_log' ) )
             ->with_validation( $validations );
 
+
     }
 
 
@@ -230,7 +231,6 @@ class Rex_Product_Feed_Ajax {
      */
     public static function get_product_number($payload) {
         $is_premium = apply_filters('wpfm_is_premium', false);
-        $info = [];
         $products = apply_filters('wpfm_get_total_number_of_products',
             array('products'  => 50)
         );
@@ -713,4 +713,5 @@ class Rex_Product_Feed_Ajax {
             );
         }
     }
+
 }

@@ -34,14 +34,6 @@ $db_version = get_option('rex_wpfm_db_version');
                         <div class="inner" style="display: none;">
                             <form action="" method="post" class="update_cat_map">
                                 <div class="widefat fixed cat-map highlight" id="cat-map">
-                                    <!-- <thead>
-                                        <tr>
-                                            <th><?php echo __('Product Category', 'rex-product-feed'); ?></th>
-                                            <th>
-                                                <?php echo __('Google Merchant Category', 'rex-product-feed');?>
-                                            </th>
-                                        </tr>
-                                    </thead> -->
                                     <div class="categories">
                                         <?php
                                             $separator = '';
@@ -51,8 +43,8 @@ $db_version = get_option('rex_wpfm_db_version');
                                     </div>
                                 </div>
                                 <div class="cat-map-actions">
-                                    <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat"><i class="fa fa-pencil-square-o"></i> Update</button>
-                                    <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat"><i class="fa fa-trash-o"></i> Delete</button>
+                                    <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat"><i class="fa fa-pencil-square-o"></i> <?php echo __('Update', 'rex-product-feed')?></button>
+                                    <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat"><i class="fa fa-trash-o"></i> <?php echo __('Delete', 'rex-product-feed')?></button>
                                 </div>
                             </form>
                         </div>
@@ -75,11 +67,11 @@ $db_version = get_option('rex_wpfm_db_version');
     <div class="col s12 m12">
         <div class="category-mapper-wrapper card ">
             <div class="cat-mapper-header">
-                <h5>Add New Category Map</h5>
+                <h5><?php echo __('Add New Category Map', 'rex-product-feed')?></h5>
             </div>
 
             <div class="mapper-name">
-                <p>Mapper Name</p>
+                <p><?php echo __('Mapper Name', 'rex-product-feed')?></p>
                 <input id="map_name" type="text" name="mapper_name">
             </div>
 
@@ -87,17 +79,12 @@ $db_version = get_option('rex_wpfm_db_version');
             <form action="#" method="post" class="add_cat_map">
 
                 <div class="widefat fixed cat-map highlight" id="cat-map">
-                    <!-- <div class="cat-map-header">
-                        <h5><?php echo __('Product Category', 'rex-product-feed'); ?></h5>
-                        <h5><?php echo __('Google Merchant Category', 'rex-product-feed'); ?></h5>
-                    </div> -->
-
                     <div class="categories">
                         <?php wpfm_hierarchical_product_category_tree(0); ?>
                     </div>
                 </div>
                 <div class="cat-map-actions">
-                    <button type="submit" class="waves-effect waves-light btn-large green" id="save_mapping_cat"><i class="fa fa-floppy-o"></i> Save</button>
+                    <button type="submit" class="waves-effect waves-light btn-large green" id="save_mapping_cat"><i class="fa fa-floppy-o"></i> <?php echo __('Save', 'rex-product-feed')?></button>
                 </div>
             </form>
         </div>

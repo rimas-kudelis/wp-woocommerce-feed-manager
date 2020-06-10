@@ -252,6 +252,18 @@ a,
   overflow: auto;
 }
 
+.wpfm-pro-tag {
+  position: absolute;
+  background: #1fb3fb;
+  color: #fff;
+  line-height: normal;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 4px 6px 2px;
+  border-radius: 3px;
+  z-index: 1;
+}
+
 .rex-onboarding .premium-merchant-alert {
   position: fixed;
   z-index: 9;
@@ -593,6 +605,7 @@ a,
   margin-left: 20px;
 }
 .rex-onboarding .rex-settings-tab-content .rex-merchant .single-merchant {
+  position: relative;
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -614,6 +627,11 @@ a,
     width: calc(100% / 2 - 20px);
   }
 }
+.rex-onboarding .rex-settings-tab-content .rex-merchant .single-merchant .wpfm-pro-tag {
+  top: calc(50% - 1px);
+  right: 20px;
+  transform: translateY(-50%);
+}
 .rex-onboarding .rex-settings-tab-content .rex-merchant .single-merchant .title {
   min-height: 21px;
   display: block;
@@ -624,6 +642,10 @@ a,
   color: #363b4e;
   font-weight: 400;
   font-family: "Roboto", sans-serif;
+}
+.rex-onboarding .rex-settings-tab-content .rex-merchant .single-merchant.wpfm-pro .switch {
+  opacity: 0;
+  visibility: hidden;
 }
 .rex-onboarding .rex-settings-tab-content .video-container iframe {
   width: 100%;
@@ -1815,13 +1837,17 @@ a,
   background: #47CCCF;
 }
 
+#rex-feed-config {
+  position: relative;
+}
+
 .rex-loading-spinner {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #fff;
+  background: rgba(12, 12, 12, 0.14);
   z-index: 9;
   opacity: 0.9;
   text-align: center;

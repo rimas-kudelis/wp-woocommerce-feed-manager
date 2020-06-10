@@ -28,7 +28,6 @@ if($client_id && $client_secret && $merchant_id)
 
 ?>
 
-
 <div class="row merchant-settings">
     <div class="col s12 m6" >
 

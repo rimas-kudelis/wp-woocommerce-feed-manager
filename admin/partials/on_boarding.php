@@ -12,16 +12,17 @@
  */
 
 
-$is_premium = apply_filters('wpfm_is_premium', false);
+//$is_premium_activated = apply_filters('wpfm_is_premium', false);
 
 
 $is_premium_activated = apply_filters('wpfm_is_premium_activate', false);
 $custom_field = get_option('rex-wpfm-product-custom-field');
+$amazon_custom_field = get_option('wpfm_amazon_fields', 'no');
 $pa_field = get_option('rex-wpfm-product-pa-field');
 $structured_data = get_option('rex-wpfm-product-structured-data');
 $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
 
-if($is_premium) {
+if($is_premium_activated) {
     $per_batch = get_option('rex-wpfm-product-per-batch', 50);
 }else {
     $per_batch = get_option('rex-wpfm-product-per-batch', 50) > 50 ? 50 : get_option('rex-wpfm-product-per-batch', 50);
@@ -33,9 +34,10 @@ $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
 
 $wpfm_enable_log = get_option('wpfm_enable_log');
 
+$pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
+
 //$wpfm_drm_pixel_enabled = get_option('wpfm_drm_pixel_enabled', 'no');
 //$wpfm_drm_pixel_data = get_option('wpfm_drm_pixel_value');
-
 ?>
 
 <div class="columns">
@@ -46,8 +48,12 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                     <a class="delete is-large close"></a>
                     <i class="fa fa-warning warning"></i>
                     <h2><?php echo __('Go Premium', 'rex-product-feed')?></h2>
-                    <p>Purchase our <a href="">premium version</a> to unlock these pro components!</p>
-                    <button type="button" class="close">ok</button>
+                    <p><?php
+                            echo sprintf(__('Purchase our <a href="%s" target="_blank" title="Click to Upgrade Pro">premium version</a> to unlock these pro components!', 'rex-product-feed'), $pro_url);
+
+                        ?>
+                    </p>
+                    <button type="button" class="close"><?php echo __('ok', 'rex-product-feed')?></button>
                 </div>
             </div>
 
@@ -82,7 +88,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </g>
                             </g>
                         </svg>
-                        General
+                        <?php echo __('General', 'rex-product-feed')?>
                     </li>
                     <li class="tab-link" data-tab="tab2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 22" width="20" height="22">
@@ -106,7 +112,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </g>
                             </g>
                         </svg>
-                        Merchants
+                        <?php echo __('Merchants', 'rex-product-feed')?>
                     </li>
                     <li class="tab-link" data-tab="tab4">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 23" width="31" height="23">
@@ -149,7 +155,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </g>
                             </g>
                         </svg>
-                        Controls
+                        <?php echo __('Controls', 'rex-product-feed')?>
                     </li>
                     <li class="tab-link video" data-tab="tab3">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 15" width="23" height="15">
@@ -171,7 +177,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </g>
                             </g>
                         </svg>
-                        Video Tutorials
+                        <?php echo __('Video Tutorials', 'rex-product-feed')?>
                     </li>
                     <li class="tab-link status" data-tab="tab5">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 18" width="16" height="18">
@@ -191,14 +197,14 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </g>
                             </g>
                         </svg>
-                        System Status
+                        <?php echo __('System Status', 'rex-product-feed')?>
                     </li>
                     <?php
                     if ( !$is_premium_activated ) {?>
-                        <li class="tab-link" data-tab="tab6"><i class="fa fa-gift"></i>Go Premium</li>
+                        <li class="tab-link" data-tab="tab6"><i class="fa fa-gift"></i><?php echo __('Go Premium', 'rex-product-feed')?></li>
                     <?php }
                     ?>
-                    <li class="tab-link" data-tab="tab7"><i class="fa fa-question-circle"></i>Logs</li>
+                    <li class="tab-link" data-tab="tab7"><i class="fa fa-question-circle"></i><?php echo __('Logs', 'rex-product-feed')?></li>
                 </ul>
 
                 <div class="rex-settings-tab-content">
@@ -208,7 +214,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 <div class="single-block-wrapper">
                                     <div class="single-block banner-block">
                                         <div class="onboarding-block">
-                                            <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/banner.png'?>" alt="rex-banner">
+                                            <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/banner.jpg'?>" alt="rex-banner">
                                         </div>
                                     </div>
 
@@ -233,7 +239,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                         <div class="onboarding-block">
                                             <div class="header">
                                                 <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Support.png'?>" class="title-icon" alt="bwf-documentation">
-                                                <h4>Support</h4>
+                                                <h4><?php echo __('Support', 'rex-product-feed')?></h4>
                                             </div>
 
                                             <div class="body">
@@ -241,7 +247,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                                     <?php echo __('Can\'t find solution on with our documentation? Just Post a ticket on Support forum. We are to solve your issue.', 'rex-product-feed')?>
                                                 </p>
 
-                                                <a class="btn-default" href="<?php echo apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed'); ?>" target="_blank">Post a Ticket</a>
+                                                <a class="btn-default" href="<?php echo apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed'); ?>" target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed')?></a>
                                             </div>
                                         </div>
                                     </div>
@@ -273,7 +279,6 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                             <div class="body">
                                                 <p>
                                                     <?php echo __('Your rating and feedback matters to us. If you are happy with WooCommerce Product Feed Manager give us a rating.', 'rex-product-feed')?>
-
                                                 </p>
 
                                                 <a class="btn-default" href="<?php echo apply_filters('wpfm_review_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post') ?>" target="_blank"><?php echo __('Rate Us!', 'rex-product-feed')?> </a>
@@ -285,7 +290,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                         <div class="onboarding-block">
                                             <div class="header">
                                                 <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Heart.png'?>" class="title-icon" alt="bwf-documentation">
-                                                <h4>Share On</h4>
+                                                <h4><?php echo __('Share On', 'rex-product-feed')?></h4>
                                             </div>
 
                                             <div class="body">
@@ -316,7 +321,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                             <li class="item"><?php echo __('9 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)', 'rex-product-feed'); ?></li>
                                         </ul>
                                     </div>
-                                    <a href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro" class="update-btn btn-default" target="_blank">Upgrade to Pro</a>
+                                    <a href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro" class="update-btn btn-default" target="_blank"><?php echo __('Upgrade to Pro', 'rex-product-feed')?></a>
                                 <?php }
                                 ?>
                             </div>
@@ -1165,6 +1170,26 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                     'status'   => 0,
                                     'name'     => 'Etsy'
                                 ),
+//                                'okazii'     => array(
+//                                    'free'     => true,
+//                                    'status'   => 0,
+//                                    'name'     => 'Okazii'
+//                                ),
+//                                'pricepanda'     => array(
+//                                    'free'     => true,
+//                                    'status'   => 0,
+//                                    'name'     => 'Price Panda'
+//                                ),
+                                'webgains'     => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => ' Webgains'
+                                ),
+//                                'vidaXL'     => array(
+//                                    'free'     => true,
+//                                    'status'   => 0,
+//                                    'name'     => 'VidaXL'
+//                                ),
                             );
 
                             $_pro_merchants = array(
@@ -1226,7 +1251,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 $_merchants = array_merge($_merchants, $merchants);
                             }
 
-                            if(!$is_premium) {
+                            if(!$is_premium_activated) {
                                 $_merchants = array_merge($_merchants, $_pro_merchants);
                             }
 
@@ -1239,23 +1264,37 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
 
                             ?>
                             <?php foreach ($_merchants as $key => $merchant): ?>
-                                <?php if($key && $key != 'undefined'): ?>
-                                    <div class="single-merchant">
+                                <?php if($key && $key != 'undefined'): 
+                                        $show_pro = false;
+                                        if( $is_premium_activated ) {
+                                            $pro_cls = '';
+                                            $disabled = '';
+                                            $show_pro = false;
+                                        }else {
+                                            if( $merchant['free']) {
+                                                $pro_cls = '';
+                                                $disabled = '';
+                                                $show_pro = false;
+                                            }else {
+                                                $pro_cls = 'wpfm-pro';
+                                                $disabled = 'disabled';
+                                                $show_pro = true;
+                                            }
+                                        }
+                                    ?>
+                                    <div class="single-merchant <?php echo $pro_cls; ?>">
+                                        <?php if( $show_pro ) { ?>
+                                            <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro" class="wpfm-pro-cta">
+                                                <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
+                                            </a>
+                                        <?php } ?>
+
                                         <span class="title"><?php echo $merchant['name']; ?></span>
                                         <?php
                                         $checked = $merchant['status'] ? 'checked' : '';
                                         $is_free = $merchant['free'] ? true : false;
                                         $name = $merchant['name'] ;
-                                        if($is_premium) {
-                                            $disabled = '';
-                                        }else {
-                                            if( $merchant['free']) {
-                                                $disabled = '';
-                                            }else {
-                                                $disabled = 'disabled';
-                                            }
-
-                                        }
+                                        
                                         ?>
                                         <div class="switch <?php echo $disabled; ?>" >
                                             <div class="wpfm-switcher">
@@ -1284,7 +1323,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 <span class="title"><?php echo __('Product(s) per batch', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <form id="wpfm-per-batch" class="wpfm-per-batch">
-                                        <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch" value="<?php echo $per_batch; ?>" min="1" <?php echo !$is_premium ?  "max='50'" : ''?>>
+                                        <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch" value="<?php echo $per_batch; ?>" min="1" <?php echo !$is_premium_activated ?  "max='50'" : ''?>>
                                         <button type="submit" class="save-batch"><span>save</span> <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                     </form>
                                 </div>
@@ -1336,13 +1375,44 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </div>
                             </div>
 
-                            <div class="single-merchant exclude-tax">
+                            <div class="single-merchant exclude-tax <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                <?php if( !$is_premium_activated ) { ?>
+                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro" class="wpfm-pro-cta">
+                                        <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
+                                    </a>
+                                <?php } ?>
+
+                                <span class="title"><?php echo __('Add custom fields for Amazon', 'rex-product-feed'); ?></span>
+                                <div class="switch">
+                                    <?php
+                                    if(!$is_premium_activated) {
+                                        $disabled = 'disabled';
+                                        $checked = '';
+                                    }else {
+                                        $disabled = '';
+                                        $checked = $amazon_custom_field === 'yes' ? 'checked': '';
+                                    }
+                                    ?>
+                                    <div class="wpfm-switcher">
+                                        <input class="switch-input" type="checkbox" id="rex-product-custom-field-amazon" <?php echo $checked; ?> <?php echo $disabled; ?>>
+                                        <label class="lever" for="rex-product-custom-field-amazon"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="single-merchant exclude-tax <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                <?php if( !$is_premium_activated ) { ?>
+                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro" class="wpfm-pro-cta">
+                                        <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
+                                    </a>
+                                <?php } ?>
+
                                 <span class="title">
                                     <?php echo __('Exclude TAX from structured data prices', 'rex-product-feed'); ?>
                                 </span>
                                 <div class="switch">
                                     <?php
-                                    if(!$is_premium) {
+                                    if(!$is_premium_activated) {
                                         $disabled = 'disabled';
                                         $checked = '';
                                     }else {
@@ -1357,11 +1427,17 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </div>
                             </div>
 
-                            <div class="single-merchant unique-product">
+                            <div class="single-merchant unique-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                <?php if( !$is_premium_activated ) { ?>
+                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro" class="wpfm-pro-cta">
+                                        <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
+                                    </a>
+                                <?php } ?>
+
                                 <span class="title"><?php echo __('Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date ) to product', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <?php
-                                    if(!$is_premium) {
+                                    if(!$is_premium_activated) {
                                         $disabled = 'disabled';
                                         $checked = '';
                                     }else {
@@ -1376,14 +1452,20 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </div>
                             </div>
 
-                            <div class="single-merchant increase-product">
+                            <div class="single-merchant increase-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                <?php if( !$is_premium_activated ) { ?>
+                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro" class="wpfm-pro-cta">
+                                        <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
+                                    </a>
+                                <?php } ?>
+
                                 <span class="title">
                                     <?php echo __('Increase the number of products that will be approved in Google\'s Merchant Center:
                                            This option will fix WooCommerce\'s (JSON-LD) structured data bug and add extra structured data elements to your pages', 'rex-product-feed'); ?>
                                 </span>
                                 <div class="switch">
                                     <?php
-                                    if(!$is_premium) {
+                                    if(!$is_premium_activated) {
                                         $disabled = 'disabled';
                                         $checked = '';
                                     }else {
@@ -1398,11 +1480,17 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                 </div>
                             </div>
 
-                            <div class="single-merchant detailed-product">
+                            <div class="single-merchant detailed-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                <?php if( !$is_premium_activated ) { ?>
+                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro" class="wpfm-pro-cta">
+                                        <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
+                                    </a>
+                                <?php } ?>
+
                                 <span class="title"><?php echo __('Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender, Additional info ) to product', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <?php
-                                    if(!$is_premium) {
+                                    if(!$is_premium_activated) {
                                         $disabled = 'disabled';
                                         $checked = '';
                                     }else {
@@ -1434,8 +1522,6 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                             } else {
                                 $isWritable = "False";
                             }
-
-
 
                             $status = array(
                                 'php_version'           =>  phpversion(),
@@ -1561,7 +1647,7 @@ $wpfm_enable_log = get_option('wpfm_enable_log');
                                         <li class="item"><?php echo __('Custom Batch configuration', 'rex-product-feed'); ?></li>
                                         <li class="item"><?php echo __('9 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)', 'rex-product-feed'); ?></li>
                                     </ul>
-                                    <a href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro" target="_blank" class="btn-default">Get Premium Version</a>
+                                    <a href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro" target="_blank" class="btn-default"><?php echo __('Get Premium Version', 'rex-product-feed')?></a>
                                 </div>
                             </div>
                         </div>

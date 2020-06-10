@@ -92,7 +92,6 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
@@ -112,6 +111,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                         }
                     }
                 }
+
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
@@ -162,24 +162,25 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     }
                 }
             }
-
-            if ($product->get_type() == 'variation') {
-                $variation_products[] = $productId;
-                $item = GoogleShopping::createItem();
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                $atts = $this->process_attributes_for_shipping_tax($atts);
-                foreach ($atts as $key => $value) {
-                    if($key == 'shipping') {
-                        $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
+            if( $this->product_scope === 'all' ) {
+                if ($product->get_type() == 'variation') {
+                    $variation_products[] = $productId;
+                    $item = GoogleShopping::createItem();
+                    $atts = $this->get_product_data( $product, $product_meta_keys );
+                    $atts = $this->process_attributes_for_shipping_tax($atts);
+                    foreach ($atts as $key => $value) {
+                        if($key == 'shipping') {
+                            $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
+                        }
+                        elseif ($key == 'tax') {
+                            $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
+                        }
+                        else {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
                     }
-                    elseif ($key == 'tax') {
-                        $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                    }
-                    else {
-                        $item->$key($value); // invoke $key as method of $item object.
-                    }
+                    $item->item_group_id( $product->get_parent_id() );
                 }
-                $item->item_group_id( $product->get_parent_id() );
             }
 
             if( $product->is_type( 'grouped' ) ){

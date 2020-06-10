@@ -319,7 +319,7 @@ class Rex_Product_Metabox {
 
         /**
          * result of bad planning
-        //       */
+               */
 //        $merchant_lists['google'] = 'Google Shopping';
 //        $merchant_lists['google_Ad']= 'Google AdWords';
 //        if(array_key_exists('drm', $merchant_lists))
@@ -496,6 +496,8 @@ class Rex_Product_Metabox {
                     'pricepanda',
                     'eytsy',
                     'okazii',
+                    'webgains',
+                    'vidaXL',
                 ))),
             ),
         ) );
@@ -753,9 +755,7 @@ class Rex_Product_Metabox {
      * @param  object $field      Current field object
      */
     function google_merchant_desc( $field_args, $field ) {
-       echo __('<p class="google-desc">'.__('Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location,
-
-                United States is US and the abbreviation for language, English is en.', 'rex-product-feed').' <a href="https://rextheme.com/google-country-codes-list/" target="_blank">'.__('Click here', 'rex-product-feed').'</a> '.__('to see the list of all abbreviations set by Google.', 'rex-product-feed').'</p>', 'rex-product-feed');
+        echo sprintf(__('<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed'));
     }
 
 

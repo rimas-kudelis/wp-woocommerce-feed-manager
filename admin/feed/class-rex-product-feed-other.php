@@ -620,6 +620,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
+        "webgains" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'feed',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
         "zbozi" => array(
             'container'  => false,
             'item_wrapper'  => 'SHOPITEM',
@@ -832,12 +844,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ($product->get_type() == 'variation') {
-                $variation_products[] = $productId;
-                $item = RexShopping::createItem();
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+            if( $this->product_scope === 'all' ) {
+                if ($product->get_type() == 'variation') {
+                    $variation_products[] = $productId;
+                    $item = RexShopping::createItem();
+                    $atts = $this->get_product_data($product, $product_meta_keys);
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
                 }
             }
 

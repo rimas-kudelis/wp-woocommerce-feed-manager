@@ -1003,7 +1003,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $log = wc_get_logger();
             if($this->batch == $this->tbatch) {
                 $log->info(__( 'Completed feed generation job.', 'rex-product-feed' ), array('source' => 'WPFM',));
-                $log->info(__( '**************************************************', 'rex-product-feed' ), array('source' => 'WPFM',));
+                $log->info('**************************************************', array('source' => 'WPFM',));
             }
         }
 
@@ -1012,20 +1012,17 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
+
             if( file_exists($file) ) {
                 if($this->batch == 1) {
-//                    update_post_meta($this->id, 'rex-feed', $this->feed);
-//                    return 'true';
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
                 }else {
                     $feed = $this->merge_feeds($file);
-//                    update_post_meta($this->id, 'rex-feed', $feed);
-//                    return 'true';
-                    return file_put_contents($file, $feed) ? 'true' : 'false';
+                    if ($feed)
+                        return file_put_contents($file, $feed) ? 'true' : 'false';
+                    return file_put_contents($file, $this->feed) ? 'true' : 'false';
                 }
             }else{
-//                update_post_meta($this->id, 'rex-feed', $this->feed);
-//                return 'true';
                 return file_put_contents($file, $this->feed) ? 'true' : 'false';
             }
         }
@@ -1161,6 +1158,13 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $parent = $orgdoc->getElementsByTagName('products')->item(0);
         }
 
+
+
+        if(!$parent)
+            return $parent;
+
+
+
         // Create a new document
         $newdoc = new DOMDocument;
         $newdoc->loadXML($this->feed);
@@ -1227,8 +1231,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         for ($i = 0; $i < $node->length; $i ++) {
             $item = $node->item($i);
-            $item = $orgdoc->importNode($item, true);
-            $parent->appendChild($item);
+            if ($item != NULL) {
+                $item = $orgdoc->importNode($item, true);
+                $parent->appendChild($item);
+            }
         }
         return $orgdoc->saveXML();
     }

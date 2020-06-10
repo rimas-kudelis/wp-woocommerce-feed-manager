@@ -24,13 +24,13 @@ if ( ! isset($feed_template) ) {
 
 <thead>
 <tr>
-    <th class="large-col">Attributes</th>
-    <th class="large-col">Type</th>
-    <th class="large-col">Value</th>
-    <th class="small-col">Prefix</th>
-    <th class="small-col">Suffix</th>
-    <th class="large-col">Output Sanitization</th>
-    <th colspan="2" class="small-col">Output Limit</th>
+    <th class="large-col"><?php echo __('Attributes', 'rex-product-feed') ?></th>
+    <th class="large-col"><?php echo __('Type', 'rex-product-feed') ?></th>
+    <th class="large-col"><?php echo __('Value', 'rex-product-feed') ?></th>
+    <th class="small-col"><?php echo __('Prefix', 'rex-product-feed') ?></th>
+    <th class="small-col"><?php echo __('Suffix', 'rex-product-feed') ?></th>
+    <th class="large-col"><?php echo __('Output Sanitization', 'rex-product-feed') ?></th>
+    <th colspan="2" class="small-col"><?php echo __('Output Limit', 'rex-product-feed') ?></th>
 </tr>
 </thead>
 

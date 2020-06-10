@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Product Feed Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-06 08:53+0000\n"
-"PO-Revision-Date: 2020-01-29 09:38+0000\n"
-"Last-Translator: devadmin <farshid@coderex.co>\n"
+"POT-Creation-Date: 2020-06-04 07:18+0000\n"
+"PO-Revision-Date: 2020-06-05 04:25+0000\n"
+"Last-Translator: \n"
 "Language-Team: Greek\n"
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
@@ -12,15 +12,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.3.1; wp-5.3.2"
+"X-Loco-Version: 2.4.0; wp-5.4.1"
 
-#: admin/class-rex-google-merchant-content-api.php:79
-#: admin/class-rex-google-merchant-content-api.php:118
+#: admin/class-rex-google-merchant-content-api.php:96
+#: admin/class-rex-google-merchant-content-api.php:135
 msgid "You are not authorized."
 msgstr "Δεν είστε εξουσιοδοτημένοι."
 
-#: admin/class-rex-google-merchant-content-api.php:80
-#: admin/class-rex-google-merchant-content-api.php:119
+#: admin/class-rex-google-merchant-content-api.php:97
+#: admin/class-rex-google-merchant-content-api.php:136
 msgid ""
 "Your access token has expired. This application uses OAuth 2.0 to Access "
 "Google APIs. Please insert the information below and authenticate token for "
@@ -31,52 +31,34 @@ msgstr ""
 "το διακριτικό ελέγχου ταυτότητας για το Google Merchant Shop. Το "
 "αναγνωριστικό πρόσβασης δημιουργείται μετά από 3600 δευτερόλεπτα."
 
-#: admin/class-rex-google-merchant-content-api.php:91
+#: admin/class-rex-google-merchant-content-api.php:108
 msgid "You are authorized."
 msgstr "Είστε εξουσιοδοτημένοι."
 
-#: admin/class-rex-google-merchant-content-api.php:92
+#: admin/class-rex-google-merchant-content-api.php:109
+#, fuzzy
+#| "You are now ready to send feed from WooCommerce Product Feed Manager to "
+#| "your Google Merchant Center. 🚀"
 msgid ""
 "You are now ready to send feed from WooCommerce Product Feed Manager to your "
-"Google Merchant Center. 🚀"
+"Google Merchant Center. "
 msgstr ""
 "Τώρα είστε έτοιμοι να στείλετε τη ροή από τον Διαχειριστή Feed προϊόντων "
 "WooCommerce στο Google Merchant Center. 🚀"
 
-#: admin/class-rex-product-feed-admin.php:204
-msgid ""
-"Hey, I noticed you just created a new feed with 50 products using WC product "
-"feed manager – that’s awesome! Could you please do me a\n"
-"                        BIG favor and give it a 5-star rating on WordPress? "
-"Just to help us spread the word and boost our motivation."
-msgstr ""
-"Γεια σου, παρατήρησα ότι μόλις δημιουργήσατε μια νέα τροφή με 50 προϊόντα "
-"που χρησιμοποιούν το διαχειριστή τροφοδοσίας προϊόντων WC - αυτό είναι "
-"εκπληκτικό! Θα μπορούσατε να μου κάνετε ένα μεγάλο χάρισμα και να του δώσετε "
-"μια βαθμολογία 5 αστέρων στο WordPress; Ακριβώς για να μας βοηθήσει να "
-"διαδώσουμε τη λέξη και να ενισχύσουμε τα κίνητρά μας."
+#: admin/class-rex-product-data-retriever.php:110
+msgid "Start product processing."
+msgstr "Ξεκινήστε την επεξεργασία του προϊόντος."
 
-#: admin/class-rex-product-feed-admin.php:209
-#: admin/class-rex-product-feed-admin.php:236
-msgid "Ok, you deserve it"
-msgstr "Εντάξει, το αξίζετε"
+#: admin/class-rex-product-data-retriever.php:122
+msgid "End product processing."
+msgstr "Επεξεργασία τελικού προϊόντος."
 
-#: admin/class-rex-product-feed-admin.php:212
-#: admin/class-rex-product-feed-admin.php:240
-msgid "Nope, maybe later."
-msgstr "Όχι, ίσως αργότερα."
+#: admin/class-rex-product-feed-admin.php:304
+msgid "Leave a review?"
+msgstr "Υποβολή κριτικής;"
 
-#: admin/class-rex-product-feed-admin.php:215
-#: admin/class-rex-product-feed-admin.php:244
-msgid "I already did."
-msgstr "Εκανα ήδη."
-
-#: admin/class-rex-product-feed-admin.php:218
-#: admin/class-rex-product-feed-admin.php:247
-msgid "Dismiss this notice."
-msgstr "Απορρίψτε την παρούσα ειδοποίηση."
-
-#: admin/class-rex-product-feed-admin.php:232
+#: admin/class-rex-product-feed-admin.php:305
 msgid ""
 "Hey, I noticed you are using WC product feed manager for over two weeks – "
 "that’s awesome! Could you please do me a BIG favor and give it a 5-star "
@@ -89,300 +71,908 @@ msgstr ""
 "WordPress; Ακριβώς για να μας βοηθήσει να διαδώσουμε τη λέξη και να "
 "ενισχύσουμε τα κίνητρά μας."
 
-#: admin/class-rex-product-feed-admin.php:310
-msgid "Product Feed"
-msgstr "Τροφοδοσία προϊόντος"
+#: admin/class-rex-product-feed-admin.php:309
+msgid "Ok, you deserve it"
+msgstr "Εντάξει, το αξίζετε"
 
-#: admin/class-rex-product-feed-admin.php:311
-msgid "Add New Feed"
-msgstr "Προσθήκη νέας ροής"
+#: admin/class-rex-product-feed-admin.php:313
+msgid "Nope, maybe later."
+msgstr "Όχι, ίσως αργότερα."
 
-#: admin/class-rex-product-feed-admin.php:312
+#: admin/class-rex-product-feed-admin.php:317
+msgid "I already did."
+msgstr "Εκανα ήδη."
+
+#: admin/class-rex-product-feed-admin.php:320
+msgid "Dismiss this notice."
+msgstr "Απορρίψτε την παρούσα ειδοποίηση."
+
+#: admin/class-rex-product-feed-admin.php:383
 msgid "Category Mapping"
 msgstr "Χαρτογράφηση κατηγοριών"
 
-#: admin/class-rex-product-feed-admin.php:313
+#: admin/class-rex-product-feed-admin.php:384
 msgid "Google Merchant Settings"
 msgstr "Ρυθμίσεις Εμπόρου Google"
 
-#: admin/class-rex-product-feed-admin.php:314
+#: admin/class-rex-product-feed-admin.php:385
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: admin/class-rex-product-feed-admin.php:386
+#: admin/partials/on_boarding.php:242
+msgid "Support"
+msgstr "Υποστήριξη"
+
+#: admin/class-rex-product-feed-admin.php:390
+#: admin/class-rex-product-feed-admin.php:445
+msgid "Go Pro"
+msgstr "Γίνε επαγγελματίας"
+
+#: admin/class-rex-product-feed-admin.php:443
 msgid "Dashboard"
 msgstr "Ταμπλό"
 
-#: admin/class-rex-product-feed-metabox.php:54
+#: admin/class-rex-product-feed-admin.php:460
+msgid "View WPFM Documentation"
+msgstr "Προβολή τεκμηρίωσης WPFM"
+
+#: admin/class-rex-product-feed-admin.php:460
+msgid "Docs & FAQs"
+msgstr "Έγγραφα και συχνές ερωτήσεις"
+
+#: admin/class-rex-product-feed-admin.php:786
+msgid "Referrer"
+msgstr "Αναφέρων"
+
+#: admin/class-rex-product-feed-admin.php:794
+msgid "The referrer: (e.g. google, newsletter)"
+msgstr "Η παραπομπή: (π.χ. google, ενημερωτικό δελτίο)"
+
+#: admin/class-rex-product-feed-admin.php:797
+msgid "Medium"
+msgstr "Μεσαίο"
+
+#: admin/class-rex-product-feed-admin.php:805
+msgid "Marketing medium: (e.g. cpc, banner, email)"
+msgstr "Μέσο μάρκετινγκ: (π.χ. cpc, banner, email)"
+
+#: admin/class-rex-product-feed-admin.php:809
+msgid "Campaign"
+msgstr "καμπάνια"
+
+#: admin/class-rex-product-feed-admin.php:817
+msgid "Product, promo code, or slogan (e.g. spring_sale)"
+msgstr "Προϊόν, κωδικός προσφοράς ή σύνθημα (π.χ. spring_sale)"
+
+#: admin/class-rex-product-feed-admin.php:820
+msgid "Campaign term"
+msgstr "Όρος καμπάνιας"
+
+#: admin/class-rex-product-feed-admin.php:828
+msgid "Identify the paid keywords"
+msgstr "Προσδιορίστε τις πληρωμένες λέξεις-κλειδιά"
+
+#: admin/class-rex-product-feed-admin.php:832
+msgid "Campaign content"
+msgstr "Campaign content"
+
+#: admin/class-rex-product-feed-admin.php:840
+msgid "Use to differentiate ads"
+msgstr "Χρησιμοποιήστε το για να διαφοροποιήσετε τις διαφημίσεις"
+
+#: admin/class-rex-product-feed-cpt.php:115
+msgid "Total products : "
+msgstr "Σύνολο προϊόντων:"
+
+#: admin/class-rex-product-feed-cpt.php:116
+msgid "Simple products : "
+msgstr "Απλά προϊόντα:"
+
+#: admin/class-rex-product-feed-cpt.php:117
+msgid "Variable parent : "
+msgstr "Μεταβλητός γονέας:"
+
+#: admin/class-rex-product-feed-cpt.php:118
+msgid "Variations : "
+msgstr "Παραλλαγές:"
+
+#: admin/class-rex-product-feed-cpt.php:119
+msgid "Group products : "
+msgstr "Ομαδικά προϊόντα:"
+
+#: admin/class-rex-product-feed-factory.php:219
+msgid "Invalid Merchant."
+msgstr "Μη έγκυρος έμπορος."
+
+#: admin/class-rex-product-feed-metabox.php:40
+#: admin/class-rex-product-feed-metabox.php:47
 msgid "Products"
 msgstr "Προϊόντα"
 
-#: admin/class-rex-product-feed-metabox.php:55
+#: admin/class-rex-product-feed-metabox.php:48
 msgid "Select products to create feed for."
 msgstr "Επιλέξτε προϊόντα για να δημιουργήσετε ροή δεδομένων για."
 
-#: admin/class-rex-product-feed-metabox.php:61
+#: admin/class-rex-product-feed-metabox.php:54
 msgid "All Published Products"
 msgstr "Όλα τα δημοσιευμένα προϊόντα"
 
-#: admin/class-rex-product-feed-metabox.php:62
+#: admin/class-rex-product-feed-metabox.php:55
 msgid "Custom Filter"
 msgstr "Φιλτράρισμα προσαρμοσμένων"
 
-#: admin/class-rex-product-feed-metabox.php:63
+#: admin/class-rex-product-feed-metabox.php:56
 msgid "Category Filter"
 msgstr "Φίλτρο κατηγοριών"
 
-#: admin/class-rex-product-feed-metabox.php:64
+#: admin/class-rex-product-feed-metabox.php:57
 msgid "Tag Filter"
 msgstr "Φίλτρο ετικετών"
 
-#: admin/class-rex-product-feed-metabox.php:113
+#: admin/class-rex-product-feed-metabox.php:107
 msgid "Refresh Interval"
 msgstr "διάστημα ανανέωσης"
 
-#: admin/class-rex-product-feed-metabox.php:114
+#: admin/class-rex-product-feed-metabox.php:108
 msgid "Feed Schedule Update"
 msgstr "Ενημέρωση χρονοδιαγράμματος ροής"
 
-#: admin/class-rex-product-feed-metabox.php:118
+#: admin/class-rex-product-feed-metabox.php:112
 msgid "No Interval"
 msgstr "Δεν υπάρχει διάστημα"
 
-#: admin/class-rex-product-feed-metabox.php:119
+#: admin/class-rex-product-feed-metabox.php:113
 msgid "Daily"
 msgstr "Καθημερινά"
 
-#: admin/class-rex-product-feed-metabox.php:120
-#: admin/class-rex-product-feed-metabox.php:400
+#: admin/class-rex-product-feed-metabox.php:114
+#: admin/class-rex-product-feed-metabox.php:700
 msgid "Hourly"
 msgstr "Ωριαίος"
 
+#: admin/class-rex-product-feed-metabox.php:125
+msgid "Include Variable Parent Product"
+msgstr "Συμπερίληψη μεταβλητού γονικού προϊόντος"
+
+#: admin/class-rex-product-feed-metabox.php:126
+msgid "Include/Exclude Parent Variable Product"
+msgstr "Συμπερίληψη / εξαίρεση γονικού μεταβλητού προϊόντος"
+
 #: admin/class-rex-product-feed-metabox.php:130
-msgid "Include Product Variations"
-msgstr "Συμπεριλάβετε παραλλαγές προϊόντων"
-
-#: admin/class-rex-product-feed-metabox.php:131
-msgid "Include/Exclude Products Variations"
-msgstr "Συμπεριλάβετε / Εξαιρέστε Παραλλαγές Προϊόντα"
-
-#: admin/class-rex-product-feed-metabox.php:135
-#: admin/class-rex-product-feed-metabox.php:151
+#: admin/class-rex-product-feed-metabox.php:146
+#: admin/class-rex-product-feed-metabox.php:163
+#: admin/class-rex-product-feed-metabox.php:179
+#: admin/class-rex-product-feed-metabox.php:195
 msgid "Yes"
 msgstr "Ναί"
 
-#: admin/class-rex-product-feed-metabox.php:136
-#: admin/class-rex-product-feed-metabox.php:152
+#: admin/class-rex-product-feed-metabox.php:131
+#: admin/class-rex-product-feed-metabox.php:147
+#: admin/class-rex-product-feed-metabox.php:164
+#: admin/class-rex-product-feed-metabox.php:180
+#: admin/class-rex-product-feed-metabox.php:196
 msgid "No"
 msgstr "Οχι"
 
-#: admin/class-rex-product-feed-metabox.php:146
+#: admin/class-rex-product-feed-metabox.php:141
+msgid "Include Product Variations"
+msgstr "Συμπεριλάβετε παραλλαγές προϊόντων"
+
+#: admin/class-rex-product-feed-metabox.php:142
+msgid "Include/Exclude Products Variations"
+msgstr "Συμπεριλάβετε / Εξαιρέστε Παραλλαγές Προϊόντα"
+
+#: admin/class-rex-product-feed-metabox.php:158
+msgid "Include variation product name"
+msgstr "Συμπεριλάβετε το όνομα προϊόντος παραλλαγής"
+
+#: admin/class-rex-product-feed-metabox.php:159
+msgid ""
+"It will add the all the variation name on product title. Will be applicable "
+"if there are more than two variation atrributes of a product."
+msgstr ""
+"Θα προσθέσει όλο το όνομα παραλλαγής στον τίτλο του προϊόντος. Θα ισχύει εάν "
+"υπάρχουν περισσότερες από δύο ιδιότητες παραλλαγής ενός προϊόντος."
+
+#: admin/class-rex-product-feed-metabox.php:174
 msgid "Include Parent Product (Grouped Product)"
 msgstr "Συμπεριλάβετε το γονικό προϊόν (ομαδοποιημένο προϊόν)"
 
-#: admin/class-rex-product-feed-metabox.php:147
+#: admin/class-rex-product-feed-metabox.php:175
 msgid "Include/Exclude Parent Product"
 msgstr "Συμπεριλάβετε / Εξαίρεση του γονικού προϊόντος"
 
-#: admin/class-rex-product-feed-metabox.php:173
-#: admin/class-rex-product-feed-metabox.php:174
-msgid "WPML Language"
-msgstr "Γλώσσα WPML"
+#: admin/class-rex-product-feed-metabox.php:190
+#: admin/class-rex-product-feed-metabox.php:191
+msgid "Exclude invisible/hidden products"
+msgstr "Εξαίρεση αόρατων / κρυφών προϊόντων"
 
-#: admin/class-rex-product-feed-metabox.php:199
+#: admin/class-rex-product-feed-metabox.php:205
+msgid "Analytics parameters"
+msgstr "Παράμετροι του Analytics"
+
+#: admin/class-rex-product-feed-metabox.php:206
+msgid "Check to activate utm params"
+msgstr "Επιλέξτε για να ενεργοποιήσετε τις παραμέτρους utm"
+
+#: admin/class-rex-product-feed-metabox.php:212
+msgid "Parameters"
+msgstr "Παράμετροι"
+
+#: admin/class-rex-product-feed-metabox.php:303
+msgid "Please select merchant"
+msgstr "Επιλέξτε έμπορο"
+
+#: admin/class-rex-product-feed-metabox.php:334
+msgid "Feed Configuration"
+msgstr "Διαμόρφωση ροής"
+
+#: admin/class-rex-product-feed-metabox.php:339
 msgid "Merchant Type"
 msgstr "Τύπος Εμπορικής"
 
-#: admin/class-rex-product-feed-metabox.php:200
+#: admin/class-rex-product-feed-metabox.php:340
 msgid "Select Merchant Type of the Feed."
 msgstr "Επιλέξτε Εμπορικός τύπος της ροής."
 
-#: admin/class-rex-product-feed-metabox.php:206
-msgid "Custom"
-msgstr "Εθιμο"
-
-#: admin/class-rex-product-feed-metabox.php:207
-msgid "Google Shopping"
-msgstr "Google Shopping"
-
-#: admin/class-rex-product-feed-metabox.php:208
-msgid "Google Adwords"
-msgstr "Google Adwords"
-
-#: admin/class-rex-product-feed-metabox.php:209
-msgid "Facebook"
-msgstr "Facebook"
-
-#: admin/class-rex-product-feed-metabox.php:210
-msgid "Amazon Ads"
-msgstr "Amazon Ads"
-
-#: admin/class-rex-product-feed-metabox.php:211
-msgid "eBay(Shopping.com)"
-msgstr "eBay(Shopping.com)"
-
-#: admin/class-rex-product-feed-metabox.php:212
-msgid "Adroll.com"
-msgstr "Adroll.com"
-
-#: admin/class-rex-product-feed-metabox.php:213
-msgid "Nextag"
-msgstr "Nextag"
-
-#: admin/class-rex-product-feed-metabox.php:214
-msgid "Price Grabber"
-msgstr "Price Grabber"
-
-#: admin/class-rex-product-feed-metabox.php:215
-msgid "Bing"
-msgstr "Bing"
-
-#: admin/class-rex-product-feed-metabox.php:216
-msgid "Kelkoo"
-msgstr "Kelkoo"
-
-#: admin/class-rex-product-feed-metabox.php:217
-msgid "Become"
-msgstr "Become"
-
-#: admin/class-rex-product-feed-metabox.php:218
-msgid "ShopZilla.com"
-msgstr "ShopZilla.com"
-
-#: admin/class-rex-product-feed-metabox.php:219
-msgid "Shopping.com"
-msgstr "Shopping.com"
-
-#: admin/class-rex-product-feed-metabox.php:224
+#: admin/class-rex-product-feed-metabox.php:351
 msgid "File Format"
 msgstr "Μορφή αρχείου"
 
-#: admin/class-rex-product-feed-metabox.php:225
+#: admin/class-rex-product-feed-metabox.php:352
 msgid "Select Format of the Feed."
 msgstr "Επιλέξτε Μορφή της ροής."
 
-#: admin/class-rex-product-feed-metabox.php:231
+#: admin/class-rex-product-feed-metabox.php:356
 msgid "XML"
 msgstr "XML"
 
-#: admin/class-rex-product-feed-metabox.php:233
+#: admin/class-rex-product-feed-metabox.php:357
 msgid "TEXT"
 msgstr "Κείμενο"
 
-#: admin/class-rex-product-feed-metabox.php:258
+#: admin/class-rex-product-feed-metabox.php:358
+msgid "CSV"
+msgstr "CSV"
+
+#: admin/class-rex-product-feed-metabox.php:359
+msgid "JSON (Only for Zalando)"
+msgstr "JSON (Μόνο για Zalando)"
+
+#: admin/class-rex-product-feed-metabox.php:524
 msgid "Add New Attribute"
 msgstr "Προσθήκη νέου χαρακτηριστικού"
 
-#: admin/class-rex-product-feed-metabox.php:292
+#: admin/class-rex-product-feed-metabox.php:525
+msgid "Add New Custom Attribute"
+msgstr "Προσθήκη νέου προσαρμοσμένου χαρακτηριστικού"
+
+#: admin/class-rex-product-feed-metabox.php:557
 msgid "Add New Filter"
 msgstr "Προσθήκη νέου φίλτρου"
 
-#: admin/class-rex-product-feed-metabox.php:316
+#: admin/class-rex-product-feed-metabox.php:573
+msgid "Feed URL"
+msgstr "Διεύθυνση URL ροής"
+
+#: admin/class-rex-product-feed-metabox.php:580
 msgid "Your Feed URL"
 msgstr "Η διεύθυνση URL της ροής σας"
 
-#: admin/class-rex-product-feed-metabox.php:346
+#: admin/class-rex-product-feed-metabox.php:601
+msgid "Why upgrade to Premium Version?"
+msgstr "Γιατί να κάνετε αναβάθμιση σε Premium έκδοση;"
+
+#: admin/class-rex-product-feed-metabox.php:623
+msgid "Supports more than 50 products."
+msgstr "Υποστηρίζει περισσότερα από 50 προϊόντα."
+
+#: admin/class-rex-product-feed-metabox.php:624
+msgid "Access to a elite support team."
+msgstr "Πρόσβαση σε μια ελίτ ομάδα υποστήριξης."
+
+#: admin/class-rex-product-feed-metabox.php:625
+msgid "Supports YITH brand attributes."
+msgstr "Υποστηρίζει τα χαρακτηριστικά της μάρκας YITH."
+
+#: admin/class-rex-product-feed-metabox.php:626
+msgid "Dynamic Attribute."
+msgstr "Δυναμικό χαρακτηριστικό."
+
+#: admin/class-rex-product-feed-metabox.php:627
+msgid ""
+"Custom field support - Brand,GTIN,MPN,UPC,EAN,Size, Pattern, Material, Age "
+"Group, Gender."
+msgstr ""
+"Υποστήριξη προσαρμοσμένου πεδίου - Μάρκα, GTIN, MPN, UPC, EAN, Μέγεθος, "
+"μοτίβο, υλικό, ηλικιακή ομάδα, φύλο."
+
+#: admin/class-rex-product-feed-metabox.php:628
+msgid "Fix WooCommerce's (JSON-LD) structure data bug"
+msgstr "Διορθώστε το σφάλμα δεδομένων δομής του WooCommerce (JSON-LD)"
+
+#: admin/class-rex-product-feed-metabox.php:646
 msgid "View Feed"
 msgstr "Προβολή τροφής"
 
-#: admin/class-rex-product-feed-metabox.php:348
+#: admin/class-rex-product-feed-metabox.php:648
 msgid "Download Feed"
 msgstr "Λήψη τροφής"
 
-#: admin/class-rex-product-feed-metabox.php:372
+#: admin/class-rex-product-feed-metabox.php:664
+msgid "Send to Google Merchant"
+msgstr "Αποστολή στον Έμπορο Google"
+
+#: admin/class-rex-product-feed-metabox.php:672
 msgid "Target Country"
 msgstr "Χώρα προορισμού"
 
-#: admin/class-rex-product-feed-metabox.php:383
+#: admin/class-rex-product-feed-metabox.php:683
 msgid "Target Language"
 msgstr "Γλώσσα στόχου"
 
-#: admin/class-rex-product-feed-metabox.php:393
+#: admin/class-rex-product-feed-metabox.php:693
 msgid "Schedule"
 msgstr "Πρόγραμμα"
 
-#: admin/class-rex-product-feed-metabox.php:398
+#: admin/class-rex-product-feed-metabox.php:698
 msgid "Monthly"
 msgstr "Μηνιαίο"
 
-#: admin/class-rex-product-feed-metabox.php:399
+#: admin/class-rex-product-feed-metabox.php:699
 msgid "Weekly"
 msgstr "Εβδομαδιαίος"
 
-#: admin/class-rex-product-feed-metabox.php:408
+#: admin/class-rex-product-feed-metabox.php:708
 msgid "Select day of month"
 msgstr "Επιλέξτε ημέρα του μήνα"
 
-#: admin/class-rex-product-feed-metabox.php:420
+#: admin/class-rex-product-feed-metabox.php:720
 msgid "Select day of week"
 msgstr "Επιλέξτε την ημέρα της εβδομάδας"
 
-#: admin/class-rex-product-feed-metabox.php:440
+#: admin/class-rex-product-feed-metabox.php:740
 msgid "Select Hour"
 msgstr "Επιλέξτε ώρα"
 
-#: admin/class-rex-product-feed-metabox.php:456
+#: admin/class-rex-product-feed-metabox.php:756
 msgid ""
-"Please note that Google has fixed abbreviations for Location and Language. "
-"For example, the abbreviation for target location, \n"
-"                United States is US and the abbreviation for language, "
-"English is en."
+"<p class=\"google-desc\">Please note that Google has fixed abbreviations for "
+"Location and Language. For example, the abbreviation for target location, "
+"United States is US and the abbreviation for language, English is en. <a "
+"href=\"https://rextheme.com/google-country-codes-list/\" target=\"_blank\">"
+"Click here</a> to see the list of all abbreviations set by Google.</p>"
 msgstr ""
-"Λάβετε υπόψη ότι η Google έχει καθορισμένες συντομεύσεις για την τοποθεσία "
-"και τη γλώσσα. Για παράδειγμα, η συντομογραφία για τη θέση προορισμού, οι "
-"Ηνωμένες Πολιτείες είναι οι ΗΠΑ και η συντομογραφία για τη γλώσσα, τα "
-"αγγλικά είναι en."
+"<p class = \"google-desc\"> Λάβετε υπόψη ότι η Google έχει διορθώσει "
+"συντομογραφίες για την Τοποθεσία και τη Γλώσσα. Για παράδειγμα, η "
+"συντομογραφία για την τοποθεσία-στόχο, οι Ηνωμένες Πολιτείες είναι ΗΠΑ και η "
+"συντομογραφία για τη γλώσσα, η αγγλική είναι en. <a href=\"https://rextheme."
+"com/google-country-codes-list/\" target=\"_blank\"> Κάντε κλικ εδώ </a> για "
+"να δείτε τη λίστα με όλες τις συντομογραφίες που έχει ορίσει η Google. </p>"
 
-#: admin/class-rex-product-feed-metabox.php:457
-msgid "Click here"
-msgstr "Κάντε κλικ ΕΔΩ"
-
-#: admin/class-rex-product-feed-metabox.php:457
-msgid "to see the list of all abbreviations set by Google."
-msgstr ""
-"Για να δείτε τη λίστα με όλες τις συντομεύσεις που έχει ορίσει η Google."
-
-#: admin/class-rex-product-feed-metabox.php:483
+#: admin/class-rex-product-feed-metabox.php:782
+#, fuzzy
+#| "Oops!! Access token has expired.Please authenticate token for Google "
+#| "Merchant Shop to be able to send feed."
 msgid ""
-"Oops!! Access token has expired.Please authenticate token for Google "
+"Oops!! Access token has expired 😕. Please authenticate token for Google "
 "Merchant Shop to be able to send feed."
 msgstr ""
 "Ωχ! Το διακριτικό πρόσβασης έχει λήξει.Παρακαλώτε το διακριτικό ελέγχου "
 "ταυτότητας για το Google Merchant Shop για να μπορείτε να στέλνετε ροή "
 "δεδομένων."
 
-#: admin/class-rex-product-feed-metabox.php:485
+#: admin/class-rex-product-feed-metabox.php:784
 msgid "Authenticate"
 msgstr "Πιστοποιώ την αυθεντικότητα"
 
-#: admin/class-rex-product-feed-metabox.php:490
+#: admin/class-rex-product-feed-metabox.php:789
 msgid "Send to google merchant"
 msgstr "Αποστολή στο Google Merchant"
 
-#: admin/partials/merchant_settings.php:43
+#: admin/class-rex-product-feed-notices.php:37
+msgid "Product Feed"
+msgstr "Τροφοδοσία προϊόντος"
+
+#: admin/feed/abstract-rex-product-feed-generator.php:368
+msgid "Start feed processing job by cron"
+msgstr "Ξεκινήστε την εργασία επεξεργασίας ροής από τον cron"
+
+#: admin/feed/abstract-rex-product-feed-generator.php:378
+msgid "Start feed processing job."
+msgstr "Ξεκινήστε την εργασία επεξεργασίας τροφών."
+
+#: admin/feed/abstract-rex-product-feed-generator.php:1005
+msgid "Completed feed generation job."
+msgstr "Ολοκληρώθηκε η εργασία δημιουργίας ροών."
+
+#: admin/partials/category_mapping.php:46
+msgid "Update"
+msgstr "Εκσυγχρονίζω"
+
+#: admin/partials/category_mapping.php:47
+msgid "Delete"
+msgstr "Διαγράφω"
+
+#: admin/partials/category_mapping.php:57
+msgid "Please update WPFM database"
+msgstr "Ενημερώστε τη βάση δεδομένων WPFM"
+
+#: admin/partials/category_mapping.php:70
+msgid "Add New Category Map"
+msgstr "Προσθήκη χάρτη νέας κατηγορίας"
+
+#: admin/partials/category_mapping.php:74
+msgid "Mapper Name"
+msgstr "Όνομα χαρτογράφησης"
+
+#: admin/partials/category_mapping.php:87
+msgid "Save"
+msgstr "Σώσει"
+
+#: admin/partials/database-update-notice.php:6
+msgid "WPFM Database Update Notice"
+msgstr "Ειδοποίηση ενημέρωσης βάσης δεδομένων WPFM"
+
+#: admin/partials/database-update-notice.php:10
+msgid ""
+"WooCommerce Product Feed Manager is getting better and now, has an updated "
+"data structure for it to run smoothly. Click on update now to get the latest "
+"data structure for WPFM. None of your data will be changed/removed, only "
+"WPFM data will be restructured for better outcome."
+msgstr ""
+"Το WooCommerce Product Feed Manager βελτιώνεται και τώρα, διαθέτει μια "
+"ενημερωμένη δομή δεδομένων για να λειτουργεί ομαλά. Κάντε κλικ στην "
+"ενημέρωση τώρα για να λάβετε την πιο πρόσφατη δομή δεδομένων για το WPFM. "
+"Κανένα από τα δεδομένα σας δεν θα αλλάξει / καταργηθεί, μόνο τα δεδομένα "
+"WPFM θα αναδιαρθρωθούν για καλύτερο αποτέλεσμα."
+
+#: admin/partials/database-update-notice.php:11
+msgid ""
+"The database update process runs in the background and may take a little "
+"while, so please be patient."
+msgstr ""
+"Η διαδικασία ενημέρωσης βάσης δεδομένων εκτελείται στο παρασκήνιο και μπορεί "
+"να διαρκέσει λίγο, οπότε παρακαλώ να είστε υπομονετικοί."
+
+#: admin/partials/database-update-notice.php:17
+msgid "Update WPFM Database"
+msgstr "Ενημέρωση βάσης δεδομένων WPFM"
+
+#: admin/partials/database-update-running-notice.php:6
+msgid "Update in progress…."
+msgstr "Αναβάθμιση σε εξέλιξη…."
+
+#: admin/partials/database-update-running-notice.php:10
+msgid "It will run in the background while you can continue browsing."
+msgstr "Θα εκτελείται στο παρασκήνιο ενώ μπορείτε να συνεχίσετε την περιήγηση."
+
+#: admin/partials/feed-config-metabox-display-filter.php:36
+msgid "If"
+msgstr "Αν"
+
+#: admin/partials/feed-config-metabox-display-filter.php:37
+msgid "Condition"
+msgstr "Κατάσταση"
+
+#: admin/partials/feed-config-metabox-display-filter.php:38
+#: admin/partials/feed-config-metabox-display.php:29
+msgid "Value"
+msgstr "αξία"
+
+#: admin/partials/feed-config-metabox-display-filter.php:39
+msgid "Then"
+msgstr "Τότε"
+
+#: admin/partials/feed-config-metabox-display.php:27
+msgid "Attributes"
+msgstr "Γνωρίσματα"
+
+#: admin/partials/feed-config-metabox-display.php:28
+msgid "Type"
+msgstr "Τύπος"
+
+#: admin/partials/feed-config-metabox-display.php:30
+msgid "Prefix"
+msgstr "Πρόθεμα"
+
+#: admin/partials/feed-config-metabox-display.php:31
+msgid "Suffix"
+msgstr "Κατάληξη"
+
+#: admin/partials/feed-config-metabox-display.php:32
+msgid "Output Sanitization"
+msgstr "Απολύμανση εξόδου"
+
+#: admin/partials/feed-config-metabox-display.php:33
+msgid "Output Limit"
+msgstr "Όριο εξόδου"
+
+#: admin/partials/merchant_settings.php:38
+msgid "Configure your google merchant"
+msgstr "Διαμορφώστε τον έμπορο google"
+
+#: admin/partials/merchant_settings.php:44
 msgid "Client ID#: "
 msgstr "Ταυτότητα πελάτη#:"
 
-#: admin/partials/merchant_settings.php:47
+#: admin/partials/merchant_settings.php:48
 msgid "Client Secret: "
 msgstr "Κλειδί πελάτη:"
 
-#: admin/partials/merchant_settings.php:51
+#: admin/partials/merchant_settings.php:52
 msgid "Merchant ID# : "
 msgstr "Merchant ID# : "
 
-#: admin/partials/merchant_settings.php:56
+#: admin/partials/merchant_settings.php:57
 msgid "Redirect URL"
 msgstr "Ανακατεύθυνση διεύθυνσης URL"
 
-#: admin/partials/merchant_settings.php:59
+#: admin/partials/merchant_settings.php:60
 msgid "Reset"
 msgstr "Επαναφορά"
 
-#: admin/partials/merchant_settings.php:60
-msgid "replay"
-msgstr "Επανάληψη"
-
-#: admin/partials/merchant_settings.php:63
+#: admin/partials/merchant_settings.php:64
 msgid "Submit"
 msgstr "υποβάλλουν"
 
-#: admin/partials/merchant_settings.php:64
-msgid "send"
-msgstr "Στείλετε"
+#: admin/partials/on_boarding.php:50 admin/partials/on_boarding.php:204
+msgid "Go Premium"
+msgstr "Πηγαίνετε Premium"
+
+#: admin/partials/on_boarding.php:52
+#, php-format
+msgid ""
+"Purchase our <a href=\"%s\" target=\"_blank\" title=\"Click to Upgrade Pro\">"
+"premium version</a> to unlock these pro components!"
+msgstr ""
+"Αγοράστε την <a href=\"%s\" target=\"_blank\" title=\"Κάντε κλικ για "
+"αναβάθμιση Pro\"> premium έκδοση </a> για να ξεκλειδώσετε αυτά τα "
+"επαγγελματικά στοιχεία!"
+
+#: admin/partials/on_boarding.php:56
+msgid "ok"
+msgstr "Εντάξει"
+
+#: admin/partials/on_boarding.php:91
+msgid "General"
+msgstr "Γενικός"
+
+#: admin/partials/on_boarding.php:115
+msgid "Merchants"
+msgstr "Έμποροι"
+
+#: admin/partials/on_boarding.php:158 admin/partials/on_boarding.php:1300
+msgid "Controls"
+msgstr "Έλεγχοι"
+
+#: admin/partials/on_boarding.php:180
+msgid "Video Tutorials"
+msgstr "Εκπαιδευτικά βίντεο"
+
+#: admin/partials/on_boarding.php:200 admin/partials/on_boarding.php:1495
+msgid "System Status"
+msgstr "Κατάσταση συστήματος"
+
+#: admin/partials/on_boarding.php:207
+msgid "Logs"
+msgstr "Κούτσουρα"
+
+#: admin/partials/on_boarding.php:225
+msgid "Documentation"
+msgstr "Τεκμηρίωση"
+
+#: admin/partials/on_boarding.php:230
+msgid ""
+"Before You start, you can check our Documentation to get familiar with "
+"WooCommerce Product Feed Manager."
+msgstr ""
+"Πριν ξεκινήσετε, μπορείτε να ελέγξετε την Τεκμηρίωση για να εξοικειωθείτε με "
+"το WooCommerce Product Feed Manager."
+
+#: admin/partials/on_boarding.php:233
+msgid "View Documentation"
+msgstr "Προβολή τεκμηρίωσης"
+
+#: admin/partials/on_boarding.php:247
+msgid ""
+"Can't find solution on with our documentation? Just Post a ticket on Support "
+"forum. We are to solve your issue."
+msgstr ""
+"Δεν μπορείτε να βρείτε λύση με την τεκμηρίωσή μας; Απλώς δημοσιεύστε ένα "
+"εισιτήριο στο φόρουμ υποστήριξης. Θα λύσουμε το πρόβλημά σας."
+
+#: admin/partials/on_boarding.php:250
+msgid "Post a Ticket"
+msgstr "Δημοσίευση εισιτηρίου"
+
+#: admin/partials/on_boarding.php:259
+msgid "Share Your Thoughts"
+msgstr "Μοιράσου τις σκέψεις σου"
+
+#: admin/partials/on_boarding.php:264
+msgid ""
+"Your suggestions are valubale to us. It can help to make WPFM even better."
+msgstr ""
+"Οι προτάσεις σας είναι πολύτιμες για εμάς. Μπορεί να βοηθήσει να κάνει το "
+"WPFM ακόμη καλύτερο."
+
+#: admin/partials/on_boarding.php:267
+msgid "Suggest"
+msgstr "Προτείνω"
+
+#: admin/partials/on_boarding.php:276
+msgid "Make WPFM Popular"
+msgstr "Κάντε το WPFM δημοφιλές"
+
+#: admin/partials/on_boarding.php:281
+msgid ""
+"Your rating and feedback matters to us. If you are happy with WooCommerce "
+"Product Feed Manager give us a rating."
+msgstr ""
+"Η βαθμολογία και τα σχόλιά σας έχουν σημασία για εμάς. Εάν είστε "
+"ικανοποιημένοι με το WooCommerce Product Feed Manager, δώστε μας μια "
+"βαθμολογία."
+
+#: admin/partials/on_boarding.php:284
+msgid "Rate Us!"
+msgstr "Βαθμολογήστε μας!"
+
+#: admin/partials/on_boarding.php:293
+msgid "Share On"
+msgstr "Κοινή χρήση"
+
+#: admin/partials/on_boarding.php:298
+msgid "Share on Facebook"
+msgstr "Μοιραστείτε στο Facebook"
+
+#: admin/partials/on_boarding.php:299
+msgid "Share on Twitter"
+msgstr "Μοιραστείτε στο Twitter"
+
+#: admin/partials/on_boarding.php:300
+msgid "Share on Google+"
+msgstr "Κοινοποίηση στο Google+"
+
+#: admin/partials/on_boarding.php:301
+msgid "Share on LinkedIn"
+msgstr "Μοιραστείτε στο LinkedIn"
+
+#: admin/partials/on_boarding.php:313 admin/partials/on_boarding.php:1620
+msgid "Why upgrade to Pro?"
+msgstr "Γιατί να κάνετε αναβάθμιση σε Pro;"
+
+#: admin/partials/on_boarding.php:315 admin/partials/on_boarding.php:1622
+msgid "Generate feed for unlimited products"
+msgstr "Δημιουργήστε ροή για απεριόριστα προϊόντα"
+
+#: admin/partials/on_boarding.php:316 admin/partials/on_boarding.php:1623
+msgid ""
+"Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, "
+"ISBN, ITF14, Offer price, Offer effective date)"
+msgstr ""
+"Μοναδικά αναγνωριστικά προϊόντων Προσαρμοσμένα πεδία (επωνυμία, GTIN, MPN, "
+"UPC, EAN, JAN, ISBN, ITF14, τιμή προσφοράς, ημερομηνία ισχύος προσφοράς)"
+
+#: admin/partials/on_boarding.php:317 admin/partials/on_boarding.php:1624
+msgid ""
+"Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age "
+"Group, Gender, Color)"
+msgstr ""
+"Λεπτομερή χαρακτηριστικά προϊόντων Προσαρμοσμένα πεδία (μέγεθος, μοτίβο, "
+"υλικό, ηλικιακή ομάδα, φύλο, χρώμα)"
+
+#: admin/partials/on_boarding.php:318 admin/partials/on_boarding.php:1625
+msgid "Ability To Exclude Tax From Structured Data Prices"
+msgstr "Δυνατότητα εξαίρεσης φόρου από τιμές δομημένων δεδομένων"
+
+#: admin/partials/on_boarding.php:319 admin/partials/on_boarding.php:1626
+msgid "Option To Fix WooCommerce’s (Json-Ld) Structured Data Bug"
+msgstr ""
+"Επιλογή διόρθωσης σφαλμάτων δομημένων δεδομένων του WooCommerce (Json-Ld)"
+
+#: admin/partials/on_boarding.php:320 admin/partials/on_boarding.php:1627
+msgid "Custom Batch configuration"
+msgstr "Προσαρμοσμένη διαμόρφωση παρτίδας"
+
+#: admin/partials/on_boarding.php:321 admin/partials/on_boarding.php:1628
+msgid ""
+"9 more pre-built templates (including eBay MIP, eBay Seller Center, Google "
+"Product Review, Google Re-marketing (DRM) and others)"
+msgstr ""
+"9 ακόμη προκατασκευασμένα πρότυπα (συμπεριλαμβανομένων των eBay MIP, eBay "
+"Seller Center, Google Product Review, Google Re-marketing (DRM) και άλλων)"
+
+#: admin/partials/on_boarding.php:324
+msgid "Upgrade to Pro"
+msgstr "Αναβάθμιση σε επαγγελματικό"
+
+#: admin/partials/on_boarding.php:334
+msgid "Available Merchants"
+msgstr "Διαθέσιμοι έμποροι"
+
+#: admin/partials/on_boarding.php:1268 admin/partials/on_boarding.php:1361
+#: admin/partials/on_boarding.php:1386 admin/partials/on_boarding.php:1413
+#: admin/partials/on_boarding.php:1438 admin/partials/on_boarding.php:1466
+msgid "pro"
+msgstr "επαγγελματίας"
+
+#: admin/partials/on_boarding.php:1303
+msgid "Product(s) per batch"
+msgstr "Προϊόν (α) ανά παρτίδα"
+
+#: admin/partials/on_boarding.php:1313
+msgid "Clear batch"
+msgstr "Καθαρή παρτίδα"
+
+#: admin/partials/on_boarding.php:1319
+msgid "Enable Facebook Pixel"
+msgstr "Ενεργοποίηση Facebook Pixel"
+
+#: admin/partials/on_boarding.php:1335
+msgid "Enable log"
+msgstr "Ενεργοποίηση καταγραφής"
+
+#: admin/partials/on_boarding.php:1349
+msgid "Facebook Pixel id"
+msgstr "Αναγνωριστικό Facebook Pixel"
+
+#: admin/partials/on_boarding.php:1365
+msgid "Add custom fields for Amazon"
+msgstr "Προσθέστε προσαρμοσμένα πεδία για το Amazon"
+
+#: admin/partials/on_boarding.php:1391
+msgid "Exclude TAX from structured data prices"
+msgstr "Εξαίρεση φόρου από τιμές δομημένων δεδομένων"
+
+#: admin/partials/on_boarding.php:1417
+msgid ""
+"Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, "
+"ITF14, Offer price, Offer effective date ) to product"
+msgstr ""
+"Προσθήκη μοναδικών αναγνωριστικών προϊόντων (επωνυμία, GTIN, MPN, UPC, EAN, "
+"JAN, ISBN, ITF14, τιμή προσφοράς, ημερομηνία ισχύος προσφοράς) στο προϊόν"
+
+#: admin/partials/on_boarding.php:1443
+msgid ""
+"Increase the number of products that will be approved in Google's Merchant "
+"Center:\n"
+"                                           This option will fix "
+"WooCommerce's (JSON-LD) structured data bug and add extra structured data "
+"elements to your pages"
+msgstr ""
+"Αυξήστε τον αριθμό των προϊόντων που θα εγκριθούν στο Merchant Center της "
+"Google:\n"
+"                                            Αυτή η επιλογή θα διορθώσει το "
+"σφάλμα δομημένων δεδομένων του WooCommerce (JSON-LD) και θα προσθέσει "
+"επιπλέον στοιχεία δομημένων δεδομένων στις σελίδες σας"
+
+#: admin/partials/on_boarding.php:1470
+msgid ""
+"Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, "
+"Gender, Additional info ) to product"
+msgstr ""
+"Προσθέστε λεπτομερή χαρακτηριστικά προϊόντος (Μέγεθος, χρώμα, μοτίβο, υλικό, "
+"ηλικιακή ομάδα, φύλο, πρόσθετες πληροφορίες) στο προϊόν"
+
+#: admin/partials/on_boarding.php:1525
+msgid "PHP version:"
+msgstr "Έκδοση PHP:"
+
+#: admin/partials/on_boarding.php:1531
+#, php-format
+msgid ""
+"%1$s - We recommend using PHP version 7.2 or above for greater performance "
+"and security."
+msgstr ""
+"Συνιστούμε τη χρήση της έκδοσης 7.2 ή παραπάνω της PHP για μεγαλύτερη "
+"απόδοση και ασφάλεια."
+
+#: admin/partials/on_boarding.php:1537
+msgid "WordPress version:"
+msgstr "Έκδοση WordPress:"
+
+#: admin/partials/on_boarding.php:1543
+#, php-format
+msgid "%1$s - WP version above 4 is required. "
+msgstr "Απαιτείται έκδοση WP πάνω από 4."
+
+#: admin/partials/on_boarding.php:1549
+msgid "WooCommerce Version:"
+msgstr "Έκδοση WooCommerce:"
+
+#: admin/partials/on_boarding.php:1555
+#, php-format
+msgid "%1$s - WC version above 4 is required. "
+msgstr "Απαιτείται έκδοση WC πάνω από 4."
+
+#: admin/partials/on_boarding.php:1561
+msgid "Memory:"
+msgstr "Μνήμη:"
+
+#: admin/partials/on_boarding.php:1567
+#, php-format
+msgid "%1$s - We recommend setting memory to at least 64MB. See: %2$s"
+msgstr "Συνιστούμε να ρυθμίσετε τη μνήμη σε τουλάχιστον 64MB. Βλέπω:"
+
+#: admin/partials/on_boarding.php:1567
+msgid "Increasing memory allocated to PHP"
+msgstr "Αύξηση της μνήμης που κατανέμεται στην PHP"
+
+#: admin/partials/on_boarding.php:1573
+msgid "Upload Limit:"
+msgstr "Όριο μεταφόρτωσης:"
+
+#: admin/partials/on_boarding.php:1579
+#, php-format
+msgid "%1$s - We recommend upload limit to at least 64MB."
+msgstr "Συνιστούμε το όριο μεταφόρτωσης τουλάχιστον 64 MB."
+
+#: admin/partials/on_boarding.php:1585
+msgid "WP Cron"
+msgstr "WP Cron"
+
+#: admin/partials/on_boarding.php:1597
+msgid "Product Feed Directory Writable"
+msgstr "Κατάλογος ροών προϊόντων με δυνατότητα εγγραφής"
+
+#: admin/partials/on_boarding.php:1603
+#, php-format
+msgid "It is required to make feed directory writable. %1$s"
+msgstr "Απαιτείται να γίνει εγγράψιμος ο κατάλογος ροών."
+
+#: admin/partials/on_boarding.php:1630
+msgid "Get Premium Version"
+msgstr "Λάβετε Premium έκδοση"
+
+#: admin/partials/on_boarding.php:1653
+msgid "View log"
+msgstr "Προβολή αρχείου καταγραφής"
+
+#: admin/partials/on_boarding.php:1657
+msgid "Copy log"
+msgstr "Αντιγραφή αρχείου καταγραφής"
+
+#: admin/partials/progress-bar.php:27
+msgid "Your feed is generating"
+msgstr "Η ροή σας δημιουργείται"
+
+#: admin/partials/wpmf-black-friday-notice.php:16
+msgid "Upgrade to pro with a"
+msgstr "Αναβάθμιση σε επαγγελματία με ένα"
+
+#: admin/partials/wpmf-black-friday-notice.php:17
+msgid "Huge Black Friday Discount"
+msgstr "Τεράστια έκπτωση Black Friday"
+
+#: admin/partials/wpmf-black-friday-notice.php:18
+msgid "Generate ultimate product feed in minutes."
+msgstr "Δημιουργήστε την απόλυτη τροφοδοσία προϊόντος σε λίγα λεπτά."
+
+#: admin/partials/wpmf-black-friday-notice.php:25
+msgid "Coupon:"
+msgstr "Κουπόνι:"
+
+#. Name of the plugin
+msgid "WooCommerce Product Feed Manager"
+msgstr "διαχειριστής ροής προϊόντων woocommerce"
+
+#. Description of the plugin
+msgid ""
+"WooCommerce Product Feed Manager helps you to sell more by uploading product "
+"feed to Google shopping, Amazon, Walmart, eBay, Nextag, Pricegrabber and "
+"acquiring real buyer."
+msgstr ""
+"Το WooCommerce Product Feed Manager σάς βοηθά να πουλάτε περισσότερα "
+"ανεβάζοντας ροή προϊόντων σε αγορές Google, Amazon, Walmart, eBay, Nextag, "
+"Pricegrabber και αποκτώντας πραγματικό αγοραστή."
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "https://rextheme.com"
+msgstr "https://rextheme.com"
+
+#. Author of the plugin
+msgid "RexTheme"
+msgstr "RexTheme"

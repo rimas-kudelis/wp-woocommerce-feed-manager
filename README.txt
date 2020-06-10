@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.4.1
 Requires PHP: 5.6
-Stable tag: 5.33
+Stable tag: 5.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 167 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 168 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -81,7 +81,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 167 pre-built templates of Merchant Shop feed
+* 168 pre-built templates of Merchant Shop feed
 * Generate feed in XML, CSV or Text file format
 * Compatible with both http and https sites 
 * Auto-sync with Google Shopping Center
@@ -276,6 +276,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Listupp](http://listupp.it/)
 - WooCommerce to [Hertie](https://www.hertie.de/)
 - WooCommerce to [Etsy](https://www.etsy.com/)
+- WooCommerce to [Webgains](https://www.webgains.com/public/en/)
 
 
 == Pro Features: ==
@@ -326,7 +327,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 167 major merchant shops:
+Currently, we support 168 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
@@ -494,6 +495,7 @@ Currently, we support 167 major merchant shops:
 - Listupp
 - Hertie
 - Etsy
+- Webgains
 
 
 = Is there a product limit? =
@@ -542,6 +544,14 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.34 (2020-06-10) =
+* Fixed: Duplicate product issue on custom filter
+* Feature: Default variation support
+* Added: Webgains template
+* Updated: Trovaprezzi attribute fields
+* Updated: Translation
+
 
 = 5.33 (2020-06-03) =
 * Updated: Vivino attribute fields

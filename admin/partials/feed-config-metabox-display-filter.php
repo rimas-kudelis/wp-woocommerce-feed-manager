@@ -33,10 +33,10 @@ $is_premium = apply_filters('wpfm_is_premium_activate', false);
 <table id="config-table" class="filter-config-table responsive-table">
     <thead>
         <tr>
-            <th class="large-col">If</th>
-            <th class="large-col">Condition</th>
-            <th class="large-col">Value</th>
-            <th class="2">Then</th>
+            <th class="large-col"><?php echo __('If', 'rex-product-feed') ?></th>
+            <th class="large-col"><?php echo __('Condition', 'rex-product-feed') ?></th>
+            <th class="large-col"><?php echo __('Value', 'rex-product-feed') ?></th>
+            <th class="2"><?php echo __('Then', 'rex-product-feed') ?></th>
         </tr>
     </thead>
 
