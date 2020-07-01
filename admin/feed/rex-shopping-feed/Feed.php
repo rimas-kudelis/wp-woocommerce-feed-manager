@@ -236,7 +236,6 @@ class Feed
     private function addItemsToFeed()
     {
         foreach ($this->items as $item) {
-
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
                 $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);

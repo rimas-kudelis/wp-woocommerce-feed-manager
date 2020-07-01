@@ -428,7 +428,6 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 			// Render default fields.
 			$field = $this->get_field( $field_args )->render_field();
 		}
-
 		return $field;
 	}
 
@@ -693,7 +692,6 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 
 		// Reset the object id.
 		$this->object_id( $stored_id );
-
 		return $sanitized_values;
 	}
 
@@ -720,7 +718,6 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		if ( 'options-page' === $object_type ) {
 			cmb2_options( $object_id )->set();
 		}
-
 		return $this->after_save();
 	}
 

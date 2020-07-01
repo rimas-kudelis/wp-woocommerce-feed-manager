@@ -446,6 +446,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     );
                 }
                 $this->products_args['tax_query']['relation'] = 'OR';
+
+                if($this->batch == 1) {
+                    wp_set_object_terms($this->id, $args[$terms], $args['products_scope']);
+                }
             }
         }
     }
@@ -650,6 +654,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         $result = new WP_Query($this->products_args);
         $this->products = $result->get_posts();
+
         if(is_array($this->products)) {
             $this->products = array_unique($this->products);
             if($this->batch == 1) {
@@ -1012,11 +1017,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
-
             if( file_exists($file) ) {
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
                 }else {
+
                     $feed = $this->merge_feeds($file);
                     if ($feed)
                         return file_put_contents($file, $feed) ? 'true' : 'false';
@@ -1158,12 +1163,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $parent = $orgdoc->getElementsByTagName('products')->item(0);
         }
 
-
-
         if(!$parent)
             return $parent;
-
-
 
         // Create a new document
         $newdoc = new DOMDocument;

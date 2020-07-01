@@ -31,6 +31,7 @@ class Rex_Product_Feed_Deactivator {
 	 */
 	public static function deactivate() {
         wp_clear_scheduled_hook('rex_feed_schedule_update');
+        wp_clear_scheduled_hook('rex_feed_weekly_update');
 
         delete_option('rex_wpfm_feed_queue');
         $args = array(

@@ -131,7 +131,8 @@ class Item
 //        $this->nodes['sale_price'] = $node->value( $salePrice . " {$code}" )->_namespace($this->namespace);
 
         $node = new Node('sale_price');
-        if($salePrice) $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+//        if($salePrice) $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
+        $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
     }
 
     /**

@@ -40,6 +40,10 @@ class Rex_Product_Feed_Activator {
             wp_schedule_event(time(), 'hourly', 'rex_feed_schedule_update');
         }
 
+        if( ! wp_next_scheduled( 'rex_feed_weekly_update' ) ) {
+            wp_schedule_event( time(), 'weekly', 'rex_feed_weekly_update' );
+        }
+
 
         /*
          * add merchant status

@@ -55,6 +55,7 @@ class Rex_Product_Feed_Cron_Handler {
         $this->background_process = new Rex_Product_Feed_Background_Process();
     }
 
+
     /**
      * Initialize Cron
      *
@@ -67,6 +68,16 @@ class Rex_Product_Feed_Cron_Handler {
             $schedule = 'daily';
         }
         $this->feed_ids = $this->get_feeds($schedule);
+        $this->rex_feed_init_batch();
+        $this->rex_feed_create_batch();
+    }
+
+
+    /**
+     * weekly cron
+     */
+    public function rex_feed_weekly_cron_handler() {
+        $this->feed_ids = $this->get_feeds('weekly');
         $this->rex_feed_init_batch();
         $this->rex_feed_create_batch();
     }
@@ -88,6 +99,13 @@ class Rex_Product_Feed_Cron_Handler {
             $meta_query[] = array(
                 'key'      => 'rex_feed_schedule',
                 'value'    => 'daily',
+            );
+            $meta_query['relation'] = 'OR';
+        }
+        if($schedule === 'weekly') {
+            $meta_query[] = array(
+                'key'      => 'rex_feed_schedule',
+                'value'    => 'weekly',
             );
             $meta_query['relation'] = 'OR';
         }
@@ -154,6 +172,7 @@ class Rex_Product_Feed_Cron_Handler {
                             'wpml_language' => $wpml,
                         );
                         try {
+                            
                             $merchant = Rex_Product_Feed_Factory::build( $payload, true, $product_id_chunk );
                         } catch (Exception $e) {
                             return $e->getMessage();

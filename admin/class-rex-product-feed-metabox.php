@@ -69,34 +69,42 @@ class Rex_Product_Metabox {
         ) );
 
         $box->add_field( array(
-            'name'           => 'Product Category',
-            'desc'           => 'Select Category',
-            'id'             => $this->prefix . 'cats',
-            'taxonomy'       => 'product_cat', //Enter Taxonomy Slug
-            'type'           => 'taxonomy_multicheck_inline',
-            'text'           => array(
-                'no_terms_text' => 'Sorry, no product categories could be found.'
-            ),
-            'attributes' => array(
-                'data-conditional-id'    => $this->prefix . 'products',
-                'data-conditional-value' => 'product_cat',
-            ),
-        ) );
+            'id'        => $this->prefix . 'product_taxonomies_block',
+            'name'      => 'Product Taxonomies',
+            'type'      => 'title',
+            'after_row' => array($this, 'product_taxonomies_cb'),
+        ));
 
-        $box->add_field( array(
-            'name'           => 'Product Tag',
-            'desc'           => 'Select Tag',
-            'id'             => $this->prefix . 'tags',
-            'taxonomy'       => 'product_tag',
-            'type'           => 'taxonomy_multicheck_inline',
-            'text'           => array(
-                'no_terms_text' => 'Sorry, no product tags could be found.'
-            ),
-            'attributes' => array(
-                'data-conditional-id'    => $this->prefix . 'products',
-                'data-conditional-value' => 'product_tag',
-            ),
-        ) );
+
+//        $box->add_field( array(
+//            'name'           => 'Product Category',
+//            'desc'           => 'Select Category',
+//            'id'             => $this->prefix . 'cats',
+//            'taxonomy'       => 'product_cat', //Enter Taxonomy Slug
+//            'type'           => 'taxonomy_multicheck_inline',
+//            'text'           => array(
+//                'no_terms_text' => 'Sorry, no product categories could be found.'
+//            ),
+//            'attributes' => array(
+//                'data-conditional-id'    => $this->prefix . 'products',
+//                'data-conditional-value' => 'product_cat',
+//            ),
+//        ) );
+
+//        $box->add_field( array(
+//            'name'           => 'Product Tag',
+//            'desc'           => 'Select Tag',
+//            'id'             => $this->prefix . 'tags',
+//            'taxonomy'       => 'product_tag',
+//            'type'           => 'taxonomy_multicheck_inline',
+//            'text'           => array(
+//                'no_terms_text' => 'Sorry, no product tags could be found.'
+//            ),
+//            'attributes' => array(
+//                'data-conditional-id'    => $this->prefix . 'products',
+//                'data-conditional-value' => 'product_tag',
+//            ),
+//        ) );
 
 
 
@@ -110,8 +118,9 @@ class Rex_Product_Metabox {
             'type'           => 'radio_inline',
             'options' => array(
                 'no'        => __( 'No Interval', 'rex-product-feed' ),
-                'daily'     => __( 'Daily', 'rex-product-feed' ),
                 'hourly'    => __( 'Hourly', 'rex-product-feed' ),
+                'daily'     => __( 'Daily', 'rex-product-feed' ),
+                'weekly'    => __( 'Weekly', 'rex-product-feed' ),
             ),
             'default' => 'no',
         ) );
@@ -498,6 +507,7 @@ class Rex_Product_Metabox {
                     'okazii',
                     'webgains',
                     'vidaXL',
+                    'mydeal',
                 ))),
             ),
         ) );
@@ -557,6 +567,33 @@ class Rex_Product_Metabox {
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
         require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display-filter.php';
         echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="fa fa-plus-circle"></i>'.__('Add New Filter', 'rex-product-feed').'</a>';
+        echo '</div>';
+    }
+
+
+    /**
+     * Display Product taxonomies
+     *
+     * @return void
+     * @author RexTheme
+     **/
+    public function product_taxonomies_cb($field_args, $field){
+        echo '<div id="rex-feed-product-taxonomies" class="rex-feed-product-taxonomies">';
+        echo '<div class="rex-feed-product-taxonomies-spinner" style="display: none; "><img src="'.WPFM_PLUGIN_DIR_URL.'admin/icon/loader.gif" alt="spinner" /></div>';
+        echo '<div id="rex-feed-product-taxonomies-contents"></div>';
+        echo '</div>';
+    }
+
+    
+
+    /**
+     * Display Feed Filter Metabox.
+     *
+     * @return void
+     * @author RexTheme
+     **/
+    public function product_tags_cb($field_args, $field){
+        echo '<div id="rex-feed-product-tags" class="rex-feed-product-tags">';
         echo '</div>';
     }
 
@@ -641,6 +678,7 @@ class Rex_Product_Metabox {
      */
     public function after_field_xml_file_cb($field_args, $field){
         $feed_url = get_post_meta( $field->object_id, $this->prefix . 'xml_file', true );
+
         // Only show feed url not empty.
         if ( strlen($feed_url) > 0 ){
             $url = esc_url( get_post_meta( $field->object_id, 'rex_feed_xml_file', true ) );

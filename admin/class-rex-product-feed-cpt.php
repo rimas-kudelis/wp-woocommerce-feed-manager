@@ -37,7 +37,7 @@ class Rex_Product_CPT {
      */
     private function post_types(){
         register_extended_post_type( 'product-feed', array(
-//            'show_in_menu' => 'product-feed',
+            'show_in_menu'       => 'product-feed',
             'rewrite'            => false,
             'query_var'          => true,
             'publicly_queryable' => false,
@@ -121,19 +121,34 @@ class Rex_Product_CPT {
                     }
                 ),
                 'date',
-                'updated' => array(
+                'scheduled' => array(
                     'title_icon'  => 'dashicons-calendar-alt',
                     'title'         => 'Updated',
                     'meta_key'    => 'updated',
                     'date_format' => 'Y/m/d g:i:s A',
                     'function'    => function (){
-                        $updated_time = '';
-                        if(get_post_meta(get_the_id(), 'updated', true)) {
-                            $updated_time = date('Y/m/d g:i A', strtotime(get_post_meta(get_the_id(), 'updated', true)));
+                        $format = get_option('time_format') . ', '.get_option('date_format');
+                        $last_updated = get_post_meta(get_the_id(), 'updated', true);
+                        $formatted_time = '';
+                        if($last_updated) {
+                            $formatted_time = date($format, strtotime($last_updated));
                         }
-                        echo 'Updated';
-                        echo '<br>';
-                        echo '<span style="text-decoration: dotted underline;" title="'.$updated_time.'">'.$updated_time.'</span>';
+
+                        $schedule = get_post_meta( get_the_id(), 'rex_feed_schedule', true );
+                        echo '<div><strong>'.__('Last Updated: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.$formatted_time.'">'.$formatted_time.'</span></div></br>';
+
+                        $next_update = '';
+                        if($schedule === 'hourly') {
+                            $next_update = date($format, strtotime('+1 hours', strtotime($last_updated)));
+                        }elseif ($schedule === 'daily') {
+                            $next_update = date($format, strtotime('+1 days', strtotime($last_updated)));
+                        }elseif ($schedule === 'weekly') {
+                            $next_update = date($format, strtotime('+ 7 days', strtotime($last_updated)));
+                        }
+
+                        if($schedule !== 'no') {
+                            echo '<div><strong>'.__('Next Schedule: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.$next_update.'">'.$next_update.'</span></div>';
+                        }
                     }
                 ),
             ),

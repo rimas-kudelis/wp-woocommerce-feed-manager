@@ -148,7 +148,9 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 $simple_products[] = $productId;
                 $item = GoogleShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
+
                 $atts = $this->process_attributes_for_shipping_tax($atts);
+
                 foreach ($atts as $key => $value) {
                     if($key == 'shipping') {
                         $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.

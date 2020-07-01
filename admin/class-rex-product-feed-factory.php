@@ -178,6 +178,8 @@ class Rex_Product_Feed_Factory {
                 'okazii',
                 'webgains',
                 'vidaXL',
+                'mydeal',
+//                'vivino',
             )
         );
 

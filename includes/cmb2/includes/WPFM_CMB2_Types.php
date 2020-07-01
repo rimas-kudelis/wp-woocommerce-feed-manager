@@ -633,6 +633,7 @@ class WPFM_CMB2_Types {
 	}
 
 	public function taxonomy_multicheck_inline( $args = array() ) {
+
 		return $this->taxonomy_multicheck( $args );
 	}
 

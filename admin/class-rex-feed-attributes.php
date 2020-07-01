@@ -32,6 +32,9 @@ class Rex_Feed_Attributes {
                 'short_description'         => 'Product Short Description',
                 'product_cats'              => 'Product Categories',
                 'product_cats_path'         => 'Product Categories Path (with separator ">")',
+                'product_cats_path_pipe'    => 'Product Categories Path (with separator "|")',
+                'yoast_primary_cats_path'   => 'Yoast Primary Category Path (with separator ">")',
+                'yoast_primary_cats_pipe'   => 'Yoast Primary Category Path (with separator "|")',
                 'product_subcategory'       => 'Product Sub Categories Path (with separator ">")',
                 'yoast_primary_cat'         => 'Yoast primary category',
                 'link'                      => 'Product URL',
@@ -107,33 +110,55 @@ class Rex_Feed_Attributes {
                 if($kk == "labels"){
                     foreach($vv as $kw => $kv){
                         if($kw == "singular_name"){
-//                            $attr_name = strtolower(str_replace(" ", "_",$kv));
                             $attr_name_clean = ucfirst($kv);
                         }
                     }
                 }
             }
-
             $list["$attr_name"] = $attr_name_clean;
         }
         $attributes['Product Dynamic Attributes'] = $list;
 
         //custom attributes
         $list = array();
-        $sql = "SELECT meta_key as name FROM {$wpdb->prefix}postmeta  as postmeta
+        $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
                 INNER JOIN {$wpdb->prefix}posts AS posts
                 ON postmeta.post_id = posts.id
                 WHERE posts.post_type = 'product' OR posts.post_type = 'product_variation'
                 AND postmeta.meta_key NOT LIKE 'pyre%'
                 AND postmeta.meta_key NOT LIKE 'sbg_%'
-                group by meta_key";
+                group by meta_key
+                ORDER BY postmeta.meta_key";
         $data = $wpdb->get_results($sql);
+
+
 
 
         if (count($data)) {
             foreach ($data as $key => $value) {
-                $value_display = str_replace("_", " ",$value->name);
-                $list["custom_attributes_" . $value->name] = ucfirst($value_display);
+                if (!preg_match("/_product_attributes/i", $value->name)) {
+                    $value_display = str_replace("_", " ",$value->name);
+                    $list["custom_attributes_" . $value->name] = ucfirst($value_display);
+                }else {
+                    $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta as postmeta
+                            INNER JOIN {$wpdb->prefix}posts AS posts
+                            ON postmeta.post_id = posts.id
+                            WHERE posts.post_type LIKE '%product%'
+                            AND postmeta.meta_key = '_product_attributes'";
+
+                    $data = $wpdb->get_results($sql);
+                    if(count($data)) {
+                        foreach ($data as $k => $meta_value) {
+                            $product_attributes = unserialize($meta_value->value);
+                            if (!empty($product_attributes)) {
+                                foreach ($product_attributes as $meta_inner_k => $arr_value) {
+                                    $value_display = str_replace("_", " ", $arr_value['name']);
+                                    $list["custom_attributes_" . $meta_inner_k] = ucfirst($value_display);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             $attributes['Product Custom Attributes'] = $list;
         }

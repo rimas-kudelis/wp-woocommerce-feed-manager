@@ -7,6 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
 {
     public static $files = array (
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
@@ -39,6 +40,10 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
             'Google\\Auth\\' => 12,
+        ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
         ),
         'C' => 
         array (
@@ -90,6 +95,10 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         'Google\\Auth\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/auth/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Composer\\Installers\\' => 
         array (
@@ -151,7 +160,9 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         'RexTheme\\RexShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Item.php',
         'RexTheme\\RexShoppingFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Node.php',
         'RexTheme\\RexShoppingVivinoFeed\\Containers\\RexShopping' => __DIR__ . '/../..' . '/admin/feed/vivino/Containers/RexShoppingVivino.php',
-        'RexTheme\\RexShoppingVivinoFeed\\VivinoFeed\\VivinoFeed' => __DIR__ . '/../..' . '/admin/feed/vivino/Feed.php',
+        'RexTheme\\RexShoppingVivinoFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/vivino/Item.php',
+        'RexTheme\\RexShoppingVivinoFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/vivino/Node.php',
+        'RexTheme\\RexShoppingVivinoFeed\\VivinoFeed' => __DIR__ . '/../..' . '/admin/feed/vivino/Feed.php',
         'RexTheme\\RexSooqrShoppingFeed\\Containers\\SooqrShopping' => __DIR__ . '/../..' . '/admin/feed/sooqr/Containers/RexShopping.php',
         'RexTheme\\RexSooqrShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/sooqr/Feed.php',
         'RexTheme\\RexSooqrShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/sooqr/Item.php',
@@ -296,6 +307,7 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         'Rex_Feed_Template_Marktplaats' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-marktplaats.php',
         'Rex_Feed_Template_Medizinfuchs' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-medizinfuchs.php',
         'Rex_Feed_Template_Moebel' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-moebel.php',
+        'Rex_Feed_Template_Mydeal' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-mydeal.php',
         'Rex_Feed_Template_Newegg' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-newegg.php',
         'Rex_Feed_Template_Nextag' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-nextag.php',
         'Rex_Feed_Template_Okazii' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-okazii.php',

@@ -2,7 +2,7 @@
 
 namespace RexTheme\RexShoppingVivinoFeed\Containers;
 
-use RexTheme\RexShoppingVivinoFeed\VivinoFeed\VivinoFeed;
+use RexTheme\RexShoppingVivinoFeed\VivinoFeed;
 
 class RexShopping
 {

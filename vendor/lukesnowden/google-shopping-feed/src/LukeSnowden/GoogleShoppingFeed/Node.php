@@ -83,6 +83,9 @@ class Node
      */
     public function attachNodeTo(\SimpleXMLElement $parent)
     {
+        if($this->name === 'sale_price') {
+            if(!$this->value) return;
+        }
         if ($this->cdata && ! preg_match("#^<!\[CDATA#is", $this->value)) {
             $this->value = "<![CDATA[{$this->value}]]>";
         }

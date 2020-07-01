@@ -186,7 +186,7 @@ class Rex_Product_Feed_Admin {
             return;
         }
 
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)))) {
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, 'product-feed_page_wpfm-license')))) {
             wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'wpfm-vendor', plugin_dir_url( __FILE__ ) . 'css/vendor.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'style-css', plugin_dir_url( __FILE__ ) . 'css/style.min.css', array(), $this->version, 'all' );
@@ -228,7 +228,7 @@ class Rex_Product_Feed_Admin {
             return;
         }
 
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix)))) {
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, 'product-feed_page_wpfm-license')))) {
             wp_enqueue_script( 'jquery-ui-autocomplete' );
             wp_enqueue_script(
                 'jquery-stop-watch',
@@ -380,17 +380,15 @@ class Rex_Product_Feed_Admin {
      * @since    1.0.0
      */
     public function load_admin_pages() {
-        $this->category_mapping_screen_hook_suffix = add_submenu_page('edit.php?post_type=product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping');
-        $this->google_screen_hook_suffix =  add_submenu_page('edit.php?post_type=product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings');
-        $this->dashboard_screen_hook_suffix = add_submenu_page('edit.php?post_type=product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
-        $this->wpfm_support_menu = add_submenu_page('edit.php?post_type=product-feed', '', __('Support', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_support',  __CLASS__ .'::wpfm_support');
 
-
+        add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_DIR_URL . 'admin/icon/icon.png', 20 );
+        $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping');
+        $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings');
+        $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
+        $this->wpfm_support_menu = add_submenu_page('product-feed', '', __('Support', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_support',  __CLASS__ .'::wpfm_support');
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
-        if(!$is_premium) $this->wpfm_pro_submenu = add_submenu_page('edit.php?post_type=product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color: #2BBBAC;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
-
+        if(!$is_premium) $this->wpfm_pro_submenu = add_submenu_page('product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color: #2BBBAC;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
         do_action('wpfm_pro_license_page');
-
         /**
          * WPFM action links
          */
@@ -467,6 +465,12 @@ class Rex_Product_Feed_Admin {
     }
 
 
+    public function register_weekly_cron() {
+        if( ! wp_next_scheduled( 'rex_feed_weekly_update' ) ) {
+            wp_schedule_event( time(), 'weekly', 'rex_feed_weekly_update' );
+        }
+    }
+
 
     /**
      *  Feed Cron handler
@@ -474,6 +478,14 @@ class Rex_Product_Feed_Admin {
      */
     public function activate_schedule_update() {
         $this->cron->rex_feed_cron_handler();
+    }
+
+
+    /**
+     * Weekly cron handler
+     */
+    public function activate_weekly_update() {
+        $this->cron->rex_feed_weekly_cron_handler();
     }
 
 

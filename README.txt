@@ -3,9 +3,9 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart
 Requires at least: 4.7
-Tested up to:  5.4.1
+Tested up to:  5.4.2
 Requires PHP: 5.6
-Stable tag: 5.34
+Stable tag: 5.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You can easily do it by generating WooCommerce product feed and uploading it on 
 
 WooCommerce Product Feed Manager will help you generate product feed in seconds.
 
-The plugin is configured to generate product feed for over 168 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
+The plugin is configured to generate product feed for over 169 major merchant shops with pre-defined templates for every merchant so that you can generate the feed in a few clicks.
 
 [youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
 
@@ -81,7 +81,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 == Features ==
 
 * Generate Product Feed in a few clicks 
-* 168 pre-built templates of Merchant Shop feed
+* 169 pre-built templates of Merchant Shop feed
 * Generate feed in XML, CSV or Text file format
 * Compatible with both http and https sites 
 * Auto-sync with Google Shopping Center
@@ -277,6 +277,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 - WooCommerce to [Hertie](https://www.hertie.de/)
 - WooCommerce to [Etsy](https://www.etsy.com/)
 - WooCommerce to [Webgains](https://www.webgains.com/public/en/)
+- WooCommerce to [MyDeal](https://www.mydeal.com.au/)
 
 
 == Pro Features: ==
@@ -327,7 +328,7 @@ This plugin was customized so that you can generate product feeds for all major 
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that WooCommerce Product Feed Manager is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
 = Which merchant shops are supported? =
-Currently, we support 168 major merchant shops:
+Currently, we support 169 major merchant shops:
 - Google Shopping
 - Google Adwords
 - Google Dynamic Search Ads
@@ -496,6 +497,7 @@ Currently, we support 168 major merchant shops:
 - Hertie
 - Etsy
 - Webgains
+- MyDeal
 
 
 = Is there a product limit? =
@@ -508,7 +510,7 @@ This plugin generates product feeds in the following file formats:
 - CSV
 **For creating Google product feed, you must use XML format.
 = What is the feed auto-update feature? =
-For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily updates or hourly updates of feed.
+For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily, hourly or weekly updates of feed.
 = Can I add attributes of my own choice? =
 Yes, with the dynamic attribute feature, you can include dynamic attributes to your product feed to be generated, without altering any details on your store.
 = Does it support product variation? =
@@ -544,6 +546,14 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.35 (2020-07-01) =
+* Feature: Weekly interval
+* Added: MyDeal template
+* Added: Category path
+* Added: Add ajax on fetching category/tags
+* Updated: Google client library
+
 
 = 5.34 (2020-06-10) =
 * Fixed: Duplicate product issue on custom filter

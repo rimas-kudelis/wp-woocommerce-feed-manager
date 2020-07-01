@@ -217,7 +217,8 @@ abstract class Rex_Feed_Abstract_Template {
                 'remove_space'             => 'Remove Space',
                 'remove_shortcodes'        => 'Remove ShortCodes',
                 'remove_special character' => 'Remove Special Character',
-                'cdata'                    => 'CDATA'
+                'cdata'                    => 'CDATA',
+                'remove_underscore'        => 'Remove underscore',
             )
         );
     }

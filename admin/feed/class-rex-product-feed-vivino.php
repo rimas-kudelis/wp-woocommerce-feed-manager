@@ -4,7 +4,6 @@ use RexTheme\RexShoppingVivinoFeed\Containers\RexShopping;
 
 class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
 
-
     /**
      * Create Feed
      *
@@ -12,8 +11,20 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
      * @author
      **/
     public function make_feed() {
+        RexShopping::$container = null;
+        RexShopping::init($this->get_wrapper(), $this->get_item_wrapper(), $this->get_namespace(),  $this->get_version(), $this->get_items_wrapper(), $this->get_stand_alone(), $this->get_wrapper_el(), $this->get_namespace_prefix() );
+        RexShopping::title($this->title);
+        RexShopping::link($this->link);
+        RexShopping::description($this->desc);
+
+        if($this->is_datetime()) {
+            RexShopping::datetime(date("Y-m-d h:i:s"));
+        }
+
+        // Generate feed for both simple and variable products.
         $this->generate_product_feed();
         $this->feed = $this->returnFinalProduct();
+
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(
@@ -23,7 +34,6 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
             return $this->save_feed($this->feed_format);
         }
     }
-
 
     /**
      * Generate feed
@@ -66,7 +76,6 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
             }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
@@ -121,15 +130,16 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
             }
 
             if( $product->is_type( 'grouped' ) ){
-                $group_products[] = $productId;
-                $item = RexShopping::createItem();
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+                if($this->parent_product) {
+                    $group_products[] = $productId;
+                    $item = RexShopping::createItem();
+                    $atts = $this->get_product_data( $product, $product_meta_keys );
+                    // add all attributes for each product.
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
                 }
             }
-
         }
 
         $total_products = array(
@@ -149,7 +159,6 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-//        return RexShopping::asRss();
 
         if ($this->feed_format == 'xml') {
             return RexShopping::asRss();

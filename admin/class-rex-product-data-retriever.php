@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Class for retriving product data based on user selected feed configuration.
  *
@@ -556,6 +557,15 @@ class Rex_Product_Data_Retriever {
             case 'product_cats_path':
                 return $this->get_product_cats_with_seperator(); break;
 
+            case 'product_cats_path_pipe':
+                return $this->get_product_cats_with_seperator('', ' | ', ''); break;
+
+            case 'yoast_primary_cats_path':
+                return $this->get_yoast_product_cats_with_seperator(); break;
+
+            case 'yoast_primary_cats_pipe':
+                return $this->get_yoast_product_cats_with_seperator('', ' | ', ''); break;
+
             case 'product_subcategory':
                 return $this->get_product_subcategory(); break;
 
@@ -577,12 +587,12 @@ class Rex_Product_Data_Retriever {
                         ! empty( $this->analytics_params['utm_medium'] ) &&
                         ! empty( $this->analytics_params['utm_campaign'] )
                     ) {
-                        return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), $this->product->get_permalink() )); break;
+                        return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink()) )); break;
                     }
-                    return $this->safeCharEncodeURL($this->product->get_permalink()); break;
+                    return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
                 }
 
-                return $this->product->get_permalink(); break;
+                return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
 
             case 'condition':
                 return $this->get_condition(); break;
@@ -713,23 +723,70 @@ class Rex_Product_Data_Retriever {
     protected function set_product_custom_att( $key ) {
 
         $new_key = str_replace('custom_attributes_', '', $key);
-
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
-
             if($new_key === '_wpfm_product_brand') {
-                $attr_name = get_post_meta($this->product->get_parent_id(), $new_key, true);
+                $meta_value = get_post_meta($this->product->get_parent_id(), $new_key, true);
             }else {
-                $attr_name = get_post_meta($this->product->get_id(), $new_key, true);
-            }
+                $meta_value = get_post_meta($this->product->get_id(), $new_key, true);
 
+
+                // need to check if these attributes value is assigned to the mother product
+                if(!$meta_value) {
+                    $list = $this->get_product_attributes($this->product->get_parent_id());
+                    if(array_key_exists($new_key, $list)) {
+                        $meta_value = str_replace('|', ',', $list[$new_key]);
+                    }
+                }
+            }
         } else{
-            $attr_name = get_post_meta($this->product->get_id(), $new_key, true);
+            $meta_value = get_post_meta($this->product->get_id(), $new_key, true);
+            if(!$meta_value) {
+                $list = $this->get_product_attributes($this->product->get_id());
+                if(array_key_exists($new_key, $list)) {
+                    $meta_value = str_replace('|', ',', $list[$new_key]);
+                }
+            }
         }
 
-        if($attr_name){
-            return $attr_name;
+        if($meta_value){
+            return $meta_value;
         }
         return '';
+    }
+
+
+    /**
+     * get all the product attributes
+     * @param $id
+     * @return array
+     */
+    protected function get_product_attributes($id) {
+        global $wpdb;
+        $list = [];
+        $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
+                            INNER JOIN {$wpdb->prefix}posts AS posts
+                            ON postmeta.post_id = posts.id
+                            WHERE posts.post_type LIKE '%product%'
+                            AND postmeta.meta_key = '_product_attributes'
+                            AND postmeta.post_id = %d";
+        $data = $wpdb->get_results($wpdb->prepare($sql, $id));
+        if(count($data)) {
+            foreach ($data as $key => $value) {
+                $value_display = str_replace("_", " ",$value->name);
+                if (!preg_match("/_product_attributes/i", $value->name)) {
+                    $list[$value->name] = ucfirst($value_display);
+                }else {
+                    $product_attributes = unserialize($value->value);
+                    if (!empty($product_attributes)) {
+                        foreach ($product_attributes as $k => $arr_value) {
+                            $value_display = str_replace("_", " ", $arr_value['value']);
+                            $list[$k] = ucfirst($value_display);
+                        }
+                    }
+                }
+            }
+        }
+        return $list;
     }
 
 
@@ -906,11 +963,40 @@ class Rex_Product_Data_Retriever {
      */
     protected function get_product_cats_with_seperator( $before = '', $sep = ' > ', $after = '' ) {
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            return $this->get_the_term_list( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
+            return $this->get_the_term_list_with_path( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
         }else {
-            return $this->get_the_term_list( $this->product->get_id(), 'product_cat', $before, $sep, $after );
+            return $this->get_the_term_list_with_path( $this->product->get_id(), 'product_cat', $before, $sep, $after );
         }
+    }
 
+
+    /**
+     * Retrieve a product's categories as a list with specified format.
+     *
+     * @param string $before Optional. Before list.
+     * @param string $sep Optional. Separate items using this.
+     * @param string $after Optional. After list.
+     * @return string
+     */
+    protected function get_yoast_product_cats_with_seperator( $before = '', $sep = ' > ', $after = '' ) {
+        $pr_id = $this->product->get_id();
+        if($this->product->is_type('variation')) {
+            $pr_id = $this->product->get_parent_id();
+        }
+        $primary_cat_id=get_post_meta($pr_id,'_yoast_wpseo_primary_product_cat',true);
+        $term_name = [];
+        if($primary_cat_id){
+            $product_cat = get_term($primary_cat_id, 'product_cat');
+            if(isset($product_cat->name)) {
+                $term_name[] = $product_cat->name;
+                $term_name_arr = $this->get_cat_names_array($pr_id, 'product_cat',$primary_cat_id, $term_name);
+                if(is_array($term_name_arr)) {
+                    return implode($sep, $term_name_arr);
+                }
+                return $this->get_product_cats('', ' > ', '');
+            }
+        }
+        return $this->get_product_cats('', ' > ', '');
     }
 
 
@@ -922,7 +1008,7 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     protected function get_product_subcategory( $sep = ' > ') {
-
+        $parent = 0;
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             $terms = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
             if ( empty( $terms ) || is_wp_error( $terms ) ){
@@ -1023,45 +1109,6 @@ class Rex_Product_Data_Retriever {
     }
 
 
-    /**
-     * get product default attributes
-     *
-     * @param $product
-     * @return mixed
-     */
-    protected function get_default_attributes($product) {
-        if( method_exists( $product, 'get_default_attributes' ) ) {
-            return $product->get_default_attributes();
-        } else {
-            return $product->get_variation_default_attributes();
-        }
-    }
-
-
-    /**
-     * Get matching variation
-     *
-     * @param $product
-     * @param $attributes
-     * @return int Matching variation ID or 0.
-     * @throws Exception
-     */
-    protected function find_matching_product_variation( $product, $attributes ) {
-        foreach( $attributes as $key => $value ) {
-            if( strpos( $key, 'attribute_' ) === 0 ) {
-                continue;
-            }
-            unset( $attributes[ $key ] );
-            $attributes[ sprintf( 'attribute_%s', $key ) ] = $value;
-        }
-        if( class_exists('WC_Data_Store') ) {
-            $data_store = WC_Data_Store::load( 'product' );
-            return $data_store->find_matching_product_variation( $product, $attributes );
-        } else {
-            return $product->get_matching_variation( $attributes );
-        }
-    }
-
 
     /**
      * Retrieve a product's dynamic attributes as a list with specified format.
@@ -1102,6 +1149,101 @@ class Rex_Product_Data_Retriever {
         ksort($term_names);
 
         return $before . join( $sep, $term_names ) . $after;
+    }
+
+
+
+    /**
+     *
+     * @param $id
+     * @param $taxonomy
+     * @param string $before
+     * @param string $sep
+     * @param string $after
+     * @return string
+     */
+    protected function get_the_term_list_with_path( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
+        $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'parent' => 0, 'orderby' => 'term_id' ));
+        if ( empty( $terms ) || is_wp_error( $terms ) ){
+            return '';
+        }
+        $output = array();
+        foreach ($terms as $term) {
+            $term_names = [];
+            $term_names[] = $term->name;
+
+            $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
+            if(is_array($term_name_arr)) {
+                $output[] = implode($sep, $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names));
+            }
+        }
+
+        return implode(' , ', $output);
+    }
+
+
+    protected function get_cat_names_array($id, $taxonomy, $parent, $term_name_array) {
+        $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'parent' => $parent,'orderby' => 'term_id' ));
+        if ( empty( $terms ) || is_wp_error( $terms ) ){
+            return $term_name_array;
+        }
+        $term_name_array[] = $terms[0]->name;
+        $term_name_array = $this->get_cat_names_array($id, $taxonomy, $terms[0]->term_id, $term_name_array);
+        return $term_name_array;
+    }
+
+
+
+    /**
+     * @param $id
+     * @param $taxonomy
+     * @param string $before
+     * @param string $sep
+     * @param string $after
+     * @since 5.35
+     */
+    protected function get_the_term_list_with_separator( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
+
+    }
+
+
+    /**
+     * get product default attributes
+     *
+     * @param $product
+     * @return mixed
+     */
+    protected function get_default_attributes($product) {
+        if( method_exists( $product, 'get_default_attributes' ) ) {
+            return $product->get_default_attributes();
+        } else {
+            return $product->get_variation_default_attributes();
+        }
+    }
+
+
+    /**
+     * Get matching variation
+     *
+     * @param $product
+     * @param $attributes
+     * @return int Matching variation ID or 0.
+     * @throws Exception
+     */
+    protected function find_matching_product_variation( $product, $attributes ) {
+        foreach( $attributes as $key => $value ) {
+            if( strpos( $key, 'attribute_' ) === 0 ) {
+                continue;
+            }
+            unset( $attributes[ $key ] );
+            $attributes[ sprintf( 'attribute_%s', $key ) ] = $value;
+        }
+        if( class_exists('WC_Data_Store') ) {
+            $data_store = WC_Data_Store::load( 'product' );
+            return $data_store->find_matching_product_variation( $product, $attributes );
+        } else {
+            return $product->get_matching_variation( $attributes );
+        }
     }
 
 
@@ -1213,50 +1355,7 @@ class Rex_Product_Data_Retriever {
     }
 
 
-    /**
-     *
-     * @param $id
-     * @param $taxonomy
-     * @param string $before
-     * @param string $sep
-     * @param string $after
-     * @return string
-     */
-    protected function get_the_term_list_with_path( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
-        $terms = wp_get_post_terms( $id, $taxonomy , array( 'orderby' => 'term_id' ));
-        if ( empty( $terms ) || is_wp_error( $terms ) ){
-            return '';
-        }
 
-
-        foreach( $terms as $term ) {
-            $term_names = [];
-            $ancestors = get_ancestors( $term->term_id, $taxonomy );
-
-            if(is_array($ancestors)) {
-                foreach( get_ancestors( $term->term_id, $taxonomy ) as $ancestor_id ){
-                    $term_names[] = get_term( $ancestor_id, $taxonomy )->name;
-                }
-                $term_names[] = get_term( $term->term_id, $taxonomy )->name;
-                if(count($term_names)>1)
-                    return implode($sep, $term_names);
-            }else {
-                $term_names[] = get_term( $term->term_id, $taxonomy )->name;
-            }
-            $output[] = implode(' > ', $term_names);
-        }
-
-
-        $term_names = array();
-
-        foreach ( $terms as $term ) {
-            $term_names[] = $term->name;
-        }
-
-        ksort($term_names);
-
-        return $before . join( $sep, $term_names ) . $after;
-    }
 
 
     /**
@@ -1293,9 +1392,9 @@ class Rex_Product_Data_Retriever {
      */
     protected function get_availability( ) {
         if ( $this->product->is_in_stock() == TRUE ) {
-            return 'in stock';
+            return 'in_stock';
         } else {
-            return 'out of stock';
+            return 'out_of_stock';
         }
     }
 
@@ -1356,6 +1455,8 @@ class Rex_Product_Data_Retriever {
                 return filter_var($val, FILTER_SANITIZE_STRING);;
             case 'cdata':
                 return $val ? "<![CDATA [$val]]>" : $val;
+            case 'remove_underscore':
+                return str_replace('_', ' ', $val);
             default:
                 return $val;
                 break;
@@ -1577,116 +1678,6 @@ class Rex_Product_Data_Retriever {
         return $args;
     }
 
-
-
-    /**
-     * Check if the request contains any variation. If it does not, it adds returns all variations linked to the request
-     * @global type $wpdb
-     * @param type $posts
-     * @return type
-     */
-    private function get_final_products($products)
-    {
-        $results=array();
-//        global $wpdb;
-        $parents_ids=array_map(function($o){ $p=wc_get_product($o); if($p->get_type()=="variable") return $o;}, $products);
-//        $clean_parents_ids=array_filter($parents_ids);
-//        $parents_ids_str= implode(",", $clean_parents_ids);
-//        if(!empty($parents_ids_str))
-//        {
-//            $request="select distinct id from $wpdb->posts where post_parent in($parents_ids_str) and post_type='product_variation'";
-//            $results=$wpdb->get_col($request);
-//        }
-        return $results;
-    }
-
-
-    /**
-     * Parse HTML to an array of meta key/value pairs using \DOMDocument.
-     *
-     * @since 2019.3.0
-     *
-     * @param string $html The HTML as generated by Yoast SEO.
-     *
-     * @return array An array containing all meta key/value pairs.
-     */
-    private function parse_using_domdocument( $html ) {
-        $dom = new \DOMDocument();
-
-        $internal_errors = libxml_use_internal_errors( true );
-        $dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) );
-
-        $metas       = $dom->getElementsByTagName( 'meta' );
-        $yoast_metas = [];
-        foreach ( $metas as $meta ) {
-            if ( $meta->hasAttributes() ) {
-                $yoast_meta = [];
-                foreach ( $meta->attributes as $attr ) {
-                    // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-                    $yoast_meta[ $attr->nodeName ] = esc_html( wp_strip_all_tags( stripslashes( $attr->nodeValue ), true ) );
-                }
-                $yoast_metas[] = $yoast_meta;
-            }
-        }
-
-        $nodes = $dom->getElementsByTagName( 'title' );
-        $title = null;
-        if ( $nodes->length ) {
-            $title = esc_html( wp_strip_all_tags( stripslashes( $nodes[0]->nodeValue ), true ) );
-        }
-
-        $xpath         = new \DOMXPath( $dom );
-        $yoast_json_ld = [];
-        foreach ( $xpath->query( '//script[@type="application/ld+json"]' ) as $node ) {
-            // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-            $yoast_json_ld[] = json_decode( (string) $node->nodeValue, true );
-        }
-        libxml_use_internal_errors( $internal_errors );
-
-        return [
-            'meta'    => $yoast_metas,
-            'title'   => $title,
-            'json_ld' => $yoast_json_ld,
-        ];
-    }
-
-    /**
-     * Parse HTML to an array of meta key/value pairs using simplexml as a fallback if \DOMDocument is unavailable.
-     *
-     * @since 2019.3.0
-     *
-     * @param string $html The HTML as generated by Yoast SEO.
-     *
-     * @return array An array containing all meta key/value pairs.
-     */
-    private function parse_using_simplexml( $html ) {
-        $yoast_metas   = [];
-        $title         = null;
-        $yoast_json_ld = [];
-        $xml           = simplexml_load_string( '<yoast>' . $html . '</yoast>' );
-        if ( $xml ) {
-            foreach ( $xml->meta as $meta ) {
-                $yoast_meta = [];
-                $attributes = $meta->attributes();
-                foreach ( $attributes as $key => $value ) {
-                    $yoast_meta[ (string) $key ] = esc_html( wp_strip_all_tags( stripslashes( (string) $value ), true ) );
-                }
-                $yoast_metas[] = $yoast_meta;
-            }
-
-            $title = isset( $xml->title ) ? esc_html( wp_strip_all_tags( stripslashes( (string) $xml->title ), true ) ) : null;
-
-            foreach ( $xml->xpath( '//script[@type="application/ld+json"]' ) as $node ) {
-                $yoast_json_ld[] = json_decode( (string) $node, true );
-            }
-        }
-
-        return [
-            'meta'    => $yoast_metas,
-            'title'   => $title,
-            'json_ld' => $yoast_json_ld,
-        ];
-    }
 
 
     /**

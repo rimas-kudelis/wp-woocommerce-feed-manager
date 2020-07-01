@@ -107,6 +107,14 @@ class Rex_Product_Feed_Ajax {
 
 
         /**
+         * product taxonomies ajax
+         */
+        wp_ajax_helper()->handle( 'fetch-product-taxonomies' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'fetch_product_taxonomies' ) )
+            ->with_validation( $validations );
+
+
+        /**
          * Stop Admin Notices
          */
         wp_ajax_helper()->handle( 'stop-notices' )
@@ -129,14 +137,15 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
-        /*
+        /**
          * Google merchant settings
          */
         wp_ajax_helper()->handle( 'google-merchant-settings' )
             ->with_callback( array( 'Rex_Google_Merchant_Settings_Api', 'save_settings' ) )
             ->with_validation( $validations );
 
-        /*
+
+        /**
          * Send to Google
          * Merchant Center
          */
@@ -145,7 +154,7 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
-        /*
+        /**
          * Add custom field
          * to product
          */
@@ -154,7 +163,7 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
-        /*
+        /**
          * Database Update
          */
         wp_ajax_helper()->handle( 'rex-wpfm-database-update' )
@@ -162,7 +171,7 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
-        /*
+        /**
          * Database Update
          */
         wp_ajax_helper()->handle( 'rex-wpfm-fetch-google-category' )
@@ -171,7 +180,7 @@ class Rex_Product_Feed_Ajax {
 
 
 
-        /*
+        /**
         * update batch
         */
         wp_ajax_helper()->handle( 'rex-product-update-batch-size' )
@@ -179,7 +188,7 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
-        /*
+        /**
         * clear batch
         */
         wp_ajax_helper()->handle( 'rex-product-clear-batch' )
@@ -187,7 +196,7 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
-        /*
+        /**
         * Show log
         */
         wp_ajax_helper()->handle( 'rex-product-feed-show-log' )
@@ -195,7 +204,7 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
 
-        /*
+        /**
         * Show black friday notices
         */
         wp_ajax_helper()->handle( 'wpfm_bf_notice_dismiss' )
@@ -217,11 +226,7 @@ class Rex_Product_Feed_Ajax {
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_log' ) )
             ->with_validation( $validations );
 
-
     }
-
-
-
 
 
     /**
@@ -245,8 +250,6 @@ class Rex_Product_Feed_Ajax {
 
         return $info;
     }
-
-
 
 
     /**
@@ -294,6 +297,111 @@ class Rex_Product_Feed_Ajax {
             include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         }
         return ob_get_clean();
+    }
+
+
+    public static function fetch_product_taxonomies($payload) {
+        $val = sanitize_text_field($payload['val']);
+        $post_id = sanitize_text_field($payload['postID']);
+        $box = wpfm_cmb2_get_metabox('rex_feed_products', $post_id, 'product-feed');
+
+        if($val === 'product_cat') {
+            $box->add_field( array(
+                'name'           => 'Product Category',
+                'desc'           => 'Select Category',
+                'id'             => 'rex_feed_cats',
+                'taxonomy'       => 'product_cat',
+                'type'           => 'taxonomy_multicheck_inline',
+            ));
+            $field = $box->get_field('rex_feed_cats');
+            ob_start();
+            $field->render_field();
+            $content = ob_get_clean();
+            ob_end_clean();
+
+
+            $terms = wp_get_post_terms($post_id, 'product_cat');
+            $values = [];
+            $content = str_replace( 'checked="checked"', ' ', $content );
+            if($terms) {
+                foreach( $terms as $term ) {
+                    $values[] = $term->slug;
+                    if ( strpos( $content, 'value="' . $term->slug . '"' ) !== false ) {
+                        $content = str_replace( 'value="' . $term->slug . '"', 'value="' . $term->slug . '"' . ' checked="checked"', $content );
+                    }
+                }
+            }
+
+            wp_send_json_success(
+                array(
+                    'hasContent' => true,
+                    'html' => $content,
+                    'hash' => $field->hash_id(),
+                    'js_data' =>$field->js_data()
+                )
+            );
+        }elseif ($val === 'product_tag') {
+            $box->add_field( array(
+                'name'           => 'Product Tags',
+                'desc'           => 'Select Tags',
+                'id'             => 'rex_feed_tags',
+                'taxonomy'       => 'product_tag',
+                'type'           => 'taxonomy_multicheck_inline',
+            ));
+            $field = $box->get_field('rex_feed_tags');
+
+            ob_start();
+            $field->render_field();
+            $content = ob_get_clean();
+            ob_end_clean();
+
+            $terms = wp_get_post_terms($post_id, 'product_tag');
+            $values = [];
+            $content = str_replace( 'checked="checked"', ' ', $content );
+            if($terms) {
+                foreach( $terms as $term ) {
+                    $values[] = $term->slug;
+                    if ( strpos( $content, 'value="' . $term->slug . '"' ) !== false ) {
+                        $content = str_replace( 'value="' . $term->slug . '"', 'value="' . $term->slug . '"' . ' checked="checked"', $content );
+                    }
+                }
+            }
+
+            wp_send_json_success(
+                array(
+                    'hasContent' => true,
+                    'html' => $content,
+                    'hash' => $field->hash_id(),
+                    'js_data' =>$field->js_data()
+                )
+            );
+        }
+
+        wp_send_json_success(
+            array(
+                'hasContent' => false,
+            )
+        );
+    }
+
+
+    public static function rex_feed_tags_render_row_cb( $field_args, $field ) {
+        $classes     = $field->row_classes();
+        $id          = $field->args( 'id' );
+        $label       = $field->args( 'name' );
+        $name        = $field->args( '_name' );
+        $value       = $field->escaped_value();
+        $description = $field->args( 'description' );
+        ?>
+        <div class="custom-field-row <?php echo $classes; ?>">
+<!--            --><?php //echo sprintf(
+//                "\t" . '<li> <label for="%s"> <input%s/> <span></span> %s </label></li>' . "\n",
+//                $a['id'],
+//                $this->concat_attrs( $a, array( 'label' ) ),
+//                $a['label']
+//            )?>
+        </div>
+        <?php
     }
 
 
@@ -713,5 +821,4 @@ class Rex_Product_Feed_Ajax {
             );
         }
     }
-
 }

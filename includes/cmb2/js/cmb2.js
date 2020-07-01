@@ -15,6 +15,9 @@ window.CMB2 = window.CMB2 || {};
 	// localization strings
 	var l10n = window.cmb2_l10;
 	var setTimeout = window.setTimeout;
+
+	// console.log(l10n);
+
 	var $document;
 	var $id = function( selector ) {
 		return $( document.getElementById( selector ) );

@@ -28,7 +28,7 @@ body, html{
     input,
     body,
     div,
-    a, 
+    a,
     p {
         font-family: 'Roboto', sans-serif;
     }
@@ -82,11 +82,11 @@ body, html{
         width: 100%;
         resize: none;
     }
-    
+
     button{
         cursor: pointer;
     }
-    
+
     /*-----------heading tag Typogrpahy------------*/
     h1 {
         font-size: 50px;
@@ -112,7 +112,7 @@ body, html{
         font-size: 16px;
         line-height: 26px;
     }
-    
+
 }
 /*------------font weight Typography------------*/
 .fw-300 {
@@ -194,7 +194,6 @@ a,
     top: 50%;
     @include transforms(translateY(-50%));//from mixin.scss
 }
-
 
 
 

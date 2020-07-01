@@ -234,7 +234,7 @@ class Feed
         if(count($this->items)){
 
             $this->items_row[] = array_keys(end($this->items)->nodes());
-            $this->items_row[0][] = 'item_group_id';
+            if(!in_array('item_group_id', $this->items_row[0])) $this->items_row[0][] = 'item_group_id';
             foreach ($this->items as $item) {
                 $row = array();
                 foreach ($item->nodes() as $itemNode) {

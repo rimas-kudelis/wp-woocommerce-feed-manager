@@ -1,6 +1,6 @@
 <?php
 
-namespace RexTheme\RexShoppingVivinoFeed\VivinoFeed;
+namespace RexTheme\RexShoppingVivinoFeed;
 
 use SimpleXMLElement;
 

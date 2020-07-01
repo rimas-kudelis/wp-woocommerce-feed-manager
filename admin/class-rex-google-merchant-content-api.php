@@ -89,22 +89,25 @@ class Rex_Google_Merchant_Settings_Api {
         $client->setRedirectUri($redirect_uri);
         $client->setScopes( 'https://www.googleapis.com/auth/content' );
         $loginUrl = $client->createAuthurl();
-        $btn_html = '<a class="btn waves-effect waves-light" href="'.$loginUrl.'">Authenticate</a>';
-        $html = '<div class="col s12 merchant-action">
-                    <div id="card-alert" class="card rex-card">
-                        <div class="card-content">
-                            <span class="card-title rex-card-title">'. __('You are not authorized.', 'rex-product-feed') .' <i class="fa fa-exclamation-triangle"></i></span>
-                            <p class="rex-p">'.  __('Your access token has expired. This application uses OAuth 2.0 to Access Google APIs. Please insert the information below and authenticate token for Google Merchant Shop. Generated access token expires after 3600 sec.', 'rex-product-feed').'</p>
-                        </div>
-                        <div class="card-action">'.$btn_html.'</div>
+        $btn_html = '<a class="btn-default" href="'.$loginUrl.'" target="_blank">'.__('Authenticate', 'rex-product-feed').'</a>';
+        $html = '<div class="single-merchant-area authorized">
+                <div class="single-merchant-block">
+                    <header>
+                        <h2 class="title">'. __("You are not authorized.", "rex-product-feed") .'</h2>
+                        <img src="'. WPFM_PLUGIN_DIR_URL . "admin/icon/danger.png" . '" class="title-icon" alt="bwf-documentation">
+                    </header>
+                    <div class="body">
+                        <p>'.  __('Your access token has expired. This application uses OAuth 2.0 to Access Google APIs. Please insert the information below and authenticate token for Google Merchant Shop. Generated access token expires after 3600 sec.', 'rex-product-feed').'</p>
+                        '.$btn_html.'
                     </div>
-                </div>';
+                </div>
+            </div>';
         return $html;
     }
 
     public function authorization_success_html() {
-        return '<div id="card-alert" class="card rex-card auth-success">
-                  <div class="card-content">
+        return '<div id="card-alert" class="single-merchant-area authorized">
+                  <div class="single-merchant-block">
                     <span class="card-title rex-card-title">'. __('You are authorized.', 'rex-product-feed') .'</span>
                     <p class="rex-p">'.  __('You are now ready to send feed from WooCommerce Product Feed Manager to your Google Merchant Center. ', 'rex-product-feed').'🚀 </p>
                   </div>              

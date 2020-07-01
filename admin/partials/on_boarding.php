@@ -48,7 +48,8 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                     <a class="delete is-large close"></a>
                     <i class="fa fa-warning warning"></i>
                     <h2><?php echo __('Go Premium', 'rex-product-feed')?></h2>
-                    <p><?php
+                    <p>
+                        <?php
                             echo sprintf(__('Purchase our <a href="%s" target="_blank" title="Click to Upgrade Pro">premium version</a> to unlock these pro components!', 'rex-product-feed'), $pro_url);
 
                         ?>
@@ -208,126 +209,143 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                 </ul>
 
                 <div class="rex-settings-tab-content">
+
                     <div id="tab1" class="tab-content active block-wrapper">
-                        <div class="general">
-                            <div class="left">
-                                <div class="single-block-wrapper">
-                                    <div class="single-block banner-block">
-                                        <div class="onboarding-block">
-                                            <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/banner.jpg'?>" alt="rex-banner">
+                        <div class="rex-general__content-area">
+
+                            <div class="rex-general__left-info-wrapper">
+
+                                <div class="rex-general__single-block-wrapper">
+
+                                    <div class="rex-general__single-block-area">
+                                        <div class="rex-general__single-block banner-block">
+                                            <div class="onboarding-block">
+                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/wpfm-Banner.png'?>" alt="rex-banner">
+                                            </div>
+                                        </div>
+
+                                        <div class="rex-general__logo-block">
+                                            <div class="upgrade-pro">
+                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/logo.png'?>" alt="logo" class="img-fluid">
+                                                
+                                                    <?php if ( !$is_premium_activated ){ ?>
+                                                        <a class="btn-default" href="https://rextheme.com/best-woocommerce-product-feed/" target="_blank"><?php _e('Upgrade to Pro ','rex-product-feed'); ?></a>
+                                                    <?php } ?>
+                                            </div>
+
+                                            <div class="rex-general__single-blocks social-share">
+                                                <h4><?php _e('Share On','rex-product-feed'); ?></h4>
+                                                <ul class="social">
+                                                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
+                                                    <li><a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//wordpress.org/plugins/best-woocommerce-feed/&title=Best%20WooCommerce%20Product%20Feed%20Manager&summary=&source=" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                                                    <li><a href="https://twitter.com/home?status=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
+                                    <!-- rex-general__single-block-area -->
+                                  
 
-                                    <div class="single-block">
-                                        <div class="onboarding-block">
+                                    <div class="rex-general__single-block-category">
+                                        <div class="rex-general__single-block">
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Document.png'?>" class="title-icon" alt="bwf-documentation">
+                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Document.png'?>" class="title-icon" alt="documentation">
                                                 <h4><?php echo __('Documentation', 'rex-product-feed')?></h4>
                                             </div>
 
                                             <div class="body">
                                                 <p>
-                                                    <?php echo __('Before You start, you can check our Documentation to get familiar with WooCommerce Product Feed Manager.', 'rex-product-feed')?>
+                                                    <?php echo __('Get started by spending some time with the documentation and generate flawless product feed for major online marketplaces within minutes.', 'rex-product-feed')?>
                                                 </p>
 
-                                                <a class="btn-default" href="https://rextheme.com/docs-category/product-feed-manager?wpfm-dashboard=1" target="_blank"><?php echo __('View Documentation', 'rex-product-feed')?></a>
+                                                <a class="btn-default" href="<?php echo apply_filters('wpfm_document_link', 'https://rextheme.com/docs-category/product-feed-manager/'); ?>" target="_blank"><?php echo __('Documentation', 'rex-product-feed')?></a>
                                             </div>
                                         </div>
-                                    </div>
+                                        <!-- rex-general__single-block one -->
 
-                                    <div class="single-block">
-                                        <div class="onboarding-block">
+                                        <div class="rex-general__single-block popular">
+
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Support.png'?>" class="title-icon" alt="bwf-documentation">
+                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Support.png'?>" class="title-icon" alt="support">
                                                 <h4><?php echo __('Support', 'rex-product-feed')?></h4>
                                             </div>
 
                                             <div class="body">
                                                 <p>
-                                                    <?php echo __('Can\'t find solution on with our documentation? Just Post a ticket on Support forum. We are to solve your issue.', 'rex-product-feed')?>
+                                                    <?php echo __('Can’t find solution with our documentation? Just post a ticket. Our professional team is here to solve your problems.', 'rex-product-feed')?>
                                                 </p>
 
-                                                <a class="btn-default" href="<?php echo apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed'); ?>" target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed')?></a>
+                                                <a class="btn-default" href="<?php echo apply_filters('wpfm_support_link', 'https://rextheme.com/your-account/?active_tab=support') ?>" target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed')?> </a>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="single-block">
-                                        <div class="onboarding-block">
+                                        </div>
+                                        <!-- rex-general__single-block two -->
+
+                                        <div class="rex-general__single-block">
+
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Feedback.png'?>" class="title-icon" alt="bwf-documentation">
-                                                <h4><?php echo __('Share Your Thoughts', 'rex-product-feed')?></h4>
+                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Rating.png'?>" class="title-icon" alt="rating">
+                                                <h4><?php echo __('Show Your Love', 'rex-product-feed')?></h4>
                                             </div>
 
                                             <div class="body">
                                                 <p>
-                                                    <?php echo __('Your suggestions are valubale to us. It can help to make WPFM even better.', 'rex-product-feed')?>
+                                                    <?php echo __('We love to have you in WooCommerce Product Feed Manager family. Take your 2 minutes to review and speed the love to encourage us to keep it going.', 'rex-product-feed')?>
                                                 </p>
 
-                                                <a class="btn-default" href="http://openvoyce.com/products/bwf" target="_blank"><?php echo __('Suggest', 'rex-product-feed')?></a>
+                                                <a class="btn-default" href="<?php echo apply_filters('wpfm_review_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post') ?>" target="_blank"><?php echo __('Leave A Review ', 'rex-product-feed')?> </a>
+                                           
                                             </div>
+
                                         </div>
+                                        <!-- rex-general__single-block.three -->
+
                                     </div>
+                                    <!-- rex-general__single-block-category.end -->
 
-                                    <div class="single-block popular">
-                                        <div class="onboarding-block">
-                                            <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Rating.png'?>" class="title-icon" alt="bwf-documentation">
-                                                <h4><?php echo __('Make WPFM Popular', 'rex-product-feed')?></h4>
-                                            </div>
-
-                                            <div class="body">
-                                                <p>
-                                                    <?php echo __('Your rating and feedback matters to us. If you are happy with WooCommerce Product Feed Manager give us a rating.', 'rex-product-feed')?>
-                                                </p>
-
-                                                <a class="btn-default" href="<?php echo apply_filters('wpfm_review_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post') ?>" target="_blank"><?php echo __('Rate Us!', 'rex-product-feed')?> </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="single-block share">
-                                        <div class="onboarding-block">
-                                            <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Heart.png'?>" class="title-icon" alt="bwf-documentation">
-                                                <h4><?php echo __('Share On', 'rex-product-feed')?></h4>
-                                            </div>
-
-                                            <div class="body">
-                                                <ul class="social">
-                                                    <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank"><?php echo __('Share on Facebook', 'rex-product-feed')?></a></li>
-                                                    <li><a href="https://twitter.com/home?status=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank"><?php echo __('Share on Twitter', 'rex-product-feed')?></a></li>
-                                                    <li><a href="https://plus.google.com/share?url=https%3A//wordpress.org/plugins/best-woocommerce-feed/" target="_blank"><?php echo __('Share on Google+', 'rex-product-feed')?></a></li>
-                                                    <li><a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//wordpress.org/plugins/best-woocommerce-feed/&title=Best%20WooCommerce%20Product%20Feed%20Manager&summary=&source=" target="_blank"><?php echo __('Share on LinkedIn', 'rex-product-feed')?></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
+                                <!-- rex-general__single-block-wrapper -->
                             </div>
+                            <!-- rex-general__left-info-wrapper -->
 
-                            <div class="right upgrade">
-                                <?php
-                                if ( !$is_premium_activated ) {?>
-                                    <div class="wpfm-pro-features rex-upgrade">
-                                        <h4 class="title"><?php echo __('Why upgrade to Pro?', 'rex-product-feed'); ?></h4>
-                                        <ul>
-                                            <li class="item"><?php echo __('Generate feed for unlimited products', 'rex-product-feed'); ?></li>
-                                            <li class="item"><?php echo __('Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date)', 'rex-product-feed'); ?></li>
-                                            <li class="item"><?php echo __('Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender, Color)', 'rex-product-feed'); ?></li>
-                                            <li class="item"><?php echo __('Ability To Exclude Tax From Structured Data Prices', 'rex-product-feed'); ?></li>
-                                            <li class="item"><?php echo __('Option To Fix WooCommerce’s (Json-Ld) Structured Data Bug', 'rex-product-feed'); ?></li>
-                                            <li class="item"><?php echo __('Custom Batch configuration', 'rex-product-feed'); ?></li>
-                                            <li class="item"><?php echo __('9 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)', 'rex-product-feed'); ?></li>
-                                        </ul>
+                            <div class="rex-general__right-info-wrapper">
+
+                                <h4 class="title"><?php _e('Check out our other amazing free plugins!','rex-product-feed'); ?></h4>
+
+                                <div class="rex-general__single-block cart">
+                                    <div class="header">
+                                        <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Cart-Lift.png'?>" class="title-icon" alt="cart-lift">
+                                        <h4><?php echo __('Cart Lift', 'rex-product-feed')?></h4>
                                     </div>
-                                    <a href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro" class="update-btn btn-default" target="_blank"><?php echo __('Upgrade to Pro', 'rex-product-feed')?></a>
-                                <?php }
-                                ?>
+
+                                    <div class="body">
+                                        <p><?php _e('Recover your abandoned cart customers with automated e-mail drip campaigns. Enjoy immediate increase in your sales..','rex-product-feed'); ?></p>
+
+                                        <a class="btn-default" href="<?php echo apply_filters('wpfm_cart_link', 'https://wordpress.org/plugins/cart-lift/'); ?>" target="_blank"><?php echo __('Get It Now', 'rex-product-feed')?></a>
+                                    </div>
+                                 </div>
+                                 <!-- rex-general__single-block -->
+
+                                 <div class="rex-general__single-block vas">
+                                    <div class="header">
+                                        <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/variation-swatch.png'?>" class="title-icon" alt="variation-swatch">
+                                        <h4><?php echo __('Variation Swatches', 'rex-product-feed')?></h4>
+                                    </div>
+
+                                    <div class="body">
+                                        <p><?php _e('Use engaging color, image, or text swatches to display your product variations and make your product page more attractive.','rex-product-feed'); ?></p>
+                                        <a class="btn-default" href="<?php echo apply_filters('wpfm_variation_link', 'https://wordpress.org/plugins/rex-variation-swatches-for-woocommerce/'); ?>" target="_blank"><?php echo __('Get It Now', 'rex-product-feed')?></a>
+                                    </div>
+                                 </div>
+                                 <!-- rex-general__single-block -->
+                                
                             </div>
+                            <!-- rex-general__right-info-wrapper.end -->
+
                         </div>
-                        <!--/columns-->
+                        <!-- rex-general__content-area.end -->
                     </div>
+                    <!-- rex-general__block-wrapper.end -->
 
                     <div id="tab2" class="tab-content block-wrapper">
                         <div class="rex-merchant">
@@ -1185,11 +1203,17 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     'status'   => 0,
                                     'name'     => ' Webgains'
                                 ),
-//                                'vidaXL'     => array(
-//                                    'free'     => true,
-//                                    'status'   => 0,
-//                                    'name'     => 'VidaXL'
-//                                ),
+                               'vidaXL'     => array(
+                                   'free'     => true,
+                                   'status'   => 0,
+                                   'name'     => 'VidaXL'
+                               ),
+                               'mydeal'     => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => 'My Deal'
+                                ),
+
                             );
 
                             $_pro_merchants = array(
@@ -1264,7 +1288,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
 
                             ?>
                             <?php foreach ($_merchants as $key => $merchant): ?>
-                                <?php if($key && $key != 'undefined'): 
+                                <?php if($key && $key != 'undefined'):
                                         $show_pro = false;
                                         if( $is_premium_activated ) {
                                             $pro_cls = '';
@@ -1294,7 +1318,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                         $checked = $merchant['status'] ? 'checked' : '';
                                         $is_free = $merchant['free'] ? true : false;
                                         $name = $merchant['name'] ;
-                                        
+
                                         ?>
                                         <div class="switch <?php echo $disabled; ?>" >
                                             <div class="wpfm-switcher">
@@ -1434,7 +1458,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     </a>
                                 <?php } ?>
 
-                                <span class="title"><?php echo __('Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date ) to product', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date, Additional info ) to product', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <?php
                                     if(!$is_premium_activated) {
@@ -1487,7 +1511,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     </a>
                                 <?php } ?>
 
-                                <span class="title"><?php echo __('Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender, Additional info ) to product', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <?php
                                     if(!$is_premium_activated) {

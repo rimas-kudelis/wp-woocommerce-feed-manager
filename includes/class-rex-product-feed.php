@@ -163,11 +163,11 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'init', $plugin_admin, 'register_cpt' );
         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rex_wpfm_admin_notices' );
         $this->loader->add_action( 'wpfm_cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
-//        $this->loader->add_action( 'cmb2_select_attributes', 'Rex_Product_Metabox', 'wpfm_merchant_dropdown' );
 
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages');
         $this->loader->add_action( 'admin_footer', $plugin_admin, 'rex_admin_footer_style');
+
 
         // remove bulk edit and quick edit for our feed cpt.
         $this->loader->add_filter( 'bulk_actions-edit-product-feed', $plugin_admin, 'remove_bulk_edit' );
@@ -188,6 +188,8 @@ class Rex_Product_Feed {
         /*
          * register rex feed schedule
          */
+        $this->loader->add_action( 'admin_init', $plugin_admin, 'register_weekly_cron');
+        $this->loader->add_action( 'rex_feed_weekly_update', $plugin_admin, 'activate_weekly_update' );
         $this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update' );
 
 

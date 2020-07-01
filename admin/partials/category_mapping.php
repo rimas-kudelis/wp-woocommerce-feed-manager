@@ -15,11 +15,6 @@ $category_map = get_option('rex-wpfm-category-mapping');
 require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
 $db_version = get_option('rex_wpfm_db_version');
 
-
-//foreach ($category_map as $key => $value) {
-//    wpfm_hierarchical_product_category_tree(0, $value['map-config']);
-//}
-//wp_die();
 ?>
 
 

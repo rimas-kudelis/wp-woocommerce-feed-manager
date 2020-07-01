@@ -366,6 +366,8 @@
             feed_config : $('form').serialize(),
         };
 
+
+
         wpAjaxHelperRequest( 'generate-promotion-feed', $payload )
             .success( function( response ) {
                 console.log( 'Woohoo!' );
@@ -843,3 +845,69 @@
 
 })( jQuery );
 
+
+
+window.WPFM_Ajaxified_Product_Taxonomies = (function ( window, document, $, undefined ) {
+    'use strict';
+
+    var app = {};
+
+    app.cache = function(){
+        app.$metabox = $( '#rex_feed_products' );
+        app.$select_cat = app.$metabox.find( '#rex_feed_products' );
+    };
+
+    app.init = function () {
+        app.cache();
+        app.$select_cat.on( 'change', app.change_color);
+    };
+
+    app.change_color = function( evt ){
+        var that = $( this ),
+            new_val = that.val();
+
+        if(new_val === 'all') {
+            $('.cmb2-id-rex-feed-config-filter-title').hide();
+            $('#rex-feed-product-taxonomies').hide();
+            $('.cmb2-id-rex-feed-tags-wrapper').hide();
+        }else if (new_val === 'filter') {
+            $('.cmb2-id-rex-feed-config-filter-title').show();
+            $('#rex-feed-product-taxonomies').hide();
+        }else if(new_val === 'product_cat' || new_val === 'product_tag') {
+            $('.cmb2-id-rex-feed-config-filter-title').hide();
+            $('#rex-feed-product-taxonomies').show();
+        }
+
+        $(".rex-feed-product-taxonomies-spinner").show();
+
+
+        if(new_val === 'product_cat' || new_val === 'product_tag') {
+            var payload = {
+                val: new_val,
+                postID : $('#post_ID').val()
+            };
+            var l10n = window.cmb2_l10;
+            wpAjaxHelperRequest( 'fetch-product-taxonomies', payload )
+                .success( function( response ) {
+                    console.log('Woohoo!');
+                    if(response.data.hasContent) {
+                        $("#rex-feed-product-taxonomies-contents").html(response.data.html);
+                        $( '<p><span class="button-secondary cmb-multicheck-toggle">' + l10n.strings.check_toggle + '</span></p>' ).insertBefore( '.cmb2-checkbox-list:not(.no-select-all)' );
+                        l10n.fields[response.data.hash] = response.data.js_data;
+                        $(".rex-feed-product-taxonomies-spinner").hide();
+                    }
+                })
+                .error( function( response ) {
+                    console.log( 'Uh, oh!' );
+                    console.log( response.statusText );
+                });
+        }
+
+
+    };
+
+    $( document ).ready( app.init );
+
+    return app;
+
+})( window, document, jQuery );
