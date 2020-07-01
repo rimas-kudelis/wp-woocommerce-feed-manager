@@ -85,7 +85,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 * Generate feed in XML, CSV or Text file format
 * Compatible with both http and https sites 
 * Auto-sync with Google Shopping Center
-* Schedule Auto Update of Product Feed 
+* Auto feed update schedule options: weekly, daily & hourly
 * Category Mapping 
 * Extensive Filter Options (filter by category, tag or custom) 
 * Dynamic Attributes
