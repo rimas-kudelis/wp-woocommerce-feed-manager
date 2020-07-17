@@ -76,7 +76,6 @@ class Rex_Product_Feed_Factory {
                 'shopmania',
                 'preis',
                 'walmart',
-                'snapchat',
                 'verizon',
                 'kelkoo_group',
                 'target',
@@ -199,6 +198,7 @@ class Rex_Product_Feed_Factory {
 
         self::$facebook_format = array(
             'instagram',
+            'snapchat'
         );
 
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {
