@@ -235,6 +235,7 @@ class Feed
 
             $this->items_row[] = array_keys(end($this->items)->nodes());
             if(!in_array('item_group_id', $this->items_row[0])) $this->items_row[0][] = 'item_group_id';
+            $length = count($this->items_row[0]);
             foreach ($this->items as $item) {
                 $row = array();
                 foreach ($item->nodes() as $itemNode) {
@@ -246,15 +247,22 @@ class Feed
                         $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $itemNode->get('value'));
                     }
                 }
+                if((count($row)+1) == $length) {
+                    $row[$length-1] = '';
+                }
                 $this->items_row[] = $row;
             }
 
             $str = '';
             foreach ($this->items_row as $fields) {
-                $str .= implode("\t", $fields) . "\n";
+                if(!$fields[$length-1]) {
+                    $str .= implode("\t", $fields) . ",\n";
+                }else {
+                    $str .= implode("\t", $fields) . "\n";
+                }
+
             }
         }
-
         return $this->items_row;
     }
 

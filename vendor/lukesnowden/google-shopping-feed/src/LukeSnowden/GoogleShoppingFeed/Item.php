@@ -102,7 +102,6 @@ class Item
     public function link($link)
     {
         $node = new Node('link');
-        $link = $this->safeCharEncodeURL($link);
         $this->nodes['link'] = $node->value($link)->addCdata()->_namespace($this->namespace);
     }
 

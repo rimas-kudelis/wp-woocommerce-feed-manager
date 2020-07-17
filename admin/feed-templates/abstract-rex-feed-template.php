@@ -219,6 +219,7 @@ abstract class Rex_Feed_Abstract_Template {
                 'remove_special character' => 'Remove Special Character',
                 'cdata'                    => 'CDATA',
                 'remove_underscore'        => 'Remove underscore',
+                'decode_url'               => 'Decode url',
             )
         );
     }

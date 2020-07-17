@@ -203,7 +203,7 @@ class Rex_Product_Data_Retriever {
         }
         elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
 
-            $val = $this->set_pr_att( $rule['meta_key']  );
+            $val = $this->set_pr_att( $rule['meta_key'] , $rule['escape'] );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
 
@@ -247,7 +247,7 @@ class Rex_Product_Data_Retriever {
      *
      * @since    1.0.0
      */
-    protected function set_pr_att( $key ) {
+    protected function set_pr_att( $key, $rule = 'default' ) {
         switch ( $key ) {
             case 'id':
                 return $this->product->get_id(); break;
@@ -264,13 +264,16 @@ class Rex_Product_Data_Retriever {
 
             case 'title':
                 if($this->append_variation === 'no') {
+                    if($this->product->is_type('variation')) {
+                        $pr_id = $this->product->get_parent_id();
+                        return get_the_title($pr_id);
+                    }
                     return $this->product->get_name();
                 }
                 else {
                     if ($this->is_children()) {
                         $_product = wc_get_product( $this->product );
                         $_variations = $_product->get_attributes();
-
                         if(count($_variations) > 2) {
                             $_title = $this->product->get_title() . " - ";
                             $title_arr = array();
@@ -285,7 +288,6 @@ class Rex_Product_Data_Retriever {
                     }else {
                         return $this->product->get_name();
                     }
-
                 }
                 break;
 
@@ -525,8 +527,47 @@ class Rex_Product_Data_Retriever {
                     $_pr  = new WC_Product_Composite($this->product->get_id());
                     return  wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals());
                 }
-                return  wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals());
+                $sale_price = $this->product->get_sale_price();
+                if($sale_price > 0) {
+                    return wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals());
+                }
+                return '';
                 break;
+
+            case 'price_excl_tax':
+
+                if ($this->product->is_type( 'grouped' ))
+                    return wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'regular') ) );
+                elseif ($this->product->is_type( 'composite' )) {
+                    $_pr  = new WC_Product_Composite($this->product->get_id());
+                    return  wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals());
+                }
+                return  wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals());
+                break;
+
+            case 'current_price_excl_tax':
+                if ($this->product->is_type( 'grouped' ))
+                    return wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'price') ) );
+                elseif ($this->product->is_type( 'composite' )) {
+                    $_pr  = new WC_Product_Composite($this->product->get_id());
+                    return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
+                }
+                return wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals());
+                break;
+
+            case 'sale_price_excl_tax':
+                if ($this->product->is_type( 'grouped' ))
+                    return wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) );
+                elseif ($this->product->is_type( 'composite' )) {
+                    $_pr  = new WC_Product_Composite($this->product->get_id());
+                    return  wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals());
+                }
+                $sale_price = $this->product->get_sale_price();
+                if($sale_price > 0) {
+                    return wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals());
+                }
+                return '';
+
 
             case 'description':
                 if(($this->is_children())):
@@ -582,16 +623,25 @@ class Rex_Product_Data_Retriever {
                 return $this->get_product_cats_for_sooqr(); break;
 
             case 'link':
+
                 if($this->analytics_params) {
                     if ( ! empty( $this->analytics_params['utm_source'] ) &&
                         ! empty( $this->analytics_params['utm_medium'] ) &&
                         ! empty( $this->analytics_params['utm_campaign'] )
                     ) {
+                        if($rule === 'decode_url') {
+                            return add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink())); break;
+                        }
                         return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink()) )); break;
+                    }
+                    if($rule === 'decode_url') {
+                        return urldecode($this->product->get_permalink()); break;
                     }
                     return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
                 }
-
+                if($rule === 'decode_url') {
+                    return urldecode($this->product->get_permalink()); break;
+                }
                 return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
 
             case 'condition':
@@ -1117,6 +1167,7 @@ class Rex_Product_Data_Retriever {
      * @param string $before Optional. Before list.
      * @param string $sep Optional. Separate items using this.
      * @param string $after Optional. After list.
+     * @return string|false
      * @return string|false
      */
     protected function get_product_dynamic_tags( $id, $key, $before = '', $sep = ', ', $after = '' ) {

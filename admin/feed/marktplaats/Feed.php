@@ -210,29 +210,37 @@ class Feed
 
 
         foreach ($this->items as $item) {
+
+            $s_nodes = array('media', 'totalBudget', 'dailyBudget', 'cpc');
+
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
                 $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);
             }else{
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
+
+            $budget = false;
             foreach ($item->nodes() as $itemNode) {
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {
                         $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
                     }
                 } else {
-                    if(preg_match("/^attribute(.*)/i", $itemNode->get('name')) > 0) {
-                        $attributesNode = $feedItemNode->addChild('attributes');
-                        foreach ($itemNode->get('value') as $value) {
-                            $attributesChild = $attributesNode->addChild('attribute');
-                            $attributesChild->addChild('attributeName', $value['name']);
-                            $attributesChild->addChild('attributeValue', $value['value']);
+                    if(in_array($itemNode->get('name'), $s_nodes)) {
+                        if($itemNode->get('name') == 'media') {
+                            $media = $feedItemNode->addChild('media');
+                            $image = $media->addChild('image');
+                            $image->addAttribute('url', $itemNode->get('value'));
+                        }else {
+                            if(!isset($feedItemNode->children('admarkt',true)->budget)) {
+                                $feedItemNode->addChild('budget');
+                            }
+                            $feedItemNode->children('admarkt',true)->budget->addChild($itemNode->get('name'), $itemNode->get('value'));
                         }
                     }else {
                         $itemNode->attachNodeTo($feedItemNode);
                     }
-
                 }
             }
         }
