@@ -75,7 +75,8 @@
      * Add a new table-row and update it's
      */
     $(document).on('click', '#rex-new-attr', function () {
-        var rowId = $(this).siblings('#config-table').find('tbody tr').length;
+        var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
+        rowId = parseInt(rowId)+1;
         var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
         var parent = $(this).siblings('#config-table').parent();
 

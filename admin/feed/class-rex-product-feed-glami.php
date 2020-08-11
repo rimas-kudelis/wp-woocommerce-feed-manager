@@ -13,9 +13,9 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
-use RexTheme\MarktPlaatsShoppingFeed\Containers\MarktPlaatsShopping;
+use RexTheme\GlamiShoppingFeed\Containers\GlamiShopping;
 
-class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
+class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator {
 
     /**
      * Create Feed
@@ -24,11 +24,8 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
      * @author
      **/
     public function make_feed() {
-        MarktPlaatsShopping::$container = null;
-        MarktPlaatsShopping::init(false, $this->setItemWrapper(), 'http://admarkt.marktplaats.nl/schemas/1.0', '', $this->setItemsWrapper());
-        MarktPlaatsShopping::title($this->title);
-        MarktPlaatsShopping::link($this->link);
-        MarktPlaatsShopping::description($this->desc);
+        GlamiShopping::$container = null;
+        GlamiShopping::init(false, $this->setItemWrapper(), '', '', $this->setItemsWrapper());
 
         $this->generate_product_feed();
 
@@ -87,9 +84,14 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
-                    $item = MarktPlaatsShopping::createItem();
+                    $atts = $this->process_attributes_for_delivery($atts);
+                    $item = GlamiShopping::createItem();
                     foreach ($atts as $key => $value) {
-                        $item->$key($value); // invoke $key as method of $item object.
+                        if($key == 'delivery') {
+                            $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
+                        }else {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
                     }
                 }
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
@@ -102,11 +104,16 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = MarktPlaatsShopping::createItem();
+                                $item = GlamiShopping::createItem();
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
+                                $atts = $this->process_attributes_for_delivery($atts);
                                 foreach ($atts as $key => $value) {
-                                    $item->$key($value); // invoke $key as method of $item object.
+                                    if($key == 'delivery') {
+                                        $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
+                                    }else {
+                                        $item->$key($value); // invoke $key as method of $item object.
+                                    }
                                 }
                             }
                         }
@@ -117,30 +124,46 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
             if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
-                $item = MarktPlaatsShopping::createItem();
+                $atts = $this->process_attributes_for_delivery($atts);
+                $item = GlamiShopping::createItem();
                 foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+                    if($key == 'delivery') {
+                        $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
+                    }else {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+
                 }
             }
 
             if( $this->product_scope === 'all' ) {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
-                    $item = MarktPlaatsShopping::createItem();
+                    $item = GlamiShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
+                    $atts = $this->process_attributes_for_delivery($atts);
                     foreach ($atts as $key => $value) {
-                        $item->$key($value); // invoke $key as method of $item object.
+                        if($key == 'delivery') {
+                            $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
+                        }else {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
                     }
                 }
             }
 
             if( $product->is_type( 'grouped' ) ){
                 $group_products[] = $productId;
-                $item = MarktPlaatsShopping::createItem();
+                $item = GlamiShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
+                $atts = $this->process_attributes_for_delivery($atts);
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+                    if($key == 'delivery') {
+                        $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
+                    }else {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
                 }
             }
         }
@@ -176,10 +199,10 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
             $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
             if($wpml) {
                 $sitepress->switch_lang($wpml);
-                $data = new Rex_Product_Marktplaats_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
+                $data = new Rex_Product_Glami_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
             }
         }else{
-            $data = new Rex_Product_Marktplaats_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
+            $data = new Rex_Product_Glami_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
         }
         return $data->get_all_data();
     }
@@ -199,13 +222,40 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
      */
     public function setItemWrapper()
     {
-        return 'admarkt:ad';
+        return 'SHOP';
     }
 
     public function setItemsWrapper()
     {
-        return 'admarkt:ads';
+        return 'SHOPITEM';
     }
+
+
+
+    /**
+     * @param $atts
+     * @return array
+     */
+    private function process_attributes_for_delivery($atts) {
+        $shipping_attr = array('DELIVERY_ID', 'DELIVERY_PRICE', 'DELIVERY_PRICE_COD');
+        $default_delivery_atts = array(
+            'DELIVERY_ID' => '',
+            'DELIVERY_PRICE' => '',
+            'DELIVERY_PRICE_COD' => ''
+        );
+
+        foreach ($atts as $key => $value) {
+            if(in_array($key, $shipping_attr)) {
+                $atts['delivery'][$key] = $value;
+                unset($atts[$key]);
+            }
+        }
+        if(array_key_exists('delivery', $atts)) {
+            $atts['delivery'] += $default_delivery_atts;
+        }
+        return $atts;
+    }
+
 
     /**
      * Return Feed
@@ -215,13 +265,13 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
     public function returnFinalProduct()
     {
         if ($this->feed_format == 'xml') {
-            return MarktPlaatsShopping::asRss();
+            return GlamiShopping::asRss();
         } elseif ($this->feed_format == 'text') {
-            return MarktPlaatsShopping::asTxt();
+            return GlamiShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            return MarktPlaatsShopping::asCsv();
+            return GlamiShopping::asCsv();
         }
-        return MarktPlaatsShopping::asRss();
+        return GlamiShopping::asRss();
     }
 
 }

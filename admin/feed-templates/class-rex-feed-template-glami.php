@@ -22,30 +22,29 @@ class Rex_Feed_Template_Glami extends Rex_Feed_Abstract_Template {
     protected function init_atts(){
         $this->attributes = array(
             'Required Information' =>  array(
-                'CATEGORYTEXT'            => 'CATEGORYTEXT',
-                'DELIVERY_DATE'           => 'DELIVERY DATE',
-                'description'             => 'DESCRIPTION',
-                'IMGURL'                  => 'IMGURL',
-                'ITEM_ID'                 => 'ITEM_ID',
-                'MANUFACTURER'            => 'MANUFACTURER',
-                'PRICE_VAT'               => 'PRICE_VAT',
-                'PRODUCTNAME'             => 'PRODUCTNAME',
-                'SIZE'                    => 'SIZE',
-                'URL'                     => 'URL',
+                'ITEM_ID'               => 'ITEM_ID',
+                'PRODUCTNAME'           => 'PRODUCTNAME',
+                'URL'                   => 'URL',
+                'IMGURL'                => 'IMGURL',
+                'PRICE_VAT'             => 'PRICE_VAT',
+                'MANUFACTURER'          => 'MANUFACTURER',
+                'CATEGORYTEXT'          => 'CATEGORYTEXT',
             ),
             'Recommended Information' =>  array(
+                'DESCRIPTION'             => 'DESCRIPTION',
                 'EAN'                     => 'EAN',
                 'IMGURL_ALTERNATIVE'      => 'IMGURL ALTERNATIVE',
                 'ITEMGROUP_ID'            => 'ITEMGROUP_ID',
                 'SIZE_SYSTEM'             => 'SIZE SYSTEM',
                 'URL_SIZE'                => 'URL SIZE',
+                'PARAM'                   => 'Param',
             ),
-
             'Optional Information' => array(
                 'CATEGORY_ID'            => 'CATEGORY ID',
                 'DELIVERY_ID'            => 'DELIVERY ID',
                 'DELIVERY_PRICE'         => 'DELIVERY PRICE',
                 'DELIVERY_PRICE_COD'     => 'DELIVERY PRICE COD',
+                'DELIVERY_DATE'          => 'DELIVERY DATE',
                 'GLAMI_CPC '             => 'GLAMI CPC',
                 'MATERIAL'               => 'MATERIAL',
                 'PROMOTION_ID  	'        => 'PROMOTION ID',
@@ -56,18 +55,6 @@ class Rex_Feed_Template_Glami extends Rex_Feed_Abstract_Template {
 
     protected function init_default_template_mappings(){
         $this->template_mappings = array(
-
-            array(
-                'attr'     => 'PRODUCTNAME',
-                'type'     => 'meta',
-                'meta_key' => 'title',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-
             array(
                 'attr'     => 'ITEM_ID',
                 'type'     => 'meta',
@@ -78,11 +65,30 @@ class Rex_Feed_Template_Glami extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
             array(
-                'attr'     => 'description',
+                'attr'     => 'PRODUCTNAME',
                 'type'     => 'meta',
-                'meta_key' => 'description',
+                'meta_key' => 'title',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'URL',
+                'type'     => 'meta',
+                'meta_key' => 'link',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'IMGURL',
+                'type'     => 'static',
+                'meta_key' => '',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
@@ -99,39 +105,6 @@ class Rex_Feed_Template_Glami extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
-            array(
-                'attr'     => 'CATEGORYTEXT',
-                'type'     => 'static',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-
-            array(
-                'attr'     => 'DELIVERY_DATE',
-                'type'     => 'static',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-
-            array(
-                'attr'     => 'IMGURL',
-                'type'     => 'static',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
             array(
                 'attr'     => 'MANUFACTURER',
                 'type'     => 'static',
@@ -142,21 +115,10 @@ class Rex_Feed_Template_Glami extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
             array(
-                'attr'     => 'SIZE',
+                'attr'     => 'CATEGORYTEXT',
                 'type'     => 'static',
                 'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'URL',
-                'type'     => 'meta',
-                'meta_key' => 'link',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',

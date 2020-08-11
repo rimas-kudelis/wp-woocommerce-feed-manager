@@ -220,6 +220,7 @@ abstract class Rex_Feed_Abstract_Template {
                 'cdata'                    => 'CDATA',
                 'remove_underscore'        => 'Remove underscore',
                 'decode_url'               => 'Decode url',
+                'remove_decimal'           => 'Remove decimal points (Marktplaats only)',
             )
         );
     }

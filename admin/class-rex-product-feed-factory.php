@@ -166,7 +166,6 @@ class Rex_Product_Feed_Factory {
                 'homedeco',
                 'imovelweb',
                 'onbuy',
-                'glami',
                 'fashiola',
                 'emag',
                 'lyst',

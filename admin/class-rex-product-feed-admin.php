@@ -297,7 +297,7 @@ class Rex_Product_Feed_Admin {
         if ($interval AND $show_notice !='no') {?>
             <div class="notice notice-info bwfm-review-notice" style="position: relative; border-left-color: #00b4ff;">
                 <div class="wpfm-logo">
-                    <img src="<?php echo WPFM_PLUGIN_DIR_URL.'admin/icon/wpfm-logo.jpg'?>">
+                    <img src="<?php echo WPFM_PLUGIN_DIR_URL.'admin/icon/WPFM_Logo.png'?>">
                 </div>
 
                 <div class="wpfm-notice-content">
@@ -382,6 +382,7 @@ class Rex_Product_Feed_Admin {
     public function load_admin_pages() {
 
         add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_DIR_URL . 'admin/icon/icon.png', 20 );
+        add_submenu_page('product-feed', __('Add New Feed', 'rex-product-feed'), __('Add New Feed', 'rex-product-feed'), 'manage_woocommerce', 'post-new.php?post_type=product-feed');
         $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping');
         $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings');
         $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');

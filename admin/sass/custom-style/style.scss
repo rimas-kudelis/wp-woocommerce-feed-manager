@@ -2327,7 +2327,7 @@
                         .rex-licenes__input-block-area {
                             display: flex;
                             flex-flow: row;
-                            align-items: center;
+                            align-items: flex-start;
                             margin-top: 70px;
                             max-width: 735px;
                             width: 100%;
@@ -2361,8 +2361,8 @@
                                 .button-secondary  {
                                     display: inline-block;
                                     border: 1px solid rgb(31, 179, 251);
-                                    height: 50px;
-                                    line-height: 47px;
+                                    height: 46px;
+                                    line-height: 44px;
                                     padding: 0px 20px;
                                     font-size: 15px;
                                     font-weight: 500;

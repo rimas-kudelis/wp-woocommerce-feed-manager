@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.4.2
 Requires PHP: 5.6
-Stable tag: 5.36
+Stable tag: 5.37
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -547,7 +547,13 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 5.36 (2020-07-17) =
+= 5.37 (2020-08-11) =
+* Fixed: Glami attributes
+* Fixed: JS issue for adding new attributes
+* Added: All images & parent product image attribute
+* Compatibility Checked : WooCommerce 4.3.2
+
+= 5.36 (2020-07-16) =
 * Added: Option to add Regular price excl. tax, Price excl. tax, Sales price excl. tax value
 * Added: Decode url sanitization for value
 * Fixed: Marktplaats template attributes

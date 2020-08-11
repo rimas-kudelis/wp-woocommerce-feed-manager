@@ -222,10 +222,12 @@ class Rex_Product_Data_Retriever {
             $val = $this->set_cat_mapper_att( $rule['meta_key']  );
         }
 
-        // maybe add prefix/suffix
-        $val = $this->maybe_add_prefix_suffix($val, $rule);
         // maybe escape
         $val = $this->maybe_escape($val, $rule['escape']);
+
+        // maybe add prefix/suffix
+        $val = $this->maybe_add_prefix_suffix($val, $rule);
+
         // maybe limit
         $val = $this->maybe_limit($val, $rule['limit']);
 
@@ -644,6 +646,31 @@ class Rex_Product_Data_Retriever {
                 }
                 return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
 
+            case 'parent_url':
+                $_pr = $this->product;
+                if ( 'WC_Product_Variation' == get_class($this->product) ) {
+                    $_pr = wc_get_product($this->product->get_parent_id());
+                }
+                if($this->analytics_params) {
+                    if ( ! empty( $this->analytics_params['utm_source'] ) &&
+                        ! empty( $this->analytics_params['utm_medium'] ) &&
+                        ! empty( $this->analytics_params['utm_campaign'] )
+                    ) {
+                        if($rule === 'decode_url') {
+                            return add_query_arg( array_filter( $this->analytics_params ), urldecode($_pr->get_permalink())); break;
+                        }
+                        return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($_pr->get_permalink()) )); break;
+                    }
+                    if($rule === 'decode_url') {
+                        return urldecode($_pr->get_permalink()); break;
+                    }
+                    return $this->safeCharEncodeURL(urldecode($_pr->get_permalink())); break;
+                }
+                if($rule === 'decode_url') {
+                    return urldecode($_pr->get_permalink()); break;
+                }
+                return $this->safeCharEncodeURL(urldecode($_pr->get_permalink())); break;
+
             case 'condition':
                 return $this->get_condition(); break;
 
@@ -723,11 +750,40 @@ class Rex_Product_Data_Retriever {
      */
     protected function set_image_att( $key ) {
         switch ( $key ) {
+            case 'main_image':
+                if ( 'WC_Product_Variation' == get_class($this->product) ) {
+                    $_pr = wc_get_product($this->product->get_parent_id());
+                    return wp_get_attachment_url(  $_pr->get_image_id() ); break;
+                }else {
+                    return wp_get_attachment_url(  $this->product->get_image_id() ); break;
+                }
+                return ''; break;
             case 'featured_image':
                 return wp_get_attachment_url(  $this->product->get_image_id() ); break;
+            case 'all_image':
+                return $this->get_all_image(); break;
+            case 'all_image_pipe':
+                return $this->get_all_image('|'); break;
             default: return $this->get_additional_image( $key ); break;
         }
     }
+
+
+    /**
+     * get all product images with separators
+     *
+     * @param string $sep
+     * @return string
+     */
+    private function get_all_image( $sep = ',' ) {
+        $attachment_ids = $this->product->get_gallery_image_ids();
+        $all_images = [];
+        foreach ($attachment_ids as $key => $val){
+            $all_images[] = wp_get_attachment_url($val);
+        }
+        return implode( $sep , $all_images );
+    }
+
 
     /**
      * Set a Product attribute.
@@ -1398,11 +1454,10 @@ class Rex_Product_Data_Retriever {
      * @return int
      */
     protected function get_item_group_id() {
-        $id = $this->product->get_id();
         if($this->product->is_type('variation')) {
-            $id = $this->product->get_parent_id();
+            return $this->product->get_parent_id();
         }
-        return $id;
+        return '';
     }
 
 
@@ -1495,7 +1550,6 @@ class Rex_Product_Data_Retriever {
             case 'htmlentities':
                 return htmlentities($val);
             case 'integer':
-                return intval($val);
             case 'price':
                 return intval($val);
             case 'remove_space':
@@ -1508,11 +1562,32 @@ class Rex_Product_Data_Retriever {
                 return $val ? "<![CDATA [$val]]>" : $val;
             case 'remove_underscore':
                 return str_replace('_', ' ', $val);
+            case 'remove_decimal':
+                if($this->checkIfFloat($val)) {
+                    $val = number_format($val, 2, '.', '');
+                    for ($i=0; $i<2; $i++) {
+                        $val = $val * 10;
+                    }
+                }else {
+                    return intval($val) * 100;
+                }
+                return $val;
             default:
                 return $val;
                 break;
 
         }
+    }
+
+
+    /**
+     * check if float
+     *
+     * @param $num
+     * @return bool
+     */
+    private function checkIfFloat($num) {
+        return is_float($num) || is_numeric($num) && ((float) $num != (int) $num);
     }
 
 

@@ -38,6 +38,7 @@ class Rex_Feed_Attributes {
                 'product_subcategory'       => 'Product Sub Categories Path (with separator ">")',
                 'yoast_primary_cat'         => 'Yoast primary category',
                 'link'                      => 'Product URL',
+                'parent_url'                => 'Parent Product URL',
                 'condition'                 => 'Condition',
                 'item_group_id'             => 'Parent ID (Group ID)',
                 'sku'                       => 'SKU',
@@ -70,7 +71,10 @@ class Rex_Feed_Attributes {
                 'promotion_id'              => 'Promotion ID',
             ),
             'Image Attributes' => array(
+                'main_image'     => 'Main Image',
                 'featured_image' => 'Featured Image',
+                'all_image'      => 'All Images (comma separated)',
+                'all_image_pipe' => 'All Images (separated by "|")',
                 'image_1'        => 'Additional Image 1',
                 'image_2'        => 'Additional Image 2',
                 'image_3'        => 'Additional Image 3',

@@ -1,9 +1,9 @@
 <?php
 
-namespace RexTheme\MarktPlaatsShoppingFeed;
+namespace RexTheme\GlamiShoppingFeed;
 
 use SimpleXMLElement;
-use RexTheme\MarktPlaatsShoppingFeed\Item;
+use RexTheme\GlamiShoppingFeed\Item;
 use Gregwar\Cache\Cache;
 
 class Feed
@@ -91,15 +91,13 @@ class Feed
     public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss')
     {
 
-        $this->namespace   = $namespace;
+        $this->namespace   = '';
         $this->version     = $version;
         $this->channelName = $wrapper;
         $this->itemlName   = $itemlName;
         $this->rss          = $rss;
 
-        $namespace = $this->namespace && !empty($this->namespace) ? " xmlns:admarkt='$this->namespace'" : '';
-
-        $this->feed = new SimpleXMLElement("<$rss $namespace ></$rss>");
+        $this->feed = new SimpleXMLElement("<$rss></$rss>");
     }
 
     /**
@@ -211,7 +209,7 @@ class Feed
 
         foreach ($this->items as $item) {
 
-            $s_nodes = array('media', 'totalBudget', 'dailyBudget', 'cpc');
+            $s_nodes = array('PARAM', 'IMGURL_ALTERNATIVE');
 
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
@@ -220,27 +218,27 @@ class Feed
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
 
-            $budget = false;
             foreach ($item->nodes() as $itemNode) {
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {
-                        $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
+                        $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'));
                     }
                 } else {
                     if(in_array($itemNode->get('name'), $s_nodes)) {
-                        if($itemNode->get('name') == 'media') {
+                        if($itemNode->get('name') == 'PARAM') {
                             if(is_array($itemNode->get('value'))) {
-                                $media = $feedItemNode->addChild('media');
                                 foreach ($itemNode->get('value') as $value) {
-                                    $image = $media->addChild('image');
-                                    $image->addAttribute('url', $value);
+                                    $param = $feedItemNode->addChild('PARAM');
+                                    $param->addChild('PARAM_NAME', $value['name']);
+                                    $param->addChild('VAL', $value['value']);
                                 }
                             }
                         }else {
-                            if(!isset($feedItemNode->children('admarkt',true)->budget)) {
-                                $feedItemNode->addChild('budget');
+                            if(is_array($itemNode->get('value'))) {
+                                foreach ($itemNode->get('value') as $value) {
+                                    $feedItemNode->addChild('IMGURL_ALTERNATIVE', $value);
+                                }
                             }
-                            $feedItemNode->children('admarkt',true)->budget->addChild($itemNode->get('name'), $itemNode->get('value'));
                         }
                     }else {
                         $itemNode->attachNodeTo($feedItemNode);
@@ -345,8 +343,8 @@ class Feed
         if (ob_get_contents()) ob_end_clean();
         $this->addItemsToFeed();
 
-//        $data = html_entity_decode($this->feed->asXml());
-        $data = $this->feed->asXml();
+        $data = html_entity_decode($this->feed->asXml());
+//        $data = $this->feed->asXml();
 
         if ($output) {
             header('Content-Type: application/xml; charset=utf-8');
