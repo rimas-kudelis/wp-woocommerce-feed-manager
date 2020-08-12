@@ -222,12 +222,12 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator {
      */
     public function setItemWrapper()
     {
-        return 'SHOP';
+        return 'SHOPITEM';
     }
 
     public function setItemsWrapper()
     {
-        return 'SHOPITEM';
+        return 'SHOP';
     }
 
 
