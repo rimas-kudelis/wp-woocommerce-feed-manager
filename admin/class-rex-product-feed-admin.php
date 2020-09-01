@@ -145,6 +145,7 @@ class Rex_Product_Feed_Admin {
 
 
 
+
     /**
      * Initialize the class and set its properties.
      *
@@ -185,6 +186,7 @@ class Rex_Product_Feed_Admin {
         if( ($hook === 'edit.php' ) ){
             return;
         }
+
 
         if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, 'product-feed_page_wpfm-license')))) {
             wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css', array(), $this->version, 'all' );

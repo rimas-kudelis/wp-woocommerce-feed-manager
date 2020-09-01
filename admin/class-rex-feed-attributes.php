@@ -178,6 +178,7 @@ class Rex_Feed_Attributes {
             }
         }
         $attributes['Category Map'] = $cat_maps_array;
+
         return $attributes;
     }
 

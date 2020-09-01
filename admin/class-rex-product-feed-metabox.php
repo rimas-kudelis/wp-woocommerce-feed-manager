@@ -227,6 +227,7 @@ class Rex_Product_Metabox {
                 'data-conditional-value' => 'on',
             ),
         ) );
+
     }
 
     /**
@@ -508,6 +509,7 @@ class Rex_Product_Metabox {
                     'webgains',
                     'vidaXL',
                     'mydeal',
+                    'shopee',
                 ))),
             ),
         ) );

@@ -208,6 +208,7 @@ return array(
     'Rex_Feed_Template_Scoupz' => $baseDir . '/admin/feed-templates/class-rex-feed-template-scoupz.php',
     'Rex_Feed_Template_Sears' => $baseDir . '/admin/feed-templates/class-rex-feed-template-sears.php',
     'Rex_Feed_Template_Shopalike' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopalike.php',
+    'Rex_Feed_Template_Shopee' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopee.php',
     'Rex_Feed_Template_Shopmania' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopmania.php',
     'Rex_Feed_Template_Shopping' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopping.php',
     'Rex_Feed_Template_Shopzilla' => $baseDir . '/admin/feed-templates/class-rex-feed-template-shopzilla.php',

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5
 Requires PHP: 5.6
-Stable tag: 5.38
+Stable tag: 5.39
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -544,6 +544,11 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.39 (2020-09-01) =
+* Fixed: Category order
+* Added: Shopee template
+* Compatibility Checked : WooCommerce 4.4.1
 
 = 5.38 (2020-08-12) =
 * Fixed: Glami items wrapper changed to SHOP

@@ -1242,20 +1242,37 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
-        $terms = wp_get_post_terms( $id, $taxonomy , array( 'orderby' => 'term_id' ));
+//        $terms = wp_get_post_terms( $id, $taxonomy , array( 'orderby' => 'term_id' ));
+//        if ( empty( $terms ) || is_wp_error( $terms ) ){
+//            return '';
+//        }
+//
+//        $term_names = array();
+//
+//        foreach ( $terms as $term ) {
+//            $term_names[] = $term->name;
+//        }
+//
+//        ksort($term_names);
+//
+//        return $before . join( $sep, $term_names ) . $after;
+
+        $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'parent' => 0, 'orderby' => 'term_id' ));
         if ( empty( $terms ) || is_wp_error( $terms ) ){
             return '';
         }
-
-        $term_names = array();
-
-        foreach ( $terms as $term ) {
+        $output = array();
+        foreach ($terms as $term) {
+            $term_names = [];
             $term_names[] = $term->name;
+
+            $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
+            if(is_array($term_name_arr)) {
+                $output[] = implode($sep, $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names));
+            }
         }
 
-        ksort($term_names);
-
-        return $before . join( $sep, $term_names ) . $after;
+        return implode(' , ', $output);
     }
 
 

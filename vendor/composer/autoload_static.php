@@ -338,6 +338,7 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         'Rex_Feed_Template_Scoupz' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-scoupz.php',
         'Rex_Feed_Template_Sears' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-sears.php',
         'Rex_Feed_Template_Shopalike' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopalike.php',
+        'Rex_Feed_Template_Shopee' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopee.php',
         'Rex_Feed_Template_Shopmania' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopmania.php',
         'Rex_Feed_Template_Shopping' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopping.php',
         'Rex_Feed_Template_Shopzilla' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-shopzilla.php',

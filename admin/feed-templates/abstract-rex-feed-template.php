@@ -65,7 +65,7 @@ abstract class Rex_Feed_Abstract_Template {
     public function __construct( $feed_rules = false ){
         $this->init_atts();
         $this->init_template_mappings( $feed_rules );
-        $this->init_product_meta_keys();
+//        $this->init_product_meta_keys();
         $this->init_sanitization_options();
     }
 

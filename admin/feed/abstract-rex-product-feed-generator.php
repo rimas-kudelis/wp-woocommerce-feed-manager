@@ -477,6 +477,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected function setup_feed_rules( $info ){
         $feed_rules       = array();
         parse_str( $info, $feed_rules );
+
         $this->product_scope = $feed_rules['rex_feed_products'];
         if($this->batch == 1) {
             if(array_key_exists('rex_feed_analytics_params_options', $feed_rules)) {
@@ -492,10 +493,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         if ( function_exists('icl_object_id') ) {
-            $this->wpml_language = array_key_exists('rex_feed_wpml_language', $feed_rules) ?
-                $feed_rules['rex_feed_wpml_language'] :
-                get_post_meta($this->id, 'rex_feed_wpml_language', true);
-            update_post_meta( $this->id, 'rex_feed_wpml_language', ICL_LANGUAGE_CODE );
+            $language = get_post_meta($this->id, 'rex_feed_wpml_language', true);;
+            if($language) {
+                $this->wpml_language = $language;
+            }else {
+                $this->wpml_language = ICL_LANGUAGE_CODE;
+            }
+
+            if($this->batch == 1) {
+                update_post_meta( $this->id, 'rex_feed_wpml_language', ICL_LANGUAGE_CODE );
+            }
         }
         else {
             $this->wpml_language = false;
@@ -1105,139 +1112,143 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
     protected function merge_feeds($prev_feed){
 
-        $xml_str = simplexml_load_file($prev_feed)->asXML();
-        $orgdoc = new DOMDocument;
-        $orgdoc->loadXML($xml_str);
+        $xml = simplexml_load_file($prev_feed);
+        if($xml) {
+            $xml_str = $xml->asXML();
+            $orgdoc = new DOMDocument;
+            $orgdoc->loadXML($xml_str);
 
-        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
-            $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
-            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq'
-        ) {
-            $parent = $orgdoc->getElementsByTagName('channel')->item(0);
-        }elseif ($this->merchant === 'ebay_mip') {
-            $parent = $orgdoc->getElementsByTagName('productRequest')->item(0);
-        }elseif ($this->merchant === 'ceneo') {
-            $parent = $orgdoc->getElementsByTagName('offers')->item(0);
-        }elseif ($this->merchant === 'heureka') {
-            $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
-        }elseif ($this->merchant === 'marktplaats') {
-            $parent = $orgdoc->getElementsByTagName('admarkt:ads');
-        }elseif ($this->merchant === 'yandex') {
-            $parent = $orgdoc->getElementsByTagName('offers')->item(0);
-        }elseif ($this->merchant === 'zbozi') {
-            $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
-        }elseif ($this->merchant === 'skroutz') {
-            $parent = $orgdoc->getElementsByTagName('mywebstore')->item(0);
-        }elseif ($this->merchant === 'google_review') {
-            $parent = $orgdoc->getElementsByTagName('reviews')->item(0);
-        }elseif ($this->merchant === 'vivino') {
-            $parent = $orgdoc->getElementsByTagName('vivino-product-list')->item(0);
-        }elseif ($this->merchant === 'trovaprezzi') {
-            $parent = $orgdoc->getElementsByTagName('Products')->item(0);
-        }elseif ($this->merchant === 'datatrics') {
-            $parent = $orgdoc->getElementsByTagName('items')->item(0);
-        }elseif ($this->merchant === 'domodi') {
-            $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
-        }elseif ($this->merchant === 'drezzy') {
-            $parent = $orgdoc->getElementsByTagName('items')->item(0);
-        }elseif ($this->merchant === 'homebook') {
-            $parent = $orgdoc->getElementsByTagName('offers')->item(0);
-        }elseif ($this->merchant === 'homedeco') {
-            $parent = $orgdoc->getElementsByTagName('items')->item(0);
-        }elseif ($this->merchant === 'glami') {
-            $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
-        }elseif ($this->merchant === 'fashiola') {
-            $parent = $orgdoc->getElementsByTagName('items')->item(0);
-        }elseif ($this->merchant === 'emag') {
-            $parent = $orgdoc->getElementsByTagName('shop')->item(0);
-        }elseif ($this->merchant === 'grupo_zap') {
-            $parent = $orgdoc->getElementsByTagName('Listings')->item(0);
-        }elseif ($this->merchant === 'lyst') {
-            $parent = $orgdoc->getElementsByTagName('channel')->item(0);
-        }elseif ($this->merchant === 'listupp') {
-            $parent = $orgdoc->getElementsByTagName('items')->item(0);
-        }elseif ($this->merchant === 'hertie') {
-            $parent = $orgdoc->getElementsByTagName('Artikel')->item(0);
-        }
-        else {
-            $parent = $orgdoc->getElementsByTagName('products')->item(0);
-        }
-
-        if(!$parent)
-            return $parent;
-
-        // Create a new document
-        $newdoc = new DOMDocument;
-        $newdoc->loadXML($this->feed);
-
-        // The node we want to import to a new document
-
-        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
-            $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
-            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq'
-        ) {
-            $node = $newdoc->getElementsByTagName("item");
-        }
-        elseif ($this->merchant === 'ebay_mip') {
-            if($newdoc->getElementsByTagName("product")) {
-                $node = $newdoc->getElementsByTagName("product");
+            if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
+                $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
+                $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq'
+            ) {
+                $parent = $orgdoc->getElementsByTagName('channel')->item(0);
+            }elseif ($this->merchant === 'ebay_mip') {
+                $parent = $orgdoc->getElementsByTagName('productRequest')->item(0);
+            }elseif ($this->merchant === 'ceneo') {
+                $parent = $orgdoc->getElementsByTagName('offers')->item(0);
+            }elseif ($this->merchant === 'heureka') {
+                $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+            }elseif ($this->merchant === 'marktplaats') {
+                $parent = $orgdoc->getElementsByTagName('admarkt:ads');
+            }elseif ($this->merchant === 'yandex') {
+                $parent = $orgdoc->getElementsByTagName('offers')->item(0);
+            }elseif ($this->merchant === 'zbozi') {
+                $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+            }elseif ($this->merchant === 'skroutz') {
+                $parent = $orgdoc->getElementsByTagName('mywebstore')->item(0);
+            }elseif ($this->merchant === 'google_review') {
+                $parent = $orgdoc->getElementsByTagName('reviews')->item(0);
+            }elseif ($this->merchant === 'vivino') {
+                $parent = $orgdoc->getElementsByTagName('vivino-product-list')->item(0);
+            }elseif ($this->merchant === 'trovaprezzi') {
+                $parent = $orgdoc->getElementsByTagName('Products')->item(0);
+            }elseif ($this->merchant === 'datatrics') {
+                $parent = $orgdoc->getElementsByTagName('items')->item(0);
+            }elseif ($this->merchant === 'domodi') {
+                $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+            }elseif ($this->merchant === 'drezzy') {
+                $parent = $orgdoc->getElementsByTagName('items')->item(0);
+            }elseif ($this->merchant === 'homebook') {
+                $parent = $orgdoc->getElementsByTagName('offers')->item(0);
+            }elseif ($this->merchant === 'homedeco') {
+                $parent = $orgdoc->getElementsByTagName('items')->item(0);
+            }elseif ($this->merchant === 'glami') {
+                $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+            }elseif ($this->merchant === 'fashiola') {
+                $parent = $orgdoc->getElementsByTagName('items')->item(0);
+            }elseif ($this->merchant === 'emag') {
+                $parent = $orgdoc->getElementsByTagName('shop')->item(0);
+            }elseif ($this->merchant === 'grupo_zap') {
+                $parent = $orgdoc->getElementsByTagName('Listings')->item(0);
+            }elseif ($this->merchant === 'lyst') {
+                $parent = $orgdoc->getElementsByTagName('channel')->item(0);
+            }elseif ($this->merchant === 'listupp') {
+                $parent = $orgdoc->getElementsByTagName('items')->item(0);
+            }elseif ($this->merchant === 'hertie') {
+                $parent = $orgdoc->getElementsByTagName('Artikel')->item(0);
             }
             else {
-                $node = $newdoc->getElementsByTagName("productVariationGroup");
+                $parent = $orgdoc->getElementsByTagName('products')->item(0);
             }
-        }
-        elseif ($this->merchant === 'ceneo') {
-            $node = $newdoc->getElementsByTagName("o");
-        }elseif ($this->merchant === 'heureka') {
-            $node = $newdoc->getElementsByTagName("SHOPITEM");
-        }elseif ($this->merchant === 'marktplaats') {
-            $node = $newdoc->getElementsByTagName("admarkt:ad");
-        }elseif ($this->merchant === 'trovaprezzi') {
-            $node = $newdoc->getElementsByTagName("Offer");
-        }elseif ($this->merchant === 'yandex') {
-            $node = $newdoc->getElementsByTagName("offer");
-        }elseif ($this->merchant === 'zbozi') {
-            $node = $newdoc->getElementsByTagName("SHOPITEM");
-        }elseif ($this->merchant === 'skroutz') {
-            $node = $newdoc->getElementsByTagName("product");
-        }elseif ($this->merchant === 'google_review') {
-            $node = $newdoc->getElementsByTagName("feed");
-        }elseif ($this->merchant === 'datatrics') {
-            $node = $newdoc->getElementsByTagName("item");
-        }elseif ($this->merchant === 'domodi') {
-            $node = $newdoc->getElementsByTagName("SHOPITEM");
-        }elseif ($this->merchant === 'drezzy') {
-            $node = $newdoc->getElementsByTagName("item");
-        }elseif ($this->merchant === 'homebook') {
-            $node = $newdoc->getElementsByTagName("offer");
-        }elseif ($this->merchant === 'homedeco') {
-            $node = $newdoc->getElementsByTagName("item");
-        }elseif ($this->merchant === 'glami') {
-            $node = $newdoc->getElementsByTagName("SHOPITEM");
-        }elseif ($this->merchant === 'fashiola') {
-            $node = $newdoc->getElementsByTagName("item");
-        }elseif ($this->merchant === 'emag') {
-            $node = $newdoc->getElementsByTagName("product");
-        }elseif ($this->merchant === 'grupo_zap') {
-            $node = $newdoc->getElementsByTagName("Listing");
-        }elseif ($this->merchant === 'lyst') {
-            $node = $newdoc->getElementsByTagName("item");
-        }elseif ($this->merchant === 'listupp') {
-            $node = $newdoc->getElementsByTagName("item");
-        }elseif ($this->merchant === 'hertie') {
-            $node = $newdoc->getElementsByTagName("Katalog");
-        }else {
-            $node = $newdoc->getElementsByTagName("product");
-        }
 
-        for ($i = 0; $i < $node->length; $i ++) {
-            $item = $node->item($i);
-            if ($item != NULL) {
-                $item = $orgdoc->importNode($item, true);
-                $parent->appendChild($item);
+            if(!$parent)
+                return $parent;
+
+            // Create a new document
+            $newdoc = new DOMDocument;
+            $newdoc->loadXML($this->feed);
+
+            // The node we want to import to a new document
+
+            if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
+                $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
+                $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq'
+            ) {
+                $node = $newdoc->getElementsByTagName("item");
             }
+            elseif ($this->merchant === 'ebay_mip') {
+                if($newdoc->getElementsByTagName("product")) {
+                    $node = $newdoc->getElementsByTagName("product");
+                }
+                else {
+                    $node = $newdoc->getElementsByTagName("productVariationGroup");
+                }
+            }
+            elseif ($this->merchant === 'ceneo') {
+                $node = $newdoc->getElementsByTagName("o");
+            }elseif ($this->merchant === 'heureka') {
+                $node = $newdoc->getElementsByTagName("SHOPITEM");
+            }elseif ($this->merchant === 'marktplaats') {
+                $node = $newdoc->getElementsByTagName("admarkt:ad");
+            }elseif ($this->merchant === 'trovaprezzi') {
+                $node = $newdoc->getElementsByTagName("Offer");
+            }elseif ($this->merchant === 'yandex') {
+                $node = $newdoc->getElementsByTagName("offer");
+            }elseif ($this->merchant === 'zbozi') {
+                $node = $newdoc->getElementsByTagName("SHOPITEM");
+            }elseif ($this->merchant === 'skroutz') {
+                $node = $newdoc->getElementsByTagName("product");
+            }elseif ($this->merchant === 'google_review') {
+                $node = $newdoc->getElementsByTagName("feed");
+            }elseif ($this->merchant === 'datatrics') {
+                $node = $newdoc->getElementsByTagName("item");
+            }elseif ($this->merchant === 'domodi') {
+                $node = $newdoc->getElementsByTagName("SHOPITEM");
+            }elseif ($this->merchant === 'drezzy') {
+                $node = $newdoc->getElementsByTagName("item");
+            }elseif ($this->merchant === 'homebook') {
+                $node = $newdoc->getElementsByTagName("offer");
+            }elseif ($this->merchant === 'homedeco') {
+                $node = $newdoc->getElementsByTagName("item");
+            }elseif ($this->merchant === 'glami') {
+                $node = $newdoc->getElementsByTagName("SHOPITEM");
+            }elseif ($this->merchant === 'fashiola') {
+                $node = $newdoc->getElementsByTagName("item");
+            }elseif ($this->merchant === 'emag') {
+                $node = $newdoc->getElementsByTagName("product");
+            }elseif ($this->merchant === 'grupo_zap') {
+                $node = $newdoc->getElementsByTagName("Listing");
+            }elseif ($this->merchant === 'lyst') {
+                $node = $newdoc->getElementsByTagName("item");
+            }elseif ($this->merchant === 'listupp') {
+                $node = $newdoc->getElementsByTagName("item");
+            }elseif ($this->merchant === 'hertie') {
+                $node = $newdoc->getElementsByTagName("Katalog");
+            }else {
+                $node = $newdoc->getElementsByTagName("product");
+            }
+
+            for ($i = 0; $i < $node->length; $i ++) {
+                $item = $node->item($i);
+                if ($item != NULL) {
+                    $item = $orgdoc->importNode($item, true);
+                    $parent->appendChild($item);
+                }
+            }
+            return $orgdoc->saveXML();
         }
-        return $orgdoc->saveXML();
+        return false;
     }
 
 

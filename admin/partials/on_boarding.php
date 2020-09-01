@@ -1213,6 +1213,11 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     'status'   => 0,
                                     'name'     => 'My Deal'
                                 ),
+                                'shopee'     => array(
+                                    'free'     => true,
+                                    'status'   => 0,
+                                    'name'     => 'Shopee'
+                                ),
 
                             );
 
