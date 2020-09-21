@@ -16,22 +16,20 @@
 if ( ! isset($feed_template) ) {
     return;
 }
-
-
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <thead>
-<tr>
-    <th class="large-col"><?php echo __('Attributes', 'rex-product-feed') ?></th>
-    <th class="large-col"><?php echo __('Type', 'rex-product-feed') ?></th>
-    <th class="large-col"><?php echo __('Value', 'rex-product-feed') ?></th>
-    <th class="small-col"><?php echo __('Prefix', 'rex-product-feed') ?></th>
-    <th class="small-col"><?php echo __('Suffix', 'rex-product-feed') ?></th>
-    <th class="large-col"><?php echo __('Output Sanitization', 'rex-product-feed') ?></th>
-    <th colspan="2" class="small-col"><?php echo __('Output Limit', 'rex-product-feed') ?></th>
-</tr>
+    <tr>
+        <th class="large-col"><?php echo __('Attributes', 'rex-product-feed') ?></th>
+        <th class="large-col"><?php echo __('Type', 'rex-product-feed') ?></th>
+        <th class="large-col"><?php echo __('Value', 'rex-product-feed') ?></th>
+        <th class="small-col"><?php echo __('Prefix', 'rex-product-feed') ?></th>
+        <th class="small-col"><?php echo __('Suffix', 'rex-product-feed') ?></th>
+        <th class="large-col"><?php echo __('Output Sanitization', 'rex-product-feed') ?></th>
+        <th colspan="2" class="small-col"><?php echo __('Output Limit', 'rex-product-feed') ?></th>
+    </tr>
 </thead>
 
 <tbody>

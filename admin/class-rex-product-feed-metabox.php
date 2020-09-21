@@ -76,55 +76,25 @@ class Rex_Product_Metabox {
         ));
 
 
-//        $box->add_field( array(
-//            'name'           => 'Product Category',
-//            'desc'           => 'Select Category',
-//            'id'             => $this->prefix . 'cats',
-//            'taxonomy'       => 'product_cat', //Enter Taxonomy Slug
-//            'type'           => 'taxonomy_multicheck_inline',
-//            'text'           => array(
-//                'no_terms_text' => 'Sorry, no product categories could be found.'
-//            ),
-//            'attributes' => array(
-//                'data-conditional-id'    => $this->prefix . 'products',
-//                'data-conditional-value' => 'product_cat',
-//            ),
-//        ) );
-
-//        $box->add_field( array(
-//            'name'           => 'Product Tag',
-//            'desc'           => 'Select Tag',
-//            'id'             => $this->prefix . 'tags',
-//            'taxonomy'       => 'product_tag',
-//            'type'           => 'taxonomy_multicheck_inline',
-//            'text'           => array(
-//                'no_terms_text' => 'Sorry, no product tags could be found.'
-//            ),
-//            'attributes' => array(
-//                'data-conditional-id'    => $this->prefix . 'products',
-//                'data-conditional-value' => 'product_tag',
-//            ),
-//        ) );
-
-
 
         /*
          * Schedule Time
          */
+        $schedules = apply_filters('wpfm_option_schedules', array(
+            'no'        => __( 'No Interval', 'rex-product-feed' ),
+            'hourly'    => __( 'Hourly', 'rex-product-feed' ),
+            'daily'     => __( 'Daily', 'rex-product-feed' ),
+            'weekly'    => __( 'Weekly', 'rex-product-feed' ),
+        ));
+
         $box->add_field( array(
             'name'           => __( 'Refresh Interval', 'rex-product-feed' ),
             'desc'           => __( 'Feed Schedule Update', 'rex-product-feed' ),
             'id'             => $this->prefix . 'schedule',
             'type'           => 'radio_inline',
-            'options' => array(
-                'no'        => __( 'No Interval', 'rex-product-feed' ),
-                'hourly'    => __( 'Hourly', 'rex-product-feed' ),
-                'daily'     => __( 'Daily', 'rex-product-feed' ),
-                'weekly'    => __( 'Weekly', 'rex-product-feed' ),
-            ),
+            'options' => $schedules,
             'default' => 'no',
         ) );
-
 
 
         /*
@@ -509,7 +479,6 @@ class Rex_Product_Metabox {
                     'webgains',
                     'vidaXL',
                     'mydeal',
-                    'shopee',
                 ))),
             ),
         ) );
@@ -531,9 +500,8 @@ class Rex_Product_Metabox {
      **/
     public function atts_config_cb($field_args, $field){
         echo '<div id="rex-feed-config" class="rex-feed-config">';
-        echo '<table id="config-table" class="responsive-table wpfm-field-mappings">';
+        echo '<table id="config-table" class="responsive-table wpfm-field-mappings ">';
         require plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';
-//        require plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         echo '</table>';
         echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large"><i class="fa fa-plus-circle"></i>'.__('Add New Attribute','rex-product-feed').'</a>';
         echo '<a id="rex-new-custom-attr" class="waves-effect waves-light btn-large"><i class="fa fa-plus-circle"></i>'.__('Add New Custom Attribute','rex-product-feed').'</a>';
@@ -933,24 +901,24 @@ class Rex_Product_Metabox {
                 'name'  => 'Bing'
             ),
             'kelkoo'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Kelkoo'
+                'free'     => true,
+                'status'   => 1,
+                'name'     => 'Kelkoo'
             ),
             'become'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Become'
+                'free'     => true,
+                'status'   => 1,
+                'name'     => 'Become'
             ),
             'shopzilla'    => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'ShopZilla'
+                'free'     => true,
+                'status'   => 1,
+                'name'     => 'ShopZilla'
             ),
             'shopping'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Shopping'
+                'free'     => true,
+                'status'   => 1,
+                'name'     => 'Shopping'
             )
         );
         if($merchants) {
@@ -958,39 +926,39 @@ class Rex_Product_Metabox {
         }
         $_pro_merchants = array(
             'ebay_mip'     => array(
-                'free'  => false,
-                'status'    => 0,
-                'name'  => 'eBay (MIP)'
+                'free'     => false,
+                'status'   => 0,
+                'name'     => 'eBay (MIP)'
             ),
-            'ebay_seller'     => array(
-                'free'  => false,
-                'status'    => 0,
-                'name'  => 'eBay Seller Center'
+            'ebay_seller'  => array(
+                'free'     => false,
+                'status'   => 0,
+                'name'     => 'eBay Seller Center'
             ),
             'ebay_seller_tickets'     => array(
-                'free'  => false,
+                'free'      => false,
                 'status'    => 0,
-                'name'  => 'eBay Seller Center (Event tickets)'
+                'name'      => 'eBay Seller Center (Event tickets)'
             ),
-            'bol'       => array(
-                'free'  => false,
-                'status'    => 0,
-                'name'  => 'Bol.com'
+            'bol'          => array(
+                'free'     => false,
+                'status'   => 0,
+                'name'     => 'Bol.com'
             ),
             'wish'       => array(
-                'free'  => false,
-                'status'    => 0,
-                'name'  => 'Wish.com'
+                'free'   => false,
+                'status' => 0,
+                'name'   => 'Wish.com'
             ),
-            'fruugo'       => array(
-                'free'  => false,
-                'status'    => 0,
-                'name'  => 'Fruugo'
+            'fruugo'      => array(
+                'free'    => false,
+                'status'  => 0,
+                'name'    => 'Fruugo'
             ),
-            'leguide'       => array(
-                'free'  => false,
-                'status'    => 0,
-                'name'  => 'Leguide'
+            'leguide'     => array(
+                'free'    => false,
+                'status'  => 0,
+                'name'    => 'Leguide'
             ),
             'connexity'       => array(
                 'free'  => false,

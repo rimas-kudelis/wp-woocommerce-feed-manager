@@ -19,7 +19,6 @@ class Rex_Feed_Template_Factory {
         } else {
             return new $className( $feed_rules );
         }
-        return false;
     }
 }
 

@@ -3,9 +3,9 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart
 Requires at least: 4.7
-Tested up to:  5.5
-Requires PHP: 5.6
-Stable tag: 5.39
+Tested up to:  5.5.1
+Requires PHP: 7.0
+Stable tag: 5.40
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -544,6 +544,17 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 5.40 (2020-10-21) =
+* Added: Support for private products
+* Added: Cache frequent queries
+* Added: Option to purge cache for WPFM
+* Added: Custom attribute added to fetch prices (regular price & sale price) from db - without the help of WC functions
+* Updated: Pinterest required fields
+* Fixed: Facebook availability attribute mapping
+* Fixed: Custom filter bug. Previously no custom filter can be added if all filter rules are deleted
+* Compatibility Checked : WooCommerce 4.5.2
+
 
 = 5.39 (2020-09-01) =
 * Fixed: Category order

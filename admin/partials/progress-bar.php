@@ -16,11 +16,9 @@
 
 
 <div class="bwfm-progressbar clearfix" style="display: none">
-    <div class="progressbar-bar" style="background: #2ecc71;"></div>
+    <div class="progressbar-bar" style="background: #1fb3fa"></div>
     <div class="progressbar-bar-percent">0</div>
 </div>
-
-
 
 <div class="progress-msg" style="display: none">
     <div class="feed-msg">

@@ -21,6 +21,8 @@ $amazon_custom_field = get_option('wpfm_amazon_fields', 'no');
 $pa_field = get_option('rex-wpfm-product-pa-field');
 $structured_data = get_option('rex-wpfm-product-structured-data');
 $exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
+$wpfm_cache_ttl = get_option( 'wpfm_cache_ttl', 3 * HOUR_IN_SECONDS );
+$wpfm_allow_private_products = get_option( 'wpfm_allow_private', 'no' );
 
 if($is_premium_activated) {
     $per_batch = get_option('rex-wpfm-product-per-batch', 50);
@@ -30,8 +32,6 @@ if($is_premium_activated) {
 
 $wpfm_fb_pixel_enabled = get_option('wpfm_fb_pixel_enabled', 'no');
 $wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
-
-
 $wpfm_enable_log = get_option('wpfm_enable_log');
 
 $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
@@ -220,7 +220,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     <div class="rex-general__single-block-area">
                                         <div class="rex-general__single-block banner-block">
                                             <div class="onboarding-block">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/wpfm-Banner.png'?>" alt="rex-banner">
+                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/wpfm-banner.png'?>" alt="rex-banner">
                                             </div>
                                         </div>
 
@@ -249,7 +249,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     <div class="rex-general__single-block-category">
                                         <div class="rex-general__single-block">
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Document.png'?>" class="title-icon" alt="documentation">
+                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/document.png'?>" class="title-icon" alt="documentation">
                                                 <h4><?php echo __('Documentation', 'rex-product-feed')?></h4>
                                             </div>
 
@@ -266,7 +266,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                         <div class="rex-general__single-block popular">
 
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Support.png'?>" class="title-icon" alt="support">
+                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/support.png'?>" class="title-icon" alt="support">
                                                 <h4><?php echo __('Support', 'rex-product-feed')?></h4>
                                             </div>
 
@@ -1213,12 +1213,6 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     'status'   => 0,
                                     'name'     => 'My Deal'
                                 ),
-                                'shopee'     => array(
-                                    'free'     => true,
-                                    'status'   => 0,
-                                    'name'     => 'Shopee'
-                                ),
-
                             );
 
                             $_pro_merchants = array(
@@ -1535,6 +1529,40 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                             </div>
 
 
+
+                            <div class="single-merchant detailed-product detailed-merchants">
+                                <span class="title"><?php echo __('WPFM cache TTL', 'rex-product-feed'); ?></span>
+                                <div class="wpfm-dropdown">
+                                    <form id="wpfm-transient-settings" class="wpfm-transient-settings">
+                                        <select id="wpfm_cache_ttl" name="wpfm_cache_ttl">
+                                            <option value="0" <?php selected( $wpfm_cache_ttl, 0 ); ?>><?php echo __('No Expiration', 'rex-product-feed'); ?></option>
+                                            <option value="3600" <?php selected( $wpfm_cache_ttl, 3600 ); ?>>1 hour</option>
+                                            <option value="10800" <?php selected( $wpfm_cache_ttl, 10800 ); ?>>3 hours</option>
+                                            <option value="21600" <?php selected( $wpfm_cache_ttl, 21600 ); ?>>6 hours</option>
+                                            <option value="43200" <?php selected( $wpfm_cache_ttl, 43200 ); ?>>12 hours</option>
+                                            <option value="86400" <?php selected( $wpfm_cache_ttl, 86400 ); ?>>24 hours</option>
+                                            <option value="604800" <?php selected( $wpfm_cache_ttl, 604800 ); ?>>1 week</option>
+                                        </select>
+                                        <span class="helper-text"><?php echo __('When the cache will be expired.', 'rex-product-feed'); ?></span>
+                                        <button type="submit" class="save-transient-button"><span>save</span> <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                    </form>
+                                    <button id="wpfm-purge-cache" class="wpfm-purge-cache"><?php echo __('Purge Cache', 'rex-product-feed'); ?><i class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="single-merchant detailed-product">
+                                <span class="title"><?php echo __('Allow private products', 'rex-product-feed'); ?></span>
+                                <div class="switch">
+                                    <?php
+                                    $disabled = '';
+                                    $checked = $wpfm_allow_private_products === 'yes' ? 'checked': '';
+                                    ?>
+                                    <div class="wpfm-switcher <?php echo $disabled; ?>">
+                                        <input class="switch-input" type="checkbox" id="rex-product-allow-private" <?php echo $checked; ?> <?php echo $disabled; ?>>
+                                        <label class="lever" for="rex-product-allow-private"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!--/settings tab-->
@@ -1706,7 +1734,6 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                             echo '<button id="wpfm-log-copy" class="btn-default" style="display: none"> <i class="fa fa-files-o"></i>'.__('Copy log', 'rex-product-feed').'</button>';
                             echo '<pre id="wpfm-log-content"></pre>';
                             echo '</div>';
-
                         ?>
                     </div>
                 </div>

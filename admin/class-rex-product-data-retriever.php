@@ -570,6 +570,21 @@ class Rex_Product_Data_Retriever {
                 }
                 return '';
 
+            case 'price_db':
+                return  wc_format_decimal( get_post_meta( $this->product->get_id(), '_regular_price', true), wc_get_price_decimals());
+                break;
+
+            case 'current_price_db':
+                return  wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true), wc_get_price_decimals());
+                break;
+
+            case 'sale_price_db':
+                $sale_price = get_post_meta( $this->product->get_id(), '_sale_price', true);
+                if( (int) $sale_price > 0) {
+                    return wc_format_decimal( $sale_price, wc_get_price_decimals());
+                }
+                return '';
+                break;
 
             case 'description':
                 if(($this->is_children())):
@@ -644,6 +659,7 @@ class Rex_Product_Data_Retriever {
                 if($rule === 'decode_url') {
                     return urldecode($this->product->get_permalink()); break;
                 }
+
                 return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
 
             case 'parent_url':
@@ -679,6 +695,9 @@ class Rex_Product_Data_Retriever {
 
             case 'availability':
                 return $this->get_availability(); break;
+            
+            case 'availability_underscore':
+                return $this->get_availability_underscore(); break;
 
             case 'quantity':
                 return $this->product->get_stock_quantity(); break;
@@ -1242,21 +1261,6 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
-//        $terms = wp_get_post_terms( $id, $taxonomy , array( 'orderby' => 'term_id' ));
-//        if ( empty( $terms ) || is_wp_error( $terms ) ){
-//            return '';
-//        }
-//
-//        $term_names = array();
-//
-//        foreach ( $terms as $term ) {
-//            $term_names[] = $term->name;
-//        }
-//
-//        ksort($term_names);
-//
-//        return $before . join( $sep, $term_names ) . $after;
-
         $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'parent' => 0, 'orderby' => 'term_id' ));
         if ( empty( $terms ) || is_wp_error( $terms ) ){
             return '';
@@ -1521,6 +1525,19 @@ class Rex_Product_Data_Retriever {
         }
     }
 
+    /**
+     * Helper to get availability underscore of a product
+     *
+     * @since    1.0.0
+     */
+    protected function get_availability_underscore( ) {
+        if ( $this->product->is_in_stock() == TRUE ) {
+            return 'in stock';
+        } else {
+            return 'out_of_stock';
+        }
+    }
+
 
     /**
      * @return string
@@ -1680,7 +1697,7 @@ class Rex_Product_Data_Retriever {
 
         $length = strlen($value);
         for ($i=0; $i < $length; $i++) {
-            $current = ord($value{$i});
+            $current = ord($value[$i]);
             if (($current == 0x9) ||
                 ($current == 0xA) ||
                 ($current == 0xD) ||
@@ -1834,6 +1851,4 @@ class Rex_Product_Data_Retriever {
             array('%25', '%5b', '%5d', '%7b', '%7d', '%7c', '%20', '%22', '%3c', '%3e', '%23', '%5c', '%5e', '%7e', '%60'),
             $string);
     }
-
-
 }

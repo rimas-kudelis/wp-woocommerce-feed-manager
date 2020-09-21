@@ -294,57 +294,30 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $bypass
      * @since    1.0.0
      */
-    public function __construct( $config, $bypass = false, $product_ids = array())
-    {
+    public function __construct( $config, $bypass = false, $product_ids = array()) {
         $this->products = [];
         $this->variable_products= [];
         $this->grouped_products = [];
-
         $this->config = $config;
-
         $this->is_logging_enabled = is_wpfm_logging_enabled();
-
         $this->bypass = $bypass;
+
         if ($this->bypass){
-            if(!empty($product_ids)) {
-                $this->id       =   $config['info']['post_id'];
-                $this->title    =   $config['info']['title'];
-                $this->desc     =   $config['info']['desc'];
-                $this->batch    =   (int) $config['info']['batch'];
-                $this->tbatch    =   (int) $config['info']['total_batch'];
-                $this->append_variation   = $config['append_variations'];
-                $this->feed_rules = $config['feed_config'];
-                $this->feed_rules_filter = $config['feed_filter'];
-                $this->variations   = $config['include_variations'];
-                $this->variable_product   = $config['variable_product'];
-                $this->parent_product   = $config['parent_product'];
-                $this->append_variation   = $config['append_variations'];
-                $this->exclude_hidden_products   = $config['exclude_hidden_products'];
-                $this->wpml_language   = $config['wpml_language'];
-                $this->product_scope   = $config['product_scope'];
-                $this->products= $product_ids;
-
-            }
-            else {
-
-                /**
-                 * legacy code
-                 * will be removed on
-                 * future major release
-                 */
-                $this->setup_feed_data($config['info']);
-                $this->feed_rules = $config['feed_config'];
-                $this->product_scope = $config['product_scope'];
-                $this->feed_rules_filter = $config['feed_filter'];
-                $this->variations   = $config['include_variations'];
-                $this->variable_product   = $config['variable_product'];
-                $this->parent_product   = $config['parent_product'];
-                $this->append_variation   = $config['append_variations'];
-                $this->wpml_language   = $config['wpml_language'];
-                $this->exclude_hidden_products   = $config['exclude_hidden_products'];
-                $this->prepare_products_args($config['products']);
-                $this->setup_products();
-            }
+            $this->id                   =   $config['info']['post_id'];
+            $this->title                =   $config['info']['title'];
+            $this->desc                 =   $config['info']['desc'];
+            $this->batch                =   (int) $config['info']['batch'];
+            $this->tbatch               =   (int) $config['info']['total_batch'];
+            $this->offset               =   (int) $config['info']['offset'];
+            $this->posts_per_page       =   (int) $config['info']['per_page'];
+            $this->feed_rules           = $config['feed_config'];
+            $this->feed_rules_filter    = $config['feed_filter'];
+            $this->variations           = $config['include_variations'];
+            $this->parent_product       = $config['include_variations'];
+            $this->append_variation     = $config['append_variations'];
+            $this->exclude_hidden_products   = $config['exclude_hidden_products'];
+            $this->wpml_language        = $config['wpml_language'];
+            $this->prepare_products_args($config['info']);
         }
         else {
             $this->setup_feed_data($config['info']);
@@ -352,9 +325,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->setup_feed_filter_rules($config['feed_config']);
             $this->setup_feed_meta($config['feed_config']);
             $this->prepare_products_args($config['products']);
-            $this->setup_products();
         }
 
+        $this->setup_products();
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
 
@@ -386,7 +359,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         if($this->tbatch == $this->batch) {
-            update_post_meta($this->id, 'updated', date("Y-m-d g:i:s"));
+            $wp_date_format = get_option('date_format', 'F j, Y');
+            $wp_time_format = get_option('time_format', 'g:i a');
+            update_post_meta($this->id, 'updated', current_time($wp_date_format.' '.$wp_time_format));
         }
 
     }
@@ -397,7 +372,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $args
      */
     protected function prepare_products_args( $args ) {
-
         $this->product_scope = $args['products_scope'];
         $post_types = array(
             'product'
@@ -413,17 +387,21 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 if($if == 'product_cats') {
                     unset($post_types[1]);
                 }
-
                 if($if == 'product_tags') {
                     unset($post_types[1]);
                 }
             }
         }
 
+        $post_status = array('publish');
+        $wpfm_allow_private_products = get_option( 'wpfm_allow_private', 'no' );
+        if($wpfm_allow_private_products === 'yes') {
+            $post_status[] = 'private';
+        }
         $this->products_args = array(
             'post_type'              => $post_types,
             'fields'                 => 'ids',
-            'post_status'            => 'publish',
+            'post_status'            => $post_status,
             'posts_per_page'         => $this->posts_per_page,
             'offset'                 => $this->offset,
             'orderby'                => 'ID',
@@ -460,14 +438,14 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_feed_data( $info ){
 
-        $this->tbatch   =   $info['total_batch'];
-        $this->posts_per_page = $info['per_batch'];
-        $this->id       =   $info['post_id'];
-        $this->title    =   $info['title'];
-        $this->desc     =   $info['desc'];
-        $this->offset   =   $info['offset'];
-        $this->batch    =   (int) $info['batch'];
-        $this->link     =   esc_url( home_url('/') );
+        $this->tbatch           =   $info['total_batch'];
+        $this->posts_per_page   =   $info['per_batch'];
+        $this->id               =   $info['post_id'];
+        $this->title            =   $info['title'];
+        $this->desc             =   $info['desc'];
+        $this->offset           =   $info['offset'];
+        $this->batch            =   (int) $info['batch'];
+        $this->link             =   esc_url( home_url('/') );
     }
 
     /**
@@ -493,15 +471,17 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         if ( function_exists('icl_object_id') ) {
-            $language = get_post_meta($this->id, 'rex_feed_wpml_language', true);;
-            if($language) {
-                $this->wpml_language = $language;
-            }else {
-                $this->wpml_language = ICL_LANGUAGE_CODE;
-            }
+            if( !class_exists( 'Polylang' ) ) {
+                $language = get_post_meta($this->id, 'rex_feed_wpml_language', true);;
+                if($language) {
+                    $this->wpml_language = $language;
+                }else {
+                    $this->wpml_language = ICL_LANGUAGE_CODE;
+                }
 
-            if($this->batch == 1) {
-                update_post_meta( $this->id, 'rex_feed_wpml_language', ICL_LANGUAGE_CODE );
+                if($this->batch == 1) {
+                    update_post_meta( $this->id, 'rex_feed_wpml_language', ICL_LANGUAGE_CODE );
+                }
             }
         }
         else {
@@ -618,7 +598,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $info
      */
     protected function setup_feed_filter_rules( $info ){
-
         if($this->product_scope === 'filter') {
             $feed_rules_filter       = array();
             parse_str( $info, $feed_rules_filter );
@@ -626,10 +605,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->feed_rules_filter    = $feed_rules_filter;
             // save the feed_rules_filter into feed post_meta.
             if($this->batch == 1) {
+                reset($this->feed_rules_filter);
+                $key = key($this->feed_rules_filter);
+                unset($this->feed_rules_filter[$key]);
                 update_post_meta($this->id, 'rex_feed_feed_config_filter', $this->feed_rules_filter);
             }
         }
-
     }
 
 
@@ -638,12 +619,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_products() {
 
-        if ( function_exists('icl_object_id') ) {
+        if( class_exists( 'SitePress' ) ) {
             global $sitepress;
             $sitepress->switch_lang($this->wpml_language);
         }
         if($this->product_scope === 'filter') {
-
             $filter_args = Rex_Product_Filter::createFilterQueryParams($this->feed_rules_filter);
             add_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
             foreach ($filter_args['args'] as $key => $value) {
@@ -652,16 +632,13 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if(array_key_exists('meta_query', $this->products_args)) {
                 $this->products_args['meta_query']['relation'] = 'OR';
             }
-
             if(array_key_exists('tax_query', $this->products_args)) {
                 $this->products_args['tax_query']['relation'] = 'AND';
             }
-
         }
 
         $result = new WP_Query($this->products_args);
         $this->products = $result->get_posts();
-
         if(is_array($this->products)) {
             $this->products = array_unique($this->products);
             if($this->batch == 1) {
@@ -981,7 +958,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $analytics_params = null;
         }
 
-        if ( function_exists('icl_object_id') ) {
+        if( class_exists( 'SitePress' ) ) {
             global $sitepress;
             $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
             if($wpml) {

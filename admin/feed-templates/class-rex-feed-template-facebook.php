@@ -132,7 +132,7 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
         array(
             'attr'     => 'availability',
             'type'     => 'meta',
-            'meta_key' => 'availability',
+            'meta_key' => 'availability_underscore',
             'st_value' => '',
             'prefix'   => '',
             'suffix'   => '',

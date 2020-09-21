@@ -30,6 +30,20 @@ class Rex_Product_Feed_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
+
+        $schedules = apply_filters('wpfm_action_schedules', array(
+            'hourly' => 60,
+            'daily' => 1440,
+            'weekly' => 10080,
+        ));
+        foreach ($schedules as $key => $value) {
+            if ( function_exists( 'as_next_scheduled_action' ) && as_next_scheduled_action( "wpfm_{$key}_schedule_update_hook" ) ) {
+                as_unschedule_all_actions( "wpfm_{$key}_schedule_update_hook" );
+            }
+        }
+
+
+
         wp_clear_scheduled_hook('rex_feed_schedule_update');
         wp_clear_scheduled_hook('rex_feed_weekly_update');
 

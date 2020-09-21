@@ -159,8 +159,7 @@ class Rex_Product_Feed_Admin {
         $this->version     = $version;
         $this->cpt         = new Rex_Product_CPT;
         $this->metabox     = new Rex_Product_Metabox;
-        $this->cron        = new Rex_Product_Feed_Cron_Handler();
-
+        $this->cron        = new Rex_Feed_Scheduler();
     }
 
     /**
@@ -299,7 +298,7 @@ class Rex_Product_Feed_Admin {
         if ($interval AND $show_notice !='no') {?>
             <div class="notice notice-info bwfm-review-notice" style="position: relative; border-left-color: #00b4ff;">
                 <div class="wpfm-logo">
-                    <img src="<?php echo WPFM_PLUGIN_DIR_URL.'admin/icon/WPFM_Logo.png'?>">
+                    <img src="<?php echo WPFM_PLUGIN_DIR_URL.'admin/icon/logo.png'?>">
                 </div>
 
                 <div class="wpfm-notice-content">
@@ -390,7 +389,9 @@ class Rex_Product_Feed_Admin {
         $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
         $this->wpfm_support_menu = add_submenu_page('product-feed', '', __('Support', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_support',  __CLASS__ .'::wpfm_support');
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
-        if(!$is_premium) $this->wpfm_pro_submenu = add_submenu_page('product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color: #2BBBAC;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
+
+        if(!$is_premium) $this->wpfm_pro_submenu = add_submenu_page('product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
+
         do_action('wpfm_pro_license_page');
         /**
          * WPFM action links
@@ -429,8 +430,9 @@ class Rex_Product_Feed_Admin {
      * WPFM redirect to support link
      */
     public static function wpfm_support() {
-        $support_link = apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed');
+        $support_link = apply_filters('wpfm_support_link', 'https://rextheme.com/support/');
         wp_redirect($support_link);
+        exit();
     }
 
 

@@ -226,6 +226,19 @@ class Rex_Product_Feed_Ajax {
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_log' ) )
             ->with_validation( $validations );
 
+
+        wp_ajax_helper()->handle( 'save-wpfm-transient' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_transient' ) )
+            ->with_validation( $validations );
+
+        wp_ajax_helper()->handle( 'purge-wpfm-transient-cache' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'purge_transient_cache' ) )
+            ->with_validation( $validations );
+
+        wp_ajax_helper()->handle( 'allow-private-products' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'allow_private_products' ) )
+            ->with_validation( $validations );
+
     }
 
 
@@ -296,7 +309,13 @@ class Rex_Product_Feed_Ajax {
         }else {
             include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         }
-        return ob_get_clean();
+        $result = ob_get_contents();
+        ob_end_clean();
+        ob_flush();
+        return array(
+            'success' => true,
+            'html' => $result
+        );
     }
 
 
@@ -546,8 +565,6 @@ class Rex_Product_Feed_Ajax {
             $service = new Google_Service_ShoppingContent($client);
             $datafeed = new Google_Service_ShoppingContent_Datafeed();
             $target = new Google_Service_ShoppingContent_DatafeedTarget();
-
-
 
             $name = $feed_title;
             $filename = $name.uniqid();
@@ -820,5 +837,36 @@ class Rex_Product_Feed_Ajax {
                 'data'  => 'disabled'
             );
         }
+    }
+
+
+
+    public static function save_transient($payload) {
+        update_option('wpfm_cache_ttl', $payload['value']);
+        return array(
+            'success' => true,
+        );
+    }
+
+
+    public static function purge_transient_cache() {
+        wpfm_purge_cached_data();
+        return array(
+            'success' => true,
+        );
+    }
+
+
+    /**
+     * Enable/Disable private products
+     *
+     * @param $payload
+     * @return array
+     */
+    public static function allow_private_products($payload) {
+        update_option('wpfm_allow_private', $payload['allow_private']);
+        return array(
+            'success' => true,
+        );
     }
 }

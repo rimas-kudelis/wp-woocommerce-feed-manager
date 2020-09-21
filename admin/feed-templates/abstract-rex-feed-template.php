@@ -89,29 +89,60 @@ abstract class Rex_Feed_Abstract_Template {
 
 
     public function printProductAttributes($selected = '') {
-        $product_attribute_dropdown = wp_cache_get( 'rex_wpfm_product_attribute_dropdown' );
-        if(false == $product_attribute_dropdown) {
-            $items = Rex_Feed_Attributes::get_attributes();
-            $i = 1;
-            foreach ($items as $groupLabel => $groups) {
-                if ( !empty($groupLabel)) {
-                    $product_attribute_dropdown .= "<optgroup label='$groupLabel' data-i='$i'>";
-                }
-                foreach ($groups as $k => $it) {
-                    $product_attribute_dropdown .= "<option value='$k'>$it</option>";
-                }
-
-                if ( !empty($groupLabel)) {
-                    $product_attribute_dropdown .= "</optgroup>";
-                }
-                $i = $i + 1;
-            }
-            wp_cache_add( 'rex_wpfm_product_attribute_dropdown', $product_attribute_dropdown, '', WEEK_IN_SECONDS );
+        $product_attribute_dropdown = $this->get_feed_cached_dropdown( 'product_attributes_dropdown', $selected );
+        if ( false === $product_attribute_dropdown ) {
+            $product_attributes = Rex_Feed_Attributes::get_attributes();
+            return $this->make_cache_dropdown( 'product_attributes_dropdown', $product_attributes , $selected );
         }
+        return $product_attribute_dropdown;
+    }
+
+
+    /**
+     *
+     * @param $key
+     * @param string $selected
+     * @return bool|string|string[]
+     */
+    private function get_feed_cached_dropdown( $key, $selected = '' ) {
+        $product_attribute_dropdown = wpfm_get_cached_data( $key );
         if ( $selected && strpos( $product_attribute_dropdown, "value='" . $selected . "'" ) !== false ) {
             $product_attribute_dropdown = str_replace( "value='" . $selected . "'", 'value="' . $selected . '"' . ' selected', $product_attribute_dropdown );
         }
-        return $product_attribute_dropdown;
+        return empty( $product_attribute_dropdown ) ? false : $product_attribute_dropdown;
+    }
+
+
+    /**
+     * make cached dropdown list
+     * for future use
+     *
+     * @param $key
+     * @param $items
+     * @param string $selected
+     * @return string|string[]
+     */
+    private function make_cache_dropdown( $key, $items, $selected = '' ) {
+        $drop_down = '';
+        $i = 1;
+        foreach ($items as $groupLabel => $groups) {
+            if ( !empty($groupLabel)) {
+                $drop_down .= "<optgroup label='$groupLabel' data-i='$i'>";
+            }
+            foreach ($groups as $k => $it) {
+                $drop_down .= "<option value='$k'>$it</option>";
+            }
+
+            if ( !empty($groupLabel)) {
+                $drop_down .= "</optgroup>";
+            }
+            $i = $i + 1;
+        }
+        wpfm_set_cached_data( $key, $drop_down );
+        if ( $selected && strpos( $drop_down, "value='" . $selected . "'" ) !== false ) {
+            $drop_down = str_replace( "value='" . $selected . "'", 'value="' . $selected . '"' . ' selected', $drop_down );
+        }
+        return $drop_down;
     }
 
 
@@ -221,6 +252,7 @@ abstract class Rex_Feed_Abstract_Template {
                 'remove_underscore'        => 'Remove underscore',
                 'decode_url'               => 'Decode url',
                 'remove_decimal'           => 'Remove decimal points (Marktplaats only)',
+
             )
         );
     }

@@ -41,6 +41,21 @@ $is_premium = apply_filters('wpfm_is_premium_activate', false);
     </thead>
 
     <tbody>
+
+    <?php
+        $keyt = rand(999, 3000); ?>
+        <tr data-row-id="<?php echo $keyt; ?>" style="display: none;">
+            <td data-title="If : "><?php $feed_filter->printSelectDropdown( $keyt, 'if', '' ); ?></td>
+            <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $keyt, 'condition', '' ); ?></td>
+            <td data-title="value : " ><?php $feed_filter->printInput( $keyt, 'value', '' ); ?></td>
+            <td data-title="then : "><?php $feed_filter->printSelectDropdown( $keyt, 'then', '' ); ?></td>
+            <td>
+                <a class="delete-row" title="Delete">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+
         <?php foreach ( $feed_filter->getFilterMappings() as $key => $item): ?>
             <tr data-row-id="<?php echo $key; ?>">
                 <td data-title="If : "><?php $feed_filter->printSelectDropdown( $key, 'if', $item['if'] ); ?></td>

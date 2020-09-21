@@ -177,8 +177,6 @@ class Rex_Product_Feed_Factory {
                 'webgains',
                 'vidaXL',
                 'mydeal',
-                'shopee',
-//                'vivino',
             )
         );
 

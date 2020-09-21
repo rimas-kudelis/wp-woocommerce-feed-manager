@@ -7,7 +7,7 @@
  * @link       https://rextheme.com
  * @since      2.0.0
  *
- * @package    Rex_Product_Feed_Cron_Handler
+ * @package    Rex_Product_Feed_Background_Process
  * @subpackage Rex_Product_Feed/admin
  */
 

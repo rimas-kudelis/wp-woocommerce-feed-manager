@@ -1,7 +1,7 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 /*--------transition property-------*/
 /*--------transform property-------*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 /*--------transition property-------*/
 /*--------transform property-------*/
 /*---------------------------*/
@@ -187,7 +187,7 @@ a,
   color: #fff;
   text-align: center;
   text-transform: capitalize;
-  background-color: #1fb3fb;
+  background-color: #062c80;
 }
 
 .overlay {
@@ -395,20 +395,6 @@ a,
   background: #f6f6f8;
   color: #1fb3fb;
 }
-.rex-onboarding .rex-settings-tabs li.active:last-child:after, .rex-onboarding .rex-settings-tabs li.active:first-child:before {
-  content: "";
-  position: absolute;
-  bottom: -9px;
-  left: 0;
-  width: 15px;
-  height: 20px;
-  background: #f6f6f8;
-}
-@media (max-width: 991px) {
-  .rex-onboarding .rex-settings-tabs li.active:last-child:after, .rex-onboarding .rex-settings-tabs li.active:first-child:before {
-    display: none;
-  }
-}
 .rex-onboarding .rex-settings-tabs li.active:last-child:after {
   left: initial;
   right: 0;
@@ -513,12 +499,12 @@ a,
   justify-content: center;
   border: 1px solid #1fb3fb;
   border-radius: 10px;
-  padding: 57px;
+  padding: 23px;
   margin-bottom: 20px;
 }
 @media (max-width: 1699px) {
   .rex-onboarding .rex-settings-tab-content .block-wrapper .rex-general__content-area .rex-general__left-info-wrapper .rex-general__single-block-wrapper .rex-general__single-block-area .rex-general__logo-block .upgrade-pro {
-    padding: 31px;
+    padding: 25px 30px;
   }
 }
 @media (max-width: 1599px) {
@@ -547,7 +533,7 @@ a,
   border-radius: 5px;
 }
 .rex-onboarding .rex-settings-tab-content .block-wrapper .rex-general__content-area .rex-general__left-info-wrapper .rex-general__single-block-wrapper .rex-general__single-block-area .rex-general__logo-block .upgrade-pro .btn-default:hover {
-  background: #47CCCF;
+  background-color: #1fb3fa;
 }
 .rex-onboarding .rex-settings-tab-content .block-wrapper .rex-general__content-area .rex-general__left-info-wrapper .rex-general__single-block-wrapper .rex-general__single-block-area .rex-general__logo-block .rex-general__single-blocks.social-share {
   background-color: #fff;
@@ -615,7 +601,7 @@ a,
   border-radius: 5px;
 }
 .rex-onboarding .rex-settings-tab-content .block-wrapper .rex-general__content-area .rex-general__left-info-wrapper .rex-general__single-block-wrapper .rex-general__single-block .body .btn-default:hover {
-  background-color: #216df0;
+  background-color: #1fb3fb;
 }
 .rex-onboarding .rex-settings-tab-content .block-wrapper .rex-general__content-area .rex-general__right-info-wrapper {
   width: 25%;
@@ -692,7 +678,7 @@ a,
   border-radius: 5px;
 }
 .rex-onboarding .rex-settings-tab-content .block-wrapper .rex-general__content-area .rex-general__right-info-wrapper .rex-general__single-block .body .btn-default:hover {
-  background-color: #216df0;
+  background-color: #1fb3fa;
 }
 .rex-onboarding .rex-settings-tab-content .block-wrapper .rex-general__content-area .right {
   width: 100%;
@@ -770,7 +756,7 @@ a,
   display: inline-block;
 }
 .rex-onboarding .rex-settings-tab-content .block-wrapper .upgrade .btn-default:hover {
-  background: #47CCCF;
+  background-color: #216df0;
 }
 .rex-onboarding .rex-settings-tab-content .rex-merchant {
   display: flex;
@@ -892,6 +878,11 @@ a,
   margin-left: 4px;
   display: none;
 }
+.rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant button.save-transient-button {
+  order: 2;
+  margin: 0 10px;
+  height: 46px;
+}
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant.product-batch {
   order: 1;
 }
@@ -928,6 +919,9 @@ a,
 }
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant.detailed-product {
   order: 9;
+}
+.rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant.detailed-merchants .title {
+  width: calc(100% - 350px);
 }
 .rex-onboarding .rex-settings-tab-content .system-status .title {
   width: 100%;
@@ -996,6 +990,49 @@ a,
 }
 .rex-onboarding .wpfm-log button {
   border-radius: 5px;
+}
+.rex-onboarding .wpfm-dropdown {
+  display: flex;
+}
+.rex-onboarding form#wpfm-transient-settings {
+  display: flex;
+  flex-wrap: wrap;
+}
+.rex-onboarding select#wpfm_cache_ttl {
+  order: 1;
+  width: 150px;
+}
+.rex-onboarding span.helper-text {
+  width: 100%;
+  order: 3;
+  font-size: 13px;
+  font-style: italic;
+  color: #363b4ead;
+  padding: 5px 0;
+}
+.rex-onboarding button#wpfm-purge-cache {
+  width: 59%;
+  height: 46px;
+}
+@media (max-width: 1599px) {
+  .rex-onboarding button#wpfm-purge-cache {
+    width: 52%;
+  }
+}
+@media (max-width: 1399px) {
+  .rex-onboarding button#wpfm-purge-cache {
+    width: 47%;
+  }
+}
+@media (max-width: 1199px) {
+  .rex-onboarding button#wpfm-purge-cache {
+    width: 62%;
+  }
+}
+@media (max-width: 991px) {
+  .rex-onboarding button#wpfm-purge-cache {
+    width: 60%;
+  }
 }
 
 .wpfm-switcher {
@@ -1471,7 +1508,7 @@ a,
 #rex_feed_conf #rex-new-attr:hover,
 #rex_feed_products #rex-new-custom-attr:hover,
 #rex_feed_products #rex-new-attr:hover {
-  background: #47CCCF;
+  background: #1fb3fa;
 }
 #rex_feed_conf #rex-new-custom-attr i,
 #rex_feed_conf #rex-new-attr i,
@@ -1600,7 +1637,7 @@ a,
   margin: 0 5px;
 }
 #rex_feed_file_link a.btn-default:hover {
-  background: #47CCCF;
+  background-color: #1fb3fa;
   color: #fff;
 }
 
@@ -1749,7 +1786,7 @@ a,
 .category-mapper-wrapper .cat-map-actions button.btn-large {
   height: 44px;
   line-height: 44px;
-  background: #1fb3fb;
+  background-color: #062c80;
   font-size: 16px;
   color: #fff;
   padding: 0 20px;
@@ -1767,7 +1804,7 @@ a,
 }
 .rex-accordion .cat-map-actions button.btn-large:hover,
 .category-mapper-wrapper .cat-map-actions button.btn-large:hover {
-  background: #47CCCF;
+  background-color: #1fb3fa;
 }
 .rex-accordion .cat-map-actions button.btn-large:focus,
 .category-mapper-wrapper .cat-map-actions button.btn-large:focus {
@@ -1912,7 +1949,7 @@ a,
   background-color: transparent;
 }
 .merchant-settings .single-merchant-area .single-merchant-block .btn-default:hover {
-  background-color: #216df0;
+  background-color: #1fb3fb;
   color: #fff;
 }
 .merchant-settings .single-merchant-area .single-merchant-block .rex-google-merchant {
@@ -1946,7 +1983,7 @@ a,
   background-color: transparent;
 }
 .merchant-settings .single-merchant-area .single-merchant-block .rex-google-merchant .button-area .btn-default:hover {
-  background-color: #216df0;
+  background-color: #1fb3fb;
   color: #fff;
 }
 .merchant-settings .authorized header {
@@ -2129,7 +2166,7 @@ a,
   line-height: 40px;
   font-size: 13px;
   padding: 0 20px;
-  background: #1fb3fb;
+  background: #062c80;
   color: #fff;
   display: inline-block;
   margin-left: 30px;
@@ -2139,7 +2176,7 @@ a,
   margin-top: 20px;
 }
 .cmb2-id-rex-feed-features-text a.btn:hover {
-  background: #47CCCF;
+  background: #1fb3fb;
 }
 
 #rex-feed-config {
@@ -2450,7 +2487,7 @@ a,
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__input-wrap-area .rex-licenes__input-block-area {
   display: flex;
   flex-flow: row;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 70px;
   max-width: 735px;
   width: 100%;
@@ -2480,8 +2517,8 @@ a,
 .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__top-area .rex-licenes__licensekey-area .rex-licenes__input-wrap-area .rex-licenes__input-block-area .rex-licenes__btn-field .button-secondary {
   display: inline-block;
   border: 1px solid #1fb3fb;
-  height: 46px;
-  line-height: 44px;
+  height: 50px;
+  line-height: 47px;
   padding: 0px 20px;
   font-size: 15px;
   font-weight: 500;

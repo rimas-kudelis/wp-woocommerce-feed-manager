@@ -15,7 +15,6 @@
     padding-right: 20px;
 }
 
-
 .product-feed_page_category_mapping .ui-autocomplete.ui-widget-content {
     max-width: 560px!important;
     max-height: 320px;
@@ -172,20 +171,7 @@
                 color: $primary-color;
 
             }
-            &.active:last-child:after,
-            &.active:first-child:before {
-                content: "";
-                position: absolute;
-                bottom: -9px;
-                left: 0;
-                width: 15px;
-                height: 20px;
-                background: #f6f6f8;
-
-                @media #{$device_768_991} {
-                    display: none;
-                }
-            }
+          
             &.active:last-child:after {
                 left: initial;
                 right: 0;
@@ -228,7 +214,6 @@
             @media #{$device_992_1199} {
                 padding: 30px;
             }
-        
 
             .rex-general__content-area {
 
@@ -296,10 +281,10 @@
                                     justify-content: center;
                                     border: 1px solid #1fb3fb;
                                     border-radius: 10px;
-                                    padding: 57px;
+                                    padding: 23px;
                                     margin-bottom: 20px;
                                     @media #{$device_1600_1699} {
-                                        padding: 31px;
+                                        padding: 25px 30px;
                                     }
                                     @media #{$device_1400_1599 } {
                                         padding: 46px;
@@ -324,7 +309,8 @@
                                         border-radius: 5px;
     
                                         &:hover {
-                                            background: #47CCCF;
+                                            background-color:#1fb3fa;
+                                            
                                         }
                                     }
                                 }
@@ -405,7 +391,7 @@
                                     border-radius: 5px;
 
                                     &:hover {
-                                        background-color: #216df0;
+                                        background-color: #1fb3fb;
                                     }
                                 }
                                 
@@ -495,7 +481,7 @@
                                     border-radius: 5px;
 
                                     &:hover {
-                                        background-color: #216df0;
+                                        background-color: #1fb3fa;
                                     }
                                 }
                                 
@@ -588,7 +574,7 @@
                     display: inline-block;
 
                     &:hover{
-                        background: #47CCCF;
+                        background-color: #216df0;
                     }
                 }
             }//upgrade
@@ -728,6 +714,11 @@
                         display: none;
                     }
                 }
+                button.save-transient-button {
+                    order: 2;
+                    margin: 0 10px;
+                    height: 46px;
+                }
 
                 &.product-batch{ order: 1;}
                 &.wpfm-clear-btn{ order: 2;}
@@ -750,6 +741,12 @@
                 &.unique-product{ order: 7;}
                 &.increase-product{ order: 8;}
                 &.detailed-product{ order: 9;}
+
+                &.detailed-merchants {
+                    .title {
+                        width: calc(100% - 350px);
+                    }
+                } 
             }
         }
 
@@ -833,6 +830,44 @@
         button {
             border-radius: 5px;
         }
+    }
+   
+    .wpfm-dropdown {
+        display: flex;
+    }
+    form#wpfm-transient-settings {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    select#wpfm_cache_ttl {
+        order: 1;
+        width: 150px;
+    }
+    span.helper-text {
+        width: 100%;
+        order: 3;
+        font-size: 13px;
+        font-style: italic;
+        color: #363b4ead;
+        padding: 5px 0;
+    }
+
+    button#wpfm-purge-cache {
+        width: 59%;
+        height: 46px;
+        @media #{$device_1400_1599} {
+            width: 52%;
+        }
+        @media #{$device_1200_1399} {
+            width: 47%;
+        }
+        @media #{$device_992_1199} {
+            width: 62%;
+        }
+        @media #{$device_768_991} {
+            width: 60%;
+        }
+        
     }
 
 }
@@ -1273,7 +1308,7 @@
         font-size: 15px;
 
         &:hover{
-            background: #47CCCF;
+            background: #1fb3fa;
         }
 
         i{
@@ -1426,7 +1461,7 @@
             margin: 0 5px;
         }
         &:hover{
-            background: #47CCCF;
+            background-color: #1fb3fa;
             color: #fff;
         }
     }
@@ -1568,7 +1603,7 @@
         button.btn-large{
             height: 44px;
             line-height: 44px;
-            background: #1fb3fb;
+            background-color: #062c80;
             font-size: 16px;
             color: #fff;
             padding: 0 20px;
@@ -1586,7 +1621,7 @@
             }
 
             &:hover{
-                background: #47CCCF;
+                background-color: #1fb3fa;
             }
             &:focus{
                 box-shadow: none;
@@ -1739,7 +1774,7 @@
                 text-transform: capitalize;
                 background-color: transparent;
                 &:hover {
-                    background-color: #216df0;
+                    background-color: #1fb3fb;
                     color:#fff;
 
                 }
@@ -1770,7 +1805,7 @@
                         text-transform: capitalize;
                         background-color: transparent;
                         &:hover {
-                            background-color: #216df0;
+                            background-color: #1fb3fb;
                             color:#fff;
                         }
                     }
@@ -1995,7 +2030,7 @@
         line-height: 40px;
         font-size: 13px;
         padding: 0 20px;
-        background: #1fb3fb;
+        background: #062c80;
         color: #fff;
         display: inline-block;
         margin-left: 30px;
@@ -2005,7 +2040,7 @@
         margin-top: 20px;
 
         &:hover{
-            background: #47CCCF;
+            background: #1fb3fb;
         }
     }
 }
@@ -2327,7 +2362,7 @@
                         .rex-licenes__input-block-area {
                             display: flex;
                             flex-flow: row;
-                            align-items: flex-start;
+                            align-items: center;
                             margin-top: 70px;
                             max-width: 735px;
                             width: 100%;
@@ -2361,8 +2396,8 @@
                                 .button-secondary  {
                                     display: inline-block;
                                     border: 1px solid rgb(31, 179, 251);
-                                    height: 46px;
-                                    line-height: 44px;
+                                    height: 50px;
+                                    line-height: 47px;
                                     padding: 0px 20px;
                                     font-size: 15px;
                                     font-weight: 500;

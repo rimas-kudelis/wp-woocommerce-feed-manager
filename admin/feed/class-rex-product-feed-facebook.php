@@ -246,10 +246,10 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             }
         }
         if(array_key_exists('shipping', $atts)) {
-            $atts['shipping'] += $default_shipping_values;
+            $atts['shipping'] = $default_shipping_values;
         }
         if(array_key_exists('tax', $atts)) {
-            $atts['tax'] += $default_tax_values;
+            $atts['tax'] = $default_tax_values;
         }
         return $atts;
     }

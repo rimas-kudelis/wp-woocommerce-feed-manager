@@ -76,7 +76,7 @@
      */
     $(document).on('click', '#rex-new-attr', function () {
         var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
-        rowId = parseInt(rowId)+1;
+        rowId = parseInt(rowId) + 1;
         var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
         var parent = $(this).siblings('#config-table').parent();
 
@@ -142,9 +142,8 @@
      * beneath it and their input attributes names.
      */
     $(document).on('click', '#config-table .delete-row', function () {
+        
         var $nextRows, rowId;
-
-
 
         var table = $(this).closest('table');
         var parent = table.parent();
@@ -157,8 +156,6 @@
         }else {
             filter = false;
         }
-
-
 
         // Gell the next rows
         if ( rowId == 0) {
@@ -253,7 +250,6 @@
      * Event listener for Merchant change functionality.
      */
     $(document).on('change', '#rex_feed_merchant', function () {
-
         var $confBox = $('.rex-feed-config');
         var merchant_name = $('#rex_feed_merchant').find(':selected').val();
         if(merchant_name !== '-1') {
@@ -265,9 +261,14 @@
             };
             wpAjaxHelperRequest( 'merchant-change', $payload )
                 .success( function( response ) {
-                    // console.log(response);
+                    var today = new Date();
+                    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    var dateTime = date+' '+time;
+
                     $confBox.fadeOut();
-                    $confBox.find('#config-table').html( response );
+                    var configTable = document.getElementsByClassName("wpfm-field-mappings")[0];
+                    configTable.innerHTML = response.html;
                     $('#config-table select').niceSelect('update');
                     $confBox.fadeIn();
                     $('.rex-loading-spinner').css('display', 'none');
@@ -732,7 +733,11 @@
     $(document).on("submit", "#wpfm-error-log-form", show_wpfm_error_log);
 
 
-    $(document).on("click", "#wpfm-log-copy", wpfm_copy_log);
+    /**
+     * copy wpfm logs data
+     *
+     * @param event
+     */
     function wpfm_copy_log(event) {
         event.preventDefault();
         var elm = document.getElementById("wpfm-log-content");
@@ -753,6 +758,7 @@
             alert("Copied div content to clipboard");
         }
     }
+    $(document).on("click", "#wpfm-log-copy", wpfm_copy_log);
 
 
     /**
@@ -843,6 +849,92 @@
             });
     }
     $(document).on('change', '#wpfm_enable_log', wpfm_enable_log);
+
+
+    /**
+     * Save WPFM transient TTL
+     * @param e
+     */
+    function save_wpfm_transient(e) {
+        e.preventDefault();
+        var $form = $(this);
+        $form.find("button.save-transient-button span").text("");
+        $form.find("button.save-transient-button i").show();
+        var value = $form.find('#wpfm_cache_ttl').val();
+        var payload = {
+            value : value,
+        };
+        wpAjaxHelperRequest( 'save-wpfm-transient', payload )
+            .success( function( response ) {
+                $form.find("button.save-transient-button i").hide();
+                $form.find("button.save-transient-button span").text("saved");
+                setTimeout(function(){
+                    $form.find("button.save-transient-button span").text("save");
+                }, 1000);
+                console.log('woohoo!');
+            })
+            .error( function( response ) {
+                $form.find("button.ssave-fb-pixel i").hide();
+                $form.find("button.save-fb-pixel span").text("failed");
+                setTimeout(function(){
+                    $form.find("button.save-fb-pixel span").text("save");
+                }, 1000);
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on("submit", "#wpfm-transient-settings", save_wpfm_transient);
+
+
+    /**
+     * purge WPFM cache
+     *
+     * @param e
+     */
+    function purge_transient_cache(e) {
+        e.preventDefault();
+        var payload = {};
+        var $el = $(this);
+        $el.find("i").show();
+        wpAjaxHelperRequest( 'purge-wpfm-transient-cache', payload )
+            .success( function( response ) {
+                $el.find("i").hide();
+                console.log('woohoo!');
+            })
+            .error( function( response ) {
+                $el.find("i").hide();
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on("click", "#wpfm-purge-cache", purge_transient_cache);
+
+
+
+    /**
+     * Enable private products
+     */
+    function allow_private() {
+        var payload = {};
+        if($(this).is(":checked")) {
+            payload = {
+                allow_private : 'yes',
+            };
+        }else {
+            payload = {
+                allow_private : 'no',
+            };
+        }
+        wpAjaxHelperRequest( 'allow-private-products', payload )
+            .success( function( response ) {
+                console.log('Woohoo!');
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
+    }
+    $(document).on('change', '#rex-product-allow-private', allow_private);
 
 })( jQuery );
 

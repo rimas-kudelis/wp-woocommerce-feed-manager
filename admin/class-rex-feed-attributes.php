@@ -21,7 +21,7 @@
 class Rex_Feed_Attributes {
 
     public static function get_attributes(){
-        global $wpdb;
+
         $attributes = array(
             'Primary Attributes'        => array(
                 'id'                        => 'Product Id',
@@ -44,6 +44,7 @@ class Rex_Feed_Attributes {
                 'sku'                       => 'SKU',
                 'parent_sku'                => 'Parent SKU',
                 'availability'              => 'Availability',
+                'availability_underscore'   => 'Availability (Without Underscore)',
                 'quantity'                  => 'Quantity',
                 'price'                     => 'Regular Price',
                 'current_price'             => 'Price',
@@ -54,6 +55,9 @@ class Rex_Feed_Attributes {
                 'price_excl_tax'            => 'Regular price excl. tax',
                 'current_price_excl_tax'    => 'Price excl. tax',
                 'sale_price_excl_tax'       => 'Sale price excl. tax',
+                'price_db'                  => 'Regular Price (From DB)',
+                'current_price_db'          => 'Price (From DB)',
+                'sale_price_db'             => 'Sale Price (From DB)',
                 'weight'                    => 'Weight',
                 'width'                     => 'Width',
                 'height'                    => 'Height',
@@ -88,88 +92,22 @@ class Rex_Feed_Attributes {
             ),
         );
 
-        //Get the Product Attributes
-        $sql = 'SELECT attribute_name as name, attribute_type as type FROM ' . $wpdb->prefix . 'woocommerce_attribute_taxonomies';
-        $data = $wpdb->get_results($sql);
-        $attr=[];
-        if (count($data)) {
-            foreach ($data as $key => $value) {
-                $attr["bwf_attr_pa_" . $value->name] = $value->name;
-            }
-        }
-        $attributes['Product Attributes'] = $attr;
-
-
-        //Product Dynamic Attributes
-        $list = array();
-        $no_taxonomies = array("category","post_tag","nav_menu","link_category","post_format","product_type","product_visibility","product_cat","product_shipping_class","product_tag");
-        $taxonomies = get_taxonomies();
-        $diff_taxonomies = array_diff($taxonomies, $no_taxonomies);
-
-
-        foreach($diff_taxonomies as $tax_diff){
-            $taxonomy_details = get_taxonomy( $tax_diff );
-            foreach($taxonomy_details as $kk => $vv){
-                if($kk == "name"){
-                    $attr_name = $vv;
-                }
-
-                if($kk == "labels"){
-                    foreach($vv as $kw => $kv){
-                        if($kw == "singular_name"){
-                            $attr_name_clean = ucfirst($kv);
-                        }
-                    }
-                }
-            }
-            $list["$attr_name"] = $attr_name_clean;
-        }
-        $attributes['Product Dynamic Attributes'] = $list;
-
-        //custom attributes
-        $list = array();
-        $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
-                INNER JOIN {$wpdb->prefix}posts AS posts
-                ON postmeta.post_id = posts.id
-                WHERE posts.post_type = 'product' OR posts.post_type = 'product_variation'
-                AND postmeta.meta_key NOT LIKE 'pyre%'
-                AND postmeta.meta_key NOT LIKE 'sbg_%'
-                group by meta_key
-                ORDER BY postmeta.meta_key";
-        $data = $wpdb->get_results($sql);
+        // Get product attributes
+        $_attributes = self::get_product_attributes();
+        $attributes['Product Attributes'] = $_attributes;
 
 
 
+        // Get product dynamic attributes
+        $_dynamic_attributes = self::get_product_dynamic_attributes();
+        $attributes['Product Dynamic Attributes'] = $_dynamic_attributes;
 
-        if (count($data)) {
-            foreach ($data as $key => $value) {
-                if (!preg_match("/_product_attributes/i", $value->name)) {
-                    $value_display = str_replace("_", " ",$value->name);
-                    $list["custom_attributes_" . $value->name] = ucfirst($value_display);
-                }else {
-                    $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta as postmeta
-                            INNER JOIN {$wpdb->prefix}posts AS posts
-                            ON postmeta.post_id = posts.id
-                            WHERE posts.post_type LIKE '%product%'
-                            AND postmeta.meta_key = '_product_attributes'";
+        // Get product dynamic attributes
+        $_custom_attributes = self::get_product_custom_attributes();
+        $attributes['Product Custom Attributes'] = $_custom_attributes;
 
-                    $data = $wpdb->get_results($sql);
-                    if(count($data)) {
-                        foreach ($data as $k => $meta_value) {
-                            $product_attributes = unserialize($meta_value->value);
-                            if (!empty($product_attributes)) {
-                                foreach ($product_attributes as $meta_inner_k => $arr_value) {
-                                    $value_display = str_replace("_", " ", $arr_value['name']);
-                                    $list["custom_attributes_" . $meta_inner_k] = ucfirst($value_display);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            $attributes['Product Custom Attributes'] = $list;
-        }
 
+        // Get category map list
         $cat_maps_array = array();
         $cat_maps = get_option('rex-wpfm-category-mapping');
         if($cat_maps){
@@ -179,6 +117,117 @@ class Rex_Feed_Attributes {
         }
         $attributes['Category Map'] = $cat_maps_array;
 
+        return $attributes;
+    }
+
+
+    /**
+     * get product attributes
+     *
+     * @return array
+     */
+    public static function get_product_attributes() {
+        $taxonomies = wpfm_get_cached_data( 'product_attributes' );
+        if ( false === $taxonomies ) {
+            // Load the main attributes
+            $globalAttributes = wc_get_attribute_taxonomy_labels();
+            if ( count( $globalAttributes ) ) {
+                foreach ( $globalAttributes as $key => $value ) {
+                    $taxonomies['bwf_attr_pa_' . $key ] = $value;
+                }
+            }
+            wpfm_set_cached_data( 'product_attributes', $taxonomies );
+        }
+        return $taxonomies;
+    }
+
+
+    /**
+     * get product dynamic attributes
+     *
+     * @return array
+     */
+    public static function get_product_dynamic_attributes() {
+        $attributes = wpfm_get_cached_data( 'product_dynamic_attributes' );
+        if ( false === $attributes ) {
+            // Load the main attributes
+            $list = array();
+            $no_taxonomies = array("category","post_tag","nav_menu","link_category","post_format","product_type","product_visibility","product_cat","product_shipping_class","product_tag");
+            $taxonomies = get_taxonomies();
+            $attr_name_clean = '';
+            $attr_name = '';
+            $diff_taxonomies = array_diff($taxonomies, $no_taxonomies);
+            foreach($diff_taxonomies as $tax_diff){
+                $taxonomy_details = get_taxonomy( $tax_diff );
+                foreach($taxonomy_details as $kk => $vv){
+                    if($kk == "name"){
+                        $attr_name = $vv;
+                    }
+                    if($kk == "labels"){
+                        foreach($vv as $kw => $kv){
+                            if($kw == "singular_name"){
+                                $attr_name_clean = ucfirst($kv);
+                            }
+                        }
+                    }
+                }
+                $attributes["$attr_name"] = $attr_name_clean;
+            }
+            wpfm_set_cached_data( 'product_dynamic_attributes', $attributes );
+        }
+        return $attributes;
+    }
+
+
+    /**
+     * get product custom attributes
+     *
+     * @return array
+     */
+    public static function get_product_custom_attributes() {
+        $attributes = wpfm_get_cached_data( 'product_custom_attributes' );
+        if ( false === $attributes ) {
+            global $wpdb;
+            $list = array();
+            $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
+                INNER JOIN {$wpdb->prefix}posts AS posts
+                ON postmeta.post_id = posts.id
+                WHERE posts.post_type = 'product' OR posts.post_type = 'product_variation'
+                AND posts.post_status = 'publish'
+                AND postmeta.meta_key NOT LIKE 'pyre%'
+                AND postmeta.meta_key NOT LIKE 'sbg_%'
+                group by meta_key
+                ORDER BY postmeta.meta_key";
+            $data = $wpdb->get_results($sql);
+            if (count($data)) {
+                foreach ($data as $key => $value) {
+                    if (!preg_match("/_product_attributes/i", $value->name)) {
+                        $value_display = str_replace("_", " ",$value->name);
+                        $attributes["custom_attributes_" . $value->name] = ucfirst($value_display);
+                    }else {
+                        $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta as postmeta
+                            INNER JOIN {$wpdb->prefix}posts AS posts
+                            ON postmeta.post_id = posts.id
+                            WHERE posts.post_type LIKE '%product%'
+                            AND postmeta.meta_key = '_product_attributes'";
+
+                        $data = $wpdb->get_results($sql);
+                        if(count($data)) {
+                            foreach ($data as $k => $meta_value) {
+                                $product_attributes = unserialize($meta_value->value);
+                                if (!empty($product_attributes)) {
+                                    foreach ($product_attributes as $meta_inner_k => $arr_value) {
+                                        $value_display = str_replace("_", " ", $arr_value['name']);
+                                        $attributes["custom_attributes_" . $meta_inner_k] = ucfirst($value_display);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            wpfm_set_cached_data( 'product_custom_attributes', $attributes );
+        }
         return $attributes;
     }
 

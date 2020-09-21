@@ -156,7 +156,7 @@ class Rex_Product_Feed {
         $rex_product_feed_database_update = new Rex_Product_Feed_Database_Update();
 
         $plugin_admin = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
-        $plugin_admin = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
+        $scheduler = new Rex_Feed_Scheduler();
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
         $this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'dequeue_scripts', 5 );
@@ -184,19 +184,30 @@ class Rex_Product_Feed {
          * for data base update
          */
         $this->loader->add_action('wp_ajax_rex_wpfm_database_update', 'Rex_Product_Feed_Ajax', 'rex_wpfm_database_update');
+        $this->loader->add_filter( 'cmb2_render_analytics_params', $plugin_admin, 'cmb2_render_analytics_params_callback', 10, 5 );
+        $this->loader->add_action( 'wp_footer', $plugin_admin, 'wpfm_enable_facebook_pixel' );
 
-        /*
-         * register rex feed schedule
+
+        /**
+         * register scheduler the corn way
          */
         $this->loader->add_action( 'admin_init', $plugin_admin, 'register_weekly_cron');
         $this->loader->add_action( 'rex_feed_weekly_update', $plugin_admin, 'activate_weekly_update' );
         $this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update' );
 
-
-        $this->loader->add_filter( 'cmb2_render_analytics_params', $plugin_admin, 'cmb2_render_analytics_params_callback', 10, 5 );
-
-        $this->loader->add_action( 'wp_footer', $plugin_admin, 'wpfm_enable_facebook_pixel' );
-
+        /**
+         * register scheduler
+         */
+//        $schedules = apply_filters('wpfm_action_schedules', array(
+//            'hourly'    => '0 * * * *',
+//            'daily'     => '0 0 * * *',
+//            'weekly'    => '0 0 * * 0',
+//        ));
+//        $this->loader->add_action( 'init', $scheduler, 'register_scheduler' );
+//        foreach ($schedules as $key => $value) {
+//            $this->loader->add_action( "wpfm_{$key}_schedule_update_hook", $scheduler, "wpfm_{$key}_schedule_update_hook", 10, 1 );
+//        }
+//        $this->loader->add_action( "wpfm_regenerate_scheduled_feed", $scheduler, "wpfm_schedule_feed_processing", 10, 5 );
     }
 
 
@@ -223,6 +234,7 @@ class Rex_Product_Feed {
         $this->loader->run();
 
     }
+
 
     /**
      * The name of the plugin used to uniquely identify it within the context of

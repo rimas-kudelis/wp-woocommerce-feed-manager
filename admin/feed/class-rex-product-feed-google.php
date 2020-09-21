@@ -79,6 +79,8 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 'group' => 0,
             );
         }
+
+
         foreach( $this->products as $productId ) {
             $product = wc_get_product( $productId );
 
@@ -91,6 +93,8 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     continue;
                 }
             }
+
+
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
@@ -118,6 +122,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     }else {
                         $variations = $product->get_children();
                     }
+
                     if($variations) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
@@ -162,6 +167,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     }
                 }
             }
+
             if( $this->product_scope === 'all' ) {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
@@ -248,10 +254,10 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             }
         }
         if(array_key_exists('shipping', $atts)) {
-            $atts['shipping'] += $default_shipping_values;
+            $atts['shipping'] = $default_shipping_values;
         }
         if(array_key_exists('tax', $atts)) {
-            $atts['tax'] += $default_tax_values;
+            $atts['tax'] = $default_tax_values;
         }
         return $atts;
     }
