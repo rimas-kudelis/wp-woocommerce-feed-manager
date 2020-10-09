@@ -15,7 +15,7 @@
 
 use RexTheme\RexShoppingFeedCustom\AmazonSeller\Containers\RexShoppingCustom;
 
-class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator {
+class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_Generator {
 
 
     /**
@@ -83,7 +83,7 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
                 $variable_product = new WC_Product_Variable($productId);
                 $atts = $this->get_product_data( $variable_product, $product_meta_keys );
                 $atts['parent_child'] = 'parent';
-                $intersect_array = array('item_sku', 'item_name', 'external_product_id_type', 'brand_name', 'manufacturer', 'feed_product_type', 'variation_theme', 'parent_child');
+                $intersect_array = array('item_sku', 'item_name', 'external_product_id_type', 'brand_name', 'manufacturer', 'feed_product_type', 'variation_theme', 'parent_child', 'recommended_browse_nodes');
 
                 $item = RexShoppingCustom::createItem();
                 foreach ($atts as $key => $value) {
@@ -108,9 +108,18 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
                             $variation_product = wc_get_product( $variation );
                             $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                             $atts['parent_child'] = 'child';
+                            $intersect_array = array('recommended_browse_nodes');
                             foreach ($atts as $key => $value) {
-                                $item->$key($value); // invoke $key as method of $item object.
+                                if(in_array($key, $intersect_array)) {
+                                    $item->$key(''); // invoke $key as method of $item object.
+                                }else {
+                                    $item->$key($value); // invoke $key as method of $item object.
+                                }
+
                             }
+//                            foreach ($atts as $key => $value) {
+//                                $item->$key($value); // invoke $key as method of $item object.
+//                            }
                         }
                     }
                 }
@@ -145,6 +154,6 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-        return RexShoppingCustom::asCSVFeeds($this->batch);
+        return RexShoppingCustom::asCSVFeeds($this->batch, 'bed_amp');
     }
 }

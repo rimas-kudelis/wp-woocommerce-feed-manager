@@ -1261,22 +1261,25 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
-        $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'parent' => 0, 'orderby' => 'term_id' ));
+        $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'orderby' => 'term_id' ));
         if ( empty( $terms ) || is_wp_error( $terms ) ){
             return '';
         }
         $output = array();
+        $term_names = [];
         foreach ($terms as $term) {
-            $term_names = [];
+//            if($term->parent) {
+//                $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
+//                if(is_array($term_name_arr)) {
+//                    $output[] = implode($sep, $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names));
+//                }
+//            }else {
+//                $term_names[] = $term->name;
+//            }
             $term_names[] = $term->name;
-
-            $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
-            if(is_array($term_name_arr)) {
-                $output[] = implode($sep, $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names));
-            }
         }
 
-        return implode(' , ', $output);
+        return implode(' , ', $term_names);
     }
 
 
@@ -1494,7 +1497,6 @@ class Rex_Product_Data_Retriever {
         $groupProductIds = $product->get_children();
         $sum = 0;
         if(!empty($groupProductIds)){
-
             foreach($groupProductIds as $id){
                 $product = wc_get_product($id);
                 $regularPrice=$product->get_regular_price();
@@ -1518,7 +1520,9 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function get_availability( ) {
-        if ( $this->product->is_in_stock() == TRUE ) {
+        if ($this->product->is_on_backorder()) {
+            return 'out_of_stock';
+        } elseif ( $this->product->is_in_stock() == TRUE ) {
             return 'in_stock';
         } else {
             return 'out_of_stock';
@@ -1531,10 +1535,12 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function get_availability_underscore( ) {
-        if ( $this->product->is_in_stock() == TRUE ) {
+        if ($this->product->is_on_backorder()) {
+            return 'out of stock';
+        } elseif ( $this->product->is_in_stock() == TRUE ) {
             return 'in stock';
         } else {
-            return 'out_of_stock';
+            return 'out of stock';
         }
     }
 

@@ -1213,6 +1213,11 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     'status'   => 0,
                                     'name'     => 'My Deal'
                                 ),
+                                'amazon_seller_bed_amp' => array(
+                                    'free'  => true,
+                                    'status'    => 0,
+                                    'name'  => 'Amazon Seller Bed&Amp'
+                                ),
                             );
 
                             $_pro_merchants = array(
@@ -1265,7 +1270,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     'free'  => false,
                                     'status'    => 0,
                                     'name'  => 'Connexity'
-                                ),
+                                )
                             );
                             $_merchants = array_merge($_merchants, $_pro_merchants);
 

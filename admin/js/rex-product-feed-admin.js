@@ -52,7 +52,6 @@
             $('#rex_feed_file_link').slideUp('fast');
         }
 
-        //$('.rex-tabs').tabs();
 
         //---------popup when click disabled input-------
         $( ".single-merchant.wpfm-pro .wpfm-pro-cta" ).on("click", function(e){
@@ -98,7 +97,6 @@
         // $row.find('input, select').val('');
 
         updateFormNameAtts( $row, rowId, filter);
-        $row.find('select').niceSelect('update');
     });
 
 
@@ -133,7 +131,6 @@
         // $row.find('input, select').val('');
 
         updateFormNameAtts( $row, rowId, filter);
-        $row.find('select').niceSelect('update');
     });
 
 
@@ -269,7 +266,7 @@
                     $confBox.fadeOut();
                     var configTable = document.getElementsByClassName("wpfm-field-mappings")[0];
                     configTable.innerHTML = response.html;
-                    $('#config-table select').niceSelect('update');
+                    
                     $confBox.fadeIn();
                     $('.rex-loading-spinner').css('display', 'none');
                     $('#rex_feed_conf .cmb2-id-rex-feed-config-heading').css('display', 'block');

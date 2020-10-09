@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.1
 Requires PHP: 7.0
-Stable tag: 5.40
+Stable tag: 5.41
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -545,7 +545,15 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 5.40 (2020-10-21) =
+= 5.41 (2020-10-09) =
+* Fixed: Facebook availability attribute
+* Fixed: Category without parents was not fetched while creating feed
+* Fixed: Variable parent product got removed on cron update before
+* Fixed: Products in backorder will show out of stock on feed
+* Updated: Polish translation
+
+
+= 5.40 (2020-09-21) =
 * Added: Support for private products
 * Added: Cache frequent queries
 * Added: Option to purge cache for WPFM

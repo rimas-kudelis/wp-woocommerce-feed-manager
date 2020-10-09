@@ -108,12 +108,18 @@ class AmazonSellerFeed extends \RexTheme\RexShoppingFeed\Feed
      * Add Items to csv
      * @return array|\RexTheme\RexShoppingFeed\Item[]
      */
-    private function addItemsToFeedCSV($batch){
+    private function addItemsToFeedCSV($batch, $type = 'seller'){
 
         if(count($this->items)){
             if($batch === 1) {
                 $this->init_atts();
-                $first_row = array('TemplateType=fptcustom', 'Version=2020.0414', 'TemplateSignature=S0lUQ0hFTixPVVRET09SX1JFQ1JFQVRJT05fUFJPRFVDVCxXSVJFTEVTU19BQ0NFU1NPUlksT1VURVJXRUFSLEhPTUVfQkVEX0FORF9CQVRILFNXRUFURVIsU0hJUlQsU0hPUlRTLEZBU0hJT05ORUNLTEFDRUJSQUNFTEVUQU5LTEVULEZJTkVORUNLTEFDRUJSQUNFTEVUQU5LTEVULFNQT1JUSU5HX0dPT0RTLEhBTkRCQUcsU1dJTVdFQVIsQlJBLEFSVF9TVVBQTElFUyxTT0NLU0hPU0lFUlksQUNDRVNTT1JZLFNFUlZFV0FSRSxQQU5UUyxPVVRET09SX0xJVklORyxIT01F', 'The top 3 rows are for Amazon.com use only. Do not modify or delete the top 3 rows.');
+                if($type === 'seller') {
+                    $first_row = array('TemplateType=fptcustom', 'Version=2020.0414', 'TemplateSignature=S0lUQ0hFTixPVVRET09SX1JFQ1JFQVRJT05fUFJPRFVDVCxXSVJFTEVTU19BQ0NFU1NPUlksT1VURVJXRUFSLEhPTUVfQkVEX0FORF9CQVRILFNXRUFURVIsU0hJUlQsU0hPUlRTLEZBU0hJT05ORUNLTEFDRUJSQUNFTEVUQU5LTEVULEZJTkVORUNLTEFDRUJSQUNFTEVUQU5LTEVULFNQT1JUSU5HX0dPT0RTLEhBTkRCQUcsU1dJTVdFQVIsQlJBLEFSVF9TVVBQTElFUyxTT0NLU0hPU0lFUlksQUNDRVNTT1JZLFNFUlZFV0FSRSxQQU5UUyxPVVRET09SX0xJVklORyxIT01F', 'The top 3 rows are for Amazon.com use only. Do not modify or delete the top 3 rows.');
+
+                }else {
+                    $first_row = array('TemplateType=fptcustom', 'Version=2020.0907', 'TemplateSignature=S0lUQ0hFTixIT01FX0ZVUk5JVFVSRV9BTkRfREVDT1IsSE9NRQ', 'settings=contentLanguageTag=en_GB&feedType=113&timestamp=2020-09-07T11%3A54%3A24.482Z', 'The top 3 rows are for Amazon.com use only. Do not modify or delete the top 3 rows.');
+
+                }
                 $second_row = array();
                 $_third_row = array_keys(end($this->items)->nodes());
                 $third_row = [];
@@ -162,11 +168,11 @@ class AmazonSellerFeed extends \RexTheme\RexShoppingFeed\Feed
      * @param bool $output
      * @return array|\RexTheme\RexShoppingFeed\Item[]|string
      */
-    public function asCSVFeed($batch, $output = false)
+    public function asCSVFeeds($batch, $type = 'seller', $output = false)
     {
 
         ob_end_clean();
-        $data = $this->addItemsToFeedCSV($batch);
+        $data = $this->addItemsToFeedCSV($batch, $type);
         if ($output) {
             die($data);
         }

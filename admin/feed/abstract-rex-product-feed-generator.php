@@ -301,7 +301,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $this->config = $config;
         $this->is_logging_enabled = is_wpfm_logging_enabled();
         $this->bypass = $bypass;
-
         if ($this->bypass){
             $this->id                   =   $config['info']['post_id'];
             $this->title                =   $config['info']['title'];
@@ -313,7 +312,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->feed_rules           = $config['feed_config'];
             $this->feed_rules_filter    = $config['feed_filter'];
             $this->variations           = $config['include_variations'];
-            $this->parent_product       = $config['include_variations'];
+            $this->parent_product       = $config['parent_product'];
+            $this->variable_product     = $config['variable_product'];
             $this->append_variation     = $config['append_variations'];
             $this->exclude_hidden_products   = $config['exclude_hidden_products'];
             $this->wpml_language        = $config['wpml_language'];

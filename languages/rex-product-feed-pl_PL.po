@@ -3,49 +3,45 @@ msgstr ""
 "Project-Id-Version: WooCommerce Product Feed Manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-04 07:18+0000\n"
-"PO-Revision-Date: 2020-06-05 05:28+0000\n"
+"PO-Revision-Date: 2020-09-30 07:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: Polish\n"
-"Language: pl_PL\n"
+"Language: pl-PL\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10 >= 2 && n%10<=4 "
 "&&(n%100<10||n%100 >= 20)? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.4.0; wp-5.4.1"
+"X-Loco-Version: 2.4.3; wp-5.5.1"
 
-#: admin/class-rex-google-merchant-content-api.php:96
+#: admin/class-rex-google-merchant-content-api.php:96 
 #: admin/class-rex-google-merchant-content-api.php:135
 msgid "You are not authorized."
 msgstr "Nie jesteś upoważniony."
 
-#: admin/class-rex-google-merchant-content-api.php:97
+#: admin/class-rex-google-merchant-content-api.php:97 
 #: admin/class-rex-google-merchant-content-api.php:136
 msgid ""
 "Your access token has expired. This application uses OAuth 2.0 to Access "
 "Google APIs. Please insert the information below and authenticate token for "
 "Google Merchant Shop. Generated access token expires after 3600 sec."
 msgstr ""
-"Twój token dostępu wygasł. Ta aplikacja używa OAuth 2.0 do uzyskiwania "
-"dostępu do interfejsów API Google. Wprowadź poniższe informacje i "
-"uwierzytelnij token dla sklepu Google Merchant. Wygenerowany token dostępu "
-"wygasa po 3600 sek."
+"Twój access token wygasł. Ta aplikacja używa OAuth 2.0, aby uzyskać dostęp "
+"do Google APIs. Proszę wstawić poniższe informacje i uwierzytelnić token dla "
+"Google Merchant Shop. Wygenerowany access token wygasa po 3600 sec."
 
 #: admin/class-rex-google-merchant-content-api.php:108
 msgid "You are authorized."
-msgstr "Masz autoryzację."
+msgstr "Jesteś upoważniony."
 
 #: admin/class-rex-google-merchant-content-api.php:109
-#, fuzzy
-#| "You are now ready to send feed from WooCommerce Product Feed Manager to "
-#| "your Google Merchant Center. 🚀"
 msgid ""
 "You are now ready to send feed from WooCommerce Product Feed Manager to your "
 "Google Merchant Center. "
 msgstr ""
-"Możesz teraz wysyłać kanały z Menedżera kanałów produktów WooCommerce do "
-"swojego Google Merchant Center. 🚀"
+"Możesz teraz wysłać feed z WooCommerce Product Feed Manager do Google "
+"Merchant Center."
 
 #: admin/class-rex-product-data-retriever.php:110
 msgid "Start product processing."
@@ -53,11 +49,11 @@ msgstr "Rozpocznij przetwarzanie produktu."
 
 #: admin/class-rex-product-data-retriever.php:122
 msgid "End product processing."
-msgstr "Przetwarzanie produktu końcowego."
+msgstr "End produktu processing."
 
 #: admin/class-rex-product-feed-admin.php:304
 msgid "Leave a review?"
-msgstr "Zostaw recenzję?"
+msgstr "Zostaw review?"
 
 #: admin/class-rex-product-feed-admin.php:305
 msgid ""
@@ -66,10 +62,10 @@ msgid ""
 "rating on WordPress? Just to help us spread the word and boost our "
 "motivation."
 msgstr ""
-"Hej, zauważyłem, że używasz menedżera kanałów produktów WC od ponad dwóch "
-"tygodni - to niesamowite! Czy możesz wyświadczyć mi WIELKĄ przysługę i "
-"przyznać mu 5 gwiazdek w WordPress? Aby pomóc nam w rozpowszechnianiu "
-"informacji i zwiększaniu motywacji."
+"Hej, zauważyłem, że używasz WooCommerce Product Feed Manager przez ponad dwa "
+"tygodnie - to super! Czy mógłbyś zrobić mi wielką przysługę i dać mu 5-star "
+"rating na WordPress? Pomoże nam to rozpowszechnić informacje i zwiększyć "
+"naszą motywację."
 
 #: admin/class-rex-product-feed-admin.php:309
 msgid "Ok, you deserve it"
@@ -89,53 +85,53 @@ msgstr "Odrzuć to powiadomienie."
 
 #: admin/class-rex-product-feed-admin.php:383
 msgid "Category Mapping"
-msgstr "Mapowanie kategorii"
+msgstr "Category Mapping"
 
 #: admin/class-rex-product-feed-admin.php:384
 msgid "Google Merchant Settings"
-msgstr "Ustawienia sprzedawcy Google"
+msgstr "Google Merchant Ustawienia"
 
 #: admin/class-rex-product-feed-admin.php:385
 msgid "Settings"
-msgstr "Ustawienia"
+msgstr "Ustawień"
 
-#: admin/class-rex-product-feed-admin.php:386
+#: admin/class-rex-product-feed-admin.php:386 
 #: admin/partials/on_boarding.php:242
 msgid "Support"
-msgstr "Wsparcie"
+msgstr "Support"
 
-#: admin/class-rex-product-feed-admin.php:390
+#: admin/class-rex-product-feed-admin.php:390 
 #: admin/class-rex-product-feed-admin.php:445
 msgid "Go Pro"
-msgstr "Bądź profesjonalny"
+msgstr "Go Pro"
 
 #: admin/class-rex-product-feed-admin.php:443
 msgid "Dashboard"
-msgstr "Deska rozdzielcza"
+msgstr "Dashboard"
 
 #: admin/class-rex-product-feed-admin.php:460
 msgid "View WPFM Documentation"
-msgstr "Zobacz dokumentację WPFM"
+msgstr "Wyświetl WPFM Documentation"
 
 #: admin/class-rex-product-feed-admin.php:460
 msgid "Docs & FAQs"
-msgstr "Dokumenty i często zadawane pytania"
+msgstr "Docs & FAQs"
 
 #: admin/class-rex-product-feed-admin.php:786
 msgid "Referrer"
-msgstr "Polecający"
+msgstr "Referrer"
 
 #: admin/class-rex-product-feed-admin.php:794
 msgid "The referrer: (e.g. google, newsletter)"
-msgstr "Strona odsyłająca: (np. Google, newsletter)"
+msgstr "The referrer: (np google, newsletter)"
 
 #: admin/class-rex-product-feed-admin.php:797
 msgid "Medium"
-msgstr "Średni"
+msgstr "Medium"
 
 #: admin/class-rex-product-feed-admin.php:805
 msgid "Marketing medium: (e.g. cpc, banner, email)"
-msgstr "Medium marketingowe: (np. CPC, baner, e-mail)"
+msgstr "Metoda marketingowa: (np. cpc, banner, e-mail)"
 
 #: admin/class-rex-product-feed-admin.php:809
 msgid "Campaign"
@@ -143,7 +139,7 @@ msgstr "Kampania"
 
 #: admin/class-rex-product-feed-admin.php:817
 msgid "Product, promo code, or slogan (e.g. spring_sale)"
-msgstr "Produkt, kod promocyjny lub hasło (np. Wyprzedaż_sprzedaż wiosenna)"
+msgstr "Produktu promo code, or slogan (np. spring_sale)"
 
 #: admin/class-rex-product-feed-admin.php:820
 msgid "Campaign term"
@@ -151,7 +147,7 @@ msgstr "Termin kampanii"
 
 #: admin/class-rex-product-feed-admin.php:828
 msgid "Identify the paid keywords"
-msgstr "Zidentyfikuj płatne słowa kluczowe"
+msgstr "Zidentyfikuj paid keywords"
 
 #: admin/class-rex-product-feed-admin.php:832
 msgid "Campaign content"
@@ -159,40 +155,40 @@ msgstr "Treść kampanii"
 
 #: admin/class-rex-product-feed-admin.php:840
 msgid "Use to differentiate ads"
-msgstr "Służy do różnicowania reklam"
+msgstr "Służy do rozróżniania Ads"
 
 #: admin/class-rex-product-feed-cpt.php:115
 msgid "Total products : "
-msgstr "Produkty ogółem:"
+msgstr "Razem produkty :"
 
 #: admin/class-rex-product-feed-cpt.php:116
 msgid "Simple products : "
-msgstr "Proste produkty:"
+msgstr "Produkty Simple :"
 
 #: admin/class-rex-product-feed-cpt.php:117
 msgid "Variable parent : "
-msgstr "Zmienny rodzic:"
+msgstr "Variable parent : "
 
 #: admin/class-rex-product-feed-cpt.php:118
 msgid "Variations : "
-msgstr "Wariacje:"
+msgstr "Variations : "
 
 #: admin/class-rex-product-feed-cpt.php:119
 msgid "Group products : "
-msgstr "Produkty grupy:"
+msgstr "Group produktów :"
 
 #: admin/class-rex-product-feed-factory.php:219
 msgid "Invalid Merchant."
-msgstr "Nieprawidłowy kupiec."
+msgstr "Nieprawidłowy Merchant."
 
-#: admin/class-rex-product-feed-metabox.php:40
+#: admin/class-rex-product-feed-metabox.php:40 
 #: admin/class-rex-product-feed-metabox.php:47
 msgid "Products"
 msgstr "Produkty"
 
 #: admin/class-rex-product-feed-metabox.php:48
 msgid "Select products to create feed for."
-msgstr "Wybierz produkty, dla których chcesz utworzyć kanał."
+msgstr "Wybierz produkty, aby stworzyć feed dla."
 
 #: admin/class-rex-product-feed-metabox.php:54
 msgid "All Published Products"
@@ -208,85 +204,85 @@ msgstr "Filtr kategorii"
 
 #: admin/class-rex-product-feed-metabox.php:57
 msgid "Tag Filter"
-msgstr "Filtr tagów"
+msgstr "Filtr Tag"
 
 #: admin/class-rex-product-feed-metabox.php:107
 msgid "Refresh Interval"
-msgstr "Częstotliwość odświeżania"
+msgstr "Refresh interwał"
 
 #: admin/class-rex-product-feed-metabox.php:108
 msgid "Feed Schedule Update"
-msgstr "Aktualizacja harmonogramu kanałów"
+msgstr "Feed Aktualizacja Harmonogramu"
 
 #: admin/class-rex-product-feed-metabox.php:112
 msgid "No Interval"
-msgstr "Bez interwału"
+msgstr "No interwał"
 
 #: admin/class-rex-product-feed-metabox.php:113
 msgid "Daily"
-msgstr "Codziennie"
+msgstr "Dzienny"
 
-#: admin/class-rex-product-feed-metabox.php:114
+#: admin/class-rex-product-feed-metabox.php:114 
 #: admin/class-rex-product-feed-metabox.php:700
 msgid "Hourly"
-msgstr "Cogodzinny"
+msgstr "Godzinowy"
 
 #: admin/class-rex-product-feed-metabox.php:125
 msgid "Include Variable Parent Product"
-msgstr "Uwzględnij zmienny produkt nadrzędny"
+msgstr "Uwzględnij Variable Parent Produkt"
 
 #: admin/class-rex-product-feed-metabox.php:126
 msgid "Include/Exclude Parent Variable Product"
-msgstr "Uwzględnij / wyklucz produkt zmienny nadrzędny"
+msgstr "Uwzględnij / Wyklucz Parent Variable Produkt"
 
-#: admin/class-rex-product-feed-metabox.php:130
-#: admin/class-rex-product-feed-metabox.php:146
-#: admin/class-rex-product-feed-metabox.php:163
-#: admin/class-rex-product-feed-metabox.php:179
+#: admin/class-rex-product-feed-metabox.php:130 
+#: admin/class-rex-product-feed-metabox.php:146 
+#: admin/class-rex-product-feed-metabox.php:163 
+#: admin/class-rex-product-feed-metabox.php:179 
 #: admin/class-rex-product-feed-metabox.php:195
 msgid "Yes"
 msgstr "tak"
 
-#: admin/class-rex-product-feed-metabox.php:131
-#: admin/class-rex-product-feed-metabox.php:147
-#: admin/class-rex-product-feed-metabox.php:164
-#: admin/class-rex-product-feed-metabox.php:180
+#: admin/class-rex-product-feed-metabox.php:131 
+#: admin/class-rex-product-feed-metabox.php:147 
+#: admin/class-rex-product-feed-metabox.php:164 
+#: admin/class-rex-product-feed-metabox.php:180 
 #: admin/class-rex-product-feed-metabox.php:196
 msgid "No"
 msgstr "Nie"
 
 #: admin/class-rex-product-feed-metabox.php:141
 msgid "Include Product Variations"
-msgstr "Uwzględnij warianty produktu"
+msgstr "Uwzględnij Produkt Variations"
 
 #: admin/class-rex-product-feed-metabox.php:142
 msgid "Include/Exclude Products Variations"
-msgstr "Dołącz / wyklucz warianty produktów"
+msgstr "Dołącz / wyklucz Produktów Variations"
 
 #: admin/class-rex-product-feed-metabox.php:158
 msgid "Include variation product name"
-msgstr "Podaj nazwę odmiany produktu"
+msgstr "Uwzględnij Nazwa Variation Produktu"
 
 #: admin/class-rex-product-feed-metabox.php:159
 msgid ""
 "It will add the all the variation name on product title. Will be applicable "
 "if there are more than two variation atrributes of a product."
 msgstr ""
-"Doda to całą nazwę odmiany w tytule produktu. Będzie obowiązywać, jeśli "
-"istnieją więcej niż dwa atrybuty zmienności produktu."
+"Will add all variant names to the product title. This will apply if your "
+"product has more than two variant attributes."
 
 #: admin/class-rex-product-feed-metabox.php:174
 msgid "Include Parent Product (Grouped Product)"
-msgstr "Uwzględnij produkt macierzysty (produkt zgrupowany)"
+msgstr "Uwzględnij Parent Produktów (Grouped produktów)"
 
 #: admin/class-rex-product-feed-metabox.php:175
 msgid "Include/Exclude Parent Product"
-msgstr "Uwzględnij / wyklucz produkt nadrzędny"
+msgstr "Uwzględnij / Wyklucz Parent Produkt"
 
-#: admin/class-rex-product-feed-metabox.php:190
+#: admin/class-rex-product-feed-metabox.php:190 
 #: admin/class-rex-product-feed-metabox.php:191
 msgid "Exclude invisible/hidden products"
-msgstr "Wyklucz niewidoczne / ukryte produkty"
+msgstr "Wyklucz invisible/hidden produkty"
 
 #: admin/class-rex-product-feed-metabox.php:205
 msgid "Analytics parameters"
@@ -294,35 +290,35 @@ msgstr "Parametry analityczne"
 
 #: admin/class-rex-product-feed-metabox.php:206
 msgid "Check to activate utm params"
-msgstr "Zaznacz, aby aktywować parametry utm"
+msgstr "Zaznacz, aby aktywować utm parameters."
 
 #: admin/class-rex-product-feed-metabox.php:212
 msgid "Parameters"
-msgstr "Parametry"
+msgstr "Parameters"
 
 #: admin/class-rex-product-feed-metabox.php:303
 msgid "Please select merchant"
-msgstr "Wybierz kupca"
+msgstr "Wybierz Merchant"
 
 #: admin/class-rex-product-feed-metabox.php:334
 msgid "Feed Configuration"
-msgstr "Konfiguracja kanału"
+msgstr "Konfiguracja Feed"
 
 #: admin/class-rex-product-feed-metabox.php:339
 msgid "Merchant Type"
-msgstr "Rodzaj sprzedawcy"
+msgstr "Typ Merchant"
 
 #: admin/class-rex-product-feed-metabox.php:340
 msgid "Select Merchant Type of the Feed."
-msgstr "Wybierz typ sprzedawcy kanału."
+msgstr "Wybierz typ Merchant za feed."
 
 #: admin/class-rex-product-feed-metabox.php:351
 msgid "File Format"
-msgstr "Format pliku"
+msgstr "File Format"
 
 #: admin/class-rex-product-feed-metabox.php:352
 msgid "Select Format of the Feed."
-msgstr "Wybierz Format kanału."
+msgstr "Wybierz a format za feed."
 
 #: admin/class-rex-product-feed-metabox.php:356
 msgid "XML"
@@ -330,7 +326,7 @@ msgstr "XML"
 
 #: admin/class-rex-product-feed-metabox.php:357
 msgid "TEXT"
-msgstr "TEKST"
+msgstr "TEXT"
 
 #: admin/class-rex-product-feed-metabox.php:358
 msgid "CSV"
@@ -342,27 +338,27 @@ msgstr "JSON (tylko dla Zalando)"
 
 #: admin/class-rex-product-feed-metabox.php:524
 msgid "Add New Attribute"
-msgstr "Dodaj nowy atrybut"
+msgstr "Dodaj nowy Attribute"
 
 #: admin/class-rex-product-feed-metabox.php:525
 msgid "Add New Custom Attribute"
-msgstr "Dodaj nowy atrybut niestandardowy"
+msgstr "Dodaj nowy Custom Attribute"
 
 #: admin/class-rex-product-feed-metabox.php:557
 msgid "Add New Filter"
-msgstr "Dodaj nowy filtr"
+msgstr "Dodaj nowy Filter"
 
 #: admin/class-rex-product-feed-metabox.php:573
 msgid "Feed URL"
-msgstr "Adres URL kanału"
+msgstr "Feed URL"
 
 #: admin/class-rex-product-feed-metabox.php:580
 msgid "Your Feed URL"
-msgstr "Twój adres URL kanału"
+msgstr "Twój Feed URL"
 
 #: admin/class-rex-product-feed-metabox.php:601
 msgid "Why upgrade to Premium Version?"
-msgstr "Dlaczego warto uaktualnić do wersji Premium?"
+msgstr "Po co aktualizować do version Premium?"
 
 #: admin/class-rex-product-feed-metabox.php:623
 msgid "Supports more than 50 products."
@@ -374,47 +370,47 @@ msgstr "Dostęp do elitarnego zespołu wsparcia."
 
 #: admin/class-rex-product-feed-metabox.php:625
 msgid "Supports YITH brand attributes."
-msgstr "Obsługuje atrybuty marki YITH."
+msgstr "Obsługuje YITH brand attributes."
 
 #: admin/class-rex-product-feed-metabox.php:626
 msgid "Dynamic Attribute."
-msgstr "Atrybut dynamiczny."
+msgstr "Dynamic Attribute."
 
 #: admin/class-rex-product-feed-metabox.php:627
 msgid ""
 "Custom field support - Brand,GTIN,MPN,UPC,EAN,Size, Pattern, Material, Age "
 "Group, Gender."
 msgstr ""
-"Obsługa pól niestandardowych - marka, GTIN, MPN, UPC, EAN, rozmiar, wzór, "
-"materiał, grupa wiekowa, płeć."
+"Custom field support - Brand,GTIN,MPN,UPC,EAN,Size, Pattern, Material, Age "
+"Group, Gender."
 
 #: admin/class-rex-product-feed-metabox.php:628
 msgid "Fix WooCommerce's (JSON-LD) structure data bug"
-msgstr "Napraw błąd danych struktury WooCommerce (JSON-LD)"
+msgstr "Naprawić WooCommerce's (JSON-LD) structure data bug"
 
 #: admin/class-rex-product-feed-metabox.php:646
 msgid "View Feed"
-msgstr "Wyświetl kanał"
+msgstr "Wyświetl Feed"
 
 #: admin/class-rex-product-feed-metabox.php:648
 msgid "Download Feed"
-msgstr "Pobierz kanał"
+msgstr "Ściągnij Feed"
 
 #: admin/class-rex-product-feed-metabox.php:664
 msgid "Send to Google Merchant"
-msgstr "Wyślij do sprzedawcy Google"
+msgstr "Wyślij do Google Merchant"
 
 #: admin/class-rex-product-feed-metabox.php:672
 msgid "Target Country"
-msgstr "Kraj docelowy"
+msgstr "Target Country"
 
 #: admin/class-rex-product-feed-metabox.php:683
 msgid "Target Language"
-msgstr "Język docelowy"
+msgstr "Target Language"
 
 #: admin/class-rex-product-feed-metabox.php:693
 msgid "Schedule"
-msgstr "Harmonogram"
+msgstr "Zaplanow"
 
 #: admin/class-rex-product-feed-metabox.php:698
 msgid "Monthly"
@@ -422,11 +418,11 @@ msgstr "Miesięczny"
 
 #: admin/class-rex-product-feed-metabox.php:699
 msgid "Weekly"
-msgstr "Co tydzień"
+msgstr "Tygodniowy"
 
 #: admin/class-rex-product-feed-metabox.php:708
 msgid "Select day of month"
-msgstr "Wybierz dzień miesiąca"
+msgstr "Wybierz a datę miesiąca."
 
 #: admin/class-rex-product-feed-metabox.php:720
 msgid "Select day of week"
@@ -444,22 +440,19 @@ msgid ""
 "href=\"https://rextheme.com/google-country-codes-list/\" target=\"_blank\">"
 "Click here</a> to see the list of all abbreviations set by Google.</p>"
 msgstr ""
-"<p class = \"google-desc\"> Pamiętaj, że Google ma ustalone skróty "
-"lokalizacji i języka. Na przykład skrót dla lokalizacji docelowej, Stany "
-"Zjednoczone to USA, a skrót dla języka angielski to en. <a href=\"https:"
-"//rextheme.com/google-country-codes-list/\" target=\"_blank\"> Kliknij tutaj "
-"</a>, aby zobaczyć listę wszystkich skrótów ustawionych przez Google. </p>"
+"<p class=\"google-desc\">PNależy pamiętać, że Google ma ustalone skróty dla "
+"Location i Language. Na przykład skrót dla target location, United States to "
+"US, a skrót dla language, English to en.<a href=\"https://rextheme."
+"com/google-country-codes-list/\" target=\"_blank\">Kliknij tutaj</a> aby "
+"zobaczyć listę wszystkich skrótów ustawionych przez Google.</p>"
 
 #: admin/class-rex-product-feed-metabox.php:782
-#, fuzzy
-#| "Oops!! Access token has expired.Please authenticate token for Google "
-#| "Merchant Shop to be able to send feed."
 msgid ""
 "Oops!! Access token has expired 😕. Please authenticate token for Google "
 "Merchant Shop to be able to send feed."
 msgstr ""
-"Ups !! Token dostępu wygasł. Uwierzytelnij token sklepu Google Merchant Shop,"
-" aby móc wysyłać kanały."
+"Ups !! Access token wygasł 😕. Uwierzytelnij token dla Google Merchant Shop, "
+"aby móc wysłać feed."
 
 #: admin/class-rex-product-feed-metabox.php:784
 msgid "Authenticate"
@@ -467,7 +460,7 @@ msgstr "Uwierzytelniać"
 
 #: admin/class-rex-product-feed-metabox.php:789
 msgid "Send to google merchant"
-msgstr "Wyślij do sprzedawcy Google"
+msgstr "Wyślij do Google Merchant"
 
 #: admin/class-rex-product-feed-notices.php:37
 msgid "Product Feed"
@@ -475,43 +468,43 @@ msgstr "Product Feed"
 
 #: admin/feed/abstract-rex-product-feed-generator.php:368
 msgid "Start feed processing job by cron"
-msgstr "Rozpocznij przetwarzanie pliku danych przez crona"
+msgstr "Rozpocznij zadanie przetwarzania feed by cron"
 
 #: admin/feed/abstract-rex-product-feed-generator.php:378
 msgid "Start feed processing job."
-msgstr "Rozpocznij zadanie przetwarzania pliku danych."
+msgstr "Rozpocznij zadanie przetwarzania feed."
 
 #: admin/feed/abstract-rex-product-feed-generator.php:1005
 msgid "Completed feed generation job."
-msgstr "Zakończone zadanie generowania pliku danych."
+msgstr "Ukończono feed generation zleceń."
 
 #: admin/partials/category_mapping.php:46
 msgid "Update"
-msgstr "Aktualizacja"
+msgstr "Zaktualizuj"
 
 #: admin/partials/category_mapping.php:47
 msgid "Delete"
-msgstr "Usunąć"
+msgstr "Kasować"
 
 #: admin/partials/category_mapping.php:57
 msgid "Please update WPFM database"
-msgstr "Zaktualizuj bazę danych WPFM"
+msgstr "Update the WPFM database"
 
 #: admin/partials/category_mapping.php:70
 msgid "Add New Category Map"
-msgstr "Dodaj nową mapę kategorii"
+msgstr "Dodaj nową Category map"
 
 #: admin/partials/category_mapping.php:74
 msgid "Mapper Name"
-msgstr "Nazwa twórcy map"
+msgstr "Nazwa Mapper"
 
 #: admin/partials/category_mapping.php:87
 msgid "Save"
-msgstr "Zapisać"
+msgstr "Zapisz"
 
 #: admin/partials/database-update-notice.php:6
 msgid "WPFM Database Update Notice"
-msgstr "Powiadomienie o aktualizacji bazy danych WPFM"
+msgstr "WPFM Database Powiadomienie o aktualizacji"
 
 #: admin/partials/database-update-notice.php:10
 msgid ""
@@ -520,19 +513,19 @@ msgid ""
 "data structure for WPFM. None of your data will be changed/removed, only "
 "WPFM data will be restructured for better outcome."
 msgstr ""
-"WooCommerce Product Feed Manager jest coraz lepszy, a teraz ma "
-"zaktualizowaną strukturę danych, aby działał sprawnie. Kliknij aktualizację "
-"teraz, aby uzyskać najnowszą strukturę danych dla WPFM. Żadne twoje dane nie "
-"zostaną zmienione / usunięte, tylko dane WPFM zostaną zrestrukturyzowane w "
-"celu uzyskania lepszych wyników."
+"WooCommerce Product Feed Manager jest coraz lepszy i ma zaktualizowaną "
+"strukturę danych, aby działał płynnie. Kliknij Aktualizuj teraz, aby uzyskać "
+"najnowszą strukturę danych dla WPFM. Żadne dane nie zostaną zmienione / "
+"usunięte, tylko WPFM dane zostaną zrestrukturyzowane w celu uzyskania "
+"lepszych wyników."
 
 #: admin/partials/database-update-notice.php:11
 msgid ""
 "The database update process runs in the background and may take a little "
 "while, so please be patient."
 msgstr ""
-"Proces aktualizacji bazy danych działa w tle i może trochę potrwać, więc "
-"bądź cierpliwy."
+"Proces aktualizacji bazy danych przebiega w tle i może chwilę potrwać, "
+"dlatego prosimy o cierpliwość."
 
 #: admin/partials/database-update-notice.php:17
 msgid "Update WPFM Database"
@@ -540,37 +533,37 @@ msgstr "Zaktualizuj bazę danych WPFM"
 
 #: admin/partials/database-update-running-notice.php:6
 msgid "Update in progress…."
-msgstr "Aktualizacja w toku…."
+msgstr "Trwa aktualizacja…"
 
 #: admin/partials/database-update-running-notice.php:10
 msgid "It will run in the background while you can continue browsing."
 msgstr ""
-"Będzie działał w tle, podczas gdy będziesz mógł kontynuować przeglądanie."
+"Będzie działać w tle, podczas gdy będziesz mógł kontynuować przeglądanie."
 
 #: admin/partials/feed-config-metabox-display-filter.php:36
 msgid "If"
-msgstr "Gdyby"
+msgstr "Jeśli"
 
 #: admin/partials/feed-config-metabox-display-filter.php:37
 msgid "Condition"
-msgstr "Stan: schorzenie"
+msgstr "Stan"
 
-#: admin/partials/feed-config-metabox-display-filter.php:38
+#: admin/partials/feed-config-metabox-display-filter.php:38 
 #: admin/partials/feed-config-metabox-display.php:29
 msgid "Value"
 msgstr "Wartość"
 
 #: admin/partials/feed-config-metabox-display-filter.php:39
 msgid "Then"
-msgstr "Następnie"
+msgstr "Wtedy"
 
 #: admin/partials/feed-config-metabox-display.php:27
 msgid "Attributes"
-msgstr "Atrybuty"
+msgstr "Attributes"
 
 #: admin/partials/feed-config-metabox-display.php:28
 msgid "Type"
-msgstr "Rodzaj"
+msgstr "Typ"
 
 #: admin/partials/feed-config-metabox-display.php:30
 msgid "Prefix"
@@ -582,7 +575,7 @@ msgstr "Przyrostek"
 
 #: admin/partials/feed-config-metabox-display.php:32
 msgid "Output Sanitization"
-msgstr "Odkażanie wyjściowe"
+msgstr "Sanitization wyjściowy"
 
 #: admin/partials/feed-config-metabox-display.php:33
 msgid "Output Limit"
@@ -590,23 +583,23 @@ msgstr "Limit wyjściowy"
 
 #: admin/partials/merchant_settings.php:38
 msgid "Configure your google merchant"
-msgstr "Skonfiguruj swojego kupca Google"
+msgstr "Skonfiguruj Google Merchant."
 
 #: admin/partials/merchant_settings.php:44
 msgid "Client ID#: "
-msgstr "Identyfikator klienta#:"
+msgstr "Client ID#: "
 
 #: admin/partials/merchant_settings.php:48
 msgid "Client Secret: "
-msgstr "Sekret klienta:"
+msgstr "Client Secret: "
 
 #: admin/partials/merchant_settings.php:52
 msgid "Merchant ID# : "
-msgstr "Numer identyfikacyjny sprzedawcy:"
+msgstr "Merchant ID# : "
 
 #: admin/partials/merchant_settings.php:57
 msgid "Redirect URL"
-msgstr "Przekieruj adres URL"
+msgstr "Redirect URL"
 
 #: admin/partials/merchant_settings.php:60
 msgid "Reset"
@@ -614,11 +607,11 @@ msgstr "Resetowanie"
 
 #: admin/partials/merchant_settings.php:64
 msgid "Submit"
-msgstr "Zatwierdź"
+msgstr "Prześlij"
 
 #: admin/partials/on_boarding.php:50 admin/partials/on_boarding.php:204
 msgid "Go Premium"
-msgstr "Przejdź na Premium"
+msgstr "Go Premium"
 
 #: admin/partials/on_boarding.php:52
 #, php-format
@@ -626,8 +619,8 @@ msgid ""
 "Purchase our <a href=\"%s\" target=\"_blank\" title=\"Click to Upgrade Pro\">"
 "premium version</a> to unlock these pro components!"
 msgstr ""
-"Kup naszą <a href=\"%s\" target=\"_blank\" title=\"Kliknij, aby uaktualnić "
-"Pro\"> wersję premium </a>, aby odblokować te pro komponenty!"
+"Kup nasz <a href=\"%s\" target=\"_blank\" title=\"Kliknij, aby uaktualnić na "
+"Pro.\">version premium </a> aby odblokować te komponenty Pro!"
 
 #: admin/partials/on_boarding.php:56
 msgid "ok"
@@ -639,23 +632,23 @@ msgstr "Generał"
 
 #: admin/partials/on_boarding.php:115
 msgid "Merchants"
-msgstr "Kupcy"
+msgstr "Merchants"
 
 #: admin/partials/on_boarding.php:158 admin/partials/on_boarding.php:1300
 msgid "Controls"
-msgstr "Sterownica"
+msgstr "Kontrolny"
 
 #: admin/partials/on_boarding.php:180
 msgid "Video Tutorials"
-msgstr "Samouczki wideo"
+msgstr "Samouczki video"
 
 #: admin/partials/on_boarding.php:200 admin/partials/on_boarding.php:1495
 msgid "System Status"
-msgstr "Status systemu"
+msgstr "System Status"
 
 #: admin/partials/on_boarding.php:207
 msgid "Logs"
-msgstr "Kłody"
+msgstr "Logs"
 
 #: admin/partials/on_boarding.php:225
 msgid "Documentation"
@@ -666,24 +659,24 @@ msgid ""
 "Before You start, you can check our Documentation to get familiar with "
 "WooCommerce Product Feed Manager."
 msgstr ""
-"Zanim zaczniesz, możesz sprawdzić naszą dokumentację, aby zapoznać się z "
-"Menedżerem kanałów produktów WooCommerce."
+"Zanim zaczniesz, możesz sprawdzić nasz Documentation, aby zapoznać się z "
+"WooCommerce Product Feed Manager."
 
 #: admin/partials/on_boarding.php:233
 msgid "View Documentation"
-msgstr "Zobacz dokumentację"
+msgstr "Wyświetl Documentation"
 
 #: admin/partials/on_boarding.php:247
 msgid ""
 "Can't find solution on with our documentation? Just Post a ticket on Support "
 "forum. We are to solve your issue."
 msgstr ""
-"Nie możesz znaleźć rozwiązania w naszej dokumentacji? Wystarczy opublikować "
-"bilet na forum pomocy technicznej. Mamy rozwiązać Twój problem."
+"Nie możesz znaleźć rozwiązania w naszym documentation? Po prostu opublikuj "
+"ticket na Support forum. Jesteśmy tutaj, aby rozwiązać Twój problem."
 
 #: admin/partials/on_boarding.php:250
 msgid "Post a Ticket"
-msgstr "Opublikuj bilet"
+msgstr "Opublikuj Ticket"
 
 #: admin/partials/on_boarding.php:259
 msgid "Share Your Thoughts"
@@ -692,43 +685,44 @@ msgstr "Podziel się swoimi przemyśleniami"
 #: admin/partials/on_boarding.php:264
 msgid ""
 "Your suggestions are valubale to us. It can help to make WPFM even better."
-msgstr "Twoje sugestie są dla nas cenne. Może to pomóc w ulepszeniu WPFM."
+msgstr ""
+"Twoje sugestie są dla nas cenne. Może pomóc uczynić WPFM jeszcze lepszym."
 
 #: admin/partials/on_boarding.php:267
 msgid "Suggest"
-msgstr "Sugerować"
+msgstr "Zaproponuj"
 
 #: admin/partials/on_boarding.php:276
 msgid "Make WPFM Popular"
-msgstr "Uczyń WPFM popularnym"
+msgstr "Zwiększ popularność WPFM"
 
 #: admin/partials/on_boarding.php:281
 msgid ""
 "Your rating and feedback matters to us. If you are happy with WooCommerce "
 "Product Feed Manager give us a rating."
 msgstr ""
-"Twoja ocena i opinie są dla nas ważne. Jeśli jesteś zadowolony z WooCommerce "
-"Product Feed Manager, daj nam ocenę."
+"Twój rating i zwrotne są dla nas ważne. Jeśli jesteś zadowolony z "
+"WooCommerce Product Feed Manager, daj nam rating."
 
 #: admin/partials/on_boarding.php:284
 msgid "Rate Us!"
-msgstr "Oceń nas!"
+msgstr "Rate Us!"
 
 #: admin/partials/on_boarding.php:293
 msgid "Share On"
-msgstr "Podziel się"
+msgstr "Udostępnij na"
 
 #: admin/partials/on_boarding.php:298
 msgid "Share on Facebook"
-msgstr "Udostępnij na Facebooku"
+msgstr "Udostępnij na Facebook"
 
 #: admin/partials/on_boarding.php:299
 msgid "Share on Twitter"
-msgstr "Podziel się na Twitterze"
+msgstr "Udostępnij na Twitterze"
 
 #: admin/partials/on_boarding.php:300
 msgid "Share on Google+"
-msgstr "Udostępnij w Google+"
+msgstr "Udostępnij na Google+"
 
 #: admin/partials/on_boarding.php:301
 msgid "Share on LinkedIn"
@@ -736,35 +730,35 @@ msgstr "Udostępnij na LinkedIn"
 
 #: admin/partials/on_boarding.php:313 admin/partials/on_boarding.php:1620
 msgid "Why upgrade to Pro?"
-msgstr "Dlaczego warto uaktualnić do wersji Pro?"
+msgstr "Po co Uaktualnij do Pro?"
 
 #: admin/partials/on_boarding.php:315 admin/partials/on_boarding.php:1622
 msgid "Generate feed for unlimited products"
-msgstr "Generuj kanał dla nieograniczonej liczby produktów"
+msgstr "Wygeneruj feed dla nieograniczonej liczby produktów"
 
 #: admin/partials/on_boarding.php:316 admin/partials/on_boarding.php:1623
 msgid ""
 "Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, "
 "ISBN, ITF14, Offer price, Offer effective date)"
 msgstr ""
-"Unikalne identyfikatory produktu Pola niestandardowe (marka, GTIN, MPN, UPC, "
-"EAN, JAN, ISBN, ITF14, cena oferty, data wejścia w życie oferty)"
+"Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, "
+"ISBN, ITF14, Offer price, Offer effective date)"
 
 #: admin/partials/on_boarding.php:317 admin/partials/on_boarding.php:1624
 msgid ""
 "Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age "
 "Group, Gender, Color)"
 msgstr ""
-"Szczegółowe atrybuty produktu Niestandardowe pola (rozmiar, wzór, materiał, "
-"grupa wiekowa, płeć, kolor)"
+"Dodaj Detailed Product Attributes Custom Fields (Size, Pattern, Material, "
+"Age Group, Gender, Color) do produktu"
 
 #: admin/partials/on_boarding.php:318 admin/partials/on_boarding.php:1625
 msgid "Ability To Exclude Tax From Structured Data Prices"
-msgstr "Możliwość wyłączenia podatku z cen danych strukturalnych"
+msgstr "Możliwość wyłączenia podatku od Structured Data cen"
 
 #: admin/partials/on_boarding.php:319 admin/partials/on_boarding.php:1626
 msgid "Option To Fix WooCommerce’s (Json-Ld) Structured Data Bug"
-msgstr "Opcja naprawy błędu danych strukturalnych WooCommerce (Json-Ld)"
+msgstr "Opcja naprawy WooCommerce’s (Json-Ld) Structured Data Bug"
 
 #: admin/partials/on_boarding.php:320 admin/partials/on_boarding.php:1627
 msgid "Custom Batch configuration"
@@ -775,30 +769,30 @@ msgid ""
 "9 more pre-built templates (including eBay MIP, eBay Seller Center, Google "
 "Product Review, Google Re-marketing (DRM) and others)"
 msgstr ""
-"9 innych gotowych szablonów (w tym MIP na eBayu, Centrum Sprzedawcy na eBayu,"
-" Przegląd produktów Google, Google Re-marketing (DRM) i inne)"
+"9 więcej gotowych templates (w tym eBay MIP, eBay Seller Center, Google "
+"Product Review, Google Re-marketing (DRM) i inne)"
 
 #: admin/partials/on_boarding.php:324
 msgid "Upgrade to Pro"
-msgstr "Przejść na wersje Pro"
+msgstr "Uaktualnij do Pro."
 
 #: admin/partials/on_boarding.php:334
 msgid "Available Merchants"
-msgstr "Dostępne kupcy"
+msgstr "Dostępne Merchants."
 
-#: admin/partials/on_boarding.php:1268 admin/partials/on_boarding.php:1361
-#: admin/partials/on_boarding.php:1386 admin/partials/on_boarding.php:1413
+#: admin/partials/on_boarding.php:1268 admin/partials/on_boarding.php:1361 
+#: admin/partials/on_boarding.php:1386 admin/partials/on_boarding.php:1413 
 #: admin/partials/on_boarding.php:1438 admin/partials/on_boarding.php:1466
 msgid "pro"
-msgstr "zawodowiec"
+msgstr "pro"
 
 #: admin/partials/on_boarding.php:1303
 msgid "Product(s) per batch"
-msgstr "Produkt (y) na partię"
+msgstr "produkt(y) na partii"
 
 #: admin/partials/on_boarding.php:1313
 msgid "Clear batch"
-msgstr "Wyczyść partię"
+msgstr "Clear batch"
 
 #: admin/partials/on_boarding.php:1319
 msgid "Enable Facebook Pixel"
@@ -806,27 +800,27 @@ msgstr "Włącz Facebook Pixel"
 
 #: admin/partials/on_boarding.php:1335
 msgid "Enable log"
-msgstr "Włącz dziennik"
+msgstr "Włącz dziennik Włącz "
 
 #: admin/partials/on_boarding.php:1349
 msgid "Facebook Pixel id"
-msgstr "Identyfikator piksela Facebooka"
+msgstr "Facebook Pixel id"
 
 #: admin/partials/on_boarding.php:1365
 msgid "Add custom fields for Amazon"
-msgstr "Dodaj niestandardowe pola dla Amazon"
+msgstr "Dodaj custom fields za Amazon"
 
 #: admin/partials/on_boarding.php:1391
 msgid "Exclude TAX from structured data prices"
-msgstr "Wyłącz PODATEK od cen danych strukturalnych"
+msgstr "Exclude TAX from structured data prices"
 
 #: admin/partials/on_boarding.php:1417
 msgid ""
 "Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, "
 "ITF14, Offer price, Offer effective date ) to product"
 msgstr ""
-"Dodaj unikalne identyfikatory produktu (marka, GTIN, MPN, UPC, EAN, JAN, "
-"ISBN, ITF14, cena oferty, data wejścia w życie oferty) do produktu"
+"Dodaj Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, "
+"ITF14, Offer price, Offer effective date ) do produktu"
 
 #: admin/partials/on_boarding.php:1443
 msgid ""
@@ -836,22 +830,23 @@ msgid ""
 "WooCommerce's (JSON-LD) structured data bug and add extra structured data "
 "elements to your pages"
 msgstr ""
-"Zwiększ liczbę produktów, które będą zatwierdzane w Google Merchant Center:\n"
-"                                            Ta opcja naprawi błąd danych "
-"strukturalnych WooCommerce (JSON-LD) i doda dodatkowe elementy danych "
-"strukturalnych do twoich stron"
+"Zwiększ liczbę produktów, które zostaną zatwierdzone w Google Merchant "
+"Center:\n"
+"                                            Ta opcja naprawi WooCommerce's "
+"(JSON-LD) structured data bug i doda dodatkowe structured data elements do "
+"twoich stron"
 
 #: admin/partials/on_boarding.php:1470
 msgid ""
 "Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, "
 "Gender, Additional info ) to product"
 msgstr ""
-"Dodaj szczegółowe atrybuty produktu (rozmiar, kolor, wzór, materiał, grupa "
-"wiekowa, płeć, dodatkowe informacje) do produktu"
+"Dodaj Detailed Product Attributes (Size, Color, Pattern, Material, Age group,"
+" Gender, Additional info) do produktu"
 
 #: admin/partials/on_boarding.php:1525
 msgid "PHP version:"
-msgstr "Wersja PHP:"
+msgstr "PHP version:"
 
 #: admin/partials/on_boarding.php:1531
 #, php-format
@@ -859,48 +854,49 @@ msgid ""
 "%1$s - We recommend using PHP version 7.2 or above for greater performance "
 "and security."
 msgstr ""
-"Zalecamy używanie PHP w wersji 7.2 lub nowszej w celu zwiększenia wydajności "
-"i bezpieczeństwa."
+"%1$s - zalecamy używanie PHP version 7.2 lub nowszego w celu zwiększenia "
+"wydajności i bezpieczeństwa."
 
 #: admin/partials/on_boarding.php:1537
 msgid "WordPress version:"
-msgstr "Wersja WordPress:"
+msgstr "Version WordPress:"
 
 #: admin/partials/on_boarding.php:1543
 #, php-format
 msgid "%1$s - WP version above 4 is required. "
-msgstr "Wymagana jest wersja WP powyżej 4."
+msgstr "%1$s - Wymagana jest wersja WP powyżej 4."
 
 #: admin/partials/on_boarding.php:1549
 msgid "WooCommerce Version:"
-msgstr "Wersja WooCommerce:"
+msgstr "Version WooCommerce:"
 
 #: admin/partials/on_boarding.php:1555
 #, php-format
 msgid "%1$s - WC version above 4 is required. "
-msgstr "Wymagana jest wersja WC powyżej 4."
+msgstr "Wymagana wersja WC powyżej 4."
 
 #: admin/partials/on_boarding.php:1561
 msgid "Memory:"
-msgstr "Pamięć:"
+msgstr "Memory:"
 
 #: admin/partials/on_boarding.php:1567
 #, php-format
 msgid "%1$s - We recommend setting memory to at least 64MB. See: %2$s"
-msgstr "Zalecamy ustawienie pamięci na co najmniej 64 MB. Widzieć:"
+msgstr ""
+"%1$s - Zalecamy ustawienie od memory do co najmniej 64 MB. Zobacz: %2$s"
 
 #: admin/partials/on_boarding.php:1567
 msgid "Increasing memory allocated to PHP"
-msgstr "Zwiększenie pamięci przydzielonej PHP"
+msgstr "Zwiększenie memory przydzielone do PHP"
 
 #: admin/partials/on_boarding.php:1573
 msgid "Upload Limit:"
-msgstr "Limit przesyłania:"
+msgstr "Limit Upload:"
 
 #: admin/partials/on_boarding.php:1579
 #, php-format
 msgid "%1$s - We recommend upload limit to at least 64MB."
-msgstr "Zalecamy ograniczenie przesyłania do co najmniej 64 MB."
+msgstr "%1$s - Zalecamy od upload limit do co najmniej 64 MB."
 
 #: admin/partials/on_boarding.php:1585
 msgid "WP Cron"
@@ -908,12 +904,12 @@ msgstr "WP Cron"
 
 #: admin/partials/on_boarding.php:1597
 msgid "Product Feed Directory Writable"
-msgstr "Katalog plików danych do zapisu"
+msgstr "Product Feed Directory z możliwością zapisu."
 
 #: admin/partials/on_boarding.php:1603
 #, php-format
 msgid "It is required to make feed directory writable. %1$s"
-msgstr "Wymagane jest, aby katalog kanałów był zapisywalny."
+msgstr "Było to konieczne, aby feed directory stał się zapisywalny."
 
 #: admin/partials/on_boarding.php:1630
 msgid "Get Premium Version"
@@ -921,27 +917,27 @@ msgstr "Uzyskaj wersję Premium"
 
 #: admin/partials/on_boarding.php:1653
 msgid "View log"
-msgstr "Wyświetl dziennik"
+msgstr "Wyświetl Log"
 
 #: admin/partials/on_boarding.php:1657
 msgid "Copy log"
-msgstr "Skopiuj dziennik"
+msgstr "Skopiuj Log"
 
 #: admin/partials/progress-bar.php:27
 msgid "Your feed is generating"
-msgstr "Twój kanał się generuje"
+msgstr "Twój feed generuje"
 
 #: admin/partials/wpmf-black-friday-notice.php:16
 msgid "Upgrade to pro with a"
-msgstr "Uaktualnij do wersji Pro za pomocą"
+msgstr "Uaktualnij do Pro z"
 
 #: admin/partials/wpmf-black-friday-notice.php:17
 msgid "Huge Black Friday Discount"
-msgstr "Ogromny rabat na czarny piątek"
+msgstr "Ogromny rabat na Black Friday"
 
 #: admin/partials/wpmf-black-friday-notice.php:18
 msgid "Generate ultimate product feed in minutes."
-msgstr "Generuj najlepszy feed produktów w kilka minut."
+msgstr "Wygeneruj ostateczny produkt feed w kilka minut."
 
 #: admin/partials/wpmf-black-friday-notice.php:25
 msgid "Coupon:"
@@ -949,7 +945,7 @@ msgstr "Kupon:"
 
 #. Name of the plugin
 msgid "WooCommerce Product Feed Manager"
-msgstr "Menedżer plików produktów wooCommerce"
+msgstr "WooCommerce Product Feed Manager"
 
 #. Description of the plugin
 msgid ""
@@ -957,9 +953,9 @@ msgid ""
 "feed to Google shopping, Amazon, Walmart, eBay, Nextag, Pricegrabber and "
 "acquiring real buyer."
 msgstr ""
-"WooCommerce Product Feed Manager pomaga sprzedawać więcej, przesyłając "
-"informacje o produktach do sklepów Google, Amazon, Walmart, eBay, Nextag, "
-"Pricegrabber i pozyskając prawdziwego nabywcę."
+"WooCommerce Product Feed Manager pomaga sprzedawać więcej, przesyłając plik "
+"danych produktów do Google Shopping, Walmart, eBay, Ceneo, Pricegrabber itd. "
+"I pozyskując prawdziwego kupującego."
 
 #. URI of the plugin
 #. Author URI of the plugin
