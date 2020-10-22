@@ -403,6 +403,7 @@ class Feed
 
         if (ob_get_contents()) ob_end_clean();
         $str = $this->addItemsToFeedText();
+
         return $str;
     }
 

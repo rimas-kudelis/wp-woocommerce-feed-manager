@@ -276,17 +276,17 @@ class Rex_Product_Data_Retriever {
                     if ($this->is_children()) {
                         $_product = wc_get_product( $this->product );
                         $_variations = $_product->get_attributes();
-                        if(count($_variations) > 2) {
-                            $_title = $this->product->get_title() . " - ";
-                            $title_arr = array();
-                            foreach($_variations as $key => $value){
-                                $title_arr[] = ucfirst($value);
+                        $_title = $this->product->get_title() . " - ";
+                        $title_arr = array();
+                        foreach($_variations as $key => $value){
+                            $taxonomy   = str_replace("attribute_", "", $key);
+                            $term       = get_term_by('slug', $value, $taxonomy);
+                            if (!empty($term) && !is_wp_error($term)) {
+                                $title_arr[] = rawurldecode(ucfirst( $term->name ) );
                             }
-                            $_title = $_title . implode(', ', $title_arr);
-                            return $_title;
-                        }else {
-                            return $this->product->get_name();
                         }
+                        $_title = $_title . implode(', ', $title_arr);
+                        return $_title;
                     }else {
                         return $this->product->get_name();
                     }
@@ -589,8 +589,11 @@ class Rex_Product_Data_Retriever {
             case 'description':
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->get_parent_id() );
-                    $_product_desc =  $this->remove_short_codes($_product->get_description());
-                    return $_product_desc;
+                    if ( ! is_object( $_product ) ) {
+                        $_product_desc =  $this->remove_short_codes($_product->get_description());
+                        return $_product_desc;
+                    }
+                    return '';
                 else:
                     return $this->remove_short_codes($this->product->get_description());
                 endif;
@@ -942,10 +945,7 @@ class Rex_Product_Data_Retriever {
                             if($m[1]) {
                                 return utf8_decode(urldecode($m[1]));
                             }
-                        }else {
-
                         }
-                        return $map_value;
                     }
                 }
             }
@@ -1521,11 +1521,11 @@ class Rex_Product_Data_Retriever {
      */
     protected function get_availability( ) {
         if ($this->product->is_on_backorder()) {
-            return 'out_of_stock';
+            return apply_filters('wpfm_product_availability_backorder', 'out_of_stock');
         } elseif ( $this->product->is_in_stock() == TRUE ) {
-            return 'in_stock';
+            return apply_filters('wpfm_product_availability', 'in_stock');
         } else {
-            return 'out_of_stock';
+            return apply_filters('wpfm_product_availability', 'out_of_stock');
         }
     }
 
@@ -1536,11 +1536,11 @@ class Rex_Product_Data_Retriever {
      */
     protected function get_availability_underscore( ) {
         if ($this->product->is_on_backorder()) {
-            return 'out of stock';
+            return apply_filters('wpfm_product_availability_backorder', 'out of stock');
         } elseif ( $this->product->is_in_stock() == TRUE ) {
-            return 'in stock';
+            return apply_filters('wpfm_product_availability', 'in stock');
         } else {
-            return 'out of stock';
+            return apply_filters('wpfm_product_availability', 'out of stock');
         }
     }
 

@@ -29,7 +29,7 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
         $this->feed = $this->returnFinalProduct();
-        $this->feed_format = 'csv';
+        $this->feed_format = 'tsv';
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(
@@ -125,7 +125,7 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
                 }
             }
 
-            if ( $product->is_type( 'simple' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $atts['parent_child'] = '';
@@ -149,11 +149,19 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
 
 
 
+//    /**
+//     * Return Feed
+//     * @return array|bool|string
+//     */
+//    public function returnFinalProduct(){
+//        return RexShoppingCustom::asCSVFeeds($this->batch, 'bed_amp');
+//    }
+
     /**
      * Return Feed
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-        return RexShoppingCustom::asCSVFeeds($this->batch, 'bed_amp');
+        return RexShoppingCustom::asTSVFeeds($this->batch, 'bed_amp');
     }
 }

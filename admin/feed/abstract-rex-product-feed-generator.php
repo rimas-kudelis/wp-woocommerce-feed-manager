@@ -1032,6 +1032,25 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 return file_put_contents($file, $this->feed) ? 'true' : 'false';
             }
         }
+        elseif ($format == 'tsv')
+        {
+            $file = trailingslashit($path) . "feed-{$this->id}.tsv";
+            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv");
+            update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
+            error_log(print_r($baseurl . '/rex-feed' . "/feed-{$this->id}.tsv",1));
+            if( file_exists($file) ) {
+                if($this->batch == 1) {
+                    return file_put_contents($file, $this->feed) ? 'true' : 'false';
+                }else {
+                    $feed = preg_replace('/^.+\n/', '', $this->feed);
+                    if($feed)
+                        return file_put_contents($file, $feed, FILE_APPEND) ? 'true' : 'false';
+                    return 'true';
+                }
+            }else{
+                return file_put_contents($file, $this->feed) ? 'true' : 'false';
+            }
+        }
         elseif ($format == 'csv'){
             $file = trailingslashit($path) . "feed-{$this->id}.csv";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.csv");

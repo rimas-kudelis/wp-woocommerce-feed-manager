@@ -69,7 +69,7 @@ class Rex_Product_Feed {
     public function __construct() {
 
         $this->plugin_name = 'rex-product-feed';
-        $this->version = '1.0.0';
+        $this->version = '5.42';
 
         $this->load_dependencies();
         $this->set_locale();

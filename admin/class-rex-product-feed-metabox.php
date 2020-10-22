@@ -336,6 +336,7 @@ class Rex_Product_Metabox {
                 'xml'          => __( 'XML', 'rex-product-feed' ),
                 'text'         => __( 'TEXT', 'rex-product-feed' ),
                 'csv'          => __( 'CSV', 'rex-product-feed' ),
+//                'tsv'          => __( 'TSV', 'rex-product-feed' ),
                 'json'         => __( 'JSON (Only for Zalando)', 'rex-product-feed' ),
             ),
             'attributes' => array(

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.1
 Requires PHP: 7.0
-Stable tag: 5.41
+Stable tag: 5.42
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -545,7 +545,14 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 5.41 (2020-10-09) =
+= 5.42 (2020-10-22) =
+* Added: External product support
+* Fixed: Variation name attribute issue - previously it was fetching slug rather than name
+* Fixed: Missing image issue on Settings page
+* Fixed: Missing value for Category mapping
+* Compatibility Checked : WooCommerce 4.6.1
+
+= 5.41 (2020-10-08) =
 * Fixed: Facebook availability attribute
 * Fixed: Category without parents was not fetched while creating feed
 * Fixed: Variable parent product got removed on cron update before
