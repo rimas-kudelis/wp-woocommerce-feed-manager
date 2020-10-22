@@ -589,7 +589,7 @@ class Rex_Product_Data_Retriever {
             case 'description':
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->get_parent_id() );
-                    if ( ! is_object( $_product ) ) {
+                    if ( is_object( $_product ) ) {
                         $_product_desc =  $this->remove_short_codes($_product->get_description());
                         return $_product_desc;
                     }
@@ -602,7 +602,9 @@ class Rex_Product_Data_Retriever {
             case 'short_description':
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->get_parent_id() );
-                    $_product_desc = $this->remove_short_codes($_product->get_short_description());
+                    if ( is_object( $_product ) ) {
+                        $_product_desc = $this->remove_short_codes($_product->get_short_description());
+                    }
                     return $_product_desc;
                 else:
                     return $this->remove_short_codes($this->product->get_short_description()) ;
