@@ -203,8 +203,7 @@ class ANSI
     /**
      * Set the number of lines that should be logged past the terminal height
      *
-     * @param int $x
-     * @param int $y
+     * @param int $history
      * @access public
      */
     function setHistory($history)
@@ -272,7 +271,7 @@ class ANSI
                     case "\x1B[K": // Clear screen from cursor right
                         $this->screen[$this->y] = substr($this->screen[$this->y], 0, $this->x);
 
-                        array_splice($this->attrs[$this->y], $this->x + 1, $this->max_x - $this->x, array_fill($this->x, $this->max_x - $this->x - 1, $this->base_attr_cell));
+                        array_splice($this->attrs[$this->y], $this->x + 1, $this->max_x - $this->x, array_fill($this->x, $this->max_x - ($this->x - 1), $this->base_attr_cell));
                         break;
                     case "\x1B[2K": // Clear entire line
                         $this->screen[$this->y] = str_repeat(' ', $this->x);

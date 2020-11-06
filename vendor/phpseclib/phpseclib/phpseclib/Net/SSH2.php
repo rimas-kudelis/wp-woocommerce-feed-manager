@@ -2112,8 +2112,6 @@ class SSH2
      * The $password parameter can be a plaintext password, a \phpseclib\Crypt\RSA object or an array
      *
      * @param string $username
-     * @param mixed $password
-     * @param mixed $...
      * @return bool
      * @see self::_login()
      * @access public
@@ -2122,6 +2120,17 @@ class SSH2
     {
         $args = func_get_args();
         $this->auth[] = $args;
+
+        // try logging with 'none' as an authentication method first since that's what
+        // PuTTY does
+        if (substr($this->server_identifier, 0, 13) != 'SSH-2.0-CoreFTP') {
+            if ($this->_login($username)) {
+                return true;
+            }
+            if (count($args) == 1) {
+                return false;
+            }
+        }
         return call_user_func_array(array(&$this, '_login'), $args);
     }
 
@@ -2129,8 +2138,6 @@ class SSH2
      * Login Helper
      *
      * @param string $username
-     * @param mixed $password
-     * @param mixed $...
      * @return bool
      * @see self::_login_helper()
      * @access private
@@ -2391,7 +2398,6 @@ class SSH2
     /**
      * Handle the keyboard-interactive requests / responses.
      *
-     * @param string $responses...
      * @return bool
      * @access private
      */
@@ -2536,7 +2542,7 @@ class SSH2
      * Login with an RSA private key
      *
      * @param string $username
-     * @param \phpseclib\Crypt\RSA $password
+     * @param \phpseclib\Crypt\RSA $privatekey
      * @return bool
      * @access private
      * @internal It might be worthwhile, at some point, to protect against {@link http://tools.ietf.org/html/rfc4251#section-9.3.9 traffic analysis}
@@ -2995,7 +3001,7 @@ class SSH2
      * @see self::write()
      * @param string $expect
      * @param int $mode
-     * @return string
+     * @return string|bool
      * @access public
      */
     function read($expect = '', $mode = self::READ_SIMPLE)
@@ -3642,8 +3648,9 @@ class SSH2
      *
      * Returns the data as a string if it's available and false if not.
      *
-     * @param $client_channel
-     * @return mixed
+     * @param int $client_channel
+     * @param bool $skip_extended
+     * @return mixed|bool
      * @access private
      */
     function _get_channel_packet($client_channel, $skip_extended = false)
@@ -3885,7 +3892,7 @@ class SSH2
                     $this->channel_buffers[$channel][] = $data;
                     break;
                 case NET_SSH2_MSG_CHANNEL_CLOSE:
-                    $this->curTimeout = 0;
+                    $this->curTimeout = 5;
 
                     if ($this->bitmap & self::MASK_SHELL) {
                         $this->bitmap&= ~self::MASK_SHELL;
@@ -3953,7 +3960,7 @@ class SSH2
         $packet.= $hmac;
 
         $start = microtime(true);
-        $result = strlen($packet) == fputs($this->fsock, $packet);
+        $result = strlen($packet) == @fputs($this->fsock, $packet);
         $stop = microtime(true);
 
         if (defined('NET_SSH2_LOGGING')) {
@@ -3973,7 +3980,8 @@ class SSH2
      *
      * Makes sure that only the last 1MB worth of packets will be logged
      *
-     * @param string $data
+     * @param string $message_number
+     * @param string $message
      * @access private
      */
     function _append_log($message_number, $message)
@@ -4114,9 +4122,13 @@ class SSH2
 
         $this->channel_status[$client_channel] = NET_SSH2_MSG_CHANNEL_CLOSE;
 
-        $this->curTimeout = 0;
+        $this->curTimeout = 5;
 
         while (!is_bool($this->_get_channel_packet($client_channel))) {
+        }
+
+        if ($this->is_timeout) {
+            $this->disconnect();
         }
 
         if ($want_reply) {
@@ -4174,7 +4186,6 @@ class SSH2
      * named constants from it, using the value as the name of the constant and the index as the value of the constant.
      * If any of the constants that would be defined already exists, none of the constants will be defined.
      *
-     * @param array $array
      * @access private
      */
     function _define_array()
@@ -4590,11 +4601,15 @@ class SSH2
              //'none'           // OPTIONAL          no encryption; NOT RECOMMENDED
         );
 
-        $engines = array(
-            Base::ENGINE_OPENSSL,
-            Base::ENGINE_MCRYPT,
-            Base::ENGINE_INTERNAL
-        );
+        if ($this->crypto_engine) {
+            $engines = array($this->crypto_engine);
+        } else {
+            $engines = array(
+                Base::ENGINE_OPENSSL,
+                Base::ENGINE_MCRYPT,
+                Base::ENGINE_INTERNAL
+            );
+        }
 
         $ciphers = array();
         foreach ($engines as $engine) {
