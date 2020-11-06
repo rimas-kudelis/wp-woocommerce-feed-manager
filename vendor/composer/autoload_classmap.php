@@ -7,8 +7,12 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'CategoryMapping' => $baseDir . '/admin/class-category-mapping.php',
-    'Google_Service_Exception' => $vendorDir . '/google/apiclient/src/Google/Service/Exception.php',
-    'Google_Service_Resource' => $vendorDir . '/google/apiclient/src/Google/Service/Resource.php',
+    'Google_Task_Composer' => $vendorDir . '/google/apiclient/src/aliases.php',
+    'LukeSnowden\\GoogleShoppingFeed\\Containers\\GoogleShopping' => $baseDir . '/includes/library/GoogleShoppingFeed/Containers/GoogleShopping.php',
+    'LukeSnowden\\GoogleShoppingFeed\\Exceptions\\MissingIdentifierException' => $baseDir . '/includes/library/GoogleShoppingFeed/Exceptions/MissingIdentifierException.php',
+    'LukeSnowden\\GoogleShoppingFeed\\Feed' => $baseDir . '/includes/library/GoogleShoppingFeed/Feed.php',
+    'LukeSnowden\\GoogleShoppingFeed\\Item' => $baseDir . '/includes/library/GoogleShoppingFeed/Item.php',
+    'LukeSnowden\\GoogleShoppingFeed\\Node' => $baseDir . '/includes/library/GoogleShoppingFeed/Node.php',
     'RexTheme\\DaisyConShoppingFeed\\Containers\\DaisyConShopping' => $baseDir . '/admin/feed/daisycon/Containers/DaisyConShopping.php',
     'RexTheme\\DaisyConShoppingFeed\\Feed' => $baseDir . '/admin/feed/daisycon/Feed.php',
     'RexTheme\\DaisyConShoppingFeed\\Item' => $baseDir . '/admin/feed/daisycon/Item.php',
@@ -274,6 +278,6 @@ return array(
     'Rex_Sooqr_Product_Data_Retriever' => $baseDir . '/admin/feed/sooqr/class-rex-sooqr-product-data-retriever.php',
     'Rex_Spartoo_Product_Data_Retriever' => $baseDir . '/admin/feed/spartoo/class-rex-spartoo-product-data-retriever.php',
     'Rex_Yandex_Product_Data_Retriever' => $baseDir . '/admin/feed/yandex/class-rex-yandex-product-data-retriever.php',
-    'WP_Async_Request' => $vendorDir . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
-    'WP_Background_Process' => $vendorDir . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
+    'WP_Async_Request' => $vendorDir . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
+    'WP_Background_Process' => $vendorDir . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
 );

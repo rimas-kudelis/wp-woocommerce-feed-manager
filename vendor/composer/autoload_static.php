@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
+class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -12,10 +12,11 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        'a8d3953fd9959404dd22d3dfcd0a79f0' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
         'db1766888a4f96ab813d6f6a38125eb9' => __DIR__ . '/..' . '/philipnewcomer/wp-ajax-helper/src/functions.php',
-        '61b9c0b2c629ace5be0b7ec3e2b7b6b4' => __DIR__ . '/..' . '/johnbillion/extended-cpts/extended-cpts.php',
-        'ea11851aa7a28f9ec6d6de365f5d5d51' => __DIR__ . '/../..' . '/includes/cmb2/init.php',
-        '5e622670e91c83ee37f2106cafc7d4b8' => __DIR__ . '/../..' . '/includes/cmb2-conditionals/cmb2-conditionals.php',
+        '8b94e6d0c6db691d2e2aa0f87ec35fa6' => __DIR__ . '/..' . '/johnbillion/extended-cpts/extended-cpts.php',
+        '09f855b7ff53f63aea28ac8bdad2dbc5' => __DIR__ . '/../..' . '/includes/library/cmb2/init.php',
+        'e73f0296670a1644ca7aa366ed140299' => __DIR__ . '/../..' . '/includes/library/cmb2-conditionals/cmb2-conditionals.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -27,6 +28,7 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
             'Psr\\Cache\\' => 10,
             'PhilipNewcomer\\WP_Ajax_Helper\\' => 30,
         ),
@@ -40,6 +42,7 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
             'Google\\Auth\\' => 12,
+            'Google\\' => 7,
         ),
         'F' => 
         array (
@@ -67,6 +70,10 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
         'Psr\\Cache\\' => 
         array (
@@ -96,6 +103,10 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         array (
             0 => __DIR__ . '/..' . '/google/auth/src',
         ),
+        'Google\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/apiclient/src',
+        ),
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
@@ -111,34 +122,23 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
     );
 
     public static $prefixesPsr0 = array (
-        'L' => 
-        array (
-            'LukeSnowden\\GoogleShoppingFeed' => 
-            array (
-                0 => __DIR__ . '/..' . '/lukesnowden/google-shopping-feed/src',
-            ),
-        ),
         'G' => 
         array (
-            'Gregwar\\Cache' => 
-            array (
-                0 => __DIR__ . '/..' . '/gregwar/cache',
-            ),
             'Google_Service_' => 
             array (
                 0 => __DIR__ . '/..' . '/google/apiclient-services/src',
-            ),
-            'Google_' => 
-            array (
-                0 => __DIR__ . '/..' . '/google/apiclient/src',
             ),
         ),
     );
 
     public static $classMap = array (
         'CategoryMapping' => __DIR__ . '/../..' . '/admin/class-category-mapping.php',
-        'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
-        'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
+        'Google_Task_Composer' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'LukeSnowden\\GoogleShoppingFeed\\Containers\\GoogleShopping' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Containers/GoogleShopping.php',
+        'LukeSnowden\\GoogleShoppingFeed\\Exceptions\\MissingIdentifierException' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Exceptions/MissingIdentifierException.php',
+        'LukeSnowden\\GoogleShoppingFeed\\Feed' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Feed.php',
+        'LukeSnowden\\GoogleShoppingFeed\\Item' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Item.php',
+        'LukeSnowden\\GoogleShoppingFeed\\Node' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Node.php',
         'RexTheme\\DaisyConShoppingFeed\\Containers\\DaisyConShopping' => __DIR__ . '/../..' . '/admin/feed/daisycon/Containers/DaisyConShopping.php',
         'RexTheme\\DaisyConShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/daisycon/Feed.php',
         'RexTheme\\DaisyConShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/daisycon/Item.php',
@@ -404,17 +404,17 @@ class ComposerStaticInit24813f5830a2a5fc5057bd03aa642494
         'Rex_Sooqr_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/sooqr/class-rex-sooqr-product-data-retriever.php',
         'Rex_Spartoo_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/spartoo/class-rex-spartoo-product-data-retriever.php',
         'Rex_Yandex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/yandex/class-rex-yandex-product-data-retriever.php',
-        'WP_Async_Request' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
-        'WP_Background_Process' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
+        'WP_Async_Request' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
+        'WP_Background_Process' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit24813f5830a2a5fc5057bd03aa642494::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit24813f5830a2a5fc5057bd03aa642494::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit24813f5830a2a5fc5057bd03aa642494::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit24813f5830a2a5fc5057bd03aa642494::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb::$classMap;
 
         }, null, ClassLoader::class);
     }
