@@ -35,6 +35,7 @@ class Rex_Feed_Attributes {
                 'product_cats_path_pipe'    => 'Product Categories Path (with separator "|")',
                 'yoast_primary_cats_path'   => 'Yoast Primary Category Path (with separator ">")',
                 'yoast_primary_cats_pipe'   => 'Yoast Primary Category Path (with separator "|")',
+                'yoast_primary_cats_comma'   => 'Yoast Primary Category Path (with separator ",")',
                 'product_subcategory'       => 'Product Sub Categories Path (with separator ">")',
                 'yoast_primary_cat'         => 'Yoast primary category',
                 'link'                      => 'Product URL',

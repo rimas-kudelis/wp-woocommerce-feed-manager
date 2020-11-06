@@ -567,8 +567,8 @@ class Rex_Product_Filter {
     }
 
 
-
     public static function createFilterQueryParams($filter_mappings) {
+
         global $wpdb;
         $prefix = $wpdb->prefix;
         $filter_args = array();
@@ -576,7 +576,6 @@ class Rex_Product_Filter {
         $tax_query = array();
 
         foreach ($filter_mappings as $key => $filter) {
-
             $if = $filter['if'];
             $then = $filter['then'];
             $condition = $filter['condition'];
@@ -619,14 +618,13 @@ class Rex_Product_Filter {
                             $filter_args['post__less_than_equal'] = $value;
                         }
                         elseif ($condition == 'less_than') {
-                            $filter_args['post__greater_than'] = $value;
+                            $filter_args['post__greater_than_equal'] = $value;
                         }
                         elseif ($condition == 'less_than_equal') {
-                            $filter_args['post__greater_than_equal'] = $value;
+                            $filter_args['post__greater_than'] = $value;
                         }
                     }
                     break;
-
 
                 //PRODUCT TITLE
                 case 'title':
@@ -652,7 +650,6 @@ class Rex_Product_Filter {
                         }
                     }
                     break;
-
 
                 //PRODUCT DESCRIPTION
                 case 'description':

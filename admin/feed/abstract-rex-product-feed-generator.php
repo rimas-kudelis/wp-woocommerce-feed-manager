@@ -654,6 +654,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
             remove_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
         }
+
+        //error_log(print_r($this->products,1));
     }
 
 
@@ -710,8 +712,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $where .= ' )';
 
         }
-
-
         if($wp_query->get('description_contain')) {
             $title_contain = $wp_query->get('title_contain');
             $i = 0;
@@ -806,18 +806,22 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         if($wp_query->get('post__greater_than')) {
+            //error_log("me post__greater_than");
             $post_greater_than_id = $wp_query->get('post__greater_than');
             $where .= ' AND (ID > '. $post_greater_than_id . ')';
         }
         if($wp_query->get('post__greater_than_equal')) {
+            //error_log("me post__greater_than_equal");
             $post_greater_than_equal_id = $wp_query->get('post__greater_than_equal');
             $where .= ' AND (ID >= '. $post_greater_than_equal_id . ')';
         }
         if($wp_query->get('post__less_than')) {
+            //error_log("me post__less_than");
             $post_less_than_id = $wp_query->get('post__less_than');
             $where .= ' AND (ID < '. $post_less_than_id . ')';
         }
         if($wp_query->get('post__less_than_equal')) {
+            //error_log("me post__less_than_equal");
             $post_less_than_equal_id = $wp_query->get('post__less_than_equal');
             $where .= ' AND (ID <= '. $post_less_than_equal_id . ')';
         }
@@ -872,8 +876,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         return false;
     }
-
-
 
 
 
@@ -978,16 +980,15 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return bool
      */
     protected function save_feed($format){
-
         $path  = wp_upload_dir();
         $baseurl = $path['baseurl'];
         $path  = $path['basedir'] . '/rex-feed';
-
 
         // make directory if not exist
         if ( !file_exists($path) ) {
             wp_mkdir_p($path);
         }
+
         if($this->is_logging_enabled) {
             $log = wc_get_logger();
             if($this->batch == $this->tbatch) {
@@ -995,8 +996,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $log->info('**************************************************', array('source' => 'WPFM',));
             }
         }
-
-
         if($format == 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
@@ -1037,7 +1036,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $file = trailingslashit($path) . "feed-{$this->id}.tsv";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
-            error_log(print_r($baseurl . '/rex-feed' . "/feed-{$this->id}.tsv",1));
             if( file_exists($file) ) {
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
@@ -1050,6 +1048,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }else{
                 return file_put_contents($file, $this->feed) ? 'true' : 'false';
             }
+            update_post_meta($this->id, 'rex_feed_xml_filesss', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv");
+
         }
         elseif ($format == 'csv'){
             $file = trailingslashit($path) . "feed-{$this->id}.csv";
@@ -1072,7 +1072,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             else {
 
                 $file = fopen($file,"a+");
-
                 $list = $this->feed;
                 array_shift($list);
                 foreach ($list as $line)

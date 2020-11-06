@@ -1,10 +1,10 @@
-(function( $ ) {
+(function ($) {
     'use strict';
 
     var progressWidth = 0;
 
-    $(function() {
-        $(".meter > span").each(function() {
+    $(function () {
+        $(".meter > span").each(function () {
             $(this)
                 .data("origWidth", $(this).width())
                 .width(0)
@@ -13,7 +13,6 @@
                 }, 1200);
         });
     });
-
 
 
     /**
@@ -27,14 +26,14 @@
      * This enables you to define handlers, for when the DOM is ready:
      *
      * $(function() {
-	 *
-	 * });
+     *
+     * });
      *
      * When the window is loaded:
      *
      * $( window ).load(function() {
-	 *
-	 * });
+     *
+     * });
      *
      * ...and/or other possibilities.
      *
@@ -44,29 +43,29 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
-    $(document).ready(function() {
-        $('#rex_feed_conf select, #rex_feed_products select, #cmb2-metabox-rex_feed_google_merchant select').niceSelect();
+    $(document).ready(function () {
+        $('#rex_feed_products select, #cmb2-metabox-rex_feed_google_merchant select').niceSelect();
         //$('.ui-timepicker-select').formSelect('destroy');
 
-        if ( $('#rex_feed_xml_file').val() == '' ) {
+        if ($('#rex_feed_xml_file').val() == '') {
             $('#rex_feed_file_link').slideUp('fast');
         }
 
 
         //---------popup when click disabled input-------
-        $( ".single-merchant.wpfm-pro .wpfm-pro-cta" ).on("click", function(e){
+        $(".single-merchant.wpfm-pro .wpfm-pro-cta").on("click", function (e) {
             e.preventDefault();
             $(".premium-merchant-alert").addClass("show-alert");
         });
 
-        $( ".premium-merchant-alert .close, .premium-merchant-alert button.close, .premium-merchant-alert" ).on("click", function(){
+        $(".premium-merchant-alert .close, .premium-merchant-alert button.close, .premium-merchant-alert").on("click", function () {
             $(".premium-merchant-alert").removeClass("show-alert");
         });
 
         $(".premium-merchant-alert .alert-box").on("click", function (e) {
             e.stopPropagation();
         });
-        
+
 
     });
 
@@ -77,11 +76,12 @@
         var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
         rowId = parseInt(rowId) + 1;
         var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
+        console.log(lastrow)
         var parent = $(this).siblings('#config-table').parent();
 
-        if(parent.hasClass('rex-feed-config-filter')) {
+        if (parent.hasClass('rex-feed-config-filter')) {
             var filter = true;
-        }else {
+        } else {
             filter = false;
         }
         $(this).siblings('#config-table').find('tbody tr:first')
@@ -90,13 +90,10 @@
             .attr('data-row-id', rowId)
             .show();
 
-
         var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");
         $row.find('ul.dropdown-content.select-dropdown, .caret, .select-dropdown ').remove();
 
-        // $row.find('input, select').val('');
-
-        updateFormNameAtts( $row, rowId, filter);
+        updateFormNameAtts($row, rowId, filter);
     });
 
 
@@ -106,13 +103,13 @@
     $(document).on('click', '#rex-new-custom-attr', function () {
         // var rowId = $(this).siblings('#config-table').find('tbody tr').length;
         var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
-        rowId = parseInt(rowId)+1;
+        rowId = parseInt(rowId) + 1;
         var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
         var parent = $(this).siblings('#config-table').parent();
 
-        if(parent.hasClass('rex-feed-config-filter')) {
+        if (parent.hasClass('rex-feed-config-filter')) {
             var filter = true;
-        }else {
+        } else {
             filter = false;
         }
 
@@ -130,7 +127,7 @@
         $row.find('td:eq(0)').append('<input type="text" name="fc[0][cust_attr]" value="">');
         // $row.find('input, select').val('');
 
-        updateFormNameAtts( $row, rowId, filter);
+        updateFormNameAtts($row, rowId, filter);
     });
 
 
@@ -139,7 +136,7 @@
      * beneath it and their input attributes names.
      */
     $(document).on('click', '#config-table .delete-row', function () {
-        
+
         var $nextRows, rowId;
 
         var table = $(this).closest('table');
@@ -148,24 +145,24 @@
         // delete row and get it's row-id
         rowId = $(this).closest('tr').remove().data('row-id');
 
-        if(parent.hasClass('rex-feed-config-filter')) {
+        if (parent.hasClass('rex-feed-config-filter')) {
             var filter = true;
-        }else {
+        } else {
             filter = false;
         }
 
         // Gell the next rows
-        if ( rowId == 0) {
+        if (rowId == 0) {
             $nextRows = $('#config-table tbody').children();
-        }else{
-            $nextRows = $('#config-table').find("[data-row-id='" + (rowId -1) + "']").nextAll('tr');
+        } else {
+            $nextRows = $('#config-table').find("[data-row-id='" + (rowId - 1) + "']").nextAll('tr');
         }
 
         // Update their row-id and name attributes
-        $nextRows.each( function (index, el) {
-            if(!$(el).css('display') == 'none') {
-                $(el).attr( 'data-row-id', rowId);
-                updateFormNameAtts( $(el), rowId, filter);
+        $nextRows.each(function (index, el) {
+            if (!$(el).css('display') == 'none') {
+                $(el).attr('data-row-id', rowId);
+                updateFormNameAtts($(el), rowId, filter);
                 rowId++;
             }
 
@@ -176,20 +173,20 @@
      * Function for updating select and input box name
      * attribute under a table-row.
      */
-    function updateFormNameAtts( $row, rowId, filter){
+    function updateFormNameAtts($row, rowId, filter) {
         var name, $el;
         $el = $row.find('input, select');
-        $el.each(function(index, item) {
+        $el.each(function (index, item) {
             name = $(item).attr('name');
-            if( $(item).parent().hasClass('static-input') ) {
+            if ($(item).parent().hasClass('static-input')) {
                 $(item).parent().hide();
             }
-            if ( name != undefined ) {
+            if (name != undefined) {
                 // get new name via regex
                 if (filter) {
                     name = name.replace(/^ff\[\d+\]/, 'ff[' + rowId + ']');
                     $(item).attr('name', name);
-                }else {
+                } else {
                     name = name.replace(/^fc\[\d+\]/, 'fc[' + rowId + ']');
                     $(item).attr('name', name);
                 }
@@ -204,10 +201,10 @@
      */
     $(document).on('change', 'select.type-dropdown', function () {
         var selected = $(this).find('option:selected').val();
-        if ( selected == 'static' ) {
+        if (selected == 'static') {
             $(this).closest('td').next('td').find('.meta-dropdown').hide();
             $(this).closest('td').next('td').find('.static-input').show();
-        }else{
+        } else {
             $(this).closest('td').next('td').find('.static-input').hide();
             $(this).closest('td').next('td').find('.meta-dropdown').show();
         }
@@ -218,30 +215,14 @@
      */
     $(document).on('change', '#rex_feed_products', function () {
         var selected = $('#rex_feed_products').find(':selected').val();
-        if ( selected == 'filter' ) {
+        if (selected == 'filter') {
             $('.cmb2-id-rex-feed-config-filter-title').show();
             $('#rex-feed-config-filter').show();
-        }else{
+        } else {
             $('.cmb2-id-rex-feed-config-filter-title').hide();
             $('#rex-feed-config-filter').hide();
         }
     });
-
-
-
-    /**
-     * Event listener for feed type change.
-     */
-    // $(document).on('change', '#rex_feed_merchant', function () {
-    //     var selected = $(this).find('option:selected').val();
-    //     var csv = '';
-    //     if ( selected == 'google' ) {
-    //         $('.cmb2-id-rex-feed-feed-format').hide();
-    //     }else{
-    //         $('.cmb2-id-rex-feed-feed-format').show();
-    //     }
-    // });
-
 
     /**
      * Event listener for Merchant change functionality.
@@ -249,45 +230,57 @@
     $(document).on('change', '#rex_feed_merchant', function () {
         var $confBox = $('.rex-feed-config');
         var merchant_name = $('#rex_feed_merchant').find(':selected').val();
-        if(merchant_name !== '-1') {
+        if (merchant_name !== '-1') {
             $confBox.find('.rex-loading-spinner').css('display', 'flex');
             var $payload = {
                 merchant: $('#rex_feed_merchant').find(':selected').val(),
-                post_id: $('#post_ID').val()
-                // feed_format: $('#rex_feed_feed_format').find(':selected').val()
+                post_id: $('#post_ID').val(),
             };
-            wpAjaxHelperRequest( 'merchant-change', $payload )
-                .success( function( response ) {
-                    var today = new Date();
-                    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                    var dateTime = date+' '+time;
+
+            wpAjaxHelperRequest('merchant-change', $payload)
+                .success(function (response) {
+                    if (response) {
+                        $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select option').each(function() {
+                            var option_value=  $(this).val();
+                            if(jQuery.inArray(option_value, response.feed_format) === -1) {
+                                $(this).removeAttr('selected');
+                                $(this).attr('disabled', 'disabled');
+                            }
+                            else {
+                                $(this).removeAttr('disabled');
+                            }
+                        });
+                        var selected = $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val();
+                        if(!selected) {
+                            $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val(response.feed_format[0]);
+                        }
+                    }
 
                     $confBox.fadeOut();
                     var configTable = document.getElementsByClassName("wpfm-field-mappings")[0];
                     configTable.innerHTML = response.html;
-                    
+
                     $confBox.fadeIn();
                     $('.rex-loading-spinner').css('display', 'none');
                     $('#rex_feed_conf .cmb2-id-rex-feed-config-heading').css('display', 'block');
                     $('#rex-new-attr, #rex-new-custom-attr').css('display', 'inline-block');
                 })
-                .error( function( response ) {
+                .error(function (response) {
                     $('.rex-loading-spinner').css('display', 'none');
-                    console.log( 'Uh, oh! Merchant change returned error!' );
-                    console.log( response.statusText );
+                    console.log('Uh, oh! Merchant change returned error!');
+                    console.log(response.statusText);
                 });
         }
 
     });
 
-    function get_checkbox_val( name ){
+    function get_checkbox_val(name) {
         var items = 'input[name="rex_feed_' + name + '[]"]';
         var vals = [];
 
-        $(items).each( function (){
-            if( $(this).prop('checked') == true){
-                vals.push( $(this).val() );
+        $(items).each(function () {
+            if ($(this).prop('checked') == true) {
+                vals.push($(this).val());
             }
         });
 
@@ -306,12 +299,12 @@
         event.preventDefault();
 
         var merchant_name = $('#rex_feed_merchant').find(':selected').val();
-        if(merchant_name == '-1') {
+        if (merchant_name == '-1') {
             alert('Please choose a merchant!');
             return;
         }
 
-        if($('.wpfm-field-mappings').find('tbody tr:first').css('display') == 'none') {
+        if ($('.wpfm-field-mappings').find('tbody tr:first').css('display') == 'none') {
             $('.wpfm-field-mappings').find('tbody tr:first').remove();
         }
         $('#wpfm-feed-clock').stopwatch().stopwatch('start');
@@ -322,23 +315,24 @@
         $(this).addClass('disabled');
         $('.bwfm-progressbar, .progress-msg').fadeIn();
         $('.progress-msg span').html('Calculating products.....');
-        wpAjaxHelperRequest( 'my-handle', $payload )
-            .success( function( response ) {
+        wpAjaxHelperRequest('my-handle', $payload)
+            .success(function (response) {
                 var per_batch = response.per_batch ? parseInt(response.per_batch) : 50;
-                if(merchant !== 'google_merchant_promotion') {
+                if (merchant !== 'google_merchant_promotion') {
                     generate_feed(response.products, 0, 1, per_batch, response.total_batch);
-                }else {
+                } else {
                     generate_promotion_feed();
                 }
 
             })
-            .error( function( response ) {
+            .error(function (response) {
                 $('#publishing-action span.spinner').removeClass('is-active');
                 $('#publish').removeClass('disabled');
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                console.log('Uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on('click', '#publish', get_product_number);
 
 
@@ -351,10 +345,10 @@
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),
             localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
             ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
-            info : {
-                post_id     : $('#post_ID').val(),
-                title       : $('#title').val(),
-                desc        : $('#title').val(),
+            info: {
+                post_id: $('#post_ID').val(),
+                title: $('#title').val(),
+                desc: $('#title').val(),
             },
             products: {
                 products_scope: $('#rex_feed_products').find(':selected').val(),
@@ -362,24 +356,22 @@
                 cats: get_checkbox_val('cats'),
             },
 
-            feed_config : $('form').serialize(),
+            feed_config: $('form').serialize(),
         };
 
-
-
-        wpAjaxHelperRequest( 'generate-promotion-feed', $payload )
-            .success( function( response ) {
-                console.log( 'Woohoo!' );
+        wpAjaxHelperRequest('generate-promotion-feed', $payload)
+            .success(function (response) {
+                console.log('Woohoo!');
                 console.log(response);
                 $('#publish').removeClass('disabled');
-                $(document).off( 'click', '#publish', get_product_number );
-                $('#publish').trigger( 'click' );
+                $(document).off('click', '#publish', get_product_number);
+                $('#publish').trigger('click');
             })
-            .error( function( response ) {
+            .error(function (response) {
                 $('#publishing-action span.spinner').removeClass('is-active');
                 $('#publish').removeClass('disabled');
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                console.log('Uh, oh!');
+                console.log(response.statusText);
             });
     }
 
@@ -390,7 +382,7 @@
      * @param batch
      * @param per_batch
      */
-    function generate_feed( product, offset, batch, per_batch, total_batch ) {
+    function generate_feed(product, offset, batch, per_batch, total_batch) {
 
         per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
 
@@ -399,14 +391,14 @@
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),
             localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
             ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
-            info : {
-                post_id     : $('#post_ID').val(),
-                title       : $('#title').val(),
-                desc        : $('#title').val(),
-                offset      : offset,
-                batch       : batch,
-                total_batch : total_batch,
-                per_batch   : per_batch,
+            info: {
+                post_id: $('#post_ID').val(),
+                title: $('#title').val(),
+                desc: $('#title').val(),
+                offset: offset,
+                batch: batch,
+                total_batch: total_batch,
+                per_batch: per_batch,
             },
 
             products: {
@@ -415,43 +407,42 @@
                 cats: get_checkbox_val('cats'),
             },
 
-            feed_config : $('form').serialize(),
+            feed_config: $('form').serialize(),
         };
-
         var batches = total_batch;
-        console.log('Total Batch: '+ batches);
-        console.log('Total Product(s): '+ product);
-        console.log('Processing Batch Number: '+ batch);
-        console.log('Offset Number: '+ offset);
+        console.log('Total Batch: ' + batches);
+        console.log('Total Product(s): ' + product);
+        console.log('Processing Batch Number: ' + batch);
+        console.log('Offset Number: ' + offset);
 
-        var progressbar = 100/batches;
+        var progressbar = 100 / batches;
         progressWidth = progressWidth + progressbar;
-        if(progressWidth > 100) {
+        if (progressWidth > 100) {
             progressWidth = 100;
         }
 
         // feed_progressBar(progressWidth);
         if (progressWidth >= 100) {
             $('.progress-msg span').html('Generating feed. Please wait.....');
-        }else {
+        } else {
             $('.progress-msg span').html('Processing feed.....');
         }
 
-        wpAjaxHelperRequest( 'generate-feed', $payload )
-            .success( function( response ) {
-                console.log( 'Woohoo!' );
+        wpAjaxHelperRequest('generate-feed', $payload)
+            .success(function (response) {
+                console.log('Woohoo!');
                 console.log(response);
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-                if(response == 'false' || response == ''){
+                if (response == 'false' || response == '') {
                     generate_feed(product, offset, batch, per_batch, total_batch);
-                }else if (response.msg == 'finish') {
+                } else if (response.msg == 'finish') {
                     feed_progressBar(progressWidth);
                     $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
                     $('#publish').removeClass('disabled');
-                    $(document).off( 'click', '#publish', get_product_number );
-                    $('#publish').trigger( 'click' );
+                    $(document).off('click', '#publish', get_product_number);
+                    $('#publish').trigger('click');
                 } else {
-                    if ( batch < batches ) {
+                    if (batch < batches) {
                         offset = offset + per_batch;
                         batch++;
                         feed_progressBar(progressWidth);
@@ -459,7 +450,7 @@
                     }
                 }
             })
-            .error( function( response ) {
+            .error(function (response) {
                 $(".progressbar-bar").css('background', '#ff0000');
                 $(".progressbar-bar").css('border-color', '#ff0000');
                 $(".progress-msg span").css('color', '#ff0000');
@@ -468,8 +459,8 @@
                 $('#publishing-action span.spinner').removeClass('is-active');
                 $('#publish').removeClass('disabled');
                 $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                console.log('Uh, oh!');
+                console.log(response.statusText);
             });
     }
 
@@ -477,10 +468,9 @@
 
         $('.progressbar-bar').animate({
             width: Math.ceil(width) + '%'
-        },1000);
-        $('.progressbar-bar-percent').html(Math.ceil(width)+ '%');
+        }, 1000);
+        $('.progressbar-bar-percent').html(Math.ceil(width) + '%');
     }
-
 
     /*
      * google merchant settings
@@ -489,29 +479,27 @@
         event.preventDefault();
         $('.rex-loading-spinner').css('display', 'flex');
         var payload = {
-            client_id : $(this).find('#client_id').val(),
-            client_secret : $(this).find('#client_secret').val(),
-            merchant_id : $(this).find('#merchant_id').val(),
+            client_id: $(this).find('#client_id').val(),
+            client_secret: $(this).find('#client_secret').val(),
+            merchant_id: $(this).find('#merchant_id').val(),
             merchant_settings: true
         };
-        wpAjaxHelperRequest( 'google-merchant-settings', payload )
-            .success( function( response ) {
+        wpAjaxHelperRequest('google-merchant-settings', payload)
+            .success(function (response) {
                 console.log('Woohoo!');
                 $('.merchant-action').html(response.html);
                 $('.rex-loading-spinner').css('display', 'none');
             })
-            .error( function( response ) {
-                console.log( 'Uh, oh!' );
+            .error(function (response) {
+                console.log('Uh, oh!');
                 $('.rex-loading-spinner').css('display', 'none');
-                console.log( response.statusText );
+                console.log(response.statusText);
             });
 
 
     }
+
     $(document).on('submit', '#rex-google-merchant', save_google_merchant_settings);
-
-
-
 
     /*
      * Send feed to Google
@@ -520,21 +508,26 @@
     function send_to_google(event) {
         event.preventDefault();
         $('.rex-loading-spinner').css('display', 'flex');
+        var selected = [];
+        $('.cmb2-id-rex-feed-google-destination input:checked').each(function() {
+            selected.push($(this).val());
+        });
         var payload = {
-            feed_id     : $('#post_ID').val(),
-            schedule    : $('#rex_feed_google_schedule option:selected').val(),
-            hour        : $('#rex_feed_google_schedule_time option:selected').val(),
-            country     : $('#rex_feed_google_target_country').val(),
-            language    : $('#rex_feed_google_target_language').val()
+            feed_id: $('#post_ID').val(),
+            schedule: $('#rex_feed_google_schedule option:selected').val(),
+            destination : selected,
+            hour: $('#rex_feed_google_schedule_time option:selected').val(),
+            country: $('#rex_feed_google_target_country').val(),
+            language: $('#rex_feed_google_target_language').val()
         };
 
         if ($('#rex_feed_google_schedule option:selected').val() == 'monthly') {
             payload['month'] = $('#rex_feed_google_schedule_month option:selected').val();
             payload['day'] = '';
-        }else if ($('#rex_feed_google_schedule option:selected').val() == 'weekly') {
+        } else if ($('#rex_feed_google_schedule option:selected').val() == 'weekly') {
             payload['day'] = $('#rex_feed_google_schedule_week_day option:selected').val();
             payload['month'] = '';
-        }else {
+        } else {
             payload['month'] = '';
             payload['day'] = '';
         }
@@ -545,9 +538,9 @@
         $('.rex-google-status').addClass('info');
         $('.rex-google-status').show();
         $('.rex-google-status').html('<p>Feed is sending. Please wait...</p>');
-        wpAjaxHelperRequest( 'send-to-google', payload )
-            .success( function( response ) {
-                if(response.success) {
+        wpAjaxHelperRequest('send-to-google', payload)
+            .success(function (response) {
+                if (response.success) {
                     $('.rex-google-status').removeClass('info');
                     $('.rex-google-status').removeClass('success');
                     $('.rex-google-status').removeClass('warning');
@@ -558,7 +551,7 @@
                     console.log('Woohoo!');
                     console.log(response);
                     location.reload();
-                }else {
+                } else {
                     $('.rex-google-status').removeClass('info');
                     $('.rex-google-status').removeClass('success');
                     $('.rex-google-status').removeClass('warning');
@@ -569,7 +562,7 @@
                     console.log(response)
                 }
             })
-            .error( function( response ) {
+            .error(function (response) {
                 $('.rex-google-status').removeClass('info');
                 $('.rex-google-status').removeClass('success');
                 $('.rex-google-status').removeClass('warning');
@@ -577,11 +570,12 @@
                 $('.rex-google-status').addClass('error');
                 $('.rex-google-status').show();
                 $('.rex-google-status').html('<p>Something wrong happened. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>');
-                console.log( 'Uh, oh!' );
-                console.log( response );
-                console.log( response.statusText );
+                console.log('Uh, oh!');
+                console.log(response);
+                console.log(response.statusText);
             });
     }
+
     $(document).on('click', '#send-to-google', send_to_google);
 
 
@@ -590,6 +584,7 @@
         $(this).closest('form').find("input[type=text]").not(':disabled').val("");
         $(this).closest('form').find("button[type=submit]").prop('disabled', false);
     }
+
     $(document).on('click', '.rex-reset-btn', reset_form);
 
 
@@ -602,30 +597,31 @@
         var key = $this.attr('data-value');
         var name = $this.attr('data-name');
         var isfree = $this.attr('data-is-free');
-        if($this.is(":checked")) {
+        if ($this.is(":checked")) {
             payload[key] = {
-                status : 1,
-                name : name,
+                status: 1,
+                name: name,
                 free: isfree,
             };
-        }else {
+        } else {
             payload[key] = {
-                status : 0,
-                name : name,
+                status: 0,
+                name: name,
                 free: isfree,
             };
         }
 
 
-        wpAjaxHelperRequest( 'rex-product-change-merchant-status', payload )
-            .success( function( response ) {
+        wpAjaxHelperRequest('rex-product-change-merchant-status', payload)
+            .success(function (response) {
                 console.log('woohoo!');
             })
-            .error( function( response ) {
-                console.log( 'uh, oh!' );
-                console.log( response.statusText );
+            .error(function (response) {
+                console.log('uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on('change', '.merchant-change', product_feed_change_merchant_status);
 
 
@@ -639,25 +635,26 @@
         $form.find("button.save-batch span").text("");
         $form.find("button.save-batch i").show();
         var per_batch = $form.find('#wpfm_product_per_batch').val();
-        wpAjaxHelperRequest( 'rex-product-update-batch-size', per_batch )
-            .success( function( response ) {
+        wpAjaxHelperRequest('rex-product-update-batch-size', per_batch)
+            .success(function (response) {
                 $form.find("button.save-batch i").hide();
                 $form.find("button.save-batch span").text("saved");
-                setTimeout(function(){
+                setTimeout(function () {
                     $form.find("button.save-batch span").text("save");
                 }, 1000);
                 console.log('woohoo!');
             })
-            .error( function( response ) {
+            .error(function (response) {
                 $form.find("button.save-batch i").hide();
                 $form.find("button.save-batch span").text("failed");
-                setTimeout(function(){
+                setTimeout(function () {
                     $form.find("button.save-batch span").text("save");
                 }, 1000);
-                console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                console.log('uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on("submit", "#wpfm-per-batch", update_per_batch);
 
 
@@ -669,28 +666,29 @@
         e.preventDefault();
         var payload = {};
         $(this).find("i").show();
-        wpAjaxHelperRequest( 'rex-product-clear-batch', payload )
-            .success( function( response ) {
+        wpAjaxHelperRequest('rex-product-clear-batch', payload)
+            .success(function (response) {
                 $("#wpfm-clear-batch").find("i").hide();
             })
-            .error( function( response ) {
-                console.log( 'uh, oh!' );
-                console.log( response.statusText );
+            .error(function (response) {
+                console.log('uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on("click", "#wpfm-clear-batch", wpfm_clear_batch);
-    
-    
+
+
     //----------setting tab-------
-    $(document).ready(function(){
-        $('ul.rex-settings-tabs li').click(function(){
+    $(document).ready(function () {
+        $('ul.rex-settings-tabs li').click(function () {
             var tab_id = $(this).attr('data-tab');
 
             $('ul.rex-settings-tabs li').removeClass('active');
             $('.rex-settings-tab-content .tab-content').removeClass('active');
 
             $(this).addClass('active');
-            $("#"+tab_id).addClass('active');
+            $("#" + tab_id).addClass('active');
         });
 
     });
@@ -704,29 +702,30 @@
         var $form = $(this);
         var log_key = $form.find('#wpfm-error-log option:selected').val();
         var payload = {
-            'logKey' : log_key
+            'logKey': log_key
         };
-        if(!log_key) {
+        if (!log_key) {
             $("#wpfm-log-copy").hide();
             $('#log-viewer pre').html('');
-        }else {
-            wpAjaxHelperRequest( 'rex-product-feed-show-log', payload )
-                .success( function( response ) {
+        } else {
+            wpAjaxHelperRequest('rex-product-feed-show-log', payload)
+                .success(function (response) {
                     console.log('woohoo!');
                     $('#log-viewer pre').html(response.content);
-                    if(log_key) {
+                    if (log_key) {
                         $("#wpfm-log-copy").show();
                     }
-                    $('#log-download').attr('href',response.file_url);
+                    $('#log-download').attr('href', response.file_url);
                 })
-                .error( function( response ) {
+                .error(function (response) {
 
-                    console.log( 'uh, oh!' );
-                    console.log( response.statusText );
+                    console.log('uh, oh!');
+                    console.log(response.statusText);
                 });
         }
 
     }
+
     $(document).on("submit", "#wpfm-error-log-form", show_wpfm_error_log);
 
 
@@ -738,14 +737,13 @@
     function wpfm_copy_log(event) {
         event.preventDefault();
         var elm = document.getElementById("wpfm-log-content");
-        if(document.body.createTextRange) {
+        if (document.body.createTextRange) {
             var range = document.body.createTextRange();
             range.moveToElementText(elm);
             range.select();
             document.execCommand("Copy");
             alert("Copied div content to clipboard");
-        }
-        else if(window.getSelection) {
+        } else if (window.getSelection) {
             var selection = window.getSelection();
             var range = document.createRange();
             range.selectNodeContents(elm);
@@ -755,6 +753,7 @@
             alert("Copied div content to clipboard");
         }
     }
+
     $(document).on("click", "#wpfm-log-copy", wpfm_copy_log);
 
 
@@ -765,28 +764,29 @@
     function enable_fb_pixel(event) {
         event.preventDefault();
         var payload = {};
-        if($(this).is(":checked")) {
+        if ($(this).is(":checked")) {
             payload = {
-                wpfm_fb_pixel_enabled : 'yes',
+                wpfm_fb_pixel_enabled: 'yes',
             };
-        }else {
+        } else {
             payload = {
-                wpfm_fb_pixel_enabled : 'no',
+                wpfm_fb_pixel_enabled: 'no',
             };
         }
-        wpAjaxHelperRequest( 'wpfm-enable-fb-pixel', payload )
-            .success( function( response ) {
-                if(response.data == 'enabled') {
+        wpAjaxHelperRequest('wpfm-enable-fb-pixel', payload)
+            .success(function (response) {
+                if (response.data == 'enabled') {
                     $('.wpfm-fb-pixel-field').removeClass('is-hidden');
-                }else {
+                } else {
                     $('.wpfm-fb-pixel-field').addClass('is-hidden');
                 }
             })
-            .error( function( response ) {
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+            .error(function (response) {
+                console.log('Uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on('change', '#wpfm_fb_pixel', enable_fb_pixel);
 
 
@@ -800,25 +800,26 @@
         $form.find("button.save-fb-pixel span").text("");
         $form.find("button.save-fb-pixel i").show();
         var value = $form.find('#wpfm_fb_pixel').val();
-        wpAjaxHelperRequest( 'save-fb-pixel-value', value )
-            .success( function( response ) {
+        wpAjaxHelperRequest('save-fb-pixel-value', value)
+            .success(function (response) {
                 $form.find("button.save-fb-pixel i").hide();
                 $form.find("button.save-fb-pixel span").text("saved");
-                setTimeout(function(){
+                setTimeout(function () {
                     $form.find("button.save-fb-pixel span").text("save");
                 }, 1000);
                 console.log('woohoo!');
             })
-            .error( function( response ) {
+            .error(function (response) {
                 $form.find("button.ssave-fb-pixel i").hide();
                 $form.find("button.save-fb-pixel span").text("failed");
-                setTimeout(function(){
+                setTimeout(function () {
                     $form.find("button.save-fb-pixel span").text("save");
                 }, 1000);
-                console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                console.log('uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on("submit", "#wpfm-fb-pixel", save_fb_pixel_id);
 
 
@@ -827,24 +828,25 @@
      */
     function wpfm_enable_log() {
         var payload = {};
-        if($(this).is(":checked")) {
+        if ($(this).is(":checked")) {
             payload = {
-                wpfm_enable_log : 'yes',
+                wpfm_enable_log: 'yes',
             };
-        }else {
+        } else {
             payload = {
-                wpfm_enable_log : 'no',
+                wpfm_enable_log: 'no',
             };
         }
-        wpAjaxHelperRequest( 'rex-enable-log', payload )
-            .success( function( response ) {
+        wpAjaxHelperRequest('rex-enable-log', payload)
+            .success(function (response) {
                 console.log('Woohoo!');
             })
-            .error( function( response ) {
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+            .error(function (response) {
+                console.log('Uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on('change', '#wpfm_enable_log', wpfm_enable_log);
 
 
@@ -859,27 +861,28 @@
         $form.find("button.save-transient-button i").show();
         var value = $form.find('#wpfm_cache_ttl').val();
         var payload = {
-            value : value,
+            value: value,
         };
-        wpAjaxHelperRequest( 'save-wpfm-transient', payload )
-            .success( function( response ) {
+        wpAjaxHelperRequest('save-wpfm-transient', payload)
+            .success(function (response) {
                 $form.find("button.save-transient-button i").hide();
                 $form.find("button.save-transient-button span").text("saved");
-                setTimeout(function(){
+                setTimeout(function () {
                     $form.find("button.save-transient-button span").text("save");
                 }, 1000);
                 console.log('woohoo!');
             })
-            .error( function( response ) {
+            .error(function (response) {
                 $form.find("button.ssave-fb-pixel i").hide();
                 $form.find("button.save-fb-pixel span").text("failed");
-                setTimeout(function(){
+                setTimeout(function () {
                     $form.find("button.save-fb-pixel span").text("save");
                 }, 1000);
-                console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                console.log('uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on("submit", "#wpfm-transient-settings", save_wpfm_transient);
 
 
@@ -893,19 +896,19 @@
         var payload = {};
         var $el = $(this);
         $el.find("i").show();
-        wpAjaxHelperRequest( 'purge-wpfm-transient-cache', payload )
-            .success( function( response ) {
+        wpAjaxHelperRequest('purge-wpfm-transient-cache', payload)
+            .success(function (response) {
                 $el.find("i").hide();
                 console.log('woohoo!');
             })
-            .error( function( response ) {
+            .error(function (response) {
                 $el.find("i").hide();
-                console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                console.log('uh, oh!');
+                console.log(response.statusText);
             });
     }
-    $(document).on("click", "#wpfm-purge-cache", purge_transient_cache);
 
+    $(document).on("click", "#wpfm-purge-cache", purge_transient_cache);
 
 
     /**
@@ -913,57 +916,57 @@
      */
     function allow_private() {
         var payload = {};
-        if($(this).is(":checked")) {
+        if ($(this).is(":checked")) {
             payload = {
-                allow_private : 'yes',
+                allow_private: 'yes',
             };
-        }else {
+        } else {
             payload = {
-                allow_private : 'no',
+                allow_private: 'no',
             };
         }
-        wpAjaxHelperRequest( 'allow-private-products', payload )
-            .success( function( response ) {
+        wpAjaxHelperRequest('allow-private-products', payload)
+            .success(function (response) {
                 console.log('Woohoo!');
             })
-            .error( function( response ) {
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+            .error(function (response) {
+                console.log('Uh, oh!');
+                console.log(response.statusText);
             });
     }
+
     $(document).on('change', '#rex-product-allow-private', allow_private);
 
-})( jQuery );
+})(jQuery);
 
 
-
-window.WPFM_Ajaxified_Product_Taxonomies = (function ( window, document, $, undefined ) {
+window.WPFM_Ajaxified_Product_Taxonomies = (function (window, document, $, undefined) {
     'use strict';
 
     var app = {};
 
-    app.cache = function(){
-        app.$metabox = $( '#rex_feed_products' );
-        app.$select_cat = app.$metabox.find( '#rex_feed_products' );
+    app.cache = function () {
+        app.$metabox = $('#rex_feed_products');
+        app.$select_cat = app.$metabox.find('#rex_feed_products');
     };
 
     app.init = function () {
         app.cache();
-        app.$select_cat.on( 'change', app.change_color);
+        app.$select_cat.on('change', app.change_color);
     };
 
-    app.change_color = function( evt ){
-        var that = $( this ),
+    app.change_color = function (evt) {
+        var that = $(this),
             new_val = that.val();
 
-        if(new_val === 'all') {
+        if (new_val === 'all') {
             $('.cmb2-id-rex-feed-config-filter-title').hide();
             $('#rex-feed-product-taxonomies').hide();
             $('.cmb2-id-rex-feed-tags-wrapper').hide();
-        }else if (new_val === 'filter') {
+        } else if (new_val === 'filter') {
             $('.cmb2-id-rex-feed-config-filter-title').show();
             $('#rex-feed-product-taxonomies').hide();
-        }else if(new_val === 'product_cat' || new_val === 'product_tag') {
+        } else if (new_val === 'product_cat' || new_val === 'product_tag') {
             $('.cmb2-id-rex-feed-config-filter-title').hide();
             $('#rex-feed-product-taxonomies').show();
         }
@@ -971,33 +974,33 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function ( window, document, $, unde
         $(".rex-feed-product-taxonomies-spinner").show();
 
 
-        if(new_val === 'product_cat' || new_val === 'product_tag') {
+        if (new_val === 'product_cat' || new_val === 'product_tag') {
             var payload = {
                 val: new_val,
-                postID : $('#post_ID').val()
+                postID: $('#post_ID').val()
             };
             var l10n = window.cmb2_l10;
-            wpAjaxHelperRequest( 'fetch-product-taxonomies', payload )
-                .success( function( response ) {
+            wpAjaxHelperRequest('fetch-product-taxonomies', payload)
+                .success(function (response) {
                     console.log('Woohoo!');
-                    if(response.data.hasContent) {
+                    if (response.data.hasContent) {
                         $("#rex-feed-product-taxonomies-contents").html(response.data.html);
-                        $( '<p><span class="button-secondary cmb-multicheck-toggle">' + l10n.strings.check_toggle + '</span></p>' ).insertBefore( '.cmb2-checkbox-list:not(.no-select-all)' );
+                        $('<p><span class="button-secondary cmb-multicheck-toggle">' + l10n.strings.check_toggle + '</span></p>').insertBefore('#rex-feed-product-taxonomies-contents .cmb2-checkbox-list:not(.no-select-all)');
                         l10n.fields[response.data.hash] = response.data.js_data;
                         $(".rex-feed-product-taxonomies-spinner").hide();
                     }
                 })
-                .error( function( response ) {
-                    console.log( 'Uh, oh!' );
-                    console.log( response.statusText );
+                .error(function (response) {
+                    console.log('Uh, oh!');
+                    console.log(response.statusText);
                 });
         }
 
 
     };
 
-    $( document ).ready( app.init );
+    $(document).ready(app.init);
 
     return app;
 
-})( window, document, jQuery );
+})(window, document, jQuery);

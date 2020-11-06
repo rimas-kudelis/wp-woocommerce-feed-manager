@@ -25,7 +25,6 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
      * @author
      **/
     public function make_feed() {
-
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
         $this->feed = $this->returnFinalProduct();
@@ -115,11 +114,7 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
                                 }else {
                                     $item->$key($value); // invoke $key as method of $item object.
                                 }
-
                             }
-//                            foreach ($atts as $key => $value) {
-//                                $item->$key($value); // invoke $key as method of $item object.
-//                            }
                         }
                     }
                 }

@@ -299,7 +299,7 @@ class Rex_Product_Metabox {
 
         /**
          * result of bad planning
-               */
+         */
 //        $merchant_lists['google'] = 'Google Shopping';
 //        $merchant_lists['google_Ad']= 'Google AdWords';
 //        if(array_key_exists('drm', $merchant_lists))
@@ -336,151 +336,8 @@ class Rex_Product_Metabox {
                 'xml'          => __( 'XML', 'rex-product-feed' ),
                 'text'         => __( 'TEXT', 'rex-product-feed' ),
                 'csv'          => __( 'CSV', 'rex-product-feed' ),
-//                'tsv'          => __( 'TSV', 'rex-product-feed' ),
+                'tsv'          => __( 'TSV', 'rex-product-feed' ),
                 'json'         => __( 'JSON (Only for Zalando)', 'rex-product-feed' ),
-            ),
-            'attributes' => array(
-                'data-conditional-id'    => $this->prefix . 'merchant',
-                'data-conditional-value' => wp_json_encode(apply_filters('wpfm_merchant_fixed_format', array(
-                    'custom',
-                    'facebook',
-                    'nextag',
-                    'pricegrabber',
-                    'ebay_mip',
-                    'amazon_seller',
-                    'bing',
-                    'kelkoo',
-                    'amazon',
-                    'become' ,
-                    'shopzilla',
-                    'shopping',
-                    'google_Ad',
-                    'adroll',
-                    'idealo',
-                    'rakuten',
-                    'pinterest',
-                    'google_dsa',
-                    'fashionchick',
-                    'google_local_products_inventory',
-                    'prisjkat',
-                    'crowdfox',
-                    'powerreviews',
-                    'trovaprezzi',
-                    'zbozi',
-                    'zalando',
-                    'liveintent',
-                    'pixmania',
-                    'coolblue',
-                    'preis',
-                    'google_merchant_promotion',
-                    'walmart',
-                    'snapchat',
-                    'verizon',
-                    'target',
-                    'pepperjam',
-                    'guenstiger',
-                    'hood',
-                    'livingo',
-                    'jet',
-                    'bonanza',
-                    'adcell',
-                    'stylefruits',
-                    'medizinfuchs',
-                    'moebel',
-                    'restposten',
-                    'sparmedo',
-                    'whiskymarketplace',
-                    'newegg',
-                    'bikeexchange',
-                    'cenowarka',
-                    'cezigue',
-                    'check24',
-                    'converto',
-                    'coolshop',
-                    'commerce_connector',
-                    'everysize',
-                    'encuentraprecios',
-                    'geizhals',
-                    'geizkragen',
-                    'go_banana',
-                    'goed_geplaatst',
-                    'grosshandel',
-                    'hardware',
-                    'hatch',
-                    'hintaopas',
-                    'fyndiq',
-                    'fasha',
-                    'realde',
-                    'hintaseuranta',
-                    'family_blend',
-                    'hitmeister',
-                    'lazada',
-                    'get_price',
-                    'home_tiger',
-                    'jurkjes',
-                    'kiesproduct',
-                    'kompario',
-                    'kwanko',
-                    'ledenicheur',
-                    'les_bonnes_bouilles',
-                    'lions_home',
-                    'locamo',
-                    'indeed',
-                    'incurvy',
-                    'jobbird',
-                    'job_board_io',
-                    'joblift',
-                    'kuantokusta',
-                    'kauftipp',
-                    'vivino',
-                    'amazon_seller_ad',
-                    'rakuten_advertising',
-                    'facebook_dynamic_ads',
-                    'pricefalls',
-                    'google_express',
-                    'google_hotel_ads',
-                    'facebook_dynamic_ads_travel',
-                    'logicsale',
-                    'google_manufacturer_center',
-                    'pronto',
-                    'awin',
-                    'google_dynamic_display_ads',
-                    'google_shopping_actions',
-                    'clubic',
-                    'adcrowd',
-                    'criteo',
-                    'shopalike',
-                    'compartner',
-                    '123i',
-                    'adtraction',
-                    'admitad',
-                    'bloomville',
-                    'bipp',
-                    'datatrics',
-                    'deltaprojects',
-                    'drezzy',
-                    'domodi',
-                    'doofinder',
-                    'homebook.pl',
-                    'homedeco',
-                    'imovelweb',
-                    'glami',
-                    'fashiola',
-                    'emarts',
-                    'epoq',
-                    'grupo_zap',
-                    'emag',
-                    'lyst',
-                    'ladenzeile',
-                    'listupp',
-                    'hertie',
-                    'pricepanda',
-                    'eytsy',
-                    'okazii',
-                    'webgains',
-                    'vidaXL',
-                    'mydeal',
-                ))),
             ),
         ) );
 
@@ -555,7 +412,7 @@ class Rex_Product_Metabox {
         echo '</div>';
     }
 
-    
+
 
     /**
      * Display Feed Filter Metabox.
@@ -567,8 +424,6 @@ class Rex_Product_Metabox {
         echo '<div id="rex-feed-product-tags" class="rex-feed-product-tags">';
         echo '</div>';
     }
-
-
 
     /**
      * Defines Metaboxes for Feed
@@ -601,8 +456,6 @@ class Rex_Product_Metabox {
         ) );
 
     }
-
-
 
     private function upgrade_notice(){
 
@@ -649,7 +502,6 @@ class Rex_Product_Metabox {
      */
     public function after_field_xml_file_cb($field_args, $field){
         $feed_url = get_post_meta( $field->object_id, $this->prefix . 'xml_file', true );
-
         // Only show feed url not empty.
         if ( strlen($feed_url) > 0 ){
             $url = esc_url( get_post_meta( $field->object_id, 'rex_feed_xml_file', true ) );
@@ -678,7 +530,18 @@ class Rex_Product_Metabox {
             'priority'      => 'low',
             'show_on_cb'    =>  array($this, 'cmb_only_show_google'),
         ) );
+        $box->add_field( array(
+            'name'    => __('Select Destination', 'rex-product' ),
+            'id'      => $this->prefix . 'google_destination',
+            'type'    => 'multicheck',
+            'options' => array(
+                'Display ads' => 'Display ads',
+                'Shopping ads' => 'Shopping ads',
+                'Shopping Actions' => 'Shopping Actions',
+            ),
 
+            'before_row'    => array($this, 'google_merchant_desc'),
+        ) );
         $box->add_field( array(
             'name'    => __('Target Country', 'rex-product-feed' ),
             'id'      => $this->prefix . 'google_target_country',
@@ -687,7 +550,6 @@ class Rex_Product_Metabox {
             'attributes'  => array(
                 'required'    => 'required',
             ),
-            'before_row'    => array($this, 'google_merchant_desc'),
         ) );
 
         $box->add_field( array(
@@ -825,6 +687,9 @@ class Rex_Product_Metabox {
             $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.csv";
         }elseif ($format == 'json'){
             $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.json";
+        }
+        elseif ($format == 'tsv'){
+            $path  = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.tsv";
         }
         return esc_url( $path );
     }

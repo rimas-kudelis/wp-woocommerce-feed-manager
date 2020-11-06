@@ -589,7 +589,7 @@ class Rex_Product_Data_Retriever {
             case 'description':
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->get_parent_id() );
-                    if ( is_object( $_product ) ) {
+                    if ( ! is_object( $_product ) ) {
                         $_product_desc =  $this->remove_short_codes($_product->get_description());
                         return $_product_desc;
                     }
@@ -602,9 +602,7 @@ class Rex_Product_Data_Retriever {
             case 'short_description':
                 if(($this->is_children())):
                     $_product = wc_get_product( $this->product->get_parent_id() );
-                    if ( is_object( $_product ) ) {
-                        $_product_desc = $this->remove_short_codes($_product->get_short_description());
-                    }
+                    $_product_desc = $this->remove_short_codes($_product->get_short_description());
                     return $_product_desc;
                 else:
                     return $this->remove_short_codes($this->product->get_short_description()) ;
@@ -628,6 +626,9 @@ class Rex_Product_Data_Retriever {
 
             case 'yoast_primary_cats_pipe':
                 return $this->get_yoast_product_cats_with_seperator('', ' | ', ''); break;
+
+            case 'yoast_primary_cats_comma':
+                return $this->get_yoast_product_cats_with_seperator('', ' , ', ''); break;
 
             case 'product_subcategory':
                 return $this->get_product_subcategory(); break;
@@ -1487,9 +1488,6 @@ class Rex_Product_Data_Retriever {
     }
 
 
-
-
-
     /**
      * Get grouped price
      *
@@ -1687,8 +1685,6 @@ class Rex_Product_Data_Retriever {
         return strip_shortcodes($content);
     }
 
-
-
     /**
      * Removes invalid XML
      *
@@ -1725,9 +1721,6 @@ class Rex_Product_Data_Retriever {
     }
 
 
-
-
-
     /**
      * calculate the value of identifier_exists
      *
@@ -1760,7 +1753,6 @@ class Rex_Product_Data_Retriever {
         return $identifier_exists;
     }
 
-
     /**
      * Returns the product shipping cost.
      *
@@ -1770,7 +1762,6 @@ class Rex_Product_Data_Retriever {
 
         return '';
     }
-
 
     /**
      * Check if this product is child product or not
@@ -1782,15 +1773,10 @@ class Rex_Product_Data_Retriever {
         return $this->product->get_parent_id() ? true: false;
     }
 
-
-
     function __call($name, $arguments)
     {
         // TODO: Implement __call() method.
     }
-
-
-
 
     public function get_args($raw_args = false) {
         if(!$raw_args)
@@ -1845,8 +1831,6 @@ class Rex_Product_Data_Retriever {
 
         return $args;
     }
-
-
 
     /**
      * @param string $string

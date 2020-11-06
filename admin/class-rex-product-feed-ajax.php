@@ -102,9 +102,8 @@ class Rex_Product_Feed_Ajax {
             ->with_validation( $validations );
 
         wp_ajax_helper()->handle( 'merchant-change' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ))
             ->with_validation( $validations );
-
 
         /**
          * product taxonomies ajax
@@ -181,32 +180,32 @@ class Rex_Product_Feed_Ajax {
 
 
         /**
-        * update batch
-        */
+         * update batch
+         */
         wp_ajax_helper()->handle( 'rex-product-update-batch-size' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'update_batch_size' ) )
             ->with_validation( $validations );
 
 
         /**
-        * clear batch
-        */
+         * clear batch
+         */
         wp_ajax_helper()->handle( 'rex-product-clear-batch' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'clear_batch' ) )
             ->with_validation( $validations );
 
 
         /**
-        * Show log
-        */
+         * Show log
+         */
         wp_ajax_helper()->handle( 'rex-product-feed-show-log' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_wpfm_log' ) )
             ->with_validation( $validations );
 
 
         /**
-        * Show black friday notices
-        */
+         * Show black friday notices
+         */
         wp_ajax_helper()->handle( 'wpfm_bf_notice_dismiss' )
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_bf_notice_dismiss' ) )
             ->with_validation( $validations );
@@ -303,6 +302,7 @@ class Rex_Product_Feed_Ajax {
             $feed_rules = false;
         }
         $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
+        $feed_format = self::get_merchant_feed_format($merchant['merchant']);
         ob_start();
         if( in_array($merchant['merchant'], apply_filters('wpfm_has_custom_feed_config', array()))) {
             do_action('wpfm_custom_metabox_display_'. $merchant['merchant'], $merchant['merchant'], $feed_template);
@@ -312,10 +312,106 @@ class Rex_Product_Feed_Ajax {
         $result = ob_get_contents();
         ob_end_clean();
         ob_flush();
+        $selected_format = get_post_meta($merchant['post_id'], 'rex_feed_feed_format', true);
+        if(!$selected_format) {
+            $selected_format = $feed_format[0];
+        }
         return array(
-            'success' => true,
-            'html' => $result
+            'success'       => true,
+            'html'          => $result,
+            'feed_format'   => $feed_format,
+            'select'        => $selected_format
         );
+    }
+
+    /**
+     * return feed format based on
+     * merchant type
+     *
+     * @param $merchant
+     * @return array
+     * @since 5.42
+     */
+    public static function get_merchant_feed_format($merchant) {
+
+        $google_format = array(
+            'google',
+            'ciao',
+            'liveintent',
+            'google_shopping_actions',
+            'google_express',
+            'criteo',
+            'compartner',
+            'doofinder',
+            'emarts',
+            'epoq',
+        );
+        $facebook_format = array(
+            'facebook',
+            'ebay_mip',
+            'leguide',
+        );
+        $amazon_format = array(
+            'amazon_seller_bed_amp',
+            'amazon_seller',
+            'amazon',
+        );
+
+        $snapchat_format = array(
+            'snapchat',
+
+        );
+        $printerst_format = array(
+            'pinterest',
+            'rakuten',
+        );
+        $Ebay_format = array(
+            'ebay_seller',
+            'lazada',
+            'bol',
+            'fruugo',
+        );
+        $instagram_format = array(
+            'instagram',
+
+        );$trovaprezzi_format = array(
+            'trovaprezzi',
+        );
+        $zalando_format = array(
+            'zalando',
+        );
+        $wish_format = array(
+            'wish',
+        );
+        $connexity_format = array(
+            'connexity',
+        );
+
+        if (in_array( $merchant, $google_format )) {
+            return array('xml');
+        }
+        elseif (in_array( $merchant, $facebook_format )) {
+            return array('xml', 'csv');
+        }elseif (in_array( $merchant, $amazon_format )){
+            return array('tsv');
+        }elseif (in_array( $merchant, $snapchat_format )){
+            return array('csv');
+        }elseif (in_array( $merchant, $printerst_format )){
+            return array('csv','tsv');
+        }elseif (in_array( $merchant, $Ebay_format )){
+            return array('csv');
+        }elseif (in_array( $merchant, $instagram_format )){
+            return array('xml','csv','tsv');
+        }elseif (in_array( $merchant, $trovaprezzi_format )){
+            return array('csv');
+        }elseif (in_array( $merchant, $zalando_format )){
+            return array('json');
+        }elseif (in_array( $merchant, $wish_format )){
+            return array('text');
+        }elseif (in_array( $merchant, $connexity_format )){
+            return array('csv','text');
+        }
+        return array('xml', 'csv', 'text', 'tsv', 'json');
     }
 
 
@@ -413,12 +509,12 @@ class Rex_Product_Feed_Ajax {
         $description = $field->args( 'description' );
         ?>
         <div class="custom-field-row <?php echo $classes; ?>">
-<!--            --><?php //echo sprintf(
-//                "\t" . '<li> <label for="%s"> <input%s/> <span></span> %s </label></li>' . "\n",
-//                $a['id'],
-//                $this->concat_attrs( $a, array( 'label' ) ),
-//                $a['label']
-//            )?>
+            <!--            --><?php //echo sprintf(
+            //                "\t" . '<li> <label for="%s"> <input%s/> <span></span> %s </label></li>' . "\n",
+            //                $a['id'],
+            //                $this->concat_attrs( $a, array( 'label' ) ),
+            //                $a['label']
+            //            )?>
         </div>
         <?php
     }
@@ -515,9 +611,6 @@ class Rex_Product_Feed_Ajax {
     }
 
 
-
-
-
     /**
      * Change merchant status
      * @param $payload
@@ -541,7 +634,6 @@ class Rex_Product_Feed_Ajax {
      * @return array
      */
     public static function send_to_google($payload) {
-
         $feed_id = $payload['feed_id'];
         $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
         if ($rex_google_merchant->is_authenticate()) {
@@ -571,7 +663,9 @@ class Rex_Product_Feed_Ajax {
 
             $target->setLanguage($payload['language']);
             $target->setCountry($payload['country']);
-            $target->setIncludedDestinations(array('Shopping'));
+            if(count($payload['destination'])){
+                $target->setIncludedDestinations($payload['destination']);
+            }
 
             $datafeed->setName($name);
             $datafeed->setContentType('products');

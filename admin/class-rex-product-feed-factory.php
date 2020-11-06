@@ -152,7 +152,6 @@ class Rex_Product_Feed_Factory {
                 'google_express',
                 'google_hotel_ads',
                 'facebook_dynamic_ads_travel',
-                'google_shopping_actions',
                 'clubic',
                 'shopalike',
                 'adtraction',
@@ -179,7 +178,6 @@ class Rex_Product_Feed_Factory {
                 'mydeal',
             )
         );
-
         self::$google_format = array(
             'google',
             'ciao',
@@ -193,9 +191,9 @@ class Rex_Product_Feed_Factory {
             'emarts',
             'epoq',
         );
-
         self::$facebook_format = array(
             'instagram',
+            'facebook',
             'snapchat'
         );
 
@@ -214,7 +212,6 @@ class Rex_Product_Feed_Factory {
         else{
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
         }
-
 
         if( $config == '' || ! class_exists( $className ) ) {
             if(is_wpfm_logging_enabled()) {
