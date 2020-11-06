@@ -266,5 +266,4 @@ class Rex_Product_Feed {
     public function get_version() {
         return $this->version;
     }
-
 }
