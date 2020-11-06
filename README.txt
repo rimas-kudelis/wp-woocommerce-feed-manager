@@ -3,9 +3,9 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart
 Requires at least: 4.7
-Tested up to:  5.5.1
+Tested up to:  5.5.3
 Requires PHP: 7.0
-Stable tag: 5.42
+Stable tag: 6.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -544,6 +544,13 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 6.0.0 (2020-11-06) =
+* Added: TSV file format for Amazon Bed&Amp
+* Added: Yoast category path with comma separator
+* Enhanced: Improve Google Auto-sync destination issue
+* Fixed: Switch feed type on merchant switch
+* Compatibility Checked : WordPress 5.5.3
 
 = 5.42 (2020-10-22) =
 * Added: External product support
