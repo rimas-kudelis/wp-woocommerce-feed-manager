@@ -546,7 +546,7 @@ WP Dashboard > Product Feed > Upgrade.
 == Changelog ==
 
 = 6.0.2 (2020-11-10) =
-* Fixed: missing description attibute value
+* Fixed: missing description attribute value
 
 = 6.0.1 (2020-11-06) =
 * Fixed: Fix Guzzle compatibility
