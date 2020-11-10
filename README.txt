@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.3
 Requires PHP: 7.0
-Stable tag: 6.0.1
+Stable tag: 6.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -545,8 +545,11 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 6.0.2 (2020-11-10) =
+* Fixed: missing description attibute value
+
 = 6.0.1 (2020-11-06) =
-* Added: TSV file format for Amazon Bed&Amp
+* Fixed: Fix Guzzle compatibility
 * Compatibility Checked : WooCommerce 4.6.2
 
 = 6.0.0 (2020-11-06) =

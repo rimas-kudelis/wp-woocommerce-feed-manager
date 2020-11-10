@@ -488,6 +488,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->wpml_language = false;
         }
 
+
+        if( class_exists( 'SitePress' ) && function_exists( 'wcml_loader' ) ) {
+            $wcml_currency    = isset($feed_rules['rex_feed_wcml_currency']) ? $feed_rules['rex_feed_wcml_currency'] : '';
+            update_post_meta( $this->id, 'rex_feed_wcml_currency', $wcml_currency );
+        }
+
         $feed_rules       = $feed_rules['fc'];
         $this->feed_rules = $feed_rules;
 
@@ -511,6 +517,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $include_parent             = $feed_rules['rex_feed_parent_product'];
         $include_variations_name    = $feed_rules['rex_feed_variation_product_name'];
         $exclude_hidden_products    = $feed_rules['rex_feed_hidden_products'];
+
+
 
         if ($include_variable_product == 'yes') {
             $this->variable_product = true;

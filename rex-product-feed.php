@@ -15,7 +15,7 @@
  * Plugin Name:       WooCommerce Product Feed Manager
  * Plugin URI:        https://rextheme.com
  * Description:       WooCommerce Product Feed Manager helps you to sell more by uploading product feed to Google shopping, Amazon, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
- * Version:           6.0.1
+ * Version:           6.0.2
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+

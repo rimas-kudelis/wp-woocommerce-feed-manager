@@ -198,6 +198,24 @@ class Rex_Product_Metabox {
             ),
         ) );
 
+
+//        if( class_exists( 'SitePress' ) && function_exists( 'wcml_loader' ) ) {
+//            global $sitepress, $woocommerce_wpml;
+//            $wcml_currencies = $woocommerce_wpml->multi_currency->get_currencies('include_default = true');
+//            $currencies = array();
+//            foreach ($wcml_currencies as $key => $value) {
+//                $currencies[$key] = $key;
+//            }
+//
+//            $box->add_field( array(
+//                'name'      => __( 'WCML Currency', 'rex-product-feed' ),
+//                'desc'      => '',
+//                'id'        => $this->prefix . 'wcml_currency',
+//                'type'      => 'radio_inline',
+//                'options'   => $currencies,
+//            ) );
+//        }
+
     }
 
     /**

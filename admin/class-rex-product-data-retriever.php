@@ -297,6 +297,7 @@ class Rex_Product_Data_Retriever {
                 return $this->get_yoast_seo_title(); break;
 
             case 'price':
+
                 if ($this->product->is_type( 'grouped' ))
                     return number_format((float)$this->get_grouped_price($this->product, 'regular'), 2, '.', '');
                 elseif ($this->product->is_type( 'composite' )) {
@@ -588,12 +589,15 @@ class Rex_Product_Data_Retriever {
 
             case 'description':
                 if(($this->is_children())):
-                    $_product = wc_get_product( $this->product->get_parent_id() );
-                    if ( ! is_object( $_product ) ) {
-                        $_product_desc =  $this->remove_short_codes($_product->get_description());
-                        return $_product_desc;
+                    $description = $this->product->get_description();
+                    if(empty($description)) {
+                        $_product = wc_get_product( $this->product->get_parent_id() );
+                        if ( is_object( $_product ) ) {
+                            return  $this->remove_short_codes($_product->get_description());
+                        }
+                    }else {
+                        return $this->remove_short_codes($description);
                     }
-                    return '';
                 else:
                     return $this->remove_short_codes($this->product->get_description());
                 endif;
@@ -601,9 +605,15 @@ class Rex_Product_Data_Retriever {
 
             case 'short_description':
                 if(($this->is_children())):
-                    $_product = wc_get_product( $this->product->get_parent_id() );
-                    $_product_desc = $this->remove_short_codes($_product->get_short_description());
-                    return $_product_desc;
+                    $short_description = $this->product->get_short_description();
+                    if(empty($short_description)) {
+                        $_product = wc_get_product( $this->product->get_parent_id() );
+                        if ( is_object( $_product ) ) {
+                            return  $this->remove_short_codes($_product->get_short_description());
+                        }
+                    }else {
+                        return $this->remove_short_codes($short_description);
+                    }
                 else:
                     return $this->remove_short_codes($this->product->get_short_description()) ;
                 endif;
