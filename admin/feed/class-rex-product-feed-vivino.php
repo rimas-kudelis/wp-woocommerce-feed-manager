@@ -118,7 +118,7 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
                 }
             }
 
-            if( $this->product_scope === 'all' ) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = RexShopping::createItem();
@@ -169,4 +169,9 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
         }
         return RexShopping::asRss();
     }
+    //replace footer of feed
+    public function footer_replace() {
+        $this->feed = str_replace('</vivino-product-list>', '', $this->feed);
+    }
+
 }

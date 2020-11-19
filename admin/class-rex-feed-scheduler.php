@@ -193,6 +193,8 @@ class Rex_Feed_Scheduler {
         $exclude_hidden_products = get_post_meta($feed_id, 'rex_feed_hidden_products', true) === 'yes';
         $append_variations = get_post_meta($feed_id, 'rex_feed_variation_product_name', true) === 'yes';
         $wpml = get_post_meta($feed_id, 'rex_feed_wpml_language', true) ? get_post_meta($feed_id, 'rex_feed_wpml_language', true) : '';
+        $wcml_currency = get_post_meta($feed_id, 'rex_feed_wcml_currency', true) ? get_post_meta($feed_id, 'rex_feed_wcml_currency', true) : '';
+        $wcml = $wcml_currency ? true : false;
         $feed_format = get_post_meta($feed_id, 'rex_feed_feed_format', true) ?
             get_post_meta($feed_id, 'rex_feed_feed_format', true) : 'xml';
         $terms_array = array();
@@ -228,8 +230,9 @@ class Rex_Feed_Scheduler {
             'parent_product' => $parent_product,
             'exclude_hidden_products' => $exclude_hidden_products,
             'wpml_language' => $wpml,
+            'wcml_currency' => $wcml_currency,
+            'wcml'          => $wcml,
         );
-
         return $payload;
     }
 

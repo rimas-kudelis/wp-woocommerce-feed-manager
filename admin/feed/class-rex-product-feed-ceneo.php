@@ -129,7 +129,7 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $this->product_scope === 'all' ) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = RexShoppingCeneo::createItem();
@@ -201,6 +201,10 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
             return RexShoppingCeneo::asRss();
         }
         return false;
+    }
+
+    public function footer_replace() {
+        $this->feed = str_replace('</offers>', '', $this->feed);
     }
 
 }

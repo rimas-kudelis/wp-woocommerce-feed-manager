@@ -40,7 +40,6 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
                 'stock'          => 'Stock',
                 'weight'          => 'Weight',
             ),
-
         );
     }
 

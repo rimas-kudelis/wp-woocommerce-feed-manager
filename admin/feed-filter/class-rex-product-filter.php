@@ -194,8 +194,6 @@ class Rex_Product_Filter {
     }
 
 
-
-
     /**
      * Initialize Default Filter Mappings with Attributes.
      *

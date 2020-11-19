@@ -208,6 +208,12 @@ class Rex_Product_Feed {
 //            $this->loader->add_action( "wpfm_{$key}_schedule_update_hook", $scheduler, "wpfm_{$key}_schedule_update_hook", 10, 1 );
 //        }
 //        $this->loader->add_action( "wpfm_regenerate_scheduled_feed", $scheduler, "wpfm_schedule_feed_processing", 10, 5 );
+
+
+        /**
+         * trigger admin notice for black friday
+         */
+         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rt_black_friday_offer_notice' );
     }
 
 
@@ -266,4 +272,5 @@ class Rex_Product_Feed {
     public function get_version() {
         return $this->version;
     }
+
 }

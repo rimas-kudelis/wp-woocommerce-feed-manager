@@ -129,7 +129,7 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
                 }
             }
 
-            if( $this->product_scope === 'all' ) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = GoogleShopping::createItem();
@@ -162,4 +162,9 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
     }
 
+
+    public function footer_replace()
+    {
+        // TODO: Implement footer_replace() method.
+    }
 }

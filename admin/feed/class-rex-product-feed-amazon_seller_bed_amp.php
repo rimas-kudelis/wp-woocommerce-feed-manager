@@ -159,4 +159,7 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
     public function returnFinalProduct(){
         return RexShoppingCustom::asTSVFeeds($this->batch, 'bed_amp');
     }
+
+    public function footer_replace() {}
 }
+

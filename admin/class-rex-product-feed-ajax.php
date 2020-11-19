@@ -238,6 +238,10 @@ class Rex_Product_Feed_Ajax {
             ->with_callback( array( 'Rex_Product_Feed_Ajax', 'allow_private_products' ) )
             ->with_validation( $validations );
 
+        wp_ajax_helper()->handle( 'bf-notice-dismiss' )
+            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rt_black_friday_offer_notice_dismiss' ) )
+            ->with_validation( $validations );
+
     }
 
 
@@ -270,6 +274,7 @@ class Rex_Product_Feed_Ajax {
      * @return string
      */
     public static function generate_feed( $config ){
+        //error_log(print_r($config,1));
         try {
             $merchant = Rex_Product_Feed_Factory::build( $config );
         } catch (Exception $e) {
@@ -959,6 +964,26 @@ class Rex_Product_Feed_Ajax {
      */
     public static function allow_private_products($payload) {
         update_option('wpfm_allow_private', $payload['allow_private']);
+        return array(
+            'success' => true,
+        );
+    }
+
+
+    /**
+     * Black friday notice dismiss
+     *
+     * @param $payload
+     * @return array
+     * @since 6.1.0
+     */
+    public static function rt_black_friday_offer_notice_dismiss($payload) {
+        $current_time = time();
+        $info = array(
+            'show_notice'   => 'no',
+            'updated_at'    => $current_time,
+        );
+        update_option('rt_bf_notice', $info);
         return array(
             'success' => true,
         );

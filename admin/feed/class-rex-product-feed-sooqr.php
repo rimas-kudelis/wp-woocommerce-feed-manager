@@ -129,7 +129,7 @@ class Rex_Product_Feed_Sooqr extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $this->product_scope === 'all' ) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = SooqrShopping::createItem();
@@ -209,6 +209,10 @@ class Rex_Product_Feed_Sooqr extends Rex_Product_Feed_Abstract_Generator {
      * @return string
      */
     protected function get_product_data(  WC_Product $product, $product_meta_keys ){
+
+        $data = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
+        return $data->get_all_data();
+
         $include_analytics_params = get_post_meta($this->id, 'rex_feed_analytics_params_options', true);
 
         if($include_analytics_params == 'on') {
@@ -230,4 +234,8 @@ class Rex_Product_Feed_Sooqr extends Rex_Product_Feed_Abstract_Generator {
         return $data->get_all_data();
     }
 
+    public function footer_replace()
+    {
+        // TODO: Implement footer_replace() method.
+    }
 }

@@ -132,7 +132,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
                 }
             }
 
-            if( $this->product_scope === 'all' ) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variable_products[] = $productId;
                     $item = RexShopping::createItem();
@@ -204,5 +204,10 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
             return RexShopping::asCsv();
         }
         return RexShopping::asRss();
+    }
+
+    public function footer_replace()
+    {
+        // TODO: Implement footer_replace() method.
     }
 }

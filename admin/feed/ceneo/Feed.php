@@ -235,6 +235,10 @@ class Feed
      */
     private function addItemsToFeed()
     {
+        $arr = array(
+            'atribute' => array(),
+            'child' => array(),
+        );
         foreach ($this->items as $item) {
 
             /** @var SimpleXMLElement $feedItemNode */

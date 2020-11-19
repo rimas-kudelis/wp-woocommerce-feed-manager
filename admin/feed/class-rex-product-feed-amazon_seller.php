@@ -138,8 +138,6 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
     }
 
-
-
     /**
      * Return Feed
      * @return array|bool|string
@@ -147,4 +145,6 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
     public function returnFinalProduct(){
         return RexShoppingCustom::asCSVFeeds($this->batch);
     }
+
+    public function footer_replace() {}
 }

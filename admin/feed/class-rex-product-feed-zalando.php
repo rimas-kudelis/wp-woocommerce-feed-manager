@@ -224,4 +224,6 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
 
     }
 
+    public function footer_replace() {}
+
 }

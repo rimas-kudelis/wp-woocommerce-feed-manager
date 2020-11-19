@@ -57,6 +57,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     }
 
     protected function generate_product_feed(){
+
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variation_products = [];
@@ -80,7 +81,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             );
         }
         foreach( $this->products as $productId ) {
-
             $product = wc_get_product( $productId );
 
             if ( ! is_object( $product ) ) {
@@ -164,7 +164,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $this->product_scope === 'all' ) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = GoogleShopping::createItem();
@@ -269,6 +269,12 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             return GoogleShopping::asCsv();
         }
         return GoogleShopping::asRss();
+    }
+
+
+    //replace footer of feed
+    public function footer_replace() {
+        $this->feed = str_replace('</channel></rss>', '', $this->feed);
     }
 
 }

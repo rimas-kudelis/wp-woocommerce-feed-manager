@@ -43,7 +43,7 @@ class Rex_Product_CPT {
             'publicly_queryable' => false,
             'supports'           => array( 'title' ),
             'enter_title_here'   => 'Enter feed title here',
-            'menu_icon'           => WPFM_PLUGIN_DIR_URL . 'admin/icon/icon.png',
+            'menu_icon'           => WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon.png',
             'admin_cols' => array(
 
                 'merchant' => array(

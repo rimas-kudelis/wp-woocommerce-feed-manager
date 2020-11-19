@@ -220,13 +220,13 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     <div class="rex-general__single-block-area">
                                         <div class="rex-general__single-block banner-block">
                                             <div class="onboarding-block">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/wpfm-banner.png'?>" alt="rex-banner">
+                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm-banner.png'?>" alt="rex-banner">
                                             </div>
                                         </div>
 
                                         <div class="rex-general__logo-block">
                                             <div class="upgrade-pro">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/logo.png'?>" alt="logo" class="img-fluid">
+                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/logo.png'?>" alt="logo" class="img-fluid">
                                                 
                                                     <?php if ( !$is_premium_activated ){ ?>
                                                         <a class="btn-default" href="https://rextheme.com/best-woocommerce-product-feed/" target="_blank"><?php _e('Upgrade to Pro ','rex-product-feed'); ?></a>
@@ -249,7 +249,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     <div class="rex-general__single-block-category">
                                         <div class="rex-general__single-block">
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/document.png'?>" class="title-icon" alt="documentation">
+                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/document.png'?>" class="title-icon" alt="documentation">
                                                 <h4><?php echo __('Documentation', 'rex-product-feed')?></h4>
                                             </div>
 
@@ -266,7 +266,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                         <div class="rex-general__single-block popular">
 
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/support.png'?>" class="title-icon" alt="support">
+                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/support.png'?>" class="title-icon" alt="support">
                                                 <h4><?php echo __('Support', 'rex-product-feed')?></h4>
                                             </div>
 
@@ -284,7 +284,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                         <div class="rex-general__single-block">
 
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Rating.png'?>" class="title-icon" alt="rating">
+                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/Rating.png'?>" class="title-icon" alt="rating">
                                                 <h4><?php echo __('Show Your Love', 'rex-product-feed')?></h4>
                                             </div>
 
@@ -310,35 +310,39 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
 
                             <div class="rex-general__right-info-wrapper">
 
-                                <h4 class="title"><?php _e('Check out our other amazing free plugins!','rex-product-feed'); ?></h4>
+                                <h4 class="title"><?php _e("Here is an offer you can't miss!",'rex-product-feed'); ?></h4>
 
-                                <div class="rex-general__single-block cart">
-                                    <div class="header">
-                                        <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/Cart-Lift.png'?>" class="title-icon" alt="cart-lift">
-                                        <h4><?php echo __('Cart Lift', 'rex-product-feed')?></h4>
-                                    </div>
-
-                                    <div class="body">
-                                        <p><?php _e('Recover your abandoned cart customers with automated e-mail drip campaigns. Enjoy immediate increase in your sales..','rex-product-feed'); ?></p>
-
-                                        <a class="btn-default" href="<?php echo apply_filters('wpfm_cart_link', 'https://wordpress.org/plugins/cart-lift/'); ?>" target="_blank"><?php echo __('Get It Now', 'rex-product-feed')?></a>
-                                    </div>
-                                 </div>
+<!--                                <div class="rex-general__single-block cart">-->
+<!--                                    <div class="header">-->
+<!--                                        <img src="--><?php //echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/Cart-Lift.png'?><!--" class="title-icon" alt="cart-lift">-->
+<!--                                        <h4>--><?php //echo __('Cart Lift', 'rex-product-feed')?><!--</h4>-->
+<!--                                    </div>-->
+<!---->
+<!--                                    <div class="body">-->
+<!--                                        <p>--><?php //_e('Recover your abandoned cart customers with automated e-mail drip campaigns. Enjoy immediate increase in your sales..','rex-product-feed'); ?><!--</p>-->
+<!---->
+<!--                                        <a class="btn-default" href="--><?php //echo apply_filters('wpfm_cart_link', 'https://wordpress.org/plugins/cart-lift/'); ?><!--" target="_blank">--><?php //echo __('Get It Now', 'rex-product-feed')?><!--</a>-->
+<!--                                    </div>-->
+<!--                                 </div>-->
                                  <!-- rex-general__single-block -->
 
-                                 <div class="rex-general__single-block vas">
-                                    <div class="header">
-                                        <img src="<?php echo WPFM_PLUGIN_DIR_URL . 'admin/icon/variation-swatch.png'?>" class="title-icon" alt="variation-swatch">
-                                        <h4><?php echo __('Variation Swatches', 'rex-product-feed')?></h4>
-                                    </div>
-
-                                    <div class="body">
-                                        <p><?php _e('Use engaging color, image, or text swatches to display your product variations and make your product page more attractive.','rex-product-feed'); ?></p>
-                                        <a class="btn-default" href="<?php echo apply_filters('wpfm_variation_link', 'https://wordpress.org/plugins/rex-variation-swatches-for-woocommerce/'); ?>" target="_blank"><?php echo __('Get It Now', 'rex-product-feed')?></a>
-                                    </div>
-                                 </div>
+<!--                                 <div class="rex-general__single-block vas">-->
+<!--                                    <div class="header">-->
+<!--                                        <img src="--><?php //echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/variation-swatch.png'?><!--" class="title-icon" alt="variation-swatch">-->
+<!--                                        <h4>--><?php //echo __('Variation Swatches', 'rex-product-feed')?><!--</h4>-->
+<!--                                    </div>-->
+<!---->
+<!--                                    <div class="body">-->
+<!--                                        <p>--><?php //_e('Use engaging color, image, or text swatches to display your product variations and make your product page more attractive.','rex-product-feed'); ?><!--</p>-->
+<!--                                        <a class="btn-default" href="--><?php //echo apply_filters('wpfm_variation_link', 'https://wordpress.org/plugins/rex-variation-swatches-for-woocommerce/'); ?><!--" target="_blank">--><?php //echo __('Get It Now', 'rex-product-feed')?><!--</a>-->
+<!--                                    </div>-->
+<!--                                 </div>-->
                                  <!-- rex-general__single-block -->
-                                
+                                <a href="https://rextheme.com/black-friday/?wpfm=1" target="_blank">
+                                    <div class="bf-banner-container">
+                                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/black-friday-2.png'?>" style="max-width: 100%;" alt="black-friday-offer">
+                                    </div>
+                                </a>
                             </div>
                             <!-- rex-general__right-info-wrapper.end -->
 
@@ -1183,11 +1187,11 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     'status'   => 0,
                                     'name'     => 'Hertie'
                                 ),
-                                'etsy'     => array(
-                                    'free'     => true,
-                                    'status'   => 0,
-                                    'name'     => 'Etsy'
-                                ),
+//                                'etsy'     => array(
+//                                    'free'     => true,
+//                                    'status'   => 0,
+//                                    'name'     => 'Etsy'
+//                                ),
 //                                'okazii'     => array(
 //                                    'free'     => true,
 //                                    'status'   => 0,

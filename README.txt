@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.3
 Requires PHP: 7.0
-Stable tag: 6.0.2
+Stable tag: 6.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,7 +82,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 
 * Generate Product Feed in a few clicks 
 * 168 pre-built templates of Merchant Shop feed
-* Generate feed in XML, CSV or Text file format
+* Generate feed in XML, CSV or Text file format
 * Compatible with both http and https sites 
 * Auto-sync with Google Shopping Center
 * Auto feed update schedule options: weekly, daily & hourly
@@ -90,7 +90,7 @@ WooCommerce Product Feed Manager is completely compatible with WPML. You can cho
 * Extensive Filter Options (filter by category, tag or custom) 
 * Dynamic Attributes
  * Add Static attributes if needed 
-* Add Prefix, and Suffix 
+* Add Prefix, and Suffix 
 * Use Shipping Class As Attribute 
 * Custom Taxonomy
 * Include/Exclude parent product of grouped products
@@ -544,6 +544,13 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 6.1.0 (2020-11-19) =
+* Fixed: Custom category mapping
+* Fixed: Google Shopping Action feed structure
+* Fixed: Fixed CDATA issue on XML feed
+* Fixed: Restore missing icons
+* Enhanced: Improve feed generation query
 
 = 6.0.2 (2020-11-10) =
 * Fixed: missing description attribute value

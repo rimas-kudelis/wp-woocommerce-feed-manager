@@ -169,6 +169,7 @@ class Rex_Product_Feed_Admin {
      */
     public function enqueue_styles($hook) {
 
+
         /**
          * This function is provided for demonstration purposes only.
          *
@@ -185,12 +186,10 @@ class Rex_Product_Feed_Admin {
         if( ($hook === 'edit.php' ) ){
             return;
         }
-
-
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, 'product-feed_page_wpfm-license')))) {
-            wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css', array(), $this->version, 'all' );
-            wp_enqueue_style( 'wpfm-vendor', plugin_dir_url( __FILE__ ) . 'css/vendor.min.css', array(), $this->version, 'all' );
-            wp_enqueue_style( 'style-css', plugin_dir_url( __FILE__ ) . 'css/style.min.css', array(), $this->version, 'all' );
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->wpfm_pro_submenu)))) {
+            wp_enqueue_style( 'font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version, 'all' );
+            wp_enqueue_style( 'wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version, 'all' );
+            wp_enqueue_style( 'style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.min.css', array(), $this->version, 'all' );
         }
     }
 
@@ -215,7 +214,7 @@ class Rex_Product_Feed_Admin {
 
         $db_version = get_option('rex_wpfm_db_version');
         if($db_version < 3) {
-            wp_enqueue_script( 'rex-wpfm-global-js', plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-global-admin.js', array( 'jquery'), $this->version, false );
+            wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery'), $this->version, false );
             wp_localize_script( 'rex-wpfm-global-js', 'rex_wpfm_ajax',
                 array(
                     'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -229,34 +228,36 @@ class Rex_Product_Feed_Admin {
             return;
         }
 
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, 'product-feed_page_wpfm-license')))) {
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->wpfm_pro_submenu)))) {
             wp_enqueue_script( 'jquery-ui-autocomplete' );
             wp_enqueue_script(
                 'jquery-stop-watch',
-                plugin_dir_url( __FILE__ ) . 'js/jquery.stopwatch.js',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/jquery.stopwatch.js',
                 array( 'jquery' ),
                 $this->version,
                 true
             );
             wp_enqueue_script(
                 'jquery-nice-select',
-                plugin_dir_url( __FILE__ ) . 'js/jquery.nice-select.min.js',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/jquery.nice-select.min.js',
                 array( 'jquery' ),
                 $this->version,
                 true
             );
             wp_enqueue_script(
                 $this->plugin_name,
-                plugin_dir_url( __FILE__ ) . 'js/rex-product-feed-admin.js',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-admin.js',
                 array( 'jquery' ),
                 $this->version,
                 true
             );
 
+
+
         }
 
         if ($screen->id == $this->category_mapping_screen_hook_suffix) {
-            wp_enqueue_script( 'category-map', plugin_dir_url( __FILE__ ) . 'js/category-mapper.js', array( 'jquery', 'jquery-ui-autocomplete' ), $this->version, true );
+            wp_enqueue_script( 'category-map', WPFM_PLUGIN_ASSETS_FOLDER . 'js/category-mapper.js', array( 'jquery', 'jquery-ui-autocomplete' ), $this->version, true );
         }
     }
 
@@ -382,7 +383,7 @@ class Rex_Product_Feed_Admin {
      */
     public function load_admin_pages() {
 
-        add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_DIR_URL . 'admin/icon/icon.png', 20 );
+        add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon.png', 20 );
         add_submenu_page('product-feed', __('Add New Feed', 'rex-product-feed'), __('Add New Feed', 'rex-product-feed'), 'manage_woocommerce', 'post-new.php?post_type=product-feed');
         $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping');
         $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings');
@@ -390,13 +391,29 @@ class Rex_Product_Feed_Admin {
         $this->wpfm_support_menu = add_submenu_page('product-feed', '', __('Support', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_support',  __CLASS__ .'::wpfm_support');
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
 
-        if(!$is_premium) $this->wpfm_pro_submenu = add_submenu_page('product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
+        if(!$is_premium) {
+            $this->wpfm_pro_submenu = add_submenu_page('product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
+        } else {
+            $this->wpfm_pro_submenu = add_submenu_page(
+                'product-feed',
+                __('License', 'rex-product-feed'),
+                __('License', 'rex-product-feed'),
+                'manage_options',
+                'wpfm-license',
+                __CLASS__ . '::wpfm_license_menu_render'
+            );
+        }
 
-        do_action('wpfm_pro_license_page');
         /**
          * WPFM action links
          */
         add_filter('plugin_action_links_' . $this->plugin_basename, array( $this, 'wpfm_plugin_action_links' ));
+    }
+
+
+    public static function wpfm_license_menu_render()
+    {
+        require plugin_dir_path(__FILE__) . '/partials/rex-product-feed-pro-license.php';
     }
 
     /**
@@ -778,6 +795,26 @@ class Rex_Product_Feed_Admin {
                     .bwfm-review-notice .wpfm-notice-content .wpfm-notice-title {
                       font-size: 24px;
                       color: #222; }
+
+            .rextheme-black-friday-offer {
+                padding: 0!important;
+                border: 0;
+            }
+            .rextheme-black-friday-offer img {
+                display: block;
+                width: 100%;
+            }
+            .rextheme-black-friday-offer .notice-dismiss {
+                top: 4px;
+                right: 6px;
+                padding: 4px;
+                background: #fff;
+                border-radius: 100%;
+            }
+            .rextheme-black-friday-offer .notice-dismiss:before {
+                content: "\f335";
+                font-size: 20px;
+            }
         </style>';
     }
 
@@ -1109,6 +1146,55 @@ class Rex_Product_Feed_Admin {
         } else {
             return $product->get_matching_variation( $attributes );
         }
+    }
+
+
+
+    /**
+     * black friday notice markup
+     * @since 6.1.0
+     */
+    public function rt_black_friday_offer_notice() {
+        $current_time = time();
+        $date_now = date("Y-m-d", $current_time);
+        $notice_info = get_option('rt_bf_notice', array(
+            'show_notice' => 'yes',
+            'updated_at' => $current_time,
+        ));
+        if($this->is_wpfm_page()) {
+            if( $notice_info['show_notice'] === 'yes' && $date_now <= '2020-12-01' ) { ?>
+                <div class="rextheme-black-friday-offer notice notice-warning is-dismissible">
+                    <a href="https://rextheme.com/black-friday/?wpfm=1" target="_blank">
+                        <div class="bf-banner-container">
+                            <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/black-friday.png'?>" style="max-width: 100%;" alt="black-friday-offer">
+                        </div>
+                    </a>
+                </div>
+            <?php }
+        }
+
+    }
+
+
+    /**
+     * check to see if it is WPFM page
+     * @return bool
+     * @since 6.1.0
+     */
+    public function is_wpfm_page() {
+        global $pagenow;
+        global $typenow;
+        $page = isset($_GET['page']) ? $_GET['page'] : '';
+        if($typenow == 'product-feed' &&  $pagenow === 'edit.php') {
+            return true;
+        }
+        elseif($typenow == 'product-feed' &&  $pagenow === 'post.php') {
+            return true;
+        }
+        elseif (in_array($page, array('category_mapping', 'merchant_settings', 'wpfm_dashboard', 'wpfm-license'))) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -26,13 +26,11 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
     public function make_feed() {
 
         DaisyConShopping::$container = null;
-
         DaisyConShopping::title($this->title);
         DaisyConShopping::link($this->link);
         DaisyConShopping::description($this->desc);
 
         $this->generate_product_feed();
-
         $this->feed = DaisyConShopping::asRss();
 
         if ($this->batch >= $this->tbatch ) {
@@ -43,7 +41,6 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
         }else {
             return $this->save_feed($this->feed_format);
         }
-
     }
 
     private function generate_product_feed(){
@@ -124,7 +121,7 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $this->product_scope === 'all' ) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = DaisyConShopping::createItem();
@@ -155,6 +152,10 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
         );
 
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+    }
+
+    public function footer_replace() {
+        $this->feed = str_replace('</channel></rss>', '', $this->feed);
     }
 
 }

@@ -25,6 +25,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
 
+        //putting data in xml file
         GoogleShopping::$container = null;
         GoogleShopping::title($this->title);
         GoogleShopping::link($this->link);
@@ -51,7 +52,6 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             return $this->save_feed($this->feed_format);
         }
     }
-
 
     /**
      * Generate feed
@@ -87,15 +87,11 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             if ( ! is_object( $product ) ) {
                 continue;
             }
-
             if ( $this->exclude_hidden_products ) {
                 if ( !$product->is_visible() ) {
                     continue;
                 }
             }
-
-
-
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
@@ -168,7 +164,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $this->product_scope === 'all' ) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = GoogleShopping::createItem();
@@ -278,6 +274,10 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             return GoogleShopping::asCsv();
         }
         return GoogleShopping::asRss();
+    }
+
+    public function footer_replace() {
+        $this->feed = str_replace('</channel></rss>', '', $this->feed);
     }
 
 }

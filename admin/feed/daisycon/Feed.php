@@ -344,11 +344,14 @@ class Feed
         if (ob_get_contents()) ob_end_clean();
 
         $this->addItemsToFeed();
-        $data = html_entity_decode($this->feed->asXml());
+
+//        $data = html_entity_decode($this->feed->asXml());
+        $data = $this->feed->asXml();
         if ($output) {
             header('Content-Type: application/xml; charset=utf-8');
             die($data);
         }
+
         return $data;
     }
 
