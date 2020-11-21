@@ -213,7 +213,9 @@ class Rex_Product_Metabox
             }
             $first_key = '';
             if( is_array($currencies )) {
-                $first_key = array_key_first($currencies);
+                reset($array);
+                $first_key = key($array);
+                // $first_key = array_key_first($currencies);
             }
 
 
