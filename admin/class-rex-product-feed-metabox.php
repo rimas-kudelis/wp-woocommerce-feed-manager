@@ -62,7 +62,6 @@ class Rex_Product_Metabox
             'before_row' => array($this, 'progress_config_cb'),
         ));
 
-
         // filter product
         $box->add_field(array(
             'id' => $this->prefix . 'config_filter_title',
@@ -78,7 +77,7 @@ class Rex_Product_Metabox
             'after_row' => array($this, 'product_taxonomies_cb'),
         ));
 
-//        do_action('wpfm_product_filter_field', $box, $this->prefix);
+        do_action('wpfm_product_filter_field', $box, $this->prefix);
 
         /*
          * Schedule Time
@@ -213,9 +212,8 @@ class Rex_Product_Metabox
             }
             $first_key = '';
             if( is_array($currencies )) {
-                reset($array);
-                $first_key = key($array);
-                // $first_key = array_key_first($currencies);
+                reset($currencies);
+                $first_key = key($currencies);
             }
 
 

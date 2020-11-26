@@ -1620,3 +1620,4 @@ var EasyAutocomplete = (function(scope) {
 	};
 
 })(jQuery);
+

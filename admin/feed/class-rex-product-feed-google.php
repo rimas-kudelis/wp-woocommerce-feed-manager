@@ -278,6 +278,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
 
     public function footer_replace() {
         $this->feed = str_replace('</channel></rss>', '', $this->feed);
+
     }
 
 }

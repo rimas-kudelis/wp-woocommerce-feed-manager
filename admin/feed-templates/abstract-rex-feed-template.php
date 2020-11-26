@@ -252,6 +252,7 @@ abstract class Rex_Feed_Abstract_Template {
                 'remove_underscore'        => 'Remove underscore',
                 'decode_url'               => 'Decode url',
                 'remove_decimal'           => 'Remove decimal points (Marktplaats only)',
+                'add_two_decimal'           => 'Two decimal points',
 
             )
         );

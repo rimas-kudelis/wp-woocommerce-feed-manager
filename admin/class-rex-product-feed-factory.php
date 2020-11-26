@@ -22,6 +22,7 @@ class Rex_Product_Feed_Factory {
         $context = array( 'source' => 'WPFM' );
         self::$other_merchants = apply_filters('wpfm_merchant_custom',
             array(
+                //'sooqr',
                 'adform',
                 'adcrowd',
                 'beslist',
@@ -36,6 +37,7 @@ class Rex_Product_Feed_Factory {
                 'whiskymarketplace',
                 'trovaprezzi',
                 'rss',
+                'nextag',
                 'nextag',
                 'pricegrabber',
                 'bing',

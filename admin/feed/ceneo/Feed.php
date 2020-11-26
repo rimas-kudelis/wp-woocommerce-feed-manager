@@ -6,6 +6,7 @@ use SimpleXMLElement;
 use RexTheme\RexShoppingCeneo\Item;
 use Gregwar\Cache\Cache;
 
+
 class Feed
 {
 
@@ -235,20 +236,46 @@ class Feed
      */
     private function addItemsToFeed()
     {
-        $arr = array(
-            'atribute' => array(),
-            'child' => array(),
-        );
+
+        $count =0;
+
+        $attrNode = array();
+        $childNode = array();
+        $imageNode = array();
+        $otherAttrNode = array();
+
         foreach ($this->items as $item) {
+             foreach ($item->nodes() as $itemNode) {
+                 if($itemNode->get('name') === 'id'||$itemNode->get('name') === 'url'||$itemNode->get('name') === 'price'||
+                     $itemNode->get('name') === 'avail'|| $itemNode->get('name') === 'stock'|| $itemNode->get('name') === 'weight'||
+                     $itemNode->get('name') === 'basket')
+                 {
+                     array_push($attrNode,$itemNode);
+
+                 }else if($itemNode->get('name') == 'image_link'||$itemNode->get('name') == 'additional_image_link'){
+                     array_push($imageNode,$itemNode);
+                 }else if($itemNode->get('name') == 'cat'||$itemNode->get('name') == 'name'||$itemNode->get('name') == 'desc'){
+                     array_push($childNode,$itemNode);
+                 }
+                 else{
+                     array_push($otherAttrNode,$itemNode);
+                 }
+             }
+        }
+
+        foreach ($this->items as $item) {
+            $count=0;
+            $count2=0;
 
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
+
                 $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);
             }else{
+
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
             foreach ($item->nodes() as $itemNode) {
-
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {
                         $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
@@ -264,18 +291,70 @@ class Feed
                         $feedItemNode->addAttribute('avail', $itemNode->get('value'));
                     }elseif($itemNode->get('name') == 'stock'){
                         $feedItemNode->addAttribute('stock', $itemNode->get('value'));
-                    }elseif($itemNode->get('name') == 'image_link'){
-                        $feedItemNode->addAttribute('stock', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'basket'){
+                        $feedItemNode->addAttribute('basket', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'weight'){
+                        $feedItemNode->addAttribute('weight', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'image_link'||$itemNode->get('name') == 'additional_image_link'){
+                        $count++;
+                        if($count===1){
+                            $image = $feedItemNode->addChild('imgs');
+                            $main = $image->addChild('main');
+                            $i = $image->addChild('i');
+                            //$main_ad_im = $image->addChild('additional_img');
+                        }
+                        if($itemNode->get('name') == 'image_link'){
+                            $main->addAttribute('url', $itemNode->get('value'));
+                            //$i->addAttribute('url', $itemNode->get('value'));
+                        }elseif ($itemNode->get('name') == 'additional_image_link'){
+                            //$main_ad_im->addAttribute('url', $itemNode->get('value'));
+                            $i->addAttribute('url', $itemNode->get('value'));
+                        }
+                        //$feedItemNode->addAttribute('stock', $itemNode->get('value'));
+
+                    }elseif (in_array($itemNode,$otherAttrNode)){
+                        $count2++;
+                        if($count2===1){
+                            $attr = $feedItemNode->addChild('attrs');
+                        }
+                        $a_tag = $attr->addChild('a');
+                        $a_tag->addAttribute('name', $itemNode->get('name'));
+                        $a_tag->addChild('value','<![CDATA ['.$itemNode->get('value').']]>');
+                        //$a_tag->addChild($itemNode->get('name'), '<![CDATA ['.$itemNode->get('value').']]>');
+                    }
+                    else {
+                        $itemNode->attachNodeTo($feedItemNode);
+                    }
+                }
+            }
+
+           /* foreach ($item->nodes() as $itemNode){
+                if (is_array($itemNode)) {
+                    foreach ($itemNode as $node) {
+                        $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
+                    }
+                }else{
+                    if(in_array($itemNode,$attrNode)){
+                        $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
+                    }elseif (in_array($itemNode,$imageNode)){
+                        $feedItemNode->addAttribute('image', $itemNode->get('value'));
                         $image = $feedItemNode->addChild('imgs');
                         $main = $image->addChild('main');
                         $i = $image->addChild('i');
                         $main->addAttribute('url', $itemNode->get('value'));
                         $i->addAttribute('url', $itemNode->get('value'));
-                    }else {
+                    }elseif (in_array($itemNode,$otherAttrNode)){
+                        $count++;
+                        if($count===1){
+                            $rr = $feedItemNode->addChild('attr', $itemNode->get('value'));
+                        }
+                        $rr->addChild($itemNode->get('name'), $itemNode->get('value'));
+                    }
+                    else{
                         $itemNode->attachNodeTo($feedItemNode);
                     }
                 }
-            }
+            }*/
         }
     }
 

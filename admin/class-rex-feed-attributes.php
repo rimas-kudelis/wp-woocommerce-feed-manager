@@ -108,6 +108,7 @@ class Rex_Feed_Attributes {
         $attributes['Product Custom Attributes'] = $_custom_attributes;
 
 
+
         // Get category map list
         $cat_maps_array = array();
         $cat_maps = get_option('rex-wpfm-category-mapping');

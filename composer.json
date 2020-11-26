@@ -23,6 +23,7 @@
             "includes/library/cmb2/init.php",
             "includes/library/cmb2-conditionals/cmb2-conditionals.php"
         ]
+    },
+    "require-dev": {
     }
 }
-

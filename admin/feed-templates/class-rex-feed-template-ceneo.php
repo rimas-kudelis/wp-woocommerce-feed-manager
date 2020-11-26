@@ -36,7 +36,7 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
                 'basket'   => 'Basket',
                 'desc'         => 'Desc',
                 'image_link'          => 'Image link',
-                'set'          => 'Set',
+                //'set'          => 'Set',
                 'stock'          => 'Stock',
                 'weight'          => 'Weight',
             ),
@@ -52,7 +52,7 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'default',
+                'escape'   => 'cdata',
                 'limit'    => 0,
             ),
             array(
@@ -72,7 +72,7 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'default',
+                'escape'   => 'cdata',
                 'limit'    => 0,
             ),
             array(
@@ -81,7 +81,7 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
                 'meta_key' => 'price',
                 'st_value' => '',
                 'prefix'   => '',
-                'suffix'   => ' '.get_option('woocommerce_currency'),
+                'suffix'   => '',
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
@@ -92,23 +92,9 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'cdata',
-                'limit'    => 0,
-            ),
-
-
-            array(
-                'attr'     => 'additional_image_link',
-                'type'     => 'static',
-                'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
-
 
             array(
                 'attr'     => 'avail',
@@ -134,13 +120,13 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
 
 
             array(
-                'attr'     => 'description',
+                'attr'     => 'desc',
                 'type'     => 'meta',
                 'meta_key' => 'description',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'default',
+                'escape'   => 'cdata',
                 'limit'    => 0,
             ),
 
@@ -157,19 +143,9 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
             ),
 
             array(
-                'attr'     => 'set',
+                'attr'     => 'stock',
                 'type'     => 'static',
                 'meta_key' => '',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
-                'attr'     => 'stock',
-                'type'     => 'meta',
-                'meta_key' => 'quantity',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
@@ -187,11 +163,6 @@ class Rex_Feed_Template_Ceneo extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
-
-
-
-
         );
     }
 

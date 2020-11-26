@@ -274,7 +274,6 @@ class Rex_Product_Feed_Ajax {
      * @return string
      */
     public static function generate_feed( $config ){
-        //error_log(print_r($config,1));
         try {
             $merchant = Rex_Product_Feed_Factory::build( $config );
         } catch (Exception $e) {
@@ -379,7 +378,8 @@ class Rex_Product_Feed_Ajax {
         $instagram_format = array(
             'instagram',
 
-        );$trovaprezzi_format = array(
+        );
+        $trovaprezzi_format = array(
             'trovaprezzi',
         );
         $zalando_format = array(
@@ -397,18 +397,21 @@ class Rex_Product_Feed_Ajax {
         }
         elseif (in_array( $merchant, $facebook_format )) {
             return array('xml', 'csv');
-        }elseif (in_array( $merchant, $amazon_format )){
+        }elseif (in_array( $merchant, $amazon_format ))
+        {
             return array('tsv');
         }elseif (in_array( $merchant, $snapchat_format )){
             return array('csv');
-        }elseif (in_array( $merchant, $printerst_format )){
+        }elseif (in_array( $merchant, $printerst_format ))
+        {
             return array('csv','tsv');
         }elseif (in_array( $merchant, $Ebay_format )){
             return array('csv');
-        }elseif (in_array( $merchant, $instagram_format )){
+        }elseif (in_array( $merchant, $instagram_format ))
+        {
             return array('xml','csv','tsv');
         }elseif (in_array( $merchant, $trovaprezzi_format )){
-            return array('csv');
+            return array('xml','csv');
         }elseif (in_array( $merchant, $zalando_format )){
             return array('json');
         }elseif (in_array( $merchant, $wish_format )){
@@ -438,7 +441,6 @@ class Rex_Product_Feed_Ajax {
             $field->render_field();
             $content = ob_get_clean();
             ob_end_clean();
-
 
             $terms = wp_get_post_terms($post_id, 'product_cat');
             $values = [];
@@ -937,7 +939,6 @@ class Rex_Product_Feed_Ajax {
             );
         }
     }
-
 
 
     public static function save_transient($payload) {

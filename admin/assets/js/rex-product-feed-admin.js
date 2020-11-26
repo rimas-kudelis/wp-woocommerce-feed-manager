@@ -392,7 +392,6 @@
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),
             localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
             ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
-            //chane my sayla
 
             info: {
                 post_id: $('#post_ID').val(),
@@ -408,11 +407,12 @@
                 products_scope: $('#rex_feed_products').find(':selected').val(),
                 tags: get_checkbox_val('tags'),
                 cats: get_checkbox_val('cats'),
-                data: $('.bc-product-search').val(),
+                data: $('#rex_feed_product_filter_ids').val(),
             },
 
             feed_config: $('form').serialize(),
         };
+        console.log($payload);
         var batches = total_batch;
         console.log('Total Batch: ' + batches);
         console.log('Total Product(s): ' + product);
@@ -981,7 +981,6 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function (window, document, $, undef
             $('.cmb-type-product-filter').hide();
             $('#rex-feed-product-taxonomies').show();
         }else if (new_val === 'product_filter') {
-            //console.log("me in wordpress")
             $('.cmb2-id-rex-feed-product-filter-title').show();
             $('.cmb-type-product-filter').show();
 

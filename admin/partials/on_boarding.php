@@ -284,7 +284,7 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                         <div class="rex-general__single-block">
 
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/Rating.png'?>" class="title-icon" alt="rating">
+                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/rating.png'?>" class="title-icon" alt="rating">
                                                 <h4><?php echo __('Show Your Love', 'rex-product-feed')?></h4>
                                             </div>
 

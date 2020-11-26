@@ -52,6 +52,22 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
     }
 
     private function generate_product_feed(){
+
+        //get feed rules filter if value
+        $feed_if_val = '';
+        if( $this->feed_rules_filter ) {
+            foreach ($this->feed_rules_filter as $key => $value) {
+                foreach ($value as $sub_key => $sub_val) {
+                    if($sub_key === 'if')
+                    {
+                        $feed_if_val = $sub_val;
+                    }
+                    break;
+                }
+            }
+        }
+
+
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variation_products = [];
@@ -64,7 +80,6 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
             'variable_parent' => 0,
             'group' => 0,
         );
-
         if($this->batch == 1) {
             $total_products = array(
                 'total' => 0,
@@ -88,7 +103,9 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
+
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
@@ -98,26 +115,52 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
                         $item->$key($value); // invoke $key as method of $item object.
                     }
                 }
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
-                    if ( $this->exclude_hidden_products ) {
-                        $variations = $product->get_visible_children();
-                    }else {
-                        $variations = $product->get_children();
+
+                if($feed_if_val!== 'id' || $feed_if_val!== 'price' || $feed_if_val!== 'sale_price'){
+                    if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag'||$this->product_scope === 'filter') {
+                        if ( $this->exclude_hidden_products ) {
+                            $variations = $product->get_visible_children();
+                        }
+                        else {
+                            $variations = $product->get_children();
+                        }
+                        if($variations) {
+                            foreach ($variations as $variation) {
+                                if($this->variations) {
+                                    $variation_products[] = $variation;
+                                    $item = RexShoppingCeneo::createItem();
+                                    $variation_product = wc_get_product( $variation );
+                                    $atts = $this->get_product_data( $variation_product, $product_meta_keys );
+                                    foreach ($atts as $key => $value) {
+                                        $item->$key($value); // invoke $key as method of $item object.
+                                    }
+                                }
+                            }
+                        }
                     }
-                    if($variations) {
-                        foreach ($variations as $variation) {
-                            if($this->variations) {
-                                $variation_products[] = $variation;
-                                $item = RexShoppingCeneo::createItem();
-                                $variation_product = wc_get_product( $variation );
-                                $atts = $this->get_product_data( $variation_product, $product_meta_keys );
-                                foreach ($atts as $key => $value) {
-                                    $item->$key($value); // invoke $key as method of $item object.
+                }else{
+                    if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                        if ( $this->exclude_hidden_products ) {
+                            $variations = $product->get_visible_children();
+                        }else {
+                            $variations = $product->get_children();
+                        }
+                        if($variations) {
+                            foreach ($variations as $variation) {
+                                if($this->variations) {
+                                    $variation_products[] = $variation;
+                                    $item = RexShoppingCeneo::createItem();
+                                    $variation_product = wc_get_product( $variation );
+                                    $atts = $this->get_product_data( $variation_product, $product_meta_keys );
+                                    foreach ($atts as $key => $value) {
+                                        $item->$key($value); // invoke $key as method of $item object.
+                                    }
                                 }
                             }
                         }
                     }
                 }
+
             }
 
             if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
@@ -129,16 +172,30 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
-                if ($product->get_type() == 'variation') {
-                    $variation_products[] = $productId;
-                    $item = RexShoppingCeneo::createItem();
-                    $atts = $this->get_product_data($product, $product_meta_keys);
-                    foreach ($atts as $key => $value) {
-                        $item->$key($value); // invoke $key as method of $item object.
+            if($feed_if_val!== 'id' || $feed_if_val!== 'price'||$feed_if_val!== 'sale_price'){
+                if( $this->product_scope === 'all' || $this->product_scope === 'product_filter') {
+                    if ($product->get_type() == 'variation') {
+                        $variation_products[] = $productId;
+                        $item = RexShoppingCeneo::createItem();
+                        $atts = $this->get_product_data($product, $product_meta_keys);
+                        foreach ($atts as $key => $value) {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
+                    }
+                }
+            }elseif($feed_if_val=== 'id'||$feed_if_val=== 'price'||$feed_if_val=== 'sale_price'){
+                if( $this->product_scope === 'all' || $this->product_scope === 'product_filter'||$this->product_scope === 'filter') {
+                    if ($product->get_type() == 'variation') {
+                        $variation_products[] = $productId;
+                        $item = RexShoppingCeneo::createItem();
+                        $atts = $this->get_product_data($product, $product_meta_keys);
+                        foreach ($atts as $key => $value) {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
                     }
                 }
             }
+
 
             if( $product->is_type( 'grouped' ) ){
                 $group_products[] = $productId;
@@ -158,7 +215,6 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
             'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
-
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
     }
 

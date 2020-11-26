@@ -205,8 +205,6 @@ class Feed
      */
     private function addItemsToFeed()
     {
-
-
         foreach ($this->items as $item) {
 
             $s_nodes = array('PARAM', 'IMGURL_ALTERNATIVE');

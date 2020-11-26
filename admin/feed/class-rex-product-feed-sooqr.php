@@ -237,5 +237,6 @@ class Rex_Product_Feed_Sooqr extends Rex_Product_Feed_Abstract_Generator {
     public function footer_replace()
     {
         // TODO: Implement footer_replace() method.
+        $this->feed = str_replace('</products>', '', $this->feed);
     }
 }

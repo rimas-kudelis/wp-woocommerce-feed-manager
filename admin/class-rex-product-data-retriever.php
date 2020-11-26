@@ -1110,7 +1110,7 @@ class Rex_Product_Data_Retriever {
 
 
             case 'yoast_primary_cats_comma':
-                return $this->get_yoast_product_cats_with_seperator('', ' , ', ''); break;
+                return $this->get_yoast_product_cats_with_seperator('', ', ', ''); break;
 
 
             case 'product_subcategory':
@@ -2098,6 +2098,11 @@ class Rex_Product_Data_Retriever {
                     }
                 }else {
                     return intval($val) * 100;
+                }
+                return $val;
+                case 'add_two_decimal':
+                if($this->checkIfFloat($val)) {
+                    $val = round($val, 2);
                 }
                 return $val;
             default:

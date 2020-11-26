@@ -465,7 +465,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_feed_data( $info ){
 
-        $this->tbatch           =   $info['total_batch'];
+
+        $this->tbatch           =   (int) $info['total_batch'];
         $this->posts_per_page   =   $info['per_batch'];
         $this->id               =   $info['post_id'];
         $this->title            =   $info['title'];
@@ -669,7 +670,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if( $this->wpml_language ) {
                 $sitepress->switch_lang( $this->wpml_language );
             }
-
         }
         if($this->product_scope === 'filter') {
             $filter_args = Rex_Product_Filter::createFilterQueryParams($this->feed_rules_filter);
@@ -1049,6 +1049,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if( file_exists($file) ) {
                 if( $this->batch == 1  ) {
+
                     if($this->tbatch > 1) {
                         $this->footer_replace();
                     }
@@ -1059,12 +1060,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     return 'true';
                 }
             }else{
-                if( $this->tbatch > 1 ) {
+
+                if((int)$this->tbatch > 1) {
                     $this->footer_replace();
                 }
                 return file_put_contents($file, $this->feed) ? 'true' : 'false';
             }
-
         }
         elseif ($format == 'text'){
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
@@ -1160,6 +1161,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return string
      */
     public function get_items() {
+
         $feed = new DOMDocument;
         $feed->loadXML($this->feed);
         $feed_string_footer = '';
@@ -1208,7 +1210,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }elseif ($this->merchant === 'vivino') {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '<vivino-product-list>';
+                $feed_string_footer .= '</vivino-product-list>';
+            }
+        }elseif ($this->merchant === 'sooqr'||$this->merchant === 'pricegrabber') {
+            $node = $feed->getElementsByTagName("product");
+            if($this->batch == $this->tbatch) {
+                $feed_string_footer .= '</products>';
             }
         }elseif ($this->merchant === 'zbozi') {
             $node = $feed->getElementsByTagName("SHOPITEM");
@@ -1595,11 +1602,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $node = $newdoc->getElementsByTagName("offer");
             }elseif ($this->merchant === 'homedeco') {
                 $node = $newdoc->getElementsByTagName("item");
-
-
-
-
-
             }elseif ($this->merchant === 'glami') {
                 $node = $newdoc->getElementsByTagName("SHOPITEM");
             }elseif ($this->merchant === 'fashiola') {
