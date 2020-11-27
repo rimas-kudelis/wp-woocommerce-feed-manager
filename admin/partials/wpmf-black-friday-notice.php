@@ -10,7 +10,7 @@
 >
     <div class="wpfm-bf-wrapper">
         <div class="wpfm-logo">
-            <img src="<?php echo WPFM_PLUGIN_DIR_URL .'admin/icon/wpfm-bf-logo.png'?>" alt="wpfm-black-friday">
+            <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER .'icon/logo.png'?>" alt="wpfm-black-friday">
         </div>
         <div class="wpfm-bf-text">
             <p><?php echo __('Upgrade to pro with a', 'rex-product-feed') ?></p>

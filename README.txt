@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.3
 Requires PHP: 7.0
-Stable tag:  6.1.3
+Stable tag:  6.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -544,6 +544,10 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 6.1.4 (2020-11-27) =
+* Fixed: Ceneo Template
+* Compatibility Checked : WooCommerce 4.7.1
 
 = 6.1.3 (2020-11-26) =
 * Fixed: Vivino Template

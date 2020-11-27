@@ -434,7 +434,6 @@
         wpAjaxHelperRequest('generate-feed', $payload)
             .success(function (response) {
                 console.log('Woohoo!');
-                console.log(response);
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if (response == 'false' || response == '') {
                     generate_feed(product, offset, batch, per_batch, total_batch);
@@ -553,7 +552,6 @@
                     $('.rex-google-status').show();
                     $('.rex-google-status').html('<p>Feed sent to google successfully.</p>');
                     console.log('Woohoo!');
-                    console.log(response);
                     location.reload();
                 } else {
                     $('.rex-google-status').removeClass('info');

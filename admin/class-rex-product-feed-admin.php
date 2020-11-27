@@ -299,7 +299,7 @@ class Rex_Product_Feed_Admin {
         if ($interval AND $show_notice !='no') {?>
             <div class="notice notice-info bwfm-review-notice" style="position: relative; border-left-color: #00b4ff;">
                 <div class="wpfm-logo">
-                    <img src="<?php echo WPFM_PLUGIN_DIR_URL.'admin/icon/logo.png'?>" style="max-width: 100%;">
+                    <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER.'icon/logo.png'?>" style="max-width: 100%;">
                 </div>
 
                 <div class="wpfm-notice-content">

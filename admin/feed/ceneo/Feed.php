@@ -317,10 +317,15 @@ class Feed
                         if($count2===1){
                             $attr = $feedItemNode->addChild('attrs');
                         }
-                        $a_tag = $attr->addChild('a');
+
+                        $a_tag = $attr->addChild('a', '<![CDATA ['.$itemNode->get('value').']]>');
                         $a_tag->addAttribute('name', $itemNode->get('name'));
-                        $a_tag->addChild('value','<![CDATA ['.$itemNode->get('value').']]>');
+//                        $a_tag->addChild('value','<![CDATA ['.$itemNode->get('value').']]>');
                         //$a_tag->addChild($itemNode->get('name'), '<![CDATA ['.$itemNode->get('value').']]>');
+
+
+//                        $a_tag = $attr->addChild('a', '<![CDATA ['.$itemNode->get('value').']]>');
+//                        $a_tag->addAttribute('name', $itemNode->get('name'));
                     }
                     else {
                         $itemNode->attachNodeTo($feedItemNode);
