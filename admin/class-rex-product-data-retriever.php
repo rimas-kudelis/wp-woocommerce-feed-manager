@@ -297,11 +297,13 @@ class Rex_Product_Data_Retriever {
                         $_title = $this->product->get_title() . " - ";
                         $title_arr = array();
                         foreach($_variations as $key => $value){
-                            $taxonomy   = str_replace("attribute_", "", $key);
-                            $term       = get_term_by('slug', $value, $taxonomy);
-                            if (!empty($term) && !is_wp_error($term)) {
-                                $title_arr[] = rawurldecode(ucfirst( $term->name ) );
-                            }
+//                            $taxonomy   = str_replace("attribute_", "", $key);
+//                            $term       = get_term_by('slug', $value, $taxonomy);
+//
+//                            if (!empty($term) && !is_wp_error($term)) {
+//                                $title_arr[] = rawurldecode(ucfirst( $term->name ) );
+//                            }
+                            $title_arr[] = rawurldecode(ucfirst( $value ) );
                         }
                         $_title = $_title . implode(', ', $title_arr);
                         return $_title;
@@ -380,6 +382,9 @@ class Rex_Product_Data_Retriever {
                             return wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals());
                         }
                     }
+                    else {
+                        return wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals());
+                    }
                 }
                 if($this->wcml) {
                     global $woocommerce_wpml;
@@ -450,18 +455,8 @@ class Rex_Product_Data_Retriever {
                                 }
                             }
                         }
-                        if($this->wcml) {
-                            global $woocommerce_wpml;
-                            $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_variation_price(), wc_get_price_decimals()), $this->wcml_currency);
-
-                            //if WCML price is set manually
-                            $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if($_custom_prices['_price'] > 0){
-                                $_price = $_custom_prices['_price'];
-                            }
-                            return $_price;
-                        }else {
-                            return wc_format_decimal( $this->product->get_variation_price(), wc_get_price_decimals());
+                        else {
+                            return wc_format_decimal( $this->product->get_price(), wc_get_price_decimals());
                         }
                     }
                     if($this->wcml) {

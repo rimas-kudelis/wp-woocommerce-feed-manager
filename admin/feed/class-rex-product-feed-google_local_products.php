@@ -165,6 +165,6 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
 
     public function footer_replace()
     {
-        // TODO: Implement footer_replace() method.
+        $this->feed = str_replace('</channel></rss>', '', $this->feed);
     }
 }

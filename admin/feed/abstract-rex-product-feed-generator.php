@@ -1167,7 +1167,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $feed_string_footer = '';
         if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
             $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' ||
-            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq'
+            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder'
+            || $this->merchant === 'emarts' || $this->merchant === 'epoq'||$this->merchant === 'google_local_products'
         ) {
             $node = $feed->getElementsByTagName("item");
             if($this->batch == $this->tbatch) {
@@ -1317,7 +1318,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
             }
-        }elseif ($this->merchant === 'beslist'||$this->merchant === 'rss'||$this->merchant === 'spartoo') {
+        }elseif ($this->merchant === 'beslist'||$this->merchant === 'rss'||$this->merchant === 'spartoo'||
+            $this->merchant === 'spartoo'||$this->merchant === 'google_local_products_inventory'||$this->merchant === 'google_Ad') {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
@@ -1485,7 +1487,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         return $str;
     }
 
-
     /**
      * Responsible for merge batch feeds.
      * @return string
@@ -1632,7 +1633,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         return false;
     }
 
-
     function cleanString($string)
     {
         // allow only letters
@@ -1647,7 +1647,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         // return
         return $res;
     }
-
 
     /**
      * Responsible for creating the feed.

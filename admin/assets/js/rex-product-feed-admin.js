@@ -412,7 +412,6 @@
 
             feed_config: $('form').serialize(),
         };
-        console.log($payload);
         var batches = total_batch;
         console.log('Total Batch: ' + batches);
         console.log('Total Product(s): ' + product);

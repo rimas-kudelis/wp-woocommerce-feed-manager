@@ -954,8 +954,10 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             $this->feed = str_replace('</Katalog>', '', $this->feed);
         }else if($this->merchant === 'beslist' ||$this->merchant === 'cdiscount'||$this->merchant === 'kieskeurig'
             ||$this->merchant === 'kauftipp'||$this->merchant === 'kuantokusta'||$this->merchant === 'kelkoonl'||$this->merchant === 'mydeal'
-            ||$this->merchant === 'prisjkat'||$this->merchant === 'pricefalls'||$this->merchant === 'pricerunner'||$this->merchant === 'nextag'
-            ||$this->merchant === 'rakuten_advertising'||$this->merchant === 'shopee'||$this->merchant === 'vidaXL'||$this->merchant === 'rss'||$this->merchant === 'pricegrabber'){
+            ||$this->merchant === 'prisjkat'||$this->merchant === 'pricefalls'|| $this->merchant === 'pricerunner'||$this->merchant === 'nextag'
+            ||$this->merchant === 'rakuten_advertising'||$this->merchant === 'shopee'
+            ||$this->merchant === 'vidaXL'||$this->merchant === 'rss'
+            ||$this->merchant === 'pricegrabber'||$this->merchant === 'google_dsa'||$this->merchant === 'google_Ad'){
             $this->feed = str_replace('</products>', '', $this->feed);
         }else if($this->merchant === '123i'){
             $this->feed = str_replace('</Imoveis></Carga>', '', $this->feed);

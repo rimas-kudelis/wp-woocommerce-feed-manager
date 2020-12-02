@@ -208,6 +208,6 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
 
     public function footer_replace()
     {
-        // TODO: Implement footer_replace() method.
+        $this->feed = str_replace('</products>', '', $this->feed);
     }
 }
