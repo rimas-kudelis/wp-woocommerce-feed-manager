@@ -1470,6 +1470,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</items>';
             }
+        }elseif ($this->merchant === 'shopping') {
+            $node = $feed->getElementsByTagName("product");
+            if($this->batch == $this->tbatch) {
+                $feed_string_footer .= '</products>';
+            }
         }else {
             $node = $feed->getElementsByTagName("item");
             if($this->batch == $this->tbatch) {

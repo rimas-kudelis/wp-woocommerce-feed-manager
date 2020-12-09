@@ -213,7 +213,7 @@ class Rex_Product_Feed {
         /**
          * trigger admin notice for black friday
          */
-         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rt_black_friday_offer_notice' );
+//         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rt_black_friday_offer_notice' );
     }
 
 

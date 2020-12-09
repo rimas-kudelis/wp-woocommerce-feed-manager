@@ -312,37 +312,37 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
 
                                 <h4 class="title"><?php _e("Here is an offer you can't miss!",'rex-product-feed'); ?></h4>
 
-<!--                                <div class="rex-general__single-block cart">-->
-<!--                                    <div class="header">-->
-<!--                                        <img src="--><?php //echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/Cart-Lift.png'?><!--" class="title-icon" alt="cart-lift">-->
-<!--                                        <h4>--><?php //echo __('Cart Lift', 'rex-product-feed')?><!--</h4>-->
-<!--                                    </div>-->
-<!---->
-<!--                                    <div class="body">-->
-<!--                                        <p>--><?php //_e('Recover your abandoned cart customers with automated e-mail drip campaigns. Enjoy immediate increase in your sales..','rex-product-feed'); ?><!--</p>-->
-<!---->
-<!--                                        <a class="btn-default" href="--><?php //echo apply_filters('wpfm_cart_link', 'https://wordpress.org/plugins/cart-lift/'); ?><!--" target="_blank">--><?php //echo __('Get It Now', 'rex-product-feed')?><!--</a>-->
-<!--                                    </div>-->
-<!--                                 </div>-->
-                                 <!-- rex-general__single-block -->
-
-<!--                                 <div class="rex-general__single-block vas">-->
-<!--                                    <div class="header">-->
-<!--                                        <img src="--><?php //echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/variation-swatch.png'?><!--" class="title-icon" alt="variation-swatch">-->
-<!--                                        <h4>--><?php //echo __('Variation Swatches', 'rex-product-feed')?><!--</h4>-->
-<!--                                    </div>-->
-<!---->
-<!--                                    <div class="body">-->
-<!--                                        <p>--><?php //_e('Use engaging color, image, or text swatches to display your product variations and make your product page more attractive.','rex-product-feed'); ?><!--</p>-->
-<!--                                        <a class="btn-default" href="--><?php //echo apply_filters('wpfm_variation_link', 'https://wordpress.org/plugins/rex-variation-swatches-for-woocommerce/'); ?><!--" target="_blank">--><?php //echo __('Get It Now', 'rex-product-feed')?><!--</a>-->
-<!--                                    </div>-->
-<!--                                 </div>-->
-                                 <!-- rex-general__single-block -->
-                                <a href="https://rextheme.com/black-friday/?wpfm=1" target="_blank">
-                                    <div class="bf-banner-container">
-                                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/black-friday-2.png'?>" style="max-width: 100%;" alt="black-friday-offer">
+                                <div class="rex-general__single-block cart">
+                                    <div class="header">
+                                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/Cart-Lift.png'?>" class="title-icon" alt="cart-lift">
+                                        <h4><?php echo __('Cart Lift', 'rex-product-feed')?></h4>
                                     </div>
-                                </a>
+
+                                    <div class="body">
+                                        <p><?php _e('Recover your abandoned cart customers with automated e-mail drip campaigns. Enjoy immediate increase in your sales..','rex-product-feed'); ?></p>
+
+                                        <a class="btn-default" href="<?php echo apply_filters('wpfm_cart_link', 'https://wordpress.org/plugins/cart-lift/'); ?>" target="_blank"><?php echo __('Get It Now', 'rex-product-feed')?></a>
+                                    </div>
+                                 </div>
+<!--                                  rex-general__single-block-->
+
+                                 <div class="rex-general__single-block vas">
+                                    <div class="header">
+                                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/variation-swatch.png'?>" class="title-icon" alt="variation-swatch">
+                                        <h4><?php echo __('Variation Swatches', 'rex-product-feed')?></h4>
+                                    </div>
+
+                                    <div class="body">
+                                        <p><?php _e('Use engaging color, image, or text swatches to display your product variations and make your product page more attractive.','rex-product-feed'); ?></p>
+                                        <a class="btn-default" href="<?php echo apply_filters('wpfm_variation_link', 'https://wordpress.org/plugins/rex-variation-swatches-for-woocommerce/'); ?>" target="_blank"><?php echo __('Get It Now', 'rex-product-feed')?></a>
+                                    </div>
+                                 </div>
+                                 <!-- rex-general__single-block -->
+<!--                                <a href="https://rextheme.com/black-friday/?wpfm=1" target="_blank">-->
+<!--                                    <div class="bf-banner-container">-->
+<!--                                        <img src="--><?php //echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/black-friday-2.png'?><!--" style="max-width: 100%;" alt="black-friday-offer">-->
+<!--                                    </div>-->
+<!--                                </a>-->
                             </div>
                             <!-- rex-general__right-info-wrapper.end -->
 

@@ -46,7 +46,6 @@ class Rex_Product_Feed_Factory {
                 'ebay',
                 'become' ,
                 'shopzilla',
-                'shopping',
                 'google_Ad',
                 'adroll',
                 'admarkt',
