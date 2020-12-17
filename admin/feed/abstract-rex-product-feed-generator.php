@@ -1319,7 +1319,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $feed_string_footer .= '</products>';
             }
         }elseif ($this->merchant === 'beslist'||$this->merchant === 'rss'||$this->merchant === 'spartoo'||
-            $this->merchant === 'spartoo'||$this->merchant === 'google_local_products_inventory'||$this->merchant === 'google_Ad') {
+            $this->merchant === 'spartoo'||$this->merchant === 'google_local_products_inventory'||$this->merchant === 'google_Ad' || $this->merchant === 'shopmania') {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
