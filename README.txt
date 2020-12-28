@@ -547,10 +547,8 @@ WP Dashboard > Product Feed > Upgrade.
 == Changelog ==
 
 = 6.2.0 (2020-12-28) =
-* Fixed: Shopmania template
 * Added: Google Custom Search Ads template
 * Added: All Amazon templates formats - CSV, TXT and TSV
-* Compatibility Checked : WooCommerce 4.8.0
 
 = 6.1.7 (2020-12-17) =
 * Fixed: Shopmania template
