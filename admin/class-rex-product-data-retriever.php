@@ -1,3 +1,4 @@
+
 <?php
 
 
@@ -1595,6 +1596,7 @@ class Rex_Product_Data_Retriever {
      * @return string|false
      */
     protected function get_product_cats_with_seperator( $before = '', $sep = ' > ', $after = '' ) {
+
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             return $this->get_the_term_list_with_path( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
         }else {
@@ -1817,7 +1819,7 @@ class Rex_Product_Data_Retriever {
             }
         }
 
-        return implode(' , ', $output);
+        return implode($sep, $output);
     }
 
 
@@ -2354,4 +2356,5 @@ class Rex_Product_Data_Retriever {
             array('%25', '%5b', '%5d', '%7b', '%7d', '%7c', '%20', '%22', '%3c', '%3e', '%23', '%5c', '%5e', '%7e', '%60'),
             $string);
     }
+
 }

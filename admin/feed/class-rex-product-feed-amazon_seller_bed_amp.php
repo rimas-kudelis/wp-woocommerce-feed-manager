@@ -28,7 +28,7 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
         $this->feed = $this->returnFinalProduct();
-        $this->feed_format = 'tsv';
+        //$this->feed_format = 'tsv';
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(
@@ -143,21 +143,18 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
     }
 
 
-
-//    /**
-//     * Return Feed
-//     * @return array|bool|string
-//     */
-//    public function returnFinalProduct(){
-//        return RexShoppingCustom::asCSVFeeds($this->batch, 'bed_amp');
-//    }
-
     /**
      * Return Feed
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-        return RexShoppingCustom::asTSVFeeds($this->batch, 'bed_amp');
+        if($this->feed_format==='csv'){
+            return RexShoppingCustom::asCSVFeeds($this->batch, 'bed_amp');
+        }elseif ($this->feed_format==='tsv'){
+            return RexShoppingCustom::asTSVFeeds($this->batch, 'bed_amp');
+        }elseif ($this->feed_format==='text'){
+            return RexShoppingCustom::asTextFeeds($this->batch, 'bed_amp');
+        }
     }
 
     public function footer_replace() {}

@@ -302,10 +302,12 @@ class Rex_Product_Feed_Ajax {
      */
     public static function show_feed_template( $merchant ){
         $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
+
         if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
             $feed_rules = false;
         }
         $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
+
         $feed_format = self::get_merchant_feed_format($merchant['merchant']);
         ob_start();
         if( in_array($merchant['merchant'], apply_filters('wpfm_has_custom_feed_config', array()))) {
@@ -314,6 +316,7 @@ class Rex_Product_Feed_Ajax {
             include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         }
         $result = ob_get_contents();
+
         ob_end_clean();
         ob_flush();
         $selected_format = get_post_meta($merchant['post_id'], 'rex_feed_feed_format', true);
@@ -356,6 +359,7 @@ class Rex_Product_Feed_Ajax {
             'leguide',
         );
         $amazon_format = array(
+            'amazon_it_collane',
             'amazon_seller_bed_amp',
             'amazon_seller',
             'amazon',
@@ -363,6 +367,7 @@ class Rex_Product_Feed_Ajax {
 
         $snapchat_format = array(
             'snapchat',
+            'google_custom_search_ads',
 
         );
         $printerst_format = array(
@@ -390,7 +395,9 @@ class Rex_Product_Feed_Ajax {
         );
         $connexity_format = array(
             'connexity',
+
         );
+
 
         if (in_array( $merchant, $google_format )) {
             return array('xml');
@@ -399,7 +406,7 @@ class Rex_Product_Feed_Ajax {
             return array('xml', 'csv');
         }elseif (in_array( $merchant, $amazon_format ))
         {
-            return array('tsv');
+            return array('csv', 'tsv','text');
         }elseif (in_array( $merchant, $snapchat_format )){
             return array('csv');
         }elseif (in_array( $merchant, $printerst_format ))

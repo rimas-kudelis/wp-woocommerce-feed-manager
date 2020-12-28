@@ -29,7 +29,6 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
         $this->feed = $this->returnFinalProduct();
-        $this->feed_format = 'csv';
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(
@@ -143,7 +142,14 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-        return RexShoppingCustom::asCSVFeeds($this->batch);
+        if($this->feed_format==='csv'){
+            return RexShoppingCustom::asCSVFeeds($this->batch);
+        }elseif ($this->feed_format==='tsv'){
+            return RexShoppingCustom::asTSVFeeds($this->batch);
+        }elseif ($this->feed_format==='text'){
+            return RexShoppingCustom::asTextFeeds($this->batch);
+        }
+
     }
 
     public function footer_replace() {}

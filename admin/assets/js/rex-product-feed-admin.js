@@ -429,7 +429,7 @@
         } else {
             $('.progress-msg span').html('Processing feed.....');
         }
-
+        console.log($payload)
         wpAjaxHelperRequest('generate-feed', $payload)
             .success(function (response) {
                 console.log('Woohoo!');
@@ -442,6 +442,7 @@
                     $('#publish').removeClass('disabled');
                     $(document).off('click', '#publish', get_product_number);
                     $('#publish').trigger('click');
+
                 } else {
                     if (batch < batches) {
                         offset = offset + per_batch;
@@ -449,6 +450,7 @@
                         feed_progressBar(progressWidth);
                         generate_feed(product, offset, batch, per_batch, total_batch);
                     }
+
                 }
             })
             .error(function (response) {

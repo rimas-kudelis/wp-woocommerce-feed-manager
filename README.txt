@@ -1,3 +1,4 @@
+
 === WooCommerce Product Feed Manager ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
@@ -5,7 +6,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.3
 Requires PHP: 7.0
-Stable tag:  6.1.7
+Stable tag:  6.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -544,6 +545,12 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 6.2.0 (2020-12-28) =
+* Fixed: Shopmania template
+* Added: Google Custom Search Ads template
+* Added: All Amazon templates formats - CSV, TXT and TSV
+* Compatibility Checked : WooCommerce 4.8.0
 
 = 6.1.7 (2020-12-17) =
 * Fixed: Shopmania template

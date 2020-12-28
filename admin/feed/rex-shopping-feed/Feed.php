@@ -104,7 +104,7 @@ class Feed
     /**
      * Feed constructor
      */
-    public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss', $stand_alone = false, $wrapperel = '', $namespace_prefix = '')
+    public function __construct($wrapper = false, $itemlName = 'item', $namespace = null, $version = '', $rss = 'rss', $stand_alone = false, $wrapperel = '')
     {
         $this->namespace   = $namespace;
         $this->version     = $version;
@@ -113,7 +113,7 @@ class Feed
         $this->itemlName   = $itemlName;
         $this->rss         = $rss;
 
-        $namespace = $this->namespace && !empty($this->namespace) ? " xmlns{$namespace_prefix}='$this->namespace'" : '';
+        $namespace = " xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'";
         $version   = $this->version && !empty($this->version) ? " version='$this->version'" : '';
         $stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
 
@@ -235,11 +235,43 @@ class Feed
      */
     private function addItemsToFeed()
     {
+
+        $count =0;
+
+        $attrNode = array();
+        $childNode = array();
+        $imageNode = array();
+        $otherAttrNode = array();
+
         foreach ($this->items as $item) {
+            foreach ($item->nodes() as $itemNode) {
+                if($itemNode->get('name') === 'id'||$itemNode->get('name') === 'url'||$itemNode->get('name') === 'price'||
+                    $itemNode->get('name') === 'avail'|| $itemNode->get('name') === 'stock'|| $itemNode->get('name') === 'weight'||
+                    $itemNode->get('name') === 'basket')
+                {
+                    array_push($attrNode,$itemNode);
+
+                }else if($itemNode->get('name') == 'image_link'||$itemNode->get('name') == 'additional_image_link'){
+                    array_push($imageNode,$itemNode);
+                }else if($itemNode->get('name') == 'cat'||$itemNode->get('name') == 'name'||$itemNode->get('name') == 'desc'){
+                    array_push($childNode,$itemNode);
+                }
+                else{
+                    array_push($otherAttrNode,$itemNode);
+                }
+            }
+        }
+
+        foreach ($this->items as $item) {
+            $count=0;
+            $count2=0;
+
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
+
                 $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);
             }else{
+
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
             foreach ($item->nodes() as $itemNode) {
@@ -248,18 +280,88 @@ class Feed
                         $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
                     }
                 } else {
-                    $itemNode->attachNodeTo($feedItemNode);
+                    if($itemNode->get('name') == 'id') {
+                        $feedItemNode->addAttribute('id', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'url'){
+                        $feedItemNode->addAttribute('url', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'price'){
+                        $feedItemNode->addAttribute('price', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'avail'){
+                        $feedItemNode->addAttribute('avail', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'stock'){
+                        $feedItemNode->addAttribute('stock', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'basket'){
+                        $feedItemNode->addAttribute('basket', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'weight'){
+                        $feedItemNode->addAttribute('weight', $itemNode->get('value'));
+                    }elseif($itemNode->get('name') == 'image_link'||$itemNode->get('name') == 'additional_image_link'){
+                        $count++;
+                        if($count===1){
+                            $image = $feedItemNode->addChild('imgs');
+                            $main = $image->addChild('main');
+                            $i = $image->addChild('i');
+                            //$main_ad_im = $image->addChild('additional_img');
+                        }
+                        if($itemNode->get('name') == 'image_link'){
+                            $main->addAttribute('url', $itemNode->get('value'));
+                            //$i->addAttribute('url', $itemNode->get('value'));
+                        }elseif ($itemNode->get('name') == 'additional_image_link'){
+                            //$main_ad_im->addAttribute('url', $itemNode->get('value'));
+                            $i->addAttribute('url', $itemNode->get('value'));
+                        }
+                        //$feedItemNode->addAttribute('stock', $itemNode->get('value'));
+
+                    }elseif (in_array($itemNode,$otherAttrNode)){
+                        $count2++;
+                        if($count2===1){
+                            $attr = $feedItemNode->addChild('attrs');
+                        }
+
+                        $a_tag = $attr->addChild('a', '<![CDATA ['.$itemNode->get('value').']]>');
+                        $a_tag->addAttribute('name', $itemNode->get('name'));
+//                        $a_tag->addChild('value','<![CDATA ['.$itemNode->get('value').']]>');
+                        //$a_tag->addChild($itemNode->get('name'), '<![CDATA ['.$itemNode->get('value').']]>');
+
+
+//                        $a_tag = $attr->addChild('a', '<![CDATA ['.$itemNode->get('value').']]>');
+//                        $a_tag->addAttribute('name', $itemNode->get('name'));
+                    }
+                    else {
+                        $itemNode->attachNodeTo($feedItemNode);
+                    }
                 }
             }
+
+            /* foreach ($item->nodes() as $itemNode){
+                 if (is_array($itemNode)) {
+                     foreach ($itemNode as $node) {
+                         $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
+                     }
+                 }else{
+                     if(in_array($itemNode,$attrNode)){
+                         $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
+                     }elseif (in_array($itemNode,$imageNode)){
+                         $feedItemNode->addAttribute('image', $itemNode->get('value'));
+                         $image = $feedItemNode->addChild('imgs');
+                         $main = $image->addChild('main');
+                         $i = $image->addChild('i');
+                         $main->addAttribute('url', $itemNode->get('value'));
+                         $i->addAttribute('url', $itemNode->get('value'));
+                     }elseif (in_array($itemNode,$otherAttrNode)){
+                         $count++;
+                         if($count===1){
+                             $rr = $feedItemNode->addChild('attr', $itemNode->get('value'));
+                         }
+                         $rr->addChild($itemNode->get('name'), $itemNode->get('value'));
+                     }
+                     else{
+                         $itemNode->attachNodeTo($feedItemNode);
+                     }
+                 }
+             }*/
         }
     }
 
-
-    /**
-     * add items to text feed
-     *
-     * @return string
-     */
     private function addItemsToFeedText() {
         $str = '';
         if(count($this->items)){
@@ -284,15 +386,8 @@ class Feed
         return $str;
     }
 
-    /**
-     * add items to csv feed
-     *
-     * @return Item[]
-     */
     private function addItemsToFeedCSV(){
-
         if(count($this->items)){
-
             $this->items_row[] = array_keys(end($this->items)->nodes());
             foreach ($this->items as $item) {
                 $row = array();
@@ -307,33 +402,10 @@ class Feed
                 }
                 $this->items_row[] = $row;
             }
-            
             $str = '';
             foreach ($this->items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
             }
-        }
-
-        return $this->items_row;
-    }
-
-
-    /**
-     * add items to json feed
-     *
-     * @return Item[]
-     */
-    private function addItemsToFeedJSON(){
-
-        if(count($this->items)){
-            $this->items_row[] = array_keys(end($this->items)->nodes());
-            foreach ($this->items as $item) {
-                $row = array();
-                foreach ($item->nodes() as $itemNode) {
-//                    if($itemNode->get)
-                }
-            }
-
         }
 
         return $this->items_row;
@@ -380,7 +452,6 @@ class Feed
     public function asRss($output = false)
     {
         if (ob_get_contents()) ob_end_clean();
-
         $this->addItemsToFeed();
 
 //        $data = html_entity_decode($this->feed->asXml());
@@ -400,11 +471,13 @@ class Feed
      */
     public function asTxt($output = false)
     {
-
         if (ob_get_contents()) ob_end_clean();
-        $str = $this->addItemsToFeedText();
-
-        return $str;
+        $this->addItemsToFeedText();
+        $data = html_entity_decode($this->feed->asXml());
+        if ($output) {
+            die($data);
+        }
+        return $data;
     }
 
     /**
@@ -415,32 +488,13 @@ class Feed
     public function asCsv($output = false)
     {
 
-        if (ob_get_contents()) ob_end_clean();
+        ob_end_clean();
         $data = $this->addItemsToFeedCSV();
         if ($output) {
             die($data);
         }
         return $data;
     }
-
-
-    /**
-     * Generate CSV feed
-     * @param bool $output
-     * @return string
-     */
-    public function asJSON($output = false)
-    {
-
-        if (ob_get_contents()) ob_end_clean();
-        $data = $this->addItemsToFeedJSON();
-        if ($output) {
-            die($data);
-        }
-        return $data;
-    }
-
-
 
     /**
      * Remove last inserted item
@@ -450,3 +504,4 @@ class Feed
         array_pop($this->items);
     }
 }
+
