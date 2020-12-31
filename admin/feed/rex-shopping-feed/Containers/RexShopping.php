@@ -13,7 +13,7 @@ class RexShopping
     public static $container = null;
 
     /**
-     * Feed namespaceF
+     * Feed namespace
      * @var Feed
      */
     public static $namespace = null;
