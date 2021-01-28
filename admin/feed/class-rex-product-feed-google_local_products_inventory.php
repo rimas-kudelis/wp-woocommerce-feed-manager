@@ -13,7 +13,7 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
-use RexTheme\RexShoppingFeed\Containers\RexShopping;
+use LukeSnowden\GoogleShoppingFeed\Containers\GoogleShopping;
 
 class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_Abstract_Generator {
 
@@ -31,11 +31,10 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
      **/
     public function make_feed() {
 
-        RexShopping::$container = null;
-        RexShopping::init(true, $this->setItemWrapper(), null, '1.0', $this->setItemsWrapper(), true, '');
-        RexShopping::title($this->title);
-        RexShopping::link($this->link);
-        RexShopping::datetime(date("Y-m-d h:i:s"));
+        GoogleShopping::$container = null;
+        GoogleShopping::title($this->title);
+        GoogleShopping::link($this->link);
+        GoogleShopping::description($this->desc);
 
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
@@ -59,6 +58,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
+        $variable_products=[];
         $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
             'total' => 0,
             'simple' => 0,
@@ -96,7 +96,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
-                    $item = RexShopping::createItem();
+                    $item = GoogleShopping::createItem();
                     foreach ($atts as $key => $value) {
                         $item->$key($value); // invoke $key as method of $item object.
                     }
@@ -111,7 +111,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variable_products[] = $variation;
-                                $item = RexShopping::createItem();
+                                $item = GoogleShopping::createItem();
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                                 foreach ($atts as $key => $value) {
@@ -126,7 +126,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
             if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
-                $item = RexShopping::createItem();
+                $item = GoogleShopping::createItem();
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
@@ -135,7 +135,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variable_products[] = $productId;
-                    $item = RexShopping::createItem();
+                    $item = GoogleShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     foreach ($atts as $key => $value) {
                         $item->$key($value); // invoke $key as method of $item object.
@@ -145,7 +145,7 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
 
             if( $product->is_type( 'grouped' ) ){
                 $group_products[] = $productId;
-                $item = RexShopping::createItem();
+                $item = GoogleShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
@@ -197,17 +197,17 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
     {
 
         if ($this->feed_format == 'xml') {
-            return RexShopping::asRss();
+            return GoogleShopping::asRss();
         } elseif ($this->feed_format == 'text') {
-            return RexShopping::asTxt();
+            return GoogleShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            return RexShopping::asCsv();
+            return GoogleShopping::asCsv();
         }
-        return RexShopping::asRss();
+        return GoogleShopping::asRss();
     }
 
-    public function footer_replace()
-    {
-        $this->feed = str_replace('</products>', '', $this->feed);
+    public function footer_replace() {
+        $this->feed = str_replace('</channel></rss>', '', $this->feed);
+
     }
 }

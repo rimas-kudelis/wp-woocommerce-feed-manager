@@ -293,8 +293,7 @@ class Rex_Product_Data_Retriever {
                 }
                 else {
                     if ($this->is_children()) {
-                        $_product = wc_get_product( $this->product );
-                        $_variations = $_product->get_attributes();
+                       /* $_variations = $_product->get_attributes();
                         $_title = $this->product->get_title() . " - ";
                         $title_arr = array();
                         foreach($_variations as $key => $value){
@@ -306,7 +305,26 @@ class Rex_Product_Data_Retriever {
 //                            }
                             $title_arr[] = rawurldecode(ucfirst( $value ) );
                         }
-                        $_title = $_title . implode(', ', $title_arr);
+                        $_title = $_title . implode(', ', $title_arr);*/
+                        $_product = wc_get_product( $this->product );
+                        $attr_summary = $_product->get_attribute_summary();
+                        $attr_array = explode(",", $attr_summary);
+
+                        $each_child_attr= [];
+                        foreach ($attr_array as $ata){
+                            $attr = strpbrk($ata,":");
+                            $each_child_attr[]=$attr;
+                        }
+
+                        $each_child_attr_two= [];
+                        foreach ($each_child_attr as $eca){
+                            $each_child_attr_two[]= str_replace(": "," ",$eca);
+                        }
+
+                        $_title = $this->product->get_title() . " - ";
+                        $_title = $_title . implode(', ', $each_child_attr_two);
+                        return $_title;
+
                         return $_title;
                     }else {
                         return $this->product->get_name();
@@ -2120,11 +2138,17 @@ class Rex_Product_Data_Retriever {
                     return intval($val) * 100;
                 }
                 return $val;
-                case 'add_two_decimal':
+            case 'add_two_decimal':
                 if($this->checkIfFloat($val)) {
                     $val = round($val, 2);
                 }
                 return $val;
+            case 'remove_hyphen':
+                return str_replace('-', '', $val);
+
+            case 'remove_hyphen_space':
+                return str_replace('-', ' ', $val);
+
             default:
                 return $val;
                 break;

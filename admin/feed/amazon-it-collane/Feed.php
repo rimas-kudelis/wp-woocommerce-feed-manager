@@ -87,6 +87,7 @@ class AmazonItCollaneFeed extends \RexTheme\RexShoppingFeed\Feed
                 $this->items_row[] = $third_row;
             }
 
+
             foreach ($this->items as $item) {
                 $row = array();
                 foreach ($item->nodes() as $itemNode) {
@@ -108,6 +109,7 @@ class AmazonItCollaneFeed extends \RexTheme\RexShoppingFeed\Feed
         }
 
         return $this->items_row;
+
     }
 
 

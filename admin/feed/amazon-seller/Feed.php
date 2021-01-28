@@ -109,7 +109,6 @@ class AmazonSellerFeed extends \RexTheme\RexShoppingFeed\Feed
      * @return array|\RexTheme\RexShoppingFeed\Item[]
      */
     private function addItemsToFeedCSV($batch, $type = 'seller'){
-
         if(count($this->items)){
             if($batch === 1) {
                 $this->init_atts();
@@ -156,7 +155,6 @@ class AmazonSellerFeed extends \RexTheme\RexShoppingFeed\Feed
                 $str .= implode("\t", $fields) . "\n";
             }
         }
-
         return $this->items_row;
     }
 

@@ -58,7 +58,7 @@ class Rex_Product_Feed_Factory {
                 'scoupz',
                 'kelkoonl',
                 'uvinum',
-                'idealo',
+                /*'idealo',*/
                 'rakuten',
                 'pricesearcher',
                 'pricemasher',
@@ -202,6 +202,7 @@ class Rex_Product_Feed_Factory {
             $className = 'Rex_Product_Feed_Other';
         }
         elseif (in_array( $config['merchant'], self::$google_format )) {
+
             $className = 'Rex_Product_Feed_Google';
         }
         elseif (in_array( $config['merchant'], self::$facebook_format )) {
@@ -211,7 +212,9 @@ class Rex_Product_Feed_Factory {
             $className = 'Rex_Product_Feed_Yandex';
         }
         else{
+
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
+
 
         }
         if( $config == '' || ! class_exists( $className ) ) {
@@ -222,6 +225,7 @@ class Rex_Product_Feed_Factory {
         } else {
             return new $className( $config, $bypass, $product_ids );
         }
+
 
         return false;
     }

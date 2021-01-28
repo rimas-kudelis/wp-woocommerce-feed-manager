@@ -133,6 +133,7 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
 
     public static $classMap = array (
         'CategoryMapping' => __DIR__ . '/../..' . '/admin/class-category-mapping.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Google_Task_Composer' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
         'LukeSnowden\\GoogleShoppingFeed\\Containers\\GoogleShopping' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Containers/GoogleShopping.php',
         'LukeSnowden\\GoogleShoppingFeed\\Exceptions\\MissingIdentifierException' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Exceptions/MissingIdentifierException.php',
@@ -147,6 +148,10 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'RexTheme\\GlamiShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/glami/Feed.php',
         'RexTheme\\GlamiShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/glami/Item.php',
         'RexTheme\\GlamiShoppingFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/glami/Node.php',
+        'RexTheme\\GoogleLocalProducts\\Containers\\GoogleLocalProducts' => __DIR__ . '/../..' . '/admin/feed/google-local-products/Containers/google_local_products.php',
+        'RexTheme\\GoogleLocalProducts\\Feed' => __DIR__ . '/../..' . '/admin/feed/google-local-products/Feed.php',
+        'RexTheme\\GoogleLocalProducts\\Item' => __DIR__ . '/../..' . '/admin/feed/google-local-products/Item.php',
+        'RexTheme\\GoogleLocalProducts\\Node' => __DIR__ . '/../..' . '/admin/feed/google-local-products/Node.php',
         'RexTheme\\GrupozapShoppingFeed\\Containers\\GrupozapShopping' => __DIR__ . '/../..' . '/admin/feed/grupo_zap/Containers/GrupozapShopping.php',
         'RexTheme\\GrupozapShopping\\Grupozap\\Feed' => __DIR__ . '/../..' . '/admin/feed/grupo_zap/Feed.php',
         'RexTheme\\MarktPlaatsShoppingFeed\\Containers\\MarktPlaatsShopping' => __DIR__ . '/../..' . '/admin/feed/marktplaats/Containers/MarktPlaatsShopping.php',
@@ -161,6 +166,10 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'RexTheme\\RexShoppingFeedCustom\\AmazonItCollane\\Containers\\RexShoppingAmazonIt' => __DIR__ . '/../..' . '/admin/feed/amazon-it-collane/Containers/RexShoppingAmazonIt.php',
         'RexTheme\\RexShoppingFeedCustom\\AmazonSellerFeed\\AmazonSellerFeed' => __DIR__ . '/../..' . '/admin/feed/amazon-seller/Feed.php',
         'RexTheme\\RexShoppingFeedCustom\\AmazonSeller\\Containers\\RexShoppingCustom' => __DIR__ . '/../..' . '/admin/feed/amazon-seller/Containers/RexShoppingCustom.php',
+        'RexTheme\\RexShoppingFeedCustom\\idealo\\Containers\\Idealo' => __DIR__ . '/../..' . '/admin/feed/idealo/Containers/Idealo_de.php',
+        'RexTheme\\RexShoppingFeedCustom\\idealo\\Idealo_feed' => __DIR__ . '/../..' . '/admin/feed/idealo/Feed.php',
+        'RexTheme\\RexShoppingFeedCustom\\idealo_de\\Containers\\Idealo_de' => __DIR__ . '/../..' . '/admin/feed/idealo_de/Containers/Idealo.php',
+        'RexTheme\\RexShoppingFeedCustom\\idealo_de\\Idealo_de_feed' => __DIR__ . '/../..' . '/admin/feed/idealo_de/Feed.php',
         'RexTheme\\RexShoppingFeed\\Containers\\RexShopping' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Containers/RexShopping.php',
         'RexTheme\\RexShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Feed.php',
         'RexTheme\\RexShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/Item.php',
@@ -290,6 +299,7 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Feed_Template_Homedeco' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-homedeco.php',
         'Rex_Feed_Template_Hood' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hood.php',
         'Rex_Feed_Template_Idealo' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-idealo.php',
+        'Rex_Feed_Template_Idealo_de' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-idealo_de.php',
         'Rex_Feed_Template_Imovelweb' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-imovelweb.php',
         'Rex_Feed_Template_Incurvy' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-incurvy.php',
         'Rex_Feed_Template_Indeed' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-indeed.php',
@@ -401,6 +411,8 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Product_Feed_Google_local_products_inventory' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-google_local_products_inventory.php',
         'Rex_Product_Feed_Google_merchant_promotion' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-google_merchant_promotion.php',
         'Rex_Product_Feed_Grupo_zap' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-grupo_zap.php',
+        'Rex_Product_Feed_Idealo' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed_idealo.php',
+        'Rex_Product_Feed_Idealo_de' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-idealo_de.php',
         'Rex_Product_Feed_Marktplaats' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-marktplaats.php',
         'Rex_Product_Feed_Notices' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-notices.php',
         'Rex_Product_Feed_Other' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-other.php',
@@ -420,6 +432,10 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Yandex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/yandex/class-rex-yandex-product-data-retriever.php',
         'WP_Async_Request' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
         'WP_Background_Process' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
+        'rextheme\\FacebookShoppingFeed\\Containers\\FacebookShopping' => __DIR__ . '/../..' . '/admin/feed/facebook-feed-format/Containers/FacebookShopping.php',
+        'rextheme\\FacebookShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/facebook-feed-format/Feed.php',
+        'rextheme\\FacebookShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/facebook-feed-format/Item.php',
+        'rextheme\\FacebookShoppingFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/facebook-feed-format/Node.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

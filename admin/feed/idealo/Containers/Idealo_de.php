@@ -1,16 +1,12 @@
 <?php
 
-namespace LukeSnowden\GoogleShoppingFeed\Containers;
+namespace RexTheme\RexShoppingFeedCustom\idealo\Containers;
 
-use LukeSnowden\GoogleShoppingFeed\Feed;
+use RexTheme\RexShoppingFeed\Containers\RexShopping;
+use RexTheme\RexShoppingFeedCustom\idealo\Idealo_feed;
 
-class GoogleShopping
+class Idealo extends RexShopping
 {
-    /**
-     * Feed container
-     * @var Feed
-     */
-    public static $container = null;
 
     /**
      * Return feed container
@@ -19,7 +15,7 @@ class GoogleShopping
     public static function container()
     {
         if (is_null(static::$container)) {
-            static::$container = new Feed;
+            static::$container = new Idealo_feed( static::$wrapper, static::$itemName, static::$namespace, static::$version , static::$rss );
         }
 
         return static::$container;
@@ -34,6 +30,4 @@ class GoogleShopping
     {
         return call_user_func_array(array(static::container(), $name), $arguments);
     }
-
-
 }

@@ -363,6 +363,7 @@ class Rex_Product_Feed_Ajax {
             'amazon_seller_bed_amp',
             'amazon_seller',
             'amazon',
+            'amazon',
         );
 
         $snapchat_format = array(
@@ -375,10 +376,15 @@ class Rex_Product_Feed_Ajax {
             'rakuten',
         );
         $Ebay_format = array(
+            'amazon_accessories_and_scarf',
             'ebay_seller',
             'lazada',
             'bol',
             'fruugo',
+            'google_local_products',
+            'idealo_de',
+            'idealo',
+
         );
         $instagram_format = array(
             'instagram',
@@ -395,7 +401,10 @@ class Rex_Product_Feed_Ajax {
         );
         $connexity_format = array(
             'connexity',
+        );
 
+        $google_local_product_inventory = array(
+            'google_local_products_inventory',
         );
 
 
@@ -425,6 +434,8 @@ class Rex_Product_Feed_Ajax {
             return array('text');
         }elseif (in_array( $merchant, $connexity_format )){
             return array('csv','text');
+        }elseif (in_array( $merchant, $google_local_product_inventory )){
+            return array('xml','text');
         }
         return array('xml', 'csv', 'text', 'tsv', 'json');
     }

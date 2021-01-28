@@ -25,15 +25,14 @@ class Rex_Feed_Template_Google_local_products_inventory extends Rex_Feed_Abstrac
             'Required Information' =>  array(
                 'store_code'                       => 'Store code',
                 'id'                    => 'Product id',
-                'quantity'                    => 'Quantity',
                 'price'                     => 'Price',
+                'quantity'                    => 'Quantity',
+
             ),
             'Optional' => array(
+                'availability' => 'Availability',
                 'sale_price'                => 'Sale Price [sale_price]',
                 'sale_price_effective_date' => 'Sale Price Effective Date [sale_price_effective_date]',
-                'availability' => 'Availability',
-                'pickup_method' => 'Pickup method',
-                'pickup_sla' => 'Pickup SLA',
             )
         );
     }
@@ -61,16 +60,6 @@ class Rex_Feed_Template_Google_local_products_inventory extends Rex_Feed_Abstrac
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'quantity',
-                'type'     => 'meta',
-                'meta_key' => 'quantity',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
-            array(
                 'attr'     => 'price',
                 'type'     => 'meta',
                 'meta_key' => 'price',
@@ -80,6 +69,17 @@ class Rex_Feed_Template_Google_local_products_inventory extends Rex_Feed_Abstrac
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
+            array(
+                'attr'     => 'quantity',
+                'type'     => 'meta',
+                'meta_key' => 'quantity',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            )
+
         );
     }
 

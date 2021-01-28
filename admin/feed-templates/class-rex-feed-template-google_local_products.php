@@ -23,45 +23,35 @@ class Rex_Feed_Template_Google_local_products extends Rex_Feed_Abstract_Template
     protected function init_atts(){
         $this->attributes = array(
             'Required Information' =>  array(
+                'Sales_Rank'                   =>'Rank',
                 'itemid'                       => 'Product Id [id]',
-                'title'                    => 'Product Title [title]',
-                'description'              => 'Product Description [description]',
-                'image_link'               => 'Main Image [image_link]',
-                'condition'                => 'Condition [condition]',
-                'google_product_category'  => 'Google Product Category [google_product_category]',
-                'webitemid'     => 'Webitemid',
+                'title'                        => 'Product Title [title]',
+                'description'                  => 'Product Description [description]',
+                'Image_URL'                    => 'Image URL',
+                'price'                        => 'Regular Price [price]',
+                'store_code'                   => 'Store code',
             ),
-            'Required energy efficiency class attributes (EU only)' => array(
-                'energy_efficiency_class' => 'Energy efficiency class',
-                'energy_efficiency_class_min' => 'Energy efficiency class min',
-                'energy_efficiency_class_max' => 'Energy efficiency class max',
-            ),
-            'Optional matching attributes' => array(
-                'brand'             => 'Manufacturer [brand]',
-                'gtin'              => 'GTIN [gtin]',
-                'mpn'               => 'MPN [mpn]',
-            ),
-            'Optional pricing attributes' => array(
-                'price'                     => 'Regular Price [price]',
-                'sale_price'                => 'Sale Price [sale_price]',
-                'sale_price_effective_date' => 'Sale Price Effective Date [sale_price_effective_date]',
-                'unit_pricing_measure' => 'Unit pricing measure',
-                'unit_pricing_base_measure' => 'Unit pricing base measure',
-            ),
+
             'Optional' => array(
-                'pickup_method' => 'Pickup method',
-                'pickup_SLA' => 'Pickup SLA',
-                'pickup_link_template' => 'Pickup link template',
-                'mobile_pickup_link_template' => 'Mobile pickup link template',
-                'link_template' => 'Link template',
-                'mobile_link_template' => 'Mobile link template',
-                'ads_redirect' => 'Ads redirect',
+                'product_url'                => 'Item URL',
+                'sale_price'                 => 'Sale Price',
+
             )
         );
     }
 
     protected function init_default_template_mappings(){
         $this->template_mappings = array(
+            array(
+                'attr'     => 'Sales_Rank',
+                'type'     => 'static',
+                'meta_key' => '',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
             array(
                 'attr'     => 'itemid',
                 'type'     => 'meta',
@@ -76,6 +66,45 @@ class Rex_Feed_Template_Google_local_products extends Rex_Feed_Abstract_Template
                 'attr'     => 'title',
                 'type'     => 'meta',
                 'meta_key' => 'title',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+
+            array(
+                'attr'     => 'description',
+                'type'     => 'meta',
+                'meta_key' => 'description',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),array(
+                'attr'     => 'Image_URL',
+                'type'     => 'meta',
+                'meta_key' => 'featured_image',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),array(
+                'attr'     => 'price',
+                'type'     => 'meta',
+                'meta_key' => 'price',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => ' '.get_option('woocommerce_currency'),
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
+            array(
+                'attr'     => 'store_code',
+                'type'     => 'static',
+                'meta_key' => '',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',

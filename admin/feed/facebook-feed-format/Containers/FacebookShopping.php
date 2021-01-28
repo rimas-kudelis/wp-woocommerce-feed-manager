@@ -1,10 +1,10 @@
 <?php
 
-namespace LukeSnowden\GoogleShoppingFeed\Containers;
+namespace rextheme\FacebookShoppingFeed\Containers;
 
-use LukeSnowden\GoogleShoppingFeed\Feed;
+use rextheme\FacebookShoppingFeed\Feed;
 
-class GoogleShopping
+class FacebookShopping
 {
     /**
      * Feed container
@@ -34,6 +34,4 @@ class GoogleShopping
     {
         return call_user_func_array(array(static::container(), $name), $arguments);
     }
-
-
 }

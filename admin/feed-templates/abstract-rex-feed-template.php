@@ -253,7 +253,8 @@ abstract class Rex_Feed_Abstract_Template {
                 'decode_url'               => 'Decode url',
                 'remove_decimal'           => 'Remove decimal points (Marktplaats only)',
                 'add_two_decimal'           => 'Two decimal points',
-
+                'remove_hyphen'           => 'Remove hyphen',
+                'remove_hyphen_space'           => 'Remove hyphen(space)',
             )
         );
     }

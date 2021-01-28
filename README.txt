@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.3
 Requires PHP: 7.0
-Stable tag:  6.2.1
+Stable tag:  6.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -544,6 +544,21 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+
+= 6.3.0 (2021-01-28) =
+* Fixed: Idealo template
+* Fixed: Facebook CSV template
+* Fixed: Idealo template
+* Fixed: Google Local Products template
+* Fixed: Google Local Product Inventory template
+* Fixed: Google shipping attributes format
+* Fixed: Variation name attribute issue – previously it was fetching slug rather than name
+* Fixed: Conflict With Visual Composer
+* Fixed: Support button link fixed
+* Added: Idealo.de template
+* Added: Sanitization - Remove Hipen
+* Added: Sanitization - Replace Hipen With Space
+* Compatibility Checked : WooCommerce 4.9.2
 
 = 6.2.1 (2020-12-31) =
 * Fixed: Pricespy template

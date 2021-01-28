@@ -138,7 +138,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     protected $grouped_products;
 
 
-
     /**
      * The Feed.
      * @since    1.0.0
@@ -558,7 +557,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $exclude_hidden_products    = $feed_rules['rex_feed_hidden_products'];
 
 
-
         if ($include_variable_product == 'yes') {
             $this->variable_product = true;
         }else {
@@ -806,7 +804,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         }
 
-
         if($wp_query->get('sdescription_contain')) {
             $title_contain = $wp_query->get('title_contain');
             $i = 0;
@@ -1049,8 +1046,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if( file_exists($file) ) {
-                if( $this->batch == 1  ) {
 
+                if( $this->batch == 1  ) {
                     if($this->tbatch > 1) {
                         $this->footer_replace();
                     }
@@ -1115,6 +1112,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $file = fopen($file,"a+");
 
                 $list = $this->feed;
+
                 if($list) {
                     foreach ($list as $line)
                     {
@@ -1128,9 +1126,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             else {
 
                 $file = fopen($file,"a+");
-
                 $list = $this->feed;
                 array_shift($list);
+                if($this->merchant=='facebook'){
+                    array_shift($list);
+                }
                 foreach ($list as $line)
                 {
                     fputcsv($file,$line);
@@ -1165,14 +1165,13 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return string
      */
     public function get_items() {
-
         $feed = new DOMDocument;
         $feed->loadXML($this->feed);
         $feed_string_footer = '';
         if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
             $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' ||
             $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder'
-            || $this->merchant === 'emarts' || $this->merchant === 'epoq'||$this->merchant === 'google_local_products'
+            || $this->merchant === 'emarts' || $this->merchant === 'epoq'||$this->merchant === 'google_local_products'||$this->merchant === 'google_local_products_inventory'
         ) {
             $node = $feed->getElementsByTagName("item");
             if($this->batch == $this->tbatch) {
@@ -1217,7 +1216,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</vivino-product-list>';
             }
-        }elseif ($this->merchant === 'sooqr'||$this->merchant === 'pricegrabber') {
+        }
+        elseif ($this->merchant === 'sooqr'||$this->merchant === 'pricegrabber') {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
@@ -1324,7 +1324,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }elseif ($this->merchant === 'beslist'||$this->merchant === 'rss'||$this->merchant === 'spartoo'||
 
-            $this->merchant === 'spartoo'||$this->merchant === 'google_local_products_inventory'||$this->merchant === 'google_Ad' || $this->merchant === 'shopmania') {
+            $this->merchant === 'spartoo'||$this->merchant === 'google_Ad' || $this->merchant === 'shopmania') {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
@@ -1473,14 +1473,15 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }elseif ($this->merchant === 'whiskymarketplace') {
             $node = $feed->getElementsByTagName("item");
             if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '</items>';
+                $feed_string_footer .= '</products>';
             }
         }elseif ($this->merchant === 'shopping') {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
             }
-        }else {
+        }
+        else {
             $node = $feed->getElementsByTagName("item");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</produkte>';

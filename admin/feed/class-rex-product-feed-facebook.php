@@ -13,7 +13,7 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
-use LukeSnowden\GoogleShoppingFeed\Containers\GoogleShopping;
+use rextheme\FacebookShoppingFeed\Containers\FacebookShopping;
 
 class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
@@ -25,26 +25,25 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
 
-        GoogleShopping::$container = null;
-        GoogleShopping::title($this->title);
-        GoogleShopping::link($this->link);
-        GoogleShopping::description($this->desc);
+        FacebookShopping::$container = null;
+        FacebookShopping::title($this->title);
+        FacebookShopping::link($this->link);
+        FacebookShopping::description($this->desc);
 
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
+        //$this->feed = $this->returnFinalProduct();
 
-//        $this->feed = $this->returnFinalProduct();
 
         if ($this->feed_format == 'xml') {
-            $this->feed = GoogleShopping::asRss();
+            $this->feed = FacebookShopping::asRss();
         }elseif ($this->feed_format == 'text') {
-            $this->feed = GoogleShopping::asTxt();
+            $this->feed = FacebookShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            $this->feed = GoogleShopping::asCsv();
+            $this->feed = FacebookShopping::asCsv();
         }else {
-            $this->feed = GoogleShopping::asRss();
+            $this->feed = FacebookShopping::asRss();
         }
-
 
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
@@ -97,7 +96,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
-                    $item = GoogleShopping::createItem();
+                    $item = FacebookShopping::createItem();
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
                     $atts = $this->process_attributes_for_shipping_tax($atts);
                     foreach ($atts as $key => $value) {
@@ -122,7 +121,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = GoogleShopping::createItem();
+                                $item = FacebookShopping::createItem();
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                                 $atts = $this->process_attributes_for_shipping_tax($atts);
@@ -146,7 +145,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
             if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
-                $item = GoogleShopping::createItem();
+                $item = FacebookShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
 
                 $atts = $this->process_attributes_for_shipping_tax($atts);
@@ -167,7 +166,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
-                    $item = GoogleShopping::createItem();
+                    $item = FacebookShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     $atts = $this->process_attributes_for_shipping_tax($atts);
                     foreach ($atts as $key => $value) {
@@ -185,7 +184,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
 
             if( $product->is_type( 'grouped' ) ){
                 $group_products[] = $productId;
-                $item = GoogleShopping::createItem();
+                $item = FacebookShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $atts = $this->process_attributes_for_shipping_tax($atts);
                 foreach ($atts as $key => $value) {
@@ -262,15 +261,14 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     public function returnFinalProduct()
     {
         if ($this->feed_format == 'xml') {
-            return GoogleShopping::asRss();
+            return FacebookShopping::asRss();
         } elseif ($this->feed_format == 'text') {
-            return GoogleShopping::asTxt();
+            return FacebookShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            return GoogleShopping::asCsv();
+            return FacebookShopping::asCsv();
         }
-        return GoogleShopping::asRss();
+        return FacebookShopping::asRss();
     }
-
 
     //replace footer of feed
     public function footer_replace() {

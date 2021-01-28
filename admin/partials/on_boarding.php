@@ -329,7 +329,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                                 </p>
 
                                                 <a class="btn-default"
-                                                   href="<?php echo apply_filters('wpfm_support_link', 'https://rextheme.com/your-account/?active_tab=support') ?>"
+                                                   href="<?php echo apply_filters('wpfm_support_link', 'https://rextheme.com/support/') ?>"
                                                    target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed') ?> </a>
                                             </div>
 
@@ -1291,7 +1291,13 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'free' => true,
                                     'status' => 0,
                                     'name' => 'Amazon Seller Bed&Amp'
+                                ),
+                                'idealo_de' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Idealo.de'
                                 )
+
                             );
 
                             $_pro_merchants = array(
@@ -1350,11 +1356,17 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'status' => 0,
                                     'name' => 'Amazon.it Collane'
                                 ),
+                                'amazon_accessories_and_scarf' => array(
+                                    'free' => false,
+                                    'status' => 0,
+                                    'name' => 'Amazon Accessories And Scarf'
+                                )
 
                             );
                             $_merchants = array_merge($_merchants, $_pro_merchants);
 
                             $merchants = get_option('rex_wpfm_merchant_status');
+
                             if ($merchants) {
                                 $_merchants = array_merge($_merchants, $merchants);
                             }
@@ -1371,7 +1383,8 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                             $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
 
                             ?>
-                            <?php foreach ($_merchants as $key => $merchant): ?>
+                            <?php foreach ($_merchants as $key => $merchant):?>
+
                                 <?php if ($key && $key != 'undefined'):
                                     $show_pro = false;
                                     if ($is_premium_activated) {

@@ -13,7 +13,8 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
-use LukeSnowden\GoogleShoppingFeed\Containers\GoogleShopping;
+use RexTheme\GoogleLocalProducts\Containers\GoogleLocalProducts;
+
 
 class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_Generator {
 
@@ -24,19 +25,15 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
      * @author
      **/
     public function make_feed() {
-
-        GoogleShopping::$container = null;
-
-        GoogleShopping::title($this->title);
-        GoogleShopping::link($this->link);
-        GoogleShopping::description($this->desc);
+        GoogleLocalProducts::$container = null;
+        GoogleLocalProducts::init(true, 'product', null,  '', 'products', false, '', '' );
+        GoogleLocalProducts::title($this->title);
+        GoogleLocalProducts::link($this->link);
+        GoogleLocalProducts::description($this->desc);
 
         // Generate feed for both simple and variable products.
-
         $this->generate_product_feed();
-
-
-        $this->feed = GoogleShopping::asRss();
+        $this->feed = $this->returnFinalProduct();
 
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
@@ -46,10 +43,12 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
         }else {
             return $this->save_feed($this->feed_format);
         }
-
     }
 
-    private function generate_product_feed(){
+    /**
+     * Generate feed
+     */
+    protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variation_products = [];
@@ -73,7 +72,8 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
             );
         }
 
-        
+
+
         foreach( $this->products as $productId ) {
             $product = wc_get_product( $productId );
 
@@ -87,28 +87,29 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
                 }
             }
 
-
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
-                    $item = GoogleShopping::createItem();
+                    $item = GoogleLocalProducts::createItem();
                     foreach ($atts as $key => $value) {
                         $item->$key($value); // invoke $key as method of $item object.
                     }
                 }
+
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
                     }else {
                         $variations = $product->get_children();
                     }
+
                     if($variations) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = GoogleShopping::createItem();
+                                $item = GoogleLocalProducts::createItem();
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                                 foreach ($atts as $key => $value) {
@@ -123,7 +124,7 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
             if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
-                $item = GoogleShopping::createItem();
+                $item = GoogleLocalProducts::createItem();
                 foreach ($atts as $key => $value) {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
@@ -132,7 +133,7 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
-                    $item = GoogleShopping::createItem();
+                    $item = GoogleLocalProducts::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     foreach ($atts as $key => $value) {
                         $item->$key($value); // invoke $key as method of $item object.
@@ -141,12 +142,14 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
             }
 
             if( $product->is_type( 'grouped' ) ){
-                $group_products[] = $productId;
-                $item = GoogleShopping::createItem();
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+                if($this->parent_product) {
+                    $group_products[] = $productId;
+                    $item = GoogleLocalProducts::createItem();
+                    $atts = $this->get_product_data( $product, $product_meta_keys );
+                    // add all attributes for each product.
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
                 }
             }
         }
@@ -158,13 +161,30 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
             'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
-
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
     }
 
-
-    public function footer_replace()
+    /**
+     * Return Feed
+     *
+     * @return array|bool|string
+     */
+    public function returnFinalProduct()
     {
-        $this->feed = str_replace('</channel></rss>', '', $this->feed);
+        if ($this->feed_format == 'xml') {
+            return GoogleLocalProducts::asRss();
+        } elseif ($this->feed_format == 'text') {
+            return GoogleLocalProducts::asTxt();
+        } elseif ($this->feed_format == 'csv') {
+            return GoogleLocalProducts::asCsv();
+        }
+        return GoogleLocalProducts::asRss();
     }
+
+
+    //replace footer of feed
+    public function footer_replace() {
+
+    }
+
 }
