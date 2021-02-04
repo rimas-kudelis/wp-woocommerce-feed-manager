@@ -1224,6 +1224,11 @@ class Rex_Product_Data_Retriever {
             
             case 'availability_underscore':
                 return $this->get_availability_underscore(); break;
+            case 'availability_backorder_instock':
+                return $this->get_availability_backorder_instock(); break;
+
+            case 'availability_backorder':
+                return $this->get_availability_backorder(); break;
 
             case 'quantity':
                 return $this->product->get_stock_quantity(); break;
@@ -1447,31 +1452,41 @@ class Rex_Product_Data_Retriever {
      * @since    3.0
      */
     protected function set_cat_mapper_att( $key ) {
+
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             $cat_lists = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
         } else{
             $cat_lists = get_the_terms( $this->product->get_id(), 'product_cat' );
         }
-
         $wpfm_category_map = get_option('rex-wpfm-category-mapping');
+
         if($wpfm_category_map) {
             $map = $wpfm_category_map[$key];
             $map_config = $map['map-config'];
+
             if($cat_lists) {
-                foreach ( $cat_lists as $term ) {
+                foreach ( $cat_lists as $key=>$term ) {
+
                     $map_key = array_search($term->term_id, array_column($map_config, 'map-key'));
+
                     if($map_key) {
+
                         $map_array = $map_config[$map_key];
+
                         $map_value = $map_array['map-value'];
-                        preg_match("~^(\d+)~", $map_value, $m);
-                        if(count($m) > 1) {
-                            if($m[1]) {
-                                return utf8_decode(urldecode($m[1]));
-                            } else {
+
+                        if(!empty($map_value)){
+                            preg_match("~^(\d+)~", $map_value, $m);
+                            if(count($m) > 1) {
+                                if($m[1]) {
+                                    return utf8_decode(urldecode($m[1]));
+                                } else {
+                                    return $map_value;
+                                }
+                            }else {
                                 return $map_value;
+
                             }
-                        }else {
-                            return $map_value;
                         }
                     }
                 }
@@ -1811,7 +1826,6 @@ class Rex_Product_Data_Retriever {
     }
 
 
-
     /**
      *
      * @param $id
@@ -1850,7 +1864,6 @@ class Rex_Product_Data_Retriever {
         $term_name_array = $this->get_cat_names_array($id, $taxonomy, $terms[0]->term_id, $term_name_array);
         return $term_name_array;
     }
-
 
 
     /**
@@ -2066,6 +2079,36 @@ class Rex_Product_Data_Retriever {
             return apply_filters('wpfm_product_availability', 'in stock');
         } else {
             return apply_filters('wpfm_product_availability', 'out of stock');
+        }
+    }
+
+    /**
+     * Helper to get availability underscore of a product
+     *
+     * @since    1.0.0
+     */
+    protected function get_availability_backorder_instock( ) {
+        if ($this->product->is_on_backorder()) {
+            return apply_filters('wpfm_product_availability_backorder', 'in_stock');
+        } elseif ( $this->product->is_in_stock() == TRUE ) {
+            return apply_filters('wpfm_product_availability', 'in_stock');
+        } else {
+            return apply_filters('wpfm_product_availability', 'out_of_stock');
+        }
+    }
+
+    /**
+     * Helper to get availability underscore of a product
+     *
+     * @since    1.0.0
+     */
+    protected function get_availability_backorder( ) {
+        if ($this->product->is_on_backorder()) {
+            return apply_filters('wpfm_product_availability_backorder', 'on_backorder');
+        } elseif ( $this->product->is_in_stock() == TRUE ) {
+            return apply_filters('wpfm_product_availability', 'in_stock');
+        } else {
+            return apply_filters('wpfm_product_availability', 'out_of_stock');
         }
     }
 

@@ -306,8 +306,4 @@ return array(
     'Rex_Yandex_Product_Data_Retriever' => $baseDir . '/admin/feed/yandex/class-rex-yandex-product-data-retriever.php',
     'WP_Async_Request' => $vendorDir . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
     'WP_Background_Process' => $vendorDir . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
-    'rextheme\\FacebookShoppingFeed\\Containers\\FacebookShopping' => $baseDir . '/admin/feed/facebook-feed-format/Containers/FacebookShopping.php',
-    'rextheme\\FacebookShoppingFeed\\Feed' => $baseDir . '/admin/feed/facebook-feed-format/Feed.php',
-    'rextheme\\FacebookShoppingFeed\\Item' => $baseDir . '/admin/feed/facebook-feed-format/Item.php',
-    'rextheme\\FacebookShoppingFeed\\Node' => $baseDir . '/admin/feed/facebook-feed-format/Node.php',
 );

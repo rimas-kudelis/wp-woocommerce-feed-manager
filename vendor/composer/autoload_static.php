@@ -432,10 +432,6 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Yandex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/yandex/class-rex-yandex-product-data-retriever.php',
         'WP_Async_Request' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
         'WP_Background_Process' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
-        'rextheme\\FacebookShoppingFeed\\Containers\\FacebookShopping' => __DIR__ . '/../..' . '/admin/feed/facebook-feed-format/Containers/FacebookShopping.php',
-        'rextheme\\FacebookShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/facebook-feed-format/Feed.php',
-        'rextheme\\FacebookShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/facebook-feed-format/Item.php',
-        'rextheme\\FacebookShoppingFeed\\Node' => __DIR__ . '/../..' . '/admin/feed/facebook-feed-format/Node.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

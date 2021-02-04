@@ -1128,9 +1128,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $file = fopen($file,"a+");
                 $list = $this->feed;
                 array_shift($list);
-                if($this->merchant=='facebook'){
-                    array_shift($list);
-                }
                 foreach ($list as $line)
                 {
                     fputcsv($file,$line);

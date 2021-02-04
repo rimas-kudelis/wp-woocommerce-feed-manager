@@ -46,6 +46,8 @@ class Rex_Feed_Attributes {
                 'parent_sku'                => 'Parent SKU',
                 'availability'              => 'Availability',
                 'availability_underscore'   => 'Availability (Without Underscore)',
+                'availability_backorder_instock'   => 'Availability (Backorder = in stock)',
+                'availability_backorder'   => 'Availability (Backorder = backorder)',
                 'quantity'                  => 'Quantity',
                 'price'                     => 'Regular Price',
                 'current_price'             => 'Price',

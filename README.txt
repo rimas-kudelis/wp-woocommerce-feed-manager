@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.3
 Requires PHP: 7.0
-Stable tag:  6.3.0
+Stable tag:  6.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -544,6 +544,12 @@ WP Dashboard > Product Feed > Upgrade.
 11. Download the Feed
 
 == Changelog ==
+= 6.3.1 (2021-02-04) =
+* Fixed: Facebook CSV Feed Template Error
+* Fixed: Issue Category Mapping Empty Result if Primary Category Not Mapped Issue
+* Added: Availability of OnBackorder results on_backorder
+* Added: Availability of OnBackorder results in_stock
+
 
 = 6.3.0 (2021-01-28) =
 * Fixed: Idealo template
