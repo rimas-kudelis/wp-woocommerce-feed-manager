@@ -551,7 +551,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 6.3.1 (2021-02-18) =
+= 6.3.2 (2021-02-18) =
 * Fixed: Glami Feed Structure Flaws
 * Fixed: UTM parameters would vanish after refresh intervals
 * Fixed: Google Promotions Feed template
