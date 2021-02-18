@@ -77,7 +77,7 @@ class Rex_Product_Metabox
             'after_row' => array($this, 'product_taxonomies_cb'),
         ));
 
-        do_action('wpfm_product_filter_field', $box, $this->prefix);
+//        do_action('wpfm_product_filter_field', $box, $this->prefix);
 
         /*
          * Schedule Time

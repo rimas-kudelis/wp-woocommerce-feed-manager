@@ -288,8 +288,9 @@ class Rex_Product_Feed_Ajax {
      * @param $config
      * @return string
      */
-    public static function generate_promotion_feed($config) {
+    public static function generate_promotion_feed( $config ) {
         $merchant = new Rex_Product_Feed_Google_merchant_promotion();
+        error_log(print_r($config,1));
         return $merchant->make_feed($config);
     }
 

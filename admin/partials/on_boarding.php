@@ -1296,6 +1296,11 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'free' => true,
                                     'status' => 0,
                                     'name' => 'Idealo.de'
+                                ),
+                                'favi' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Favi - Compari & Árukereső'
                                 )
 
                             );

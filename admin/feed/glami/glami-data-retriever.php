@@ -20,25 +20,19 @@ class Rex_Product_Glami_Data_Retriever extends Rex_Product_Data_Retriever {
     public function set_all_value() {
         $this->data = array();
         foreach ($this->feed_rules as $key => $rule) {
-            if($rule['attr'] === 'PARAM') {
-                $value = $this->set_val( $rule );
-                if($value) {
-                    $searchVal = array("bwf_attr_pa_", "pa_", "custom_attributes_");
-                    $name = str_replace($searchVal, '', $rule['meta_key']);
-                    $this->data['PARAM'][] = array(
-                        'name' => $name,
-                        'value' => $value,
-                    );
+            if(array_key_exists('attr', $rule)) {
+                if ($rule['attr'] === 'IMGURL_ALTERNATIVE') {
+                    $value = $this->set_val($rule);
+                    if ($value) {
+                        $this->data[$rule['attr']][] = $value;
+                    }
+                } else {
+                    $this->data[$rule['attr']] = $this->set_val($rule);
                 }
-            }
-            elseif ($rule['attr'] === 'IMGURL_ALTERNATIVE') {
-                $value = $this->set_val( $rule );
-                if($value) {
-                    $this->data[$rule['attr']][] = $value;
+            } elseif (array_key_exists('cust_attr', $rule)) {
+                if($rule['cust_attr']) {
+                    $this->data[$rule['cust_attr']] = $this->set_val( $rule );
                 }
-            }
-            else {
-                $this->data[ $rule['attr'] ] = $this->set_val( $rule );
             }
         }
     }

@@ -185,6 +185,8 @@ class Rex_Feed_Scheduler {
     private function get_feed_settings_payload($feed_id, $current_batch, $total_batches, $per_batch, $offset) {
         $merchant = get_post_meta($feed_id, 'rex_feed_merchant', true);
         $feed_config = get_post_meta($feed_id, 'rex_feed_feed_config', true);
+        $analytics = get_post_meta($feed_id, 'rex_feed_analytics_params_options', true);
+        $analytics_params = $analytics === 'on' ? get_post_meta($feed_id, 'rex_feed_analytics_params', true): [];
         $feed_filter = get_post_meta($feed_id, 'rex_feed_feed_config_filter', true);
         $product_scope = get_post_meta($feed_id, 'rex_feed_products', true);
         $include_variations = get_post_meta($feed_id, 'rex_feed_variations', true) === 'yes';
@@ -232,6 +234,8 @@ class Rex_Feed_Scheduler {
             'wpml_language' => $wpml,
             'wcml_currency' => $wcml_currency,
             'wcml'          => $wcml,
+            'analytics'          => $analytics,
+            'analytics_params'          => $analytics_params,
         );
         return $payload;
     }

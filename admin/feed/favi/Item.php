@@ -1,6 +1,6 @@
 <?php
 
-namespace RexTheme\GlamiShoppingFeed;
+namespace RexTheme\FaviShoppingFeed;
 
 use RexTheme\GlamiShoppingFeed\Node;
 use RexTheme\GlamiShoppingFeed\Containers\GlamiShopping;

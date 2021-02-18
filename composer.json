@@ -25,5 +25,8 @@
         ]
     },
     "require-dev": {
+    },
+    "config": {
+        "platform-check": false
     }
 }

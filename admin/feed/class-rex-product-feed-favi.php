@@ -13,9 +13,9 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
-use RexTheme\GlamiShoppingFeed\Containers\GlamiShopping;
+use RexTheme\FaviShoppingFeed\Containers\FaviShopping;
 
-class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
+class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
 {
 
     /**
@@ -26,8 +26,8 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
      **/
     public function make_feed()
     {
-        GlamiShopping::$container = null;
-        GlamiShopping::init(false, $this->setItemWrapper(), '', '', $this->setItemsWrapper());
+        FaviShopping::$container = null;
+        FaviShopping::init(false, $this->setItemWrapper(), '', '', $this->setItemsWrapper());
 
         $this->generate_product_feed();
 
@@ -87,9 +87,8 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $atts = $this->get_product_data($variable_product, $product_meta_keys);
-                    $atts = $this->process_attributes_for_delivery($atts);
                     $atts = $this->process_attributes_for_param($atts);
-                    $item = GlamiShopping::createItem();
+                    $item = FaviShopping::createItem();
                     foreach ($atts as $key => $value) {
                         if ($key == 'delivery') {
                             $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -110,10 +109,9 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                         foreach ($variations as $variation) {
                             if ($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = GlamiShopping::createItem();
+                                $item = FaviShopping::createItem();
                                 $variation_product = wc_get_product($variation);
                                 $atts = $this->get_product_data($variation_product, $product_meta_keys);
-                                $atts = $this->process_attributes_for_delivery($atts);
                                 $atts = $this->process_attributes_for_param($atts);
                                 foreach ($atts as $key => $value) {
                                     if ($key == 'delivery') {
@@ -133,9 +131,9 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
             if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle')) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data($product, $product_meta_keys);
-                $atts = $this->process_attributes_for_delivery($atts);
+
                 $atts = $this->process_attributes_for_param($atts);
-                $item = GlamiShopping::createItem();
+                $item = FaviShopping::createItem();
                 foreach ($atts as $key => $value) {
                     if ($key == 'delivery') {
                         $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -150,9 +148,8 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
             if ($this->product_scope === 'all'|| $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
-                    $item = GlamiShopping::createItem();
+                    $item = FaviShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
-                    $atts = $this->process_attributes_for_delivery($atts);
                     $atts = $this->process_attributes_for_param($atts);
                     foreach ($atts as $key => $value) {
                         if ($key == 'delivery') {
@@ -169,9 +166,8 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
 
             if ($product->is_type('grouped')) {
                 $group_products[] = $productId;
-                $item = GlamiShopping::createItem();
+                $item = FaviShopping::createItem();
                 $atts = $this->get_product_data($product, $product_meta_keys);
-                $atts = $this->process_attributes_for_delivery($atts);
                 $atts = $this->process_attributes_for_param($atts);
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
@@ -224,39 +220,14 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
      */
     public function setItemWrapper()
     {
-        return 'SHOPITEM';
+        return 'product';
     }
 
     public function setItemsWrapper()
     {
-        return 'SHOP';
+        return 'products';
     }
 
-
-    /**
-     * @param $atts
-     * @return array
-     */
-    private function process_attributes_for_delivery($atts)
-    {
-        $shipping_attr = array('DELIVERY_ID', 'DELIVERY_PRICE', 'DELIVERY_PRICE_COD');
-        $default_delivery_atts = array(
-            'DELIVERY_ID' => '',
-            'DELIVERY_PRICE' => '',
-            'DELIVERY_PRICE_COD' => ''
-        );
-
-        foreach ($atts as $key => $value) {
-            if (in_array($key, $shipping_attr)) {
-                $atts['delivery'][$key] = $value;
-                unset($atts[$key]);
-            }
-        }
-        if (array_key_exists('delivery', $atts)) {
-            $atts['delivery'] += $default_delivery_atts;
-        }
-        return $atts;
-    }
 
 
     /**
@@ -269,22 +240,20 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
      */
     private function process_attributes_for_param($atts) {
         foreach ($atts as $key => $value) {
-            if(preg_match('/^PARAM/im', $key)) {
+            if(preg_match('/^Attribute/im', $key)) {
                 $param_no = preg_replace('/[^0-9]/', '', $key);
-                $atts['param'][] = array(
+                $atts['attributes'][] = array(
                     'key'           => $key,
                     'name'          => $value,
-                    'value'         => isset($atts['VALUE_'.$param_no]) ? $atts['VALUE_'.$param_no] : '',
-                    'percentage'    => isset($atts['PERCENTAGE_'.$param_no]) ? $atts['PERCENTAGE_'.$param_no] : '',
+                    'value'         => isset($atts['Attribute_value_'.$param_no]) ? $atts['Attribute_value_'.$param_no] : '',
                 );
             }
         }
         foreach ($atts as $key => $value) {
-            if(preg_match('/^PARAM/im', $key)) {
+            if(preg_match('/^Attribute/im', $key)) {
                 $param_no = preg_replace('/[^0-9]/', '', $key);
-                unset($atts['VALUE_' . $param_no]);
-                unset($atts['PERCENTAGE_' . $param_no]);
-                unset($atts['PARAM_NAME_' . $param_no]);
+                unset($atts['Attribute_value_' . $param_no]);
+                unset($atts['Attribute_name_' . $param_no]);
             }
         }
         return $atts;
@@ -299,19 +268,19 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
     public function returnFinalProduct()
     {
         if ($this->feed_format == 'xml') {
-            return GlamiShopping::asRss();
+            return FaviShopping::asRss();
         } elseif ($this->feed_format == 'text') {
-            return GlamiShopping::asTxt();
+            return FaviShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            return GlamiShopping::asCsv();
+            return FaviShopping::asCsv();
         }
-        return GlamiShopping::asRss();
+        return FaviShopping::asRss();
     }
 
 
     //replace footer of feed
     public function footer_replace()
     {
-        $this->feed = str_replace('</SHOP>', '', $this->feed);
+        $this->feed = str_replace('</products>', '', $this->feed);
     }
 }

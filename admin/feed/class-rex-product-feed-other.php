@@ -676,6 +676,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
+        "favi" => array(
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
         "webgains" => array(
             'container'  => false,
             'item_wrapper'  => 'item',
@@ -969,7 +981,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             ||$this->merchant === 'prisjkat'||$this->merchant === 'pricefalls'|| $this->merchant === 'pricerunner'||$this->merchant === 'nextag'
             ||$this->merchant === 'rakuten_advertising'||$this->merchant === 'shopee'
             ||$this->merchant === 'vidaXL'||$this->merchant === 'rss'
-            ||$this->merchant === 'pricegrabber'||$this->merchant === 'google_dsa'||$this->merchant === 'google_Ad' || $this->merchant === 'shopmania'){
+            ||$this->merchant === 'pricegrabber'||$this->merchant === 'google_dsa'||$this->merchant === 'google_Ad' || $this->merchant === 'shopmania' || $this->merchant === 'favi'){
             $this->feed = str_replace('</products>', '', $this->feed);
         }else if($this->merchant === '123i'){
             $this->feed = str_replace('</Imoveis></Carga>', '', $this->feed);

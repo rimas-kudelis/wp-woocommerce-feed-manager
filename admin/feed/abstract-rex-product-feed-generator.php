@@ -340,6 +340,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->wpml_language            = $config['wpml_language'];
             $this->wcml                     = $config['wcml'];
             $this->wcml_currency            = $config['wcml_currency'];
+            $this->analytics                = $config['analytics'];
+            $this->analytics_params         = $config['analytics_params'];
             $this->prepare_products_args($config['info']);
         }
         else {
@@ -991,17 +993,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys ){
 
-//        if( class_exists( 'SitePress' ) ) {
-//            global $sitepress;
-//            $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
-//            if($wpml) {
-//                $sitepress->switch_lang($wpml);
-//                $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
-//            }
-//        } else {
-//            $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
-//        }
-
         $data = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
         return $data->get_all_data();
 
@@ -1168,7 +1159,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
             $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' ||
             $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder'
-            || $this->merchant === 'emarts' || $this->merchant === 'epoq'||$this->merchant === 'google_local_products'||$this->merchant === 'google_local_products_inventory'
+            || $this->merchant === 'emarts' || $this->merchant === 'epoq'||$this->merchant === 'google_local_products'|| $this->merchant === 'google_local_products_inventory'
+            || $this->merchant === 'google_merchant_promotion'
         ) {
             $node = $feed->getElementsByTagName("item");
             if($this->batch == $this->tbatch) {
@@ -1510,7 +1502,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
             if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
                 $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' || $this->merchant === 'rss' ||
-                $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq'
+                $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder' || $this->merchant === 'emarts' || $this->merchant === 'epoq' || $this->merchant === 'google_merchant_promotion'
             ) {
                 $parent = $orgdoc->getElementsByTagName('channel')->item(0);
             }elseif ($this->merchant === 'ebay_mip') {

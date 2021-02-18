@@ -1,9 +1,9 @@
 <?php
 
-namespace RexTheme\GlamiShoppingFeed;
+namespace RexTheme\FaviShoppingFeed;
 
 use SimpleXMLElement;
-use RexTheme\GlamiShoppingFeed\Item;
+use RexTheme\FaviShoppingFeed\Item;
 use Gregwar\Cache\Cache;
 
 class Feed
@@ -223,10 +223,10 @@ class Feed
                     }
                 } else {
                     if(in_array($itemNode->get('name'), $s_nodes)) {
-                        if($itemNode->get('name') == 'PARAM') {
+                        if($itemNode->get('name') == 'attributes') {
                             if(is_array($itemNode->get('value'))) {
                                 foreach ($itemNode->get('value') as $value) {
-                                    $param = $feedItemNode->addChild('PARAM');
+                                    $param = $feedItemNode->addChild('Attributes');
                                     $param->addChild('PARAM_NAME', $value['name']);
                                     $param->addChild('VAL', $value['value']);
                                     if($value['percentage']) {

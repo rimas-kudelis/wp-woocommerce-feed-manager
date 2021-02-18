@@ -37,7 +37,6 @@ class Rex_Feed_Template_Glami extends Rex_Feed_Abstract_Template {
                 'ITEMGROUP_ID'            => 'ITEMGROUP_ID',
                 'SIZE_SYSTEM'             => 'SIZE SYSTEM',
                 'URL_SIZE'                => 'URL SIZE',
-                'PARAM'                   => 'Param',
             ),
             'Optional Information' => array(
                 'CATEGORY_ID'            => 'CATEGORY ID',
@@ -49,7 +48,32 @@ class Rex_Feed_Template_Glami extends Rex_Feed_Abstract_Template {
                 'MATERIAL'               => 'MATERIAL',
                 'PROMOTION_ID  	'        => 'PROMOTION ID',
             ),
-
+            'Params' => array(
+                'PARAM_NAME_1'      => 'PARAM 1',
+                'VALUE_1'           => 'Value 1',
+                'PERCENTAGE_1'      => 'PERCENTAGE 1',
+                'PARAM_NAME_2'      => 'PARAM 2',
+                'VALUE_2'           => 'Value 2',
+                'PERCENTAGE_2'      => 'PERCENTAGE 2',
+                'PARAM_NAME_3'      => 'PARAM 3',
+                'VALUE_3'           => 'Value 3',
+                'PERCENTAGE_3'      => 'PERCENTAGE 3',
+                'PARAM_NAME_4'      => 'PARAM 4',
+                'VALUE_4'           => 'Value 4',
+                'PERCENTAGE_4'      => 'PERCENTAGE 4',
+                'PARAM_NAME_5'      => 'PARAM 5',
+                'VALUE_5'           => 'Value 5',
+                'PERCENTAGE_5'      => 'PERCENTAGE 5',
+                'PARAM_NAME_6'      => 'PARAM 6',
+                'VALUE_6'           => 'Value 6',
+                'PERCENTAGE_6'      => 'PERCENTAGE 6',
+                'PARAM_NAME_7'      => 'PARAM 7',
+                'VALUE_7'           => 'Value 7',
+                'PERCENTAGE_7'      => 'PERCENTAGE 7',
+                'PARAM_NAME_8'      => 'PARAM 8',
+                'VALUE_8'           => 'Value 8',
+                'PERCENTAGE_8'      => 'PERCENTAGE 8',
+            ),
         );
     }
 

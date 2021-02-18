@@ -185,6 +185,7 @@ class Rex_Product_Feed_Factory {
             'liveintent',
             'pinterest',
             'google_shopping_actions',
+            'google_merchant_promotion',
             'google_express',
             'criteo',
             'compartner',

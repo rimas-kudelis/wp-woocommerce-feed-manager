@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.5.3
 Requires PHP: 7.0
-Stable tag:  6.3.1
+Stable tag:  6.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -531,19 +531,33 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Screenshots ==
-1. Select "Product Feeds" from the Admin Menu
-2. Click ‘Add New’ for Creating New Feed
-3. Click ‘Title Field’ & Give Feed Name
-4. Select ‘Products’ to Create Feed For
-5. Click ‘All Published Products’ & Select ‘Map Category’ for Category Mapping
-6. Select ‘Merchant Type’ for Desired Merchant Store
-7. Select Your Desired File Format
-8. Click ‘Add New Attribute’ & Select ‘Static’ for Custom Attribute
-9. Attribute Customization
-10. Click to Publish Feed
-11. Download the Feed
+1. Click On Product Feed
+2. Click On Add New Feed
+3. Include All Products Or Apply Filters
+4. Configure Feed Options
+5. Choose Merchant And Feed Type
+6. Default Merchant Feed Will Appear
+7. Configure Attribute Values As Required
+8. Publish Your Product Feed
+9. Feed Generated - View Feed Or Download Feed
+10. Category Mapping
+11. Google Content API Settings For Auto-sync
+12. Custom Feed Generation
+13. Add New Attribute To Choose From Existing Attributes
+14. Add New Custom Attribute To Name Your Own Attribute
+15. Plugin Settings Page - General
+16. Plugin Settings Page - Merchants
+17. Plugin Settings Page - Controls
 
 == Changelog ==
+
+= 6.3.1 (2021-02-18) =
+* Fixed: Glami Feed Structure Flaws
+* Fixed: UTM parameters would vanish after refresh intervals
+* Fixed: Google Promotions Feed template
+* Added: Favi - Compari & Árukereső feed template
+
+
 = 6.3.1 (2021-02-04) =
 * Fixed: Facebook CSV Feed Template Error
 * Fixed: Issue Category Mapping Empty Result if Primary Category Not Mapped Issue

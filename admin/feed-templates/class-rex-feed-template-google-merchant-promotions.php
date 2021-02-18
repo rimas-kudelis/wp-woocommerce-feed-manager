@@ -31,7 +31,6 @@ class Rex_Feed_Template_Google_merchant_promotion extends Rex_Feed_Abstract_Temp
                 'redemption_channel' => 'Redemption channel',
                 'promotion_destination' => 'Promotion destination',
             ),
-
             'Promotion categories'  =>  array(
                 'percent_off' => 'Percent off',
                 'money_off_amount' => 'Money off amount',
@@ -40,7 +39,53 @@ class Rex_Feed_Template_Google_merchant_promotion extends Rex_Feed_Abstract_Temp
                 'free_gift_value' => 'Free gift value',
                 'free_gift_description' => 'Free gift description',
                 'free_gift_item_id' => 'Free gift item id',
-            )
+            ),
+            'Product filters'  =>  array(
+                'item_id' => 'Item id',
+                'product_type' => 'Product type',
+                'brand' => 'Brand',
+                'item_group_id' => 'Item group id',
+                'item_id_exclusion' => 'Item id exclusion',
+                'product_type_exclusion' => 'Product type exclusion',
+                'brand_exclusion' => 'Brand exclusion',
+                'item_group_id_exclusion' => 'Item group id exclusion',
+            ),
+            'Preconditions'  =>  array(
+                'minimum_purchase_amount' => 'Minimum purchase amount',
+            ),
+            'Limits'  =>  array(
+                'limit_quantity' => 'Limit quantity',
+                'limit_value'    => 'Limit value',
+            ),
+            'Additional attributes'  =>  array(
+                'promotion_display_dates' => 'Promotion display dates',
+                'title' => 'Title',
+                'link' => 'Link',
+                'id' => 'Id',
+                'condition' => 'Condition',
+                'price' => 'Price',
+                'availability' => 'Availability',
+                'shipping' => 'Shipping',
+                'shipping_weight' => 'Shipping weight',
+                'gtin' => 'Gtin',
+                'brand' => 'Brand',
+                'mpn' => 'MPN',
+                'google_product' => 'Google product',
+                'product_type' => 'Product type',
+                'additional_image' => 'Additional image',
+                'color' => 'Color',
+                'size' => 'Size',
+                'gender' => 'Gender',
+                'age_group' => 'Age group',
+                'item_group_id' => 'Item group id',
+                'sale_price' => 'Sale price',
+                'sale_price_effective_date' => 'Sale price effective date',
+                'description' => 'Description',
+                'generic_redemption_code' => 'Generic redemption code',
+                'image_link' => 'Image link',
+                'fine_print' => 'Fine print',
+                'promotion_price' => 'Promotion price',
+            ),
 
         );
     }

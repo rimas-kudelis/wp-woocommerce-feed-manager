@@ -319,11 +319,12 @@
         wpAjaxHelperRequest('my-handle', $payload)
             .success(function (response) {
                 var per_batch = response.per_batch ? parseInt(response.per_batch) : 50;
-                if (merchant !== 'google_merchant_promotion') {
-                    generate_feed(response.products, 0, 1, per_batch, response.total_batch);
-                } else {
-                    generate_promotion_feed();
-                }
+                // if (merchant !== 'google_merchant_promotion') {
+                //     generate_feed(response.products, 0, 1, per_batch, response.total_batch);
+                // } else {
+                //     generate_promotion_feed(response.products, 0, 1, per_batch, response.total_batch);
+                // }
+                generate_feed(response.products, 0, 1, per_batch, response.total_batch);
 
             })
             .error(function (response) {
@@ -340,37 +341,118 @@
     /**
      * generate promotion feed
      */
-    function generate_promotion_feed() {
+    function generate_promotion_feed(product, offset, batch, per_batch, total_batch) {
+        // var $payload = {
+        //     merchant: $('#rex_feed_merchant').find(':selected').val(),
+        //     feed_format: $('#rex_feed_feed_format').find(':selected').val(),
+        //     localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
+        //     ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
+        //     info: {
+        //         post_id: $('#post_ID').val(),
+        //         title: $('#title').val(),
+        //         desc: $('#title').val(),
+        //     },
+        //     products: {
+        //         products_scope: $('#rex_feed_products').find(':selected').val(),
+        //         tags: get_checkbox_val('tags'),
+        //         cats: get_checkbox_val('cats'),
+        //     },
+        //
+        //     feed_config: $('form').serialize(),
+        // };
+        //
+        // wpAjaxHelperRequest('generate-promotion-feed', $payload)
+        //     .success(function (response) {
+        //         console.log('Woohoo!');
+        //         console.log(response);
+        //         $('#publish').removeClass('disabled');
+        //         $(document).off('click', '#publish', get_product_number);
+        //         $('#publish').trigger('click');
+        //     })
+        //     .error(function (response) {
+        //         $('#publishing-action span.spinner').removeClass('is-active');
+        //         $('#publish').removeClass('disabled');
+        //         console.log('Uh, oh!');
+        //         console.log(response.statusText);
+        //     });
+
+
+        per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
+
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),
             localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
             ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
+
             info: {
                 post_id: $('#post_ID').val(),
                 title: $('#title').val(),
                 desc: $('#title').val(),
+                offset: offset,
+                batch: batch,
+                total_batch: total_batch,
+                per_batch: per_batch,
             },
+
             products: {
                 products_scope: $('#rex_feed_products').find(':selected').val(),
                 tags: get_checkbox_val('tags'),
                 cats: get_checkbox_val('cats'),
+                data: $('#rex_feed_product_filter_ids').val(),
             },
 
             feed_config: $('form').serialize(),
         };
+        var batches = total_batch;
+        console.log('Total Batch: ' + batches);
+        console.log('Total Product(s): ' + product);
+        console.log('Processing Batch Number: ' + batch);
+        console.log('Offset Number: ' + offset);
 
+        var progressbar = 100 / batches;
+        progressWidth = progressWidth + progressbar;
+        if (progressWidth > 100) {
+            progressWidth = 100;
+        }
+
+        if (progressWidth >= 100) {
+            $('.progress-msg span').html('Generating feed. Please wait.....');
+        } else {
+            $('.progress-msg span').html('Processing feed.....');
+        }
         wpAjaxHelperRequest('generate-promotion-feed', $payload)
             .success(function (response) {
                 console.log('Woohoo!');
-                console.log(response);
-                $('#publish').removeClass('disabled');
-                $(document).off('click', '#publish', get_product_number);
-                $('#publish').trigger('click');
+                var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+                if (response == 'false' || response == '') {
+                    generate_promotion_feed(product, offset, batch, per_batch, total_batch);
+                } else if (response.msg == 'finish') {
+                    feed_progressBar(progressWidth);
+                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
+                    $('#publish').removeClass('disabled');
+                    $(document).off('click', '#publish', get_product_number);
+                    $('#publish').trigger('click');
+
+                } else {
+                    if (batch < batches) {
+                        offset = offset + per_batch;
+                        batch++;
+                        feed_progressBar(progressWidth);
+                        generate_promotion_feed(product, offset, batch, per_batch, total_batch);
+                    }
+
+                }
             })
             .error(function (response) {
+                $(".progressbar-bar").css('background', '#ff0000');
+                $(".progressbar-bar").css('border-color', '#ff0000');
+                $(".progress-msg span").css('color', '#ff0000');
+                $(".progress-msg i").css('color', '#ff0000');
+                $(".progress-msg span").html(response.statusText);
                 $('#publishing-action span.spinner').removeClass('is-active');
                 $('#publish').removeClass('disabled');
+                $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
                 console.log('Uh, oh!');
                 console.log(response.statusText);
             });
@@ -429,7 +511,6 @@
         } else {
             $('.progress-msg span').html('Processing feed.....');
         }
-        console.log($payload)
         wpAjaxHelperRequest('generate-feed', $payload)
             .success(function (response) {
                 console.log('Woohoo!');
