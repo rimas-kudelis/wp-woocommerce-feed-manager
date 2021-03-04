@@ -1256,6 +1256,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</SHOP>';
             }
+        }elseif ($this->merchant === 'favi') {
+            $node = $feed->getElementsByTagName("product");
+            if($this->batch == $this->tbatch) {
+                $feed_string_footer .= '</products>';
+            }
         }elseif ($this->merchant === 'fashiola') {
             $node = $feed->getElementsByTagName("item");
             if($this->batch == $this->tbatch) {
@@ -1537,6 +1542,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $parent = $orgdoc->getElementsByTagName('items')->item(0);
             }elseif ($this->merchant === 'glami') {
                 $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+            }elseif ($this->merchant === 'favi') {
+                $parent = $orgdoc->getElementsByTagName('products')->item(0);
             }elseif ($this->merchant === 'fashiola') {
                 $parent = $orgdoc->getElementsByTagName('items')->item(0);
             }elseif ($this->merchant === 'emag') {
@@ -1605,6 +1612,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $node = $newdoc->getElementsByTagName("item");
             }elseif ($this->merchant === 'glami') {
                 $node = $newdoc->getElementsByTagName("SHOPITEM");
+            }elseif ($this->merchant === 'favi') {
+                $node = $newdoc->getElementsByTagName("product");
             }elseif ($this->merchant === 'fashiola') {
                 $node = $newdoc->getElementsByTagName("item");
             }elseif ($this->merchant === 'emag') {

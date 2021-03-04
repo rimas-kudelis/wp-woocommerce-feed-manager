@@ -17,7 +17,7 @@ class FaviShopping
      * @var Feed
      */
     public static $namespace = '';
-
+    
     /**
      * Feed rss version
      * @var Feed

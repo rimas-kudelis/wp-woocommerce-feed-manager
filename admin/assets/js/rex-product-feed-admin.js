@@ -1,12 +1,12 @@
-(function ($) {
+(function($) {
     'use strict';
 
     var progressWidth = 0;
     var deferred = $.Deferred();
     var promise = deferred.promise();
 
-    $(function () {
-        $(".meter > span").each(function () {
+    $(function() {
+        $(".meter > span").each(function() {
             $(this)
                 .data("origWidth", $(this).width())
                 .width(0)
@@ -45,7 +45,7 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#rex_feed_products select, #cmb2-metabox-rex_feed_google_merchant select').niceSelect();
         //$('.ui-timepicker-select').formSelect('destroy');
 
@@ -55,16 +55,16 @@
 
 
         //---------popup when click disabled input-------
-        $(".single-merchant.wpfm-pro .wpfm-pro-cta").on("click", function (e) {
+        $(".single-merchant.wpfm-pro .wpfm-pro-cta").on("click", function(e) {
             e.preventDefault();
             $(".premium-merchant-alert").addClass("show-alert");
         });
 
-        $(".premium-merchant-alert .close, .premium-merchant-alert button.close, .premium-merchant-alert").on("click", function () {
+        $(".premium-merchant-alert .close, .premium-merchant-alert button.close, .premium-merchant-alert").on("click", function() {
             $(".premium-merchant-alert").removeClass("show-alert");
         });
 
-        $(".premium-merchant-alert .alert-box").on("click", function (e) {
+        $(".premium-merchant-alert .alert-box").on("click", function(e) {
             e.stopPropagation();
         });
 
@@ -74,7 +74,7 @@
     /**
      * Add a new table-row and update it's
      */
-    $(document).on('click', '#rex-new-attr', function () {
+    $(document).on('click', '#rex-new-attr', function() {
         var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
         rowId = parseInt(rowId) + 1;
         var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
@@ -101,7 +101,7 @@
     /**
      * add new custom attributes
      */
-    $(document).on('click', '#rex-new-custom-attr', function () {
+    $(document).on('click', '#rex-new-custom-attr', function() {
         // var rowId = $(this).siblings('#config-table').find('tbody tr').length;
         var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
         rowId = parseInt(rowId) + 1;
@@ -136,7 +136,7 @@
      * Delete a table-row and update all row-id
      * beneath it and their input attributes names.
      */
-    $(document).on('click', '#config-table .delete-row', function () {
+    $(document).on('click', '#config-table .delete-row', function() {
 
         var $nextRows, rowId;
 
@@ -160,7 +160,7 @@
         }
 
         // Update their row-id and name attributes
-        $nextRows.each(function (index, el) {
+        $nextRows.each(function(index, el) {
             if (!$(el).css('display') == 'none') {
                 $(el).attr('data-row-id', rowId);
                 updateFormNameAtts($(el), rowId, filter);
@@ -177,7 +177,7 @@
     function updateFormNameAtts($row, rowId, filter) {
         var name, $el;
         $el = $row.find('input, select');
-        $el.each(function (index, item) {
+        $el.each(function(index, item) {
             name = $(item).attr('name');
             if ($(item).parent().hasClass('static-input')) {
                 $(item).parent().hide();
@@ -200,7 +200,7 @@
     /**
      * Event listener for Attribute type change functionality.
      */
-    $(document).on('change', 'select.type-dropdown', function () {
+    $(document).on('change', 'select.type-dropdown', function() {
         var selected = $(this).find('option:selected').val();
         if (selected == 'static') {
             $(this).closest('td').next('td').find('.meta-dropdown').hide();
@@ -214,7 +214,7 @@
     /**
      * Event listener for Filter Product.
      */
-    $(document).on('change', '#rex_feed_products', function () {
+    $(document).on('change', '#rex_feed_products', function() {
         var selected = $('#rex_feed_products').find(':selected').val();
         if (selected == 'filter') {
             $('.cmb2-id-rex-feed-config-filter-title').show();
@@ -228,9 +228,10 @@
     /**
      * Event listener for Merchant change functionality.
      */
-    $(document).on('change', '#rex_feed_merchant', function () {
+    $(document).on('change', '#rex_feed_merchant', function() {
         var $confBox = $('.rex-feed-config');
         var merchant_name = $('#rex_feed_merchant').find(':selected').val();
+
         if (merchant_name !== '-1') {
             $confBox.find('.rex-loading-spinner').css('display', 'flex');
             var $payload = {
@@ -239,20 +240,21 @@
             };
 
             wpAjaxHelperRequest('merchant-change', $payload)
-                .success(function (response) {
+                .success(function(response) {
                     if (response) {
                         $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select option').each(function() {
-                            var option_value=  $(this).val();
-                            if(jQuery.inArray(option_value, response.feed_format) === -1) {
+                            var option_value = $(this).val();
+                            if (jQuery.inArray(option_value, response.feed_format) === -1) {
                                 $(this).removeAttr('selected');
                                 $(this).attr('disabled', 'disabled');
-                            }
-                            else {
+                            } else {
                                 $(this).removeAttr('disabled');
                             }
+                            console.log(response.feed_format[0])
+                            console.log(option_value)
                         });
                         var selected = $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val();
-                        if(!selected) {
+                        if (!selected) {
                             $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val(response.feed_format[0]);
                         }
                     }
@@ -260,13 +262,13 @@
                     $confBox.fadeOut();
                     var configTable = document.getElementsByClassName("wpfm-field-mappings")[0];
                     configTable.innerHTML = response.html;
-
+                    console.log(configTable);
                     $confBox.fadeIn();
                     $('.rex-loading-spinner').css('display', 'none');
                     $('#rex_feed_conf .cmb2-id-rex-feed-config-heading').css('display', 'block');
                     $('#rex-new-attr, #rex-new-custom-attr').css('display', 'inline-block');
                 })
-                .error(function (response) {
+                .error(function(response) {
                     $('.rex-loading-spinner').css('display', 'none');
                     console.log('Uh, oh! Merchant change returned error!');
                     console.log(response.statusText);
@@ -279,7 +281,7 @@
         var items = 'input[name="rex_feed_' + name + '[]"]';
         var vals = [];
 
-        $(items).each(function () {
+        $(items).each(function() {
             if ($(this).prop('checked') == true) {
                 vals.push($(this).val());
             }
@@ -317,7 +319,7 @@
         $('.bwfm-progressbar, .progress-msg').fadeIn();
         $('.progress-msg span').html('Calculating products.....');
         wpAjaxHelperRequest('my-handle', $payload)
-            .success(function (response) {
+            .success(function(response) {
                 var per_batch = response.per_batch ? parseInt(response.per_batch) : 50;
                 // if (merchant !== 'google_merchant_promotion') {
                 //     generate_feed(response.products, 0, 1, per_batch, response.total_batch);
@@ -327,7 +329,7 @@
                 generate_feed(response.products, 0, 1, per_batch, response.total_batch);
 
             })
-            .error(function (response) {
+            .error(function(response) {
                 $('#publishing-action span.spinner').removeClass('is-active');
                 $('#publish').removeClass('disabled');
                 console.log('Uh, oh!');
@@ -422,7 +424,7 @@
             $('.progress-msg span').html('Processing feed.....');
         }
         wpAjaxHelperRequest('generate-promotion-feed', $payload)
-            .success(function (response) {
+            .success(function(response) {
                 console.log('Woohoo!');
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if (response == 'false' || response == '') {
@@ -444,7 +446,7 @@
 
                 }
             })
-            .error(function (response) {
+            .error(function(response) {
                 $(".progressbar-bar").css('background', '#ff0000');
                 $(".progressbar-bar").css('border-color', '#ff0000');
                 $(".progress-msg span").css('color', '#ff0000');
@@ -512,7 +514,7 @@
             $('.progress-msg span').html('Processing feed.....');
         }
         wpAjaxHelperRequest('generate-feed', $payload)
-            .success(function (response) {
+            .success(function(response) {
                 console.log('Woohoo!');
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if (response == 'false' || response == '') {
@@ -534,7 +536,7 @@
 
                 }
             })
-            .error(function (response) {
+            .error(function(response) {
                 $(".progressbar-bar").css('background', '#ff0000');
                 $(".progressbar-bar").css('border-color', '#ff0000');
                 $(".progress-msg span").css('color', '#ff0000');
@@ -570,12 +572,12 @@
             merchant_settings: true
         };
         wpAjaxHelperRequest('google-merchant-settings', payload)
-            .success(function (response) {
+            .success(function(response) {
                 console.log('Woohoo!');
                 $('.merchant-action').html(response.html);
                 $('.rex-loading-spinner').css('display', 'none');
             })
-            .error(function (response) {
+            .error(function(response) {
                 console.log('Uh, oh!');
                 $('.rex-loading-spinner').css('display', 'none');
                 console.log(response.statusText);
@@ -600,7 +602,7 @@
         var payload = {
             feed_id: $('#post_ID').val(),
             schedule: $('#rex_feed_google_schedule option:selected').val(),
-            destination : selected,
+            destination: selected,
             hour: $('#rex_feed_google_schedule_time option:selected').val(),
             country: $('#rex_feed_google_target_country').val(),
             language: $('#rex_feed_google_target_language').val()
@@ -624,7 +626,7 @@
         $('.rex-google-status').show();
         $('.rex-google-status').html('<p>Feed is sending. Please wait...</p>');
         wpAjaxHelperRequest('send-to-google', payload)
-            .success(function (response) {
+            .success(function(response) {
                 if (response.success) {
                     $('.rex-google-status').removeClass('info');
                     $('.rex-google-status').removeClass('success');
@@ -646,7 +648,7 @@
                     console.log(response)
                 }
             })
-            .error(function (response) {
+            .error(function(response) {
                 $('.rex-google-status').removeClass('info');
                 $('.rex-google-status').removeClass('success');
                 $('.rex-google-status').removeClass('warning');
@@ -697,10 +699,10 @@
 
 
         wpAjaxHelperRequest('rex-product-change-merchant-status', payload)
-            .success(function (response) {
+            .success(function(response) {
                 console.log('woohoo!');
             })
-            .error(function (response) {
+            .error(function(response) {
                 console.log('uh, oh!');
                 console.log(response.statusText);
             });
@@ -720,18 +722,18 @@
         $form.find("button.save-batch i").show();
         var per_batch = $form.find('#wpfm_product_per_batch').val();
         wpAjaxHelperRequest('rex-product-update-batch-size', per_batch)
-            .success(function (response) {
+            .success(function(response) {
                 $form.find("button.save-batch i").hide();
                 $form.find("button.save-batch span").text("saved");
-                setTimeout(function () {
+                setTimeout(function() {
                     $form.find("button.save-batch span").text("save");
                 }, 1000);
                 console.log('woohoo!');
             })
-            .error(function (response) {
+            .error(function(response) {
                 $form.find("button.save-batch i").hide();
                 $form.find("button.save-batch span").text("failed");
-                setTimeout(function () {
+                setTimeout(function() {
                     $form.find("button.save-batch span").text("save");
                 }, 1000);
                 console.log('uh, oh!');
@@ -751,10 +753,10 @@
         var payload = {};
         $(this).find("i").show();
         wpAjaxHelperRequest('rex-product-clear-batch', payload)
-            .success(function (response) {
+            .success(function(response) {
                 $("#wpfm-clear-batch").find("i").hide();
             })
-            .error(function (response) {
+            .error(function(response) {
                 console.log('uh, oh!');
                 console.log(response.statusText);
             });
@@ -764,8 +766,8 @@
 
 
     //----------setting tab-------
-    $(document).ready(function () {
-        $('ul.rex-settings-tabs li').click(function () {
+    $(document).ready(function() {
+        $('ul.rex-settings-tabs li').click(function() {
             var tab_id = $(this).attr('data-tab');
 
             $('ul.rex-settings-tabs li').removeClass('active');
@@ -793,7 +795,7 @@
             $('#log-viewer pre').html('');
         } else {
             wpAjaxHelperRequest('rex-product-feed-show-log', payload)
-                .success(function (response) {
+                .success(function(response) {
                     console.log('woohoo!');
                     $('#log-viewer pre').html(response.content);
                     if (log_key) {
@@ -801,7 +803,7 @@
                     }
                     $('#log-download').attr('href', response.file_url);
                 })
-                .error(function (response) {
+                .error(function(response) {
 
                     console.log('uh, oh!');
                     console.log(response.statusText);
@@ -858,14 +860,14 @@
             };
         }
         wpAjaxHelperRequest('wpfm-enable-fb-pixel', payload)
-            .success(function (response) {
+            .success(function(response) {
                 if (response.data == 'enabled') {
                     $('.wpfm-fb-pixel-field').removeClass('is-hidden');
                 } else {
                     $('.wpfm-fb-pixel-field').addClass('is-hidden');
                 }
             })
-            .error(function (response) {
+            .error(function(response) {
                 console.log('Uh, oh!');
                 console.log(response.statusText);
             });
@@ -885,18 +887,18 @@
         $form.find("button.save-fb-pixel i").show();
         var value = $form.find('#wpfm_fb_pixel').val();
         wpAjaxHelperRequest('save-fb-pixel-value', value)
-            .success(function (response) {
+            .success(function(response) {
                 $form.find("button.save-fb-pixel i").hide();
                 $form.find("button.save-fb-pixel span").text("saved");
-                setTimeout(function () {
+                setTimeout(function() {
                     $form.find("button.save-fb-pixel span").text("save");
                 }, 1000);
                 console.log('woohoo!');
             })
-            .error(function (response) {
+            .error(function(response) {
                 $form.find("button.ssave-fb-pixel i").hide();
                 $form.find("button.save-fb-pixel span").text("failed");
-                setTimeout(function () {
+                setTimeout(function() {
                     $form.find("button.save-fb-pixel span").text("save");
                 }, 1000);
                 console.log('uh, oh!');
@@ -922,10 +924,10 @@
             };
         }
         wpAjaxHelperRequest('rex-enable-log', payload)
-            .success(function (response) {
+            .success(function(response) {
                 console.log('Woohoo!');
             })
-            .error(function (response) {
+            .error(function(response) {
                 console.log('Uh, oh!');
                 console.log(response.statusText);
             });
@@ -948,18 +950,18 @@
             value: value,
         };
         wpAjaxHelperRequest('save-wpfm-transient', payload)
-            .success(function (response) {
+            .success(function(response) {
                 $form.find("button.save-transient-button i").hide();
                 $form.find("button.save-transient-button span").text("saved");
-                setTimeout(function () {
+                setTimeout(function() {
                     $form.find("button.save-transient-button span").text("save");
                 }, 1000);
                 console.log('woohoo!');
             })
-            .error(function (response) {
+            .error(function(response) {
                 $form.find("button.ssave-fb-pixel i").hide();
                 $form.find("button.save-fb-pixel span").text("failed");
-                setTimeout(function () {
+                setTimeout(function() {
                     $form.find("button.save-fb-pixel span").text("save");
                 }, 1000);
                 console.log('uh, oh!');
@@ -981,11 +983,11 @@
         var $el = $(this);
         $el.find("i").show();
         wpAjaxHelperRequest('purge-wpfm-transient-cache', payload)
-            .success(function (response) {
+            .success(function(response) {
                 $el.find("i").hide();
                 console.log('woohoo!');
             })
-            .error(function (response) {
+            .error(function(response) {
                 $el.find("i").hide();
                 console.log('uh, oh!');
                 console.log(response.statusText);
@@ -1010,10 +1012,10 @@
             };
         }
         wpAjaxHelperRequest('allow-private-products', payload)
-            .success(function (response) {
+            .success(function(response) {
                 console.log('Woohoo!');
             })
-            .error(function (response) {
+            .error(function(response) {
                 console.log('Uh, oh!');
                 console.log(response.statusText);
             });
@@ -1024,23 +1026,23 @@
 })(jQuery);
 
 
-window.WPFM_Ajaxified_Product_Taxonomies = (function (window, document, $, undefined) {
+window.WPFM_Ajaxified_Product_Taxonomies = (function(window, document, $, undefined) {
     'use strict';
 
     var app = {};
 
-    app.cache = function () {
+    app.cache = function() {
         app.$metabox = $('#rex_feed_products');
         app.$select_cat = app.$metabox.find('#rex_feed_products');
     };
 
 
-    app.init = function () {
+    app.init = function() {
         app.cache();
         app.$select_cat.on('change', app.change_color);
     };
 
-    app.change_color = function (evt) {
+    app.change_color = function(evt) {
         var that = $(this),
             new_val = that.val();
 
@@ -1060,7 +1062,7 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function (window, document, $, undef
             $('.rex-feed-product-filters').hide();
             $('.cmb-type-product-filter').hide();
             $('#rex-feed-product-taxonomies').show();
-        }else if (new_val === 'product_filter') {
+        } else if (new_val === 'product_filter') {
             $('.cmb2-id-rex-feed-product-filter-title').show();
             $('.cmb-type-product-filter').show();
 
@@ -1079,7 +1081,7 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function (window, document, $, undef
             };
             var l10n = window.cmb2_l10;
             wpAjaxHelperRequest('fetch-product-taxonomies', payload)
-                .success(function (response) {
+                .success(function(response) {
                     console.log('Woohoo!');
                     if (response.data.hasContent) {
                         $("#rex-feed-product-taxonomies-contents").html(response.data.html);
@@ -1090,7 +1092,7 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function (window, document, $, undef
 
                     }
                 })
-                .error(function (response) {
+                .error(function(response) {
                     console.log('Uh, oh!');
                     console.log(response.statusText);
                 });

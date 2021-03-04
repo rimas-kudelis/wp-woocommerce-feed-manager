@@ -290,7 +290,6 @@ class Rex_Product_Feed_Ajax {
      */
     public static function generate_promotion_feed( $config ) {
         $merchant = new Rex_Product_Feed_Google_merchant_promotion();
-        error_log(print_r($config,1));
         return $merchant->make_feed($config);
     }
 
@@ -408,6 +407,13 @@ class Rex_Product_Feed_Ajax {
             'google_local_products_inventory',
         );
 
+        $shopzilla = array(
+            'shopzilla',
+        );
+        $bing = array(
+            'bing',
+        );
+
 
         if (in_array( $merchant, $google_format )) {
             return array('xml');
@@ -437,6 +443,10 @@ class Rex_Product_Feed_Ajax {
             return array('csv','text');
         }elseif (in_array( $merchant, $google_local_product_inventory )){
             return array('xml','text');
+        }elseif (in_array( $merchant, $shopzilla)){
+            return array('text');
+        }elseif (in_array( $merchant, $bing)){
+            return array('text','xml', 'csv', 'text', 'tsv', 'json');
         }
         return array('xml', 'csv', 'text', 'tsv', 'json');
     }

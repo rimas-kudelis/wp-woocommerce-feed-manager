@@ -396,6 +396,7 @@ class Rex_Product_Metabox
         echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large"><i class="fa fa-plus-circle"></i>' . __('Add New Attribute', 'rex-product-feed') . '</a>';
         echo '<a id="rex-new-custom-attr" class="waves-effect waves-light btn-large"><i class="fa fa-plus-circle"></i>' . __('Add New Custom Attribute', 'rex-product-feed') . '</a>';
         echo '</div>';
+    
     }
 
 

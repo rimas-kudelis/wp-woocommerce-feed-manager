@@ -75,6 +75,12 @@ class Feed
      * @var string
      */
     protected $description = '';
+    
+    /**
+     * [$product_url product url]
+     * @var string
+     */
+    protected $product_url = '';
 
     /**
      * [$link description]
@@ -115,6 +121,7 @@ class Feed
     {
         $this->description = (string)$description;
     }
+  
 
     /**
      * @param string $link

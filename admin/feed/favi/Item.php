@@ -2,8 +2,8 @@
 
 namespace RexTheme\FaviShoppingFeed;
 
-use RexTheme\GlamiShoppingFeed\Node;
-use RexTheme\GlamiShoppingFeed\Containers\GlamiShopping;
+use RexTheme\FaviShoppingFeed\Node;
+use RexTheme\FaviShoppingFeed\Containers\FaviShopping;
 
 class Item
 {
@@ -117,7 +117,7 @@ class Item
     public function price($price)
     {
         $node = new Node('price');
-        $this->nodes['price'] = $node->value($price)->_namespace($this->namespace);
+        $this->nodes['price'] = $node->value($price);
     }
 
     /**
@@ -145,9 +145,9 @@ class Item
      */
     public function description($description)
     {
-        $node = new Node('DESCRIPTION');
+        $node = new Node('Description');
         $description = $this->safeCharEncodeText($description);
-        $this->nodes['DESCRIPTION'] = $node->value(substr($description, 0, 5000))->addCdata();
+        $this->nodes['Description'] = $node->value(substr($description, 0, 5000))->addCdata();
     }
 
     /**

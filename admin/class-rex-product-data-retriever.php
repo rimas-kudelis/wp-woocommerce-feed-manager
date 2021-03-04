@@ -193,6 +193,7 @@ class Rex_Product_Data_Retriever {
                         $this->data[ $rule['attr']][] = array(
                             'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
                             'value' => $this->set_val( $rule )
+                            
                         );
                     }else {
                         $this->data[ $rule['attr'] ] = $this->set_val( $rule );
@@ -224,6 +225,10 @@ class Rex_Product_Data_Retriever {
 
             $val = $this->set_pr_att( $rule['meta_key'] , $rule['escape'] );
         }
+        elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
+            
+            $val = $this->set_woodmart_att( $rule['meta_key'] );
+        }
         elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
 
             $val = $this->set_image_att( $rule['meta_key']  );
@@ -233,6 +238,7 @@ class Rex_Product_Data_Retriever {
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_dynamic_att( $rule['meta_key']  );
+            
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_custom_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_custom_att( $rule['meta_key']  );
@@ -264,6 +270,46 @@ class Rex_Product_Data_Retriever {
     }
 
     /**
+     * Set a woodmart gallery attribute.
+     *
+     * @since    1.0.0
+     */
+    protected function set_woodmart_att($key){
+        $id = substr($key, strpos($key, "_") + 1);
+        if('image_'.$id == $key){
+            return $this->get_woodmart_gallery($id);
+        }
+        
+    }
+
+
+    /**
+     * get a woodmart gallery attribute.
+     *
+     * @since    1.0.0
+     */
+    public function get_woodmart_gallery($id){
+        $product_id = $this->product->get_id();
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            $parent_id = $this->product->get_parent_id();
+            $all_gallery = get_post_meta($parent_id,'woodmart_variation_gallery_data',true);
+            if(isset($all_gallery[$product_id])){
+                $image_ids = $all_gallery[$product_id];
+                if($image_ids) {
+                    $image_ids = explode(',', $image_ids);
+                    if(isset($image_ids[$id])) {
+                        $image_id = $image_ids[$id];
+                        if($image_id){
+                            return  wp_get_attachment_url($image_id);              
+                        }
+                    }
+                }  
+            }
+        }
+        return '';
+    }
+
+    /**
      * Set a primary attribute.
      *
      * @since    1.0.0
@@ -272,6 +318,7 @@ class Rex_Product_Data_Retriever {
         switch ( $key ) {
             case 'id':
                 return $this->product->get_id(); break;
+                
 
             case 'sku':
                 return $this->product->get_sku(); break;
@@ -1466,15 +1513,11 @@ class Rex_Product_Data_Retriever {
 
             if($cat_lists) {
                 foreach ( $cat_lists as $key=>$term ) {
-
                     $map_key = array_search($term->term_id, array_column($map_config, 'map-key'));
 
-                    if($map_key) {
-
+                    if( $map_key == 0 || $map_key ) {
                         $map_array = $map_config[$map_key];
-
                         $map_value = $map_array['map-value'];
-
                         if(!empty($map_value)){
                             preg_match("~^(\d+)~", $map_value, $m);
                             if(count($m) > 1) {
@@ -1820,6 +1863,7 @@ class Rex_Product_Data_Retriever {
 //                $term_names[] = $term->name;
 //            }
             $term_names[] = $term->name;
+ 
         }
 
         return implode(' , ', $term_names);
@@ -1952,6 +1996,16 @@ class Rex_Product_Data_Retriever {
      */
     protected function is_primary_attr( $key ) {
         return array_key_exists( $key, $this->product_meta_keys['Primary Attributes'] );
+    }
+    /**
+     * Helper to check if a attribute is a Primary Attribute.
+     *
+     * @since    1.0.0
+     */
+    protected function is_woodmart_attr( $key ) {
+        if(isset($this->product_meta_keys['Woodmart Image Gallery'])){
+            return array_key_exists( $key, $this->product_meta_keys['Woodmart Image Gallery'] );
+        }
     }
 
     /**
@@ -2152,7 +2206,11 @@ class Rex_Product_Data_Retriever {
     protected function maybe_escape($val, $escape) {
         switch ($escape){
             case 'strip_tags':
-                return strip_tags($val);
+                $striped_string =  strip_tags($val);
+                if(substr($striped_string, -1) == " "){
+                    return rtrim($striped_string);
+                }
+                return $striped_string;
             case 'utf_8_encode':
                 return utf8_encode($val);
             case 'htmlentities':

@@ -22,6 +22,7 @@ class Rex_Feed_Attributes {
 
     public static function get_attributes(){
 
+        
         $attributes = array(
             'Primary Attributes'        => array(
                 'id'                        => 'Product Id',
@@ -94,6 +95,28 @@ class Rex_Feed_Attributes {
                 'image_10'       => 'Additional Image 10',
             ),
         );
+        
+        $theme = wp_get_theme();
+        if ( 'Woodmart' == $theme->name || 'Woodmart' == $theme->parent_theme ) {
+            $attributes_2 = array(
+                'Woodmart Image Gallery' => array(
+                    'image_0'        => 'WM Variation Gallery Image 1',
+                    'image_1'        => 'WM Variation Gallery Image 2',
+                    'image_2'        => 'WM Variation Gallery Image 3',
+                    'image_3'        => 'WM Variation Gallery Image 4',
+                    'image_4'        => 'WM Variation Gallery Image 5',
+                    'image_5'        => 'WM Variation Gallery Image 6',
+                    'image_6'        => 'WM Variation Gallery Image 7',
+                    'image_7'        => 'WM Variation Gallery Image 8',
+                    'image_8'        => 'WM Variation Gallery Image 9',
+                    'image_9'       => 'WM Variation Gallery Image 10'
+                ),
+            );
+
+            $attributes = array_merge($attributes, $attributes_2);
+        }
+
+        
 
         // Get product attributes
         $_attributes = self::get_product_attributes();
@@ -179,6 +202,7 @@ class Rex_Feed_Attributes {
             }
             wpfm_set_cached_data( 'product_dynamic_attributes', $attributes );
         }
+        
         return $attributes;
     }
 
