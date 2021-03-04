@@ -551,7 +551,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 6.3.3 (2021-03-03) =
+= 6.3.3 (2021-03-04) =
 * Added: WooMart Theme Gallery Image Compatibility
 * Fixed: Remove extra space at the end when Strip tags used
 * Fixed: Favi Price Tag And Product URL issue
