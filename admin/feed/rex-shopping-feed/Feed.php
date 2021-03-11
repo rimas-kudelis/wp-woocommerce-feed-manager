@@ -235,6 +235,7 @@ class Feed
      */
     private function addItemsToFeed()
     {
+        
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
@@ -252,6 +253,7 @@ class Feed
                 }
             }
         }
+        
     }
 
 
@@ -292,7 +294,7 @@ class Feed
     private function addItemsToFeedCSV(){
 
         if(count($this->items)){
-
+            
             $this->items_row[] = array_keys(end($this->items)->nodes());
             foreach ($this->items as $item) {
                 $row = array();

@@ -206,6 +206,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => true,
             'datetime'   => true,
         ),
+        "bing" => array(
+            'container'  => true,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => true,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => true,
+            'datetime'   => true,
+        ),
         "emag" => array(
             'container'  => true,
             'item_wrapper'  => 'product',

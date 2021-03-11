@@ -438,7 +438,7 @@ class Rex_Product_Feed_Ajax {
         }elseif (in_array( $merchant, $zalando_format )){
             return array('json');
         }elseif (in_array( $merchant, $wish_format )){
-            return array('text');
+            return array('csv','text');
         }elseif (in_array( $merchant, $connexity_format )){
             return array('csv','text');
         }elseif (in_array( $merchant, $google_local_product_inventory )){
@@ -446,7 +446,7 @@ class Rex_Product_Feed_Ajax {
         }elseif (in_array( $merchant, $shopzilla)){
             return array('text');
         }elseif (in_array( $merchant, $bing)){
-            return array('text','xml', 'csv', 'text', 'tsv', 'json');
+            return array('text');
         }
         return array('xml', 'csv', 'text', 'tsv', 'json');
     }

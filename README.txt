@@ -3,9 +3,9 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart
 Requires at least: 4.7
-Tested up to:  5.6.2
+Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.3.3
+Stable tag:  6.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -551,7 +551,12 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 6.3.3 (2021-03-04) =
+= 6.4.0 (2021-03-11) =
+* Fixed: Bing feed type set to text by default
+* Fixed: Cron issue while updating Bing feed
+* Compatibility Checked : WooCommerce 5.1.0 & WP 5.7
+
+= 6.3.3 (2021-03-03) =
 * Added: WooMart Theme Gallery Image Compatibility
 * Fixed: Remove extra space at the end when Strip tags used
 * Fixed: Favi Price Tag And Product URL issue

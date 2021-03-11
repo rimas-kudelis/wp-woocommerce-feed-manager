@@ -93,7 +93,7 @@ class Rex_Feed_Template_Bing extends Rex_Feed_Abstract_Template {
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',
-                'escape'   => 'cdata',
+                'escape'   => 'default',
                 'limit'    => 0,
             ),
             array(

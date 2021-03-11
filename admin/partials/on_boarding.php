@@ -329,7 +329,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                                 </p>
 
                                                 <a class="btn-default"
-                                                   href="<?php echo apply_filters('wpfm_support_link', 'https://rextheme.com/support/') ?>"
+                                                   href="<?php echo apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0') ?>"
                                                    target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed') ?> </a>
                                             </div>
 

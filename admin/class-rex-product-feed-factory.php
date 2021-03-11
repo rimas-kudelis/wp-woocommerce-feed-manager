@@ -213,11 +213,9 @@ class Rex_Product_Feed_Factory {
             $className = 'Rex_Product_Feed_Yandex';
         }
         else{
-
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
-
-
         }
+
         if( $config == '' || ! class_exists( $className ) ) {
             if(is_wpfm_logging_enabled()) {
                 $log->critical(__( 'Invalid Merchant.', 'rex-product-feed' ), array('source' => 'WPFM-Critical'));

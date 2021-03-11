@@ -1058,7 +1058,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         elseif ($format == 'text'){
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
-            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
+            update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.txt");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if( file_exists($file) ) {
                 if($this->batch == 1) {

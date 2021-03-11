@@ -1413,6 +1413,7 @@ a,
 .category-mapper-wrapper .cat-map {
   background: #fff;
   margin-top: 20px;
+  max-width: 100%;
   border-radius: 5px; }
 .rex-accordion .cat-map-header,
 .category-mapper-wrapper .cat-map-header {

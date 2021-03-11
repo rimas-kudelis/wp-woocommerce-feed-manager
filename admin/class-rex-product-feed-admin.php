@@ -447,7 +447,7 @@ class Rex_Product_Feed_Admin {
      * WPFM redirect to support link
      */
     public static function wpfm_support() {
-        $support_link = apply_filters('wpfm_support_link', 'https://rextheme.com/support/');
+        $support_link = apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0');
         wp_redirect($support_link);
         exit();
     }
