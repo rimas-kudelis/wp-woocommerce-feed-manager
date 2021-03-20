@@ -115,6 +115,7 @@ class Rex_Feed_Attributes {
 
             $attributes = array_merge($attributes, $attributes_2);
         }
+       
 
         
 

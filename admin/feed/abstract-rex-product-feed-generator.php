@@ -1037,8 +1037,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if( file_exists($file) ) {
-
                 if( $this->batch == 1  ) {
+                    $feed = new DOMDocument;
+                    $feed->loadXML($this->feed);
+                    $this->feed = $feed->saveXML($feed,LIBXML_NOEMPTYTAG);
                     if($this->tbatch > 1) {
                         $this->footer_replace();
                     }
@@ -1049,7 +1051,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     return 'true';
                 }
             }else{
-
                 if((int)$this->tbatch > 1) {
                     $this->footer_replace();
                 }
@@ -1223,6 +1224,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }elseif ($this->merchant === 'google_review') {
             $node = $feed->getElementsByTagName("review");
+            
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</feed>';
             }
@@ -1482,13 +1484,17 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }
         $str = '';
+        
         for ($i = 0; $i < $node->length; $i ++) {
             $item = $node->item($i);
+            
             if ($item != NULL) {
-                $str .= $feed->saveXML($item);
+                $str .= $feed->saveXML($item,LIBXML_NOEMPTYTAG);
             }
         }
+
         $str .= $feed_string_footer;
+        
         return $str;
     }
 
@@ -1498,7 +1504,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      **/
 
     protected function merge_feeds($prev_feed){
-
+       
         $xml = simplexml_load_file($prev_feed);
         if($xml) {
             $xml_str = $xml->asXML();

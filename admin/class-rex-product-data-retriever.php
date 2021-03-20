@@ -228,9 +228,7 @@ class Rex_Product_Data_Retriever {
         elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
             
             $val = $this->set_woodmart_att( $rule['meta_key'] );
-        }
-        elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
-
+        }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
             $val = $this->set_image_att( $rule['meta_key']  );
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
@@ -281,7 +279,7 @@ class Rex_Product_Data_Retriever {
         }
         
     }
-
+    
 
     /**
      * get a woodmart gallery attribute.
@@ -308,6 +306,9 @@ class Rex_Product_Data_Retriever {
         }
         return '';
     }
+
+
+
 
     /**
      * Set a primary attribute.
@@ -461,6 +462,9 @@ class Rex_Product_Data_Retriever {
                         }
                         return wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals());
                     }
+                }
+                elseif($this->product->is_type('bundle')){
+                    return $this->product->get_bundle_price();  
                 }
                 if($this->wcml) {
                     global $woocommerce_wpml;
@@ -1998,7 +2002,7 @@ class Rex_Product_Data_Retriever {
         return array_key_exists( $key, $this->product_meta_keys['Primary Attributes'] );
     }
     /**
-     * Helper to check if a attribute is a Primary Attribute.
+     * Helper to check if a attribute is a Woodmart Attribute.
      *
      * @since    1.0.0
      */
@@ -2007,7 +2011,6 @@ class Rex_Product_Data_Retriever {
             return array_key_exists( $key, $this->product_meta_keys['Woodmart Image Gallery'] );
         }
     }
-
     /**
      * Helper to check if a attribute is a Image Attribute.
      *
