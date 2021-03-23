@@ -7,7 +7,7 @@
     </p>
     <p>
         <?php
-            esc_html_e( 'WooCommerce Product Feed Manager is getting better and now, has an updated data structure for it to run smoothly. Click on update now to get the latest data structure for WPFM. None of your data will be changed/removed, only WPFM data will be restructured for better outcome.', 'rex-product-feed' );
+            esc_html_e( 'Product Feed Manager for WooCommerce  is getting better and now, has an updated data structure for it to run smoothly. Click on update now to get the latest data structure for WPFM. None of your data will be changed/removed, only WPFM data will be restructured for better outcome.', 'rex-product-feed' );
             esc_html_e( 'The database update process runs in the background and may take a little while, so please be patient.', 'rex-product-feed' );
 
         ?>

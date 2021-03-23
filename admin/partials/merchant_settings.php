@@ -13,6 +13,7 @@ $merchant_id = $rex_google_merchant::$merchant_id;
 $redirect_uri = admin_url( 'admin.php?page=merchant_settings' );
 
 if(isset($_GET['code'])){
+    $code = sanitize_text_field($_GET['code']);
     $rex_google_merchant->save_access_token($_GET['code']);
 }
 

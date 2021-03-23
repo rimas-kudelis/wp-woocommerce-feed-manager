@@ -215,7 +215,11 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
             return file_put_contents($file, json_encode($this->product_data)) ? 'true' : 'false';
         }
         else {
-            $inp = file_get_contents($file);
+            $request = wp_remote_get( "http://www.google.com/basepages/producttype/taxonomy." . $languageCulture . ".txt" );
+            if( is_wp_error( $request ) ) {
+                return false;
+            }
+            $inp = wp_remote_retrieve_body( $request );
             $tempArray = json_decode($inp, true);
             $result=array_merge($tempArray, $this->product_data);
             $jsonData = json_encode($result);

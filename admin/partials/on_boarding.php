@@ -346,7 +346,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
 
                                             <div class="body">
                                                 <p>
-                                                    <?php echo __('We love to have you in WooCommerce Product Feed Manager family. Take your 2 minutes to review and speed the love to encourage us to keep it going.', 'rex-product-feed') ?>
+                                                    <?php echo __('We love to have you in Product Feed Manager for WooCommerce family. Take your 2 minutes to review and speed the love to encourage us to keep it going.', 'rex-product-feed') ?>
                                                 </p>
 
                                                 <a class="btn-default"

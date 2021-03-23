@@ -1,17 +1,17 @@
 <?php
 /**
- * Handles hooking WPFM_CMB2 forms/metaboxes into the post/attachement/user screens
+ * Handles hooking CMB2 forms/metaboxes into the post/attachement/user screens
  * and handles hooking in and saving those fields.
  *
  * @since  2.0.0
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  */
-class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
+class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_Hookup {
 
 	/**
 	 * The object type we are performing the hookup for
@@ -33,9 +33,10 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 	 * Constructor
 	 *
 	 * @since 2.0.0
-	 * @param WPFM_CMB2 $cmb The WPFM_CMB2 object to hookup
+	 * @param CMB2   $cmb        The CMB2 object to hookup.
+	 * @param string $option_key Option key to use.
 	 */
-	public function __construct( WPFM_CMB2 $cmb, $option_key ) {
+	public function __construct( CMB2 $cmb, $option_key ) {
 		$this->cmb = $cmb;
 		$this->option_key = $option_key;
 	}
@@ -50,6 +51,13 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 			add_filter( "cmb2_should_autoload_{$this->option_key}", '__return_false' );
 		}
 
+		/**
+		 * For WP < 4.7. Ensure the register_setting function exists.
+		 */
+		if ( ! WPFM_CMB2_Utils::wp_at_least( '4.7' ) && ! function_exists( 'register_setting' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
 		// Register setting to cmb2 group.
 		register_setting( 'cmb2', $this->option_key );
 
@@ -60,7 +68,7 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 		$hook = $this->cmb->prop( 'admin_menu_hook' );
 
 		// Hook in to add our menu.
-		add_action( $hook, array( $this, 'options_page_menu_hooks' ) );
+		add_action( $hook, array( $this, 'options_page_menu_hooks' ), $this->get_priority() );
 
 		// If in the network admin, need to use get/update_site_option.
 		if ( 'network_admin_menu' === $hook ) {
@@ -107,8 +115,8 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 		}
 
 		if ( $this->cmb->prop( 'cmb_styles' ) ) {
-			// Include CMB CSS in the head to avoid FOUC
-			add_action( "admin_print_styles-{$page_hook}", array( 'WPFM_CMB2_hookup', 'enqueue_cmb_css' ) );
+			// Include CMB CSS in the head to avoid FOUC.
+			add_action( "admin_print_styles-{$page_hook}", array( 'CMB2_Hookup', 'enqueue_cmb_css' ) );
 		}
 
 		$this->maybe_register_message();
@@ -144,7 +152,7 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 			 * Unless there are other reasons for notifications, the callback should only
 			 * `add_settings_error()` if `$args['should_notify']` is truthy.
 			 *
-			 * @param WPFM_CMB2  $cmb The WPFM_CMB2 object.
+			 * @param CMB2  $cmb The CMB2 object.
 			 * @param array $args {
 			 *     An array of message arguments
 			 *
@@ -183,28 +191,40 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 
 		$callback = $this->cmb->prop( 'display_cb' );
 		if ( is_callable( $callback ) ) {
-			return $callback( $this );
+			return call_user_func( $callback, $this );
 		}
 
-		$tabs = $this->get_tab_group_tabs();
 		?>
-		<div class="wrap cmb2-options-page option-<?php echo $this->option_key; ?>">
+		<div class="wrap cmb2-options-page option-<?php echo esc_attr( sanitize_html_class( $this->option_key ) ); ?>">
 			<?php if ( $this->cmb->prop( 'title' ) ) : ?>
 				<h2><?php echo wp_kses_post( $this->cmb->prop( 'title' ) ); ?></h2>
 			<?php endif; ?>
-			<?php if ( ! empty( $tabs ) ) : ?>
-				<h2 class="nav-tab-wrapper">
-					<?php foreach ( $tabs as $option_key => $tab_title ) : ?>
-						<a class="nav-tab<?php if ( self::is_page( $option_key ) ) : ?> nav-tab-active<?php endif; ?>" href="<?php menu_page_url( $option_key ); ?>"><?php echo wp_kses_post( $tab_title ); ?></a>
-					<?php endforeach; ?>
-				</h2>
-			<?php endif; ?>
+			<?php $this->options_page_tab_nav_output(); ?>
 			<form class="cmb-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST" id="<?php echo $this->cmb->cmb_id; ?>" enctype="multipart/form-data" encoding="multipart/form-data">
 				<input type="hidden" name="action" value="<?php echo esc_attr( $this->option_key ); ?>">
 				<?php $this->options_page_metabox(); ?>
 				<?php submit_button( esc_attr( $this->cmb->prop( 'save_button' ) ), 'primary', 'submit-cmb' ); ?>
 			</form>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Display options-page Tab Navigation output.
+	 *
+	 * @since 2.9.0
+	 */
+	public function options_page_tab_nav_output() {
+		$tabs = $this->get_tab_group_tabs();
+		if ( empty( $tabs ) ) {
+			return;
+		}
+		?>
+		<h2 class="nav-tab-wrapper">
+			<?php foreach ( $tabs as $option_key => $tab_title ) : ?>
+				<a class="nav-tab<?php if ( self::is_page( $option_key ) ) : ?> nav-tab-active<?php endif; ?>" href="<?php menu_page_url( $option_key ); ?>"><?php echo wp_kses_post( $tab_title ); ?></a>
+			<?php endforeach; ?>
+		</h2>
 		<?php
 	}
 
@@ -219,14 +239,14 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 	public function maybe_output_settings_notices() {
 		global $parent_file;
 
-		// The settings sub-pages will already have settings_errors() called in wp-admin/options-head.php
+		// The settings sub-pages will already have settings_errors() called in wp-admin/options-head.php.
 		if ( 'options-general.php' !== $parent_file ) {
 			settings_errors( "{$this->option_key}-notices" );
 		}
 	}
 
 	/**
-	 * Gets navigation tabs array for WPFM_CMB2 options pages which share the
+	 * Gets navigation tabs array for CMB2 options pages which share the
 	 * same tab_group property.
 	 *
 	 * @since 2.4.0
@@ -237,7 +257,7 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 		$tabs      = array();
 
 		if ( $tab_group ) {
-			$boxes = WPFM_CMB2_Boxes::get_by( 'tab_group', $tab_group );
+			$boxes = CMB2_Boxes::get_by( 'tab_group', $tab_group );
 
 			foreach ( $boxes as $cmb_id => $cmb ) {
 				$option_key = $cmb->options_page_keys();
@@ -251,7 +271,7 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 			}
 		}
 
-		return $tabs;
+		return apply_filters( 'cmb2_tab_group_tabs', $tabs, $tab_group );
 	}
 
 	/**
@@ -277,7 +297,7 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 
 		if (
 			$this->can_save( 'options-page' )
-			// check params
+			// check params.
 			&& isset( $_POST['submit-cmb'], $_POST['action'] )
 			&& $this->option_key === $_POST['action']
 		) {
@@ -289,13 +309,17 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 			$url = add_query_arg( 'settings-updated', $updated ? 'true' : 'false', $url );
 		}
 
-		wp_safe_redirect( esc_url_raw( $url ), WP_Http::SEE_OTHER );
+		wp_safe_redirect( esc_url_raw( $url ), 303 /* WP_Http::SEE_OTHER */ );
 		exit;
 	}
 
 	/**
-	 * Replaces get_option with get_site_option
+	 * Replaces get_option with get_site_option.
+	 *
 	 * @since 2.2.5
+	 *
+	 * @param mixed $test    Not used.
+	 * @param mixed $default Default value to use.
 	 * @return mixed Value set for the network option.
 	 */
 	public function network_get_override( $test, $default = false ) {
@@ -303,8 +327,12 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 	}
 
 	/**
-	 * Replaces update_option with update_site_option
+	 * Replaces update_option with update_site_option.
+	 *
 	 * @since 2.2.5
+	 *
+	 * @param mixed $test         Not used.
+	 * @param mixed $option_value Value to use.
 	 * @return bool Success/Failure
 	 */
 	public function network_update_override( $test, $option_value ) {
@@ -316,8 +344,7 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 	 *
 	 * @since  2.4.0
 	 *
-	 * @param  string $page Page slug
-	 *
+	 * @param  string $page Page slug.
 	 * @return boolean
 	 */
 	public static function is_page( $page ) {
@@ -327,7 +354,8 @@ class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 	/**
 	 * Magic getter for our object.
 	 *
-	 * @param string $field
+	 * @param string $field Property to retrieve.
+	 *
 	 * @throws Exception Throws an exception if the field is invalid.
 	 * @return mixed
 	 */

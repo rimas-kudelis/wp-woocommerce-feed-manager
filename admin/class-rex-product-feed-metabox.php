@@ -41,6 +41,7 @@ class Rex_Product_Metabox
             'object_types' => array('product-feed'), // Post type
         ));
 
+
         /**
          * Check if WooCommerce is active
          **/

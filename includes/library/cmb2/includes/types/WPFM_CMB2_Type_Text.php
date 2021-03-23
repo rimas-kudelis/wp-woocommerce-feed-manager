@@ -5,12 +5,12 @@
  * @since  2.2.2
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  */
-class WPFM_CMB2_Type_Text extends WPFM_CMB2_Type_Base {
+class WPFM_CMB2_Type_Text extends WPFM_CMB2_Type_Counter_Base {
 
 	/**
 	 * The type of field
@@ -50,6 +50,9 @@ class WPFM_CMB2_Type_Text extends WPFM_CMB2_Type_Base {
 			'desc'            => $this->_desc( true ),
 			'js_dependencies' => array(),
 		), $args );
+
+		// Add character counter?
+		$a = $this->maybe_update_attributes_for_char_counter( $a );
 
 		return $this->rendered(
 			sprintf( '<input%s/>%s', $this->concat_attrs( $a, array( 'desc' ) ), $a['desc'] )

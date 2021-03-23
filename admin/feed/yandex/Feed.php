@@ -364,7 +364,12 @@ class Feed
         $cache = new Cache;
         $cache->setCacheDirectory($this->cacheDir);
         $data = $cache->getOrCreate('google-feed-taxonomy.txt', array( 'max-age' => '86400' ), function () {
-            return file_get_contents("http://www.google.com/basepages/producttype/taxonomy.en-GB.txt");
+            $request = wp_remote_get( "http://www.google.com/basepages/producttype/taxonomy.en-GB.txt" );
+            if( is_wp_error( $request ) ) {
+                return false;
+            }
+            $body = wp_remote_retrieve_body( $request );
+            return json_decode( $body );
         });
         return explode("\n", trim($data));
     }

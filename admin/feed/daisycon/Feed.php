@@ -293,7 +293,12 @@ class Feed
         $cache->setCacheDirectory($this->cacheDir);
         $data = $cache->getOrCreate('google-feed-taxonomy.'.$languageISO639.'.txt', array('max-age' => '86400'),
             function () use ($languageCulture) {
-                return file_get_contents("http://www.google.com/basepages/producttype/taxonomy." . $languageCulture . ".txt");
+                $request = wp_remote_get( "http://www.google.com/basepages/producttype/taxonomy." . $languageCulture . ".txt" );
+                if( is_wp_error( $request ) ) {
+                    return false;
+                }
+                $body = wp_remote_retrieve_body( $request );
+                return json_decode( $body );
             }
         );
 

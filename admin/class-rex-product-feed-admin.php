@@ -1184,7 +1184,7 @@ class Rex_Product_Feed_Admin {
     public function is_wpfm_page() {
         global $pagenow;
         global $typenow;
-        $page = isset($_GET['page']) ? $_GET['page'] : '';
+        $page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : '';
         if($typenow == 'product-feed' &&  $pagenow === 'edit.php') {
             return true;
         }

@@ -250,8 +250,6 @@
                             } else {
                                 $(this).removeAttr('disabled');
                             }
-                            console.log(response.feed_format[0])
-                            console.log(option_value)
                         });
                         var selected = $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val();
                         if (!selected) {
@@ -262,7 +260,6 @@
                     $confBox.fadeOut();
                     var configTable = document.getElementsByClassName("wpfm-field-mappings")[0];
                     configTable.innerHTML = response.html;
-                    console.log(configTable);
                     $confBox.fadeIn();
                     $('.rex-loading-spinner').css('display', 'none');
                     $('#rex_feed_conf .cmb2-id-rex-feed-config-heading').css('display', 'block');

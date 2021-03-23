@@ -1,12 +1,12 @@
 <?php
 /**
- * CMB taxonomy_multicheck field type
+ * CMB taxonomy_multicheck_hierarchical field type
  *
- * @since  2.2.2
+ * @since  2.2.5
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  */

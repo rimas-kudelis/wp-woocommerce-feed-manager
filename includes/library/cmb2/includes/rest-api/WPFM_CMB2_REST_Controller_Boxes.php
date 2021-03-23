@@ -1,6 +1,6 @@
 <?php
 /**
- * WPFM_CMB2 objects/boxes endpoint for WordPres REST API.
+ * CMB2 objects/boxes endpoint for WordPres REST API.
  * Allows access to boxes configuration data.
  *
  * @todo  Add better documentation.
@@ -9,8 +9,8 @@
  * @since 2.2.3
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  */
@@ -100,14 +100,14 @@ class WPFM_CMB2_REST_Controller_Boxes extends WPFM_CMB2_REST_Controller {
 		 *
 		 * @since 2.2.3
 		 *
-		 * @param bool   $can_access Whether this WPFM_CMB2 endpoint can be accessed.
-		 * @param object $controller This WPFM_CMB2_REST_Controller object.
+		 * @param bool   $can_access Whether this CMB2 endpoint can be accessed.
+		 * @param object $controller This CMB2_REST_Controller object.
 		 */
 		return apply_filters( 'cmb2_api_get_boxes_permissions_check', true, $this );
 	}
 
 	/**
-	 * Get all public WPFM_CMB2 boxes.
+	 * Get all public CMB2 boxes.
 	 *
 	 * @since 2.2.3
 	 *
@@ -174,14 +174,14 @@ class WPFM_CMB2_REST_Controller_Boxes extends WPFM_CMB2_REST_Controller {
 		 *
 		 * @since 2.2.3
 		 *
-		 * @param bool   $can_access Whether this WPFM_CMB2 endpoint can be accessed.
-		 * @param object $controller This WPFM_CMB2_REST_Controller object.
+		 * @param bool   $can_access Whether this CMB2 endpoint can be accessed.
+		 * @param object $controller This CMB2_REST_Controller object.
 		 */
 		return $this->maybe_hook_callback_and_apply_filters( 'cmb2_api_get_box_permissions_check', $can_access );
 	}
 
 	/**
-	 * Get one WPFM_CMB2 box from the collection.
+	 * Get one CMB2 box from the collection.
 	 *
 	 * @since 2.2.3
 	 *
@@ -199,7 +199,7 @@ class WPFM_CMB2_REST_Controller_Boxes extends WPFM_CMB2_REST_Controller {
 	}
 
 	/**
-	 * Get a WPFM_CMB2 box prepared for REST
+	 * Get a CMB2 box prepared for REST
 	 *
 	 * @since 2.2.3
 	 *
@@ -210,7 +210,7 @@ class WPFM_CMB2_REST_Controller_Boxes extends WPFM_CMB2_REST_Controller {
 
 		$boxes_data = $cmb->meta_box;
 
-		if ( isset( $this->request['_rendered'] ) && $this->namespace_base !== ltrim( WPFM_CMB2_REST_Controller::get_intial_route(), '/' ) ) {
+		if ( isset( $this->request['_rendered'] ) && $this->namespace_base !== ltrim( CMB2_REST_Controller::get_intial_route(), '/' ) ) {
 			$boxes_data['form_open'] = $this->get_cb_results( array( $cmb, 'render_form_open' ) );
 			$boxes_data['form_close'] = $this->get_cb_results( array( $cmb, 'render_form_close' ) );
 
@@ -218,7 +218,7 @@ class WPFM_CMB2_REST_Controller_Boxes extends WPFM_CMB2_REST_Controller {
 			$before_css = $wp_styles->queue;
 			$before_js = $wp_scripts->queue;
 
-			WPFM_CMB2_JS::enqueue();
+			CMB2_JS::enqueue();
 
 			$boxes_data['js_dependencies'] = array_values( array_diff( $wp_scripts->queue, $before_js ) );
 			$boxes_data['css_dependencies'] = array_values( array_diff( $wp_styles->queue, $before_css ) );
@@ -242,7 +242,7 @@ class WPFM_CMB2_REST_Controller_Boxes extends WPFM_CMB2_REST_Controller {
 	 *
 	 * @since  2.2.3
 	 *
-	 * @param  WPFM_CMB2_REST $cmb WPFM_CMB2_REST object to build links from.
+	 * @param  CMB2_REST $cmb CMB2_REST object to build links from.
 	 *
 	 * @return array          Array of links
 	 */

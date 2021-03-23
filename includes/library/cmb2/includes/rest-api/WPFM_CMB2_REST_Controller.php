@@ -5,7 +5,7 @@ if ( ! class_exists( 'WP_REST_Controller' ) ) {
 }
 
 /**
- * Creates WPFM_CMB2 objects/fields endpoint for WordPres REST API.
+ * Creates CMB2 objects/fields endpoint for WordPres REST API.
  * Allows access to fields registered to a specific post type and more.
  *
  * @todo  Add better documentation.
@@ -14,8 +14,8 @@ if ( ! class_exists( 'WP_REST_Controller' ) ) {
  * @since 2.2.3
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  */
@@ -26,7 +26,7 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 	 *
 	 * @var string
 	 */
-	protected $namespace = WPFM_CMB2_REST::NAME_SPACE;
+	protected $namespace = CMB2_REST::NAME_SPACE;
 
 	/**
 	 * The base of this controller's route.
@@ -68,16 +68,16 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 	public $object_type = '';
 
 	/**
-	 * WPFM_CMB2 Instance
+	 * CMB2 Instance
 	 *
-	 * @var WPFM_CMB2_REST
+	 * @var CMB2_REST
 	 */
 	protected $rest_box;
 
 	/**
-	 * WPFM_CMB2_Field Instance
+	 * CMB2_Field Instance
 	 *
-	 * @var WPFM_CMB2_Field
+	 * @var CMB2_Field
 	 */
 	protected $field;
 
@@ -131,8 +131,8 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 		 *
 		 * @since 2.2.3
 		 *
-		 * @param bool   $default_access Whether this WPFM_CMB2 endpoint can be accessed.
-		 * @param object $controller     This WPFM_CMB2_REST_Controller object.
+		 * @param bool   $default_access Whether this CMB2 endpoint can be accessed.
+		 * @param object $controller     This CMB2_REST_Controller object.
 		 */
 		$default_access = apply_filters( $filter, $default_access, $this );
 
@@ -142,7 +142,7 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Checks if the WPFM_CMB2 box has any registered callback parameters for the given filter.
+	 * Checks if the CMB2 box has any registered callback parameters for the given filter.
 	 *
 	 * The registered handlers will have a property name which matches the filter, except:
 	 * - The 'cmb2_api' prefix will be removed
@@ -170,7 +170,7 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Unhooks any WPFM_CMB2 box registered callback parameters for the given filter.
+	 * Unhooks any CMB2 box registered callback parameters for the given filter.
 	 *
 	 * @since  2.2.3
 	 *
@@ -188,7 +188,7 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Prepare a WPFM_CMB2 object for serialization
+	 * Prepare a CMB2 object for serialization
 	 *
 	 * @since 2.2.3
 	 *
@@ -217,7 +217,7 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Prepare the WPFM_CMB2 item for the REST response.
+	 * Prepare the CMB2 item for the REST response.
 	 *
 	 * @since 2.2.3
 	 *
@@ -229,7 +229,7 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 		$data = $this->filter_response_by_context( $data, $this->request['context'] );
 
 		/**
-		 * Filter the prepared WPFM_CMB2 item response.
+		 * Filter the prepared CMB2 item response.
 		 *
 		 * @since 2.2.3
 		 *
@@ -362,7 +362,7 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Get WPFM_CMB2 fields schema, conforming to JSON Schema
+	 * Get CMB2 fields schema, conforming to JSON Schema
 	 *
 	 * @since 2.2.3
 	 *
@@ -371,7 +371,7 @@ abstract class WPFM_CMB2_REST_Controller extends WP_REST_Controller {
 	public function get_item_schema() {
 		$schema = array(
 			'$schema'              => 'http://json-schema.org/draft-04/schema#',
-			'title'                => 'WPFM_CMB2',
+			'title'                => 'CMB2',
 			'type'                 => 'object',
 			'properties'           => array(
 				'description' => array(

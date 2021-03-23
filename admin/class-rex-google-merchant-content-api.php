@@ -109,7 +109,7 @@ class Rex_Google_Merchant_Settings_Api {
         return '<div id="card-alert" class="single-merchant-area authorized">
                   <div class="single-merchant-block">
                     <span class="card-title rex-card-title">'. __('You are authorized.', 'rex-product-feed') .'</span>
-                    <p class="rex-p">'.  __('You are now ready to send feed from WooCommerce Product Feed Manager to your Google Merchant Center. ', 'rex-product-feed').'🚀 </p>
+                    <p class="rex-p">'.  __('You are now ready to send feed from Product Feed Manager for WooCommerce to your Google Merchant Center. ', 'rex-product-feed').'🚀 </p>
                   </div>              
                 </div>';
     }

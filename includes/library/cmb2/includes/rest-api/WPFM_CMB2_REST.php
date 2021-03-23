@@ -1,25 +1,23 @@
 <?php
 /**
- * Handles hooking WPFM_CMB2 objects/fields into the WordPres REST API
+ * Handles hooking CMB2 objects/fields into the WordPres REST API
  * which can allow fields to be read and/or updated.
  *
  * @since  2.2.3
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  *
  * @property-read read_fields Array of readable field objects.
- * @property-read edit_fields Array of editable field objects.
- * @property-read rest_read   Whether WPFM_CMB2 object is readable via the rest api.
- * @property-read rest_edit   Whether WPFM_CMB2 object is editable via the rest api.
+ * @property-read rest_read   Whether CMB2 object is readable via the rest api.
  */
 class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 
 	/**
-	 * The current WPFM_CMB2 REST endpoint version
+	 * The current CMB2 REST endpoint version
 	 *
 	 * @var string
 	 * @since 2.2.3
@@ -27,7 +25,7 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	const VERSION = '1';
 
 	/**
-	 * The WPFM_CMB2 REST base namespace (v should always be followed by $version)
+	 * The CMB2 REST base namespace (v should always be followed by $version)
 	 *
 	 * @var string
 	 * @since 2.2.3
@@ -35,13 +33,13 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	const NAME_SPACE = 'cmb2/v1';
 
 	/**
-	 * @var   WPFM_CMB2 object
+	 * @var   CMB2 object
 	 * @since 2.2.3
 	 */
 	public $cmb;
 
 	/**
-	 * @var   WPFM_CMB2_REST[] objects
+	 * @var   CMB2_REST[] objects
 	 * @since 2.2.3
 	 */
 	protected static $boxes = array();
@@ -60,7 +58,7 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	/**
 	 * Array of readable field objects.
 	 *
-	 * @var   WPFM_CMB2_Field[]
+	 * @var   CMB2_Field[]
 	 * @since 2.2.3
 	 */
 	protected $read_fields = array();
@@ -68,20 +66,20 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	/**
 	 * Array of editable field objects.
 	 *
-	 * @var   WPFM_CMB2_Field[]
+	 * @var   CMB2_Field[]
 	 * @since 2.2.3
 	 */
 	protected $edit_fields = array();
 
 	/**
-	 * Whether WPFM_CMB2 object is readable via the rest api.
+	 * Whether CMB2 object is readable via the rest api.
 	 *
 	 * @var boolean
 	 */
 	protected $rest_read = false;
 
 	/**
-	 * Whether WPFM_CMB2 object is editable via the rest api.
+	 * Whether CMB2 object is editable via the rest api.
 	 *
 	 * @var boolean
 	 */
@@ -92,7 +90,7 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	 *
 	 * @since  2.2.6
 	 *
-	 * @param  WPFM_CMB2 $cmb The WPFM_CMB2 object to hookup
+	 * @param  WPFM_CMB2 $cmb The CMB2 object to hookup
 	 *
 	 * @return WPFM_CMB2_Hookup_Base $hookup The hookup object.
 	 */
@@ -112,7 +110,7 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	 *
 	 * @since 2.2.3
 	 *
-	 * @param WPFM_CMB2 $cmb The WPFM_CMB2 object to be registered for the API.
+	 * @param WPFM_CMB2 $cmb The CMB2 object to be registered for the API.
 	 */
 	public function __construct( WPFM_CMB2 $cmb ) {
 		$this->cmb = $cmb;
@@ -147,7 +145,7 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	}
 
 	/**
-	 * Initiate the WPFM_CMB2 Boxes and Fields routes
+	 * Initiate the CMB2 Boxes and Fields routes
 	 *
 	 * @since  2.2.3
 	 *
@@ -174,6 +172,14 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 		$alltypes = $taxonomies = array();
 
 		foreach ( self::$boxes as $cmb_id => $rest_box ) {
+
+			// Hook box specific filter callbacks.
+			$callback = $rest_box->cmb->prop( 'register_rest_field_cb' );
+			if ( is_callable( $callback ) ) {
+				call_user_func( $callback, $rest_box );
+				continue;
+			}
+
 			$types = array_flip( $rest_box->cmb->box_types( array( 'post' ) ) );
 
 			if ( isset( $types['user'] ) ) {
@@ -401,17 +407,52 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 			foreach ( self::$type_boxes[ $main_object_type ] as $cmb_id ) {
 				$rest_box = self::$boxes[ $cmb_id ];
 
-				foreach ( $rest_box->read_fields as $field_id ) {
-					$rest_box->cmb->object_id( $object['id'] );
-					$rest_box->cmb->object_type( $main_object_type );
-
-					$field = $rest_box->cmb->get_field( $field_id );
-
-					$field->object_id( $object['id'] );
-					$field->object_type( $main_object_type );
-
-					$values[ $cmb_id ][ $field->id( true ) ] = $field->get_data();
+				if ( ! $rest_box->cmb->is_box_type( $object_type ) ) {
+					continue;
 				}
+
+				$result = self::get_box_rest_values( $rest_box, $object['id'], $main_object_type );
+				if ( ! empty( $result ) ) {
+					if ( empty( $values[ $cmb_id ] ) ) {
+						$values[ $cmb_id ] = $result;
+					} else {
+						$values[ $cmb_id ] = array_merge( $values[ $cmb_id ], $result );
+					}
+				}
+			}
+		}
+
+		return $values;
+	}
+
+	/**
+	 * Get box rest values.
+	 *
+	 * @since  2.7.0
+	 *
+	 * @param  CMB2_REST $rest_box         The CMB2_REST object.
+	 * @param  integer   $object_id        The object ID.
+	 * @param  string    $main_object_type The object type (post, user, term, etc)
+	 *
+	 * @return array                       Array of box rest values.
+	 */
+	public static function get_box_rest_values( $rest_box, $object_id = 0, $main_object_type = 'post' ) {
+
+		$rest_box->cmb->object_id( $object_id );
+		$rest_box->cmb->object_type( $main_object_type );
+
+		$values = array();
+
+		foreach ( $rest_box->read_fields as $field_id ) {
+			$field = $rest_box->cmb->get_field( $field_id );
+			$field->object_id( $object_id );
+			$field->object_type( $main_object_type );
+
+			$values[ $field->id( true ) ] = $field->get_rest_value();
+
+			if ( $field->args( 'has_supporting_data' ) ) {
+				$field = $field->get_supporting_field();
+				$values[ $field->id( true ) ] = $field->get_rest_value();
 			}
 		}
 
@@ -522,20 +563,38 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 
 		if ( ! empty( self::$type_boxes[ $main_object_type ] ) ) {
 			foreach ( self::$type_boxes[ $main_object_type ] as $cmb_id ) {
-				$rest_box = self::$boxes[ $cmb_id ];
-
-				if ( ! array_key_exists( $cmb_id, $values ) ) {
-					continue;
+				$result = self::santize_box_rest_values( $values, self::$boxes[ $cmb_id ], $object_id, $main_object_type );
+				if ( ! empty( $result ) ) {
+					$updated[ $cmb_id ] = $result;
 				}
-
-				$rest_box->cmb->object_id( $object_id );
-				$rest_box->cmb->object_type( $main_object_type );
-
-				$updated[ $cmb_id ] = $rest_box->sanitize_box_values( $values );
 			}
 		}
 
 		return $updated;
+	}
+
+	/**
+	 * Updates box rest values.
+	 *
+	 * @since  2.7.0
+	 *
+	 * @param  array     $values           Array of values.
+	 * @param  CMB2_REST $rest_box         The CMB2_REST object.
+	 * @param  integer   $object_id        The object ID.
+	 * @param  string    $main_object_type The object type (post, user, term, etc)
+	 *
+	 * @return mixed|bool                  Array of updated statuses if successful.
+	 */
+	public static function santize_box_rest_values( $values, $rest_box, $object_id = 0, $main_object_type = 'post' ) {
+
+		if ( ! array_key_exists( $rest_box->cmb->cmb_id, $values ) ) {
+			return false;
+		}
+
+		$rest_box->cmb->object_id( $object_id );
+		$rest_box->cmb->object_type( $main_object_type );
+
+		return $rest_box->sanitize_box_values( $values );
 	}
 
 	/**
@@ -597,17 +656,17 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	 * @since  2.2.3
 	 *
 	 * @param  array      $values Array of values being provided.
-	 * @param  WPFM_CMB2_Field $field  WPFM_CMB2_Field object.
+	 * @param  CMB2_Field $field  CMB2_Field object.
 	 *
 	 * @return mixed               The results of saving/sanitizing the group field value.
 	 */
-	protected function sanitize_group_value( array $values, WPFM_CMB2_Field $field ) {
+	protected function sanitize_group_value( array $values, CMB2_Field $field ) {
 		$fields = $field->fields();
 		if ( empty( $fields ) ) {
 			return;
 		}
 
-		$this->cmb->data_to_save[ $field->_id() ] = $values[ $this->cmb->cmb_id ][ $field->_id() ];
+		$this->cmb->data_to_save[ $field->_id( '', false ) ] = $values[ $this->cmb->cmb_id ][ $field->_id( '', false ) ];
 
 		return $this->cmb->save_group_field( $field );
 	}
@@ -629,7 +688,17 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 		return $protected;
 	}
 
-	protected static function get_object_id( $object, $object_type = 'post' ) {
+	/**
+	 * Get the object ID for the given object/type.
+	 *
+	 * @since  2.2.3
+	 *
+	 * @param  mixed  $object      The object to get the ID for.
+	 * @param  string $object_type The object type we are looking for.
+	 *
+	 * @return int                 The object ID if found.
+	 */
+	public static function get_object_id( $object, $object_type = 'post' ) {
 		switch ( $object_type ) {
 			case 'user':
 			case 'post':
@@ -656,10 +725,10 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	 *
 	 * @since  2.2.3
 	 *
-	 * @param  string|WPFM_CMB2_Field $field_id      Field ID or WPFM_CMB2_Field object.
+	 * @param  string|CMB2_Field $field_id      Field ID or CMB2_Field object.
 	 * @param  boolean           $return_object Whether to return the Field object.
 	 *
-	 * @return mixed                            False if field can't be read or true|WPFM_CMB2_Field object.
+	 * @return mixed                            False if field can't be read or true|CMB2_Field object.
 	 */
 	public function field_can_read( $field_id, $return_object = false ) {
 		return $this->field_can( 'read_fields', $field_id, $return_object );
@@ -670,10 +739,10 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	 *
 	 * @since  2.2.3
 	 *
-	 * @param  string|WPFM_CMB2_Field $field_id      Field ID or WPFM_CMB2_Field object.
+	 * @param  string|CMB2_Field $field_id      Field ID or CMB2_Field object.
 	 * @param  boolean           $return_object Whether to return the Field object.
 	 *
-	 * @return mixed                            False if field can't be edited or true|WPFM_CMB2_Field object.
+	 * @return mixed                            False if field can't be edited or true|CMB2_Field object.
 	 */
 	public function field_can_edit( $field_id, $return_object = false ) {
 		return $this->field_can( 'edit_fields', $field_id, $return_object );
@@ -685,13 +754,13 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	 * @since  2.2.3
 	 *
 	 * @param  string            $type          Whether we are checking for read or edit fields.
-	 * @param  string|WPFM_CMB2_Field $field_id      Field ID or WPFM_CMB2_Field object.
+	 * @param  string|CMB2_Field $field_id      Field ID or CMB2_Field object.
 	 * @param  boolean           $return_object Whether to return the Field object.
 	 *
-	 * @return mixed                            False if field can't be read or edited or true|WPFM_CMB2_Field object.
+	 * @return mixed                            False if field can't be read or edited or true|CMB2_Field object.
 	 */
-	protected function field_can( $type = 'read_fields', $field_id, $return_object = false ) {
-		if ( ! in_array( $field_id instanceof WPFM_CMB2_Field ? $field_id->id() : $field_id, $this->{$type}, true ) ) {
+	protected function field_can( $type, $field_id, $return_object = false ) {
+		if ( ! in_array( $field_id instanceof CMB2_Field ? $field_id->id() : $field_id, $this->{$type}, true ) ) {
 			return false;
 		}
 
@@ -699,24 +768,24 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	}
 
 	/**
-	 * Get a WPFM_CMB2_REST instance object from the registry by a WPFM_CMB2 id.
+	 * Get a CMB2_REST instance object from the registry by a CMB2 id.
 	 *
 	 * @since  2.2.3
 	 *
-	 * @param  string $cmb_id WPFM_CMB2 config id
+	 * @param  string $cmb_id CMB2 config id
 	 *
-	 * @return WPFM_CMB2_REST|false The WPFM_CMB2_REST object or false.
+	 * @return CMB2_REST|false The CMB2_REST object or false.
 	 */
 	public static function get_rest_box( $cmb_id ) {
 		return isset( self::$boxes[ $cmb_id ] ) ? self::$boxes[ $cmb_id ] : false;
 	}
 
 	/**
-	 * Remove a WPFM_CMB2_REST instance object from the registry.
+	 * Remove a CMB2_REST instance object from the registry.
 	 *
 	 * @since  2.2.3
 	 *
-	 * @param string $cmb_id A WPFM_CMB2 instance id.
+	 * @param string $cmb_id A CMB2 instance id.
 	 */
 	public static function remove( $cmb_id ) {
 		if ( array_key_exists( $cmb_id, self::$boxes ) ) {
@@ -725,10 +794,10 @@ class WPFM_CMB2_REST extends WPFM_CMB2_Hookup_Base {
 	}
 
 	/**
-	 * Retrieve all WPFM_CMB2_REST instances from the registry.
+	 * Retrieve all CMB2_REST instances from the registry.
 	 *
 	 * @since  2.2.3
-	 * @return WPFM_CMB2[] Array of all registered WPFM_CMB2_REST instances.
+	 * @return CMB2[] Array of all registered CMB2_REST instances.
 	 */
 	public static function get_all() {
 		return self::$boxes;

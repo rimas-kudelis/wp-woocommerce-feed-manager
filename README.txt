@@ -1,7 +1,7 @@
 === Product Feed Manager for WooCommerce ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: product feed,woocommerce product feed,google shopping,google shopping feed,Product Feed Manager for WooCommerce,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart
+Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
@@ -9,7 +9,7 @@ Stable tag:  6.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best Product Feed Manager helps you to sell more by uploading product feed to Google shopping, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
+Product Feed Manager for WooCommerce helps you to sell more by uploading product feed to Google shopping, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
 
 == Description ==
 Do you wish to increase your WooCommerce store sales? One way is to promote on popular merchant shops such as Google Shopping, Facebook Dynamics, Walmart, eBay etc.
@@ -550,6 +550,9 @@ WP Dashboard > Product Feed > Upgrade.
 17. Plugin Settings Page - Controls
 
 == Changelog ==
+
+= 6.4.1 (2021-03-23) =
+* Update: Plugin name
 
 = 6.4.0 (2021-03-11) =
 * Fixed: Bing feed type set to text by default

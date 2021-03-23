@@ -1,10 +1,10 @@
 <?php
 /**
- * WPFM_CMB2 - The core metabox object
+ * CMB2 - The core metabox object
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  *
@@ -16,7 +16,7 @@
  */
 
 /**
- * The main WPFM_CMB2 object for storing box data/properties.
+ * The main CMB2 object for storing box data/properties.
  */
 class WPFM_CMB2 extends WPFM_CMB2_Base {
 
@@ -59,42 +59,42 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @since 1.0.1
 	 */
 	protected $mb_defaults = array(
-		'id'               => '',
-		'title'            => '',
+		'id'                      => '',
+		'title'                   => '',
 		// Post type slug, or 'user', 'term', 'comment', or 'options-page'.
-		'object_types'     => array(),
+		'object_types'            => array(),
 
-		 /*
-		  * The context within the screen where the boxes should display. Available contexts vary
-		  * from screen to screen. Post edit screen contexts include 'normal', 'side', and 'advanced'.
-		  *
-		  * For placement in locations outside of a metabox, other options include:
-		  * 'form_top', 'before_permalink', 'after_title', 'after_editor'
-		  *
-		  * Comments screen contexts include 'normal' and 'side'. Default is 'normal'.
+		/**
+		 * The context within the screen where the boxes should display. Available contexts vary
+		 * from screen to screen. Post edit screen contexts include 'normal', 'side', and 'advanced'.
+		 *
+		 * For placement in locations outside of a metabox, other options include:
+		 * 'form_top', 'before_permalink', 'after_title', 'after_editor'
+		 *
+		 * Comments screen contexts include 'normal' and 'side'. Default is 'normal'.
 		 */
-		'context'          => 'normal',
-		'priority'         => 'high',
-		'show_names'       => true, // Show field names on the left.
-		'show_on_cb'       => null, // Callback to determine if metabox should display.
-		'show_on'          => array(), // Post IDs or page templates to display this metabox. overrides 'show_on_cb'.
-		'cmb_styles'       => true, // Include WPFM_CMB2 stylesheet.
-		'enqueue_js'       => true, // Include WPFM_CMB2 JS.
-		'fields'           => array(),
+		'context'                 => 'normal',
+		'priority'                => 'high', // Or 10 for options pages.
+		'show_names'              => true, // Show field names on the left.
+		'show_on_cb'              => null, // Callback to determine if metabox should display.
+		'show_on'                 => array(), // Post IDs or page templates to display this metabox. overrides 'show_on_cb'.
+		'cmb_styles'              => true, // Include CMB2 stylesheet.
+		'enqueue_js'              => true, // Include CMB2 JS.
+		'fields'                  => array(),
 
-		/*
-		 * Handles hooking WPFM_CMB2 forms/metaboxes into the post/attachement/user/options-page screens
- 		 * and handles hooking in and saving those fields.
+		/**
+		 * Handles hooking CMB2 forms/metaboxes into the post/attachement/user/options-page screens
+		 * and handles hooking in and saving those fields.
 		 */
-		'hookup'           => true,
-		'save_fields'      => true, // Will not save during hookup if false.
-		'closed'           => false, // Default metabox to being closed.
-		'taxonomies'       => array(),
-		'new_user_section' => 'add-new-user', // or 'add-existing-user'.
-		'new_term_section' => true,
-		'show_in_rest'     => false,
-		'classes'          => null, // Optionally add classes to the WPFM_CMB2 wrapper
-		'classes_cb'       => '', // Optionally add classes to the WPFM_CMB2 wrapper (via a callback)
+		'hookup'                  => true,
+		'save_fields'             => true, // Will not save during hookup if false.
+		'closed'                  => false, // Default metabox to being closed.
+		'taxonomies'              => array(),
+		'new_user_section'        => 'add-new-user', // or 'add-existing-user'.
+		'new_term_section'        => true,
+		'show_in_rest'            => false,
+		'classes'                 => null, // Optionally add classes to the CMB2 wrapper.
+		'classes_cb'              => '', // Optionally add classes to the CMB2 wrapper (via a callback).
 
 		/*
 		 * The following parameter is for post alternate-context metaboxes only.
@@ -102,28 +102,48 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 * To output the fields 'naked' (without a postbox wrapper/style), then
 		 * add a `'remove_box_wrap' => true` to your metabox registration array.
 		 */
-		'remove_box_wrap' => false,
+		'remove_box_wrap'         => false,
+
+		/*
+		 * The following parameter is any additional arguments passed as $callback_args
+		 * to add_meta_box, if/when applicable.
+		 *
+		 * CMB2 does not use these arguments in the add_meta_box callback, however, these args
+		 * are parsed for certain special properties, like determining Gutenberg/block-editor
+		 * compatibility.
+		 *
+		 * Examples:
+		 *
+		 * - Make sure default editor is used as metabox is not compatible with block editor
+		 *      [ '__block_editor_compatible_meta_box' => false/true ]
+		 *
+		 * - Or declare this box exists for backwards compatibility
+		 *      [ '__back_compat_meta_box' => false ]
+		 *
+		 * More: https://wordpress.org/gutenberg/handbook/extensibility/meta-box/
+		 */
+		'mb_callback_args'        => null,
 
 		/*
 		 * The following parameters are for options-page metaboxes,
 		 * and several are passed along to add_menu_page()/add_submenu_page()
 		 */
 
-		// 'menu_title'    => null, // Falls back to 'title' (above). Do not define here so we can set a fallback.
-		'message_cb'       => '', // Optionally define the options-save message (via a callback).
-		'option_key'       => '', // The actual option key and admin menu page slug.
-		'parent_slug'      => '', // Used as first param in add_submenu_page().
-		'capability'       => 'manage_options', // Cap required to view options-page.
-		'icon_url'         => '', // Menu icon. Only applicable if 'parent_slug' is left empty.
-		'position'         => null, // Menu position. Only applicable if 'parent_slug' is left empty.
+		// 'menu_title'           => null, // Falls back to 'title' (above). Do not define here so we can set a fallback.
+		'message_cb'              => '', // Optionally define the options-save message (via a callback).
+		'option_key'              => '', // The actual option key and admin menu page slug.
+		'parent_slug'             => '', // Used as first param in add_submenu_page().
+		'capability'              => 'manage_options', // Cap required to view options-page.
+		'icon_url'                => '', // Menu icon. Only applicable if 'parent_slug' is left empty.
+		'position'                => null, // Menu position. Only applicable if 'parent_slug' is left empty.
 
-		'admin_menu_hook'  => 'admin_menu', // Alternately 'network_admin_menu' to add network-level options page.
-		'display_cb'       => false, // Override the options-page form output (WPFM_CMB2_Hookup::options_page_output()).
-		'save_button'      => '', // The text for the options-page save button. Defaults to 'Save'.
+		'admin_menu_hook'         => 'admin_menu', // Alternately 'network_admin_menu' to add network-level options page.
+		'display_cb'              => false, // Override the options-page form output (CMB2_Hookup::options_page_output()).
+		'save_button'             => '', // The text for the options-page save button. Defaults to 'Save'.
 		'disable_settings_errors' => false, // On settings pages (not options-general.php sub-pages), allows disabling.
-		'tab_group'        => '', // Tab-group identifier, enables options page tab navigation.
-		// 'tab_title'    => null, // Falls back to 'title' (above). Do not define here so we can set a fallback.
-		// 'autoload'     => true, // Defaults to true, the options-page option will be autloaded.
+		'tab_group'               => '', // Tab-group identifier, enables options page tab navigation.
+		// 'tab_title'            => null, // Falls back to 'title' (above). Do not define here so we can set a fallback.
+		// 'autoload'             => true, // Defaults to true, the options-page option will be autloaded.
 	);
 
 	/**
@@ -151,7 +171,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	protected $generated_nonce = '';
 
 	/**
-	 * Whether there are fields to be shown in columns. Set in WPFM_CMB2::add_field().
+	 * Whether there are fields to be shown in columns. Set in CMB2::add_field().
 	 *
 	 * @var   bool
 	 * @since 2.2.2
@@ -184,10 +204,19 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		$this->meta_box['fields'] = array();
 
 		// Ensures object_types is an array.
-		$this->set_prop( 'object_types', $this->box_types() ) ;
+		$this->set_prop( 'object_types', $this->box_types() );
 		$this->object_id( $object_id );
 
 		if ( $this->is_options_page_mb() ) {
+
+			// Check initial priority.
+			if ( empty( $config['priority'] ) ) {
+
+				// If not explicitly defined, Reset the priority to 10
+				// Fixes https://github.com/CMB2/CMB2/issues/1410.
+				$this->meta_box['priority'] = 10;
+			}
+
 			$this->init_options_mb();
 		}
 
@@ -197,19 +226,19 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 			$this->add_fields( $config['fields'] );
 		}
 
-		WPFM_CMB2_Boxes::add( $this );
+        WPFM_CMB2_Boxes::add( $this );
 
 		/**
-		 * Hook during initiation of WPFM_CMB2 object
+		 * Hook during initiation of CMB2 object
 		 *
 		 * The dynamic portion of the hook name, $this->cmb_id, is this meta_box id.
 		 *
-		 * @param array $cmb This WPFM_CMB2 object
+		 * @param array $cmb This CMB2 object
 		 */
-		do_action( "cmb2_init_{$this->cmb_id}", $this );
+		do_action( "wpfm_cmb2_init_{$this->cmb_id}", $this );
 
 		// Hook in the hookup... how meta.
-		add_action( "wpfm_cmb2_init_hookup_{$this->cmb_id}", array( 'WPFM_CMB2_hookup', 'maybe_init_and_hookup' ) );
+		add_action( "wpfm_cmb2_init_hookup_{$this->cmb_id}", array( 'WPFM_CMB2_Hookup', 'maybe_init_and_hookup' ) );
 
 		// Hook in the rest api functionality.
 		add_action( "wpfm_cmb2_init_hookup_{$this->cmb_id}", array( 'WPFM_CMB2_REST', 'maybe_init_and_hookup' ) );
@@ -222,7 +251,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @param int    $object_id   Object ID.
 	 * @param string $object_type Type of object being saved. (e.g., post, user, or comment).
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function show_form( $object_id = 0, $object_type = '' ) {
 		$this->render_form_open( $object_id, $object_type );
@@ -242,13 +271,13 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @param  integer $object_id   Object ID.
 	 * @param  string  $object_type Object type.
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function render_form_open( $object_id = 0, $object_type = '' ) {
 		$object_type = $this->object_type( $object_type );
 		$object_id = $this->object_id( $object_id );
 
-		echo "\n<!-- Begin WPFM_CMB2 Fields -->\n";
+		echo "\n<!-- Begin CMB2 Fields -->\n";
 
 		$this->nonce_field();
 
@@ -258,11 +287,11 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 * @param array  $cmb_id      The current box ID.
 		 * @param int    $object_id   The ID of the current object.
 		 * @param string $object_type The type of object you are working with.
-		 *	                           Usually `post` (this applies to all post-types).
-		 *	                           Could also be `comment`, `user` or `options-page`.
-		 * @param array  $cmb         This WPFM_CMB2 object.
+		 *                            Usually `post` (this applies to all post-types).
+		 *                            Could also be `comment`, `user` or `options-page`.
+		 * @param array  $cmb         This CMB2 object.
 		 */
-		do_action( 'cmb2_before_form', $this->cmb_id, $object_id, $object_type, $this );
+		do_action( 'wpfm_cmb2_before_form', $this->cmb_id, $object_id, $object_type, $this );
 
 		/**
 		 * Hook before form table begins
@@ -275,9 +304,9 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 *
 		 * @param array  $cmb_id      The current box ID
 		 * @param int    $object_id   The ID of the current object
-		 * @param array  $cmb         This WPFM_CMB2 object
+		 * @param array  $cmb         This CMB2 object
 		 */
-		do_action( "cmb2_before_{$object_type}_form_{$this->cmb_id}", $object_id, $this );
+		do_action( "wpfm_cmb2_before_{$object_type}_form_{$this->cmb_id}", $object_id, $this );
 
 		echo '<div class="', esc_attr( $this->box_classes() ), '"><div id="cmb2-metabox-', sanitize_html_class( $this->cmb_id ), '" class="cmb2-metabox cmb-field-list">';
 
@@ -285,7 +314,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	}
 
 	/**
-	 * Defines the classes for the WPFM_CMB2 form/wrap.
+	 * Defines the classes for the CMB2 form/wrap.
 	 *
 	 * @since  2.0.0
 	 * @return string Space concatenated list of classes
@@ -337,17 +366,23 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 * @since 2.2.2
 		 *
 		 * @param string $classes Array of classes for the cmb2-wrap.
-		 * @param WPFM_CMB2   $cmb     This WPFM_CMB2 object.
+		 * @param CMB2   $cmb     This CMB2 object.
 		 */
 		$classes = apply_filters( 'cmb2_wrap_classes', $classes, $this );
 
-		// Clean up.
-		$classes = array_map( 'strip_tags', array_filter( $classes ) );
+		$split = array();
+		foreach ( array_filter( $classes ) as $class ) {
+			foreach ( explode( ' ', $class ) as $_class ) {
+				// Clean up & sanitize.
+				$split[] = sanitize_html_class( strip_tags( $_class ) );
+			}
+		}
+		$classes = $split;
 
 		// Remove any duplicates.
 		$classes = array_unique( $classes );
 
-		// Make a string.
+		// Make it a string.
 		return implode( ' ', $classes );
 	}
 
@@ -359,7 +394,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @param  integer $object_id   Object ID.
 	 * @param  string  $object_type Object type.
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function render_form_close( $object_id = 0, $object_type = '' ) {
 		$object_type = $this->object_type( $object_type );
@@ -379,9 +414,9 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 * Could also be `comment`, `user` or `options-page`.
 		 *
 		 * @param int    $object_id   The ID of the current object
-		 * @param array  $cmb         This WPFM_CMB2 object
+		 * @param array  $cmb         This CMB2 object
 		 */
-		do_action( "cmb2_after_{$object_type}_form_{$this->cmb_id}", $object_id, $this );
+		do_action( "wpfm_cmb2_after_{$object_type}_form_{$this->cmb_id}", $object_id, $this );
 
 		/**
 		 * Hook after form form has been rendered
@@ -389,13 +424,13 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 * @param array  $cmb_id      The current box ID.
 		 * @param int    $object_id   The ID of the current object.
 		 * @param string $object_type The type of object you are working with.
-		 *	                           Usually `post` (this applies to all post-types).
-		 *	                           Could also be `comment`, `user` or `options-page`.
-		 * @param array  $cmb         This WPFM_CMB2 object.
+		 *                            Usually `post` (this applies to all post-types).
+		 *                            Could also be `comment`, `user` or `options-page`.
+		 * @param array  $cmb         This CMB2 object.
 		 */
-		do_action( 'cmb2_after_form', $this->cmb_id, $object_id, $object_type, $this );
+		do_action( 'wpfm_cmb2_after_form', $this->cmb_id, $object_id, $object_type, $this );
 
-		echo "\n<!-- End WPFM_CMB2 Fields -->\n";
+		echo "\n<!-- End CMB2 Fields -->\n";
 
 		return $this;
 	}
@@ -428,6 +463,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 			// Render default fields.
 			$field = $this->get_field( $field_args )->render_field();
 		}
+
 		return $field;
 	}
 
@@ -440,7 +476,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	public function render_group( $args ) {
 		$field_group = false;
 
-		if ( $args instanceof WPFM_CMB2_Field  ) {
+		if ( $args instanceof WPFM_CMB2_Field ) {
 			$field_group = 'group' === $args->type() ? $args : false;
 		} elseif ( isset( $args['id'], $args['fields'] ) && is_array( $args['fields'] ) ) {
 			$field_group = $this->get_field( $args );
@@ -540,7 +576,6 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 * @since 2.2.2
 		 *
 		 * @param string     $group_wrap_attributes Current attributes array.
-		 *
 		 * @param WPFM_CMB2_Field $field_group           The group WPFM_CMB2_Field object.
 		 */
 		$group_wrap_attributes = apply_filters( 'cmb2_group_wrap_attributes', $group_wrap_attributes, $field_group );
@@ -551,7 +586,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 				$att_value = htmlspecialchars( $att_value );
 			}
 
-			$atts[ sanitize_html_class( $att ) ] = sanitize_text_field( strip_tags( $att_value ) );
+			$atts[ sanitize_html_class( $att ) ] = sanitize_text_field( $att_value );
 		}
 
 		return WPFM_CMB2_Utils::concat_attrs( $atts );
@@ -568,13 +603,15 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	public function render_group_row( $field_group ) {
 
 		$field_group->peform_param_callback( 'before_group_row' );
-		$closed_class = $field_group->options( 'closed' ) ? ' closed' : '';
+		$closed_class     = $field_group->options( 'closed' ) ? ' closed' : '';
+		$confirm_deletion = $field_group->options( 'remove_confirm' );
+		$confirm_deletion = ! empty( $confirm_deletion ) ? $confirm_deletion : '';
 
 		echo '
-		<div class="postbox cmb-row cmb-repeatable-grouping', $closed_class, '" data-iterator="', $field_group->index, '">';
+		<div id="cmb-group-', $field_group->id(), '-', $field_group->index, '" class="postbox cmb-row cmb-repeatable-grouping', $closed_class, '" data-iterator="', $field_group->index, '">';
 
 		if ( $field_group->args( 'repeatable' ) ) {
-			echo '<button type="button" data-selector="', $field_group->id(), '_repeat" class="dashicons-before dashicons-no-alt cmb-remove-group-row" title="', esc_attr( $field_group->options( 'remove_button' ) ), '"></button>';
+			echo '<button type="button" data-selector="', $field_group->id(), '_repeat" data-confirm="', esc_attr( $confirm_deletion ), '" class="dashicons-before dashicons-no-alt cmb-remove-group-row" title="', esc_attr( $field_group->options( 'remove_button' ) ), '"></button>';
 		}
 
 			echo '
@@ -597,11 +634,12 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 				$this->get_field( $field_args, $field_group )->render_field();
 			}
 		}
+
 		if ( $field_group->args( 'repeatable' ) ) {
 			echo '
 					<div class="cmb-row cmb-remove-field-row">
 						<div class="cmb-remove-row">
-							<button type="button" data-selector="', $field_group->id(), '_repeat" class="cmb-remove-group-row cmb-remove-group-row-button alignright button-secondary">', $field_group->options( 'remove_button' ), '</button>
+							<button type="button" data-selector="', $field_group->id(), '_repeat" data-confirm="', esc_attr( $confirm_deletion ), '" class="cmb-remove-group-row cmb-remove-group-row-button alignright button-secondary">', $field_group->options( 'remove_button' ), '</button>
 						</div>
 					</div>
 					';
@@ -617,11 +655,13 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	}
 
 	/**
-	 * Add a hidden field to the list of hidden fields to be rendered later
+	 * Add a hidden field to the list of hidden fields to be rendered later.
 	 *
 	 * @since 2.0.0
+	 *
 	 * @param array           $field_args  Array of field arguments to be passed to WPFM_CMB2_Field.
 	 * @param WPFM_CMB2_Field|null $field_group WPFM_CMB2_Field group field object.
+	 * @return WPFM_CMB2_Field
 	 */
 	public function add_hidden_field( $field_args, $field_group = null ) {
 		if ( isset( $field_args['field_args'] ) ) {
@@ -647,7 +687,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 *
 	 * @since  2.0.0
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function render_hidden_fields() {
 		if ( ! empty( $this->hidden_fields ) ) {
@@ -664,6 +704,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 *
 	 * @since  2.0.3
 	 * @param  array $data_to_sanitize Array of field_id => value data for sanitizing (likely $_POST data).
+	 * @return mixed
 	 */
 	public function get_sanitized_values( array $data_to_sanitize ) {
 		$this->data_to_save = $data_to_sanitize;
@@ -692,6 +733,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 
 		// Reset the object id.
 		$this->object_id( $stored_id );
+
 		return $sanitized_values;
 	}
 
@@ -703,7 +745,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @param  string $object_type  Type of object being saved. (e.g., post, user, or comment).
 	 * @param  array  $data_to_save Array of key => value data for saving. Likely $_POST data.
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function save_fields( $object_id = 0, $object_type = '', $data_to_save = array() ) {
 
@@ -718,6 +760,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		if ( 'options-page' === $object_type ) {
 			cmb2_options( $object_id )->set();
 		}
+
 		return $this->after_save();
 	}
 
@@ -726,7 +769,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 *
 	 * @since  2.0.0
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function process_fields() {
 
@@ -751,7 +794,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @since  2.0.0
 	 * @param  array $field_args Array of field arguments.
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function process_field( $field_args ) {
 
@@ -784,9 +827,9 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	/**
 	 * Fires the "cmb2_{$object_type}_process_fields_{$cmb_id}" action hook.
 	 *
-	 * @since  2.x.x
+	 * @since 2.2.2
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function pre_process() {
 		$object_type = $this->object_type();
@@ -801,10 +844,10 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 *
 		 * The dynamic portion of the hook name, $this->cmb_id, is the meta_box id.
 		 *
-		 * @param array $cmb       This WPFM_CMB2 object
+		 * @param array $cmb       This CMB2 object
 		 * @param int   $object_id The ID of the current object
 		 */
-		do_action( "cmb2_{$object_type}_process_fields_{$this->cmb_id}", $this, $this->object_id() );
+		do_action( "wpfm_cmb2_{$object_type}_process_fields_{$this->cmb_id}", $this, $this->object_id() );
 
 		return $this;
 	}
@@ -815,7 +858,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 *
 	 * @since  2.x.x
 	 *
-	 * @return WPFM_CMB2
+	 * @return CMB2
 	 */
 	public function after_save() {
 		$object_type = $this->object_type();
@@ -825,16 +868,16 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 * Fires after all fields have been saved.
 		 *
 		 * The dynamic portion of the hook name, $object_type, refers to the metabox/form's object type
-		 * 	Usually `post` (this applies to all post-types).
-		 *  	Could also be `comment`, `user` or `options-page`.
+		 * Usually `post` (this applies to all post-types).
+		 * Could also be `comment`, `user` or `options-page`.
 		 *
 		 * @param int    $object_id   The ID of the current object
 		 * @param array  $cmb_id      The current box ID
 		 * @param string $updated     Array of field ids that were updated.
 		 *                            Will only include field ids that had values change.
-		 * @param array  $cmb         This WPFM_CMB2 object
+		 * @param array  $cmb         This CMB2 object
 		 */
-		do_action( "cmb2_save_{$object_type}_fields", $object_id, $this->cmb_id, $this->updated, $this );
+		do_action( "wpfm_cmb2_save_{$object_type}_fields", $object_id, $this->cmb_id, $this->updated, $this );
 
 		/**
 		 * Fires after all fields have been saved.
@@ -842,15 +885,15 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		 * The dynamic portion of the hook name, $this->cmb_id, is the meta_box id.
 		 *
 		 * The dynamic portion of the hook name, $object_type, refers to the metabox/form's object type
-		 * 	Usually `post` (this applies to all post-types).
-		 *  	Could also be `comment`, `user` or `options-page`.
+		 * Usually `post` (this applies to all post-types).
+		 * Could also be `comment`, `user` or `options-page`.
 		 *
 		 * @param int    $object_id   The ID of the current object
 		 * @param string $updated     Array of field ids that were updated.
 		 *                            Will only include field ids that had values change.
-		 * @param array  $cmb         This WPFM_CMB2 object
+		 * @param array  $cmb         This CMB2 object
 		 */
-		do_action( "cmb2_save_{$object_type}_fields_{$this->cmb_id}", $object_id, $this->updated, $this );
+		do_action( "wpfm_cmb2_save_{$object_type}_fields_{$this->cmb_id}", $object_id, $this->updated, $this );
 
 		return $this;
 	}
@@ -900,6 +943,9 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 
 			$field  = $this->get_new_field( $field_args, $field_group );
 			$sub_id = $field->id( true );
+			if ( empty( $saved[ $field_group->index ] ) ) {
+				$saved[ $field_group->index ] = array();
+			}
 
 			foreach ( (array) $group_vals as $field_group->index => $post_vals ) {
 
@@ -945,10 +991,10 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 				// Add to `$saved` array.
 				$saved[ $field_group->index ][ $sub_id ] = $new_val;
 
-			}// End foreach().
+			}// End foreach.
 
 			$saved[ $field_group->index ] = WPFM_CMB2_Utils::filter_empty( $saved[ $field_group->index ] );
-		}// End foreach().
+		}// End foreach.
 
 		$saved = WPFM_CMB2_Utils::filter_empty( $saved );
 
@@ -977,17 +1023,17 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		// Try to get our object ID from the global space.
 		switch ( $this->object_type() ) {
 			case 'user':
-				$object_id = isset( $_REQUEST['user_id'] ) ? wp_unslash( $_REQUEST['user_id'] ) : $object_id;
+				$object_id = isset( $_REQUEST['user_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['user_id'] ) ) : $object_id;
 				$object_id = ! $object_id && 'user-new.php' !== $pagenow && isset( $GLOBALS['user_ID'] ) ? $GLOBALS['user_ID'] : $object_id;
 				break;
 
 			case 'comment':
-				$object_id = isset( $_REQUEST['c'] ) ? wp_unslash( $_REQUEST['c'] ) : $object_id;
+				$object_id = isset( $_REQUEST['c'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['c'] ) ) : $object_id;
 				$object_id = ! $object_id && isset( $GLOBALS['comments']->comment_ID ) ? $GLOBALS['comments']->comment_ID : $object_id;
 				break;
 
 			case 'term':
-				$object_id = isset( $_REQUEST['tag_ID'] ) ? wp_unslash( $_REQUEST['tag_ID'] ) : $object_id;
+				$object_id = isset( $_REQUEST['tag_ID'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tag_ID'] ) ) : $object_id;
 				break;
 
 			case 'options-page':
@@ -999,7 +1045,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 
 			default:
 				$object_id = isset( $GLOBALS['post']->ID ) ? $GLOBALS['post']->ID : $object_id;
-				$object_id = isset( $_REQUEST['post'] ) ? wp_unslash( $_REQUEST['post'] ) : $object_id;
+				$object_id = isset( $_REQUEST['post'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post'] ) ) : $object_id;
 				break;
 		}
 
@@ -1069,6 +1115,30 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	}
 
 	/**
+	 * Check if given object_type(s) matches any of the registered object types or
+	 * taxonomies for this box.
+	 *
+	 * @since  2.7.0
+	 * @param  string|array $object_types The object type(s) to check.
+	 * @param  array        $fallback     Fallback object_types value.
+	 *
+	 * @return bool Whether given object type(s) are registered to this box.
+	 */
+	public function is_box_type( $object_types = array(), $fallback = array() ) {
+		$object_types = (array) $object_types;
+		$box_types    = $this->box_types( $fallback );
+
+		if ( in_array( 'term', $box_types, true ) ) {
+			$taxonomies = WPFM_CMB2_Utils::ensure_array( $this->prop( 'taxonomies' ) );
+			$box_types = array_merge( $box_types, $taxonomies );
+		}
+
+		$found = array_intersect( $object_types, $box_types );
+
+		return ! empty( $found );
+	}
+
+	/**
 	 * Initates the object types and option key for an options page metabox.
 	 *
 	 * @since  2.2.5
@@ -1092,7 +1162,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		$this->set_prop( 'option_key', $keys );
 
 		// Reset the object types.
-		$this->set_prop( 'object_types', array_unique( $types ) ) ;
+		$this->set_prop( 'object_types', array_unique( $types ) );
 	}
 
 	/**
@@ -1100,6 +1170,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 *
 	 * @since  2.2.5
 	 *
+	 * @param array $types Array of types.
 	 * @return array
 	 */
 	protected function deinit_options_mb( $types ) {
@@ -1191,8 +1262,8 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 			$values = $this->meta_box['show_on']['value'];
 		} elseif ( ! empty( $this->meta_box['show_on']['options-page'] ) ) {
 			$values = $this->meta_box['show_on']['options-page'];
-		} elseif ( $this->prop( 'option_key') ) {
-			$values = $this->prop( 'option_key');
+		} elseif ( $this->prop( 'option_key' ) ) {
+			$values = $this->prop( 'option_key' );
 		}
 
 		if ( $values ) {
@@ -1321,7 +1392,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 
 		list( $field_id, $sub_field_id ) = $ids;
 
-		$index = implode( '', $ids ) . ( $field_group ? $field_group->index : '' );
+		$index = $field_id . ( $sub_field_id ? '|' . $sub_field_id : '' ) . ( $field_group ? '|' . $field_group->index : '' );
 
 		if ( array_key_exists( $index, $this->fields ) && ! $reset_cached ) {
 			return $this->fields[ $index ];
@@ -1361,7 +1432,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	}
 
 	/**
-	 * Get default field arguments specific to this WPFM_CMB2 object.
+	 * Get default field arguments specific to this CMB2 object.
 	 *
 	 * @since  2.2.0
 	 * @param  array      $field_args  Metabox field config array.
@@ -1392,7 +1463,7 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @since 2.1.0
 	 * @param array $fields          Array of fields to add.
 	 * @param mixed $parent_field_id Parent field id or null.
- 	 *
+	 *
 	 * @return WPFM_CMB2
 	 */
 	protected function add_fields( $fields, $parent_field_id = null ) {
@@ -1425,44 +1496,9 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @return string|false    Field id or false.
 	 */
 	public function add_field( array $field, $position = 0 ) {
+
 		if ( ! array_key_exists( 'id', $field ) ) {
 			return false;
-		}
-
-		// Perform some field-type-specific initiation actions.
-		switch ( $field['type'] ) {
-			case 'file':
-			case 'file_list':
-
-				// Initiate attachment JS hooks.
-				add_filter( 'wp_prepare_attachment_for_js', array( 'WPFM_CMB2_Type_File_Base', 'prepare_image_sizes_for_js' ), 10, 3 );
-				break;
-
-			case 'oembed':
-
-				// Initiate oembed Ajax hooks.
-				cmb2_ajax();
-				break;
-
-			case 'group':
-				if ( empty( $field['render_row_cb'] ) ) {
-					$field['render_row_cb'] = array( $this, 'render_group_callback' );
-				}
-				break;
-			case 'colorpicker':
-				// https://github.com/JayWood/WPFM_CMB2_RGBa_Picker
-				// Dequeue the rgba_colorpicker custom field script if it is used,
-				// since we now enqueue our own more current version.
-				add_action( 'admin_enqueue_scripts', array( 'WPFM_CMB2_Type_Colorpicker', 'dequeue_rgba_colorpicker_script' ), 99 );
-				break;
-		}
-
-		if ( isset( $field['column'] ) && false !== $field['column'] ) {
-			$field = $this->define_field_column( $field );
-		}
-
-		if ( isset( $field['taxonomy'] ) && ! empty( $field['remove_default'] ) ) {
-			$this->tax_metaboxes_to_remove[ $field['taxonomy'] ] = $field['taxonomy'];
 		}
 
 		$this->_add_field_to_array(
@@ -1472,26 +1508,6 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 		);
 
 		return $field['id'];
-	}
-
-	/**
-	 * Defines a field's column if requesting to be show in admin columns.
-	 *
-	 * @since  2.2.3
-	 * @param  array $field Metabox field config array.
-	 * @return array         Modified metabox field config array.
-	 */
-	protected function define_field_column( array $field ) {
-		$this->has_columns = true;
-
-		$column = is_array( $field['column'] ) ? $field['column'] : array();
-
-		$field['column'] = wp_parse_args( $column, array(
-			'name'     => isset( $field['name'] ) ? $field['name'] : '',
-			'position' => false,
-		) );
-
-		return $field;
 	}
 
 	/**
@@ -1528,6 +1544,72 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	}
 
 	/**
+	 * Perform some field-type-specific initiation actions.
+	 *
+	 * @since  2.7.0
+	 * @param  array $field Metabox field config array.
+	 * @return void
+	 */
+	protected function field_actions( $field ) {
+		switch ( $field['type'] ) {
+			case 'file':
+			case 'file_list':
+
+				// Initiate attachment JS hooks.
+				add_filter( 'wp_prepare_attachment_for_js', array( 'CMB2_Type_File_Base', 'prepare_image_sizes_for_js' ), 10, 3 );
+				break;
+
+			case 'oembed':
+				// Initiate oembed Ajax hooks.
+				cmb2_ajax();
+				break;
+
+			case 'group':
+				if ( empty( $field['render_row_cb'] ) ) {
+					$field['render_row_cb'] = array( $this, 'render_group_callback' );
+				}
+				break;
+			case 'colorpicker':
+
+				// https://github.com/JayWood/CMB2_RGBa_Picker
+				// Dequeue the rgba_colorpicker custom field script if it is used,
+				// since we now enqueue our own more current version.
+				add_action( 'admin_enqueue_scripts', array( 'CMB2_Type_Colorpicker', 'dequeue_rgba_colorpicker_script' ), 99 );
+				break;
+		}
+
+		if ( isset( $field['column'] ) && false !== $field['column'] ) {
+			$field = $this->define_field_column( $field );
+		}
+
+		if ( isset( $field['taxonomy'] ) && ! empty( $field['remove_default'] ) ) {
+			$this->tax_metaboxes_to_remove[ $field['taxonomy'] ] = $field['taxonomy'];
+		}
+
+		return $field;
+	}
+
+	/**
+	 * Defines a field's column if requesting to be show in admin columns.
+	 *
+	 * @since  2.2.3
+	 * @param  array $field Metabox field config array.
+	 * @return array         Modified metabox field config array.
+	 */
+	protected function define_field_column( array $field ) {
+		$this->has_columns = true;
+
+		$column = is_array( $field['column'] ) ? $field['column'] : array();
+
+		$field['column'] = wp_parse_args( $column, array(
+			'name'     => isset( $field['name'] ) ? $field['name'] : '',
+			'position' => false,
+		) );
+
+		return $field;
+	}
+
+	/**
 	 * Add a field array to a fields array in desired position
 	 *
 	 * @since 2.0.2
@@ -1536,8 +1618,10 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	 * @param integer $position Optionally specify a position in the array to be inserted.
 	 */
 	protected function _add_field_to_array( $field, &$fields, $position = 0 ) {
+		$field = $this->field_actions( $field );
+
 		if ( $position ) {
-			WPFM_CMB2_Utils::array_insert( $fields, array( $field['id'] => $field ), $position );
+            WPFM_CMB2_Utils::array_insert( $fields, array( $field['id'] => $field ), $position );
 		} else {
 			$fields[ $field['id'] ] = $field;
 		}
@@ -1658,8 +1742,8 @@ class WPFM_CMB2 extends WPFM_CMB2_Base {
 	/**
 	 * Handles metabox property callbacks, and passes this $cmb object as property.
 	 *
-	 * @since  2.2.3
-	 * @param  callable $cb                The callback method/function/closure
+	 * @since 2.2.3
+	 * @param  callable $cb                The callback method/function/closure.
 	 * @param  mixed    $additional_params Any additoinal parameters which should be passed to the callback.
 	 * @return mixed                       Return of the callback function.
 	 */

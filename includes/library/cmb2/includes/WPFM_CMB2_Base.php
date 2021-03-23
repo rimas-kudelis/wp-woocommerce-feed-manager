@@ -1,24 +1,24 @@
 <?php
 /**
- * WPFM_CMB2 Base - Base object functionality.
+ * CMB2 Base - Base object functionality.
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  *
  * @property-read $args        The objects array of properties/arguments.
  * @property-read $meta_box    The objects array of properties/arguments.
  * @property-read $properties  The objects array of properties/arguments.
- * @property-read $cmb_id      Current WPFM_CMB2 instance ID
+ * @property-read $cmb_id      Current CMB2 instance ID
  * @property-read $object_id   Object ID
  * @property-read $object_type Type of object being handled. (e.g., post, user, comment, or term)
  */
 abstract class WPFM_CMB2_Base {
 
 	/**
-	 * Current WPFM_CMB2 instance ID
+	 * Current CMB2 instance ID
 	 *
 	 * @var   string
 	 * @since 2.2.3
@@ -79,7 +79,7 @@ abstract class WPFM_CMB2_Base {
 	 * Get started
 	 *
 	 * @since 2.2.3
-	 * @param array $args Object properties array
+	 * @param array $args Object properties array.
 	 */
 	public function __construct( $args = array() ) {
 		if ( ! empty( $args ) ) {
@@ -101,7 +101,7 @@ abstract class WPFM_CMB2_Base {
 	 * Returns the object ID
 	 *
 	 * @since  2.2.3
-	 * @param  integer $object_id Object ID
+	 * @param  integer $object_id Object ID.
 	 * @return integer Object ID
 	 */
 	public function object_id( $object_id = 0 ) {
@@ -116,7 +116,7 @@ abstract class WPFM_CMB2_Base {
 	 * Returns the object type
 	 *
 	 * @since  2.2.3
-	 * @param  string $object_type Object Type
+	 * @param  string $object_type Object Type.
 	 * @return string Object type
 	 */
 	public function object_type( $object_type = '' ) {
@@ -156,9 +156,9 @@ abstract class WPFM_CMB2_Base {
 	 * Set object property.
 	 *
 	 * @since  2.2.2
-	 * @param  string $property Metabox config property to retrieve
-	 * @param  mixed  $value    Value to set if no value found
-	 * @return mixed            Metabox config property value or false
+	 * @param  string $property Metabox config property to retrieve.
+	 * @param  mixed  $value    Value to set if no value found.
+	 * @return mixed            Metabox config property value or false.
 	 */
 	public function set_prop( $property, $value ) {
 		$this->{$this->properties_name}[ $property ] = $value;
@@ -170,8 +170,8 @@ abstract class WPFM_CMB2_Base {
 	 * Get object property and optionally set a fallback
 	 *
 	 * @since  2.0.0
-	 * @param  string $property Metabox config property to retrieve
-	 * @param  mixed  $fallback Fallback value to set if no value found
+	 * @param  string $property Metabox config property to retrieve.
+	 * @param  mixed  $fallback Fallback value to set if no value found.
 	 * @return mixed            Metabox config property value or false
 	 */
 	public function prop( $property, $fallback = null ) {
@@ -183,11 +183,11 @@ abstract class WPFM_CMB2_Base {
 	}
 
 	/**
-	 * Get default field arguments specific to this WPFM_CMB2 object.
+	 * Get default field arguments specific to this CMB2 object.
 	 *
 	 * @since  2.2.0
 	 * @param  array      $field_args  Metabox field config array.
-	 * @param  WPFM_CMB2_Field $field_group (optional) WPFM_CMB2_Field object (group parent)
+	 * @param  CMB2_Field $field_group (optional) CMB2_Field object (group parent).
 	 * @return array                   Array of field arguments.
 	 */
 	protected function get_default_args( $field_args, $field_group = null ) {
@@ -209,12 +209,12 @@ abstract class WPFM_CMB2_Base {
 	}
 
 	/**
-	 * Get a new field object specific to this WPFM_CMB2 object.
+	 * Get a new field object specific to this CMB2 object.
 	 *
 	 * @since  2.2.0
 	 * @param  array      $field_args  Metabox field config array.
-	 * @param  WPFM_CMB2_Field $field_group (optional) WPFM_CMB2_Field object (group parent)
-	 * @return WPFM_CMB2_Field WPFM_CMB2_Field object
+	 * @param  WPFM_CMB2_Field $field_group (optional) CMB2_Field object (group parent).
+	 * @return WPFM_CMB2_Field CMB2_Field object
 	 */
 	protected function get_new_field( $field_args, $field_group = null ) {
 		return new WPFM_CMB2_Field( $this->get_default_args( $field_args, $field_group ) );
@@ -231,7 +231,7 @@ abstract class WPFM_CMB2_Base {
 		// Default to showing this cmb
 		$show = true;
 
-		// Use the callback to determine showing the cmb, if it exists
+		// Use the callback to determine showing the cmb, if it exists.
 		if ( is_callable( $this->prop( 'show_on_cb' ) ) ) {
 			$show = (bool) call_user_func( $this->prop( 'show_on_cb' ), $this );
 		}
@@ -243,7 +243,7 @@ abstract class WPFM_CMB2_Base {
 	 * Displays the results of the param callbacks.
 	 *
 	 * @since 2.0.0
-	 * @param string $param Field parameter
+	 * @param string $param Field parameter.
 	 */
 	public function peform_param_callback( $param ) {
 		echo $this->get_param_callback_result( $param );
@@ -253,15 +253,15 @@ abstract class WPFM_CMB2_Base {
 	 * Store results of the param callbacks for continual access
 	 *
 	 * @since  2.0.0
-	 * @param  string $param Field parameter
+	 * @param  string $param Field parameter.
 	 * @return mixed         Results of param/param callback
 	 */
 	public function get_param_callback_result( $param ) {
 
-		// If we've already retrieved this param's value,
+		// If we've already retrieved this param's value.
 		if ( array_key_exists( $param, $this->callback_results ) ) {
 
-			// send it back
+			// Send it back.
 			return $this->callback_results[ $param ];
 		}
 
@@ -292,8 +292,8 @@ abstract class WPFM_CMB2_Base {
 	 * Unset the cached results of the param callback.
 	 *
 	 * @since  2.2.6
-	 * @param  string $param Field parameter
-	 * @return WPFM_CMB2_Base
+	 * @param  string $param Field parameter.
+	 * @return CMB2_Base
 	 */
 	public function unset_param_callback_cache( $param ) {
 		if ( isset( $this->callback_results[ $param ] ) ) {
@@ -307,7 +307,7 @@ abstract class WPFM_CMB2_Base {
 	 * Handles the parameter callbacks, and passes this object as parameter.
 	 *
 	 * @since  2.2.3
-	 * @param  callable $cb                The callback method/function/closure
+	 * @param  callable $cb                The callback method/function/closure.
 	 * @param  mixed    $additional_params Any additoinal parameters which should be passed to the callback.
 	 * @return mixed                       Return of the callback function.
 	 */
@@ -319,7 +319,7 @@ abstract class WPFM_CMB2_Base {
 	 * Checks if field has a callback value
 	 *
 	 * @since  1.0.1
-	 * @param  string $cb Callback string
+	 * @param  string $cb Callback string.
 	 * @return mixed      NULL, false for NO validation, or $cb string if it exists.
 	 */
 	public function maybe_callback( $cb ) {
@@ -328,10 +328,10 @@ abstract class WPFM_CMB2_Base {
 			return null;
 		}
 
-		// Check if requesting explicitly false
+		// Check if requesting explicitly false.
 		$cb = false !== $args[ $cb ] && 'false' !== $args[ $cb ] ? $args[ $cb ] : false;
 
-		// If requesting NO validation, return false
+		// If requesting NO validation, return false.
 		if ( ! $cb ) {
 			return false;
 		}
@@ -356,7 +356,7 @@ abstract class WPFM_CMB2_Base {
 	 *
 	 * @param  string $hook_name     The hook name.
 	 * @param  bool   $val           The default value.
-	 * @param  string $hook_function The hook function. Default: 'add_filter'
+	 * @param  string $hook_function The hook function. Default: 'add_filter'.
 	 *
 	 * @return null|bool             Null if hook is registered, or bool for value.
 	 */
@@ -386,7 +386,7 @@ abstract class WPFM_CMB2_Base {
 	 */
 	public static function maybe_hook( $val, $hook_name, $hook_function ) {
 		if ( is_callable( $val ) ) {
-			$hook_function( $hook_name, $val, 10, 2 );
+			call_user_func( $hook_function, $hook_name, $val, 10, 2 );
 			return null;
 		}
 
@@ -406,15 +406,16 @@ abstract class WPFM_CMB2_Base {
 	 * @since 2.2.3
 	 *
 	 * @param string $function The function that was called.
-	 * @param string $version  The version of WPFM_CMB2 that deprecated the argument used.
+	 * @param string $version  The version of CMB2 that deprecated the argument used.
 	 * @param string $message  Optional. A message regarding the change, or numeric
 	 *                         key to generate message from additional arguments.
 	 *                         Default null.
 	 */
 	protected function deprecated_param( $function, $version, $message = null ) {
 
+		$args = func_get_args();
+
 		if ( is_numeric( $message ) ) {
-			$args = func_get_args();
 
 			switch ( $message ) {
 
@@ -439,7 +440,7 @@ abstract class WPFM_CMB2_Base {
 		 *
 		 * @param string $function The function that was called.
 		 * @param string $message  A message regarding the change.
-		 * @param string $version  The version of WPFM_CMB2 that deprecated the argument used.
+		 * @param string $version  The version of CMB2 that deprecated the argument used.
 		 */
 		do_action( 'deprecated_argument_run', $function, $message, $version );
 
@@ -470,7 +471,7 @@ abstract class WPFM_CMB2_Base {
 	/**
 	 * Magic getter for our object.
 	 *
-	 * @param string $field
+	 * @param string $field Requested property.
 	 * @throws Exception Throws an exception if the field is invalid.
 	 * @return mixed
 	 */
@@ -496,8 +497,11 @@ abstract class WPFM_CMB2_Base {
 	 * Allows overloading the object with methods... Whooaaa oooh it's magic, y'knoooow.
 	 *
 	 * @since 1.0.0
+	 * @throws Exception Invalid method exception.
+	 *
 	 * @param string $method Non-existent method.
-	 * @param array  $args   All arguments passed to the method
+	 * @param array  $args   All arguments passed to the method.
+	 * @return mixed
 	 */
 	public function __call( $method, $args ) {
 		$object_class = strtolower( get_class( $this ) );
@@ -509,7 +513,7 @@ abstract class WPFM_CMB2_Base {
 		array_unshift( $args, $this );
 
 		/**
-		 * Allows overloading the object (WPFM_CMB2 or WPFM_CMB2_Field) with additional capabilities
+		 * Allows overloading the object (CMB2 or CMB2_Field) with additional capabilities
 		 * by registering hook callbacks.
 		 *
 		 * The first dynamic portion of the hook name, $object_class, refers to the object class,

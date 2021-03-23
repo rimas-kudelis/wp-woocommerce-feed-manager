@@ -1,6 +1,6 @@
 <?php
 /**
- * WPFM_CMB2 objects/fields endpoint for WordPres REST API.
+ * CMB2 objects/fields endpoint for WordPres REST API.
  * Allows access to fields registered to a specific box.
  *
  * @todo  Add better documentation.
@@ -9,8 +9,8 @@
  * @since 2.2.3
  *
  * @category  WordPress_Plugin
- * @package   WPFM_CMB2
- * @author    WPFM_CMB2 team
+ * @package   CMB2
+ * @author    CMB2 team
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  */
@@ -95,14 +95,14 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 		 *
 		 * @since 2.2.3
 		 *
-		 * @param bool   $can_access Whether this WPFM_CMB2 endpoint can be accessed.
-		 * @param object $controller This WPFM_CMB2_REST_Controller object.
+		 * @param bool   $can_access Whether this CMB2 endpoint can be accessed.
+		 * @param object $controller This CMB2_REST_Controller object.
 		 */
 		return $this->maybe_hook_callback_and_apply_filters( 'cmb2_api_get_fields_permissions_check', $can_access );
 	}
 
 	/**
-	 * Get all public WPFM_CMB2 box fields.
+	 * Get all public CMB2 box fields.
 	 *
 	 * @since 2.2.3
 	 *
@@ -169,14 +169,14 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 		 *
 		 * @since 2.2.3
 		 *
-		 * @param bool   $can_access Whether this WPFM_CMB2 endpoint can be accessed.
-		 * @param object $controller This WPFM_CMB2_REST_Controller object.
+		 * @param bool   $can_access Whether this CMB2 endpoint can be accessed.
+		 * @param object $controller This CMB2_REST_Controller object.
 		 */
 		return $this->maybe_hook_callback_and_apply_filters( 'cmb2_api_get_field_permissions_check', $can_access );
 	}
 
 	/**
-	 * Get one WPFM_CMB2 field from the collection.
+	 * Get one CMB2 field from the collection.
 	 *
 	 * @since 2.2.3
 	 *
@@ -215,14 +215,14 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 		 *
 		 * @since 2.2.3
 		 *
-		 * @param bool   $can_update Whether this WPFM_CMB2 endpoint can be accessed.
-		 * @param object $controller This WPFM_CMB2_REST_Controller object.
+		 * @param bool   $can_update Whether this CMB2 endpoint can be accessed.
+		 * @param object $controller This CMB2_REST_Controller object.
 		 */
 		return $this->maybe_hook_callback_and_apply_filters( 'cmb2_api_update_field_value_permissions_check', $can_update );
 	}
 
 	/**
-	 * Update WPFM_CMB2 field value.
+	 * Update CMB2 field value.
 	 *
 	 * @since 2.2.3
 	 *
@@ -233,7 +233,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 		$this->initiate_rest_read_box( $request, 'field_value_update' );
 
 		if ( ! $this->request['value'] ) {
-			return new WP_Error( 'cmb2_rest_update_field_error', __( 'WPFM_CMB2 Field value cannot be updated without the value parameter specified.', 'cmb2' ), array(
+			return new WP_Error( 'cmb2_rest_update_field_error', __( 'CMB2 Field value cannot be updated without the value parameter specified.', 'cmb2' ), array(
 				'status' => 400,
 			) );
 		}
@@ -263,14 +263,14 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 		 *
 		 * @since 2.2.3
 		 *
-		 * @param bool   $can_delete Whether this WPFM_CMB2 endpoint can be accessed.
-		 * @param object $controller This WPFM_CMB2_REST_Controller object.
+		 * @param bool   $can_delete Whether this CMB2 endpoint can be accessed.
+		 * @param object $controller This CMB2_REST_Controller object.
 		 */
 		return $this->maybe_hook_callback_and_apply_filters( 'cmb2_api_delete_field_value_permissions_check', $can_delete );
 	}
 
 	/**
-	 * Delete WPFM_CMB2 field value.
+	 * Delete CMB2 field value.
 	 *
 	 * @since 2.2.3
 	 *
@@ -284,7 +284,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 	}
 
 	/**
-	 * Modify WPFM_CMB2 field value.
+	 * Modify CMB2 field value.
 	 *
 	 * @since 2.2.3
 	 *
@@ -294,7 +294,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 	public function modify_field_value( $activity ) {
 
 		if ( ! $this->request['object_id'] || ! $this->request['object_type'] ) {
-			return new WP_Error( 'cmb2_rest_modify_field_value_error', __( 'WPFM_CMB2 Field value cannot be modified without the object_id and object_type parameters specified.', 'cmb2' ), array(
+			return new WP_Error( 'cmb2_rest_modify_field_value_error', __( 'CMB2 Field value cannot be modified without the object_id and object_type parameters specified.', 'cmb2' ), array(
 				'status' => 400,
 			) );
 		}
@@ -331,7 +331,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 	 *
 	 * @since 2.2.3
 	 *
-	 * @param  string\WPFM_CMB2_Field Field id or Field object.
+	 * @param  string\CMB2_Field Field id or Field object.
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function prepare_read_field( $field ) {
@@ -351,7 +351,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 	 *
 	 * @since 2.2.3
 	 *
-	 * @param  WPFM_CMB2_Field Field object.
+	 * @param  CMB2_Field Field object.
 	 * @return array      Response array.
 	 */
 	public function prepare_field_response() {
@@ -368,11 +368,11 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 	 *
 	 * @since  2.2.3
 	 *
-	 * @param  WPFM_CMB2_Field $field field object.
+	 * @param  CMB2_Field $field field object.
 	 *
 	 * @return array             Array of field data.
 	 */
-	protected function prepare_field_data( WPFM_CMB2_Field $field ) {
+	protected function prepare_field_data( CMB2_Field $field ) {
 		$field_data = array();
 		$params_to_ignore = array( 'show_in_rest', 'options' );
 		$params_to_rename = array(
@@ -395,7 +395,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 
 			if ( 'options_cb' === $key ) {
 				$value = $field->options();
-			} elseif ( in_array( $key, WPFM_CMB2_Field::$callable_fields, true ) ) {
+			} elseif ( in_array( $key, CMB2_Field::$callable_fields, true ) ) {
 
 				if ( isset( $this->request['_rendered'] ) ) {
 					$value = $key === 'render_row_cb' ? $rendered : $field->get_param_callback_result( $key );
@@ -416,8 +416,40 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 			}
 		}
 
+		if ( $field->args( 'has_supporting_data' ) ) {
+			$field_data = $this->get_supporting_data( $field_data, $field );
+		}
+
 		if ( $this->request['object_id'] && $this->request['object_type'] ) {
-			$field_data['value'] = $field->get_data();
+			$field_data['value'] = $field->get_rest_value();
+		}
+
+		return $field_data;
+	}
+
+	/**
+	 * Gets field supporting data (field id and value).
+	 *
+	 * @since  2.7.0
+	 *
+	 * @param  CMB2_Field $field      Field object.
+	 * @param  array      $field_data Array of field data.
+	 *
+	 * @return array                  Array of field data.
+	 */
+	public function get_supporting_data( $field_data, $field ) {
+
+		// Reset placement of this property.
+		unset( $field_data['has_supporting_data'] );
+		$field_data['has_supporting_data'] = true;
+
+		$field = $field->get_supporting_field();
+		$field_data['supporting_data'] = array(
+			'id' => $field->_id( '', false ),
+		);
+
+		if ( $this->request['object_id'] && $this->request['object_type'] ) {
+			$field_data['supporting_data']['value'] = $field->get_rest_value();
 		}
 
 		return $field_data;
@@ -428,7 +460,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 	 *
 	 * @since  2.2.3
 	 *
-	 * @param  WPFM_CMB2_Field $field Field object to build links from.
+	 * @param  CMB2_Field $field Field object to build links from.
 	 *
 	 * @return array             Array of links
 	 */
@@ -438,7 +470,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 
 		$links = array(
 			'self' => array(
-				'href' => rest_url( trailingslashit( $boxbase ) . 'fields/' . $field->_id() . $query_string ),
+				'href' => rest_url( trailingslashit( $boxbase ) . 'fields/' . $field->_id( '', false ) . $query_string ),
 			),
 			'collection' => array(
 				'href' => rest_url( trailingslashit( $boxbase ) . 'fields' . $query_string ),
@@ -453,7 +485,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 	}
 
 	/**
-	 * Checks if the WPFM_CMB2 box or field has any registered callback parameters for the given filter.
+	 * Checks if the CMB2 box or field has any registered callback parameters for the given filter.
 	 *
 	 * The registered handlers will have a property name which matches the filter, except:
 	 * - The 'cmb2_api' prefix will be removed
@@ -482,7 +514,7 @@ class WPFM_CMB2_REST_Controller_Fields extends WPFM_CMB2_REST_Controller_Boxes {
 	}
 
 	/**
-	 * Unhooks any WPFM_CMB2 box or field registered callback parameters for the given filter.
+	 * Unhooks any CMB2 box or field registered callback parameters for the given filter.
 	 *
 	 * @since  2.2.3
 	 *

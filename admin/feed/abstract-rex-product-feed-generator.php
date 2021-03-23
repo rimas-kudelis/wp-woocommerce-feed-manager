@@ -1226,7 +1226,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $node = $feed->getElementsByTagName("review");
             
             if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '</feed>';
+                $feed_string_footer .= '</reviews></feed>';
             }
         }elseif ($this->merchant === 'datatrics') {
             $node = $feed->getElementsByTagName("item");

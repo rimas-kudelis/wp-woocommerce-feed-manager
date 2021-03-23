@@ -871,18 +871,23 @@ class Rex_Product_Feed_Ajax {
     /**
      * WPFM log
      * @param $payload
+     * @return array
      */
     public static function show_wpfm_log($payload) {
 
         $key = $payload['logKey'];
-        $log_content = esc_html( file_get_contents( WC_LOG_DIR . $key ));
-        $upload_dir = wp_upload_dir();
-        $url = $upload_dir['baseurl'];
-
+        $upload_dir = wp_upload_dir( null, false );
+        $wc_log_url = $upload_dir['basedir'].'/wc-logs/';
+        $file_url = $wc_log_url  . $key;
+        ob_start();
+        include_once $file_url;
+        $out = ob_get_clean();
+        ob_end_clean();
+        error_log(print_r($out,1));
         return array(
             'success' => true,
-            'content' => $log_content,
-            'file_url' => $url . '/wc-logs/'. $key
+            'content' => $out,
+            'file_url' => $wc_log_url. $key
         );
 
     }

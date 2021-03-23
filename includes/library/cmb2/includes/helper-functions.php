@@ -17,7 +17,7 @@
  * @return string        Directory with optional path appended
  */
 function wpfm_cmb2_dir( $path = '' ) {
-	return WPFM_CMB2_DIR . $path;
+    return WPFM_CMB2_DIR . $path;
 }
 
 /**
@@ -27,21 +27,21 @@ function wpfm_cmb2_dir( $path = '' ) {
  * @param  string $class_name Name of the class being requested
  */
 function wpfm_cmb2_autoload_classes( $class_name ) {
-	if ( 0 !== strpos( $class_name, 'WPFM_CMB2' ) ) {
-		return;
-	}
+    if ( 0 !== strpos( $class_name, 'WPFM_CMB2' ) ) {
+        return;
+    }
 
-	$path = 'includes';
+    $path = 'includes';
 
-	if ( 'WPFM_CMB2_Type' === $class_name || 0 === strpos( $class_name, 'WPFM_CMB2_Type_' ) ) {
-		$path .= '/types';
-	}
+    if ( 'WPFM_CMB2_Type' === $class_name || 0 === strpos( $class_name, 'WPFM_CMB2_Type_' ) ) {
+        $path .= '/types';
+    }
 
-	if ( 'WPFM_CMB2_REST' === $class_name || 0 === strpos( $class_name, 'WPFM_CMB2_REST_' ) ) {
-		$path .= '/rest-api';
-	}
+    if ( 'WPFM_CMB2_REST' === $class_name || 0 === strpos( $class_name, 'WPFM_CMB2_REST_' ) ) {
+        $path .= '/rest-api';
+    }
 
-	include_once( wpfm_cmb2_dir( "$path/{$class_name}.php" ) );
+    include_once( wpfm_cmb2_dir( "$path/{$class_name}.php" ) );
 }
 
 /**
@@ -51,9 +51,9 @@ function wpfm_cmb2_autoload_classes( $class_name ) {
  * @return WPFM_CMB2_Utils object WPFM_CMB2 utilities class
  */
 function wpfm_cmb2_utils() {
-	static $wpfm_cmb2_utils;
-	$wpfm_cmb2_utils = $wpfm_cmb2_utils ? $wpfm_cmb2_utils : new WPFM_CMB2_Utils();
-	return $wpfm_cmb2_utils;
+    static $wpfm_cmb2_utils;
+    $wpfm_cmb2_utils = $wpfm_cmb2_utils ? $wpfm_cmb2_utils : new WPFM_CMB2_Utils();
+    return $wpfm_cmb2_utils;
 }
 
 /**
@@ -63,7 +63,7 @@ function wpfm_cmb2_utils() {
  * @return WPFM_CMB2_Ajax object WPFM_CMB2 ajax class
  */
 function wpfm_cmb2_ajax() {
-	return WPFM_CMB2_Ajax::get_instance();
+    return WPFM_CMB2_Ajax::get_instance();
 }
 
 /**
@@ -73,7 +73,7 @@ function wpfm_cmb2_ajax() {
  * @return WPFM_CMB2_Option object Options class for setting/getting options for metabox
  */
 function wpfm_cmb2_options( $key ) {
-	return WPFM_CMB2_Options::get( $key );
+    return WPFM_CMB2_Options::get( $key );
 }
 
 /**
@@ -93,26 +93,26 @@ function wpfm_cmb2_options( $key ) {
  * @return string        oEmbed string
  */
 function wpfm_cmb2_get_oembed( $args = array() ) {
-	$oembed = wpfm_cmb2_ajax()->get_oembed_no_edit( $args );
+    $oembed = wpfm_cmb2_ajax()->get_oembed_no_edit( $args );
 
-	// Send back our embed
-	if ( $oembed['embed'] && $oembed['embed'] != $oembed['fallback'] ) {
-		return '<div class="cmb2-oembed">' . $oembed['embed'] . '</div>';
-	}
+    // Send back our embed
+    if ( $oembed['embed'] && $oembed['embed'] != $oembed['fallback'] ) {
+        return '<div class="cmb2-oembed">' . $oembed['embed'] . '</div>';
+    }
 
-	$error = sprintf(
-		/* translators: 1: results for. 2: link to codex.wordpress.org/Embeds */
-		esc_html__( 'No oEmbed Results Found for %1$s. View more info at %2$s.', 'cmb2' ),
-		$oembed['fallback'],
-		'<a href="https://codex.wordpress.org/Embeds" target="_blank">codex.wordpress.org/Embeds</a>'
-	);
+    $error = sprintf(
+    /* translators: 1: results for. 2: link to codex.wordpress.org/Embeds */
+        esc_html__( 'No oEmbed Results Found for %1$s. View more info at %2$s.', 'cmb2' ),
+        $oembed['fallback'],
+        '<a href="https://codex.wordpress.org/Embeds" target="_blank">codex.wordpress.org/Embeds</a>'
+    );
 
-	if ( isset( $args['wp_error'] ) && $args['wp_error'] ) {
-		return new WP_Error( 'wpfm_cmb2_get_oembed_result', $error, compact( 'oembed', 'args' ) );
-	}
+    if ( isset( $args['wp_error'] ) && $args['wp_error'] ) {
+        return new WP_Error( 'wpfm_cmb2_get_oembed_result', $error, compact( 'oembed', 'args' ) );
+    }
 
-	// Otherwise, send back error info that no oEmbeds were found
-	return '<p class="ui-state-error-text">' . $error . '</p>';
+    // Otherwise, send back error info that no oEmbeds were found
+    return '<p class="ui-state-error-text">' . $error . '</p>';
 }
 
 /**
@@ -122,7 +122,7 @@ function wpfm_cmb2_get_oembed( $args = array() ) {
  * @see wpfm_cmb2_get_oembed
  */
 function wpfm_cmb2_do_oembed( $args = array() ) {
-	echo wpfm_cmb2_get_oembed( $args );
+    echo wpfm_cmb2_get_oembed( $args );
 }
 add_action( 'wpfm_cmb2_do_oembed', 'wpfm_cmb2_do_oembed' );
 
@@ -136,7 +136,7 @@ add_action( 'wpfm_cmb2_do_oembed', 'wpfm_cmb2_do_oembed' );
  * @return array               Options array or specific field
  */
 function wpfm_cmb2_get_option( $option_key, $field_id = '', $default = false ) {
-	return wpfm_cmb2_options( $option_key )->get( $field_id, $default );
+    return wpfm_cmb2_options( $option_key )->get( $field_id, $default );
 }
 
 /**
@@ -150,11 +150,11 @@ function wpfm_cmb2_get_option( $option_key, $field_id = '', $default = false ) {
  * @return boolean             Success/Failure
  */
 function wpfm_cmb2_update_option( $option_key, $field_id, $value, $single = true ) {
-	if ( wpfm_cmb2_options( $option_key )->update( $field_id, $value, false, $single ) ) {
-		return wpfm_cmb2_options( $option_key )->set();
-	}
+    if ( wpfm_cmb2_options( $option_key )->update( $field_id, $value, false, $single ) ) {
+        return wpfm_cmb2_options( $option_key )->set();
+    }
 
-	return false;
+    return false;
 }
 
 /**
@@ -170,16 +170,16 @@ function wpfm_cmb2_update_option( $option_key, $field_id, $value, $single = true
  */
 function wpfm_cmb2_get_field( $meta_box, $field_id, $object_id = 0, $object_type = '' ) {
 
-	$object_id = $object_id ? $object_id : get_the_ID();
-	$cmb = $meta_box instanceof WPFM_CMB2 ? $meta_box : cmb2_get_metabox( $meta_box, $object_id );
+    $object_id = $object_id ? $object_id : get_the_ID();
+    $cmb = $meta_box instanceof WPFM_CMB2 ? $meta_box : cmb2_get_metabox( $meta_box, $object_id );
 
-	if ( ! $cmb ) {
-		return;
-	}
+    if ( ! $cmb ) {
+        return;
+    }
 
-	$cmb->object_type( $object_type ? $object_type : $cmb->mb_object_type() );
+    $cmb->object_type( $object_type ? $object_type : $cmb->mb_object_type() );
 
-	return $cmb->get_field( $field_id );
+    return $cmb->get_field( $field_id );
 }
 
 /**
@@ -194,8 +194,8 @@ function wpfm_cmb2_get_field( $meta_box, $field_id, $object_id = 0, $object_type
  * @return mixed               Maybe escaped value
  */
 function wpfm_cmb2_get_field_value( $meta_box, $field_id, $object_id = 0, $object_type = '' ) {
-	$field = wpfm_cmb2_get_field( $meta_box, $field_id, $object_id, $object_type );
-	return $field->escaped_value();
+    $field = wpfm_cmb2_get_field( $meta_box, $field_id, $object_id, $object_type );
+    return $field->escaped_value();
 }
 
 /**
@@ -206,7 +206,7 @@ function wpfm_cmb2_get_field_value( $meta_box, $field_id, $object_id = 0, $objec
  * @return WPFM_CMB2 object            Instantiated WPFM_CMB2 object
  */
 function wpfm_new_cmb2_box( array $meta_box_config ) {
-	return wpfm_cmb2_get_metabox( $meta_box_config );
+    return wpfm_cmb2_get_metabox( $meta_box_config );
 }
 
 /**
@@ -220,32 +220,29 @@ function wpfm_new_cmb2_box( array $meta_box_config ) {
  * @return WPFM_CMB2 object
  */
 function wpfm_cmb2_get_metabox( $meta_box, $object_id = 0, $object_type = '' ) {
+    if ( $meta_box instanceof WPFM_CMB2 ) {
+        return $meta_box;
+    }
 
-
-	if ( $meta_box instanceof WPFM_CMB2 ) {
-		return $meta_box;
-	}
-
-	if ( is_string( $meta_box ) ) {
-		$cmb = WPFM_CMB2_Boxes::get( $meta_box );
-	} else {
-		// See if we already have an instance of this metabox
-		$cmb = WPFM_CMB2_Boxes::get( $meta_box['id'] );
-		// If not, we'll initate a new metabox
-		$cmb = $cmb ? $cmb : new WPFM_CMB2( $meta_box, $object_id );
-	}
+    if ( is_string( $meta_box ) ) {
+        $cmb = WPFM_CMB2_Boxes::get( $meta_box );
+    } else {
+        // See if we already have an instance of this metabox
+        $cmb = WPFM_CMB2_Boxes::get( $meta_box['id'] );
+        // If not, we'll initate a new metabox
+        $cmb = $cmb ? $cmb : new WPFM_CMB2( $meta_box, $object_id );
+    }
 
 
 
-	if ( $cmb && $object_id ) {
-		$cmb->object_id( $object_id );
-	}
+    if ( $cmb && $object_id ) {
+        $cmb->object_id( $object_id );
+    }
 
-	if ( $cmb && $object_type ) {
-		$cmb->object_type( $object_type );
-	}
-
-	return $cmb;
+    if ( $cmb && $object_type ) {
+        $cmb->object_type( $object_type );
+    }
+    return $cmb;
 }
 
 /**
@@ -257,8 +254,8 @@ function wpfm_cmb2_get_metabox( $meta_box, $object_id = 0, $object_type = '' ) {
  * @return mixed                   Array of sanitized values or false if no WPFM_CMB2 object found
  */
 function wpfm_cmb2_get_metabox_sanitized_values( $meta_box, array $data_to_sanitize ) {
-	$cmb = wpfm_cmb2_get_metabox( $meta_box );
-	return $cmb ? $cmb->get_sanitized_values( $data_to_sanitize ) : false;
+    $cmb = wpfm_cmb2_get_metabox( $meta_box );
+    return $cmb ? $cmb->get_sanitized_values( $data_to_sanitize ) : false;
 }
 
 /**
@@ -272,15 +269,15 @@ function wpfm_cmb2_get_metabox_sanitized_values( $meta_box, array $data_to_sanit
  */
 function wpfm_cmb2_get_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
 
-	$object_id = $object_id ? $object_id : get_the_ID();
-	$cmb       = wpfm_cmb2_get_metabox( $meta_box, $object_id );
+    $object_id = $object_id ? $object_id : get_the_ID();
+    $cmb       = wpfm_cmb2_get_metabox( $meta_box, $object_id );
 
-	ob_start();
-	// Get cmb form
+    ob_start();
+    // Get cmb form
     wpfm_cmb2_print_metabox_form( $cmb, $object_id, $args );
-	$form = ob_get_clean();
+    $form = ob_get_clean();
 
-	return apply_filters( 'cmb2_get_metabox_form', $form, $object_id, $cmb );
+    return apply_filters( 'cmb2_get_metabox_form', $form, $object_id, $cmb );
 }
 
 /**
@@ -293,58 +290,58 @@ function wpfm_cmb2_get_metabox_form( $meta_box, $object_id = 0, $args = array() 
  */
 function wpfm_cmb2_print_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
 
-	$object_id = $object_id ? $object_id : get_the_ID();
-	$cmb = cmb2_get_metabox( $meta_box, $object_id );
+    $object_id = $object_id ? $object_id : get_the_ID();
+    $cmb = cmb2_get_metabox( $meta_box, $object_id );
 
-	// if passing a metabox ID, and that ID was not found
-	if ( ! $cmb ) {
-		return;
-	}
+    // if passing a metabox ID, and that ID was not found
+    if ( ! $cmb ) {
+        return;
+    }
 
-	$args = wp_parse_args( $args, array(
-		'form_format' => '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<input type="submit" name="submit-cmb" value="%4$s" class="button-primary"></form>',
-		'save_button' => esc_html__( 'Save', 'cmb2' ),
-		'object_type' => $cmb->mb_object_type(),
-		'cmb_styles'  => $cmb->prop( 'cmb_styles' ),
-		'enqueue_js'  => $cmb->prop( 'enqueue_js' ),
-	) );
+    $args = wp_parse_args( $args, array(
+        'form_format' => '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<input type="submit" name="submit-cmb" value="%4$s" class="button-primary"></form>',
+        'save_button' => esc_html__( 'Save', 'cmb2' ),
+        'object_type' => $cmb->mb_object_type(),
+        'cmb_styles'  => $cmb->prop( 'cmb_styles' ),
+        'enqueue_js'  => $cmb->prop( 'enqueue_js' ),
+    ) );
 
-	// Set object type explicitly (rather than trying to guess from context)
-	$cmb->object_type( $args['object_type'] );
+    // Set object type explicitly (rather than trying to guess from context)
+    $cmb->object_type( $args['object_type'] );
 
-	// Save the metabox if it's been submitted
-	// check permissions
-	// @todo more hardening?
-	if (
-		$cmb->prop( 'save_fields' )
-		// check nonce
-		&& isset( $_POST['submit-cmb'], $_POST['object_id'], $_POST[ $cmb->nonce() ] )
-		&& wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() )
-		&& $object_id && $_POST['object_id'] == $object_id
-	) {
-		$cmb->save_fields( $object_id, $cmb->object_type(), $_POST );
-	}
+    // Save the metabox if it's been submitted
+    // check permissions
+    // @todo more hardening?
+    if (
+        $cmb->prop( 'save_fields' )
+        // check nonce
+        && isset( $_POST['submit-cmb'], $_POST['object_id'], $_POST[ $cmb->nonce() ] )
+        && wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() )
+        && $object_id && $_POST['object_id'] == $object_id
+    ) {
+        $cmb->save_fields( $object_id, $cmb->object_type(), $_POST );
+    }
 
-	// Enqueue JS/CSS
-	if ( $args['cmb_styles'] ) {
-		WPFM_CMB2_hookup::enqueue_cmb_css();
-	}
+    // Enqueue JS/CSS
+    if ( $args['cmb_styles'] ) {
+        WPFM_CMB2_hookup::enqueue_cmb_css();
+    }
 
-	if ( $args['enqueue_js'] ) {
-		WPFM_CMB2_hookup::enqueue_cmb_js();
-	}
+    if ( $args['enqueue_js'] ) {
+        WPFM_CMB2_hookup::enqueue_cmb_js();
+    }
 
-	$form_format = apply_filters( 'cmb2_get_metabox_form_format', $args['form_format'], $object_id, $cmb );
+    $form_format = apply_filters( 'cmb2_get_metabox_form_format', $args['form_format'], $object_id, $cmb );
 
-	$format_parts = explode( '%3$s', $form_format );
+    $format_parts = explode( '%3$s', $form_format );
 
-	// Show cmb form
-	printf( $format_parts[0], $cmb->cmb_id, $object_id );
-	$cmb->show_form();
+    // Show cmb form
+    printf( $format_parts[0], $cmb->cmb_id, $object_id );
+    $cmb->show_form();
 
-	if ( isset( $format_parts[1] ) && $format_parts[1] ) {
-		printf( str_ireplace( '%4$s', '%1$s', $format_parts[1] ), $args['save_button'] );
-	}
+    if ( isset( $format_parts[1] ) && $format_parts[1] ) {
+        printf( str_ireplace( '%4$s', '%1$s', $format_parts[1] ), $args['save_button'] );
+    }
 
 }
 
@@ -357,68 +354,68 @@ function wpfm_cmb2_print_metabox_form( $meta_box, $object_id = 0, $args = array(
  * @param  array $args      Optional arguments array
  */
 function wpfm_cmb2_metabox_form( $meta_box, $object_id = 0, $args = array() ) {
-	if ( ! isset( $args['echo'] ) || $args['echo'] ) {
+    if ( ! isset( $args['echo'] ) || $args['echo'] ) {
         wpfm_cmb2_print_metabox_form( $meta_box, $object_id, $args );
-	} else {
-		return wpfm_cmb2_get_metabox_form( $meta_box, $object_id, $args );
-	}
+    } else {
+        return wpfm_cmb2_get_metabox_form( $meta_box, $object_id, $args );
+    }
 }
 
 if ( ! function_exists( 'wpfm_date_create_from_format' ) ) {
 
-	/**
-	 * Reimplementation of DateTime::createFromFormat for PHP < 5.3. :(
-	 * Borrowed from http://stackoverflow.com/questions/5399075/php-datetimecreatefromformat-in-5-2
-	 *
-	 * @param $date_format
-	 * @param $date_value
-	 *
-	 * @return DateTime
-	 */
-	function wpfm_date_create_from_format( $date_format, $date_value ) {
+    /**
+     * Reimplementation of DateTime::createFromFormat for PHP < 5.3. :(
+     * Borrowed from http://stackoverflow.com/questions/5399075/php-datetimecreatefromformat-in-5-2
+     *
+     * @param $date_format
+     * @param $date_value
+     *
+     * @return DateTime
+     */
+    function wpfm_date_create_from_format( $date_format, $date_value ) {
 
-		$schedule_format = str_replace(
-			array( 'M', 'Y', 'm', 'd', 'H', 'i', 'a' ),
-			array( '%b', '%Y', '%m', '%d', '%H', '%M', '%p' ),
-			$date_format
-		);
+        $schedule_format = str_replace(
+            array( 'M', 'Y', 'm', 'd', 'H', 'i', 'a' ),
+            array( '%b', '%Y', '%m', '%d', '%H', '%M', '%p' ),
+            $date_format
+        );
 
-		/*
-		 * %Y, %m and %d correspond to date()'s Y m and d.
-		 * %I corresponds to H, %M to i and %p to a
-		 */
-		$parsed_time = strptime( $date_value, $schedule_format );
+        /*
+         * %Y, %m and %d correspond to date()'s Y m and d.
+         * %I corresponds to H, %M to i and %p to a
+         */
+        $parsed_time = strptime( $date_value, $schedule_format );
 
-		$ymd = sprintf(
-			/*
-			 * This is a format string that takes six total decimal
-			 * arguments, then left-pads them with zeros to either
-			 * 4 or 2 characters, as needed
-			 */
-			'%04d-%02d-%02d %02d:%02d:%02d',
-			$parsed_time['tm_year'] + 1900,  // This will be "111", so we need to add 1900.
-			$parsed_time['tm_mon'] + 1,      // This will be the month minus one, so we add one.
-			$parsed_time['tm_mday'],
-			$parsed_time['tm_hour'],
-			$parsed_time['tm_min'],
-			$parsed_time['tm_sec']
-		);
+        $ymd = sprintf(
+        /*
+         * This is a format string that takes six total decimal
+         * arguments, then left-pads them with zeros to either
+         * 4 or 2 characters, as needed
+         */
+            '%04d-%02d-%02d %02d:%02d:%02d',
+            $parsed_time['tm_year'] + 1900,  // This will be "111", so we need to add 1900.
+            $parsed_time['tm_mon'] + 1,      // This will be the month minus one, so we add one.
+            $parsed_time['tm_mday'],
+            $parsed_time['tm_hour'],
+            $parsed_time['tm_min'],
+            $parsed_time['tm_sec']
+        );
 
-		return new DateTime( $ymd );
-	}
+        return new DateTime( $ymd );
+    }
 }// End if().
 
 if ( ! function_exists( 'wpfm_date_timestamp_get' ) ) {
 
-	/**
-	 * Returns the Unix timestamp representing the date.
-	 * Reimplementation of DateTime::getTimestamp for PHP < 5.3. :(
-	 *
-	 * @param DateTime
-	 *
-	 * @return int
-	 */
-	function wpfm_date_timestamp_get( DateTime $date ) {
-		return $date->format( 'U' );
-	}
+    /**
+     * Returns the Unix timestamp representing the date.
+     * Reimplementation of DateTime::getTimestamp for PHP < 5.3. :(
+     *
+     * @param DateTime
+     *
+     * @return int
+     */
+    function wpfm_date_timestamp_get( DateTime $date ) {
+        return $date->format( 'U' );
+    }
 }// End if().

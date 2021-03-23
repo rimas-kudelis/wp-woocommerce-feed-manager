@@ -1,27 +1,26 @@
 <?php
 /**
- * The initation loader for WPMF_CMB2, and the main plugin file.
+ * The initation loader for CMB2, and the main plugin file.
  *
  * @category     WordPress_Plugin
- * @package      WPMF_CMB2
- * @author       WPMF_CMB2 team
+ * @package      CMB2
+ * @author       CMB2 team
  * @license      GPL-2.0+
  * @link         https://cmb2.io
  *
- * Plugin Name:  WPMF_CMB2
- * Plugin URI:   https://github.com/WPMF_CMB2/WPMF_CMB2
- * Description:  WPMF_CMB2 will create metaboxes and forms with custom fields that will blow your mind.
- * Author:       WPMF_CMB2 team
+ * Plugin Name:  CMB2
+ * Plugin URI:   https://github.com/CMB2/CMB2
+ * Description:  CMB2 will create metaboxes and forms with custom fields that will blow your mind.
+ * Author:       CMB2 team
  * Author URI:   https://cmb2.io
  * Contributors: Justin Sternberg (@jtsternberg / dsgnwrks.pro)
  *               WebDevStudios (@webdevstudios / webdevstudios.com)
- *               Zao (zao.is)
  *               Human Made (@humanmadeltd / hmn.md)
  *               Jared Atchison (@jaredatch / jaredatchison.com)
  *               Bill Erickson (@billerickson / billerickson.net)
  *               Andrew Norcross (@norcross / andrewnorcross.com)
  *
- * Version:      2.4.2
+ * Version:      2.9.0
  *
  * Text Domain:  cmb2
  * Domain Path:  languages
@@ -54,20 +53,20 @@
  * ***********************************************************************
  */
 
-if ( ! class_exists( 'WPMF_CMB2_Bootstrap_242', false ) ) {
+if ( ! class_exists( 'WPMF_CMB2_Bootstrap_290', false ) ) {
 
 	/**
-	 * Handles checking for and loading the newest version of WPMF_CMB2
+	 * Handles checking for and loading the newest version of CMB2
 	 *
 	 * @since  2.0.0
 	 *
 	 * @category  WordPress_Plugin
-	 * @package   WPMF_CMB2
-	 * @author    WPMF_CMB2 team
+	 * @package   CMB2
+	 * @author    CMB2 team
 	 * @license   GPL-2.0+
 	 * @link      https://cmb2.io
 	 */
-	class WPMF_CMB2_Bootstrap_242 {
+	class WPMF_CMB2_Bootstrap_290 {
 
 		/**
 		 * Current version number
@@ -75,7 +74,7 @@ if ( ! class_exists( 'WPMF_CMB2_Bootstrap_242', false ) ) {
 		 * @var   string
 		 * @since 1.0.0
 		 */
-		const VERSION = '2.4.2';
+		const VERSION = '2.9.0';
 
 		/**
 		 * Current version hook priority.
@@ -84,20 +83,20 @@ if ( ! class_exists( 'WPMF_CMB2_Bootstrap_242', false ) ) {
 		 * @var   int
 		 * @since 2.0.0
 		 */
-		const PRIORITY = 9999;
+		const PRIORITY = 9959;
 
 		/**
-		 * Single instance of the WPMF_CMB2_Bootstrap_242 object
+		 * Single instance of the CMB2_Bootstrap_290 object
 		 *
-		 * @var WPMF_CMB2_Bootstrap_242
+		 * @var CMB2_Bootstrap_290
 		 */
 		public static $single_instance = null;
 
 		/**
-		 * Creates/returns the single instance WPMF_CMB2_Bootstrap_242 object
+		 * Creates/returns the single instance CMB2_Bootstrap_290 object
 		 *
 		 * @since  2.0.0
-		 * @return WPMF_CMB2_Bootstrap_242 Single instance object
+		 * @return WPMF_CMB2_Bootstrap_290 Single instance object
 		 */
 		public static function initiate() {
 			if ( null === self::$single_instance ) {
@@ -108,38 +107,38 @@ if ( ! class_exists( 'WPMF_CMB2_Bootstrap_242', false ) ) {
 
 		/**
 		 * Starts the version checking process.
-		 * Creates WPMF_CMB2_LOADED definition for early detection by other scripts
+		 * Creates CMB2_LOADED definition for early detection by other scripts
 		 *
-		 * Hooks WPMF_CMB2 inclusion to the init hook on a high priority which decrements
+		 * Hooks CMB2 inclusion to the init hook on a high priority which decrements
 		 * (increasing the priority) with each version release.
 		 *
 		 * @since 2.0.0
 		 */
 		private function __construct() {
 			/**
-			 * A constant you can use to check if WPMF_CMB2 is loaded
-			 * for your plugins/themes with WPMF_CMB2 dependency
+			 * A constant you can use to check if CMB2 is loaded
+			 * for your plugins/themes with CMB2 dependency
 			 */
 			if ( ! defined( 'WPMF_CMB2_LOADED' ) ) {
 				define( 'WPMF_CMB2_LOADED', self::PRIORITY );
 			}
 
+			if ( ! function_exists( 'add_action' ) ) {
+				// We are running outside of the context of WordPress.
+				return;
+			}
 
-
-
-			add_action( 'init', array( $this, 'wpfm_include_cmb' ));
+			add_action( 'init', array( $this, 'include_cmb' ), self::PRIORITY );
 		}
 
 		/**
-		 * A final check if WPMF_CMB2 exists before kicking off our WPMF_CMB2 loading.
-		 * WPMF_CMB2_VERSION and WPFM_WPMF_CMB2_DIR constants are set at this point.
+		 * A final check if CMB2 exists before kicking off our CMB2 loading.
+		 * CMB2_VERSION and CMB2_DIR constants are set at this point.
 		 *
 		 * @since  2.0.0
 		 */
-		public function wpfm_include_cmb() {
-
-
-			if ( class_exists( 'WPFM_CMB2', false ) ) {
+		public function include_cmb() {
+			if ( class_exists( 'WPMF_CMB2', false ) ) {
 				return;
 			}
 
@@ -158,7 +157,7 @@ if ( ! class_exists( 'WPMF_CMB2_Bootstrap_242', false ) ) {
 			require_once WPFM_CMB2_DIR . 'includes/WPFM_CMB2.php';
 			require_once WPFM_CMB2_DIR . 'includes/helper-functions.php';
 
-//			// Now kick off the class autoloader.
+			// Now kick off the class autoloader.
 			spl_autoload_register( 'wpfm_cmb2_autoload_classes' );
 
 			// Kick the whole thing off.
@@ -167,7 +166,7 @@ if ( ! class_exists( 'WPMF_CMB2_Bootstrap_242', false ) ) {
 		}
 
 		/**
-		 * Registers WPMF_CMB2 text domain path
+		 * Registers CMB2 text domain path
 		 *
 		 * @since  2.0.0
 		 */
@@ -184,7 +183,7 @@ if ( ! class_exists( 'WPMF_CMB2_Bootstrap_242', false ) ) {
 			}
 
 			if ( ! $loaded ) {
-				$locale = apply_filters( 'plugin_locale', get_locale(), 'cmb2' );
+				$locale = apply_filters( 'plugin_locale', function_exists( 'determine_locale' ) ? determine_locale() : get_locale(), 'cmb2' );
 				$mofile = dirname( __FILE__ ) . '/languages/cmb2-' . $locale . '.mo';
 				load_textdomain( 'cmb2', $mofile );
 			}
@@ -194,6 +193,6 @@ if ( ! class_exists( 'WPMF_CMB2_Bootstrap_242', false ) ) {
 	}
 
 	// Make it so...
-    WPMF_CMB2_Bootstrap_242::initiate();
+    WPMF_CMB2_Bootstrap_290::initiate();
 
 }// End if().
