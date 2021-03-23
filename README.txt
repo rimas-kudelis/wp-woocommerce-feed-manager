@@ -313,6 +313,8 @@ Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without
 
 Learn more how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
+We use below mentioned third party services to improve user experience and enhance the plugin features -
+* [Google Content API](https://developers.google.com/shopping-content/guides/quickstart)
 
 == Installation ==
 1. Upload the Product Feed Manager for WooCommerce to the `/wp-content/plugins/` directory
