@@ -11,7 +11,7 @@
  * @license   GPL-2.0+
  * @link      https://cmb2.io
  */
-class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_Hookup {
+class WPFM_CMB2_Options_Hookup extends WPFM_CMB2_hookup {
 
 	/**
 	 * The object type we are performing the hookup for
