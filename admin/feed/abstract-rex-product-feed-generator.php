@@ -1037,7 +1037,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             if( file_exists($file) ) {
-                if( $this->batch == 1  ) {
+                if( $this->batch == 1) {
                     $feed = new DOMDocument;
                     $feed->loadXML($this->feed);
                     $this->feed = $feed->saveXML($feed,LIBXML_NOEMPTYTAG);
@@ -1050,6 +1050,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     file_put_contents( $file, $feed, FILE_APPEND );
                     return 'true';
                 }
+                    // $feed = $this->get_items();
+                    // if($this->tbatch > 1) {
+                    //     $this->footer_replace();
+                    // }
+                    // file_put_contents( $file, $feed, FILE_APPEND );
+                    // return 'true';
             }else{
                 if((int)$this->tbatch > 1) {
                     $this->footer_replace();
@@ -1226,7 +1232,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $node = $feed->getElementsByTagName("review");
             
             if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '</reviews></feed>';
+                $feed_string_footer .='</reviews></feed>';
             }
         }elseif ($this->merchant === 'datatrics') {
             $node = $feed->getElementsByTagName("item");

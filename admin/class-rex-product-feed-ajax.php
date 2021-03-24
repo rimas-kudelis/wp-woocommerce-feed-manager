@@ -276,9 +276,12 @@ class Rex_Product_Feed_Ajax {
     public static function generate_feed( $config ){
         try {
             $merchant = Rex_Product_Feed_Factory::build( $config );
+            
+            
         } catch (Exception $e) {
             return $e->getMessage();
         }
+       
         return $merchant->make_feed();
     }
 
@@ -301,14 +304,19 @@ class Rex_Product_Feed_Ajax {
      * @throws Exception
      */
     public static function show_feed_template( $merchant ){
+        
+        
         $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
-
         if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
             $feed_rules = false;
         }
         $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
+        
 
         $feed_format = self::get_merchant_feed_format($merchant['merchant']);
+        
+       
+        
         ob_start();
         if( in_array($merchant['merchant'], apply_filters('wpfm_has_custom_feed_config', array()))) {
             do_action('wpfm_custom_metabox_display_'. $merchant['merchant'], $merchant['merchant'], $feed_template);
@@ -323,6 +331,7 @@ class Rex_Product_Feed_Ajax {
         if(!$selected_format) {
             $selected_format = $feed_format[0];
         }
+        
         return array(
             'success'       => true,
             'html'          => $result,
@@ -340,7 +349,7 @@ class Rex_Product_Feed_Ajax {
      * @since 5.42
      */
     public static function get_merchant_feed_format($merchant) {
-
+        
         $google_format = array(
             'google',
             'ciao',

@@ -238,7 +238,7 @@
                 merchant: $('#rex_feed_merchant').find(':selected').val(),
                 post_id: $('#post_ID').val(),
             };
-
+            
             wpAjaxHelperRequest('merchant-change', $payload)
                 .success(function(response) {
                     if (response) {
@@ -250,6 +250,8 @@
                             } else {
                                 $(this).removeAttr('disabled');
                             }
+                            // console.log(response.feed_format[0])
+                            // console.log(option_value)
                         });
                         var selected = $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val();
                         if (!selected) {
@@ -694,9 +696,10 @@
             };
         }
 
-
+       
         wpAjaxHelperRequest('rex-product-change-merchant-status', payload)
             .success(function(response) {
+
                 console.log('woohoo!');
             })
             .error(function(response) {

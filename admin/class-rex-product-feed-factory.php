@@ -18,7 +18,7 @@ class Rex_Product_Feed_Factory {
     private static $facebook_format;
 
     public static function build( $config, $bypass = false , $product_ids = array()){
-
+        
         $log = wc_get_logger();
         $context = array( 'source' => 'WPFM' );
         self::$other_merchants = apply_filters('wpfm_merchant_custom',

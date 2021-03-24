@@ -410,7 +410,7 @@ class Item
      * @return array
      */
     public function nodes()
-    {
+    {    
         return $this->nodes;
     }
 
