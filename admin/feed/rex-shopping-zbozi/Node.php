@@ -1,6 +1,6 @@
 <?php
 
-namespace RexTheme\FaviShoppingFeed;
+namespace RexTheme\RexShoppingZbozi;
 
 class Node
 {
@@ -83,7 +83,7 @@ class Node
      */
     public function attachNodeTo(\SimpleXMLElement $parent)
     {
-        if ( preg_match("/CDATA/", json_encode($this->value))) {
+        if ( preg_match("/CDATA/", $this->value)) {
             $this->value = str_replace("CDATA","",$this->value);
             $this->value = str_replace("%20","",$this->value);
             $this->value = str_replace("]]>","",$this->value);
@@ -92,7 +92,7 @@ class Node
             $no=$node->ownerDocument;
             $node->appendChild($no->createCDATASection($this->value));
         }else {
-            $parent->addChild(str_replace(' ', '_', $this->name), htmlspecialchars(json_encode($this->value)), $this->_namespace);
+            $parent->addChild(str_replace(' ', '_', $this->name), htmlspecialchars($this->value), $this->_namespace);
         }
     }
 }

@@ -222,18 +222,24 @@ class Feed
             }else{
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
-
+            
             foreach ($item->nodes() as $itemNode) {
+                
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {
                         $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'));
+                       
                     }
+                    
                 } else {
+                    
                     if(in_array($itemNode->get('name'), $s_nodes)) {
                         if($itemNode->get('name') == 'attributes') {
+                            
                             if(is_array($itemNode->get('value'))) {
                                 foreach ($itemNode->get('value') as $value) {
-                                    $param = $feedItemNode->addChild('Attributes');
+                                    $params = $feedItemNode->addChild('Attributes');
+                                    $param = $params->addChild('Attribute');
                                     $param->addChild('PARAM_NAME', $value['name']);
                                     $param->addChild('VAL', $value['value']);
                                     if($value['percentage']) {
@@ -241,29 +247,46 @@ class Feed
                                     }
                                 }
                             }
-                        } else {
+                        }else {
                             if(is_array($itemNode->get('value'))) {
                                 foreach ($itemNode->get('value') as $value) {
                                     $feedItemNode->addChild('IMGURL_ALTERNATIVE', $value);
                                 }
                             }
                         }
-                    } else {
-                        if(preg_match('/^PARAM/im', $itemNode->get('name'))) {
+                    }else {
+                       
+                        if($itemNode->get('name') == 'attributes') {
+                            
                             if(is_array($itemNode->get('value'))) {
+                                $params = $feedItemNode->addChild('Attributes');
                                 foreach ($itemNode->get('value') as $value) {
-
-                                    $param = $feedItemNode->addChild('PARAM');
-                                    $param->addChild('PARAM_NAME', $value['name']);
-                                    $param->addChild('VAL', $value['value']);
-                                    if($value['percentage']) {
+                                    $param = $params->addChild('Attribute');
+                                    $param->addChild('Attribute_name', $value['name']);
+                                    $param->addChild('Attribute_value', $value['value']);
+                                    if(isset($value['percentage'])) {
                                         $param->addChild('PERCENTAGE', $value['percentage']);
                                     }
                                 }
                             }
-                        } else {
-                            $itemNode->attachNodeTo($feedItemNode);
+                        }else{
+                            if(preg_match('/^PARAM/im', $itemNode->get('name'))) {
+                                if(is_array($itemNode->get('value'))) {
+                                    foreach ($itemNode->get('value') as $value) {
+    
+                                        $param = $feedItemNode->addChild('PARAM');
+                                        $param->addChild('PARAM_NAME', $value['name']);
+                                        $param->addChild('VAL', $value['value']);
+                                        if($value['percentage']) {
+                                            $param->addChild('PERCENTAGE', $value['percentage']);
+                                        }
+                                    }
+                                }
+                            } else {
+                                $itemNode->attachNodeTo($feedItemNode);
+                            }
                         }
+                        
                     }
                 }
             }

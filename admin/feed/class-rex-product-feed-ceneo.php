@@ -206,6 +206,15 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
             }
+            if( $product->is_type( 'woosb' ) ){
+                $group_products[] = $productId;
+                $item = RexShoppingCeneo::createItem();
+                $atts = $this->get_product_data( $product, $product_meta_keys );
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+            }
         }
 
         $total_products = array(

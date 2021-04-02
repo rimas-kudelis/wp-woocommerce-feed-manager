@@ -49,6 +49,28 @@ class Rex_Feed_Template_Heureka extends Rex_Feed_Abstract_Template {
                 'COLOR'                     => 'COLOR',
                 'GIFT'                      => 'GIFT',
             ),
+            'Attributes' => array(
+                'Param_name_1'      => 'PARAM 1',
+                'Param_value_1'     => 'Value 1',
+                'Param_name_2'      => 'PARAM 2',
+                'Param_value_2'     => 'Value 2',
+                'Param_name_3'      => 'PARAM 3',
+                'Param_value_3'     => 'Value 3',
+                'Param_name_4'      => 'PARAM 4',
+                'Param_value_4'     => 'Value 4',
+                'Param_name_5'      => 'PARAM 5',
+                'Param_value_5'     => 'Value 5',
+                'Param_name_6'      => 'PARAM 6',
+                'Param_value_6'     => 'Value 6',
+                'Param_name_7'      => 'PARAM 7',
+                'Param_value_7'     => 'Value 7',
+                'Param_name_8'      => 'PARAM 8',
+                'Param_value_8'     => 'Value 8',
+                'Param_name_9'      => 'PARAM 9',
+                'Param_value_9'     => 'Value 9',
+                'Param_name_10'     => 'PARAM 10',
+                'Param_value_10'    => 'Value 10',
+            ),
         );
     }
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace RexTheme\RexShoppingFeed;
 
 class Node

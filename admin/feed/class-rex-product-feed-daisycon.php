@@ -132,7 +132,7 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $product->is_type( 'grouped' ) ){
+            if( $product->is_type( 'grouped' ) || $product->is_type( 'woosb' )){
                 $group_products[] = $productId;
                 $item = DaisyConShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );

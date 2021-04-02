@@ -341,19 +341,6 @@ class Rex_Product_Data_Retriever {
                 }
                 else {
                     if ($this->is_children()) {
-                       /* $_variations = $_product->get_attributes();
-                        $_title = $this->product->get_title() . " - ";
-                        $title_arr = array();
-                        foreach($_variations as $key => $value){
-//                            $taxonomy   = str_replace("attribute_", "", $key);
-//                            $term       = get_term_by('slug', $value, $taxonomy);
-//
-//                            if (!empty($term) && !is_wp_error($term)) {
-//                                $title_arr[] = rawurldecode(ucfirst( $term->name ) );
-//                            }
-                            $title_arr[] = rawurldecode(ucfirst( $value ) );
-                        }
-                        $_title = $_title . implode(', ', $title_arr);*/
                         $_product = wc_get_product( $this->product );
                         $attr_summary = $_product->get_attribute_summary();
                         $attr_array = explode(",", $attr_summary);
@@ -387,7 +374,7 @@ class Rex_Product_Data_Retriever {
                 if ($this->product->is_type( 'grouped' )) {
                     if($this->wcml) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal($this->get_grouped_price($this->product, 'regular'), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters('wcml_raw_price_amount', wc_format_decimal($this->get_grouped_price($this->product, 'regular'), wc_get_price_decimals()), $this->wcml_currency);
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -466,6 +453,8 @@ class Rex_Product_Data_Retriever {
                 elseif($this->product->is_type('bundle')){
                     return $this->product->get_bundle_price();  
                 }
+                
+
                 if($this->wcml) {
                     global $woocommerce_wpml;
                     $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals()), $this->wcml_currency);

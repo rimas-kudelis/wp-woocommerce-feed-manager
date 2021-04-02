@@ -266,18 +266,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
-        "heureka" => array(
-            'container'  => false,
-            'item_wrapper'  => 'SHOPITEM',
-            'items_wrapper' => 'SHOP',
-            'namespace' => null,
-            'namespace_prefix' => '',
-            'stand_alone'   => false,
-            'version' => '',
-            'wrapper_el'   => '',
-            'wrapper'   => false,
-            'datetime'   => false,
-        ),
+        // "heureka" => array(
+        //     'container'  => false,
+        //     'item_wrapper'  => 'SHOPITEM',
+        //     'items_wrapper' => 'SHOP',
+        //     'namespace' => null,
+        //     'namespace_prefix' => '',
+        //     'stand_alone'   => false,
+        //     'version' => '',
+        //     'wrapper_el'   => '',
+        //     'wrapper'   => false,
+        //     'datetime'   => false,
+        // ),
         "homebook" => array(
             'container'  => false,
             'item_wrapper'  => 'offer',
@@ -544,18 +544,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
-        "rakuten" => array(
-            'container'  => false,
-            'item_wrapper'  => 'product',
-            'items_wrapper' => 'products',
-            'namespace' => null,
-            'namespace_prefix' => '',
-            'stand_alone'   => false,
-            'version' => '',
-            'wrapper_el'   => '',
-            'wrapper'   => false,
-            'datetime'   => false,
-        ),
+        // "rakuten" => array(
+        //     'container'  => false,
+        //     'item_wrapper'  => 'product',
+        //     'items_wrapper' => 'products',
+        //     'namespace' => null,
+        //     'namespace_prefix' => '',
+        //     'stand_alone'   => false,
+        //     'version' => '',
+        //     'wrapper_el'   => '',
+        //     'wrapper'   => false,
+        //     'datetime'   => false,
+        // ),
         "rakuten_advertising" => array(
             'container'  => false,
             'item_wrapper'  => 'product',
@@ -724,18 +724,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
-        "zbozi" => array(
-            'container'  => false,
-            'item_wrapper'  => 'SHOPITEM',
-            'items_wrapper' => 'SHOP',
-            'namespace' => 'http://www.zbozi.cz/ns/offer/1.0',
-            'namespace_prefix' => '',
-            'stand_alone'   => false,
-            'version' => '',
-            'wrapper_el'   => '',
-            'wrapper'   => false,
-            'datetime'   => false,
-        ),
+        // "zbozi" => array(
+        //     'container'  => false,
+        //     'item_wrapper'  => 'SHOPITEM',
+        //     'items_wrapper' => 'SHOP',
+        //     'namespace' => 'http://www.zbozi.cz/ns/offer/1.0',
+        //     'namespace_prefix' => '',
+        //     'stand_alone'   => false,
+        //     'version' => '',
+        //     'wrapper_el'   => '',
+        //     'wrapper'   => false,
+        //     'datetime'   => false,
+        // ),
     );
     /**
      * Get version
@@ -935,7 +935,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $product->is_type( 'grouped' ) ){
+            if( $product->is_type( 'grouped' ) || $product->is_type( 'woosb' )){
                 if($this->parent_product) {
                     $group_products[] = $productId;
                     $item = RexShopping::createItem();
@@ -978,9 +978,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 
 
     public function footer_replace() {
-        if($this->merchant === 'heureka'){
-            $this->feed = str_replace('</SHOP>', '', $this->feed);
-        }else if($this->merchant === 'trovaprezzi'){
+        if($this->merchant === 'trovaprezzi'){
             $this->feed = str_replace('</Products>', '', $this->feed);
         }else if($this->merchant === 'zbozi'){
             $this->feed = str_replace('</SHOP>', '', $this->feed);

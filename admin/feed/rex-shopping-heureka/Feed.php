@@ -1,14 +1,13 @@
 <?php
 
-namespace RexTheme\GoogleLocalProducts;
+namespace RexTheme\RexShoppingHeureka;
 
 use SimpleXMLElement;
-use RexTheme\GoogleLocalProducts\Item;
+use RexTheme\RexShoppingHeureka\Item;
 use Gregwar\Cache\Cache;
 
 class Feed
 {
-
     /**
      * Define Google Namespace url
      * @var string
@@ -100,7 +99,7 @@ class Feed
 
 
     protected $stand_alone = false;
-
+    public $param;
     /**
      * Feed constructor
      */
@@ -234,7 +233,7 @@ class Feed
      * Adds items to feed
      */
     private function addItemsToFeed()
-    {   
+    { 
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
@@ -243,16 +242,28 @@ class Feed
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
             foreach ($item->nodes() as $itemNode) {
-                if (is_array($itemNode)) {
-                    foreach ($itemNode as $node) {
-                        $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
+                if($itemNode->get('name') != 'param'){
+                    if(str_contains($itemNode->get('name'),'Param_name_')){
+                        $this->param = $feedItemNode->addChild('PARAM');
+                        $this->param->addChild('PARAM_NAME',$itemNode->get('value'));
+                    }elseif(str_contains($itemNode->get('name'),'Param_value_')){
+                        $this->param->addChild('VAL',$itemNode->get('value'));
+                    }else{
+    
+                        if (is_array($itemNode)) {
+                            foreach ($itemNode as $node) {
+                                $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
+                            }
+                        } else {
+                            $itemNode->attachNodeTo($feedItemNode);
+                        }
                     }
-                } else {
-                    $itemNode->attachNodeTo($feedItemNode);
                 }
             }
         }
+        
     }
+
 
     /**
      * add items to text feed
@@ -289,46 +300,10 @@ class Feed
      * @return Item[]
      */
     private function addItemsToFeedCSV(){
-        $headers = [];
-        $header_two=[];
+
         if(count($this->items)){
-            $headers = array_keys(end($this->items)->nodes());
-            foreach ($headers as $header){
-
-               if($header=='itemid'){
-                   $header_two[]='Product Item Id';
-
-               }elseif ($header=='title'){
-                   $header_two[]='Title';
-
-               }elseif ($header=='Sales_Rank'){
-                   $header_two[]='Rank';
-
-               }elseif ($header=='description'){
-                   $header_two[]='Description';
-
-               }elseif ($header=='sale_price'){
-                   $header_two[]='Sale Price';
-
-               }elseif ($header=='product_url'){
-                   $header_two[]='Item URL';
-
-               }elseif ($header=='Image_URL'){
-                   $header_two[]='Image URL';
-
-               }elseif ($header=='price'){
-                   $header_two[]='Price';
-
-               }elseif ($header=='store_code'){
-                   $header_two[]='Store Code';
-               }
-               else
-               {
-                   $header_two[]=$header;
-               }
-            }
-
-            $this->items_row[] = $header_two;
+            
+            $this->items_row[] = array_keys(end($this->items)->nodes());
             foreach ($this->items as $item) {
                 $row = array();
                 foreach ($item->nodes() as $itemNode) {
@@ -342,13 +317,11 @@ class Feed
                 }
                 $this->items_row[] = $row;
             }
-            
             $str = '';
             foreach ($this->items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
             }
         }
-
         return $this->items_row;
     }
 
@@ -383,12 +356,7 @@ class Feed
         $cache = new Cache;
         $cache->setCacheDirectory($this->cacheDir);
         $data = $cache->getOrCreate('google-feed-taxonomy.txt', array( 'max-age' => '86400' ), function () {
-            $request = wp_remote_get( "http://www.google.com/basepages/producttype/taxonomy.en-GB.txt" );
-            if( is_wp_error( $request ) ) {
-                return false;
-            }
-            $body = wp_remote_retrieve_body( $request );
-            return json_decode( $body );
+            return file_get_contents("http://www.google.com/basepages/producttype/taxonomy.en-GB.txt");
         });
         return explode("\n", trim($data));
     }
@@ -460,6 +428,7 @@ class Feed
         if ($output) {
             die($data);
         }
+        
         return $data;
     }
 

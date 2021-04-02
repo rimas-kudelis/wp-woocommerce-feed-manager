@@ -23,7 +23,7 @@ class Rex_Feed_Template_Google_local_products extends Rex_Feed_Abstract_Template
     protected function init_atts(){
         $this->attributes = array(
             'Required Information' =>  array(
-                'Sales_Rank'                   =>'Rank',
+                'Sales_Rank'                   => 'Rank',
                 'itemid'                       => 'Product Id [id]',
                 'title'                        => 'Product Title [title]',
                 'description'                  => 'Product Description [description]',

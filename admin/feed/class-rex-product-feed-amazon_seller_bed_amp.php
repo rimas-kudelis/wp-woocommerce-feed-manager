@@ -120,7 +120,7 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
                 }
             }
 
-            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle') || $product->is_type( 'woosb' )) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $atts['parent_child'] = '';

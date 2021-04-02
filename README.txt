@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.4.3
+Stable tag:  6.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -552,6 +552,9 @@ WP Dashboard > Product Feed > Upgrade.
 17. Plugin Settings Page - Controls
 
 == Changelog ==
+
+= 6.4.4 (2021-04-02) =
+* Fixed: Zbozi feed format
 
 = 6.4.3 (2021-03-24) =
 * Fixed: Meta fields file warnings

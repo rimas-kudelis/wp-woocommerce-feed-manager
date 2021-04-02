@@ -1,9 +1,9 @@
 <?php
 
-namespace RexTheme\GoogleLocalProducts;
+namespace RexTheme\RexShoppingRakuten;
 
 use SimpleXMLElement;
-use RexTheme\GoogleLocalProducts\Item;
+use RexTheme\RexShoppingRakuten\Item;
 use Gregwar\Cache\Cache;
 
 class Feed
@@ -234,7 +234,8 @@ class Feed
      * Adds items to feed
      */
     private function addItemsToFeed()
-    {   
+    {
+       
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
@@ -252,7 +253,9 @@ class Feed
                 }
             }
         }
+        
     }
+
 
     /**
      * add items to text feed
@@ -289,46 +292,10 @@ class Feed
      * @return Item[]
      */
     private function addItemsToFeedCSV(){
-        $headers = [];
-        $header_two=[];
+       
         if(count($this->items)){
-            $headers = array_keys(end($this->items)->nodes());
-            foreach ($headers as $header){
-
-               if($header=='itemid'){
-                   $header_two[]='Product Item Id';
-
-               }elseif ($header=='title'){
-                   $header_two[]='Title';
-
-               }elseif ($header=='Sales_Rank'){
-                   $header_two[]='Rank';
-
-               }elseif ($header=='description'){
-                   $header_two[]='Description';
-
-               }elseif ($header=='sale_price'){
-                   $header_two[]='Sale Price';
-
-               }elseif ($header=='product_url'){
-                   $header_two[]='Item URL';
-
-               }elseif ($header=='Image_URL'){
-                   $header_two[]='Image URL';
-
-               }elseif ($header=='price'){
-                   $header_two[]='Price';
-
-               }elseif ($header=='store_code'){
-                   $header_two[]='Store Code';
-               }
-               else
-               {
-                   $header_two[]=$header;
-               }
-            }
-
-            $this->items_row[] = $header_two;
+            
+            $this->items_row[] = array_keys(end($this->items)->nodes());
             foreach ($this->items as $item) {
                 $row = array();
                 foreach ($item->nodes() as $itemNode) {

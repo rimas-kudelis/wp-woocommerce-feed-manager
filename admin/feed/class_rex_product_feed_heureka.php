@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that generates xml feed for any merchant with custom configuration.
  *
@@ -8,16 +7,14 @@
  * @link       https://rextheme.com
  * @since      1.0.0
  *
- * @package    Rex_Product_Feed_Google
- * @subpackage Rex_Product_Feed_Google/includes
+ * @package    Rex_Product_Feed_Wish
+ * @subpackage Rex_Product_Feed_wish/includes
  * @author     RexTheme <info@rextheme.com>
- */
+ */ 
+use RexTheme\RexShoppingHeureka\Containers\RexShopping;
 
-use RexTheme\GlamiShoppingFeed\Containers\GlamiShopping;
-
-class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
+class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
 {
-
     /**
      * Create Feed
      *
@@ -26,8 +23,8 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
      **/
     public function make_feed()
     {
-        GlamiShopping::$container = null;
-        GlamiShopping::init(false, $this->setItemWrapper(), '', '', $this->setItemsWrapper());
+        RexShopping::$container = null;
+        RexShopping::init(false, $this->setItemWrapper(), '', '', $this->setItemsWrapper());
 
         $this->generate_product_feed();
 
@@ -44,7 +41,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
         }
     }
 
-
+    
     private function generate_product_feed()
     {
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
@@ -89,7 +86,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                     $atts = $this->get_product_data($variable_product, $product_meta_keys);
                     $atts = $this->process_attributes_for_delivery($atts);
                     $atts = $this->process_attributes_for_param($atts);
-                    $item = GlamiShopping::createItem();
+                    $item = RexShopping::createItem();
                     foreach ($atts as $key => $value) {
                         if ($key == 'delivery') {
                             $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -110,7 +107,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                         foreach ($variations as $variation) {
                             if ($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = GlamiShopping::createItem();
+                                $item = RexShopping::createItem();
                                 $variation_product = wc_get_product($variation);
                                 $atts = $this->get_product_data($variation_product, $product_meta_keys);
                                 $atts = $this->process_attributes_for_delivery($atts);
@@ -135,7 +132,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                 $atts = $this->get_product_data($product, $product_meta_keys);
                 $atts = $this->process_attributes_for_delivery($atts);
                 $atts = $this->process_attributes_for_param($atts);
-                $item = GlamiShopping::createItem();
+                $item = RexShopping::createItem();
                 foreach ($atts as $key => $value) {
                     if ($key == 'delivery') {
                         $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -150,7 +147,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
             if ($this->product_scope === 'all'|| $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
-                    $item = GlamiShopping::createItem();
+                    $item = RexShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     $atts = $this->process_attributes_for_delivery($atts);
                     $atts = $this->process_attributes_for_param($atts);
@@ -169,7 +166,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
 
             if ($product->is_type('grouped')) {
                 $group_products[] = $productId;
-                $item = GlamiShopping::createItem();
+                $item = RexShopping::createItem();
                 $atts = $this->get_product_data($product, $product_meta_keys);
                 $atts = $this->process_attributes_for_delivery($atts);
                 $atts = $this->process_attributes_for_param($atts);
@@ -184,10 +181,9 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                     }
                 }
             }
-
-            if( $product->is_type( 'woosb' ) ){
+            if ($product->is_type('woosb')) {
                 $group_products[] = $productId;
-                $item = GlamiShopping::createItem();
+                $item = RexShopping::createItem();
                 $atts = $this->get_product_data($product, $product_meta_keys);
                 $atts = $this->process_attributes_for_delivery($atts);
                 $atts = $this->process_attributes_for_param($atts);
@@ -200,7 +196,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                     } else {
                         $item->$key($value); // invoke $key as method of $item object.
                     }
-                } 
+                }
             }
         }
 
@@ -222,7 +218,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
      * @return string
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys ){
-        $data = new Rex_Product_Glami_Data_Retriever( $product, $this, $product_meta_keys );
+        $data = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
         return $data->get_all_data();
     }
 
@@ -317,15 +313,14 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
     public function returnFinalProduct()
     {
         if ($this->feed_format == 'xml') {
-            return GlamiShopping::asRss();
+            return RexShopping::asRss();
         } elseif ($this->feed_format == 'text') {
-            return GlamiShopping::asTxt();
+            return RexShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            return GlamiShopping::asCsv();
+            return RexShopping::asCsv();
         }
-        return GlamiShopping::asRss();
+        return RexShopping::asRss();
     }
-
 
     //replace footer of feed
     public function footer_replace()

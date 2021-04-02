@@ -276,12 +276,10 @@ class Rex_Product_Feed_Ajax {
     public static function generate_feed( $config ){
         try {
             $merchant = Rex_Product_Feed_Factory::build( $config );
-            
-            
+ 
         } catch (Exception $e) {
             return $e->getMessage();
         }
-       
         return $merchant->make_feed();
     }
 
@@ -390,7 +388,6 @@ class Rex_Product_Feed_Ajax {
             'lazada',
             'bol',
             'fruugo',
-            'google_local_products',
             'idealo_de',
             'idealo',
 
@@ -414,6 +411,10 @@ class Rex_Product_Feed_Ajax {
 
         $google_local_product_inventory = array(
             'google_local_products_inventory',
+        );
+        
+        $google_local_product = array(
+            'google_local_products',
         );
 
         $shopzilla = array(
@@ -452,6 +453,8 @@ class Rex_Product_Feed_Ajax {
             return array('csv','text');
         }elseif (in_array( $merchant, $google_local_product_inventory )){
             return array('xml','text');
+        }elseif (in_array( $merchant, $google_local_product )){
+            return array('text','csv');
         }elseif (in_array( $merchant, $shopzilla)){
             return array('text');
         }elseif (in_array( $merchant, $bing)){
