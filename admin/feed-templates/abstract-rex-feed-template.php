@@ -249,12 +249,13 @@ abstract class Rex_Feed_Abstract_Template {
                 'remove_shortcodes'        => 'Remove ShortCodes',
                 'remove_special character' => 'Remove Special Character',
                 'cdata'                    => 'CDATA',
+                'cdata_without_space'      => 'CDATA without space',
                 'remove_underscore'        => 'Remove underscore',
                 'decode_url'               => 'Decode url',
                 'remove_decimal'           => 'Remove decimal points (Marktplaats only)',
-                'add_two_decimal'           => 'Two decimal points',
-                'remove_hyphen'           => 'Remove hyphen',
-                'remove_hyphen_space'           => 'Remove hyphen(space)',
+                'add_two_decimal'          => 'Two decimal points',
+                'remove_hyphen'            => 'Remove hyphen',
+                'remove_hyphen_space'      => 'Remove hyphen(space)',
             )
         );
     }

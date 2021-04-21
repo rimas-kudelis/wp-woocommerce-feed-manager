@@ -161,6 +161,10 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
         $this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'dequeue_scripts', 5 );
         $this->loader->add_action( 'init', $plugin_admin, 'register_cpt' );
+        // if ( get_post_type() == 'product-feed' ) {
+            // $this->loader->add_action( 'post_submitbox_start', $plugin_admin, 'register_purge_button' );
+        // }
+       
         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rex_wpfm_admin_notices' );
         $this->loader->add_action( 'wpfm_cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
 
@@ -168,6 +172,7 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages');
         $this->loader->add_action( 'admin_footer', $plugin_admin, 'rex_admin_footer_style');
 
+       
 
         // remove bulk edit and quick edit for our feed cpt.
         $this->loader->add_filter( 'bulk_actions-edit-product-feed', $plugin_admin, 'remove_bulk_edit' );

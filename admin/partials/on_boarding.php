@@ -1301,6 +1301,16 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'free' => true,
                                     'status' => 0,
                                     'name' => 'Favi - Compari & Árukereső'
+                                ),
+                                'ibud' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Ibud'
+                                ),
+                                'google_local_inventory_ads' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Google Local Inventory Ads'
                                 )
 
                             );
@@ -1311,11 +1321,11 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'status' => 0,
                                     'name' => 'Google Remarketing (DRM)'
                                 ),
-                                'google_review' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Google Review'
-                                ),
+                                // 'google_review' => array(
+                                //     'free' => false,
+                                //     'status' => 0,
+                                //     'name' => 'Google Review'
+                                // ),
                                 'ebay_mip' => array(
                                     'free' => false,
                                     'status' => 0,

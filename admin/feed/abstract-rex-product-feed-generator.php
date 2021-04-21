@@ -155,6 +155,15 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @var      bool    $allowed
      */
     protected $allowed;
+    
+    /**
+     * Product Filter Condition
+     *
+     * @since    1.1.10
+     * @access   private
+     * @var      bool    $allowed
+     */
+    protected $product_filter_condition;
 
 
 
@@ -458,6 +467,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         if($args['products_scope']==='product_filter'){
             $this->products_args['post__in'] = $args['data'];
+            
         }
     }
 
@@ -541,6 +551,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($this->batch == 1) {
             update_post_meta($this->id, 'rex_feed_feed_config', $this->feed_rules);
         }
+      
     }
 
 
@@ -551,12 +562,17 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_feed_meta( $config ){
         $feed_rules       = array();
+        
         parse_str( $config, $feed_rules );
         $include_variable_product   = $feed_rules['rex_feed_variable_product'];
         $include_variations         = $feed_rules['rex_feed_variations'];
         $include_parent             = $feed_rules['rex_feed_parent_product'];
         $include_variations_name    = $feed_rules['rex_feed_variation_product_name'];
         $exclude_hidden_products    = $feed_rules['rex_feed_hidden_products'];
+        if(isset($feed_rules['product_filter_condition'])){
+            $this->product_filter_condition = $feed_rules['product_filter_condition'];
+        }
+        
 
 
         if ($include_variable_product == 'yes') {
@@ -645,9 +661,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $info
      */
     protected function setup_feed_filter_rules( $info ){
+        
         if($this->product_scope === 'filter') {
             $feed_rules_filter       = array();
             parse_str( $info, $feed_rules_filter );
+            
             $feed_rules_filter          = $feed_rules_filter['ff'];
             $this->feed_rules_filter    = $feed_rules_filter;
             // save the feed_rules_filter into feed post_meta.
@@ -656,6 +674,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $key = key($this->feed_rules_filter);
                 unset($this->feed_rules_filter[$key]);
                 update_post_meta($this->id, 'rex_feed_feed_config_filter', $this->feed_rules_filter);
+                
             }
         }
     }
@@ -666,6 +685,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_products() {
 
+      
         if( class_exists( 'SitePress' ) ) {
             global $sitepress;
             if( $this->wpml_language ) {
@@ -675,6 +695,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($this->product_scope === 'filter') {
             $filter_args = Rex_Product_Filter::createFilterQueryParams($this->feed_rules_filter);
             add_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
+             
             foreach ($filter_args['args'] as $key => $value) {
                 $this->products_args[$key] = $value;
             }
@@ -684,11 +705,40 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if(array_key_exists('tax_query', $this->products_args)) {
                 $this->products_args['tax_query']['relation'] = 'AND';
             }
-        }
 
+            
+          
+        }
+       
         $result = new WP_Query($this->products_args);
         $this->products = $result->get_posts();
+        // $condition = $this->product_filter_condition;
+        
+        // if($condition == 'exc'){
+        //     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
+        //     $args = array(
+        //         'post_type' => 'product',
+        //         'paged' => $paged,
+        //         'posts_per_page' => -1
+        //     );
+        //     $wp_query = new WP_Query($args);
+        //     $indentyfier = 0;
+        //     foreach($wp_query->posts as $all_products){
+        //         if(($key = array_search($all_products->ID, $this->products)) !== false){
+        //             unset($this->products[$key]);
+        //         }else{
+        //             $this->products[] = $all_products->ID;
+        //         }
+        //         $indentyfier++;
+        //     }
+        // }else{
+        //     $result = new WP_Query($this->products_args);
+        //     $this->products = $result->get_posts();
+        // }
+        
+        
+    
         if(is_array($this->products)) {
             $this->products = array_unique($this->products);
             if($this->batch == 1) {
@@ -721,7 +771,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $where .= ' AND (';
             foreach ($title_contain as $title) {
                 $i = $i + 1;
-                $op = ($i > 1)? 'AND' : '';
+                $op = ($i > 1)? 'OR' : '';
                 $where .= ' '. $op. ' '. $wpdb->posts . '.post_title LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
             };
             $where .= ' )';
@@ -754,7 +804,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $where .= ' AND (';
             foreach ($title_dn_contain as $title) {
                 $i = $i + 1;
-                $op = ($i > 1)? 'AND' : '';
+                $op = ($i > 1)? 'ç' : '';
                 $where .= ' '. $op. ' '. $wpdb->posts . '.post_title <> \'' . $wpdb->esc_like( $title ) . '\'';
             };
             $where .= ' )';
@@ -767,7 +817,68 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             foreach ($title_contain as $title) {
                 $i = $i + 1;
                 $op = ($i > 1)? 'OR' : '';
+                
                 $where .= ' '. $op. ' '. $wpdb->posts . '.post_content LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('brand_contain')) {
+            $title_contain = $wp_query->get('brand_contain');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_contain as $title) {
+                $post_id = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%".$title."%'");
+                foreach($post_id as $pi){
+                    $i = $i + 1;
+                    $op = ($i > 1)? 'OR' : '';
+                    $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
+                }
+                
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('brand_equal_to')) {
+            $title_contain = $wp_query->get('brand_equal_to');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_contain as $title) {
+                $post_id = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%".$title."%'");
+                foreach($post_id as $pi){
+                    $i = $i + 1;
+                    $op = ($i > 1)? 'OR' : '';
+                    $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
+                }
+                
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('brand_dn_contain')) {
+            $title_contain = $wp_query->get('brand_dn_contain');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_contain as $title) {
+                $post_id = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value NOT like '%".$title."%'");
+                foreach($post_id as $pi){
+                    $i = $i + 1;
+                    $op = ($i > 1)? 'OR' : '';
+                    $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
+                }
+                
+            };
+            $where .= ' )';
+        }
+        if($wp_query->get('brand_nequal_to')) {
+            $title_contain = $wp_query->get('brand_nequal_to');
+            $i = 0;
+            $where .= ' AND (';
+            foreach ($title_contain as $title) {
+                $post_id = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%".$title."%'");
+                foreach($post_id as $pi){
+                    $i = $i + 1;
+                    $op = ($i > 1)? 'OR' : '';
+                    $where .= ' '. $op. ' '. $wpdb->posts . '.ID != \'' . $pi->post_id. '\'';
+                }
+                
             };
             $where .= ' )';
         }
@@ -868,7 +979,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $post_less_than_equal_id = $wp_query->get('post__less_than_equal');
             $where .= ' AND (ID <= '. $post_less_than_equal_id . ')';
         }
-
+        
         return $where;
     }
 
@@ -1006,6 +1117,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }else{
             $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
         }
+        
         return $data->get_all_data();
     }
 
@@ -1039,7 +1151,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if( file_exists($file) ) {
                 if( $this->batch == 1) {
                     $feed = new DOMDocument;
-                    $feed->loadXML($this->feed);
+                    $feed->loadXML($this->feed,);
                     $this->feed = $feed->saveXML($feed,LIBXML_NOEMPTYTAG);
                     if($this->tbatch > 1) {
                         $this->footer_replace();
@@ -1482,6 +1594,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
             }
+        }elseif ($this->merchant === 'ibud') {
+            $node = $feed->getElementsByTagName("shop");
+            if($this->batch == $this->tbatch) {
+                $feed_string_footer .= '</shop>';
+            }
+        }elseif ($this->merchant === 'google_local_inventory_ads') {
+            $node = $feed->getElementsByTagName("shop");
+            if($this->batch == $this->tbatch) {
+                $feed_string_footer .= '</shop>';
+            }
         }
         else {
             $node = $feed->getElementsByTagName("item");
@@ -1554,6 +1676,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $parent = $orgdoc->getElementsByTagName('items')->item(0);
             }elseif ($this->merchant === 'glami') {
                 $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
+            }elseif ($this->merchant === 'ibud') {
+                $parent = $orgdoc->getElementsByTagName('yml_catalog')->item(0);
             }elseif ($this->merchant === 'favi') {
                 $parent = $orgdoc->getElementsByTagName('products')->item(0);
             }elseif ($this->merchant === 'fashiola') {
@@ -1568,6 +1692,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $parent = $orgdoc->getElementsByTagName('items')->item(0);
             }elseif ($this->merchant === 'hertie') {
                 $parent = $orgdoc->getElementsByTagName('Artikel')->item(0);
+            }elseif ($this->merchant === 'google_local_inventory_ads') {
+                $parent = $orgdoc->getElementsByTagName('shop')->item(0);
             }
             else {
                 $parent = $orgdoc->getElementsByTagName('products')->item(0);
@@ -1638,6 +1764,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $node = $newdoc->getElementsByTagName("item");
             }elseif ($this->merchant === 'hertie') {
                 $node = $newdoc->getElementsByTagName("Katalog");
+            }elseif ($this->merchant === 'ibud') {
+                $node = $newdoc->getElementsByTagName("shop");
             }else {
                 $node = $newdoc->getElementsByTagName("product");
             }

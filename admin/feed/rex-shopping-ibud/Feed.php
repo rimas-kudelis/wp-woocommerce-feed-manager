@@ -1,13 +1,14 @@
 <?php
 
-namespace RexTheme\RexShoppingHeureka;
+namespace RexTheme\RexShoppingIbud;
 
 use SimpleXMLElement;
-use RexTheme\RexShoppingHeureka\Item;
+use RexTheme\RexShoppingIbud\Item;
 use Gregwar\Cache\Cache;
 
 class Feed
 {
+
     /**
      * Define Google Namespace url
      * @var string
@@ -99,7 +100,7 @@ class Feed
 
 
     protected $stand_alone = false;
-    public $param;
+
     /**
      * Feed constructor
      */
@@ -115,8 +116,10 @@ class Feed
         $namespace = $this->namespace && !empty($this->namespace) ? " xmlns{$namespace_prefix}='$this->namespace'" : '';
         $version   = $this->version && !empty($this->version) ? " version='$this->version'" : '';
         $stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
-
-        $this->feed = new SimpleXMLElement("<$rss $namespace $stand_alone_text $version ></$rss>");
+        
+        $date = date("Y-m-d H:i");
+        $this->feed = new SimpleXMLElement('<yml_catalog  date="'.$date.'" ></yml_catalog>');
+       // $this->feed = new SimpleXMLElement('<rss version="' . $this->version . '"></rss>');
     }
 
     /**
@@ -234,35 +237,50 @@ class Feed
      */
     private function addItemsToFeed()
     {   
-        foreach ($this->items as $item) {
-            /** @var SimpleXMLElement $feedItemNode */
-            if ( $this->channelName && !empty($this->channelName) ) {
-                $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);
+        // since wordpress 4.5.0
+        $args = array(
+            'taxonomy'   => "product_cat",
+            'orderby'    => 'name',
+        );
+        $product_categories = get_terms($args);
+        $shopNodes = $this->feed->addChild('shop');
+        $feedItemNodes = $shopNodes->addChild('categories');
+        foreach($product_categories as $category){
+            $feedItemNode = $feedItemNodes->addChild('category');
+            $feedItemNode->addChild(str_replace(' ', '_', 'id'), $category->term_id);
+            $feedItemNode->addChild(str_replace(' ', '_', 'picture'), '');
+            $feedItemNode->addChild(str_replace(' ', '_', 'name_ru'), $category->name);
+            $feedItemNode->addChild(str_replace(' ', '_', 'name_uk'), $category->name);
+            $feedItemNode->addChild(str_replace(' ', '_', 'parentId'), $category->parentId);
+            if($category->description){
+                $feedItemNode->addChild(str_replace(' ', '_', 'description_ru'), '<![CDATA[ '.$category->description.' ]]>');
+                $feedItemNode->addChild(str_replace(' ', '_', 'description_uk'), '<![CDATA[ '.$category->description.' ]]>');
             }else{
-                $feedItemNode = $this->feed->addChild($this->itemlName);
+            $feedItemNode->addChild(str_replace(' ', '_', 'description_ru'), $category->description);
+            $feedItemNode->addChild(str_replace(' ', '_', 'description_uk'), $category->description);
             }
+            // $feedItemNode->addChild(str_replace(' ', '_', ''), $category->term_id);
+        }
+       
+        $feedItemNodes = $shopNodes->addChild('offers');
+        foreach ($this->items as $item) {
+            $feedItemNode = $feedItemNodes->addChild('offer');
+            // /** @var SimpleXMLElement $feedItemNode */
+            // if ( $this->channelName && !empty($this->channelName) ) {
+            //     $feedItemNode = $feedItemNode->{$this->channelName}->addChild($this->itemlName);
+            // }else{
+            //     $feedItemNode = $feedItemNode->addChild($this->itemlName);
+            // }
             foreach ($item->nodes() as $itemNode) {
-                
-                if($itemNode->get('name') != 'param'){
-                    if(stristr($itemNode->get('name'),'Param_name_')){
-                        $this->param = $feedItemNode->addChild('PARAM');
-                        $this->param->addChild('PARAM_NAME',$itemNode->get('value'));
-                    }elseif(stristr($itemNode->get('name'),'Param_value_')){
-                        $this->param->addChild('VAL',$itemNode->get('value'));
-                    }else{
-    
-                        if (is_array($itemNode)) {
-                            foreach ($itemNode as $node) {
-                                $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
-                            }
-                        } else {
-                            $itemNode->attachNodeTo($feedItemNode);
-                        }
+                if (is_array($itemNode)) {
+                    foreach ($itemNode as $node) {
+                        $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
                     }
+                } else {
+                    $itemNode->attachNodeTo($feedItemNode);
                 }
             }
-        }
-        
+        } 
     }
 
 
@@ -318,11 +336,13 @@ class Feed
                 }
                 $this->items_row[] = $row;
             }
+            
             $str = '';
             foreach ($this->items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
             }
         }
+
         return $this->items_row;
     }
 
@@ -357,7 +377,12 @@ class Feed
         $cache = new Cache;
         $cache->setCacheDirectory($this->cacheDir);
         $data = $cache->getOrCreate('google-feed-taxonomy.txt', array( 'max-age' => '86400' ), function () {
-            return file_get_contents("http://www.google.com/basepages/producttype/taxonomy.en-GB.txt");
+            $request = wp_remote_get( "http://www.google.com/basepages/producttype/taxonomy.en-GB.txt" );
+            if( is_wp_error( $request ) ) {
+                return false;
+            }
+            $body = wp_remote_retrieve_body( $request );
+            return json_decode( $body );
         });
         return explode("\n", trim($data));
     }
@@ -429,7 +454,6 @@ class Feed
         if ($output) {
             die($data);
         }
-        
         return $data;
     }
 

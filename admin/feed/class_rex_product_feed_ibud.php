@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that generates xml feed for any merchant with custom configuration.
  *
@@ -8,16 +7,14 @@
  * @link       https://rextheme.com
  * @since      1.0.0
  *
- * @package    Rex_Product_Feed_Google
- * @subpackage Rex_Product_Feed_Google/includes
+ * @package    Rex_Product_Feed_Rakuten
+ * @subpackage Rex_Product_Feed_Rakuten/includes
  * @author     RexTheme <info@rextheme.com>
- */
+ */ 
+use RexTheme\RexShoppingIbud\Containers\RexShopping;
 
-use RexTheme\FaviShoppingFeed\Containers\FaviShopping;
-
-class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
+class Rex_Product_Feed_Ibud extends Rex_Product_Feed_Abstract_Generator
 {
-
     /**
      * Create Feed
      *
@@ -26,8 +23,8 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
      **/
     public function make_feed()
     {
-        FaviShopping::$container = null;
-        FaviShopping::init(false, $this->setItemWrapper(), '', '', $this->setItemsWrapper());
+        RexShopping::$container = null;
+        RexShopping::init(false, $this->setItemWrapper(), '', '', $this->setItemsWrapper());
 
         $this->generate_product_feed();
 
@@ -44,7 +41,7 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
         }
     }
 
-
+    
     private function generate_product_feed()
     {
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
@@ -87,8 +84,9 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $atts = $this->get_product_data($variable_product, $product_meta_keys);
+                    $atts = $this->process_attributes_for_delivery($atts);
                     $atts = $this->process_attributes_for_param($atts);
-                    $item = FaviShopping::createItem();
+                    $item = RexShopping::createItem();
                     foreach ($atts as $key => $value) {
                         if ($key == 'delivery') {
                             $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -109,10 +107,12 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                         foreach ($variations as $variation) {
                             if ($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = FaviShopping::createItem();
+                                $item = RexShopping::createItem();
                                 $variation_product = wc_get_product($variation);
                                 $atts = $this->get_product_data($variation_product, $product_meta_keys);
+                                $atts = $this->process_attributes_for_delivery($atts);
                                 $atts = $this->process_attributes_for_param($atts);
+                                $check_item_group_id = 0;
                                 foreach ($atts as $key => $value) {
                                     if ($key == 'delivery') {
                                         $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -121,9 +121,17 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                                     } else {
                                         $item->$key($value); // invoke $key as method of $item object.
                                     }
+                                    if('item_group_id' == $key){
+                                        $check_item_group_id = 1;
+                                    }
+                                   
+                                }
+                                if($check_item_group_id == 0){
+                                    $item->item_group_id($variation_product->get_parent_id());
                                 }
                             }
                         }
+                        
                     }
                 }
             }
@@ -131,9 +139,9 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
             if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle')) {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data($product, $product_meta_keys);
-
+                $atts = $this->process_attributes_for_delivery($atts);
                 $atts = $this->process_attributes_for_param($atts);
-                $item = FaviShopping::createItem();
+                $item = RexShopping::createItem();
                 foreach ($atts as $key => $value) {
                     if ($key == 'delivery') {
                         $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -148,9 +156,11 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
             if ($this->product_scope === 'all'|| $this->product_scope =='product_filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
-                    $item = FaviShopping::createItem();
+                    $item = RexShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
+                    $atts = $this->process_attributes_for_delivery($atts);
                     $atts = $this->process_attributes_for_param($atts);
+                    $check_item_group_id = 0;
                     foreach ($atts as $key => $value) {
                         if ($key == 'delivery') {
                             $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -160,14 +170,39 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                         else {
                             $item->$key($value); // invoke $key as method of $item object.
                         }
+                        if('item_group_id' == $key){
+                            $check_item_group_id = 1;
+                        }
+                       
+                    }
+                    if($check_item_group_id == 0){
+                        $item->item_group_id($product->get_parent_id());
                     }
                 }
             }
 
-            if ($product->is_type('grouped') || $product->is_type( 'woosb' )) {
+            if ($product->is_type('grouped')) {
                 $group_products[] = $productId;
-                $item = FaviShopping::createItem();
+                $item = RexShopping::createItem();
                 $atts = $this->get_product_data($product, $product_meta_keys);
+                $atts = $this->process_attributes_for_delivery($atts);
+                $atts = $this->process_attributes_for_param($atts);
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    if ($key == 'delivery') {
+                        $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
+                    } elseif ($key === 'param') {
+                        $item->$key($key, $value);
+                    } else {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
+            }
+            if ($product->is_type('woosb')) {
+                $group_products[] = $productId;
+                $item = RexShopping::createItem();
+                $atts = $this->get_product_data($product, $product_meta_keys);
+                $atts = $this->process_attributes_for_delivery($atts);
                 $atts = $this->process_attributes_for_param($atts);
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
@@ -200,7 +235,7 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
      * @return string
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys ){
-        $data = new Rex_Product_Glami_Data_Retriever( $product, $this, $product_meta_keys );
+        $data = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
         return $data->get_all_data();
     }
 
@@ -220,14 +255,39 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
      */
     public function setItemWrapper()
     {
-        return 'product';
+        return 'SHOPITEM';
     }
 
     public function setItemsWrapper()
     {
-        return 'products';
+        return 'shop';
     }
 
+
+    /**
+     * @param $atts
+     * @return array
+     */
+    private function process_attributes_for_delivery($atts)
+    {
+        $shipping_attr = array('DELIVERY_ID', 'DELIVERY_PRICE', 'DELIVERY_PRICE_COD');
+        $default_delivery_atts = array(
+            'DELIVERY_ID' => '',
+            'DELIVERY_PRICE' => '',
+            'DELIVERY_PRICE_COD' => ''
+        );
+
+        foreach ($atts as $key => $value) {
+            if (in_array($key, $shipping_attr)) {
+                $atts['delivery'][$key] = $value;
+                unset($atts[$key]);
+            }
+        }
+        if (array_key_exists('delivery', $atts)) {
+            $atts['delivery'] += $default_delivery_atts;
+        }
+        return $atts;
+    }
 
 
     /**
@@ -240,19 +300,22 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
      */
     private function process_attributes_for_param($atts) {
         foreach ($atts as $key => $value) {
-            if(preg_match('/^Attribute/im', $key)) {
+            if(preg_match('/^PARAM/im', $key)) {
                 $param_no = preg_replace('/[^0-9]/', '', $key);
-                $atts['attributes'][$key] = array(
+                $atts['param'][] = array(
                     'key'           => $key,
                     'name'          => $value,
-                    'value'         => isset($atts['Attribute_value_'.$param_no]) ? $atts['Attribute_value_'.$param_no] : '',
+                    'value'         => isset($atts['VALUE_'.$param_no]) ? $atts['VALUE_'.$param_no] : '',
+                    'percentage'    => isset($atts['PERCENTAGE_'.$param_no]) ? $atts['PERCENTAGE_'.$param_no] : '',
                 );
             }
         }
         foreach ($atts as $key => $value) {
-            if(preg_match('/^Attribute/im', $key)) {
+            if(preg_match('/^PARAM/im', $key)) {
                 $param_no = preg_replace('/[^0-9]/', '', $key);
-                unset($atts['attributes']['Attribute_value_' . $param_no]);
+                unset($atts['VALUE_' . $param_no]);
+                unset($atts['PERCENTAGE_' . $param_no]);
+                unset($atts['PARAM_NAME_' . $param_no]);
             }
         }
         return $atts;
@@ -267,19 +330,18 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
     public function returnFinalProduct()
     {
         if ($this->feed_format == 'xml') {
-            return FaviShopping::asRss();
+            return RexShopping::asRss();
         } elseif ($this->feed_format == 'text') {
-            return FaviShopping::asTxt();
+            return RexShopping::asTxt();
         } elseif ($this->feed_format == 'csv') {
-            return FaviShopping::asCsv();
+            return RexShopping::asCsv();
         }
-        return FaviShopping::asRss();
+        return RexShopping::asRss();
     }
-
 
     //replace footer of feed
     public function footer_replace()
     {
-        $this->feed = str_replace('</products>', '', $this->feed);
+        $this->feed = str_replace('</shop>', '', $this->feed);
     }
 }

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.4.5
+Stable tag:  6.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -553,8 +553,22 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 6.4.6 (2021-04-21) =
+* Fixed: Feed formatting issue for some merchants
+* Fixed: Item Group ID not showing Parent SKU for variable products
+* Fixed: Heureka Feed Param attribute
+* Fixed: Favi - Compari & Árukereső feed Attribute tags
+* Fixed: Internal server error when the custom field is named "Custom" (Facebook)
+* Fixed: Rakuten Feed structure updated
+* Added: User can filter by Manufacturer - Custom Filter
+* Added: Remove before and after spaces from CDATA and remove CDATA
+* Added: New Template - Google Local Inventory Ads
+* Added: New Template - Ibud
+* Added: WPC Product Bundles For WooCommerce Support
+* Added: Composite products support
+
 = 6.4.5 (2021-04-07) =
-* Fixed: Feed formatting issue on some merchants
+* Fixed: Feed formatting issue for some merchants
 
 = 6.4.4 (2021-04-02) =
 * Fixed: Zbozi feed format

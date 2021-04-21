@@ -127,6 +127,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                                 $atts = $this->process_attributes_for_shipping_tax($atts);
+                                $check_item_group_id  = 0;
                                 foreach ($atts as $key => $value) {
                                     if($key == 'shipping') {
                                         $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
@@ -137,8 +138,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                                     else {
                                         $item->$key($value); // invoke $key as method of $item object.
                                     }
+                                    if('item_group_id' == $key){
+                                        $check_item_group_id = 1;
+                                    }
+                                   
                                 }
-                                $item->item_group_id( $variation_product->get_parent_id() );
+                                if($check_item_group_id == 0){
+                                    $item->item_group_id($variation_product->get_parent_id());
+                                }
                             }
                         }
                     }
@@ -170,6 +177,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     $item = GoogleShopping::createItem();
                     $atts = $this->get_product_data( $product, $product_meta_keys );
                     $atts = $this->process_attributes_for_shipping_tax($atts);
+                    $check_item_group_id = 0;
                     foreach ($atts as $key => $value) {
                         if($key == 'shipping') {
                             $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
@@ -180,8 +188,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                         else {
                             $item->$key($value); // invoke $key as method of $item object.
                         }
+                        if('item_group_id' == $key){
+                            $check_item_group_id = 1;
+                        }
+                       
                     }
-                    $item->item_group_id( $product->get_parent_id() );
+                    if($check_item_group_id == 0){
+                        $item->item_group_id($product->get_parent_id());
+                    }
                 }
             }
 

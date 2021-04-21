@@ -116,8 +116,8 @@ class Feed
         $namespace = $this->namespace && !empty($this->namespace) ? " xmlns{$namespace_prefix}='$this->namespace'" : '';
         $version   = $this->version && !empty($this->version) ? " version='$this->version'" : '';
         $stand_alone_text = $stand_alone ? 'standalone="yes"' : '';
-        // $this->feed = new SimpleXMLElement('<xml version="' . $this->version . '" encoding="utf-8"></xml>');
-        $this->feed = new SimpleXMLElement("<$rss $namespace $stand_alone_text $version ></$rss>");
+//        $this->feed = new SimpleXMLElement('<xml version="' . $this->version . '" encoding="utf-8"></xml>');
+         $this->feed = new SimpleXMLElement("<$rss $namespace $stand_alone_text $version ></$rss>");
     }
 
     /**
@@ -235,7 +235,6 @@ class Feed
      */
     private function addItemsToFeed()
     {
-        
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {

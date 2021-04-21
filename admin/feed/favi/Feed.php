@@ -234,26 +234,26 @@ class Feed
                 } else {
                     
                     if(in_array($itemNode->get('name'), $s_nodes)) {
-                        if($itemNode->get('name') == 'attributes') {
+                        // if($itemNode->get('name') == 'attributes') {
                             
-                            if(is_array($itemNode->get('value'))) {
-                                foreach ($itemNode->get('value') as $value) {
-                                    $params = $feedItemNode->addChild('Attributes');
-                                    $param = $params->addChild('Attribute');
-                                    $param->addChild('PARAM_NAME', $value['name']);
-                                    $param->addChild('VAL', $value['value']);
-                                    if($value['percentage']) {
-                                        $param->addChild('PERCENTAGE', $value['percentage']);
-                                    }
-                                }
-                            }
-                        }else {
+                        //     if(is_array($itemNode->get('value'))) {
+                        //         foreach ($itemNode->get('value') as $value) {
+                        //             $params = $feedItemNode->addChild('Attributes');
+                        //             $param = $params->addChild('Attribute');
+                        //             $param->addChild('PARAM_NAME', $value['name']);
+                        //             $param->addChild('VAL', $value['value']);
+                        //             if($value['percentage']) {
+                        //                 $param->addChild('PERCENTAGE', $value['percentage']);
+                        //             }
+                        //         }
+                        //     }
+                        // }else {
                             if(is_array($itemNode->get('value'))) {
                                 foreach ($itemNode->get('value') as $value) {
                                     $feedItemNode->addChild('IMGURL_ALTERNATIVE', $value);
                                 }
                             }
-                        }
+                        // }
                     }else {
                        
                         if($itemNode->get('name') == 'attributes') {
@@ -283,7 +283,9 @@ class Feed
                                     }
                                 }
                             } else {
-                                $itemNode->attachNodeTo($feedItemNode);
+                                if(!stristr($itemNode->get('name'),'Attribute_')) {
+                                    $itemNode->attachNodeTo($feedItemNode);
+                                }
                             }
                         }
                         

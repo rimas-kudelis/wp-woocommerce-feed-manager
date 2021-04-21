@@ -423,6 +423,12 @@ class Rex_Product_Feed_Ajax {
         $bing = array(
             'bing',
         );
+        $ibud = array(
+            'ibud',
+        );
+        $google_local_inventory_ads = array(
+            'google_local_inventory_ads',
+        );
 
 
         if (in_array( $merchant, $google_format )) {
@@ -437,7 +443,7 @@ class Rex_Product_Feed_Ajax {
             return array('csv');
         }elseif (in_array( $merchant, $printerst_format ))
         {
-            return array('csv','tsv');
+            return array('csv','tsv','xml');
         }elseif (in_array( $merchant, $Ebay_format )){
             return array('csv');
         }elseif (in_array( $merchant, $instagram_format ))
@@ -459,6 +465,10 @@ class Rex_Product_Feed_Ajax {
             return array('text');
         }elseif (in_array( $merchant, $bing)){
             return array('text');
+        }elseif (in_array( $merchant, $ibud)){
+            return array('xml');
+        }elseif (in_array( $merchant, $google_local_inventory_ads)){
+            return array('xml','text');
         }
         return array('xml', 'csv', 'text', 'tsv', 'json');
     }
@@ -895,7 +905,6 @@ class Rex_Product_Feed_Ajax {
         include_once $file_url;
         $out = ob_get_clean();
         ob_end_clean();
-        error_log(print_r($out,1));
         return array(
             'success' => true,
             'content' => $out,

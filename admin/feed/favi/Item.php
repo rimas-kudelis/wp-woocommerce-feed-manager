@@ -116,8 +116,8 @@ class Item
      */
     public function price($price)
     {
-        $node = new Node('price');
-        $this->nodes['price'] = $node->value($price);
+        $node = new Node('Price');
+        $this->nodes['Price'] = $node->value($price);
     }
 
     /**

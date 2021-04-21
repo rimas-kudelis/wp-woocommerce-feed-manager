@@ -1,5 +1,5 @@
 <?php
-namespace RexTheme\RexShoppingRakuten;
+namespace RexTheme\RexShoppingIbud;
 
 class Node
 {
@@ -91,8 +91,6 @@ class Node
             $no=$node->ownerDocument;
             $node->appendChild($no->createCDATASection($this->value));
         }else {
-            
-            // $parent->addChild($this->name, htmlspecialchars($this->value), $this->_namespace);
             $parent->addChild(str_replace(' ', '_', $this->name), htmlspecialchars($this->value), $this->_namespace);
         }
     }

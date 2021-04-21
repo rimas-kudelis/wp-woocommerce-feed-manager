@@ -295,13 +295,12 @@ class Rex_Product_Feed_Admin {
         $current_time = time();
         $notice_start = 1209600;
         $interval   = ($current_time - $activation_time) > $notice_start ? true : false;
-
+        
         if ($interval AND $show_notice !='no') {?>
             <div class="notice notice-info bwfm-review-notice" style="position: relative; border-left-color: #00b4ff;">
                 <div class="wpfm-logo">
                     <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER.'icon/logo.png'?>" style="max-width: 100%;">
                 </div>
-
                 <div class="wpfm-notice-content">
                     <h2 class="wpfm-notice-title"><?php echo __('Leave a review?', 'rex-product-feed'); ?></h2>
                     <p><?php echo __( 'Hey, I noticed you are using WC product feed manager for over two weeks – that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.', 'rex-product-feed' ) ?><br>~ Lincoln </p>
@@ -334,6 +333,20 @@ class Rex_Product_Feed_Admin {
      */
     public function register_cpt() {
         $this->cpt->register();
+    }
+
+
+    public function register_purge_button(){
+       
+        if( get_post_type() == 'product-feed' ){
+            $html = '';
+            $html .= '<button id="wpfm-purge-cache" style="background: #1fb3fb;"';
+            $html .= 'class="wpfm-purge-cache btn_on_feed">Purge Cache';
+            $html .= '<i class="fa fa-spinner fa-pulse fa-fw"></i></button>';
+            
+            print $html;
+        }
+        
     }
 
     /**
@@ -587,6 +600,16 @@ class Rex_Product_Feed_Admin {
                 'free'  => true,
                 'status'    => 1,
                 'name'  => 'Shopping'
+            ),
+            'ibud'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Ibud'
+            ),
+            'google_local_inventory_ads'=> array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Google Local Inventory Ads'
             )
         );
         $array = array_merge($free_merchants, $array);

@@ -92,7 +92,7 @@ class Node
             $no=$node->ownerDocument;
             $node->appendChild($no->createCDATASection($this->value));
         }else {
-            $parent->addChild(str_replace(' ', '_', $this->name), htmlspecialchars(json_encode($this->value)), $this->_namespace);
+            $parent->addChild(str_replace(' ', '_', $this->name), htmlspecialchars($this->value), $this->_namespace);
         }
     }
 }

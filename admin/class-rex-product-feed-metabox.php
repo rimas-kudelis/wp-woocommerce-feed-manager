@@ -58,7 +58,7 @@ class Rex_Product_Metabox
                 'filter' => __('Custom Filter', 'rex-product-feed'),
                 'product_cat' => __('Category Filter', 'rex-product-feed'),
                 'product_tag' => __('Tag Filter', 'rex-product-feed'),
-//                'product_filter' => __('Product Filter', 'rex-product-feed'),
+               'product_filter' => __('Product Filter', 'rex-product-feed'),
             ),
             'before_row' => array($this, 'progress_config_cb'),
         ));
@@ -78,7 +78,7 @@ class Rex_Product_Metabox
             'after_row' => array($this, 'product_taxonomies_cb'),
         ));
 
-//        do_action('wpfm_product_filter_field', $box, $this->prefix);
+       do_action('wpfm_product_filter_field', $box, $this->prefix);
 
         /*
          * Schedule Time
@@ -304,6 +304,11 @@ class Rex_Product_Metabox
                 'free' => true,
                 'status' => 1,
                 'name' => 'Shopping'
+            ),
+            'google_local_inventory_ads'=> array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Google Local Inventory Ads'
             )
         );
         $merchants = get_option('rex_wpfm_merchant_status');
@@ -835,6 +840,11 @@ class Rex_Product_Metabox
                 'free' => true,
                 'status' => 1,
                 'name' => 'Shopping'
+            ),
+            'ibud' => array(
+                'free' => true,
+                'status' => 1,
+                'name' => 'Ibud'
             )
         );
         if ($merchants) {

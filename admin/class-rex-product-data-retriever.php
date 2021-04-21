@@ -224,6 +224,8 @@ class Rex_Product_Data_Retriever {
         elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
 
             $val = $this->set_pr_att( $rule['meta_key'] , $rule['escape'] );
+           
+            
         }
         elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
             
@@ -325,11 +327,18 @@ class Rex_Product_Data_Retriever {
                 return $this->product->get_sku(); break;
 
             case 'parent_sku':
-                $pr_id = $this->product->get_id();
-                if($this->product->is_type('variation')) {
-                    $pr_id = $this->product->get_parent_id();
+                $pr_id = '';
+                if($this->product->is_type('variation')){
+                    $parent_id = $this->product->get_parent_id();
+                    $wc_parent_product = wc_get_product( $parent_id );
+                    $pr_id = $wc_parent_product->get_sku();
+                   
+                }else{
+                    $pr_id = $this->product->get_sku();
                 }
-                return get_post_meta($pr_id, '_sku', true); break;
+                
+                return $pr_id; break;
+                // return get_post_meta($pr_id, '_sku', true); break;
 
             case 'title':
                 if($this->append_variation === 'no') {
@@ -1417,7 +1426,7 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function set_product_custom_att( $key ) {
-
+        
         $new_key = str_replace('custom_attributes_', '', $key);
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             if($new_key === '_wpfm_product_brand') {
@@ -1457,6 +1466,7 @@ class Rex_Product_Data_Retriever {
      * @return array
      */
     protected function get_product_attributes($id) {
+       
         global $wpdb;
         $list = [];
         $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
@@ -2078,13 +2088,14 @@ class Rex_Product_Data_Retriever {
      * @since    2.0.3
      */
     public function get_grouped_price($product, $type) {
+       
         $groupProductIds = $product->get_children();
         $sum = 0;
         if(!empty($groupProductIds)){
             foreach($groupProductIds as $id){
                 $product = wc_get_product($id);
-                $regularPrice=$product->get_regular_price();
-                $currentPrice=$product->get_price();
+                $regularPrice = $product->get_regular_price();
+                $currentPrice = $product->get_price();
                 if($type == "regular"){
                     $sum += $regularPrice;
                 }else{
@@ -2215,10 +2226,12 @@ class Rex_Product_Data_Retriever {
             case 'remove_shortcodes':
                 return strip_shortcodes( $val );
             case 'remove_special':
-                return filter_var($val, FILTER_SANITIZE_STRING);;
+                return filter_var($val, FILTER_SANITIZE_STRING);
             case 'cdata':
                 return $val ? "CDATA $val " : $val;
                 return $val ? "&#x3C;![CDATA [$val]]&#x3E;" : $val;
+            case 'cdata_without_space':
+                return $val ? "CDATA$val" : $val;
             case 'remove_underscore':
                 return str_replace('_', ' ', $val);
             case 'remove_decimal':

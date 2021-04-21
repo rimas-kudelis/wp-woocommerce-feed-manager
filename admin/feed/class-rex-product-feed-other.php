@@ -830,7 +830,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
         $this->feed = $this->returnFinalProduct();
-
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);
             return array(

@@ -17,6 +17,9 @@ class Rex_Product_Feed_Factory {
 
     private static $facebook_format;
 
+    private static $ibud_format;
+    private static $google_local_inventory_ads_format;
+
     public static function build( $config, $bypass = false , $product_ids = array()){
         
         $log = wc_get_logger();
@@ -192,12 +195,19 @@ class Rex_Product_Feed_Factory {
             'doofinder',
             'emarts',
             'epoq',
+            'google_local_inventory_ads',
         );
         self::$facebook_format = array(
             'instagram',
             'facebook',
             'snapchat'
         );
+        self::$ibud_format = array(
+            'ibud'
+        );
+        // self::$google_local_inventory_ads_format = array(
+        //     'google_local_inventory_ads'
+        // );
 
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {
             $className = 'Rex_Product_Feed_Other';
@@ -209,6 +219,12 @@ class Rex_Product_Feed_Factory {
         elseif (in_array( $config['merchant'], self::$facebook_format )) {
             $className = 'Rex_Product_Feed_Facebook';
         }
+        elseif (in_array( $config['merchant'], self::$ibud_format )) {
+            $className = 'Rex_Product_Feed_Ibud';
+        }
+        // elseif (in_array( $config['merchant'], self::$google_local_inventory_ads_format )) {
+        //     $className = 'Rex_Product_Feed_Google_local_inventory_ads';
+        // }
         elseif ($config['merchant'] === 'admitad') {
             $className = 'Rex_Product_Feed_Yandex';
         }

@@ -97,6 +97,9 @@
         updateFormNameAtts($row, rowId, filter);
     });
 
+    var pro_filter_condition = ''
+    console.log(pro_filter_condition)
+
 
     /**
      * add new custom attributes
@@ -491,10 +494,12 @@
                 tags: get_checkbox_val('tags'),
                 cats: get_checkbox_val('cats'),
                 data: $('#rex_feed_product_filter_ids').val(),
+                
             },
 
             feed_config: $('form').serialize(),
         };
+        
         var batches = total_batch;
         console.log('Total Batch: ' + batches);
         console.log('Total Product(s): ' + product);
@@ -1065,9 +1070,11 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function(window, document, $, undefi
         } else if (new_val === 'product_filter') {
             $('.cmb2-id-rex-feed-product-filter-title').show();
             $('.cmb-type-product-filter').show();
-
             $('.cmb2-id-rex-feed-config-filter-title').hide();
             $('#rex-feed-product-taxonomies').hide();
+            
+            
+            
 
         }
 

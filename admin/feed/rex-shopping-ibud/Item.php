@@ -1,9 +1,9 @@
 <?php
 
-namespace RexTheme\RexShoppingHeureka;
+namespace RexTheme\RexShoppingIbud;
 
-use RexTheme\RexShoppingHeureka\Node;
-use RexTheme\RexShoppingHeureka\Containers\RexShopping;
+use RexTheme\RexShoppingIbud\Node;
+use RexTheme\RexShoppingIbud\Containers\RexShopping;
 
 class Item
 {
@@ -81,8 +81,8 @@ class Item
      */
     public function id($id)
     {
-        $node = new Node('ID');
-        $this->nodes['ID'] = $node->value($id);
+        $node = new Node('id');
+        $this->nodes['cat']['id'] = $node->value($id);
     }
 
     /**
@@ -92,9 +92,9 @@ class Item
      */
     public function title($title)
     {
-        $node = new Node('TITLE');
+        $node = new Node('title');
         $title = $this->safeCharEncodeText($title);
-        $this->nodes['TITLE'] = $node->value($title);
+        $this->nodes['title'] = $node->value($title);
     }
 
     /**
@@ -104,9 +104,9 @@ class Item
      */
     public function link($link)
     {
-        $node = new Node('LINK');
+        $node = new Node('link');
 //        $link = $this->safeCharEncodeURL($link);
-        $this->nodes['LINK'] = $node->value($link);
+        $this->nodes['link'] = $node->value($link);
     }
 
     /**
@@ -116,8 +116,8 @@ class Item
      */
     public function price($price)
     {
-        $node = new Node('PRICE');
-        $this->nodes['PRICE'] = $node->value($price);
+        $node = new Node('price');
+        $this->nodes['price'] = $node->value($price);
     }
 
     /**
@@ -133,8 +133,8 @@ class Item
 //            $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
 //        }
 
-        $node = new Node('SALE_PRICE');
-        $this->nodes['SALE_PRICE'] = $node->value($salePrice);
+        $node = new Node('sale_price');
+        $this->nodes['sale_price'] = $node->value($salePrice);
 
     }
 
@@ -145,9 +145,9 @@ class Item
      */
     public function description($description)
     {
-        $node = new Node('DESCRIPTION');
+        $node = new Node('description');
         $description = $this->safeCharEncodeText($description);
-        $this->nodes['DESCRIPTION'] = $node->value(substr($description, 0, 5000));
+        $this->nodes['description'] = $node->value(substr($description, 0, 5000));
     }
 
     /**
@@ -157,8 +157,8 @@ class Item
      */
     public function condition($condition)
     {
-        $node = new Node('CONDITION');
-        $this->nodes['CONDITION'] = $node->value($condition);
+        $node = new Node('condition');
+        $this->nodes['condition'] = $node->value($condition);
     }
 
     /**
@@ -168,8 +168,8 @@ class Item
      */
     public function expiration_date($expirationDate)
     {
-        $node = new Node('EXPIRATION_DATE');
-        $this->nodes['EXPIRATION_DATE'] = $node->value($expirationDate);
+        $node = new Node('expiration_date');
+        $this->nodes['expiration_date'] = $node->value($expirationDate);
     }
 
     /**
@@ -283,7 +283,7 @@ class Item
     public function shipping($shipping)
     {
         $node = new Node('shipping');
-        $this->nodes['shipping'] = $node->value($shipping);
+        $this->nodes['shipping'] = $node->value($shipping)->_namespace($this->namespace);
     }
 
     /**
@@ -411,6 +411,7 @@ class Item
      */
     public function nodes()
     {    
+       
         return $this->nodes;
     }
 

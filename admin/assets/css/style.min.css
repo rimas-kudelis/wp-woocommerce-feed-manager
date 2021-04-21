@@ -836,6 +836,27 @@ a,
     .rex-onboarding button#wpfm-purge-cache {
       width: 60%; } }
 
+.btn_on_feed{
+  border: none !important;
+  color: #fff;
+  height: auto !important;
+  border-radius: 4px;
+  text-transform: capitalize;
+  font-size: 13px;
+  align-items: center;
+  width: 140px !important;
+  justify-content: center;
+  text-align: center;
+  margin-left: 1%;
+  min-height: 32px;
+  line-height: 2.30769231;
+  padding: 0 12px
+}   
+
+.btn_on_feed i{ 
+ display: none;
+}
+
 .wpfm-switcher {
   display: flex;
   flex-flow: row-reverse;

@@ -177,7 +177,6 @@ class Feed
      */
     public function createItem()
     {
-
         $this->channel();
         $item = new Item($this->namespace);
         $index = 'index_' . md5(microtime());

@@ -82,6 +82,7 @@ class Item
      */
     public function id($id)
     {
+        
         $node = new Node('id');
         $this->nodes['id'] = $node->value($id)->_namespace($this->namespace);
     }

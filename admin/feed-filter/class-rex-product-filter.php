@@ -139,6 +139,7 @@ class Rex_Product_Filter {
                 'product_tags'              => 'Tags',
                 'sale_price_dates_from'     => 'Sale Start Date',
                 'sale_price_dates_to'       => 'Sale End Date',
+                'manufacturer'              => 'Manufacturer',
             ),
         );
 
@@ -565,7 +566,7 @@ class Rex_Product_Filter {
         $filter_args = array();
         $sql = '';
         $tax_query = array();
-
+        
         foreach ($filter_mappings as $key => $filter) {
             $if = $filter['if'];
             $then = $filter['then'];
@@ -640,6 +641,31 @@ class Rex_Product_Filter {
                             $filter_args['title_equal_to'][] = $value;
                         }
                     }
+                    break; 
+                    
+                case 'manufacturer':
+                    if($then == 'inc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['brand_contain'][] = $value;
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['brand_dn_contain'][] = $value;
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['brand_equal_to'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['brand_nequal_to'][] = $value;
+                        }
+                    }elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $filter_args['brand_dn_contain'][] = $value;
+                        }elseif ($condition == 'dn_contain') {
+                            $filter_args['brand_contain'][] = $value;
+                        }elseif ($condition == 'equal_to') {
+                            $filter_args['brand_equal_to'][] = $value;
+                        }elseif ($condition == 'nequal_to') {
+                            $filter_args['brand_nequal_to'][] = $value;
+                        }
+                    }
+                    
                     break;
 
                 //PRODUCT DESCRIPTION
@@ -1160,6 +1186,13 @@ class Rex_Product_Filter {
                             );
                         }elseif ($condition == 'greater_than') {
                             $filter_args['meta_query'][] = array(
+                                'relation' => 'OR',
+                                array(
+                                    'key' => '_regular_price',
+                                    'compare' => 'NOT EXISTS',
+                                    'value' => '',
+                                    'type' => 'NUMERIC',
+                                ),
                                 array(
                                     'key'       => '_regular_price',
                                     'value'     => $value,
@@ -1326,6 +1359,7 @@ class Rex_Product_Filter {
 
                 //PRODUCT SALE PRICE
                 case 'sale_price':
+                   
                     if($then == 'inc') {
                         if ($condition == 'equal_to') {
                             $filter_args['meta_query'][] = array(
