@@ -1151,7 +1151,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if( file_exists($file) ) {
                 if( $this->batch == 1) {
                     $feed = new DOMDocument;
-                    $feed->loadXML($this->feed,);
+                    $feed->loadXML($this->feed);
                     $this->feed = $feed->saveXML($feed,LIBXML_NOEMPTYTAG);
                     if($this->tbatch > 1) {
                         $this->footer_replace();

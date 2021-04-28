@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.5.0
+Stable tag:  6.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -553,7 +553,10 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 6.4.6 (2021-04-21) =
+= 6.5.1 (2021-04-28) =
+* Fixed: Warning on feed generation
+
+= 6.5.0 (2021-04-21) =
 * Fixed: Feed formatting issue for some merchants
 * Fixed: Item Group ID not showing Parent SKU for variable products
 * Fixed: Heureka Feed Param attribute
