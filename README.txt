@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.5.1
+Stable tag:  6.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -552,6 +552,10 @@ WP Dashboard > Product Feed > Upgrade.
 17. Plugin Settings Page - Controls
 
 == Changelog ==
+
+= 6.5.2 (2021-05-05) =
+* Fixed: Warning on feed generation for Google and Facebook
+* Compatibility Checked : WooCommerce 5.2.2
 
 = 6.5.1 (2021-04-28) =
 * Fixed: Warning on feed generation
