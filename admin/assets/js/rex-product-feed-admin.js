@@ -999,8 +999,50 @@
             });
     }
 
+    function purge_transient_cache_on_feed(e) {
+        var publish = $('#publish').val();
+        if( 'Publish' == publish ){
+            var answer = window.confirm("All data will be lost?");
+            if (answer) {   
+            var payload = {};
+            var $el = $(this);
+            $el.find("i").show();
+            wpAjaxHelperRequest('purge-wpfm-transient-cache', payload)
+                .success(function(response) {
+                    $el.find("i").hide();
+                    console.log('woohoo!');
+                    location.reload();
+                })
+                .error(function(response) {
+                    $el.find("i").hide();
+                    console.log('uh, oh!');
+                    console.log(response.statusText);
+                });
+            }else{
+                e.preventDefault();
+            }
+        }else{ 
+            var payload = {};
+            var $el = $(this);
+            $el.find("i").show();
+            wpAjaxHelperRequest('purge-wpfm-transient-cache', payload)
+                .success(function(response) {
+                    $el.find("i").hide();
+                    console.log('woohoo!');
+                    location.reload();
+                })
+                .error(function(response) {
+                    $el.find("i").hide();
+                    console.log('uh, oh!');
+                    console.log(response.statusText);
+                });
+        }
+        
+    }
+
     $(document).on("click", "#wpfm-purge-cache", purge_transient_cache);
 
+    $(document).on("click", "#btn_on_feed", purge_transient_cache_on_feed);
 
     /**
      * Enable private products

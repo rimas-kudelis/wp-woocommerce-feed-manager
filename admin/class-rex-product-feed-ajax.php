@@ -429,6 +429,9 @@ class Rex_Product_Feed_Ajax {
         $google_local_inventory_ads = array(
             'google_local_inventory_ads',
         );
+        $DealsForU = array(
+            'DealsForU',
+        );
 
 
         if (in_array( $merchant, $google_format )) {
@@ -466,6 +469,8 @@ class Rex_Product_Feed_Ajax {
         }elseif (in_array( $merchant, $bing)){
             return array('text');
         }elseif (in_array( $merchant, $ibud)){
+            return array('xml');
+        }elseif (in_array( $merchant, $DealsForU)){
             return array('xml');
         }elseif (in_array( $merchant, $google_local_inventory_ads)){
             return array('xml','text');

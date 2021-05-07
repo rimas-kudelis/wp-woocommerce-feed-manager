@@ -845,6 +845,11 @@ class Rex_Product_Metabox
                 'free' => true,
                 'status' => 1,
                 'name' => 'Ibud'
+            ),
+            'DealsForU' => array(
+                'free' => true,
+                'status' => 1,
+                'name' => 'Deals4u.gr'
             )
         );
         if ($merchants) {

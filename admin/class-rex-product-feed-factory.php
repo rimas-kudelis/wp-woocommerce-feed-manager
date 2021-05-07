@@ -18,6 +18,7 @@ class Rex_Product_Feed_Factory {
     private static $facebook_format;
 
     private static $ibud_format;
+    private static $DealsForU;
     private static $google_local_inventory_ads_format;
 
     public static function build( $config, $bypass = false , $product_ids = array()){
@@ -205,6 +206,10 @@ class Rex_Product_Feed_Factory {
         self::$ibud_format = array(
             'ibud'
         );
+
+        self::$DealsForU = array(
+            'DealsForU'
+        );
         // self::$google_local_inventory_ads_format = array(
         //     'google_local_inventory_ads'
         // );
@@ -221,6 +226,9 @@ class Rex_Product_Feed_Factory {
         }
         elseif (in_array( $config['merchant'], self::$ibud_format )) {
             $className = 'Rex_Product_Feed_Ibud';
+        }
+        elseif (in_array( $config['merchant'], self::$DealsForU )) {
+            $className = 'Rex_Product_Feed_DealsForU';
         }
         // elseif (in_array( $config['merchant'], self::$google_local_inventory_ads_format )) {
         //     $className = 'Rex_Product_Feed_Google_local_inventory_ads';

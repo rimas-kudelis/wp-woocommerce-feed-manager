@@ -20,6 +20,8 @@ class VivinoFeed  extends \RexTheme\RexShoppingFeed\Feed
                 'bottles-quantity' => 'Bottles quantity',
                 'price-discounted-from' => 'price-discounted-from',
                 'price-discounted-until' => 'price-discounted-until',
+                'product-id' => 'product-id',
+                'quantity-is-minimum' => 'quantity-is-minimum',
             ),
             'extras' => array(
                 'wine-name' => 'Wine name',
@@ -47,7 +49,7 @@ class VivinoFeed  extends \RexTheme\RexShoppingFeed\Feed
                 'ph' => 'ph',
                 'producer' => 'producer',
                 'producer-address' => 'producer-address',
-                'product-id' => 'product-id',
+                'ean' => 'ean',
                 'production-size' => 'production-size',
                 'residual-sugar' => 'residual-sugar',
                 'sweetness' => 'sweetness',
@@ -87,11 +89,12 @@ class VivinoFeed  extends \RexTheme\RexShoppingFeed\Feed
                     if(array_key_exists($itemNode->get('name'), $this->attributes['products'])) {
                         if($itemNode->get('name') === 'bottles-size' || $itemNode->get('name') === 'bottles-quantity') {
                             if ($itemNode->get('name') === 'bottles-quantity') {
-                                $bottle_size_node = $feedItemNode->addChild('bottles', $itemNode->get('value'));;
+                                $bottle_size_node = $feedItemNode->addChild('bottle_quantity', $itemNode->get('value'));
                             }
                             else {
                                 $bottle_size = $itemNode->get('value');
-                                $bottle_size_node->addAttribute('size', $bottle_size);
+                                $bottle_size_node = $feedItemNode->addChild('bottle_size', $bottle_size);
+                                // $bottle_size_node->addAttribute('size', $bottle_size);
                             }
                         }else {
                             $itemNode->attachNodeTo($feedItemNode);

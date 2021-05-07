@@ -230,6 +230,13 @@ class Rex_Product_Data_Retriever {
         elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
             
             $val = $this->set_woodmart_att( $rule['meta_key'] );
+        }elseif ( 'meta' === $rule['type'] && $this->is_perfect_attr( $rule['meta_key'] ) ) {
+            
+            $val = $this->set_perfect_attr( $rule['meta_key'] );
+        }elseif ( 'meta' === $rule['type'] && $this->is_wc_brand_attr( $rule['meta_key'] ) ) {
+            
+            $val = $this->set_wc_brand_attr( $rule['meta_key'] );
+
         }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
             $val = $this->set_image_att( $rule['meta_key']  );
         }
@@ -309,8 +316,45 @@ class Rex_Product_Data_Retriever {
         return '';
     }
 
-
-
+    /**
+     * Set Perfect woocommerce brand attribute
+     */
+    protected function set_perfect_attr( $key ) {
+        $brands = wp_get_object_terms($this->product->get_id(), 'pwb-brand');
+        $brnd = '';
+        $i = 0;
+        foreach($brands as $brand){
+            if($i == 0){
+                $brnd .= $brand->name; 
+            }else{
+                $brnd .= ', '.$brand->name; 
+            }
+            $i++;
+        }
+        return $brnd;
+    }
+    /**
+     * Set Perfect woocommerce brand attribute
+     */
+    protected function set_wc_brand_attr( $key ) {
+        $terms = get_terms( array( 'object_ids' => $this->product->get_ID(), 'taxonomy' => 'berocket_brand' ) );
+       
+        $brnd = '';
+        if(!empty($terms)){
+            
+            $i = 0;
+            foreach($terms as $brand){
+                if($i == 0){
+                    $brnd .= $brand->name; 
+                }else{
+                    $brnd .= ', '.$brand->name; 
+                }
+                $i++;
+            }
+           
+        } 
+        return $brnd;
+    }
 
     /**
      * Set a primary attribute.
@@ -318,11 +362,11 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function set_pr_att( $key, $rule = 'default' ) {
+       
         switch ( $key ) {
             case 'id':
                 return $this->product->get_id(); break;
                 
-
             case 'sku':
                 return $this->product->get_sku(); break;
 
@@ -1213,7 +1257,13 @@ class Rex_Product_Data_Retriever {
 
             case 'sooqr_cats':
                 return $this->get_product_cats_for_sooqr(); break;
-
+                
+            case 'perfect_brand':
+                $brand = get_products_brands($this->product->get_id());
+                return $this->product->get_id(); break;
+            case 'woocommerce_brand':
+                
+                return '12';
             case 'link':
 
                 if($this->analytics_params) {
@@ -1427,7 +1477,9 @@ class Rex_Product_Data_Retriever {
      */
     protected function set_product_custom_att( $key ) {
         
+        
         $new_key = str_replace('custom_attributes_', '', $key);
+        
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             if($new_key === '_wpfm_product_brand') {
                 $meta_value = get_post_meta($this->product->get_parent_id(), $new_key, true);
@@ -1445,6 +1497,7 @@ class Rex_Product_Data_Retriever {
             }
         } else{
             $meta_value = get_post_meta($this->product->get_id(), $new_key, true);
+            
             if(!$meta_value) {
                 $list = $this->get_product_attributes($this->product->get_id());
                 if(array_key_exists($new_key, $list)) {
@@ -1453,6 +1506,7 @@ class Rex_Product_Data_Retriever {
             }
         }
 
+        
         if($meta_value){
             return $meta_value;
         }
@@ -1712,7 +1766,6 @@ class Rex_Product_Data_Retriever {
         }
         return $this->get_product_cats('', ' > ', '');
     }
-
 
 
     /**
@@ -2003,13 +2056,29 @@ class Rex_Product_Data_Retriever {
     /**
      * Helper to check if a attribute is a Woodmart Attribute.
      *
-     * @since    1.0.0
      */
     protected function is_woodmart_attr( $key ) {
         if(isset($this->product_meta_keys['Woodmart Image Gallery'])){
             return array_key_exists( $key, $this->product_meta_keys['Woodmart Image Gallery'] );
         }
     }
+    
+    /**
+     * Helper to check if a attribute is a Perfect Brand Attribute.
+     *
+     */
+    protected function is_wc_brand_attr( $key ) {
+        if(isset($this->product_meta_keys['Woocommerce Brand'])){
+            return array_key_exists( $key, $this->product_meta_keys['Woocommerce Brand'] );
+        }
+    }
+    
+    protected function is_perfect_attr( $key ) {
+        if(isset($this->product_meta_keys['Perfect Brand'])){
+            return array_key_exists( $key, $this->product_meta_keys['Perfect Brand'] );
+        }
+    }
+
     /**
      * Helper to check if a attribute is a Image Attribute.
      *
@@ -2253,8 +2322,11 @@ class Rex_Product_Data_Retriever {
                 return str_replace('-', '', $val);
 
             case 'remove_hyphen_space':
-                return str_replace('-', ' ', $val);
-
+                return str_replace('-', ' ', $val); 
+            
+            case 'replace_space_with_hyphen':
+                return str_replace(' ', '-', $val);
+                
             default:
                 return $val;
                 break;

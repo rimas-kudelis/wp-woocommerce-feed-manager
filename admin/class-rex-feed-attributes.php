@@ -22,7 +22,6 @@ class Rex_Feed_Attributes {
 
     public static function get_attributes(){
 
-        
         $attributes = array(
             'Primary Attributes'        => array(
                 'id'                        => 'Product Id',
@@ -67,7 +66,7 @@ class Rex_Feed_Attributes {
                 'height'                    => 'Height',
                 'length'                    => 'Length',
                 "shipping_class"            => "Shipping Class",
-//                "shipping_cost"             => "Shipping Cost",
+            //    "shipping_cost"             => "Shipping Cost",
                 'rating_total'              => 'Total Rating',
                 'rating_average'            => 'Average Rating',
                 'product_tags'              => 'Tags',
@@ -109,15 +108,33 @@ class Rex_Feed_Attributes {
                     'image_6'        => 'WM Variation Gallery Image 7',
                     'image_7'        => 'WM Variation Gallery Image 8',
                     'image_8'        => 'WM Variation Gallery Image 9',
-                    'image_9'       => 'WM Variation Gallery Image 10'
+                    'image_9'        => 'WM Variation Gallery Image 10'
                 ),
             );
 
             $attributes = array_merge($attributes, $attributes_2);
         }
-       
 
-        
+        $plugins = get_option('active_plugins');
+        if(in_array('perfect-woocommerce-brands/perfect-woocommerce-brands.php',$plugins)){
+            $attributes_3 = array(
+                'Perfect Brand' => array(
+                    'perfect_brand'  => 'Product Brand',
+                    
+                ),
+            );
+            $attributes = array_merge($attributes, $attributes_3);
+        }
+        if(in_array('brands-for-woocommerce/woocommerce-brand.php',$plugins)){
+            $attributes_4 = array(
+                'Woocommerce Brand' => array(
+                    'woocommerce_brand'  => 'Woocommerce Brand',
+                    
+                ),
+            );
+            $attributes = array_merge($attributes, $attributes_4);
+        }
+
 
         // Get product attributes
         $_attributes = self::get_product_attributes();
@@ -131,6 +148,7 @@ class Rex_Feed_Attributes {
 
         // Get product dynamic attributes
         $_custom_attributes = self::get_product_custom_attributes();
+       
         $attributes['Product Custom Attributes'] = $_custom_attributes;
 
 
@@ -215,7 +233,9 @@ class Rex_Feed_Attributes {
      */
     public static function get_product_custom_attributes() {
         $attributes = wpfm_get_cached_data( 'product_custom_attributes' );
+        $attributes = false;
         if ( false === $attributes ) {
+            
             global $wpdb;
             $list = array();
             $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
@@ -228,12 +248,15 @@ class Rex_Feed_Attributes {
                 group by meta_key
                 ORDER BY postmeta.meta_key";
             $data = $wpdb->get_results($sql);
+            
             if (count($data)) {
                 foreach ($data as $key => $value) {
                     if (!preg_match("/_product_attributes/i", $value->name)) {
+                       
                         $value_display = str_replace("_", " ",$value->name);
                         $attributes["custom_attributes_" . $value->name] = ucfirst($value_display);
                     }else {
+                        
                         $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta as postmeta
                             INNER JOIN {$wpdb->prefix}posts AS posts
                             ON postmeta.post_id = posts.id
@@ -254,6 +277,27 @@ class Rex_Feed_Attributes {
                         }
                     }
                 }
+            }
+            
+            foreach( $attributes as $key => $attr){
+                
+                $clean_value = str_replace("_", "",$key);
+                $i=0;
+                foreach( $attributes as $key2 => $attr2){
+                    $clean_value2 = str_replace("_", "",$key2);
+                    
+                    if($clean_value == $clean_value2){
+                        
+                        if($i == 1){
+                            
+                            $modify_key2 = substr_replace($key2, '_', 18, 0);
+                            unset($attributes[$modify_key2]);
+                        }
+                        $i++;
+                    }
+                }
+              
+                
             }
             wpfm_set_cached_data( 'product_custom_attributes', $attributes );
         }

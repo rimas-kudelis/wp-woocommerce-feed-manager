@@ -70,6 +70,7 @@ class Rex_Feed_Scheduler {
      * @return int[]|WP_Post[]
      */
     public function get_feeds( $schedule = 'hourly' ) {
+
         $meta_query = array();
         $meta_query[] = array(
             'key'      => 'rex_feed_schedule',
@@ -97,6 +98,8 @@ class Rex_Feed_Scheduler {
             'fields' => 'ids',
             'meta_query'     => $meta_query,
         );
+
+        
         $query = new WP_Query( $args );
         return $query->get_posts();
     }
@@ -109,6 +112,7 @@ class Rex_Feed_Scheduler {
      * @return int[]|WP_Post[]
      */
     public function get_feeds_for_scheduler( $schedule = 'hourly' ) {
+
         $args = array(
             'post_type'      => 'product-feed',
             'post_status'    => array('publish'),
@@ -129,16 +133,19 @@ class Rex_Feed_Scheduler {
      * @param $schedule
      */
     public function wpfm_hourly_schedule_update_hook($schedule) {
+     
         $this->feed_ids = $this->get_feeds_for_scheduler($schedule);
         $this->configure_merchant_object(false, $schedule );
     }
 
     public function wpfm_daily_schedule_update_hook($schedule) {
+      
         $this->feed_ids = $this->get_feeds_for_scheduler($schedule);
         $this->configure_merchant_object(false, $schedule);
     }
 
     public function wpfm_weekly_schedule_update_hook($schedule) {
+  
         $this->feed_ids = $this->get_feeds_for_scheduler($schedule);
         $this->configure_merchant_object(false, $schedule);
     }
@@ -155,6 +162,7 @@ class Rex_Feed_Scheduler {
         if($hour == 07){
             $schedule = 'daily';
         }
+
         $this->feed_ids = $this->get_feeds($schedule);
         $this->configure_merchant_object(true);
         $this->start_batch_processing();
@@ -249,9 +257,12 @@ class Rex_Feed_Scheduler {
      * @param string $schedule
      */
     private function configure_merchant_object( $cron = false, $schedule = 'hourly' ) {
+       
         if ($this->feed_ids) {
-            foreach ($this->feed_ids as $key => $feed_id) {
+            foreach ( $this->feed_ids as $key => $feed_id) {
+              
                 $products_info = Rex_Product_Feed_Ajax::get_product_number(array());
+                
                 $per_batch = $products_info['per_batch'];
                 $total_batches = $products_info['total_batch'];
                 $offset = 0;

@@ -162,7 +162,7 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'dequeue_scripts', 5 );
         $this->loader->add_action( 'init', $plugin_admin, 'register_cpt' );
         // if ( get_post_type() == 'product-feed' ) {
-            // $this->loader->add_action( 'post_submitbox_start', $plugin_admin, 'register_purge_button' );
+            $this->loader->add_action( 'post_submitbox_start', $plugin_admin, 'register_purge_button' );
         // }
        
         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rex_wpfm_admin_notices' );

@@ -14,6 +14,41 @@ body.vcv-wb-editor {
   height: 100%;
 }
 
+
+/* new css for purge btn */
+#major-publishing-actions {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+#major-publishing-actions #btn_on_feed {
+  order: 1;
+}
+#major-publishing-actions #btn_on_feed:hover {
+  cursor: pointer;
+}
+#major-publishing-actions #delete-action {
+  float: none;
+  order: 3;
+  margin-left: auto;
+}
+#major-publishing-actions #publishing-action {
+  float: none;
+  order: 2;
+}
+
+#rex_feed_products .product_filter_condition {
+  height: 52px!important;
+  line-height: 46px!important;
+  margin-left: 15px;
+}
+
+#rex_feed_products  .select2-container--default .select2-selection--multiple,
+#rex_feed_products .select2-container--default.select2-container--focus .select2-selection--multiple {
+border: 1px solid #e8e8e8;
+}
+
+
 .rex-onboarding {
   /*-----------heading tag Typogrpahy------------*/ }
   .rex-onboarding * {
@@ -821,7 +856,7 @@ a,
   color: #363b4ead;
   padding: 5px 0; }
 .rex-onboarding button#wpfm-purge-cache {
-  width: 59%;
+  width: 59%; 
   height: 46px; }
   @media (max-width: 1599px) {
     .rex-onboarding button#wpfm-purge-cache {

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.5.2
+Stable tag:  6.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -552,6 +552,17 @@ WP Dashboard > Product Feed > Upgrade.
 17. Plugin Settings Page - Controls
 
 == Changelog ==
+
+= 6.6.0 (2021-05-07) =
+* Added: New Sanitization Filter - Replace Space With Hyphen (-)
+* Added: Add Purge Cache button on the feed generation page
+* Added: Perfect Brands For WooCommerce Support
+* Added: New feed template added – Deals4U.gr
+* Fixed: Price Filter not working - issue fixed
+* Fixed: Heureka Delivery Attribute structure fixed
+* Fixed: Feed not fetching correct info from Advanced Custom Fields (ACF) fixed
+* Fixed: Vivino template structure fixed
+* Fixed: Vivino template structure
 
 = 6.5.2 (2021-05-05) =
 * Fixed: Warning on feed generation for Google and Facebook

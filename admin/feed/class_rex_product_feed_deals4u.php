@@ -7,13 +7,13 @@
  * @link       https://rextheme.com
  * @since      1.0.0
  *
- * @package    Rex_Product_Feed_Wish
- * @subpackage Rex_Product_Feed_wish/includes
+ * @package    Rex_Product_Feed_Rakuten
+ * @subpackage Rex_Product_Feed_Rakuten/includes
  * @author     RexTheme <info@rextheme.com>
  */ 
-use RexTheme\RexShoppingHeureka\Containers\RexShopping;
+use RexTheme\RexShoppingDealsForU\Containers\RexShopping;
 
-class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
+class Rex_Product_Feed_DealsForU extends Rex_Product_Feed_Abstract_Generator
 {
     /**
      * Create Feed
@@ -45,7 +45,6 @@ class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
     private function generate_product_feed()
     {
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
-        
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];
@@ -113,6 +112,7 @@ class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
                                 $atts = $this->get_product_data($variation_product, $product_meta_keys);
                                 $atts = $this->process_attributes_for_delivery($atts);
                                 $atts = $this->process_attributes_for_param($atts);
+                                $check_item_group_id = 0;
                                 foreach ($atts as $key => $value) {
                                     if ($key == 'delivery') {
                                         $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -121,9 +121,17 @@ class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
                                     } else {
                                         $item->$key($value); // invoke $key as method of $item object.
                                     }
+                                    if('item_group_id' == $key){
+                                        $check_item_group_id = 1;
+                                    }
+                                   
+                                }
+                                if($check_item_group_id == 0){
+                                    $item->item_group_id($variation_product->get_parent_id());
                                 }
                             }
                         }
+                        
                     }
                 }
             }
@@ -152,6 +160,7 @@ class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     $atts = $this->process_attributes_for_delivery($atts);
                     $atts = $this->process_attributes_for_param($atts);
+                    $check_item_group_id = 0;
                     foreach ($atts as $key => $value) {
                         if ($key == 'delivery') {
                             $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -161,6 +170,13 @@ class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
                         else {
                             $item->$key($value); // invoke $key as method of $item object.
                         }
+                        if('item_group_id' == $key){
+                            $check_item_group_id = 1;
+                        }
+                       
+                    }
+                    if($check_item_group_id == 0){
+                        $item->item_group_id($product->get_parent_id());
                     }
                 }
             }
@@ -244,7 +260,7 @@ class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
 
     public function setItemsWrapper()
     {
-        return 'SHOP';
+        return 'offers';
     }
 
 
@@ -326,6 +342,6 @@ class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
     //replace footer of feed
     public function footer_replace()
     {
-        $this->feed = str_replace('</SHOP>', '', $this->feed);
+        $this->feed = str_replace('</offers>', '', $this->feed);
     }
 }

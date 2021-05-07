@@ -59,6 +59,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     protected function generate_product_feed(){
 
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];

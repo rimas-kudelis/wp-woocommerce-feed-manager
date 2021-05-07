@@ -256,6 +256,7 @@ abstract class Rex_Feed_Abstract_Template {
                 'add_two_decimal'          => 'Two decimal points',
                 'remove_hyphen'            => 'Remove hyphen',
                 'remove_hyphen_space'      => 'Remove hyphen(space)',
+                'replace_space_with_hyphen'=> 'Replace Space With Hyphen',
             )
         );
     }

@@ -25,12 +25,12 @@ class Rex_Feed_Template_Heureka extends Rex_Feed_Abstract_Template {
 
             'Required Information'      =>  array(
                 'ITEM_ID'               => 'ITEM ID',
-                'PRODUCTNAME'           => 'PRODUCT NAME',
-                'DESCRIPTION'           => 'Description',
+                'PRODUCTNAME'           => 'Product name',
                 'URL'                   => 'Product URL',
                 'IMGURL'                => 'Image URL',
-                'PRICE_VAT'             => 'PRICE',
-                'DELIVERY_DATE'         => 'DELIVERY DATE',
+                'PRICE_VAT'             => 'Price',
+                'DESCRIPTION'           => 'Description',
+                'DELIVERY_DATE'         => 'delivery date',
             ),
 
             'Additional Information'        => array(
@@ -71,6 +71,21 @@ class Rex_Feed_Template_Heureka extends Rex_Feed_Abstract_Template {
                 'Param_name_10'     => 'PARAM 10',
                 'Param_value_10'    => 'Value 10',
             ),
+            'Delivery Attributes' => array(
+                'Delivery_id_1'         => 'Delivery ID 1',
+                'Delivery_price_1'      => 'Delivery Price 1',
+                'Delivery_price_cod_1'  => 'Delivery Price COD 1',
+                'Delivery_id_2'         => 'Delivery ID 2',
+                'Delivery_price_2'      => 'Delivery Price 2',
+                'Delivery_price_cod_2'  => 'Delivery Price COD 2',
+                'Delivery_id_3'         => 'Delivery ID 3',
+                'Delivery_price_3'      => 'Delivery Price 3',
+                'Delivery_price_cod_3'  => 'Delivery Price COD 3',
+                'Delivery_id_4'         => 'Delivery ID 4',
+                'Delivery_price_4'      => 'Delivery Price 4',
+                'Delivery_price_cod_4'  => 'Delivery Price COD 4',
+                
+            )
         );
     }
 
@@ -98,16 +113,7 @@ class Rex_Feed_Template_Heureka extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
 
-            array(
-                'attr'     => 'DESCRIPTION',
-                'type'     => 'meta',
-                'meta_key' => 'description',
-                'st_value' => '',
-                'prefix'   => '',
-                'suffix'   => '',
-                'escape'   => 'default',
-                'limit'    => 0,
-            ),
+            
 
             array(
                 'attr'     => 'URL',
@@ -142,7 +148,16 @@ class Rex_Feed_Template_Heureka extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
+            array(
+                'attr'     => 'DESCRIPTION',
+                'type'     => 'meta',
+                'meta_key' => 'description',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0,
+            ),
             array(
                 'attr'     => 'DELIVERY_DATE',
                 'type'     => 'static',
@@ -153,6 +168,7 @@ class Rex_Feed_Template_Heureka extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
+            
         );
     }
 

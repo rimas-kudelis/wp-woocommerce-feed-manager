@@ -154,6 +154,7 @@ class Rex_Product_Feed_Admin {
      * @param      string    $version    The version of this plugin.
      */
     public function __construct( $plugin_name, $version ) {
+
         $this->plugin_name = $plugin_name;
         $this->plugin_basename      = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_name . '.php' );
         $this->version     = $version;
@@ -340,7 +341,7 @@ class Rex_Product_Feed_Admin {
        
         if( get_post_type() == 'product-feed' ){
             $html = '';
-            $html .= '<button id="wpfm-purge-cache" style="background: #1fb3fb;"';
+            $html .= '<button id="btn_on_feed" style="background: #1fb3fb;"';
             $html .= 'class="wpfm-purge-cache btn_on_feed">Purge Cache';
             $html .= '<i class="fa fa-spinner fa-pulse fa-fw"></i></button>';
             
@@ -610,6 +611,11 @@ class Rex_Product_Feed_Admin {
                 'free'  => true,
                 'status'    => 1,
                 'name'  => 'Google Local Inventory Ads'
+            ),
+            'DealsForU'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'DealsF4u.gr'
             )
         );
         $array = array_merge($free_merchants, $array);

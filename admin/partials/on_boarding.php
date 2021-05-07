@@ -1311,6 +1311,11 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'free' => true,
                                     'status' => 0,
                                     'name' => 'Google Local Inventory Ads'
+                                ),
+                                'DealsForU' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Deals4u.gr'
                                 )
 
                             );

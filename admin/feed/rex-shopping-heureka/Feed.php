@@ -100,6 +100,7 @@ class Feed
 
     protected $stand_alone = false;
     public $param;
+    public $delivery;
     /**
      * Feed constructor
      */
@@ -249,6 +250,13 @@ class Feed
                         $this->param->addChild('PARAM_NAME',$itemNode->get('value'));
                     }elseif(stristr($itemNode->get('name'),'Param_value_')){
                         $this->param->addChild('VAL',$itemNode->get('value'));
+                    }elseif(stristr($itemNode->get('name'),'Delivery_id_')){
+                        $this->delivery = $feedItemNode->addChild('DELIVERY');
+                        $this->delivery->addChild('DELIVERY_ID',$itemNode->get('value'));
+                    }elseif(stristr($itemNode->get('name'),'Delivery_price_') && !stristr($itemNode->get('name'),'Delivery_price_cod_')){
+                        $this->delivery->addChild('DELIVERY_PRICE',$itemNode->get('value'));
+                    }elseif( stristr($itemNode->get('name'),'Delivery_price_cod_') ){
+                        $this->delivery->addChild('DELIVERY_PRICE_COD',$itemNode->get('value'));
                     }else{
     
                         if (is_array($itemNode)) {

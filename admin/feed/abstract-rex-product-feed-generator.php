@@ -700,7 +700,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $this->products_args[$key] = $value;
             }
             if(array_key_exists('meta_query', $this->products_args)) {
-                $this->products_args['meta_query']['relation'] = 'OR';
+                $this->products_args['meta_query']['relation'] = 'AND';
             }
             if(array_key_exists('tax_query', $this->products_args)) {
                 $this->products_args['tax_query']['relation'] = 'AND';
@@ -712,35 +712,67 @@ abstract class Rex_Product_Feed_Abstract_Generator {
        
         $result = new WP_Query($this->products_args);
         $this->products = $result->get_posts();
-        // $condition = $this->product_filter_condition;
         
-        // if($condition == 'exc'){
-        //     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        $condition = $this->product_filter_condition;
+        
+        if($this->products_args['post__in']){
+            update_post_meta($this->id, 'rex_feed_product_condition', $condition);
+            if($condition == 'exc'){
+                $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+                $args = array(
+                    'post_type' => 'product',
+                    'paged' => $paged,
+                    'posts_per_page' => -1
+                );
+                $wp_query = new WP_Query($args);
+                $all_products = wc_get_products($args);
+                foreach ($all_products as $key => $product) {
+                
+                    if ($product->get_type() == "variable") {
+                        $variations = $product->get_available_variations();
+                        $variations_ids = wp_list_pluck( $variations, 'variation_id' );
+                        foreach ($variations_ids as $variation) {
+                            if(($key = array_search($variation,$this->products)) !== false){
+                            
+                                unset($this->products[$key]);
+                            }
+                        }
+                    }
+                }
 
-        //     $args = array(
-        //         'post_type' => 'product',
-        //         'paged' => $paged,
-        //         'posts_per_page' => -1
-        //     );
-        //     $wp_query = new WP_Query($args);
-        //     $indentyfier = 0;
-        //     foreach($wp_query->posts as $all_products){
-        //         if(($key = array_search($all_products->ID, $this->products)) !== false){
-        //             unset($this->products[$key]);
-        //         }else{
-        //             $this->products[] = $all_products->ID;
-        //         }
-        //         $indentyfier++;
-        //     }
-        // }else{
-        //     $result = new WP_Query($this->products_args);
-        //     $this->products = $result->get_posts();
-        // }
+
+                $indentyfier = 0;
+                foreach($wp_query->posts as $all_products){
+                    $product = wc_get_product($all_products->ID);
+                    
+                    if(($key = array_search($all_products->ID, $this->products)) !== false){
+                        
+                        if ($product->get_type() == 'variation') {
+
+                            
+                        }
+                        
+                        unset($this->products[$key]);
+                    
+                    }else{
+                        $this->products[] = $all_products->ID;
+                    }
+                    $indentyfier++;
+                }
+            }else{
+                $result = new WP_Query($this->products_args);
+                $this->products = $result->get_posts();
+            }
+            
+        }else{
+            update_post_meta($this->id, 'rex_feed_product_condition', '');
+        }
         
         
-    
+      
         if(is_array($this->products)) {
             $this->products = array_unique($this->products);
+            
             if($this->batch == 1) {
                 update_post_meta($this->id, 'rex_feed_product_ids', $this->products);
             }else {
@@ -1128,6 +1160,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return bool
      */
     protected function save_feed($format){
+        
+        
         $path  = wp_upload_dir();
         $baseurl = $path['baseurl'];
         $path  = $path['basedir'] . '/rex-feed';
@@ -1152,7 +1186,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 if( $this->batch == 1) {
                     $feed = new DOMDocument;
                     $feed->loadXML($this->feed);
-                    $this->feed = $feed->saveXML($feed,LIBXML_NOEMPTYTAG);
+                    $this->feed = $feed->saveXML($feed, LIBXML_NOEMPTYTAG);
                     if($this->tbatch > 1) {
                         $this->footer_replace();
                     }
@@ -1172,10 +1206,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 if((int)$this->tbatch > 1) {
                     $this->footer_replace();
                 }
-                return file_put_contents($file, $this->feed) ? 'true' : 'false';
+                return file_put_contents($file, $this->feed, FILE_APPEND) ? 'true' : 'false';
             }
         }
         elseif ($format == 'text'){
+            $this->feed = preg_replace('/\s+/', ' ',$this->feed);
+            $this->feed = str_replace('\t', '', $this->feed);
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.txt");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
@@ -1194,6 +1230,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         elseif ($format == 'tsv')
         {
+
+            // $this->feed = preg_replace('/\s+/', ' ',$this->feed);
+            // $this->feed = str_replace('\t', '', $this->feed);
             $file = trailingslashit($path) . "feed-{$this->id}.tsv";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
@@ -1599,6 +1638,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</shop>';
             }
+        }elseif ($this->merchant === 'DealsForU') {
+            $node = $feed->getElementsByTagName("offers");
+            if($this->batch == $this->tbatch) {
+                $feed_string_footer .= '</offers>';
+            }
         }elseif ($this->merchant === 'google_local_inventory_ads') {
             $node = $feed->getElementsByTagName("shop");
             if($this->batch == $this->tbatch) {
@@ -1678,6 +1722,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
             }elseif ($this->merchant === 'ibud') {
                 $parent = $orgdoc->getElementsByTagName('yml_catalog')->item(0);
+            }elseif ($this->merchant === 'DealsForU') {
+                $parent = $orgdoc->getElementsByTagName('offers')->item(0);
             }elseif ($this->merchant === 'favi') {
                 $parent = $orgdoc->getElementsByTagName('products')->item(0);
             }elseif ($this->merchant === 'fashiola') {
@@ -1766,6 +1812,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $node = $newdoc->getElementsByTagName("Katalog");
             }elseif ($this->merchant === 'ibud') {
                 $node = $newdoc->getElementsByTagName("shop");
+            }elseif ($this->merchant === 'DealsForU') {
+                $node = $newdoc->getElementsByTagName("offers");
             }else {
                 $node = $newdoc->getElementsByTagName("product");
             }
