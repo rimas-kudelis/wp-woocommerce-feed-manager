@@ -43,6 +43,9 @@ class Rex_Product_Feed_Activator {
         if( ! wp_next_scheduled( 'rex_feed_weekly_update' ) ) {
             wp_schedule_event( time(), 'weekly', 'rex_feed_weekly_update' );
         }
+        if( ! wp_next_scheduled( 'rex_feed_daily_update' ) ) {
+            wp_schedule_event( time(), 'daily', 'rex_feed_daily_update' );
+        }
 
 
         /*

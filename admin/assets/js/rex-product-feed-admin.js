@@ -243,7 +243,7 @@
             };
             
             wpAjaxHelperRequest('merchant-change', $payload)
-                .success(function(response) {
+                .done(function(response) {
                     if (response) {
                         $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select option').each(function() {
                             var option_value = $(this).val();
@@ -270,7 +270,7 @@
                     $('#rex_feed_conf .cmb2-id-rex-feed-config-heading').css('display', 'block');
                     $('#rex-new-attr, #rex-new-custom-attr').css('display', 'inline-block');
                 })
-                .error(function(response) {
+                .fail(function(response) {
                     $('.rex-loading-spinner').css('display', 'none');
                     console.log('Uh, oh! Merchant change returned error!');
                     console.log(response.statusText);
@@ -321,7 +321,7 @@
         $('.bwfm-progressbar, .progress-msg').fadeIn();
         $('.progress-msg span').html('Calculating products.....');
         wpAjaxHelperRequest('my-handle', $payload)
-            .success(function(response) {
+            .done(function(response) {
                 var per_batch = response.per_batch ? parseInt(response.per_batch) : 50;
                 // if (merchant !== 'google_merchant_promotion') {
                 //     generate_feed(response.products, 0, 1, per_batch, response.total_batch);
@@ -331,7 +331,7 @@
                 generate_feed(response.products, 0, 1, per_batch, response.total_batch);
 
             })
-            .error(function(response) {
+            .fail(function(response) {
                 $('#publishing-action span.spinner').removeClass('is-active');
                 $('#publish').removeClass('disabled');
                 console.log('Uh, oh!');
@@ -518,7 +518,7 @@
             $('.progress-msg span').html('Processing feed.....');
         }
         wpAjaxHelperRequest('generate-feed', $payload)
-            .success(function(response) {
+            .done(function(response) {
                 console.log('Woohoo!');
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if (response == 'false' || response == '') {
@@ -540,7 +540,7 @@
 
                 }
             })
-            .error(function(response) {
+            .fail(function(response) {
                 $(".progressbar-bar").css('background', '#ff0000');
                 $(".progressbar-bar").css('border-color', '#ff0000');
                 $(".progress-msg span").css('color', '#ff0000');
@@ -802,6 +802,7 @@
             wpAjaxHelperRequest('rex-product-feed-show-log', payload)
                 .success(function(response) {
                     console.log('woohoo!');
+
                     $('#log-viewer pre').html(response.content);
                     if (log_key) {
                         $("#wpfm-log-copy").show();

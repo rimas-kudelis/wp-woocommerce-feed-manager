@@ -259,18 +259,13 @@ class Feed
             $feedItemNode->addChild(str_replace(' ', '_', 'description_ru'), $category->description);
             $feedItemNode->addChild(str_replace(' ', '_', 'description_uk'), $category->description);
             }
-            // $feedItemNode->addChild(str_replace(' ', '_', ''), $category->term_id);
+            
         }
        
         $feedItemNodes = $shopNodes->addChild('offers');
         foreach ($this->items as $item) {
             $feedItemNode = $feedItemNodes->addChild('offer');
-            // /** @var SimpleXMLElement $feedItemNode */
-            // if ( $this->channelName && !empty($this->channelName) ) {
-            //     $feedItemNode = $feedItemNode->{$this->channelName}->addChild($this->itemlName);
-            // }else{
-            //     $feedItemNode = $feedItemNode->addChild($this->itemlName);
-            // }
+            
             foreach ($item->nodes() as $itemNode) {
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {

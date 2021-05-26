@@ -69,8 +69,9 @@ class Rex_Feed_Scheduler {
      * @param string $schedule
      * @return int[]|WP_Post[]
      */
-    public function get_feeds( $schedule = 'hourly' ) {
+    public function get_feeds( $schedule ) {
 
+        
         $meta_query = array();
         $meta_query[] = array(
             'key'      => 'rex_feed_schedule',
@@ -112,7 +113,7 @@ class Rex_Feed_Scheduler {
      * @return int[]|WP_Post[]
      */
     public function get_feeds_for_scheduler( $schedule = 'hourly' ) {
-
+        
         $args = array(
             'post_type'      => 'product-feed',
             'post_status'    => array('publish'),
@@ -126,6 +127,7 @@ class Rex_Feed_Scheduler {
             ),
         );
         $query = new WP_Query( $args );
+        
         return $query->get_posts();
     }
 
@@ -141,6 +143,7 @@ class Rex_Feed_Scheduler {
     public function wpfm_daily_schedule_update_hook($schedule) {
       
         $this->feed_ids = $this->get_feeds_for_scheduler($schedule);
+
         $this->configure_merchant_object(false, $schedule);
     }
 
@@ -159,10 +162,10 @@ class Rex_Feed_Scheduler {
     public function rex_feed_cron_handler() {
         $hour = date('H');
         $schedule = 'hourly';
-        if($hour == 07){
-            $schedule = 'daily';
-        }
-
+        // if($hour == 07){
+        //     $schedule = 'daily';
+        // }
+        
         $this->feed_ids = $this->get_feeds($schedule);
         $this->configure_merchant_object(true);
         $this->start_batch_processing();
@@ -174,8 +177,22 @@ class Rex_Feed_Scheduler {
      */
     public function rex_feed_weekly_cron_handler() {
         $this->feed_ids = $this->get_feeds('weekly');
+        
         $this->configure_merchant_object(true);
         $this->start_batch_processing();
+    } 
+    
+    /**
+     * weekly cron
+     */
+    public function rex_feed_daily_cron_handler() {
+        $hour = date('H');
+        
+        if($hour == 07){
+            $this->feed_ids = $this->get_feeds('daily');
+            $this->configure_merchant_object(true);
+            $this->start_batch_processing();
+        }   
     }
 
 
@@ -192,6 +209,7 @@ class Rex_Feed_Scheduler {
      */
     private function get_feed_settings_payload($feed_id, $current_batch, $total_batches, $per_batch, $offset) {
         $merchant = get_post_meta($feed_id, 'rex_feed_merchant', true);
+        $product_condition = get_post_meta($feed_id, 'rex_feed_product_condition', true);
         $feed_config = get_post_meta($feed_id, 'rex_feed_feed_config', true);
         $analytics = get_post_meta($feed_id, 'rex_feed_analytics_params_options', true);
         $analytics_params = $analytics === 'on' ? get_post_meta($feed_id, 'rex_feed_analytics_params', true): [];
@@ -208,10 +226,12 @@ class Rex_Feed_Scheduler {
         $feed_format = get_post_meta($feed_id, 'rex_feed_feed_format', true) ?
             get_post_meta($feed_id, 'rex_feed_feed_format', true) : 'xml';
         $terms_array = array();
+        
         if ( $product_scope !== 'all' && $product_scope !== 'filter') {
             $terms = wp_get_post_terms($feed_id, $product_scope);
             if ($terms) {
                 foreach ($terms as $term) {
+                   
                     $terms_array[] = $term->slug;
                 }
             }
@@ -235,6 +255,7 @@ class Rex_Feed_Scheduler {
                 'tags'          => $terms_array,
             ),
             'feed_filter'    => $feed_filter,
+            'product_condition'    => $product_condition,
             'include_variations' => $include_variations,
             'variable_product' => $variable_product,
             'parent_product' => $parent_product,
@@ -245,6 +266,8 @@ class Rex_Feed_Scheduler {
             'analytics'          => $analytics,
             'analytics_params'          => $analytics_params,
         );
+        
+
         return $payload;
     }
 
@@ -257,12 +280,11 @@ class Rex_Feed_Scheduler {
      * @param string $schedule
      */
     private function configure_merchant_object( $cron = false, $schedule = 'hourly' ) {
-       
+     
         if ($this->feed_ids) {
             foreach ( $this->feed_ids as $key => $feed_id) {
               
                 $products_info = Rex_Product_Feed_Ajax::get_product_number(array());
-                
                 $per_batch = $products_info['per_batch'];
                 $total_batches = $products_info['total_batch'];
                 $offset = 0;

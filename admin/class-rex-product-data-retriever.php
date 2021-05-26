@@ -262,6 +262,11 @@ class Rex_Product_Data_Retriever {
 
         // maybe limit
         $val = $this->maybe_limit($val, $rule['limit']);
+        $val = trim(preg_replace('/(?:\s\s+|\n|\t)/', '',$val));
+        
+        if(!$val){
+            return '\t';
+        }
 
         return $val;
 
@@ -334,16 +339,23 @@ class Rex_Product_Data_Retriever {
         return $brnd;
     }
     /**
-     * Set Perfect woocommerce brand attribute
+     * Set woocommerce brand attribute
+     * @param key meta_key
      */
     protected function set_wc_brand_attr( $key ) {
-        $terms = get_terms( array( 'object_ids' => $this->product->get_ID(), 'taxonomy' => 'berocket_brand' ) );
-       
+        $brands = '';
+      
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            $brands = wp_get_post_terms( $this->product->get_parent_id(), 'berocket_brand', array("fields" => "all") );
+           
+        }else{
+            $brands = wp_get_post_terms( $this->product->get_ID(), 'berocket_brand', array("fields" => "all") );
+        }
         $brnd = '';
-        if(!empty($terms)){
+        if(!empty($brands)){
             
             $i = 0;
-            foreach($terms as $brand){
+            foreach($brands as $brand){
                 if($i == 0){
                     $brnd .= $brand->name; 
                 }else{
@@ -352,7 +364,8 @@ class Rex_Product_Data_Retriever {
                 $i++;
             }
            
-        } 
+        }
+     
         return $brnd;
     }
 
@@ -369,18 +382,20 @@ class Rex_Product_Data_Retriever {
                 
             case 'sku':
                 return $this->product->get_sku(); break;
-
+                
             case 'parent_sku':
                 $pr_id = '';
                 if($this->product->is_type('variation')){
                     $parent_id = $this->product->get_parent_id();
                     $wc_parent_product = wc_get_product( $parent_id );
+                    
                     $pr_id = $wc_parent_product->get_sku();
                    
                 }else{
+                   
                     $pr_id = $this->product->get_sku();
                 }
-                
+             
                 return $pr_id; break;
                 // return get_post_meta($pr_id, '_sku', true); break;
 
@@ -388,8 +403,13 @@ class Rex_Product_Data_Retriever {
                 if($this->append_variation === 'no') {
                     if($this->product->is_type('variation')) {
                         $pr_id = $this->product->get_parent_id();
+                        // $_title = preg_replace('/\s+/', ' ', get_the_title($pr_id));
+                        // $_title = str_replace('\t', '', $_title);
+                        // return $_title;
+                 
                         return get_the_title($pr_id);
                     }
+
                     return $this->product->get_name();
                 }
                 else {
@@ -411,9 +431,10 @@ class Rex_Product_Data_Retriever {
 
                         $_title = $this->product->get_title() . " - ";
                         $_title = $_title . implode(', ', $each_child_attr_two);
+
+                        
                         return $_title;
 
-                        return $_title;
                     }else {
                         return $this->product->get_name();
                     }
@@ -421,7 +442,8 @@ class Rex_Product_Data_Retriever {
                 break;
 
             case 'yoast_title':
-                return $this->get_yoast_seo_title(); break;
+                $yoast_title = preg_replace('/\s+/', ' ',$this->get_yoast_seo_title());
+                return $yoast_title; break;
 
             case 'price':
                 if ($this->product->is_type( 'grouped' )) {
@@ -1155,7 +1177,7 @@ class Rex_Product_Data_Retriever {
             case 'current_price_db':
                 if($this->wcml) {
                     global $woocommerce_wpml;
-                    $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true), wc_get_price_decimals()), $this->wcml_currency);
+                    $_price = apply_filters('wcml_raw_price_amount', wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true), wc_get_price_decimals()), $this->wcml_currency);
 
                     //if WCML price is set manually
                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1194,14 +1216,18 @@ class Rex_Product_Data_Retriever {
                     if(empty($description)) {
                         $_product = wc_get_product( $this->product->get_parent_id() );
                         if ( is_object( $_product ) ) {
-                            return  $this->remove_short_codes($_product->get_description());
+                            
+                            return $this->remove_short_codes($_product->get_description());
                         }
                     }else {
+       
                         return $this->remove_short_codes($description);
                     }
                 else:
+                    // $des = preg_replace('/(?:\s\s+|\n|\t)/', ' ',$this->product->get_description());
                     return $this->remove_short_codes($this->product->get_description());
                 endif;
+                
                 break;
 
             case 'short_description':
@@ -1210,9 +1236,11 @@ class Rex_Product_Data_Retriever {
                     if(empty($short_description)) {
                         $_product = wc_get_product( $this->product->get_parent_id() );
                         if ( is_object( $_product ) ) {
+           
                             return  $this->remove_short_codes($_product->get_short_description());
                         }
                     }else {
+   
                         return $this->remove_short_codes($short_description);
                     }
                 else:
@@ -1221,12 +1249,15 @@ class Rex_Product_Data_Retriever {
                 break;
 
             case 'yoast_meta_desc':
+        
                 return $this->get_yoast_meta_description(); break;
 
             case 'product_cats':
+
                 return $this->get_product_cats(); break;
 
             case 'product_cats_path':
+              
                 return $this->get_product_cats_with_seperator(); break;
 
             case 'product_cats_path_pipe':
@@ -1261,9 +1292,7 @@ class Rex_Product_Data_Retriever {
             case 'perfect_brand':
                 $brand = get_products_brands($this->product->get_id());
                 return $this->product->get_id(); break;
-            case 'woocommerce_brand':
-                
-                return '12';
+            
             case 'link':
 
                 if($this->analytics_params) {
@@ -1476,17 +1505,13 @@ class Rex_Product_Data_Retriever {
      * @since    1.0.0
      */
     protected function set_product_custom_att( $key ) {
-        
-        
         $new_key = str_replace('custom_attributes_', '', $key);
-        
+        $meta_value = '';
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             if($new_key === '_wpfm_product_brand') {
                 $meta_value = get_post_meta($this->product->get_parent_id(), $new_key, true);
             }else {
                 $meta_value = get_post_meta($this->product->get_id(), $new_key, true);
-
-
                 // need to check if these attributes value is assigned to the mother product
                 if(!$meta_value) {
                     $list = $this->get_product_attributes($this->product->get_parent_id());
@@ -1497,7 +1522,6 @@ class Rex_Product_Data_Retriever {
             }
         } else{
             $meta_value = get_post_meta($this->product->get_id(), $new_key, true);
-            
             if(!$meta_value) {
                 $list = $this->get_product_attributes($this->product->get_id());
                 if(array_key_exists($new_key, $list)) {
@@ -1505,12 +1529,8 @@ class Rex_Product_Data_Retriever {
                 }
             }
         }
+        return apply_filters("product_custom_att_value_{$new_key}", $meta_value, $new_key, $this->product);
 
-        
-        if($meta_value){
-            return $meta_value;
-        }
-        return '';
     }
 
 
@@ -2064,7 +2084,7 @@ class Rex_Product_Data_Retriever {
     }
     
     /**
-     * Helper to check if a attribute is a Perfect Brand Attribute.
+     * Helper to check if a attribute is a Woocommerce Brand Attribute.
      *
      */
     protected function is_wc_brand_attr( $key ) {
@@ -2073,6 +2093,10 @@ class Rex_Product_Data_Retriever {
         }
     }
     
+    /**
+     * Helper to check if a attribute is a Perfect Brand Attribute.
+     *
+     */
     protected function is_perfect_attr( $key ) {
         if(isset($this->product_meta_keys['Perfect Brand'])){
             return array_key_exists( $key, $this->product_meta_keys['Perfect Brand'] );
@@ -2157,7 +2181,6 @@ class Rex_Product_Data_Retriever {
      * @since    2.0.3
      */
     public function get_grouped_price($product, $type) {
-       
         $groupProductIds = $product->get_children();
         $sum = 0;
         if(!empty($groupProductIds)){
@@ -2278,7 +2301,9 @@ class Rex_Product_Data_Retriever {
     protected function maybe_escape($val, $escape) {
         switch ($escape){
             case 'strip_tags':
+                $val = preg_replace('/(?:<|&lt;).*?(?:>|&gt;)/', '', $val);
                 $striped_string =  strip_tags($val);
+                // $striped_string = utf8_decode($striped_string);
                 if(substr($striped_string, -1) == " "){
                     return rtrim($striped_string);
                 }
@@ -2292,7 +2317,19 @@ class Rex_Product_Data_Retriever {
                 return intval($val);
             case 'remove_space':
                 return preg_replace('/\s+/', '', $val);;
+            case 'remove_shortcodes_and_tags':
+                $val = preg_replace('/(?:<|&lt;).*?(?:>|&gt;)/', '', $val);
+                $striped_string =  strip_tags($val);
+                if(substr($striped_string, -1) == " "){
+                    $striped_string = preg_replace('#\[[^\]]+\]#', '',$striped_string);
+                    return rtrim(strip_shortcodes( $striped_string ));
+                }
+
+                $striped_string = preg_replace('#\[[^\]]+\]#', '',$striped_string);
+                return strip_shortcodes( $striped_string );
+                
             case 'remove_shortcodes':
+                $val = preg_replace('#\[[^\]]+\]#', '',$val);
                 return strip_shortcodes( $val );
             case 'remove_special':
                 return filter_var($val, FILTER_SANITIZE_STRING);

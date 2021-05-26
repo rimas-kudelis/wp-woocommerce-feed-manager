@@ -850,6 +850,21 @@ class Rex_Product_Metabox
                 'free' => true,
                 'status' => 1,
                 'name' => 'Deals4u.gr'
+            ),
+            'Bestprice' => array(
+                'free' => true,
+                'status' => 1,
+                'name' => 'Bestprice'
+            ),
+            'spartooFr' => array(
+                'free' => true,
+                'status' => 1,
+                'name' => 'SpartooFr'
+            ),
+            'mirakl' => array(
+                'free' => true,
+                'status' => 1,
+                'name' => 'Mirakl'
             )
         );
         if ($merchants) {

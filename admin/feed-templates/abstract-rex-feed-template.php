@@ -247,6 +247,7 @@ abstract class Rex_Feed_Abstract_Template {
                 'price'                    => 'Price',
                 'remove_space'             => 'Remove Space',
                 'remove_shortcodes'        => 'Remove ShortCodes',
+                'remove_shortcodes_and_tags' => 'Remove ShortCodes and Strip Tags',
                 'remove_special character' => 'Remove Special Character',
                 'cdata'                    => 'CDATA',
                 'cdata_without_space'      => 'CDATA without space',

@@ -18,7 +18,10 @@ class Rex_Product_Feed_Factory {
     private static $facebook_format;
 
     private static $ibud_format;
+    private static $mirakl_format;
+    private static $bestprice_format;
     private static $DealsForU;
+    private static $spartooFr;
     private static $google_local_inventory_ads_format;
 
     public static function build( $config, $bypass = false , $product_ids = array()){
@@ -203,12 +206,21 @@ class Rex_Product_Feed_Factory {
             'facebook',
             'snapchat'
         );
+        self::$bestprice_format = array(
+            'Bestprice'
+        );
         self::$ibud_format = array(
             'ibud'
+        );
+        self::$mirakl_format = array(
+            'mirakl'
         );
 
         self::$DealsForU = array(
             'DealsForU'
+        );
+        self::$spartooFr = array(
+            'spartooFr'
         );
         // self::$google_local_inventory_ads_format = array(
         //     'google_local_inventory_ads'
@@ -227,8 +239,18 @@ class Rex_Product_Feed_Factory {
         elseif (in_array( $config['merchant'], self::$ibud_format )) {
             $className = 'Rex_Product_Feed_Ibud';
         }
+        
+        elseif (in_array( $config['merchant'], self::$mirakl_format )) {
+            $className = 'Rex_Product_Feed_Mirakl';
+        }
         elseif (in_array( $config['merchant'], self::$DealsForU )) {
             $className = 'Rex_Product_Feed_DealsForU';
+        }
+        elseif (in_array( $config['merchant'], self::$bestprice_format )) {
+            $className = 'Rex_Product_Feed_Bestprice';
+        }
+        elseif (in_array( $config['merchant'], self::$spartooFr )) {
+            $className = 'Rex_Product_Feed_SpartooFr';
         }
         // elseif (in_array( $config['merchant'], self::$google_local_inventory_ads_format )) {
         //     $className = 'Rex_Product_Feed_Google_local_inventory_ads';

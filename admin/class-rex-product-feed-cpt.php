@@ -83,6 +83,7 @@ class Rex_Product_CPT {
      * @since 6.1.2
      */
     public function fill_product_feed_columns( $column, $post_id ) {
+        
         switch ( $column ) {
             case 'merchant' :
                 echo ucwords( esc_html( str_replace('_', ' ' , get_post_meta( $post_id, 'rex_feed_merchant', true )) ) );
@@ -140,6 +141,7 @@ class Rex_Product_CPT {
                 }
 
                 $schedule = get_post_meta( $post_id, 'rex_feed_schedule', true );
+              
                 echo '<div><strong>'.__('Last Updated: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.$formatted_time.'">'.$formatted_time.'</span></div></br>';
 
                 $next_update = '';
@@ -150,7 +152,6 @@ class Rex_Product_CPT {
                 }elseif ($schedule === 'weekly') {
                     $next_update = date($format, strtotime('+ 7 days', strtotime($last_updated)));
                 }
-
                 if($schedule !== 'no') {
                     echo '<div><strong>'.__('Next Schedule: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.$next_update.'">'.$next_update.'</span></div>';
                 }

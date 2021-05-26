@@ -505,6 +505,9 @@ class Rex_Product_Feed_Admin {
         if( ! wp_next_scheduled( 'rex_feed_weekly_update' ) ) {
             wp_schedule_event( time(), 'weekly', 'rex_feed_weekly_update' );
         }
+        if( ! wp_next_scheduled( 'rex_feed_daily_update' ) ) {
+            wp_schedule_event( time(), 'daily', 'rex_feed_daily_update' );
+        }
     }
 
 
@@ -522,6 +525,13 @@ class Rex_Product_Feed_Admin {
      */
     public function activate_weekly_update() {
         $this->cron->rex_feed_weekly_cron_handler();
+    }
+    
+    /**
+     * Daily cron handler
+     */
+    public function activate_daily_update() {
+        $this->cron->rex_feed_daily_cron_handler();
     }
 
 
@@ -616,6 +626,21 @@ class Rex_Product_Feed_Admin {
                 'free'  => true,
                 'status'    => 1,
                 'name'  => 'DealsF4u.gr'
+            ),
+            'Bestprice'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Bestprice'
+            ),
+            'spartooFr'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'SpartooFr'
+            ),
+            'mirakl'     => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Mirakl'
             )
         );
         $array = array_merge($free_merchants, $array);

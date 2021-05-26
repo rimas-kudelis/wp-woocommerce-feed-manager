@@ -572,6 +572,11 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'status' => 0,
                                     'name' => 'Spartoo.nl'
                                 ),
+                                // 'spartooFr' => array(
+                                //     'free' => true,
+                                //     'status' => 0,
+                                //     'name' => 'SpartooFr'
+                                // ),
                                 'tweakers' => array(
                                     'free' => true,
                                     'status' => 0,
@@ -1316,6 +1321,16 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'free' => true,
                                     'status' => 0,
                                     'name' => 'Deals4u.gr'
+                                ),
+                                'Bestprice' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Bestprice'
+                                ),
+                                'mirakl' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Mirakl'
                                 )
 
                             );
@@ -1870,6 +1885,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                         <?php
                         $logs = WC_Admin_Status::scan_log_files();
                         $wpfm_logs = array();
+                       
                         $pattern = '/^wpfm|fatal/';
                         foreach ($logs as $key => $value) {
                             if (preg_match($pattern, $key)) {

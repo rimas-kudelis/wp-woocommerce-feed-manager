@@ -1874,6 +1874,8 @@ a,
 #rex-feed-config {
   position: relative; }
 
+
+
 .rex-loading-spinner {
   position: absolute;
   top: 0;
@@ -2241,4 +2243,11 @@ a,
           .rex-licenes .rex-licenes__general-area .rex-licenes__general-wrap-area .rex-licenes__single-category .single-block:last-child {
             margin-right: 0; }
 
+
+            #rex_feed_products .product_filter_condition{
+              display: block;
+              max-width: 150px;
+              margin-left: 0;
+              margin-top: 15px;
+            }
 /*# sourceMappingURL=style.min.css.map */

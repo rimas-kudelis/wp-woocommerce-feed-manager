@@ -34,7 +34,6 @@ class Rex_Product_Feed_Controller {
     public static function add_id_to_feed_queue( $feed_id ) {
 
         $feed_queue_ids = self::get_feed_queue();
-
         if( ! in_array( $feed_id, $feed_queue_ids ) ) {
             array_push( $feed_queue_ids, $feed_id );
             update_option( 'rex_wpfm_feed_queue', $feed_queue_ids );

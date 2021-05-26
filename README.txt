@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.6.0
+Stable tag:  6.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,7 +87,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 * Auto-sync with Google Shopping Center
 * Auto feed update schedule options: weekly, daily & hourly
 * Category Mapping 
-* Extensive Filter Options (filter by category, tag or custom) 
+* Extensive Filter Options (filter by category, product, tag or custom) 
 * Dynamic Attributes
  * Add Static attributes if needed 
 * Add Prefix, and Suffix 
@@ -104,6 +104,8 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 * Yoast: SEO title, Meta description & Primary category support 
 * Supports the official “WooCommerce Composite Products” plugin
 * Supports the official “WooCommerce Product Bundles” plugin
+* Supports "Brands for WooCommerce" plugin
+* Supports "Perfect Brands for WooCoomerce" plugin
 
 
 
@@ -277,6 +279,11 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 - WooCommerce to [Etsy](https://www.etsy.com/)
 - WooCommerce to [Webgains](https://www.webgains.com/public/en/)
 - WooCommerce to [MyDeal](https://www.mydeal.com.au/)
+- WooCommerce to [Deals4U.gr](https://deals4u.gr/)
+- WooCommerce to [ibud](https://ibud.ua/)
+- WooCommerce to [BestPrice.gr](https://www.bestprice.gr/)
+- WooCommerce to [Spartoo.fr](https://www.spartoo.com/)
+- WooCommerce to [Mirakl](https://www.mirakl.com/)
 
 
 == Pro Features: ==
@@ -288,6 +295,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 * Ability To Exclude Tax From Structured Data Prices 
 * Option To Fix WooCommerce's (Json-Ld) Structured Data Bug
 * 9 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)
+* Auto-suggestion Product Filter
 
 **Supported Merchants In Pro Version**
 - All merchants feed templates in free version
@@ -498,6 +506,11 @@ Currently, we support 168 major merchant shops:
 - Etsy
 - Webgains
 - MyDeal
+- Deals4u.gr
+- Ibud
+- Spartoo.fr
+- Mirakl
+- BestPrice.gr
 
 
 = Is there a product limit? =
@@ -553,6 +566,14 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 6.6.1 (2021-05-26) =
+* Fixed: Plugin conflict with SweepWidget fixed
+* Fixed: Ceneo merchant feed structure fixed
+​* Added: Brands For WooCommerce plugin support added
+* Added: New Sanitization Filter 'Remove ShortCodes and Strip Tags' added
+* Added: New Template - BestPrice.gr
+* Added: New Template - Mirakl
+
 = 6.6.0 (2021-05-07) =
 * Added: New Sanitization Filter - Replace Space With Hyphen (-)
 * Added: Add Purge Cache button on the feed generation page
@@ -562,7 +583,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Heureka Delivery Attribute structure fixed
 * Fixed: Feed not fetching correct info from Advanced Custom Fields (ACF) fixed
 * Fixed: Vivino template structure fixed
-* Fixed: Vivino template structure
 
 = 6.5.2 (2021-05-05) =
 * Fixed: Warning on feed generation for Google and Facebook
@@ -608,7 +628,7 @@ WP Dashboard > Product Feed > Upgrade.
 * Compatibility Checked : WooCommerce 5.1.0 & WP 5.7
 
 = 6.3.3 (2021-03-03) =
-* Added: WooMart Theme Gallery Image Compatibility
+* Added: WoodMart Theme Gallery Image Compatibility
 * Fixed: Remove extra space at the end when Strip tags used
 * Fixed: Favi Price Tag And Product URL issue
 * Fixed: PHP notices resolved
