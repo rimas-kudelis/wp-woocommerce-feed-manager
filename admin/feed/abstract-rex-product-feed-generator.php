@@ -1276,8 +1276,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.csv");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
             
-            $this->feed = preg_replace('/\s+/', ' ',$this->feed);
-            $this->feed = str_replace('\t', ' ', $this->feed);  
+//            $this->feed = preg_replace('/\s+/', ' ',$this->feed);
+//            $this->feed = str_replace('\t', ' ', $this->feed);
 
             if($this->batch == 1) {
                 if(file_exists($file)){
