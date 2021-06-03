@@ -1329,7 +1329,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-
     /**
      * get feed item as string
      *

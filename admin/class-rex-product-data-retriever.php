@@ -262,12 +262,7 @@ class Rex_Product_Data_Retriever {
 
         // maybe limit
         $val = $this->maybe_limit($val, $rule['limit']);
-        $val = trim(preg_replace('/(?:\s\s+|\n|\t)/', '',$val));
-        
-        if(!$val){
-            return '\t';
-        }
-
+        // $val = trim(preg_replace('/(?:\s\s+|\n|\t)/', '',$val));
         return $val;
 
     }
@@ -532,7 +527,7 @@ class Rex_Product_Data_Retriever {
 
                 if($this->wcml) {
                     global $woocommerce_wpml;
-                    $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
+                    $_price  = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
 
                     //if WCML price is set manually
                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1930,14 +1925,7 @@ class Rex_Product_Data_Retriever {
         $output = array();
         $term_names = [];
         foreach ($terms as $term) {
-//            if($term->parent) {
-//                $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
-//                if(is_array($term_name_arr)) {
-//                    $output[] = implode($sep, $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names));
-//                }
-//            }else {
-//                $term_names[] = $term->name;
-//            }
+
             $term_names[] = $term->name;
  
         }

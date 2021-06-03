@@ -290,14 +290,16 @@ class Rex_Product_Feed_Admin {
     public function rex_wpfm_admin_notices() {
 
         $show_notice = get_option('rex_bwfm_notification_status');
-
         $activation_time = get_option('rex_bwfm_first_installation');
-
         $current_time = time();
-        $notice_start = 1209600;
-        $interval   = ($current_time - $activation_time) > $notice_start ? true : false;
-        
-        if ($interval AND $show_notice !='no') {?>
+
+        $notice_start = 7;
+        // $notice_start = 1209600;
+        $current_date = new DateTime(date('Y-m-d',$current_time));
+        $activation_date = new DateTime(date('Y-m-d', $activation_time));
+        $date_diff = $activation_date->diff($current_date);
+        $interval   = $date_diff->d > $notice_start ? true : false;
+        if ($interval && $show_notice !='no' && $_GET['post_type'] == 'product-feed') {?>
             <div class="notice notice-info bwfm-review-notice" style="position: relative; border-left-color: #00b4ff;">
                 <div class="wpfm-logo">
                     <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER.'icon/logo.png'?>" style="max-width: 100%;">
