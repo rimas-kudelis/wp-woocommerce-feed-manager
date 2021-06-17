@@ -196,11 +196,11 @@ class Rex_Product_Feed_Google_local_products_inventory extends Rex_Product_Feed_
     public function returnFinalProduct()
     {
 
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             return GoogleShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             return GoogleShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return GoogleShopping::asCsv();
         }
         return GoogleShopping::asRss();

@@ -143,7 +143,7 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-        if($this->feed_format==='csv'){
+        if($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon'){
             return RexShoppingCustom::asCSVFeeds($this->batch);
         }elseif ($this->feed_format==='tsv'){
             return RexShoppingCustom::asTSVFeeds($this->batch);

@@ -163,6 +163,8 @@ class Rex_Feed_Attributes {
         }
         $attributes['Category Map'] = $cat_maps_array;
 
+        $attributes = apply_filters('rex_wpfm_attributes',$attributes);
+        
         return $attributes;
     }
 
@@ -250,11 +252,12 @@ class Rex_Feed_Attributes {
             $data = $wpdb->get_results($sql);
             
             if (count($data)) {
+               
                 foreach ($data as $key => $value) {
                     if (!preg_match("/_product_attributes/i", $value->name)) {
-                       
                         $value_display = str_replace("_", " ",$value->name);
                         $attributes["custom_attributes_" . $value->name] = ucfirst($value_display);
+                        
                     }else {
                         
                         $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta as postmeta
@@ -289,7 +292,6 @@ class Rex_Feed_Attributes {
                     if($clean_value == $clean_value2){
                         
                         if($i == 1){
-                            
                             $modify_key2 = substr_replace($key2, '_', 18, 0);
                             unset($attributes[$modify_key2]);
                         }

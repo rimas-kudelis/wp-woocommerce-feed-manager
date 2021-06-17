@@ -171,11 +171,11 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
      */
     public function returnFinalProduct()
     {
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             return GoogleLocalProducts::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             return GoogleLocalProducts::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return GoogleLocalProducts::asCsv();
         }
         return GoogleLocalProducts::asRss();

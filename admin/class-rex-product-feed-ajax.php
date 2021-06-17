@@ -359,6 +359,7 @@ class Rex_Product_Feed_Ajax {
             'doofinder',
             'emarts',
             'epoq',
+            'google_review'
         );
         $facebook_format = array(
             'facebook',
@@ -443,54 +444,70 @@ class Rex_Product_Feed_Ajax {
         );
 
 
-        if (in_array( $merchant, $google_format )) {
-            return array('xml');
-        }
-        elseif (in_array( $merchant, $facebook_format )) {
-            return array('xml', 'csv');
-        }elseif (in_array( $merchant, $amazon_format ))
-        {
-            return array('csv', 'tsv','text');
-        }elseif (in_array( $merchant, $snapchat_format )){
-            return array('csv');
-        }elseif (in_array( $merchant, $printerst_format ))
-        {
-            return array('csv','tsv','xml');
-        }elseif (in_array( $merchant, $Ebay_format )){
-            return array('csv');
-        }elseif (in_array( $merchant, $instagram_format ))
-        {
-            return array('xml','csv','tsv');
-        }elseif (in_array( $merchant, $trovaprezzi_format )){
-            return array('xml','csv');
-        }elseif (in_array( $merchant, $zalando_format )){
-            return array('json');
-        }elseif (in_array( $merchant, $wish_format )){
-            return array('csv','text');
-        }elseif (in_array( $merchant, $connexity_format )){
-            return array('csv','text');
-        }elseif (in_array( $merchant, $google_local_product_inventory )){
-            return array('xml','text');
-        }elseif (in_array( $merchant, $google_local_product )){
-            return array('text','csv');
-        }elseif (in_array( $merchant, $shopzilla)){
-            return array('text');
-        }elseif (in_array( $merchant, $bing)){
-            return array('text');
-        }elseif (in_array( $merchant, $ibud)){
-            return array('xml');
-        }elseif (in_array( $merchant, $mirakl)){
-            return array('xml');
-        }elseif (in_array( $merchant, $DealsForU)){
-            return array('xml');
-        }elseif (in_array( $merchant, $Bestprice)){
-            return array('xml');
-        }elseif (in_array( $merchant, $spartooFr)){
-            return array('xml','csv');
-        }elseif (in_array( $merchant, $google_local_inventory_ads)){
-            return array('xml','text');
-        }
-        return array('xml', 'csv', 'text', 'tsv', 'json');
+	    if ( in_array( $merchant, $google_format ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $facebook_format ) ) {
+		    return array( 'xml', 'csv', 'csv_semicolon' );
+	    }
+        elseif ( in_array( $merchant, $amazon_format ) ) {
+		    return array( 'csv', 'csv_semicolon', 'tsv', 'text' );
+	    }
+        elseif ( in_array( $merchant, $snapchat_format ) ) {
+		    return array( 'csv', 'csv_semicolon' );
+	    }
+        elseif ( in_array( $merchant, $printerst_format ) ) {
+		    return array( 'csv', 'csv_semicolon', 'tsv', 'xml' );
+	    }
+        elseif ( in_array( $merchant, $Ebay_format ) ) {
+		    return array( 'csv', 'csv_semicolon' );
+	    }
+        elseif ( in_array( $merchant, $instagram_format ) ) {
+		    return array( 'xml', 'csv', 'csv_semicolon', 'tsv' );
+	    }
+        elseif ( in_array( $merchant, $trovaprezzi_format ) ) {
+		    return array( 'xml', 'csv', 'csv_semicolon' );
+	    }
+        elseif ( in_array( $merchant, $zalando_format ) ) {
+		    return array( 'json' );
+	    }
+        elseif ( in_array( $merchant, $wish_format ) ) {
+		    return array( 'csv', 'csv_semicolon', 'text' );
+	    }
+        elseif ( in_array( $merchant, $connexity_format ) ) {
+		    return array( 'csv', 'csv_semicolon', 'text' );
+	    }
+        elseif ( in_array( $merchant, $google_local_product_inventory ) ) {
+		    return array( 'xml', 'text' );
+	    }
+        elseif ( in_array( $merchant, $google_local_product ) ) {
+		    return array( 'text', 'csv', 'csv_semicolon' );
+	    }
+        elseif ( in_array( $merchant, $shopzilla ) ) {
+		    return array( 'text' );
+	    }
+        elseif ( in_array( $merchant, $bing ) ) {
+		    return array( 'text' );
+	    }
+        elseif ( in_array( $merchant, $ibud ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $mirakl ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $DealsForU ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $Bestprice ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $spartooFr ) ) {
+		    return array( 'xml', 'csv', 'csv_semicolon' );
+	    }
+        elseif ( in_array( $merchant, $google_local_inventory_ads ) ) {
+		    return array( 'xml', 'text' );
+	    }
+	    return array( 'xml', 'csv', 'csv_semicolon', 'text', 'tsv', 'json' );
     }
 
 

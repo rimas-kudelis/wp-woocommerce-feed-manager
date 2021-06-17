@@ -266,11 +266,11 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
      */
     public function returnFinalProduct()
     {
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             return FaviShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             return FaviShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return FaviShopping::asCsv();
         }
         return FaviShopping::asRss();

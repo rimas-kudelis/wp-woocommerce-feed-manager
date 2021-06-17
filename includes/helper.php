@@ -88,80 +88,83 @@ if( !function_exists('wpfm_run_schedule_update') ) {
      * @param $feeds
      * @param string $schedule
      */
-    function wpfm_run_schedule_update($feeds, $schedule = 'hourly') {
-        $count      = 0;
-        $batch_size = 20;
-        if ($feeds) {
-            $total_feeds = count($feeds);
-            foreach ($feeds as $key => $feed_id) {
-                $products_info = Rex_Product_Feed_Ajax::get_product_number(array());
-                $per_batch = $products_info['per_batch'];
-                $total_batches = $products_info['total_batch'];
-                $offset = 0;
-                $terms_array = array();
-                for ($i = 1; $i<=$total_batches; $i++) {
-                    if($i === 1) update_post_meta($feed_id, 'rex_feed_status', 'processing');
-                    if($i === $total_batches) update_post_meta($feed_id, 'rex_feed_status', 'completed');
+	function wpfm_run_schedule_update( $feeds, $schedule = 'hourly' )
+	{
+		$count      = 0;
+		$batch_size = 20;
+		if ( $feeds ) {
+			$total_feeds = count( $feeds );
+			foreach ( $feeds as $key => $feed_id ) {
+				$products_info = Rex_Product_Feed_Ajax::get_product_number( array() );
+				$per_batch     = $products_info[ 'per_batch' ];
+				$total_batches = $products_info[ 'total_batch' ];
+				$offset        = 0;
+				$terms_array   = array();
 
-                    $merchant = get_post_meta($feed_id, 'rex_feed_merchant', true);
-                    $feed_config = get_post_meta($feed_id, 'rex_feed_feed_config', true);
-                    $feed_filter = get_post_meta($feed_id, 'rex_feed_feed_config_filter', true);
-                    $product_scope = get_post_meta($feed_id, 'rex_feed_products', true);
-                    $include_variations = get_post_meta($feed_id, 'rex_feed_variations', true) === 'yes';
-                    $variable_product = get_post_meta($feed_id, 'rex_feed_variable_product', true) === 'yes';
-                    $parent_product = get_post_meta($feed_id, 'rex_feed_parent_product', true) === 'yes';
-                    $exclude_hidden_products = get_post_meta($feed_id, 'rex_feed_hidden_products', true) === 'yes';
-                    $append_variations = get_post_meta($feed_id, 'rex_feed_variation_product_name', true) === 'yes';
-                    $wpml = get_post_meta($feed_id, 'rex_feed_wpml_language', true) ? get_post_meta($feed_id, 'rex_feed_wpml_language', true) : '';
-                    $feed_format = get_post_meta($feed_id, 'rex_feed_feed_format', true) ?
-                        get_post_meta($feed_id, 'rex_feed_feed_format', true) : 'xml';
+				for ( $i = 1; $i <= $total_batches; $i++ ) {
+					if ( $i === 1 ) update_post_meta( $feed_id, 'rex_feed_status', 'processing' );
+					if ( $i === $total_batches ) update_post_meta( $feed_id, 'rex_feed_status', 'completed' );
 
-                    if ( $product_scope !== 'all' && $product_scope !== 'filter') {
-                        $terms = wp_get_post_terms($feed_id, $product_scope);
-                        if ($terms) {
-                            foreach ($terms as $term) {
-                                $terms_array[] = $term->slug;
-                            }
-                        }
-                    }
+					$merchant                = get_post_meta( $feed_id, 'rex_feed_merchant', true );
+					$feed_config             = get_post_meta( $feed_id, 'rex_feed_feed_config', true );
+					$feed_filter             = get_post_meta( $feed_id, 'rex_feed_feed_config_filter', true );
+					$product_scope           = get_post_meta( $feed_id, 'rex_feed_products', true );
+					$include_variations      = get_post_meta( $feed_id, 'rex_feed_variations', true ) === 'yes';
+					$variable_product        = get_post_meta( $feed_id, 'rex_feed_variable_product', true ) === 'yes';
+					$parent_product          = get_post_meta( $feed_id, 'rex_feed_parent_product', true ) === 'yes';
+					$exclude_hidden_products = get_post_meta( $feed_id, 'rex_feed_hidden_products', true ) === 'yes';
+					$append_variations       = get_post_meta( $feed_id, 'rex_feed_variation_product_name', true ) === 'yes';
+					$wpml                    = get_post_meta( $feed_id, 'rex_feed_wpml_language', true ) ? get_post_meta( $feed_id, 'rex_feed_wpml_language', true ) : '';
+					$feed_format             = get_post_meta( $feed_id, 'rex_feed_feed_format', true ) ?
+						get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
 
-                    $payload = array(
-                        'merchant' => $merchant,
-                        'feed_format' => $feed_format,
-                        'feed_config'    => $feed_config,
-                        'append_variations' => $append_variations,
-                        'info'      => array(
-                            'post_id'       => $feed_id,
-                            'title'         => get_the_title($feed_id),
-                            'desc'          => get_the_title($feed_id),
-                            'total_batch'   => $total_batches,
-                            'batch'         => $i,
-                            'per_page'      => $per_batch,
-                            'offset'        => $offset,
-                            'products_scope' => $product_scope,
-                            'cats'          => $terms_array,
-                            'tags'          => $terms_array,
-                        ),
-                        'feed_filter'    => $feed_filter,
-                        'include_variations' => $include_variations,
-                        'variable_product' => $variable_product,
-                        'parent_product' => $parent_product,
-                        'exclude_hidden_products' => $exclude_hidden_products,
-                        'wpml_language' => $wpml,
-                    );
-                    try {
-                        $merchant = Rex_Product_Feed_Factory::build( $payload, true );
-                        $merchant->make_feed();
-                        $offset += (int) $per_batch;
-                    } catch (Exception $e) {
-                        $log = wc_get_logger();
-                        $log->critical( $e->getMessage(), array('source' => 'wpfm-error') );
-                    }
-                }
-                $count ++;
-            }
-        }
-    }
+					if ( $product_scope !== 'all' && $product_scope !== 'filter' ) {
+						$terms = wp_get_post_terms( $feed_id, $product_scope );
+						if ( $terms ) {
+							foreach ( $terms as $term ) {
+								$terms_array[] = $term->slug;
+							}
+						}
+					}
+
+					$payload = array(
+						'merchant'                => $merchant,
+						'feed_format'             => $feed_format,
+						'feed_config'             => $feed_config,
+						'append_variations'       => $append_variations,
+						'info'                    => array(
+							'post_id'        => $feed_id,
+							'title'          => get_the_title( $feed_id ),
+							'desc'           => get_the_title( $feed_id ),
+							'total_batch'    => $total_batches,
+							'batch'          => $i,
+							'per_page'       => $per_batch,
+							'offset'         => $offset,
+							'products_scope' => $product_scope,
+							'cats'           => $terms_array,
+							'tags'           => $terms_array,
+						),
+						'feed_filter'             => $feed_filter,
+						'include_variations'      => $include_variations,
+						'variable_product'        => $variable_product,
+						'parent_product'          => $parent_product,
+						'exclude_hidden_products' => $exclude_hidden_products,
+						'wpml_language'           => $wpml,
+					);
+					try {
+						$merchant = Rex_Product_Feed_Factory::build( $payload, true );
+						$merchant->make_feed();
+						$offset += (int) $per_batch;
+					}
+					catch ( Exception $e ) {
+						$log = wc_get_logger();
+						$log->critical( $e->getMessage(), array( 'source' => 'wpfm-error' ) );
+					}
+				}
+				$count++;
+			}
+		}
+	}
 }
 
 

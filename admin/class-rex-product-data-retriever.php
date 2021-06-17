@@ -1,7 +1,5 @@
 
 <?php
-
-
 /**
  * Class for retriving product data based on user selected feed configuration.
  *
@@ -11,8 +9,7 @@
  * @subpackage Rex_Product_Feed/admin
  * @author     RexTheme <info@rextheme.com>
  */
-class Rex_Product_Data_Retriever {
-
+class Rex_Product_Data_Retriever{
     /**
      * The ID of this plugin.
      *
@@ -21,8 +18,6 @@ class Rex_Product_Data_Retriever {
      * @var      string    $plugin_name    The ID of this plugin.
      */
     protected $feed_rules;
-
-
     /**
      * @var string $feed_id The id of the feed
      */
@@ -218,25 +213,19 @@ class Rex_Product_Data_Retriever {
      */
     public function set_val( $rule ) {
         $val = '';
+
         if ( 'static' === $rule['type'] ) {
             $val = $rule['st_value'];
         }
         elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
-
             $val = $this->set_pr_att( $rule['meta_key'] , $rule['escape'] );
-           
-            
         }
         elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
-            
             $val = $this->set_woodmart_att( $rule['meta_key'] );
         }elseif ( 'meta' === $rule['type'] && $this->is_perfect_attr( $rule['meta_key'] ) ) {
-            
             $val = $this->set_perfect_attr( $rule['meta_key'] );
         }elseif ( 'meta' === $rule['type'] && $this->is_wc_brand_attr( $rule['meta_key'] ) ) {
-            
             $val = $this->set_wc_brand_attr( $rule['meta_key'] );
-
         }elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
             $val = $this->set_image_att( $rule['meta_key']  );
         }
@@ -245,7 +234,6 @@ class Rex_Product_Data_Retriever {
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_dynamic_att( $rule['meta_key']  );
-            
         }
         elseif ( 'meta' === $rule['type'] && $this->is_product_custom_attr( $rule['meta_key'] ) ) {
             $val = $this->set_product_custom_att( $rule['meta_key']  );
@@ -266,6 +254,8 @@ class Rex_Product_Data_Retriever {
         return $val;
 
     }
+
+    
 
     /**
      * Return all data.
@@ -397,12 +387,9 @@ class Rex_Product_Data_Retriever {
             case 'title':
                 if($this->append_variation === 'no') {
                     if($this->product->is_type('variation')) {
-                        $pr_id = $this->product->get_parent_id();
-                        // $_title = preg_replace('/\s+/', ' ', get_the_title($pr_id));
-                        // $_title = str_replace('\t', '', $_title);
-                        // return $_title;
-                 
-                        return get_the_title($pr_id);
+                        /*$pr_id = $this->product->get_parent_id();*/
+
+                        return $this->product->get_title();
                     }
 
                     return $this->product->get_name();
@@ -1252,7 +1239,6 @@ class Rex_Product_Data_Retriever {
                 return $this->get_product_cats(); break;
 
             case 'product_cats_path':
-              
                 return $this->get_product_cats_with_seperator(); break;
 
             case 'product_cats_path_pipe':
@@ -1432,7 +1418,10 @@ class Rex_Product_Data_Retriever {
                 }
                 return ''; break;
             case 'featured_image':
-                return wp_get_attachment_url(  $this->product->get_image_id() ); break;
+                if( wp_get_attachment_url(  $this->product->get_image_id() ) ){
+                    return wp_get_attachment_url(  $this->product->get_image_id() ); break;
+                }
+                return ''; break;
             case 'all_image':
                 return $this->get_all_image(); break;
             case 'all_image_pipe':
@@ -1523,6 +1512,7 @@ class Rex_Product_Data_Retriever {
                     $meta_value = str_replace('|', ',', $list[$new_key]);
                 }
             }
+            
         }
         return apply_filters("product_custom_att_value_{$new_key}", $meta_value, $new_key, $this->product);
 
@@ -1747,7 +1737,7 @@ class Rex_Product_Data_Retriever {
 
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             return $this->get_the_term_list_with_path( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
-        }else {
+        }else {            
             return $this->get_the_term_list_with_path( $this->product->get_id(), 'product_cat', $before, $sep, $after );
         }
     }
@@ -1925,12 +1915,19 @@ class Rex_Product_Data_Retriever {
         $output = array();
         $term_names = [];
         foreach ($terms as $term) {
-
+            if($term->parent) {
+                $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
+                if( is_array($term_name_arr) ) {
+                    $output[] = implode($sep, $term_name_arr);
+                }
+            }else {
+                $term_names[] = $term->name;
+            }
             $term_names[] = $term->name;
- 
+            
         }
 
-        return implode(' , ', $term_names);
+        return implode(', ', $term_names);
     }
 
 
@@ -1944,33 +1941,64 @@ class Rex_Product_Data_Retriever {
      * @return string
      */
     protected function get_the_term_list_with_path( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
-        $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'parent' => 0, 'orderby' => 'term_id' ));
+        $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'orderby' => 'term_id' ));
+
         if ( empty( $terms ) || is_wp_error( $terms ) ){
             return '';
         }
-        $output = array();
-        foreach ($terms as $term) {
-            $term_names = [];
-            $term_names[] = $term->name;
 
-            $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
-            if(is_array($term_name_arr)) {
-                $output[] = implode($sep, $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names));
-            }
+	    $terms_id = array();
+        foreach ($terms as $term) {
+        	$terms_id[] = $term->term_id;
         }
 
-        return implode($sep, $output);
-    }
+	    $output   = array();
 
+        foreach ($terms as $term) {
+            $term_names = [];
+            $term->name = htmlspecialchars_decode($term->name);
+            $term_names[] = $term->name;
+            
+           
+	        $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
+
+	        if ( !empty( array_diff( $term_name_arr, $term_names) ) ) {
+
+		        foreach ( $term_name_arr as $t_name ) {
+			        $temp = array();
+			        $temp[] = $term->name;
+			        $temp[] = $t_name;
+			        $output[] = implode($sep, $temp);
+		        }
+	        }
+	        else if ( $term->parent == 0 ) {
+		        if( is_array($term_name_arr) ) {
+			        $output[] = implode($sep, $term_name_arr);
+		        }
+	        }
+	        else if ( !in_array( $term->parent, $terms_id) ) {
+		        if( is_array($term_name_arr) ) {
+			        $output[] = implode($sep, $term_name_arr);
+		        }
+	        }
+        }
+        return implode(', ', $output);
+    }
 
     protected function get_cat_names_array($id, $taxonomy, $parent, $term_name_array) {
         $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'parent' => $parent,'orderby' => 'term_id' ));
+
         if ( empty( $terms ) || is_wp_error( $terms ) ){
             return $term_name_array;
         }
-        $term_name_array[] = $terms[0]->name;
-        $term_name_array = $this->get_cat_names_array($id, $taxonomy, $terms[0]->term_id, $term_name_array);
-        return $term_name_array;
+		$term_arr = array();
+        foreach ( $terms as $term ) {
+	        $term_name_array = array();
+	        $term_name_array[] = $term->name;
+	        $term_name_array = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_name_array);
+	        $term_arr[] = $term_name_array[0];
+        }
+        return $term_arr;
     }
 
 
@@ -2177,9 +2205,10 @@ class Rex_Product_Data_Retriever {
                 $regularPrice = $product->get_regular_price();
                 $currentPrice = $product->get_price();
                 if($type == "regular"){
-                    $sum += $regularPrice;
+                    
+                    $sum += (int)($regularPrice);
                 }else{
-                    $sum += $currentPrice;
+                    $sum += (int)$currentPrice;
                 }
             }
         }
@@ -2583,5 +2612,4 @@ class Rex_Product_Data_Retriever {
             array('%25', '%5b', '%5d', '%7b', '%7d', '%7c', '%20', '%22', '%3c', '%3e', '%23', '%5c', '%5e', '%7e', '%60'),
             $string);
     }
-
 }

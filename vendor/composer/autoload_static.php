@@ -132,6 +132,7 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
     );
 
     public static $classMap = array (
+        'Abstract_Rex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/class-rex-feed-abstract-data-retriever.php',
         'CategoryMapping' => __DIR__ . '/../..' . '/admin/class-category-mapping.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Google_Task_Composer' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',

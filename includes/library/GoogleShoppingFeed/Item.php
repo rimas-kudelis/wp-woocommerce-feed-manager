@@ -584,6 +584,5 @@ class Item
             $node = new Node($name);
             $this->nodes[$name] = $node->value($arguments[0])->_namespace($this->namespace);
         }
-
     }
 }

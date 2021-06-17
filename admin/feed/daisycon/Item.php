@@ -535,6 +535,7 @@ class Item
     public function additional_image_link($imagesLink)
     {
         $this->nodes['additional_image_link'] = [];
+
         if (is_array($imagesLink)) {
             foreach ($imagesLink as $imageLink) {
                 $node = new Node('additional_image_link');

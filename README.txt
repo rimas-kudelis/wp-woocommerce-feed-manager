@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.6.3
+Stable tag:  6.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -566,6 +566,17 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 6.6.4 (2021-06-17) =
+* Fixed: Last update showing 00:00 01.01.1970 - issue fixed
+* Fixed: Empty field showing %20 - issue fixed
+* Fixed: TSV feed multiple spaces - issue fixed
+* Fixed: Hyphen is replaced with a special character (Variable Product) - issue fixed
+* Fixed: Product Categories Path showing blank result if the parent category is unavailable - issue fixed
+* Fixed: Pinterest template structure fixed
+* Added: Duplicate Feed feature added
+* Added: Semicolon (;) separator for CSV feature added
+* Added: New feed template added – Spartoo.fr
+
 = 6.6.3 (2021-06-03) =
 * Fixed: Fix admin notice dismissal issue
 
@@ -575,10 +586,11 @@ WP Dashboard > Product Feed > Upgrade.
 = 6.6.1 (2021-05-26) =
 * Fixed: Plugin conflict with SweepWidget fixed
 * Fixed: Ceneo merchant feed structure fixed
-​* Added: Brands For WooCommerce plugin support added
 * Added: New Sanitization Filter 'Remove ShortCodes and Strip Tags' added
 * Added: New Template - BestPrice.gr
 * Added: New Template - Mirakl
+* Added: Brands For WooCommerce plugin support added
+
 
 = 6.6.0 (2021-05-07) =
 * Added: New Sanitization Filter - Replace Space With Hyphen (-)

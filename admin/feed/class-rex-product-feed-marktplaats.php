@@ -219,11 +219,11 @@ class Rex_Product_Feed_Marktplaats extends Rex_Product_Feed_Abstract_Generator {
      */
     public function returnFinalProduct()
     {
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             return MarktPlaatsShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             return MarktPlaatsShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return MarktPlaatsShopping::asCsv();
         }
         return MarktPlaatsShopping::asRss();

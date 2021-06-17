@@ -165,11 +165,11 @@ class Rex_Product_Feed_Shopping extends Rex_Product_Feed_Other {
      */
     public function returnFinalProduct(){
 
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             return RexShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             return RexShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return RexShopping::asCsv();
         }
         return RexShopping::asRss();

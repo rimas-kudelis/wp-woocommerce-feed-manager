@@ -395,8 +395,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
         if($this->tbatch == $this->batch) {
-            $wp_date_format = get_option('date_format', 'F j, Y');
-            $wp_time_format = get_option('time_format', 'g:i a');
+            $wp_date_format = 'F j, Y';
+            $wp_time_format = 'g:i a';
             update_post_meta($this->id, 'updated', current_time($wp_date_format.' '.$wp_time_format));
         }
 
@@ -744,9 +744,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if(array_key_exists('tax_query', $this->products_args)) {
                 $this->products_args['tax_query']['relation'] = 'AND';
             }
-
-            
-          
         }
        
 
@@ -1044,7 +1041,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     }
 
 
-
     /**
      * Setup the variable products from products array.
      */
@@ -1062,7 +1058,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         return false;
     }
-
 
 
     /**
@@ -1111,8 +1106,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
     }
 
 
-
-
     /**
      * Setup the variable products from products array.
      */
@@ -1139,22 +1132,73 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys ){
 
-        $data = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
-        return $data->get_all_data();
+	    $data                  = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
+	    $all_data              = $data->get_all_data();
 
-        if( class_exists( 'SitePress' ) ) {
-            global $sitepress;
-            $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
-            if($wpml) {
-                $sitepress->switch_lang($wpml);
-                $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
-            }
-        }else{
-            $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
-        }
-        
-        return $data->get_all_data();
+	    if ( $this->merchant === 'pinterest' && $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+		    return $this->additional_img_link_pinterest( $all_data );
+	    }
+
+	    return $all_data;
+
+	    /*if ( class_exists( 'SitePress' ) ) {
+		    global $sitepress;
+		    $wpml = get_post_meta( $this->id, 'rex_feed_wpml_language', true ) ? get_post_meta( $this->id, 'rex_feed_wpml_language', true ) : $sitepress->get_default_language();
+		    if ( $wpml ) {
+			    $sitepress->switch_lang( $wpml );
+			    $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params );
+		    }
+	    }
+	    else {
+		    $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params );
+	    }
+
+	    return $data->get_all_data();*/
     }
+
+	/**
+	 * @desc Converts all additional image link
+	 * as one string for pinterest.
+	 *
+	 * @param $data
+	 * @return mixed
+	 */
+	protected function additional_img_link_pinterest( $data ) {
+		$additional_image_link_keys = array();
+		$additional_image_link_values = array();
+		$additional_image_link_keys = $this->preg_array_key_exists('/^additional_image_link_/',$data);
+
+		if ( !empty( $additional_image_link_keys ) ) {
+
+			foreach ( $additional_image_link_keys as $key ) {
+				array_push( $additional_image_link_values, $data[ $key ] );
+				unset( $data[ $key ] );
+			}
+
+			$additional_image_link_str           = implode( ', ', $additional_image_link_values );
+			$data[ 'additional_image_link' ] = $additional_image_link_str;
+
+			return $data;
+		}
+		return $data;
+	}
+
+	/**
+	 * @desc Returns keys of an array with matching pattern.
+	 *
+	 * @param $pattern
+	 * @param $array
+	 * @return array|false
+	 */
+	protected function preg_array_key_exists( $pattern, $array ) {
+		// extract the keys.
+		$keys = array_keys($array);
+
+		// convert the preg_grep() returned array to int..and return.
+		// the ret value of preg_grep() will be an array of values
+		// that match the pattern.
+		return preg_grep($pattern,$keys);
+	}
 
 
     /**
@@ -1162,9 +1206,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      *
      * @return bool
      */
-    protected function save_feed($format){
-        
-       
+    protected function save_feed($format) {
 
         $path  = wp_upload_dir();
         $baseurl = $path['baseurl'];
@@ -1182,62 +1224,49 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $log->info('**************************************************', array('source' => 'WPFM',));
             }
         }
-        if($format == 'xml'){
+        if($format === 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
-            // $this->feed = mb_convert_encoding($this->feed, 'UTF-8', 'HTML-ENTITIES');
-            // $this->feed =  iconv(mb_detect_encoding($this->feed), "UTF-8", $this->feed);
-            
-            // $this->feed = iconv(mb_detect_encoding($this->feed, mb_detect_order(), true), "UTF-8", $this->feed);
-            // $this->feed = str_replace('&nbsp;', ' ', $this->feed);
-            // $this->feed = str_replace('&lt;', '', $this->feed);
-            // $this->feed = htmlspecialchars($this->feed);
             
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
+
             if( file_exists($file) ) {
                 if( $this->batch == 1) {
                     $feed = new DOMDocument;
                     $feed->loadXML($this->feed);
+
                     $this->feed = $feed->saveXML($feed, LIBXML_NOEMPTYTAG);
                     if($this->tbatch > 1) {
                         $this->footer_replace();
                     }
 
-                    $this->feed = str_replace('\t', ' ', $this->feed);  
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
                 }else {
                     $feed = $this->get_items();
                     file_put_contents( $file, $feed, FILE_APPEND );
                     return 'true';
                 }
-                    // $feed = $this->get_items();
-                    // if($this->tbatch > 1) {
-                    //     $this->footer_replace();
-                    // }
-                    // file_put_contents( $file, $feed, FILE_APPEND );
-                    // return 'true';
-            }else{
+            } else{
                 if((int)$this->tbatch > 1) {
                     $this->footer_replace();
                 }
-                $this->feed = str_replace('\t', ' ', $this->feed);  
+
                 return file_put_contents($file, $this->feed, FILE_APPEND) ? 'true' : 'false';
             }
         }
-        elseif ($format == 'text'){
+        elseif ($format === 'text'){
             
             
             $this->feed = iconv("UTF-8", "Windows-1252//IGNORE", $this->feed);
-            $this->feed = preg_replace('/(?:\s\s+|\n|\t)/', ' ',$this->feed);
 
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.txt");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
+
             if( file_exists($file) ) {
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
-                }else {
-                    // $feed = preg_replace('/^.+\n/', '', $this->feed);
+                } else {
                     $feed = $this->feed;
                     if($feed)
                         return file_put_contents($file, $feed, FILE_APPEND) ? 'true' : 'false';
@@ -1247,20 +1276,19 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 return file_put_contents($file, $this->feed) ? 'true' : 'false';
             }
         }
-        elseif ($format == 'tsv')
+        elseif ($format === 'tsv')
         {
             
             $this->feed = iconv("UTF-8", "Windows-1252//IGNORE", $this->feed);
-            $this->feed = preg_replace('/(?:\s\s+|\n|\t)/', ' ',$this->feed);
             
             $file = trailingslashit($path) . "feed-{$this->id}.tsv";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
+
             if( file_exists($file) ) {
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
-                }else {
-                    // $feed = preg_replace('/^.+\n/', '', $this->feed);
+                } else {
                     $feed = $this->feed;
                     if($feed)
                         return file_put_contents($file, $feed, FILE_APPEND) ? 'true' : 'false';
@@ -1271,13 +1299,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
 
         }
-        elseif ($format == 'csv'){
+        elseif ($format === 'csv' || $format === 'csv_semicolon'){
             $file = trailingslashit($path) . "feed-{$this->id}.csv";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.csv");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
-            
-//            $this->feed = preg_replace('/\s+/', ' ',$this->feed);
-//            $this->feed = str_replace('\t', ' ', $this->feed);
 
             if($this->batch == 1) {
                 if(file_exists($file)){
@@ -1290,7 +1315,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 if($list) {
                     foreach ($list as $line)
                     {
-                        fputcsv($file,$line);
+                    	if ( $format === 'csv' ) {
+		                    fputcsv( $file, $line );
+	                    }
+                    	elseif ( $format === 'csv_semicolon' ) {
+		                    fputcsv( $file, $line, ';' );
+	                    }
                     }
                 }
 
@@ -1304,7 +1334,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 array_shift($list);
                 foreach ($list as $line)
                 {
-                    fputcsv($file,$line);
+	                if ( $format === 'csv' ) {
+		                fputcsv( $file, $line );
+	                }
+	                elseif ( $format === 'csv_semicolon' ) {
+		                fputcsv( $file, $line, ';' );
+	                }
                 }
                 fclose($file);
                 return 'true';
@@ -1335,6 +1370,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return string
      */
     public function get_items() {
+
         $feed = new DOMDocument;
         $feed->loadXML($this->feed);
         $feed_string_footer = '';
@@ -1715,7 +1751,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      **/
 
     protected function merge_feeds($prev_feed){
-       
+    	
         $xml = simplexml_load_file($prev_feed);
         if($xml) {
             $xml_str = $xml->asXML();

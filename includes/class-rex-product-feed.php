@@ -165,6 +165,11 @@ class Rex_Product_Feed {
             $this->loader->add_action( 'post_submitbox_start', $plugin_admin, 'register_purge_button' );
         // }
        
+
+        
+
+
+
         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rex_wpfm_admin_notices' );
         $this->loader->add_action( 'wpfm_cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
 
@@ -178,6 +183,12 @@ class Rex_Product_Feed {
         $this->loader->add_filter( 'bulk_actions-edit-product-feed', $plugin_admin, 'remove_bulk_edit' );
         $this->loader->add_filter( 'post_row_actions', $plugin_admin, 'remove_quick_edit' );
         $this->loader->add_filter( 'plugin_row_meta', $plugin_admin, 'wpfm_plugin_row_meta', 10, 2 );
+
+        /**
+         * duplicate feed item
+         */
+        $this->loader->add_action( 'admin_action_wpfm_duplicate_post_as_draft', $plugin_admin, 'wpfm_duplicate_post_as_draft' );
+        $this->loader->add_filter( 'page_row_actions', $plugin_admin, 'wpfm_duplicate_post_link',9,2);
 
         /**
          * new merchant status
@@ -200,6 +211,8 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'rex_feed_weekly_update', $plugin_admin, 'activate_weekly_update' );
         $this->loader->add_action( 'rex_feed_daily_update', $plugin_admin, 'activate_daily_update' );
         $this->loader->add_action( 'rex_feed_schedule_update', $plugin_admin, 'activate_schedule_update' );
+
+        
 
         /**
          * register scheduler

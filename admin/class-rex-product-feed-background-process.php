@@ -83,8 +83,7 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
      * Override if applicable, but ensure that the below actions are
      * performed, or, call parent::complete().
      */
-    protected function complete() {
-
+	protected function complete() {
         $feed_queue_ids = Rex_Product_Feed_Controller::get_feed_queue();
         foreach ($feed_queue_ids as $feed_id) {
             Rex_Product_Feed_Controller::remove_id_from_feed_queue($feed_id);

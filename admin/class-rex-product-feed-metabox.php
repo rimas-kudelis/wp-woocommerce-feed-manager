@@ -364,17 +364,18 @@ class Rex_Product_Metabox
         do_action('wpfm_merchant_settings_field', $box, $this->prefix);
 
         $box->add_field(array(
-            'name' => __('File Format', 'rex-product-feed'),
-            'desc' => __('Select Format of the Feed.', 'rex-product-feed'),
-            'id' => $this->prefix . 'feed_format',
-            'type' => 'select',
-            'options' => array(
-                'xml' => __('XML', 'rex-product-feed'),
-                'text' => __('TEXT', 'rex-product-feed'),
-                'csv' => __('CSV', 'rex-product-feed'),
-                'tsv' => __('TSV', 'rex-product-feed'),
-                'json' => __('JSON (Only for Zalando)', 'rex-product-feed'),
-            ),
+	        'name'    => __( 'File Format', 'rex-product-feed' ),
+	        'desc'    => __( 'Select Format of the Feed.', 'rex-product-feed' ),
+	        'id'      => $this->prefix . 'feed_format',
+	        'type'    => 'select',
+	        'options' => array(
+		        'xml'           => __( 'XML', 'rex-product-feed' ),
+		        'text'          => __( 'TEXT', 'rex-product-feed' ),
+		        'csv'           => __( 'CSV (default)', 'rex-product-feed' ),
+		        'csv_semicolon' => __( 'CSV (";" separator)', 'rex-product-feed' ),
+		        'tsv'           => __( 'TSV', 'rex-product-feed' ),
+		        'json'          => __( 'JSON (Only for Zalando)', 'rex-product-feed' ),
+	        ),
         ));
 
         $box->add_field(array(
@@ -732,20 +733,24 @@ class Rex_Product_Metabox
      **/
     public function sanitize_xml_file($value, $field_args, $field)
     {
-        $format = $field->data_to_save['rex_feed_feed_format'];
-        $path = wp_upload_dir();
-        if ($format == 'xml') {
-            $path = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.xml";
-        } elseif ($format == 'text') {
-            $path = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.txt";
-        } elseif ($format == 'csv') {
-            $path = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.csv";
-        } elseif ($format == 'json') {
-            $path = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.json";
-        } elseif ($format == 'tsv') {
-            $path = $path['baseurl'] . '/rex-feed' . "/feed-{$field->object_id}.tsv";
-        }
-        return esc_url($path);
+	    $format = $field->data_to_save[ 'rex_feed_feed_format' ];
+	    $path   = wp_upload_dir();
+	    if ( $format === 'xml' ) {
+		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.xml";
+	    }
+	    elseif ( $format === 'text' ) {
+		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.txt";
+	    }
+	    elseif ( $format === 'csv' || $format === 'csv_semicolon' ) {
+		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.csv";
+	    }
+	    elseif ( $format === 'json' ) {
+		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.json";
+	    }
+	    elseif ( $format === 'tsv' ) {
+		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.tsv";
+	    }
+	    return esc_url( $path );
     }
 
 

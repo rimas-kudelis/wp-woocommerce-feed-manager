@@ -2971,7 +2971,7 @@ class X509
             $start = false;
         }
 
-        return $format == self::DN_OPENSSL ? $result : $output;
+        return $format === self::DN_OPENSSL ? $result : $output;
     }
 
     /**

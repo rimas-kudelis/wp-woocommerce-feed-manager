@@ -193,11 +193,11 @@ class Rex_Product_Feed_Sooqr extends Rex_Product_Feed_Abstract_Generator {
      */
     public function returnFinalProduct()
     {
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             return SooqrShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             return SooqrShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return SooqrShopping::asCsv();
         }
         return SooqrShopping::asRss();

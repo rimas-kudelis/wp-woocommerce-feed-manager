@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Abstract_Rex_Product_Data_Retriever' => $baseDir . '/admin/class-rex-feed-abstract-data-retriever.php',
     'CategoryMapping' => $baseDir . '/admin/class-category-mapping.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Google_Task_Composer' => $vendorDir . '/google/apiclient/src/aliases.php',

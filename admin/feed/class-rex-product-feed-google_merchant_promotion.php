@@ -135,11 +135,11 @@ class Rex_Product_Feed_Google_merchant_promotion {
             $item->$key($value);
         }
 
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             $this->feed = GoogleShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             $this->feed = GoogleShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             $this->feed = GoogleShopping::asCsv();
         }else {
             $this->feed = GoogleShopping::asRss();
@@ -180,15 +180,15 @@ class Rex_Product_Feed_Google_merchant_promotion {
         }
 
 
-        if($format == 'xml'){
+        if($format === 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
             return file_put_contents($file, $this->feed) ? 'true' : 'false';
         }
-        elseif ($format == 'text'){
+        elseif ($format === 'text'){
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
             return file_put_contents($file, $this->feed) ? 'true' : 'false';
         }
-        elseif ($format == 'csv'){
+        elseif ($format === 'csv' || $format === 'csv_semicolon'){
             $file = trailingslashit($path) . "feed-{$this->id}.csv";
             if(file_exists($file)){
                 unlink($file);

@@ -133,9 +133,10 @@ class Rex_Product_CPT {
                 echo '</ul><b>';
                 break;
             case 'scheduled' :
-                $format = get_option('time_format') . ', '.get_option('date_format');
-                $last_updated = get_post_meta($post_id, 'updated', true);
-                $formatted_time = '';
+	            $format         = get_option( 'time_format', 'F j, Y' ) . ', ' . get_option( 'date_format', 'g:i a' );
+	            $last_updated   = get_post_meta( $post_id, 'updated', true );
+	            $formatted_time = '';
+
                 if($last_updated) {
                     $formatted_time = date($format, strtotime($last_updated));
                 }

@@ -252,9 +252,6 @@ class Rex_Product_Feed_Factory {
         elseif (in_array( $config['merchant'], self::$spartooFr )) {
             $className = 'Rex_Product_Feed_SpartooFr';
         }
-        // elseif (in_array( $config['merchant'], self::$google_local_inventory_ads_format )) {
-        //     $className = 'Rex_Product_Feed_Google_local_inventory_ads';
-        // }
         elseif ($config['merchant'] === 'admitad') {
             $className = 'Rex_Product_Feed_Yandex';
         }

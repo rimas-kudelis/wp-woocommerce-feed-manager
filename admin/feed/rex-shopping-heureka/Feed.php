@@ -234,7 +234,8 @@ class Feed
      * Adds items to feed
      */
     private function addItemsToFeed()
-    {   
+    {
+
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
@@ -243,7 +244,6 @@ class Feed
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
             foreach ($item->nodes() as $itemNode) {
-                
                 if($itemNode->get('name') != 'param'){
                     if(stristr($itemNode->get('name'),'Param_name_')){
                         $this->param = $feedItemNode->addChild('PARAM');

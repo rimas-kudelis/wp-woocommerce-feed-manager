@@ -33,6 +33,24 @@
     z-index: 1;
 }
 
+#major-publishing-actions {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+#major-publishing-actions #wpfm-purge-cache {
+    order: 1;
+}
+#major-publishing-actions #delete-action {
+    float: none;
+    order: 3;
+    margin-left: auto;
+}
+#major-publishing-actions #publishing-action {
+    float: none;
+    order: 2;
+}
+
 //----------01. Settings page style-----------
 
 .rex-onboarding {

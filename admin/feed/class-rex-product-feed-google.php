@@ -33,11 +33,11 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
 
         $this->generate_product_feed();
 
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             $this->feed = GoogleShopping::asRss();
-        }elseif ($this->feed_format == 'text') {
+        }elseif ($this->feed_format === 'text') {
             $this->feed = GoogleShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             $this->feed = GoogleShopping::asCsv();
         }else {
             $this->feed = GoogleShopping::asRss();
@@ -275,11 +275,11 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
      */
     public function returnFinalProduct()
     {
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             return GoogleShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             return GoogleShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return GoogleShopping::asCsv();
         }
         return GoogleShopping::asRss();

@@ -263,7 +263,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
 
                                         <div class="rex-general__logo-block">
                                             <div class="upgrade-pro">
-                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/logo.png' ?>"
+                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/logo-4.png' ?>"
                                                      alt="logo" class="img-fluid">
 
                                                 <?php if (!$is_premium_activated) { ?>
@@ -572,11 +572,11 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'status' => 0,
                                     'name' => 'Spartoo.nl'
                                 ),
-                                // 'spartooFr' => array(
-                                //     'free' => true,
-                                //     'status' => 0,
-                                //     'name' => 'SpartooFr'
-                                // ),
+                                'spartooFr' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'SpartooFr'
+                                ),
                                 'tweakers' => array(
                                     'free' => true,
                                     'status' => 0,
@@ -1336,66 +1336,66 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                             );
 
                             $_pro_merchants = array(
-                                'drm' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Google Remarketing (DRM)'
-                                ),
-                                // 'google_review' => array(
-                                //     'free' => false,
-                                //     'status' => 0,
-                                //     'name' => 'Google Review'
-                                // ),
-                                'ebay_mip' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'eBay (MIP)'
-                                ),
-                                'ebay_seller' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'eBay Seller Center'
-                                ),
-                                'ebay_seller_tickets' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'eBay Seller Center (Event tickets)'
-                                ),
-                                'bol' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Bol.com'
-                                ),
-                                'wish' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Wish.com'
-                                ),
-                                'fruugo' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Fruugo'
-                                ),
-                                'leguide' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Leguide'
-                                ),
-                                'connexity' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Connexity'
-                                ),
-                                'amazon_it_collane' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Amazon.it Collane'
-                                ),
-                                'amazon_accessories_and_scarf' => array(
-                                    'free' => false,
-                                    'status' => 0,
-                                    'name' => 'Amazon Accessories And Scarf'
-                                )
+	                            'drm'                          => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Google Remarketing (DRM)'
+	                            ),
+	                            /*'google_review'                => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Google Review'
+	                            ),*/
+	                            'ebay_mip'                     => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'eBay (MIP)'
+	                            ),
+	                            'ebay_seller'                  => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'eBay Seller Center'
+	                            ),
+	                            'ebay_seller_tickets'          => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'eBay Seller Center (Event tickets)'
+	                            ),
+	                            'bol'                          => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Bol.com'
+	                            ),
+	                            'wish'                         => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Wish.com'
+	                            ),
+	                            'fruugo'                       => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Fruugo'
+	                            ),
+	                            'leguide'                      => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Leguide'
+	                            ),
+	                            'connexity'                    => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Connexity'
+	                            ),
+	                            'amazon_it_collane'            => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Amazon.it Collane'
+	                            ),
+	                            'amazon_accessories_and_scarf' => array(
+		                            'free'   => false,
+		                            'status' => 0,
+		                            'name'   => 'Amazon Accessories And Scarf'
+	                            )
 
                             );
                             $_merchants = array_merge($_merchants, $_pro_merchants);
@@ -1410,6 +1410,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                 $_merchants = array_merge($_merchants, $_pro_merchants);
                             }
 
+
                             /**
                              * result of bad planning
                              */
@@ -1417,6 +1418,8 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                             $_merchants['google_Ad']['name'] = 'Google AdWords';
                             $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
 
+                            $_merchants = apply_filters('rex_wpfm_all_merchant',$_merchants);
+                            
                             ?>
                             <?php foreach ($_merchants as $key => $merchant):?>
 

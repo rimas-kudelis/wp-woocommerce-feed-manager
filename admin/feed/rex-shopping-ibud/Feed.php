@@ -236,7 +236,8 @@ class Feed
      * Adds items to feed
      */
     private function addItemsToFeed()
-    {   
+    {
+
         // since wordpress 4.5.0
         $args = array(
             'taxonomy'   => "product_cat",

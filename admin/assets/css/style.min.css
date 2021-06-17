@@ -22,30 +22,43 @@ body.vcv-wb-editor {
   justify-content: space-between;
 }
 #major-publishing-actions #btn_on_feed {
-  order: 1;
+  order: 2;
 }
 #major-publishing-actions #btn_on_feed:hover {
   cursor: pointer;
 }
 #major-publishing-actions #delete-action {
   float: none;
-  order: 3;
-  margin-left: auto;
+  order: 1;
+  width: 100%;
 }
 #major-publishing-actions #publishing-action {
   float: none;
-  order: 2;
+  order: 3;
 }
 
-#rex_feed_products .product_filter_condition {
-  height: 52px!important;
-  line-height: 46px!important;
-  margin-left: 15px;
+#rex_feed_products .cmb-type-product-filter .select2.select2-container {
+  width: 100%!important;
 }
 
 #rex_feed_products  .select2-container--default .select2-selection--multiple,
 #rex_feed_products .select2-container--default.select2-container--focus .select2-selection--multiple {
-border: 1px solid #e8e8e8;
+  border: 1px solid #e8e8e8;
+}
+
+#rex_feed_products .cmb-type-product-filter .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  padding: 11px 10px;
+}
+#rex_feed_products .cmb-type-product-filter .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  padding: 0 23px 0 5px;
+}
+#rex_feed_products .cmb-type-product-filter .select2-container--default .select2-selection--multiple .select2-selection__clear {
+  padding: 2px 7px;
+  font-size: 20px;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 
@@ -856,7 +869,7 @@ a,
   color: #363b4ead;
   padding: 5px 0; }
 .rex-onboarding button#wpfm-purge-cache {
-  width: 59%; 
+  width: 59%;
   height: 46px; }
   @media (max-width: 1599px) {
     .rex-onboarding button#wpfm-purge-cache {
@@ -882,7 +895,6 @@ a,
   width: 140px !important;
   justify-content: center;
   text-align: center;
-  margin-left: 1%;
   min-height: 32px;
   line-height: 2.30769231;
   padding: 0 12px
@@ -1005,6 +1017,14 @@ a,
   padding-left: 12px;
   padding-right: 25px;
   min-width: 240px; }
+  #rex_feed_products .nice-select.product_filter_condition {
+    height: 40px;
+    line-height: 38px;
+    margin-left: 0;
+    margin-top: 15px;
+    max-width: 150px;
+    display: block;
+}
   #rex_feed_conf .nice-select:after,
   #rex_feed_products .nice-select:after {
     height: 7px;
@@ -2244,10 +2264,11 @@ a,
             margin-right: 0; }
 
 
-            #rex_feed_products .product_filter_condition{
-              display: block;
-              max-width: 150px;
-              margin-left: 0;
-              margin-top: 15px;
-            }
-/*# sourceMappingURL=style.min.css.map */
+@media screen and (max-width: 782px){
+    #delete-action, #publishing-action {
+      line-height: 1.9;
+    }
+    .btn_on_feed {
+      height: 40px!important;
+    }
+}

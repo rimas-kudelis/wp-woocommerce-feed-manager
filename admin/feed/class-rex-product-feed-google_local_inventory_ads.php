@@ -195,15 +195,16 @@ class Rex_Product_Feed_Google_local_inventory_ads extends Rex_Product_Feed_Abstr
      */
     public function returnFinalProduct()
     {
-
-        if ($this->feed_format == 'xml') {
-            return GoogleLocalProducts::asRss();
-        } elseif ($this->feed_format == 'text') {
-            return GoogleLocalProducts::asTxt();
-        } elseif ($this->feed_format == 'csv') {
-            return GoogleLocalProducts::asCsv();
-        }
-        return GoogleLocalProducts::asRss();
+	    if ( $this->feed_format === 'xml' ) {
+		    return GoogleLocalProducts::asRss();
+	    }
+	    elseif ( $this->feed_format === 'text' ) {
+		    return GoogleLocalProducts::asTxt();
+	    }
+	    elseif ( $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+		    return GoogleLocalProducts::asCsv();
+	    }
+	    return GoogleLocalProducts::asRss();
     }
 
     public function footer_replace() {

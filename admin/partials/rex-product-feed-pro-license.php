@@ -224,7 +224,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
 
                 <div class="rex-licenes__logo-area">
                     <div class="rex-licenes__logo">
-                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/logo.png'?>" class="title-icon" alt="logo">
+                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/logo-4.png'?>" class="title-icon" alt="logo">
                     </div>
 
                     <div class="rex-licenes__btn-area">

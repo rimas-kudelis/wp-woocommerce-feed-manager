@@ -127,7 +127,7 @@ class Feed
         
         $date = date("Y-m-d H:i");
         
-        $this->feed = new SimpleXMLElement('<Products></Products>');
+        $this->feed = new SimpleXMLElement('<root></root>');
     }
 
     /**
@@ -247,11 +247,11 @@ class Feed
     {   
         
         
-        // $shopNodes = $this->feed->addChild('products');
+        $shopNodes = $this->feed->addChild('products');
         
         foreach ($this->items as $item) {
            
-            $feedItemNode = $this->feed->addChild('product');
+            $feedItemNode = $shopNodes->addChild('product');
             $i = 0;
             $k = 0;
             $photo_ittr = 1;

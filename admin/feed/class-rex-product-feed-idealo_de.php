@@ -202,7 +202,7 @@ class Rex_Product_Feed_Idealo_de extends Rex_Product_Feed_Abstract_Generator {
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-        if($this->feed_format==='csv'){
+        if($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon'){
             return Idealo_de::asCSVFeeds($this->batch);
         }elseif ($this->feed_format==='tsv'){
             return Idealo_de::asTSVFeeds($this->batch);

@@ -165,11 +165,11 @@ class Rex_Product_Feed_Grupo_zap extends Rex_Product_Feed_Abstract_Generator {
      */
     public function returnFinalProduct(){
 
-        if ($this->feed_format == 'xml') {
+        if ($this->feed_format === 'xml') {
             return GrupozapShopping::asRss();
-        } elseif ($this->feed_format == 'text') {
+        } elseif ($this->feed_format === 'text') {
             return GrupozapShopping::asTxt();
-        } elseif ($this->feed_format == 'csv') {
+        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return GrupozapShopping::asCsv();
         }
         return GrupozapShopping::asRss();
