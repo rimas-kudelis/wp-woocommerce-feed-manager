@@ -1923,8 +1923,6 @@ class Rex_Product_Data_Retriever{
             }else {
                 $term_names[] = $term->name;
             }
-            $term_names[] = $term->name;
-            
         }
 
         return implode(', ', $term_names);
