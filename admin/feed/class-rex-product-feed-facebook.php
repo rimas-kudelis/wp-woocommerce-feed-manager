@@ -33,18 +33,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
 
-//        $this->feed = $this->returnFinalProduct();
-
-        if ($this->feed_format === 'xml') {
-            $this->feed = GoogleShopping::asRss();
-        }elseif ($this->feed_format === 'text') {
-            $this->feed = GoogleShopping::asTxt();
-        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
-            $this->feed = GoogleShopping::asCsv();
-        }else {
-            $this->feed = GoogleShopping::asRss();
-        }
-
+        $this->feed = $this->returnFinalProduct();
 
         if ($this->batch >= $this->tbatch ) {
             $this->save_feed($this->feed_format);

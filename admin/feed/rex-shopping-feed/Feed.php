@@ -291,9 +291,7 @@ class Feed
      * @return Item[]
      */
     private function addItemsToFeedCSV(){
-
         if(count($this->items)){
-            
             $this->items_row[] = array_keys(end($this->items)->nodes());
             foreach ($this->items as $item) {
                 $row = array();

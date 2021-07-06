@@ -132,7 +132,6 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
     );
 
     public static $classMap = array (
-        'Abstract_Rex_Product_Data_Retriever' => __DIR__ . '/../..' . '/admin/class-rex-feed-abstract-data-retriever.php',
         'CategoryMapping' => __DIR__ . '/../..' . '/admin/class-category-mapping.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Google_Task_Composer' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
@@ -432,6 +431,7 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Feed_Template_Winesearcher' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-winesearcher.php',
         'Rex_Feed_Template_Yandex' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-yandex.php',
         'Rex_Feed_Template_Zalando' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-zalando.php',
+        'Rex_Feed_Template_Zalando_stock_update' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-zalando-stock-update.php',
         'Rex_Feed_Template_Zbozi' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-zbozi.php',
         'Rex_Google_Merchant_Settings_Api' => __DIR__ . '/../..' . '/admin/class-rex-google-merchant-content-api.php',
         'Rex_Product_CPT' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-cpt.php',
@@ -475,6 +475,7 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Product_Feed_Vivino' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-vivino.php',
         'Rex_Product_Feed_Yandex' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-yandex.php',
         'Rex_Product_Feed_Zalando' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-zalando.php',
+        'Rex_Product_Feed_Zalando_stock_update' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-zalando-stock-update.php',
         'Rex_Product_Feed_Zbozi' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-zbozi.php',
         'Rex_Product_Filter' => __DIR__ . '/../..' . '/admin/feed-filter/class-rex-product-filter.php',
         'Rex_Product_Glami_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/glami/glami-data-retriever.php',

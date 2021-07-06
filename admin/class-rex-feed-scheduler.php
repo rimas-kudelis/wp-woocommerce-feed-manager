@@ -71,34 +71,35 @@ class Rex_Feed_Scheduler {
      */
     public function get_feeds( $schedule ) {
 
-        
-        $meta_query = array();
-        $meta_query[] = array(
-            'key'      => 'rex_feed_schedule',
-            'value'    => 'hourly',
-        );
-        if($schedule === 'daily') {
-            $meta_query[] = array(
-                'key'      => 'rex_feed_schedule',
-                'value'    => 'daily',
-            );
-            $meta_query['relation'] = 'OR';
-        }
-        if($schedule === 'weekly') {
-            $meta_query[] = array(
-                'key'      => 'rex_feed_schedule',
-                'value'    => 'weekly',
-            );
-            $meta_query['relation'] = 'OR';
-        }
+	    $meta_query   = array();
+	    if ( $schedule === 'hourly' ) {
+		    $meta_query[] = array(
+			    'key'   => 'rex_feed_schedule',
+			    'value' => 'hourly',
+		    );
+	    }
+	    if ( $schedule === 'daily' ) {
+		    $meta_query[]             = array(
+			    'key'   => 'rex_feed_schedule',
+			    'value' => 'daily',
+		    );
+//		    $meta_query[ 'relation' ] = 'OR';
+	    }
+	    if ( $schedule === 'weekly' ) {
+		    $meta_query[]             = array(
+			    'key'   => 'rex_feed_schedule',
+			    'value' => 'weekly',
+		    );
+//		    $meta_query[ 'relation' ] = 'OR';
+	    }
 
-        $args = array(
-            'post_type'      => 'product-feed',
-            'post_status'    => array('publish'),
-            'posts_per_page' => -1,
-            'fields' => 'ids',
-            'meta_query'     => $meta_query,
-        );
+	    $args = array(
+		    'post_type'      => 'product-feed',
+		    'post_status'    => array( 'publish' ),
+		    'posts_per_page' => -1,
+		    'fields'         => 'ids',
+		    'meta_query'     => $meta_query,
+	    );
 
         
         $query = new WP_Query( $args );
@@ -156,42 +157,33 @@ class Rex_Feed_Scheduler {
 
 
     /**
-     * Initialize Cron
+     * Hourly Cron
      *
      * @since    2.0.0
      */
     public function rex_feed_cron_handler() {
-        $hour = date('H');
-        $schedule = 'hourly';
-        
-        $this->feed_ids = $this->get_feeds($schedule);
 
-        $this->configure_merchant_object(true);
+        $this->configure_merchant_object(true );
         $this->start_batch_processing();
     }
 
 
     /**
-     * weekly cron
+     * Weekly Cron
      */
     public function rex_feed_weekly_cron_handler() {
-        $this->feed_ids = $this->get_feeds('weekly');
         
-        $this->configure_merchant_object(true);
+        $this->configure_merchant_object(true, 'weekly' );
         $this->start_batch_processing();
     } 
     
     /**
-     * weekly cron
+     * Daily Cron
      */
     public function rex_feed_daily_cron_handler() {
-        $hour = date('H');
-        
-        if($hour == 07){
-            $this->feed_ids = $this->get_feeds('daily');
-            $this->configure_merchant_object(true);
-            $this->start_batch_processing();
-        }   
+
+	    $this->configure_merchant_object(true, 'daily');
+	    $this->start_batch_processing();
     }
 
 
@@ -279,6 +271,8 @@ class Rex_Feed_Scheduler {
      * @param string $schedule
      */
     private function configure_merchant_object( $cron = false, $schedule = 'hourly' ) {
+
+	    $this->feed_ids = $this->get_feeds( $schedule );
 
 	    if ( $this->feed_ids ) {
 		    foreach ( $this->feed_ids as $key => $feed_id ) {
@@ -378,9 +372,7 @@ class Rex_Feed_Scheduler {
 
 
 
-    /*
-     * start the background process
-     */
+    // start the background process
     private function start_batch_processing() {
 	    if ( $this->batch_array ) {
 		    foreach ( $this->batch_array as $feed_id => $batches ) {

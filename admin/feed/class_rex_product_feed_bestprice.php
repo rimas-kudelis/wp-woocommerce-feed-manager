@@ -343,6 +343,6 @@ class Rex_Product_Feed_Bestprice extends Rex_Product_Feed_Abstract_Generator
     //replace footer of feed
     public function footer_replace()
     {
-        $this->feed = str_replace('</products>', '', $this->feed);
+        $this->feed = str_replace('</products></store>', '', $this->feed);
     }
 }

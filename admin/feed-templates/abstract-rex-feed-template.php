@@ -270,6 +270,7 @@ abstract class Rex_Feed_Abstract_Template {
      * @param string $feed_rules The Rules Of Feeds
      */
     protected function init_template_mappings( $feed_rules ){
+
         if ( !empty($feed_rules) && $feed_rules ) {
             $this->template_mappings = $feed_rules;
         }else{

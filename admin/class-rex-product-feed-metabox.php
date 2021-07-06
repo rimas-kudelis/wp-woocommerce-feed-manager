@@ -336,10 +336,6 @@ class Rex_Product_Metabox
         /**
          * result of bad planning
          */
-//        $merchant_lists['google'] = 'Google Shopping';
-//        $merchant_lists['google_Ad']= 'Google AdWords';
-//        if(array_key_exists('drm', $merchant_lists))
-//            $merchant_lists['drm'] = 'Google Remarketing (DRM)';
 
         reset($merchant_lists);
         $default_merchant = key($merchant_lists);

@@ -22,19 +22,18 @@ class Rex_Feed_Template_SpartooFr extends Rex_Feed_Abstract_Template {
 
     protected function init_atts(){
         $this->attributes = array(
-            'Required Information'      =>  array(
-                'partner_reference'     => 'Product Reference',
-                'manufacturers_name'    => 'Manufacturers Name',
-                'product_sex'           => 'Product sex',
-                'product_price'         => 'Product price',
-                'product_style'         => 'Product style',
-                'size_name_'            => 'Size name',
-                'size_quantity_'        => 'Size quantity',
-                'size_reference_'       => 'Size reference',
-                'ean_'                  => 'EAN',
-                'photo_'                => 'Picture',
-                
-            ),
+	        'Required Information' => array(
+		        'reference_partenaire' => 'Product Reference',
+		        'manufacturers_name'   => 'Manufacturers Name',
+		        'product_sex'          => 'Product sex',
+		        'product_price'        => 'Product price',
+		        'product_style'        => 'Product style',
+		        'size_name'           => 'Size name',
+		        'size_quantity'       => 'Size quantity',
+		        'size_reference'      => 'Size reference',
+		        'ean'                 => 'EAN',
+		        'photo'               => 'Picture',
+	        ),
 
             'Additional Information'    => array(
                 'product_name'          => 'Product name',
@@ -99,7 +98,7 @@ class Rex_Feed_Template_SpartooFr extends Rex_Feed_Abstract_Template {
     protected function init_default_template_mappings(){
         $this->template_mappings = array(
             array(
-                'attr'     => 'partner_reference',
+                'attr'     => 'reference_partenaire',
                 'type'     => 'meta',
                 'meta_key' => '',
                 'st_value' => '',
@@ -149,7 +148,7 @@ class Rex_Feed_Template_SpartooFr extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'size_name_',
+                'attr'     => 'size_name',
                 'type'     => 'static',
                 'meta_key' => '',
                 'st_value' => '',
@@ -159,7 +158,7 @@ class Rex_Feed_Template_SpartooFr extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'size_quantity_',
+                'attr'     => 'size_quantity',
                 'type'     => 'static',
                 'meta_key' => '',
                 'st_value' => '',
@@ -169,7 +168,7 @@ class Rex_Feed_Template_SpartooFr extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'size_reference_',
+                'attr'     => 'size_reference',
                 'type'     => 'static',
                 'meta_key' => '',
                 'st_value' => '',
@@ -179,7 +178,7 @@ class Rex_Feed_Template_SpartooFr extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'ean_',
+                'attr'     => 'ean',
                 'type'     => 'meta',
                 'meta_key' => 'sku',
                 'st_value' => '',
@@ -189,7 +188,7 @@ class Rex_Feed_Template_SpartooFr extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'photo_',
+                'attr'     => 'photo',
                 'type'     => 'meta',
                 'meta_key' => 'featured_image',
                 'st_value' => '',

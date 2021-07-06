@@ -184,7 +184,7 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
 
     //replace footer of feed
     public function footer_replace() {
-
+	    $this->feed = str_replace('</products>', '', $this->feed);
     }
 
 }

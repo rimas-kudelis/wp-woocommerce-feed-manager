@@ -116,6 +116,7 @@ class Rex_Feed_Attributes {
         }
 
         $plugins = get_option('active_plugins');
+
         if(in_array('perfect-woocommerce-brands/perfect-woocommerce-brands.php',$plugins)){
             $attributes_3 = array(
                 'Perfect Brand' => array(
@@ -146,8 +147,19 @@ class Rex_Feed_Attributes {
         $_dynamic_attributes = self::get_product_dynamic_attributes();
         $attributes['Product Dynamic Attributes'] = $_dynamic_attributes;
 
+
+
         // Get product dynamic attributes
         $_custom_attributes = self::get_product_custom_attributes();
+
+
+	    if(in_array('woo-discount-rules/woo-discount-rules.php',$plugins)){
+		    $woo_discount_rules = array(
+			    'woo_discount_rules_price'  => 'Woo Discount Rules - Price',
+			    'woo_discount_rules_expire_date'  => 'Woo Discount Rules - Expire Date',
+		    );
+		    $_custom_attributes = array_merge($_custom_attributes, $woo_discount_rules);
+	    }
        
         $attributes['Product Custom Attributes'] = $_custom_attributes;
 

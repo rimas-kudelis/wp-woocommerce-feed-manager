@@ -33,12 +33,25 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
         RexShopping::description($this->desc);
 
         $this->generate_product_feed();
+
+	    if ( $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+		    $this->feed = $this->returnFinalProduct();
+	    }
+
         if ($this->batch >= $this->tbatch ) {
-            $this->save_json_feed('json');
+        	if ( $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+		        $this->save_feed($this->feed_format );
+	        }
+        	else {
+		        $this->save_json_feed('json');
+	        }
             return array(
                 'msg' => 'finish'
             );
         }else {
+	        if ( $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+		        return $this->save_feed($this->feed_format );
+	        }
             return $this->save_json_feed('json');
         }
     }
@@ -52,6 +65,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
         $simple_products = [];
         $variation_products = [];
         $group_products = [];
+        $variable_parent = [];
         $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
             'total' => 0,
             'simple' => 0,
@@ -85,6 +99,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 $variable_parent[] = $productId;
                 $parent_atts = $this->get_product_data( $product, $product_meta_keys );
+	            $item = RexShopping::createItem();
 
                 if ( $this->exclude_hidden_products ) {
                     $variations = $product->get_visible_children();
@@ -102,18 +117,26 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                     }
                 }
                 $json_array = $this->get_product_model($parent_atts);
-                foreach ($atts as $att) {
+
+                foreach ($atts as $att ) {
+	                foreach ( $att as $key => $value ) {
+		                $item->$key($value);
+	                }
                     $json_array['product_model']['product_configs'][0]['product_simples'][] = $this->get_product_simples($att);
                 }
-                $this->product_data[] = $json_array;
+                $this->feed[] = $json_array;
             }
 
             if ( $product->is_type( 'simple' )) {
+	            $item = RexShopping::createItem();
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
+                foreach ( $atts as $key => $value ) {
+	                $item->$key($value);
+                }
                 $json_array = $this->get_product_model($atts);
                 $json_array['product_model']['product_configs'][0]['product_simples'][] = $this->get_product_simples($atts);
-                $this->product_data[] = $json_array;
+                $this->feed[] = $json_array;
             }
         }
 
@@ -209,24 +232,45 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
         $baseurl = $path['baseurl'];
         $path  = $path['basedir'] . '/rex-feed';
         $file = trailingslashit($path) . "feed-{$this->id}.json";
+
         update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.json");
         update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
+
         if($this->batch == 1) {
-            return file_put_contents($file, json_encode($this->product_data)) ? 'true' : 'false';
+            return file_put_contents($file, json_encode($this->feed)) ? 'true' : 'false';
         }
         else {
+	        $languageCulture = 'de-CH';
             $request = wp_remote_get( "http://www.google.com/basepages/producttype/taxonomy." . $languageCulture . ".txt" );
             if( is_wp_error( $request ) ) {
                 return false;
             }
             $inp = wp_remote_retrieve_body( $request );
-            $tempArray = json_decode($inp, true);
-            $result=array_merge($tempArray, $this->product_data);
+
+            $tempArray = explode( '>', $inp );
+            $result=array_merge($tempArray, $this->feed);
             $jsonData = json_encode($result);
             return file_put_contents($file, $jsonData) ? 'true' : 'false';
         }
 
     }
+
+	/**
+	 * Return Feed
+	 *
+	 * @return array|bool|string
+	 */
+	public function returnFinalProduct(){
+
+		if ($this->feed_format === 'xml') {
+			return RexShopping::asRss();
+		} elseif ($this->feed_format === 'text') {
+			return RexShopping::asTxt();
+		} elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
+			return RexShopping::asCsv();
+		}
+		return RexShopping::asRss();
+	}
 
     public function footer_replace() {}
 

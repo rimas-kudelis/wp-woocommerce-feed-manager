@@ -209,6 +209,5 @@ class Rex_Product_Feed_Google_local_inventory_ads extends Rex_Product_Feed_Abstr
 
     public function footer_replace() {
         $this->feed = str_replace('</channel></rss>', '', $this->feed);
-
     }
 }

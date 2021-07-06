@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Abstract_Rex_Product_Data_Retriever' => $baseDir . '/admin/class-rex-feed-abstract-data-retriever.php',
     'CategoryMapping' => $baseDir . '/admin/class-category-mapping.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Google_Task_Composer' => $vendorDir . '/google/apiclient/src/aliases.php',
@@ -306,6 +305,7 @@ return array(
     'Rex_Feed_Template_Winesearcher' => $baseDir . '/admin/feed-templates/class-rex-feed-template-winesearcher.php',
     'Rex_Feed_Template_Yandex' => $baseDir . '/admin/feed-templates/class-rex-feed-template-yandex.php',
     'Rex_Feed_Template_Zalando' => $baseDir . '/admin/feed-templates/class-rex-feed-template-zalando.php',
+    'Rex_Feed_Template_Zalando_stock_update' => $baseDir . '/admin/feed-templates/class-rex-feed-template-zalando-stock-update.php',
     'Rex_Feed_Template_Zbozi' => $baseDir . '/admin/feed-templates/class-rex-feed-template-zbozi.php',
     'Rex_Google_Merchant_Settings_Api' => $baseDir . '/admin/class-rex-google-merchant-content-api.php',
     'Rex_Product_CPT' => $baseDir . '/admin/class-rex-product-feed-cpt.php',
@@ -349,6 +349,7 @@ return array(
     'Rex_Product_Feed_Vivino' => $baseDir . '/admin/feed/class-rex-product-feed-vivino.php',
     'Rex_Product_Feed_Yandex' => $baseDir . '/admin/feed/class-rex-product-feed-yandex.php',
     'Rex_Product_Feed_Zalando' => $baseDir . '/admin/feed/class-rex-product-feed-zalando.php',
+    'Rex_Product_Feed_Zalando_stock_update' => $baseDir . '/admin/feed/class-rex-product-feed-zalando-stock-update.php',
     'Rex_Product_Feed_Zbozi' => $baseDir . '/admin/feed/class-rex-product-feed-zbozi.php',
     'Rex_Product_Filter' => $baseDir . '/admin/feed-filter/class-rex-product-filter.php',
     'Rex_Product_Glami_Data_Retriever' => $baseDir . '/admin/feed/glami/glami-data-retriever.php',

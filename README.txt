@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.7
 Requires PHP: 7.0
-Stable tag:  6.6.5
+Stable tag:  6.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -565,6 +565,16 @@ WP Dashboard > Product Feed > Upgrade.
 17. Plugin Settings Page - Controls
 
 == Changelog ==
+
+= 6.6.6 (2021-07-06) =
+* Fixed: Few merchants conflict issue with the PRO version - issue fixed
+* Fixed: Google Local Products XML structure change - issue fixed
+* Added: Rank Math Primary Category support added
+* Added: Discount Rules For WooCommerce Support added
+* Added: WPC Composite Products for WooCommerce support added
+* Added: Support for the new merchant – Zalando Stock Update
+* Added: New feed template added – Zalando CSV
+* Added: New feed template added – Zalando CSV (Semi-colon separator)
 
 = 6.6.5 (2021-06-18) =
 * Fixed: Dynamic attribute issue fixed

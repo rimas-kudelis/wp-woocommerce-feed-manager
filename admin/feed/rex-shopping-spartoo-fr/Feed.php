@@ -244,11 +244,9 @@ class Feed
      * Adds items to feed
      */
     private function addItemsToFeed()
-    {   
-        
-        
+    {
         $shopNodes = $this->feed->addChild('products');
-        
+
         foreach ($this->items as $item) {
            
             $feedItemNode = $shopNodes->addChild('product');
@@ -266,8 +264,8 @@ class Feed
                     } 
                         
                 } else {
-                    if(0 === strpos($key,'size_') || 0=== strpos($key,'ean_')){
-                        if( 0 === strpos($key,'size_name_') ){
+                    if(0 === strpos($key,'size_') || 0=== strpos($key,'ean')){
+                        if( 0 === strpos($key,'size_name') ){
                             if($i == 0){
                                 $this->size_list = $feedItemNode->addChild('size_list');
                                 $i++;
@@ -278,7 +276,7 @@ class Feed
                             $this->size->addChild($key,$itemNode->get('value'));  
                         }
                        
-                    }elseif( 0 === strpos($key,'photo_') ){
+                    }elseif( 0 === strpos($key,'photo') ){
                         if($k == 0){
                            
                             $this->photo = $feedItemNode->addChild('photos');
@@ -323,7 +321,7 @@ class Feed
                 }
                 
             }
-        } 
+        }
     }
 
 

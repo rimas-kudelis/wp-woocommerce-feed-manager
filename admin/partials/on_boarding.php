@@ -727,6 +727,11 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'status' => 0,
                                     'name' => 'Zalando'
                                 ),
+                                'zalando_stock_update' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Zalando Stock Update'
+                                ),
                                 'pixmania' => array(
                                     'free' => true,
                                     'status' => 0,
@@ -1341,11 +1346,11 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
 		                            'status' => 0,
 		                            'name'   => 'Google Remarketing (DRM)'
 	                            ),
-	                            /*'google_review'                => array(
+	                            'google_review'                => array(
 		                            'free'   => false,
 		                            'status' => 0,
 		                            'name'   => 'Google Review'
-	                            ),*/
+	                            ),
 	                            'ebay_mip'                     => array(
 		                            'free'   => false,
 		                            'status' => 0,

@@ -276,7 +276,6 @@ class Rex_Product_Feed_Ajax {
     public static function generate_feed( $config ){
         try {
             $merchant = Rex_Product_Feed_Factory::build( $config );
- 
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -303,8 +302,8 @@ class Rex_Product_Feed_Ajax {
      */
     public static function show_feed_template( $merchant ){
         
-        
         $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
+
         if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
             $feed_rules = false;
         }
@@ -312,8 +311,6 @@ class Rex_Product_Feed_Ajax {
         
 
         $feed_format = self::get_merchant_feed_format($merchant['merchant']);
-        
-       
         
         ob_start();
         if( in_array($merchant['merchant'], apply_filters('wpfm_has_custom_feed_config', array()))) {
@@ -402,6 +399,7 @@ class Rex_Product_Feed_Ajax {
         );
         $zalando_format = array(
             'zalando',
+            'zalando_stock_update'
         );
         $wish_format = array(
             'wish',
@@ -443,7 +441,6 @@ class Rex_Product_Feed_Ajax {
             'spartooFr',
         );
 
-
 	    if ( in_array( $merchant, $google_format ) ) {
 		    return array( 'xml' );
 	    }
@@ -469,7 +466,10 @@ class Rex_Product_Feed_Ajax {
 		    return array( 'xml', 'csv', 'csv_semicolon' );
 	    }
         elseif ( in_array( $merchant, $zalando_format ) ) {
-		    return array( 'json' );
+	        if ( $merchant === 'zalando_stock_update' ) {
+		        return array( 'csv_semicolon' );
+            }
+		    return array( 'json', 'csv', 'csv_semicolon' );
 	    }
         elseif ( in_array( $merchant, $wish_format ) ) {
 		    return array( 'csv', 'csv_semicolon', 'text' );
@@ -481,7 +481,7 @@ class Rex_Product_Feed_Ajax {
 		    return array( 'xml', 'text' );
 	    }
         elseif ( in_array( $merchant, $google_local_product ) ) {
-		    return array( 'text', 'csv', 'csv_semicolon' );
+		    return array( 'xml', 'text', 'csv', 'csv_semicolon' );
 	    }
         elseif ( in_array( $merchant, $shopzilla ) ) {
 		    return array( 'text' );

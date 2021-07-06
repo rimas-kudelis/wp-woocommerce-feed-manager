@@ -155,7 +155,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @var      bool    $allowed
      */
     protected $allowed;
-    
+
     /**
      * Product Filter Condition
      *
@@ -362,7 +362,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->setup_feed_meta($config['feed_config']);
             $this->prepare_products_args($config['products']);
         }
-        
+
         $this->setup_products();
         $this->merchant = $config['merchant'];
         $this->feed_format = $config['feed_format'];
@@ -472,7 +472,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 if(!$this->product_filter_condition){
                     $condition = get_post_meta($this->id, 'rex_feed_product_condition');
                     $condition_str = implode('',$condition);
-                   
+
                     foreach($ids as $id){
                         if( $condition_str == 'inc' ){
                             $this->products_args['post__in'] = $id;
@@ -480,10 +480,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                             $this->products_args['post__not_in'] = $id;
                         }
                     }
-                    
+
                 }else{
                     $i = 0;
-                     
+
                     if($args['data']){
                         if( $this->product_filter_condition == 'inc' ){
 
@@ -493,9 +493,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                         }
                     }else{
                         foreach($ids as $id){
-                        
+
                             if( $this->product_filter_condition == 'inc' ){
-    
+
                                 $this->products_args['post__in'] = $id;
                             }else{
                                 $this->products_args['post__not_in'] = $id;
@@ -503,11 +503,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                             $i++;
                         }
                     }
-                    
-                }  
-                
+
+                }
+
         }
-        
+
     }
 
     /**
@@ -515,7 +515,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $info
      */
     protected function setup_feed_data( $info ){
-
 
         $this->tbatch           =   (int) $info['total_batch'];
         $this->posts_per_page   =   $info['per_batch'];
@@ -590,7 +589,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($this->batch == 1) {
             update_post_meta($this->id, 'rex_feed_feed_config', $this->feed_rules);
         }
-      
+
     }
 
 
@@ -601,7 +600,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_feed_meta( $config ){
         $feed_rules       = array();
-        
+
         parse_str( $config, $feed_rules );
         $include_variable_product   = $feed_rules['rex_feed_variable_product'];
         $include_variations         = $feed_rules['rex_feed_variations'];
@@ -611,7 +610,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if(isset($feed_rules['product_filter_condition'])){
             $this->product_filter_condition = $feed_rules['product_filter_condition'];
         }
-        
+
 
 
         if ($include_variable_product == 'yes') {
@@ -700,11 +699,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @param $info
      */
     protected function setup_feed_filter_rules( $info ){
-        
+
         if($this->product_scope === 'filter') {
             $feed_rules_filter       = array();
             parse_str( $info, $feed_rules_filter );
-            
+
             $feed_rules_filter          = $feed_rules_filter['ff'];
             $this->feed_rules_filter    = $feed_rules_filter;
             // save the feed_rules_filter into feed post_meta.
@@ -713,7 +712,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $key = key($this->feed_rules_filter);
                 unset($this->feed_rules_filter[$key]);
                 update_post_meta($this->id, 'rex_feed_feed_config_filter', $this->feed_rules_filter);
-                
+
             }
         }
     }
@@ -724,7 +723,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_products() {
 
-      
+
         if( class_exists( 'SitePress' ) ) {
             global $sitepress;
             if( $this->wpml_language ) {
@@ -734,7 +733,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($this->product_scope === 'filter') {
             $filter_args = Rex_Product_Filter::createFilterQueryParams($this->feed_rules_filter);
             add_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
-             
+
             foreach ($filter_args['args'] as $key => $value) {
                 $this->products_args[$key] = $value;
             }
@@ -745,11 +744,11 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $this->products_args['tax_query']['relation'] = 'AND';
             }
         }
-       
+
 
         $result = new WP_Query($this->products_args);
         $this->products = $result->get_posts();
-        
+
         $condition = $this->product_filter_condition;
         if($this->products_args['post__in']){
             if($this->product_filter_condition){
@@ -757,23 +756,23 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
             $result = new WP_Query($this->products_args);
             $this->products = $result->get_posts();
-            
+
         }else{
             if($this->product_filter_condition){
                 update_post_meta($this->id, 'rex_feed_product_condition', $condition);
             }
-           
+
             $result = new WP_Query($this->products_args);
             $this->products = $result->get_posts();
-            
+
         }
-        
-        
+
+
         if(is_array($this->products)) {
             $this->products = array_unique($this->products);
-            
+
             if($this->batch == 1) {
-                
+
                 update_post_meta($this->id, 'rex_feed_product_ids', $this->products);
             }else {
                 if(get_post_meta($this->id, 'rex_feed_product_ids', true)) {
@@ -849,7 +848,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             foreach ($title_contain as $title) {
                 $i = $i + 1;
                 $op = ($i > 1)? 'OR' : '';
-                
+
                 $where .= ' '. $op. ' '. $wpdb->posts . '.post_content LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
             };
             $where .= ' )';
@@ -865,7 +864,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     $op = ($i > 1)? 'OR' : '';
                     $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
                 }
-                
+
             };
             $where .= ' )';
         }
@@ -880,7 +879,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     $op = ($i > 1)? 'OR' : '';
                     $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
                 }
-                
+
             };
             $where .= ' )';
         }
@@ -895,7 +894,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     $op = ($i > 1)? 'OR' : '';
                     $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
                 }
-                
+
             };
             $where .= ' )';
         }
@@ -910,7 +909,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     $op = ($i > 1)? 'OR' : '';
                     $where .= ' '. $op. ' '. $wpdb->posts . '.ID != \'' . $pi->post_id. '\'';
                 }
-                
+
             };
             $where .= ' )';
         }
@@ -1011,7 +1010,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $post_less_than_equal_id = $wp_query->get('post__less_than_equal');
             $where .= ' AND (ID <= '. $post_less_than_equal_id . ')';
         }
-        
+
         return $where;
     }
 
@@ -1200,7 +1199,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 		return preg_grep($pattern,$keys);
 	}
 
-
+	protected $counter = 0;
     /**
      * Save the feed as XML file.
      *
@@ -1224,9 +1223,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $log->info('**************************************************', array('source' => 'WPFM',));
             }
         }
+
         if($format === 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";
-            
+
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
 
@@ -1255,8 +1255,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }
         elseif ($format === 'text'){
-            
-            
+
+
             $this->feed = iconv("UTF-8", "Windows-1252//IGNORE", $this->feed);
 
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
@@ -1278,9 +1278,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         elseif ($format === 'tsv')
         {
-            
+
             $this->feed = iconv("UTF-8", "Windows-1252//IGNORE", $this->feed);
-            
+
             $file = trailingslashit($path) . "feed-{$this->id}.tsv";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
@@ -1328,7 +1328,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 return 'true';
             }
             else {
-
                 $file = fopen($file,"a+");
                 $list = $this->feed;
                 array_shift($list);
@@ -1374,17 +1373,24 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $feed = new DOMDocument;
         $feed->loadXML($this->feed);
         $feed_string_footer = '';
-        if($this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'|| $this->merchant === 'ciao' ||
-            $this->merchant === 'daisycon'  || $this->merchant === 'instagram'|| $this->merchant === 'liveintent' ||
-            $this->merchant === 'google_shopping_actions' || $this->merchant === 'google_express' || $this->merchant === 'doofinder'
-            || $this->merchant === 'emarts' || $this->merchant === 'epoq'||$this->merchant === 'google_local_products'|| $this->merchant === 'google_local_products_inventory'
-            || $this->merchant === 'google_merchant_promotion'
-        ) {
-            $node = $feed->getElementsByTagName("item");
-            if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '</channel></rss>';
-            }
-        }
+	    if ( $this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest'
+	         || $this->merchant === 'ciao'
+	         || $this->merchant === 'daisycon'
+	         || $this->merchant === 'instagram'
+	         || $this->merchant === 'liveintent'
+	         || $this->merchant === 'google_shopping_actions'
+	         || $this->merchant === 'google_express'
+	         || $this->merchant === 'doofinder'
+	         || $this->merchant === 'emarts'
+	         || $this->merchant === 'epoq'
+	         || $this->merchant === 'google_local_products_inventory'
+	         || $this->merchant === 'google_merchant_promotion'
+	    ) {
+		    $node = $feed->getElementsByTagName( "item" );
+		    if ( $this->batch == $this->tbatch ) {
+			    $feed_string_footer .= '</channel></rss>';
+		    }
+	    }
         elseif ($this->merchant === 'ebay_mip') {
             if($feed->getElementsByTagName("product")) {
                 $node = $feed->getElementsByTagName("product");
@@ -1424,12 +1430,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $feed_string_footer .= '</vivino-product-list>';
             }
         }
-        elseif ($this->merchant === 'sooqr'||$this->merchant === 'pricegrabber') {
+        elseif ($this->merchant === 'sooqr'|| $this->merchant === 'pricegrabber' || $this->merchant === 'bonanza' ) {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
             }
-        }elseif ($this->merchant === 'zbozi') {
+        }elseif ($this->merchant === 'zbozi' || $this->merchant === 'rakuten' ) {
             $node = $feed->getElementsByTagName("SHOPITEM");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</SHOP>';
@@ -1441,9 +1447,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }elseif ($this->merchant === 'google_review') {
             $node = $feed->getElementsByTagName("review");
-            
+
             if($this->batch == $this->tbatch) {
-                $feed_string_footer .='</reviews></feed>';
+                $feed_string_footer .='</feed>';
             }
         }elseif ($this->merchant === 'datatrics') {
             $node = $feed->getElementsByTagName("item");
@@ -1662,13 +1668,19 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
             }
-        }elseif ($this->merchant === 'pricefalls'||$this->merchant === 'pricerunner'||$this->merchant === 'nextag'
-            ||$this->merchant==='rakuten_advertising'||$this->merchant==='shopee'||$this->merchant==='vidaXL') {
-            $node = $feed->getElementsByTagName("product");
-            if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '</products>';
-            }
-        }elseif ($this->merchant === 'skroutz') {
+        }
+	    elseif ( $this->merchant === 'pricefalls' || $this->merchant === 'pricerunner' || $this->merchant === 'nextag'
+	             || $this->merchant === 'rakuten_advertising'
+	             || $this->merchant === 'shopee'
+	             || $this->merchant === 'vidaXL'
+	             || $this->merchant === 'google_local_products'
+	             || $this->merchant === 'billiger'
+	    ) {
+		    $node = $feed->getElementsByTagName( "product" );
+		    if ( $this->batch == $this->tbatch ) {
+			    $feed_string_footer .= '</products>';
+		    }
+	    }elseif ($this->merchant === 'skroutz') {
             $node = $feed->getElementsByTagName("mywebstore");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</product>';
@@ -1688,7 +1700,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
             }
-        }elseif ($this->merchant === 'shopping') {
+        }elseif ($this->merchant === 'shopping' || $this->merchant === 'become'  || $this->merchant === 'adroll' ) {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';
@@ -1704,14 +1716,14 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $feed_string_footer .= '</import>';
             }
         }elseif ($this->merchant === 'spartooFr') {
-            $node = $feed->getElementsByTagName("products");
+            $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '</products>';
+                $feed_string_footer .= '</products></root>';
             }
         }elseif ($this->merchant === 'Bestprice') {
-            $node = $feed->getElementsByTagName("products");
+            $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '</products>';
+                $feed_string_footer .= '</products></store>';
             }
         }elseif ($this->merchant === 'DealsForU') {
             $node = $feed->getElementsByTagName("offers");
@@ -1719,9 +1731,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $feed_string_footer .= '</offers>';
             }
         }elseif ($this->merchant === 'google_local_inventory_ads') {
-            $node = $feed->getElementsByTagName("shop");
+            $node = $feed->getElementsByTagName("item");
+
             if($this->batch == $this->tbatch) {
-                $feed_string_footer .= '</shop>';
+                $feed_string_footer .= '</channel></rss>';
             }
         }
         else {
@@ -1731,17 +1744,18 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }
         $str = '';
-        
-        for ($i = 0; $i < $node->length; $i ++) {
-            $item = $node->item($i);
-            
-            if ($item != NULL) {
-                $str .= $feed->saveXML($item,LIBXML_NOEMPTYTAG);
-            }
+
+        if ( !empty( $node ) ) {
+	        for ($i = 0; $i < $node->length; $i ++) {
+		        $item = $node->item($i);
+		        if ($item != NULL) {
+			        $str .= $feed->saveXML($item,LIBXML_NOEMPTYTAG);
+		        }
+	        }
         }
 
         $str .= $feed_string_footer;
-        
+
         return $str;
     }
 
@@ -1751,7 +1765,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      **/
 
     protected function merge_feeds($prev_feed){
-    	
+
         $xml = simplexml_load_file($prev_feed);
         if($xml) {
             $xml_str = $xml->asXML();
