@@ -22,16 +22,16 @@ class Rex_Feed_Template_Bonanza extends Rex_Feed_Abstract_Template {
 
     protected function init_atts(){
         $this->attributes = array(
-            'Required Information' =>  array(
-                'id'                => 'id',
-                'title'             => 'Product Title',
-                'description'       => 'Description',
-                'price'             => 'Price',
-                'image-url'         => 'Images',
-                'category'          => 'Category',
-                'sku'               => 'sku',
-                'quantity'          => 'quantity',
-            ),
+	        'Required Information' => array(
+		        'id'          => 'id',
+		        'title'       => 'Product Title',
+		        'description' => 'Description',
+		        'price'       => 'Price',
+		        'image1'      => 'Images',
+		        'category'    => 'Category',
+		        'sku'         => 'sku',
+		        'quantity'    => 'quantity',
+	        ),
 
             'Additional Information' => array(
                 'booth_category'                => 'Booth Category',
@@ -95,7 +95,7 @@ class Rex_Feed_Template_Bonanza extends Rex_Feed_Abstract_Template {
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'image-url',
+                'attr'     => 'image1',
                 'type'     => 'meta',
                 'meta_key' => 'featured_image',
                 'st_value' => '',
