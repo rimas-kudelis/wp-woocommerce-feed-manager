@@ -3,7 +3,7 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuteen,skroutz,walmart,google shopping feed, facebook catalog, feed
 Requires at least: 4.7
-Tested up to:  5.7
+Tested up to:  5.8
 Requires PHP: 7.0
 Stable tag:  6.6.8
 License: GPLv2 or later
