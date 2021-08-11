@@ -1336,8 +1336,12 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'free' => true,
                                     'status' => 0,
                                     'name' => 'Mirakl'
+                                ),
+                                'lesitedumif' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Lesitedumif'
                                 )
-
                             );
 
                             $_pro_merchants = array(

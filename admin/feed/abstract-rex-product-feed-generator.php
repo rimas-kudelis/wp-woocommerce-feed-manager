@@ -417,6 +417,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
         if($this->product_scope == 'filter') {
             foreach ($this->feed_rules_filter as $filter) {
+
                 $if = $filter['if'];
 
                 if($if == 'product_cats') {
@@ -468,44 +469,47 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }
         if($args['products_scope']==='product_filter'){
-                $ids = get_post_meta($this->id, 'rex_feed_product_filter_ids');
-                if(!$this->product_filter_condition){
-                    $condition = get_post_meta($this->id, 'rex_feed_product_condition');
-                    $condition_str = implode('',$condition);
+            $ids = get_post_meta($this->id, 'rex_feed_product_filter_ids');
+            if(!$this->product_filter_condition){
+                $condition = get_post_meta($this->id, 'rex_feed_product_condition');
+                $condition_str = implode('',$condition);
 
+                foreach($ids as $id){
+                    if( $condition_str == 'inc' ){
+                        $this->products_args['post__in'] = $id;
+                    }else{
+                        $this->products_args['post__not_in'] = $id;
+                    }
+                }
+
+            }else{
+                $i = 0;
+
+                if($args['data']){
+                    if( $this->product_filter_condition == 'inc' ){
+
+                        $this->products_args['post__in'] = $args['data'];
+                    }else{
+                        $this->products_args['post__not_in'] = $args['data'];
+                    }
+                }else{
                     foreach($ids as $id){
-                        if( $condition_str == 'inc' ){
+
+                        if( $this->product_filter_condition == 'inc' ){
+
                             $this->products_args['post__in'] = $id;
                         }else{
                             $this->products_args['post__not_in'] = $id;
                         }
+                        $i++;
                     }
-
-                }else{
-                    $i = 0;
-
-                    if($args['data']){
-                        if( $this->product_filter_condition == 'inc' ){
-
-                            $this->products_args['post__in'] = $args['data'];
-                        }else{
-                            $this->products_args['post__not_in'] = $args['data'];
-                        }
-                    }else{
-                        foreach($ids as $id){
-
-                            if( $this->product_filter_condition == 'inc' ){
-
-                                $this->products_args['post__in'] = $id;
-                            }else{
-                                $this->products_args['post__not_in'] = $id;
-                            }
-                            $i++;
-                        }
-                    }
-
                 }
 
+            }
+        }
+
+        if($args['products_scope']==='featured') {
+            $this->products_args['post__in'] = wc_get_featured_product_ids();
         }
 
     }
@@ -582,8 +586,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             update_post_meta( $this->id, 'rex_feed_wcml_currency', $wcml_currency );
         }
 
-        $feed_rules       = $feed_rules['fc'];
-        $this->feed_rules = $feed_rules;
+        $this->feed_rules = isset( $feed_rules['fc'] ) ? $feed_rules['fc'] : array();
 
         // save the feed_rules into feed post_meta.
         if($this->batch == 1) {
@@ -703,7 +706,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($this->product_scope === 'filter') {
             $feed_rules_filter       = array();
             parse_str( $info, $feed_rules_filter );
-
             $feed_rules_filter          = $feed_rules_filter['ff'];
             $this->feed_rules_filter    = $feed_rules_filter;
             // save the feed_rules_filter into feed post_meta.
@@ -732,11 +734,13 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
         if($this->product_scope === 'filter') {
             $filter_args = Rex_Product_Filter::createFilterQueryParams($this->feed_rules_filter);
+
             add_filter( 'posts_where', array($this, 'wpfm_post_title_filter'), 10, 2 );
 
             foreach ($filter_args['args'] as $key => $value) {
                 $this->products_args[$key] = $value;
             }
+
             if(array_key_exists('meta_query', $this->products_args)) {
                 $this->products_args['meta_query']['relation'] = 'AND';
             }
@@ -745,20 +749,20 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }
 
-
         $result = new WP_Query($this->products_args);
         $this->products = $result->get_posts();
 
         $condition = $this->product_filter_condition;
+
         if($this->products_args['post__in']){
-            if($this->product_filter_condition){
+            if( $condition ){
                 update_post_meta($this->id, 'rex_feed_product_condition', $condition);
             }
             $result = new WP_Query($this->products_args);
             $this->products = $result->get_posts();
 
         }else{
-            if($this->product_filter_condition){
+            if( $condition ){
                 update_post_meta($this->id, 'rex_feed_product_condition', $condition);
             }
 
@@ -768,7 +772,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
 
-        if(is_array($this->products)) {
+        if( is_array( $this->products ) ) {
             $this->products = array_unique($this->products);
 
             if($this->batch == 1) {
@@ -795,6 +799,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @return string
      */
     function wpfm_post_title_filter($where, $wp_query) {
+
         global $wpdb;
         if($wp_query->get('title_contain')) {
             $title_contain = $wp_query->get('title_contain');
@@ -1134,7 +1139,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	    $data                  = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
 	    $all_data              = $data->get_all_data();
 
-	    if ( $this->merchant === 'pinterest' && $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+	    if ( $this->merchant === 'pinterest' && ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') ) {
 		    return $this->additional_img_link_pinterest( $all_data );
 	    }
 

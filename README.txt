@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.8
 Requires PHP: 7.0
-Stable tag:  6.6.8
+Stable tag:  6.6.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Generate WooCommerce product feed for Google Shopping, Facebook, eBay, Instagram
 == Description ==
 Generating your WooCommerce Product Feed was never this easy! 
 
-Any marketplace you want you to list your products on, you can generate an accurate product feed with your WooCommerce products in just a few clicks.
+Any marketplace you want to list your products on, you can generate an accurate product feed with your WooCommerce products in just a few clicks.
 
 Use pre-defined merchant templates to generate flawless feed for over 180+ merchants, including Google Shopping, Facebook, eBay, Instagram, PriceRunner, Rakuten,  Vivino, Trovaprezzi & many more (<a href="https://rextheme.com/best-woocommerce-product-feed" target="_blank">full list</a>).
 
@@ -583,6 +583,15 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 6.6.9 (2021-08-11) =
+* Changelog: Fixed: PHP warning for empty attributes
+* Fixed: Glami feed template updated
+* Fixed: Custom CSV feed structure issue
+* Fixed: Zalando Stock Update CSV Issue
+* Fixed: Purge cache button responsive issue
+* Added: Parent description value for the variable Products
+* Added: Generate only featured products
+
 = 6.6.8 (2021-07-15) =
 * Compatibility Checked : WooCommerce 5.5.1
 
@@ -637,6 +646,7 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Heureka Delivery Attribute structure fixed
 * Fixed: Feed not fetching correct info from Advanced Custom Fields (ACF) fixed
 * Fixed: Vivino template structure fixed
+* Fixed: Warning if product attributes are empty
 
 = 6.5.2 (2021-05-05) =
 * Fixed: Warning on feed generation for Google and Facebook

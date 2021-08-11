@@ -182,6 +182,7 @@ class Rex_Product_Data_Retriever{
 	 */
 	public function set_all_value() {
 		$this->data = array();
+
 		foreach ( $this->feed_rules as $key => $rule ) {
 
 			if(array_key_exists('attr', $rule)) {
@@ -241,6 +242,9 @@ class Rex_Product_Data_Retriever{
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_cat_mapper_att( $rule['meta_key']  );
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_glami_attr( $rule['meta_key'] ) ) {
+			$val = $this->set_glami_att( $rule['meta_key']  );
 		}
 
 		// maybe escape
@@ -417,7 +421,7 @@ class Rex_Product_Data_Retriever{
 	 * @since    1.0.0
 	 */
 	protected function set_pr_att( $key, $rule = 'default' ) {
-
+	    
 		switch ( $key ) {
 			case 'id':
 				return $this->product->get_id(); break;
@@ -437,7 +441,6 @@ class Rex_Product_Data_Retriever{
 
 					$pr_id = $this->product->get_sku();
 				}
-
 				return $pr_id; break;
 
 			case 'title':
@@ -1309,6 +1312,20 @@ class Rex_Product_Data_Retriever{
 
 				break;
 
+			case 'parent_desc':
+
+			    if( $this->is_children() ) {
+			        $parent_product = wc_get_product( $this->product->get_parent_id() );
+
+                    if ( is_object( $parent_product ) ) {
+
+                        return $this->remove_short_codes( $parent_product->get_description() );
+                    }
+                }
+
+			    return $this->product->get_description();
+				break;
+
 			case 'short_description':
 				if(($this->is_children())):
 					$short_description = $this->product->get_short_description();
@@ -1328,11 +1345,9 @@ class Rex_Product_Data_Retriever{
 				break;
 
 			case 'yoast_meta_desc':
-
 				return $this->get_yoast_meta_description(); break;
 
 			case 'product_cats':
-
 				return $this->get_product_cats(); break;
 
 			case 'product_cats_path':
@@ -1347,10 +1362,8 @@ class Rex_Product_Data_Retriever{
 			case 'yoast_primary_cats_pipe':
 				return $this->get_yoast_product_cats_with_seperator('', ' | ', ''); break;
 
-
 			case 'yoast_primary_cats_comma':
 				return $this->get_yoast_product_cats_with_seperator('', ', ', ''); break;
-
 
 			case 'product_subcategory':
 				return $this->get_product_subcategory(); break;
@@ -1428,8 +1441,16 @@ class Rex_Product_Data_Retriever{
 			case 'availability':
 				return $this->get_availability(); break;
 
+			case 'availability_zero_three':
+			    $if_available = $this->get_availability();
+			    if ( 'out_of_stock' == $if_available ) {
+			        return '3';
+                }
+			    return '0'; break;
+
 			case 'availability_underscore':
 				return $this->get_availability_underscore(); break;
+
 			case 'availability_backorder_instock':
 				return $this->get_availability_backorder_instock(); break;
 
@@ -1476,8 +1497,6 @@ class Rex_Product_Data_Retriever{
 				return date( get_option( 'date_format' ), $this->product->get_date_on_sale_to() ); break;
 
 			case 'sale_price_effective_date':
-
-
 				$sale_price_dates_to        = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_to', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
 				$sale_price_dates_from      = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_from', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
 
@@ -1555,6 +1574,26 @@ class Rex_Product_Data_Retriever{
 		}
 		$key = str_replace( 'bwf_attr_pa_', '', $key);
 		$value = $this->product->get_attribute( $key );
+
+		if ( ! empty( $value ) ) {
+			$value = trim( $value );
+		}
+		return $value;
+	}
+
+
+	/**
+	 * Set a Glami attribute.
+	 *
+	 * @since    1.0.0
+	 */
+	protected function set_glami_att( $key ) {
+		if ( 'WC_Product_Variation' != get_class($this->product) ) {
+			return;
+		}
+		$key = str_replace( 'param_', '', $key);
+		$value = $this->product->get_attribute( $key );
+
 		if ( ! empty( $value ) ) {
 			$value = trim( $value );
 		}
@@ -2267,6 +2306,13 @@ class Rex_Product_Data_Retriever{
 	 */
 	protected function is_product_attr( $key ) {
 		return array_key_exists( $key, $this->product_meta_keys['Product Attributes'] );
+	}
+
+	/**
+	 * Helper to check if a attribute is a Glami Attribute.
+	 */
+	protected function is_glami_attr( $key ) {
+		return array_key_exists( $key, $this->product_meta_keys['Glami Attributes'] );
 	}
 
 

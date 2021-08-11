@@ -380,6 +380,27 @@ class Item
     }
 
     /**
+     * Add one additional image (string) or multiple images (array).
+     *
+     * @param $imagesLink
+     */
+    public function additional_image_link($imagesLink)
+    {
+        $this->nodes['additional_image_link'] = [];
+        if (is_array($imagesLink)) {
+            foreach ($imagesLink as $imageLink) {
+                $node = new Node('additional_image_link');
+                $imageLink = $this->safeCharEncodeURL(urldecode($imageLink));
+                array_push($this->nodes['additional_image_link'], $node->value($imageLink)->_namespace($this->namespace)->addCdata());
+            }
+        } else {
+            $node = new Node('additional_image_link');
+            $imageLink = $this->safeCharEncodeURL(urldecode($imagesLink));
+            array_push($this->nodes['additional_image_link'], $node->value($imagesLink)->_namespace($this->namespace)->addCdata());
+        }
+    }
+
+    /**
      * @param string $name
      * @param array $arguments
      */
@@ -387,7 +408,6 @@ class Item
     {
         // check if additional_image_link attributes
         if ( 0 === strpos( $name, 'additional_image_link_' ) ) {
-            $name = 'additional_image_link';
             $node = new Node($name);
             $this->nodes[$name][] = $node->value($arguments[0])->_namespace($this->namespace);
         }else{ // other attributes

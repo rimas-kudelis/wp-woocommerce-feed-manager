@@ -55,6 +55,7 @@ class Rex_Product_Metabox
             'default' => 'all',
             'options' => array(
                 'all' => __('All Published Products', 'rex-product-feed'),
+                'featured' => __('All Featured Products', 'rex-product-feed'),
                 'filter' => __('Custom Filter', 'rex-product-feed'),
                 'product_cat' => __('Category Filter', 'rex-product-feed'),
                 'product_tag' => __('Tag Filter', 'rex-product-feed'),

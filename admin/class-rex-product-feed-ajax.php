@@ -440,6 +440,9 @@ class Rex_Product_Feed_Ajax {
         $spartooFr = array(
             'spartooFr',
         );
+        $lesitedumif = array(
+            'lesitedumif',
+        );
 
 	    if ( in_array( $merchant, $google_format ) ) {
 		    return array( 'xml' );
@@ -506,6 +509,9 @@ class Rex_Product_Feed_Ajax {
 	    }
         elseif ( in_array( $merchant, $google_local_inventory_ads ) ) {
 		    return array( 'xml', 'text' );
+	    }
+        elseif ( in_array( $merchant, $lesitedumif ) ) {
+		    return array( 'csv', 'csv_semicolon' );
 	    }
 	    return array( 'xml', 'csv', 'csv_semicolon', 'text', 'tsv', 'json' );
     }

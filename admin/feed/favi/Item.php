@@ -362,8 +362,8 @@ class Item
 
     public function item_group_id($id)
     {
-        $node = new Node('item_group_id');
-        $this->nodes['item_group_id'] = $node->value($id)->_namespace($this->namespace);
+        $node = new Node('GroupId');
+        $this->nodes['GroupId'] = $node->value($id)->_namespace($this->namespace);
     }
 
     /**

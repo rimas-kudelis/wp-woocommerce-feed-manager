@@ -1084,7 +1084,6 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function(window, document, $, undefi
         app.$select_cat = app.$metabox.find('#rex_feed_products');
     };
 
-
     app.init = function() {
         app.cache();
         app.$select_cat.on('change', app.change_color);
@@ -1094,7 +1093,7 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function(window, document, $, undefi
         var that = $(this),
             new_val = that.val();
 
-        if (new_val === 'all') {
+        if (new_val === 'all' || new_val === 'featured') {
             $('.cmb2-id-rex-feed-config-filter-title').hide();
             $('#rex-feed-product-taxonomies').hide();
             $('.cmb2-id-rex-feed-tags-wrapper').hide();
@@ -1146,6 +1145,10 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function(window, document, $, undefi
                     console.log('Uh, oh!');
                     console.log(response.statusText);
                 });
+        }
+
+        if (new_val === 'featured') {
+            $(".rex-feed-product-taxonomies-spinner").hide();
         }
     };
 

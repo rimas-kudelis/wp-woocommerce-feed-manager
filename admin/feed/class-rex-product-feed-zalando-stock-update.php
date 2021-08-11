@@ -89,48 +89,67 @@ class Rex_Product_Feed_Zalando_stock_update extends Rex_Product_Feed_Abstract_Ge
 				}
 			}
 
-			if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-				$variable_parent[] = $productId;
-				$parent_atts = $this->get_product_data( $product, $product_meta_keys );
-				$item = RexShopping::createItem();
+            if ( $product->is_type( 'variable' ) && $product->has_child() ) {
+                if($this->variable_product) {
+                    $variable_parent[] = $productId;
+                    $variable_product = new WC_Product_Variable($productId);
+                    $atts = $this->get_product_data( $variable_product, $product_meta_keys );
+                    $item = RexShopping::createItem();
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
+                    if ( $this->exclude_hidden_products ) {
+                        $variations = $product->get_visible_children();
+                    }else {
+                        $variations = $product->get_children();
+                    }
+                    if($variations) {
+                        foreach ($variations as $variation) {
+                            if($this->variations) {
+                                $variation_products[] = $variation;
+                                $item = RexShopping::createItem();
+                                $variation_product = wc_get_product( $variation );
+                                $atts = $this->get_product_data( $variation_product, $product_meta_keys );
+                                foreach ($atts as $key => $value) {
+                                    $item->$key($value); // invoke $key as method of $item object.
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-				if ( $this->exclude_hidden_products ) {
-					$variations = $product->get_visible_children();
-				}else {
-					$variations = $product->get_children();
-				}
-				$atts = array();
-				if($variations) {
-					foreach ($variations as $variation) {
-						if($this->variations) {
-							$variation_products[] = $variation;
-							$variation_product = wc_get_product( $variation );
-							$atts[] = $this->get_product_data( $variation_product, $product_meta_keys );
-						}
-					}
-				}
-				$product_data = $this->get_product_model($parent_atts);
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' ) || $product->is_type( 'woosb' )) {
+                $simple_products[] = $productId;
+                $atts = $this->get_product_data( $product, $product_meta_keys );
+                $item = RexShopping::createItem();
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+            }
 
-				foreach ($atts as $att ) {
-					foreach ( $att as $key => $value ) {
-						$item->$key($value);
-					}
-//					$product_data['product_model']['product_configs'][0]['product_simples'][] = $this->get_product_simples($att);
-				}
-				$this->feed[] = $product_data;
-			}
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
+                if ($product->get_type() == 'variation') {
+                    $variation_products[] = $productId;
+                    $item = RexShopping::createItem();
+                    $atts = $this->get_product_data($product, $product_meta_keys);
+                    foreach ($atts as $key => $value) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
+            }
 
-			if ( $product->is_type( 'simple' )) {
-				$item = RexShopping::createItem();
-				$simple_products[] = $productId;
-				$atts = $this->get_product_data( $product, $product_meta_keys );
-				foreach ( $atts as $key => $value ) {
-					$item->$key($value);
-				}
-				$product_data = $this->get_product_model($atts);
-//				$product_data['product_model']['product_configs'][0]['product_simples'][] = $this->get_product_simples($atts);
-				$this->feed[] = $product_data;
-			}
+            if( $product->is_type( 'grouped' ) ){
+                $group_products[] = $productId;
+                $item = RexShopping::createItem();
+                $atts = $this->get_product_data( $product, $product_meta_keys );
+                // add all attributes for each product.
+                foreach ($atts as $key => $value) {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+            }
 		}
 
 		$total_products = array(

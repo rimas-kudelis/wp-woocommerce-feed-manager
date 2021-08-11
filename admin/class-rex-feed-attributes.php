@@ -28,6 +28,7 @@ class Rex_Feed_Attributes {
                 'title'                     => 'Product Title',
                 'yoast_title'               => 'Product Title [Yoast SEO]',
                 'description'               => 'Product Description',
+                'parent_desc'               => 'Product Description [Parent]',
                 'yoast_meta_desc'           => 'Product Description [Yoast SEO]',
                 'short_description'         => 'Product Short Description',
                 'product_cats'              => 'Product Categories',
@@ -48,6 +49,7 @@ class Rex_Feed_Attributes {
                 'availability_underscore'   => 'Availability (Without Underscore)',
                 'availability_backorder_instock'   => 'Availability (Backorder = in stock)',
                 'availability_backorder'   => 'Availability (Backorder = backorder)',
+                'availability_zero_three'   => 'Availability (0 - 3)',
                 'quantity'                  => 'Quantity',
                 'price'                     => 'Regular Price',
                 'current_price'             => 'Price',
@@ -140,7 +142,9 @@ class Rex_Feed_Attributes {
         // Get product attributes
         $_attributes = self::get_product_attributes();
         $attributes['Product Attributes'] = $_attributes;
-
+        $attributes['Glami Attributes'] = array(
+            'param_size'     => 'Value - Size'
+        );
 
 
         // Get product dynamic attributes
@@ -148,10 +152,8 @@ class Rex_Feed_Attributes {
         $attributes['Product Dynamic Attributes'] = $_dynamic_attributes;
 
 
-
         // Get product dynamic attributes
         $_custom_attributes = self::get_product_custom_attributes();
-
 
 	    if(in_array('woo-discount-rules/woo-discount-rules.php',$plugins)){
 		    $woo_discount_rules = array(
@@ -176,7 +178,6 @@ class Rex_Feed_Attributes {
         $attributes['Category Map'] = $cat_maps_array;
 
         $attributes = apply_filters('rex_wpfm_attributes',$attributes);
-        
         return $attributes;
     }
 
@@ -198,7 +199,7 @@ class Rex_Feed_Attributes {
             }
             wpfm_set_cached_data( 'product_attributes', $taxonomies );
         }
-        return $taxonomies;
+        return is_array($taxonomies) ? $taxonomies : array();
     }
 
 

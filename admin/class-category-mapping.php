@@ -28,3 +28,4 @@ class CategoryMapping{
         return $product_categories;
     }
 }
+

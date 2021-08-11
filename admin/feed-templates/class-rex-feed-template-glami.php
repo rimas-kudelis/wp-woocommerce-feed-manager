@@ -73,6 +73,7 @@ class Rex_Feed_Template_Glami extends Rex_Feed_Abstract_Template {
                 'PARAM_NAME_8'      => 'PARAM 8',
                 'VALUE_8'           => 'Value 8',
                 'PERCENTAGE_8'      => 'PERCENTAGE 8',
+                'PERCENTAGE_SIZE'      => 'PARAM - SIZE',
             ),
         );
     }

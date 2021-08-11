@@ -83,13 +83,17 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
             }
 
             if ($product->is_type('variable') && $product->has_child()) {
+
                 if ($this->variable_product) {
+
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $atts = $this->get_product_data($variable_product, $product_meta_keys);
                     $atts = $this->process_attributes_for_param($atts);
                     $item = FaviShopping::createItem();
+                    $check_item_group_id = 0;
                     foreach ($atts as $key => $value) {
+
                         if ($key == 'delivery') {
                             $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
                         } elseif ($key === 'param') {
@@ -97,6 +101,12 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                         } else {
                             $item->$key($value); // invoke $key as method of $item object.
                         }
+                        if('item_group_id' == $key){
+                            $check_item_group_id = 1;
+                        }
+                    }
+                    if($check_item_group_id == 0){
+                        $item->item_group_id($productId);
                     }
                 }
                 if ($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
@@ -113,6 +123,7 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                                 $variation_product = wc_get_product($variation);
                                 $atts = $this->get_product_data($variation_product, $product_meta_keys);
                                 $atts = $this->process_attributes_for_param($atts);
+
                                 foreach ($atts as $key => $value) {
                                     if ($key == 'delivery') {
                                         $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
