@@ -59,7 +59,6 @@ class Rex_Feed_Template_Bipp extends Rex_Feed_Abstract_Template {
                 'escape'   => 'default',
                 'limit'    => 0,
             ),
-
         );
     }
 

@@ -91,7 +91,7 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                     $atts = $this->get_product_data($variable_product, $product_meta_keys);
                     $atts = $this->process_attributes_for_param($atts);
                     $item = FaviShopping::createItem();
-                    $check_item_group_id = 0;
+
                     foreach ($atts as $key => $value) {
 
                         if ($key == 'delivery') {
@@ -101,21 +101,15 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                         } else {
                             $item->$key($value); // invoke $key as method of $item object.
                         }
-                        if('item_group_id' == $key){
-                            $check_item_group_id = 1;
-                        }
-                    }
-                    if($check_item_group_id == 0){
-                        $item->item_group_id($productId);
                     }
                 }
-                if ($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
+                if ($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
                     if ($this->exclude_hidden_products) {
                         $variations = $product->get_visible_children();
                     } else {
                         $variations = $product->get_children();
                     }
-                    if ($variations) {
+                    if ( $variations && $this->product_scope !='filter' ) {
                         foreach ($variations as $variation) {
                             if ($this->variations) {
                                 $variation_products[] = $variation;
@@ -123,6 +117,7 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                                 $variation_product = wc_get_product($variation);
                                 $atts = $this->get_product_data($variation_product, $product_meta_keys);
                                 $atts = $this->process_attributes_for_param($atts);
+                                $check_item_group_id = 0;
 
                                 foreach ($atts as $key => $value) {
                                     if ($key == 'delivery') {
@@ -132,6 +127,12 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                                     } else {
                                         $item->$key($value); // invoke $key as method of $item object.
                                     }
+                                    if('item_group_id' == $key){
+                                        $check_item_group_id = 1;
+                                    }
+                                }
+                                if($check_item_group_id == 0){
+                                    $item->item_group_id($variation_product->get_parent_id());
                                 }
                             }
                         }
@@ -156,12 +157,14 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                 }
             }
 
-            if ($this->product_scope === 'all'|| $this->product_scope =='product_filter') {
+            if ($this->product_scope === 'all' || $this->product_scope == 'product_filter' || $this->product_scope == 'filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = FaviShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     $atts = $this->process_attributes_for_param($atts);
+                    $check_item_group_id = 0;
+
                     foreach ($atts as $key => $value) {
                         if ($key == 'delivery') {
                             $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
@@ -171,6 +174,12 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                         else {
                             $item->$key($value); // invoke $key as method of $item object.
                         }
+                        if('item_group_id' == $key){
+                            $check_item_group_id = 1;
+                        }
+                    }
+                    if($check_item_group_id == 0){
+                        $item->item_group_id($product->get_parent_id());
                     }
                 }
             }
@@ -180,6 +189,7 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                 $item = FaviShopping::createItem();
                 $atts = $this->get_product_data($product, $product_meta_keys);
                 $atts = $this->process_attributes_for_param($atts);
+                $check_item_group_id = 0;
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
                     if ($key == 'delivery') {
@@ -189,6 +199,12 @@ class Rex_Product_Feed_Favi extends Rex_Product_Feed_Abstract_Generator
                     } else {
                         $item->$key($value); // invoke $key as method of $item object.
                     }
+                    if('item_group_id' == $key){
+                        $check_item_group_id = 1;
+                    }
+                }
+                if($check_item_group_id == 0){
+                    $item->item_group_id($productId);
                 }
             }
         }

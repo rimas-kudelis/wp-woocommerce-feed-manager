@@ -453,7 +453,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if ( $args['products_scope'] === 'product_cat' || $args['products_scope'] === 'product_tag') {
             $this->products_args['post_type'] = 'product';
             $terms = $args['products_scope'] === 'product_tag' ? 'tags' : 'cats';
-            if(is_array($args[$terms])) {
+
+            if( isset( $args[$terms] ) && is_array($args[$terms])) {
                 foreach ($args[$terms] as $term) {
                     $this->products_args['tax_query'][] = array(
                         'taxonomy' => $args['products_scope'],
@@ -468,24 +469,28 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 }
             }
         }
+
         if($args['products_scope']==='product_filter'){
-            $ids = get_post_meta($this->id, 'rex_feed_product_filter_ids');
+            $ids = get_post_meta($this->id, 'rex_feed_product_filter_ids', true);
+
             if(!$this->product_filter_condition){
                 $condition = get_post_meta($this->id, 'rex_feed_product_condition');
                 $condition_str = implode('',$condition);
 
-                foreach($ids as $id){
-                    if( $condition_str == 'inc' ){
-                        $this->products_args['post__in'] = $id;
-                    }else{
-                        $this->products_args['post__not_in'] = $id;
+                if( $ids ) {
+                    foreach($ids as $id){
+                        if( $condition_str == 'inc' ){
+                            $this->products_args['post__in'] = $id;
+                        }else{
+                            $this->products_args['post__not_in'] = $id;
+                        }
                     }
                 }
 
             }else{
                 $i = 0;
 
-                if($args['data']){
+                if( isset( $args['data'] ) && $args['data'] ){
                     if( $this->product_filter_condition == 'inc' ){
 
                         $this->products_args['post__in'] = $args['data'];
@@ -493,25 +498,25 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                         $this->products_args['post__not_in'] = $args['data'];
                     }
                 }else{
-                    foreach($ids as $id){
+                    if( $ids ) {
+                        foreach($ids as $id){
 
-                        if( $this->product_filter_condition == 'inc' ){
+                            if( $this->product_filter_condition == 'inc' ){
 
-                            $this->products_args['post__in'] = $id;
-                        }else{
-                            $this->products_args['post__not_in'] = $id;
+                                $this->products_args['post__in'] = $id;
+                            }else{
+                                $this->products_args['post__not_in'] = $id;
+                            }
+                            $i++;
                         }
-                        $i++;
                     }
                 }
-
             }
         }
 
         if($args['products_scope']==='featured') {
             $this->products_args['post__in'] = wc_get_featured_product_ids();
         }
-
     }
 
     /**

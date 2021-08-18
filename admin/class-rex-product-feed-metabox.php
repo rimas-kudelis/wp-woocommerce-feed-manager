@@ -371,7 +371,7 @@ class Rex_Product_Metabox
 		        'csv'           => __( 'CSV (default)', 'rex-product-feed' ),
 		        'csv_semicolon' => __( 'CSV (";" separator)', 'rex-product-feed' ),
 		        'tsv'           => __( 'TSV', 'rex-product-feed' ),
-		        'json'          => __( 'JSON (Only for Zalando)', 'rex-product-feed' ),
+		        'json'          => __( 'JSON', 'rex-product-feed' ),
 	        ),
         ));
 

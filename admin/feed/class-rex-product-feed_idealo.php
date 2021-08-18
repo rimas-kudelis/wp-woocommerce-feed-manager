@@ -128,7 +128,7 @@ class Rex_Product_Feed_Idealo extends Rex_Product_Feed_Abstract_Generator {
                 }else {
                     $variations = $product->get_children();
                 }
-                if($variations) {
+                if( $variations && $this->product_scope !='filter' ) {
                     foreach ($variations as $variation) {
                         $product = wc_get_product($variation);
 
@@ -184,6 +184,24 @@ class Rex_Product_Feed_Idealo extends Rex_Product_Feed_Abstract_Generator {
                     $item->$key($value); // invoke $key as method of $item object.
                 }
             }
+
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
+		        if ($product->get_type() == 'variation') {
+			        $atts = $this->get_product_data( $product, $product_meta_keys );
+			        $atts['parent_child'] = '';
+			        $atts['relationship_type'] = '';
+			        $atts['variation_theme'] = '';
+			        foreach ($all_variation_distinct as $dv){
+				        $attr_label = wc_attribute_label($dv);
+				        $label_final= $attr_label.$name;
+				        $atts[lcfirst($label_final)] ='';
+			        }
+			        $item = Idealo::createItem();
+			        foreach ($atts as $key => $value) {
+				        $item->$key($value); // invoke $key as method of $item object.
+			        }
+		        }
+	        }
 
         }
 

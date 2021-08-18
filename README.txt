@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.8
 Requires PHP: 7.0
-Stable tag:  6.6.9
+Stable tag:  6.6.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -582,6 +582,14 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 6.6.10 (2021-08-18) =
+* Fixed: Custom Filter Availability issue fixed
+* Fixed: Lesitedumif feed template updated
+* Fixed: Favi feed template updated
+* Fixed: Vivino feed template updated
+* Added: Bing Image feed template added
+* Compatibility Checked : WooCommerce 5.6.0
 
 = 6.6.9 (2021-08-11) =
 * Changelog: Fixed: PHP warning for empty attributes

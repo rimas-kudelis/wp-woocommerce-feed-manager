@@ -69,6 +69,7 @@ class Rex_Feed_Template_Vivino extends Rex_Feed_Abstract_Template
                 'vintage' => 'Vintage',
                 'winemaker' => 'Winemaker',
                 'ean' => 'Ean',
+                'image' => 'Image',
             ) ,
         );
     }

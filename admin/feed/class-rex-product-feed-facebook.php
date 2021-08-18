@@ -73,6 +73,8 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         foreach( $this->products as $productId ) {
             $product = wc_get_product( $productId );
 
+            error_log(print_r($productId, true));
+            error_log(print_r('here', true));
             if ( ! is_object( $product ) ) {
                 continue;
             }
@@ -105,13 +107,13 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                         }
                     }
                 }
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
                     }else {
                         $variations = $product->get_children();
                     }
-                    if($variations) {
+                    if( $variations && $this->product_scope !='filter' ) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variation_products[] = $variation;
@@ -136,7 +138,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                                     if('item_group_id' == $key){
                                         $check_item_group_id = 1;
                                     }
-                                   
                                 }
                                 if($check_item_group_id == 0){
                                     $item->item_group_id($variation_product->get_parent_id());
@@ -166,13 +167,11 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                             $key = $key.' ';
                         }
                         $item->$key($value); // invoke $key as method of $item object.
-                            
-                        
                     }
                 }
             }
 
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter' ) {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = GoogleShopping::createItem();
@@ -194,12 +193,10 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                         if('item_group_id' == $key){
                             $check_item_group_id = 1;
                         }
-                       
                     }
                     if($check_item_group_id == 0){
                         $item->item_group_id($product->get_parent_id());
                     }
-                    
                 }
             }
 

@@ -114,14 +114,14 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
                     }
                 }
 
-                if ($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
+                if ($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
                     if ($this->exclude_hidden_products) {
                         $variations = $product->get_visible_children();
                     } else {
                         $variations = $product->get_children();
                     }
 
-                    if ($variations) {
+                    if ( $variations && $this->product_scope !='filter' ) {
                         foreach ($variations as $variation) {
                             if ($this->variations) {
                                 $variation_products[] = $variation;

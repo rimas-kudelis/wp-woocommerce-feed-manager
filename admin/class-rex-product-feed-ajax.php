@@ -422,6 +422,9 @@ class Rex_Product_Feed_Ajax {
         $bing = array(
             'bing',
         );
+        $bing_json_feed = array(
+            'bing_image',
+        );
         $ibud = array(
             'ibud',
         );
@@ -512,6 +515,9 @@ class Rex_Product_Feed_Ajax {
 	    }
         elseif ( in_array( $merchant, $lesitedumif ) ) {
 		    return array( 'csv', 'csv_semicolon' );
+	    }
+        elseif ( in_array( $merchant, $bing_json_feed ) ) {
+		    return array( 'json' );
 	    }
 	    return array( 'xml', 'csv', 'csv_semicolon', 'text', 'tsv', 'json' );
     }

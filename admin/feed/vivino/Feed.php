@@ -50,6 +50,7 @@ class VivinoFeed  extends \RexTheme\RexShoppingFeed\Feed
                 'producer' => 'producer',
                 'producer-address' => 'producer-address',
                 'ean' => 'ean',
+                'image' => 'image',
                 'production-size' => 'production-size',
                 'residual-sugar' => 'residual-sugar',
                 'sweetness' => 'sweetness',

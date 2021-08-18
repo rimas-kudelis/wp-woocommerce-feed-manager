@@ -107,7 +107,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                     $variations = $product->get_children();
                 }
                 $atts = array();
-                if($variations) {
+                if( $variations && $this->product_scope !='filter' ) {
                     foreach ($variations as $variation) {
                         if($this->variations) {
                             $variation_products[] = $variation;
@@ -138,6 +138,17 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 $json_array['product_model']['product_configs'][0]['product_simples'][] = $this->get_product_simples($atts);
                 $this->feed[] = $json_array;
             }
+
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
+		        if ($product->get_type() == 'variation') {
+			        $variation_products[] = $productId;
+			        $item = RexShopping::createItem();
+			        $atts = $this->get_product_data($product, $product_meta_keys);
+			        foreach ($atts as $key => $value) {
+				        $item->$key($value); // invoke $key as method of $item object.
+			        }
+		        }
+	        }
         }
 
         $total_products = array(

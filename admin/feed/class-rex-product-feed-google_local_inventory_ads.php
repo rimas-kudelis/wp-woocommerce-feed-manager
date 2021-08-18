@@ -101,13 +101,13 @@ class Rex_Product_Feed_Google_local_inventory_ads extends Rex_Product_Feed_Abstr
                         $item->$key($value); // invoke $key as method of $item object.
                     }
                 }
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
                     }else {
                         $variations = $product->get_children();
                     }
-                    if($variations) {
+                    if( $variations && $this->product_scope !='filter' ) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variable_products[] = $variation;
@@ -132,7 +132,7 @@ class Rex_Product_Feed_Google_local_inventory_ads extends Rex_Product_Feed_Abstr
                 }
             }
 
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
                 if ($product->get_type() == 'variation') {
                     $variable_products[] = $productId;
                     $item = GoogleLocalProducts::createItem();

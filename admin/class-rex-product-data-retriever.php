@@ -1513,7 +1513,72 @@ class Rex_Product_Data_Retriever{
 			case 'identifier_exists':
 				return $this->calculate_identifier_exists($this->data);
 
+			case 'post_publish_date':
+				$product_id = '';
+				if ( $this->product->is_type('variation') ) {
+					$product_id = $this->product->get_parent_id();
+				}
+				else {
+					$product_id = $this->product->get_id();
+				}
+				return get_the_date( '', $product_id ) . 'T' . get_the_time( 'g:i:s', $product_id ) . 'Z';
+
+			case 'post_modified_date':
+				$product_id = '';
+				if ( $this->product->is_type('variation') ) {
+					$product_id = $this->product->get_parent_id();
+				}
+				else {
+					$product_id = $this->product->get_id();
+				}
+				return get_the_modified_date( '', $product_id ) . 'T' . get_the_modified_time( 'g:i:s', $product_id ) . 'Z';
+
+			case 'current_page':
+				$product_id = '';
+				if ( $this->product->is_type('variation') ) {
+					$product_id = $this->product->get_parent_id();
+				}
+				else {
+					$product_id = $this->product->get_id();
+				}
+				return get_permalink( $product_id );
+
+			case 'author_name':
+				$author_id = '';
+				if ( $this->product->is_type('variation') ) {
+					$author_id = get_post_field( 'post_author', $this->product->get_parent_id() );
+				}
+				else {
+					$author_id = get_post_field( 'post_author', $this->product->get_id() );
+				}
+				return get_the_author_meta( 'display_name', $author_id );
+
+			case 'author_url':
+				$author_id = '';
+				if ( $this->product->is_type('variation') ) {
+					$author_id = get_post_field( 'post_author', $this->product->get_parent_id() );
+				}
+				else {
+					$author_id = get_post_field( 'post_author', $this->product->get_id() );
+				}
+				return get_author_posts_url( $author_id );
+
 			default: return ''; break;
+		}
+	}
+
+
+	/**
+	 * @desc retrieves image metadata
+	 *
+	 * @return array|false
+	 */
+	protected function get_image_meta(){
+		if ( 'WC_Product_Variation' == get_class($this->product) ) {
+			$_pr = wc_get_product($this->product->get_parent_id());
+			return wp_get_attachment_metadata( $_pr->get_image_id() );
+		}else {
+			return wp_get_attachment_metadata( $this->product->get_image_id() );
 		}
 	}
 
@@ -1524,6 +1589,7 @@ class Rex_Product_Data_Retriever{
 	 * @since    1.0.0
 	 */
 	protected function set_image_att( $key ) {
+
 		switch ( $key ) {
 			case 'main_image':
 				if ( 'WC_Product_Variation' == get_class($this->product) ) {
@@ -1532,7 +1598,46 @@ class Rex_Product_Data_Retriever{
 				}else {
 					return wp_get_attachment_url(  $this->product->get_image_id() ); break;
 				}
-				return ''; break;
+				return '';
+
+			case 'image_height':
+				$image_src = $this->get_image_meta();
+
+				return $image_src[ 'height' ];
+
+			case 'image_width':
+				$image_src = $this->get_image_meta();
+
+				return $image_src[ 'width' ];
+
+			case 'encoding_format':
+				$image_src = $this->get_image_meta();
+
+				return $image_src[ 'sizes' ][ 'woocommerce_thumbnail' ][ 'mime-type' ];
+
+			case 'image_size':
+				if ( 'WC_Product_Variation' == get_class($this->product) ) {
+					$_pr = wc_get_product($this->product->get_parent_id());
+					$image_size = filesize(get_attached_file(  $_pr->get_image_id() ) );
+
+				}else {
+					$image_size = filesize(get_attached_file(  $this->product->get_image_id() ) );
+				}
+
+				return $image_size;
+
+			case 'keywords':
+				$image_src = $this->get_image_meta();
+				return $image_src[ 'image_meta' ][ 'keywords' ];
+
+			case 'thumbnail_image':
+				if ( 'WC_Product_Variation' == get_class($this->product) ) {
+					return get_the_post_thumbnail_url( $this->product->get_parent_id() );
+
+				}else {
+					return get_the_post_thumbnail_url(  $this->product->get_id() );
+				}
+
 			case 'featured_image':
 				if( wp_get_attachment_url(  $this->product->get_image_id() ) ){
 					return wp_get_attachment_url(  $this->product->get_image_id() ); break;

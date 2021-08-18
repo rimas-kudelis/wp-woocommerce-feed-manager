@@ -112,14 +112,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     }
                 }
 
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
                     }else {
                         $variations = $product->get_children();
                     }
 
-                    if($variations) {
+                    if( $variations && $this->product_scope !='filter' ) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variation_products[] = $variation;
@@ -171,7 +171,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter') {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
                 if ($product->get_type() == 'variation') {
                     $variation_products[] = $productId;
                     $item = GoogleShopping::createItem();

@@ -99,7 +99,7 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
                 }else {
                     $variations = $product->get_children();
                 }
-                if($variations) {
+                if( $variations && $this->product_scope !='filter' ) {
                     foreach ($variations as $variation) {
                         if($this->variations) {
                             $variation_products[] = $variation;
@@ -129,6 +129,17 @@ class Rex_Product_Feed_Amazon_seller_bed_amp extends Rex_Product_Feed_Abstract_G
                     $item->$key($value); // invoke $key as method of $item object.
                 }
             }
+
+	        if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
+		        if ($product->get_type() == 'variation') {
+			        $variation_products[] = $productId;
+			        $item = RexShoppingCustom::createItem();
+			        $atts = $this->get_product_data($product, $product_meta_keys);
+			        foreach ($atts as $key => $value) {
+				        $item->$key($value); // invoke $key as method of $item object.
+			        }
+		        }
+	        }
 
         }
 
