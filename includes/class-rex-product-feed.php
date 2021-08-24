@@ -164,13 +164,8 @@ class Rex_Product_Feed {
         // if ( get_post_type() == 'product-feed' ) {
             $this->loader->add_action( 'post_submitbox_start', $plugin_admin, 'register_purge_button' );
         // }
-       
-
-        
 
 
-
-        $this->loader->add_action( 'admin_notices', $plugin_admin, 'rex_wpfm_admin_notices' );
         $this->loader->add_action( 'wpfm_cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
 
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
@@ -233,6 +228,13 @@ class Rex_Product_Feed {
          * trigger admin notice for black friday
          */
 //         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rt_black_friday_offer_notice' );
+
+
+	    /**
+	     * Trigger review request on new feed publish
+	     */
+	    $this->loader->add_action( 'publish_product-feed', $plugin_admin, 'rex_feed_show_review_request', 99999, 2 );
+	    $this->loader->add_action( 'admin_init', $plugin_admin, 'rex_feed_remove_all_notices_from_pfm_edit_page', 999999 );
     }
 
 

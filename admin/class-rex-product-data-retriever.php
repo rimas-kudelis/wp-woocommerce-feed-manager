@@ -10,6 +10,7 @@
  */
 use Wdr\App\Controllers\ManageDiscount;
 use Wdr\App\Models\DBTable;
+use Aelia\WC\CurrencySwitcher\WC_Aelia_CurrencySwitcher;
 
 class Rex_Product_Data_Retriever{
 	/**
@@ -113,6 +114,7 @@ class Rex_Product_Data_Retriever{
 	 */
 	public function __construct( WC_Product $product, Rex_Product_Feed_Abstract_Generator $feed, $product_meta_keys ) {
 
+
 		$this->is_logging_enabled   = is_wpfm_logging_enabled();
 		$this->product              = $product;
 		$this->analytics_params     = $feed->analytics_params;
@@ -152,7 +154,6 @@ class Rex_Product_Data_Retriever{
 	 */
 	public function set_test_feed_rules() {
 		$this->feed_rules = array();
-
 		foreach ($this->product_meta_keys as $key_cat => $attrs) {
 			foreach ($attrs as $key => $attr) {
 				$this->feed_rules[] = array(
@@ -414,14 +415,13 @@ class Rex_Product_Data_Retriever{
 		return $price;
 	}
 
-
 	/**
 	 * Set a primary attribute.
 	 *
 	 * @since    1.0.0
 	 */
 	protected function set_pr_att( $key, $rule = 'default' ) {
-	    
+
 		switch ( $key ) {
 			case 'id':
 				return $this->product->get_id(); break;
@@ -487,7 +487,6 @@ class Rex_Product_Data_Retriever{
 				return $yoast_title; break;
 
 			case 'price':
-
 				if ($this->product->is_type( 'grouped' )) {
 					if($this->wcml) {
 						global $woocommerce_wpml;
@@ -499,9 +498,20 @@ class Rex_Product_Data_Retriever{
 							$_price = $_custom_prices['_regular_price'];
 						}
 
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+
 						return $this->get_condition_price( $key, $_price );
-					}else {
-						return wc_format_decimal( $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'regular') ), wc_get_price_decimals());
+					}
+					else {
+						$_price = $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'regular') );
+
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+
+						return wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
 				elseif ($this->product->is_type( 'composite' )) {
@@ -523,14 +533,25 @@ class Rex_Product_Data_Retriever{
 							$_price = $_custom_prices['_regular_price'];
 						}
 
-						return ç;
-					}else {
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 
+						return $_price;
+					}else {
 						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							return wc_format_decimal( $this->get_condition_price( $key, $_pr->get_composite_price() ), wc_get_price_decimals());
+							$_price = $this->get_condition_price( $key, $_pr->get_composite_price() );
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 						else {
-							return wc_format_decimal( $this->get_condition_price( $key, $_pr->get_composite_regular_price() ), wc_get_price_decimals());
+							$_price = $this->get_condition_price( $key, $_pr->get_composite_regular_price() );
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 					}
 				}
@@ -550,9 +571,17 @@ class Rex_Product_Data_Retriever{
 									$_price = $_custom_prices['_regular_price'];
 								}
 
+								if ( $this->is_aelia_active() ){
+									$_price = $this->get_converted_price( $_price );
+								}
+
 								return $this->get_condition_price( $key, $_price );
 							}else {
-								return wc_format_decimal(  $this->get_condition_price( $key, $_variation_product->get_regular_price() ), wc_get_price_decimals());
+								$_price = $this->get_condition_price( $key, $_variation_product->get_regular_price() );
+								if ( $this->is_aelia_active() ){
+									$_price = $this->get_converted_price( $_price );
+								}
+								return wc_format_decimal(  $_price, wc_get_price_decimals());
 							}
 						}
 						if($this->wcml) {
@@ -564,9 +593,17 @@ class Rex_Product_Data_Retriever{
 							if($_custom_prices['_regular_price'] > 0){
 								$_price = $_custom_prices['_regular_price'];
 							}
+
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
 							return $this->get_condition_price( $key, $_price );
 						}else {
-							return wc_format_decimal( $this->get_condition_price( $key, $this->product->get_variation_regular_price() ), wc_get_price_decimals());
+							$_price = $this->get_condition_price( $key, $this->product->get_variation_regular_price() );
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return wc_format_decimal(  $_price, wc_get_price_decimals());
 						}
 					}
 					else {
@@ -579,13 +616,25 @@ class Rex_Product_Data_Retriever{
 								$_price = $_custom_prices['_regular_price'];
 							}
 
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+
 							return $this->get_condition_price( $key, $_price );
 						}
-						return wc_format_decimal( $this->get_condition_price( $key, $this->product->get_variation_regular_price() ), wc_get_price_decimals());
+						$_price = $this->get_condition_price( $key, $this->product->get_variation_regular_price() );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return wc_format_decimal(  $_price, wc_get_price_decimals());
 					}
 				}
 				elseif($this->product->is_type('bundle')){
-					return $this->get_condition_price( $key, $this->product->get_bundle_price() );
+					$_price = $this->product->get_bundle_price();
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
+					return $this->get_condition_price( $key, $_price );
 				}
 
 
@@ -598,10 +647,17 @@ class Rex_Product_Data_Retriever{
 					if($_custom_prices['_regular_price'] > 0){
 						$_price = $_custom_prices['_regular_price'];
 					}
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
 					return $this->get_condition_price( $key, $_price );
 
 				}else {
-					return wc_format_decimal( $this->get_condition_price( $key, $this->product->get_regular_price() ), wc_get_price_decimals());
+					$_price = $this->get_condition_price( $key, $this->product->get_regular_price() );
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
+					return wc_format_decimal(  $_price, wc_get_price_decimals());
 				}
 				break;
 
@@ -617,9 +673,16 @@ class Rex_Product_Data_Retriever{
 							if($_custom_prices['_price'] > 0){
 								$_price = $_custom_prices['_price'];
 							}
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
 							return $this->get_condition_price( $key, $_price );
 						}else {
-							return wc_format_decimal( $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'price') ), wc_get_price_decimals() );
+							$_price = $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'price') );
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return wc_format_decimal(  $_price, wc_get_price_decimals());
 						}
 					}
 					elseif ($this->product->is_type( 'composite' )) {
@@ -633,9 +696,16 @@ class Rex_Product_Data_Retriever{
 							if($_custom_prices['_price'] > 0){
 								$_price = $_custom_prices['_price'];
 							}
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
 							return $this->get_condition_price( $key, $_price );
 						}else {
-							return wc_format_decimal( $this->get_condition_price( $key, $_pr->get_composite_price() ), wc_get_price_decimals());
+							$_price = $this->get_condition_price( $key, $_pr->get_composite_price() );
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return wc_format_decimal(  $_price, wc_get_price_decimals());
 						}
 					}elseif ($this->product->is_type( 'variable' )) {
 						$default_attributes = $this->get_default_attributes( $this->product );
@@ -652,9 +722,16 @@ class Rex_Product_Data_Retriever{
 									if($_custom_prices['_price'] > 0){
 										$_price = $_custom_prices['_price'];
 									}
+									if ( $this->is_aelia_active() ){
+										$_price = $this->get_converted_price( $_price );
+									}
 									return $this->get_condition_price( $key, $_price );
 								}else {
-									return wc_format_decimal( $this->get_condition_price( $key, $_variation_product->get_price() ), wc_get_price_decimals());
+									$_price = $this->get_condition_price( $key, $_variation_product->get_price() );
+									if ( $this->is_aelia_active() ){
+										$_price = $this->get_converted_price( $_price );
+									}
+									return wc_format_decimal(  $_price, wc_get_price_decimals());
 								}
 							}
 						}
@@ -668,9 +745,16 @@ class Rex_Product_Data_Retriever{
 								if($_custom_prices['_price'] > 0){
 									$_price = $_custom_prices['_price'];
 								}
+								if ( $this->is_aelia_active() ){
+									$_price = $this->get_converted_price( $_price );
+								}
 								return $this->get_condition_price( $key, $_price );
 							}else{
-								return wc_format_decimal( $this->get_condition_price( $key, $this->product->get_price() ), wc_get_price_decimals());
+								$_price = $this->get_condition_price( $key, $this->product->get_price() );
+								if ( $this->is_aelia_active() ){
+									$_price = $this->get_converted_price( $_price );
+								}
+								return wc_format_decimal(  $_price, wc_get_price_decimals());
 
 							}
 						}
@@ -684,9 +768,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_price'] > 0){
 							$_price = $_custom_prices['_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $this->get_condition_price( $key, $_price );
 					}else {
-						return  wc_format_decimal( $this->get_condition_price( $key, $this->product->get_price() ), wc_get_price_decimals());
+						$_price = $this->get_condition_price( $key, $this->product->get_price() );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return wc_format_decimal(  $_price, wc_get_price_decimals());
 					}
 				}
 				else {
@@ -699,23 +790,36 @@ class Rex_Product_Data_Retriever{
 							$wad_discounts[$discount_type][$discount_id] = new WAD_Discount($discount_id);
 						}
 					}
-					if ($this->product->is_type( 'grouped' ))
-						$sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') ;
+					if ($this->product->is_type( 'grouped' )) {
+						$sale_price = number_format( (float) $this->get_grouped_price( $this->product, 'sale' ), 2, '.', '' );
+
+						if ( $this->is_aelia_active() ){
+							$sale_price = $this->get_converted_price( $sale_price );
+						}
+						return $sale_price;
+					}
 					elseif ($this->product->is_type( 'composite' )) {
 						$_pr  = new WC_Product_Composite($this->product->get_id());
-						return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
-					}elseif ($this->product->is_type( 'variable' )) {
+						$_price = $_pr->get_composite_price();
+
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return  wc_format_decimal( $_price, wc_get_price_decimals());
+					}
+					elseif ($this->product->is_type( 'variable' )) {
 						$default_attributes = $this->get_default_attributes( $this->product );
 						if($default_attributes) {
 							$variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
 							if($variation_id) {
 								$_variation_product = wc_get_product($variation_id);
 								$sale_price = number_format( (float)$_variation_product->get_price(), 2, '.', '');
-							}else {
+							}
+							else {
 								$sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '');
 							}
-
-						}else {
+						}
+						else {
 							$sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '');
 						}
 					}
@@ -757,9 +861,16 @@ class Rex_Product_Data_Retriever{
 								if($_custom_prices['_price'] > 0){
 									$_price = $_custom_prices['_price'];
 								}
+								if ( $this->is_aelia_active() ){
+									$_price = $this->get_converted_price( $_price );
+								}
 								return $this->get_condition_price( $key, $_price );
 							}else {
-								return  wc_format_decimal( $this->get_condition_price( $key, $sale_price ), wc_get_price_decimals());
+								$_price = $this->get_condition_price( $key, $sale_price );
+								if ( $this->is_aelia_active() ){
+									$_price = $this->get_converted_price( $_price );
+								}
+								return  wc_format_decimal( $_price, wc_get_price_decimals());
 							}
 						}
 					}
@@ -772,9 +883,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_price'] > 0){
 							$_price = $_custom_prices['_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $this->get_condition_price( $key, $_price );
 					}else {
-						return  wc_format_decimal( $this->get_condition_price( $key, $sale_price ), wc_get_price_decimals());
+						$_price = $this->get_condition_price( $key, $sale_price );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return  wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
 				break;
@@ -812,8 +930,17 @@ class Rex_Product_Data_Retriever{
 							if($_custom_prices['_sale_price'] > 0){
 								$_price = $_custom_prices['_sale_price'];
 							}
+
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+
 							return $this->get_condition_price( $key, $_price );
 						}else {
+
+							if ( $this->is_aelia_active() ){
+								$sale_price = $this->get_converted_price( $sale_price );
+							}
 							return $this->get_condition_price( $key, $sale_price );
 						}
 					}
@@ -857,9 +984,17 @@ class Rex_Product_Data_Retriever{
 							if($_custom_prices['_sale_price'] > 0){
 								$_price = $_custom_prices['_sale_price'];
 							}
+
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
 							return $this->get_condition_price( $key, $_price );
 						}else {
-							return  wc_format_decimal( $this->get_condition_price( $key, $_pr->get_sale_price() ), wc_get_price_decimals());
+							$_price = $this->get_condition_price( $key, $_pr->get_sale_price() );
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return  wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 					}
 					else
@@ -900,9 +1035,17 @@ class Rex_Product_Data_Retriever{
 								if($_custom_prices['_sale_price'] > 0){
 									$_price = $_custom_prices['_sale_price'];
 								}
+
+								if ( $this->is_aelia_active() ){
+									$_price = $this->get_converted_price( $_price );
+								}
 								return $this->get_condition_price( $key, $_price );
 							}else {
-								return  wc_format_decimal( $this->get_condition_price( $key, $sale_price ), wc_get_price_decimals());
+								$_price = $this->get_condition_price( $key, $sale_price );
+								if ( $this->is_aelia_active() ){
+									$_price = $this->get_converted_price( $_price );
+								}
+								return  wc_format_decimal( $_price, wc_get_price_decimals());
 							}
 						}
 					}
@@ -917,8 +1060,16 @@ class Rex_Product_Data_Retriever{
 							if($_custom_prices['_sale_price'] > 0){
 								$_price = $_custom_prices['_sale_price'];
 							}
+
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
 							return $this->get_condition_price( $key, $_price );
 						}else {
+
+							if ( $this->is_aelia_active() ){
+								$sale_price = $this->get_converted_price( $sale_price );
+							}
 							return $this->get_condition_price( $key, $sale_price );
 						}
 					}
@@ -938,9 +1089,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_regular_price'] > 0){
 							$_price = $_custom_prices['_regular_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $this->get_condition_price( $key, $_price );
 					}else {
-						return wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'regular') ) ) );
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'regular') ) ) );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return $_price ;
 					}
 				}
 				elseif ($this->product->is_type( 'composite' )) {
@@ -960,14 +1118,25 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_regular_price'] > 0){
 							$_price = $_custom_prices['_regular_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $this->get_condition_price( $key, $_price );
 					}else {
 
 						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							return  wc_format_decimal( $this->get_condition_price( $key, $_pr->get_composite_price() ), wc_get_price_decimals());
+							$_price = $this->get_condition_price( $key, $_pr->get_composite_price() );
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return  wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 						else {
-							return  wc_format_decimal( $this->get_condition_price( $key, $_pr->get_composite_regular_price() ), wc_get_price_decimals());
+							$_price = $this->get_condition_price( $key, $_pr->get_composite_regular_price() );
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return  wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 					}
 				}
@@ -980,9 +1149,16 @@ class Rex_Product_Data_Retriever{
 					if($_custom_prices['_regular_price'] > 0){
 						$_price = $_custom_prices['_regular_price'];
 					}
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
 					return $this->get_condition_price( $key, $_price );
 				}else {
-					return  wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->product->get_regular_price() ) ) ), wc_get_price_decimals());
+					$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->product->get_regular_price() ) ) );
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
+					return  wc_format_decimal( $_price, wc_get_price_decimals() );
 				}
 				break;
 
@@ -997,9 +1173,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_price'] > 0){
 							$_price = $_custom_prices['_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $this->get_condition_price( $key, $_price );
 					}else {
-						return wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'price') ) ) );
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'price') ) ) );;
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return $_price;
 					}
 				}
 				elseif ($this->product->is_type( 'composite' )) {
@@ -1013,9 +1196,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_price'] > 0){
 							$_price = $_custom_prices['_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $this->get_condition_price( $key, $_price );
 					}else {
-						return  wc_format_decimal( $this->get_condition_price( $key, $_pr->get_composite_price() ), wc_get_price_decimals());
+						$_price = $this->get_condition_price( $key, $_pr->get_composite_price() );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return  wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
 				if($this->wcml) {
@@ -1027,9 +1217,16 @@ class Rex_Product_Data_Retriever{
 					if($_custom_prices['_price'] > 0){
 						$_price = $_custom_prices['_price'];
 					}
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
 					return $this->get_condition_price( $key, $_price );
 				}else {
-					return wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->product->get_price() ) ) ), wc_get_price_decimals());
+					$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->product->get_price() ) ) );
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
+					return wc_format_decimal( $_price, wc_get_price_decimals());
 				}
 				break;
 
@@ -1044,9 +1241,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_sale_price'] > 0){
 							$_price = $_custom_prices['_sale_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) );
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return $_price;
 					}
 				}
 				elseif ($this->product->is_type( 'composite' )) {
@@ -1060,9 +1264,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_sale_price'] > 0){
 							$_price = $_custom_prices['_sale_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return  wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals());
+						$_price = $_pr->get_sale_price();
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return  wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
 				$sale_price = $this->product->get_sale_price();
@@ -1076,9 +1287,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_sale_price'] > 0){
 							$_price = $_custom_prices['_sale_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals());
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
 				return '';
@@ -1096,9 +1314,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_regular_price'] > 0){
 							$_price = $_custom_prices['_regular_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'regular') ) );
+						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'regular') ) );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return $_price;
 					}
 				}
 				elseif ($this->product->is_type( 'composite' )) {
@@ -1118,13 +1343,24 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_regular_price'] > 0){
 							$_price = $_custom_prices['_regular_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
 						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
+							$_price = $_pr->get_composite_price();
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return  wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 						else {
-							return  wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals());
+							$_price = $_pr->get_composite_regular_price();
+							if ( $this->is_aelia_active() ){
+								$_price = $this->get_converted_price( $_price );
+							}
+							return  wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 					}
 				}
@@ -1137,9 +1373,16 @@ class Rex_Product_Data_Retriever{
 					if($_custom_prices['_regular_price'] > 0){
 						$_price = $_custom_prices['_regular_price'];
 					}
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
 					return $_price;
 				}else {
-					return  wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals());
+					$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) );
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
+					return  wc_format_decimal( $_price, wc_get_price_decimals());
 				}
 				break;
 
@@ -1154,9 +1397,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_price'] > 0){
 							$_price = $_custom_prices['_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'price') ) );
+						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'price') ) );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return $_price;
 					}
 				}
 				elseif ($this->product->is_type( 'composite' )) {
@@ -1170,9 +1420,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_price'] > 0){
 							$_price = $_custom_prices['_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return  wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals());
+						$_price = $_pr->get_composite_price();
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return  wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
 				if($this->wcml) {
@@ -1184,9 +1441,16 @@ class Rex_Product_Data_Retriever{
 					if($_custom_prices['_price'] > 0){
 						$_price = $_custom_prices['_price'];
 					}
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
 					return $_price;
 				}else {
-					return wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals());
+					$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) );
+					if ( $this->is_aelia_active() ){
+						$_price = $this->get_converted_price( $_price );
+					}
+					return wc_format_decimal( $_price, wc_get_price_decimals());
 				}
 				break;
 
@@ -1201,9 +1465,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_sale_price'] > 0){
 							$_price = $_custom_prices['_sale_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) );
+						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return $_price;
 					}
 				}
 				elseif ($this->product->is_type( 'composite' )) {
@@ -1217,9 +1488,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_sale_price'] > 0){
 							$_price = $_custom_prices['_sale_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return  wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals());
+						$_price = $_pr->get_sale_price();
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return  wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
 				$sale_price = $this->product->get_sale_price();
@@ -1233,9 +1511,16 @@ class Rex_Product_Data_Retriever{
 						if($_custom_prices['_sale_price'] > 0){
 							$_price = $_custom_prices['_sale_price'];
 						}
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
 						return $_price;
 					}else {
-						return wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals());
+						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) );
+						if ( $this->is_aelia_active() ){
+							$_price = $this->get_converted_price( $_price );
+						}
+						return wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
 				return '';
@@ -1252,7 +1537,11 @@ class Rex_Product_Data_Retriever{
 					}
 					return $_price;
 				}else {
-					return  wc_format_decimal( get_post_meta( $this->product->get_id(), '_regular_price', true), wc_get_price_decimals());
+					$meta_key = '_regular_price';
+					if ( $this->product->is_type( 'variable' ) || $this->product->is_type( 'grouped' ) ){
+						$meta_key = '_price';
+					}
+					return  wc_format_decimal( get_post_meta( $this->product->get_id(), $meta_key, true), wc_get_price_decimals());
 				}
 				break;
 
@@ -1565,6 +1854,33 @@ class Rex_Product_Data_Retriever{
 
 			default: return ''; break;
 		}
+	}
+
+
+	/**
+	 * @desc check if aelia is active.
+	 *
+	 * @return bool
+	 */
+	protected function is_aelia_active(){
+		$active_plugings         = get_option( 'active_plugins' );
+		$aelia_plugin            = 'woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php';
+		$aelia_foundation_plugin = 'wc-aelia-foundation-classes/wc-aelia-foundation-classes.php';
+
+		return in_array( $aelia_plugin, $active_plugings ) && in_array( $aelia_foundation_plugin, $active_plugings );
+	}
+
+	/**
+	 * @desc Gets price converted by Aelia
+	 *
+	 * @param $price
+	 * @return mixed|void
+	 */
+	protected function get_converted_price( $price ) {
+		$from_currency = get_woocommerce_currency();
+		$to_currency = get_post_meta( $this->feed->get_feed_id(), 'rex_feed_aelia_currency', true );
+
+		return apply_filters( 'wc_aelia_cs_convert', $price, $from_currency, $to_currency );
 	}
 
 

@@ -1071,6 +1071,48 @@
 
     $(document).on('change', '#rex-product-allow-private', allow_private);
 
+    // Trigger Based Review Request
+    $( document ).ready( function () {
+
+        $( document ).on( 'click', '#rex_rate_now, #rex_rate_not_now, #rex_rated_already', function ( e ) {
+            var btn_id = $( this ).attr( 'id' );
+            var show = true;
+            var frequency = '';
+
+            if ( btn_id == 'rex_rate_now' || btn_id == 'rex_rated_already' ) {
+                if ( btn_id == 'rex_rated_already' )
+                    e.preventDefault();
+
+                var feed_id = $( '#rex_feed_hidden_feed_id' ).val();
+                var show = false;
+                var frequency = 'never';
+            }
+            else if ( btn_id == 'rex_rate_not_now' ) {
+                e.preventDefault();
+                var feed_id = $( '#rex_feed_hidden_feed_id' ).val();
+                var show = false;
+                var frequency = 'one_week';
+            }
+
+            var payload = {
+                feed_id: feed_id,
+                show: show,
+                frequency: frequency
+            };
+
+            wpAjaxHelperRequest('trigger-review-request', payload)
+                .success(function(response) {
+                    $('#rex_feed_trigger_based_review_request').fadeOut();
+                    console.log('Woohoo! Awesome!!');
+                })
+                .error(function(response) {
+                    console.log('Uh, oh! Not Awesome!!');
+                    // console.log('response.statusText');
+                });
+        } );
+    } );
+    // Trigger Based Review Request ENDS
+
 })(jQuery);
 
 
@@ -1114,10 +1156,6 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function(window, document, $, undefi
             $('.cmb-type-product-filter').show();
             $('.cmb2-id-rex-feed-config-filter-title').hide();
             $('#rex-feed-product-taxonomies').hide();
-            
-            
-            
-
         }
 
         $(".rex-feed-product-taxonomies-spinner").show();
@@ -1137,8 +1175,6 @@ window.WPFM_Ajaxified_Product_Taxonomies = (function(window, document, $, undefi
                         $('<p><span class="button-secondary cmb-multicheck-toggle">' + l10n.strings.check_toggle + '</span></p>').insertBefore('.cmb2-checkbox-list:not(.no-select-all)');
                         l10n.fields[response.data.hash] = response.data.js_data;
                         $(".rex-feed-product-taxonomies-spinner").hide();
-
-
                     }
                 })
                 .error(function(response) {

@@ -597,7 +597,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($this->batch == 1) {
             update_post_meta($this->id, 'rex_feed_feed_config', $this->feed_rules);
         }
-
     }
 
 
@@ -1164,6 +1163,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 	    return $data->get_all_data();*/
     }
+
+	/**
+	 * @desc Gets feed id.
+	 *
+	 * @return mixed
+	 */
+    public function get_feed_id() {
+    	return $this->config['info']['post_id'];
+    }
+
 
 	/**
 	 * @desc Converts all additional image link
@@ -1941,7 +1950,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         return false;
     }
 
-    function cleanString($string)
+    public function cleanString($string)
     {
         // allow only letters
         $res = preg_replace("/[^a-zA-Z]/", "", $string);

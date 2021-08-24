@@ -144,8 +144,6 @@ class Rex_Product_Feed_Admin {
     private $wpfm_support_menu = null;
 
 
-
-
     /**
      * Initialize the class and set its properties.
      *
@@ -252,9 +250,13 @@ class Rex_Product_Feed_Admin {
                 $this->version,
                 true
             );
-
-
-
+            wp_enqueue_script(
+                'jquery-cookie',
+                'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/latest/js.cookie.min.js',
+                array( 'jquery' ),
+                $this->version,
+                true
+            );
         }
 
         if ($screen->id == $this->category_mapping_screen_hook_suffix) {
@@ -280,52 +282,6 @@ class Rex_Product_Feed_Admin {
             wp_dequeue_script( 'cmb2-conditionals' );
         }
     }
-
-
-    /**
-     * Admin Notices
-     *
-     * @since    1.2.7
-     */
-    public function rex_wpfm_admin_notices() {
-
-        $show_notice = get_option('rex_bwfm_notification_status');
-        $activation_time = get_option('rex_bwfm_first_installation');
-        $current_time = time();
-        $notice_start = 7;
-        // $notice_start = 1209600;
-        $current_date = new DateTime(date('Y-m-d',$current_time));
-        $activation_date = new DateTime(date('Y-m-d',$activation_time));
-        $date_diff = $activation_date->diff($current_date);
-        $interval   = $date_diff->d > $notice_start ? true : false;
-        if ($interval AND $show_notice !='no' AND isset( $_GET['post_type'] ) AND $_GET['post_type'] == 'product-feed') {?>
-            <div class="notice notice-info bwfm-review-notice" style="position: relative; border-left-color: #00b4ff;">
-                <div class="wpfm-logo">
-                    <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER.'icon/logo-4.png'?>" style="max-width: 100%;">
-                </div>
-                <div class="wpfm-notice-content">
-                    <h2 class="wpfm-notice-title"><?php echo __('Leave a review?', 'rex-product-feed'); ?></h2>
-                    <p><?php echo __( 'Hey, I noticed you are using WC product feed manager for over two weeks – that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.', 'rex-product-feed' ) ?><br>~ Lincoln </p>
-                    <ul>
-                        <li style="display: inline;">
-                            <span class="dashicons dashicons-external" style="font-size: 1.4em; padding-left: 10px"></span>
-                            <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank" class="" style="font-weight: bold; padding-left: 10px;"><?php echo __('Ok, you deserve it','rex-product-feed')?></a>
-                        </li>
-                        <li style="display: inline;">
-                            <span class="dashicons dashicons-calendar" style="font-size: 1.4em; padding-left: 10px"></span>
-                            <a href="#" class="stop-bwfm-notice" style="font-weight: bold; padding-left: 10px;"><?php echo __( 'Nope, maybe later.', 'rex-product-feed' ) ?></a>
-                        </li>
-                        <li style="display: inline;">
-                            <span class="dashicons dashicons-smiley" style="font-size: 1.4em; padding-left: 10px"></span>
-                            <a href="#" class="stop-bwfm-notice" style="font-weight: bold; padding-left: 10px;"><?php echo __( 'I already did.', 'rex-product-feed' ) ?></a>
-                        </li>
-                    </ul>
-                    <button type="button" class="notice-dismiss bwfm-dismiss-notice"><span class="screen-reader-text"><?php echo __( 'Dismiss this notice.', 'rex-product-feed' ) ?></span></button>
-                </div>
-            </div>
-        <?php }
-    }
-
 
 
     /**
@@ -540,8 +496,6 @@ class Rex_Product_Feed_Admin {
         add_filter('plugin_action_links_' . $this->plugin_basename, array( $this, 'wpfm_plugin_action_links' ));
     }
 
-    
-
 
     public static function wpfm_license_menu_render()
     {
@@ -554,7 +508,6 @@ class Rex_Product_Feed_Admin {
     public static function category_mapping(){
         require plugin_dir_path(__FILE__) . '/partials/category_mapping.php';
     }
-
 
 
     public static function user_dashboard(){
@@ -814,7 +767,6 @@ class Rex_Product_Feed_Admin {
         }
         return $array;
     }
-
 
 
     /*
@@ -1370,6 +1322,33 @@ class Rex_Product_Feed_Admin {
     }
 
 
-    
+	/**
+	 * Trigger review request on new feed publish
+	 */
+    public function rex_feed_show_review_request( $post_id, WP_Post $post ){
 
+	    $show_review_request = get_option( 'rex_feed_review_request' );
+
+	    if ( empty( $show_review_request ) ) {
+	        $data = array (
+                'show' => true,
+                'time' => '',
+                'frequency' => 'immediate'
+            );
+		    update_option( 'rex_feed_review_request', $data );
+	    }
+    }
+
+	/**
+	 * Removes all actions from product feed edit page.
+	 */
+	public function rex_feed_remove_all_notices_from_pfm_edit_page()
+	{
+		$post_type   = isset( $_GET[ 'post' ] ) ? sanitize_text_field( get_post_type( $_GET[ 'post' ] ) ) : '';
+		$post_action = isset( $_GET[ 'action' ] ) ? sanitize_text_field( $_GET[ 'action' ] ) : '';
+
+		if ( $post_type == 'product-feed' && $post_action == 'edit' ) {
+			remove_all_actions( 'admin_notices' );
+		}
+	}
 }

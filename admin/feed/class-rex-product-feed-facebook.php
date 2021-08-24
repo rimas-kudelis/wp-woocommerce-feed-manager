@@ -73,8 +73,6 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
         foreach( $this->products as $productId ) {
             $product = wc_get_product( $productId );
 
-            error_log(print_r($productId, true));
-            error_log(print_r('here', true));
             if ( ! is_object( $product ) ) {
                 continue;
             }

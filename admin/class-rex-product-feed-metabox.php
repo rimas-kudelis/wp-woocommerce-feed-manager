@@ -1,4 +1,5 @@
 <?php
+use Aelia\WC\CurrencySwitcher\WC_Aelia_Currencies_Manager;
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -25,6 +26,7 @@ class Rex_Product_Metabox
         $this->feed_config();
         $this->feed_file();
         $this->google_merchant();
+        $this->rex_feed_trigger_based_review();
         if (!$is_premium) $this->upgrade_notice();
     }
 
@@ -190,6 +192,42 @@ class Rex_Product_Metabox
             'id' => $this->prefix . 'analytics_params_options',
             'type' => 'checkbox',
         ));
+
+
+	    $aelia_plugin            = 'woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php';
+	    $aelia_foundation_plugin = 'wc-aelia-foundation-classes/wc-aelia-foundation-classes.php';
+
+        if ( is_plugin_active( $aelia_plugin ) && is_plugin_active( $aelia_foundation_plugin ) ) {
+	        $aelia_settings = get_option( 'wc_aelia_currency_switcher' );
+	        $enabled_currency = is_array( $aelia_settings ) && isset( $aelia_settings[ 'enabled_currencies' ] )
+		        ? $aelia_settings[ 'enabled_currencies' ] : '';
+	        $aelia_world_currency = WC_Aelia_Currencies_Manager::world_currencies();
+	        $currency_options = array();
+
+	        if ( is_array( $enabled_currency ) && !empty( $enabled_currency ) ) {
+		        foreach ( $enabled_currency as $currency ) {
+			        if( array_key_exists( $currency, $aelia_world_currency) ){
+				        $currency_options[ $currency ] = $aelia_world_currency[ $currency ];
+			        }
+		        }
+	        }
+	        else{
+		        $currency_options = array( 'Please configure Aelia Currency Switcher!' );
+	        }
+
+	        /**
+	         * Aelia currency dropdown to convert.
+	         */
+	        $box->add_field(array(
+		        'name' => __('Aelia Currency', 'rex-product-feed'),
+		        'desc' => __('Select currency to convert', 'rex-product-feed'),
+		        'id' => $this->prefix . 'aelia_currency',
+		        'type' => 'select',
+		        'show_option_none' => false,
+		        'default' => get_woocommerce_currency(),
+		        'options' => $currency_options
+	        ));
+        }
 
         $box->add_field(array(
             'name' => __('Parameters', 'rex-product-feed'),
@@ -437,12 +475,6 @@ class Rex_Product_Metabox
     }
 
 
-//    //display product filter
-//    public function atts_filter_product($field_args, $field){
-//
-//    }
-
-
     /**
      * Display Product taxonomies
      *
@@ -500,7 +532,89 @@ class Rex_Product_Metabox
                 'disabled' => 'disabled',
             ),
         ));
+    }
 
+    /**
+     * Defines Metaboxes for Trigger based review request
+     *
+     * @return void
+     * @author RexTheme
+     **/
+	private function rex_feed_trigger_based_review()
+	{
+		$feed_id             = isset( $_GET[ 'post' ] ) ? sanitize_text_field( $_GET[ 'post' ] ) : '';
+		$show_review_request = array();
+
+		if ( $feed_id != '' ) {
+			$show_review_request = get_option( 'rex_feed_review_request' );
+		}
+
+		if ( !empty( $show_review_request ) && isset( $show_review_request[ 'show' ] ) && $show_review_request[ 'show' ] ) {
+
+			if ( isset( $show_review_request[ 'frequency' ] ) ) {
+				if ( $show_review_request[ 'frequency' ] == 'immediate' ) {
+					$this->rex_feed_generate_review_request();
+				}
+                elseif ( $show_review_request[ 'frequency' ] == 'one_week' ) {
+					$last_shown_date = $show_review_request[ 'time' ];
+					$current_date    = time();
+					$current_date    = new DateTime( date( 'Y-m-d', $current_date ) );
+					$last_shown_date = new DateTime( date( 'Y-m-d', $last_shown_date ) );
+					$date_diff       = $last_shown_date->diff( $current_date );
+
+					if ( $date_diff->d > 7 ) {
+						$this->rex_feed_generate_review_request();
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Generates review request meta fields in Product Feed edit page.
+	 */
+	public function rex_feed_generate_review_request()
+	{
+		$box = wpfm_new_cmb2_box(
+			array(
+				'id'           => $this->prefix . 'trigger_based_review_request',
+				'title'        => esc_html__( 'Feed URL', 'rex-product-feed' ),
+				'object_types' => array( 'product-feed' ), // Post type
+				'context'      => 'side',
+				'priority'     => 'high'
+			) );
+
+		$box->add_field(
+			array(
+				'name'        => __( '', 'rex-product-feed' ),
+				'desc'        => __( '', 'rex-product-feed' ),
+				'id'          => $this->prefix . 'review_request',
+				'type'        => '',
+				'after_field' => array( $this, 'rex_feed_review_request_body_content' ),
+				'default'     => '',
+			) );
+	}
+
+
+    /**
+     * Body contents for Trigger based review request
+     *
+     * @return void
+     * @author RexTheme
+     **/
+    public function rex_feed_review_request_body_content(){
+        ?>
+        <div id="rex_feed_review_request_body_content">
+            <input type="hidden" id="rex_feed_hidden_feed_id" value="<?php echo sanitize_text_field( $_GET[ 'post' ] ); ?>">
+            <h2>Rating</h2>
+            <p>Please do give us a<br>rating if you like using<br>our plugin. It will only<br>take 2 minutes.</p>
+            <div id="rex_feed_review_request_btn">
+                <a id="rex_rate_now" class="waves-effect waves-light btn-large" href="https://wordpress.org/plugins/best-woocommerce-feed/#reviews" target="_blank"><?php _e('Rate Now', 'rex-product-feed')?></a>
+                <a id="rex_rate_not_now" class="waves-effect waves-light btn-large"><?php _e('Not Now', 'rex-product-feed')?></a>
+                <a id="rex_rated_already" class="waves-effect waves-light btn-large"><?php _e('Already Rated', 'rex-product-feed')?></a>
+            </div>
+        </div>
+        <?php
     }
 
     private function upgrade_notice()

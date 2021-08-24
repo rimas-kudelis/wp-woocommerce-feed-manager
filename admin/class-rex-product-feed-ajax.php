@@ -75,174 +75,181 @@ class Rex_Product_Feed_Ajax {
      *
      * @since    1.0.0
      */
-    public static function init() {
+	public static function init()
+	{
 
-        $validations = array(
-            'logged_in' => true,
-            'user_can'  => 'manage_options',
-        );
+		$validations = array(
+			'logged_in' => true,
+			'user_can'  => 'manage_options',
+		);
 
-        wp_ajax_helper()->handle( 'my-handle' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'get_product_number' ) )
-            ->with_validation( $validations );
-
-
-        wp_ajax_helper()->handle( 'generate-feed' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_feed' ) )
-            ->with_validation( $validations );
+		wp_ajax_helper()->handle( 'my-handle' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'get_product_number' ) )
+		                ->with_validation( $validations );
 
 
-        wp_ajax_helper()->handle( 'generate-promotion-feed' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_promotion_feed' ) )
-            ->with_validation( $validations );
+		wp_ajax_helper()->handle( 'generate-feed' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_feed' ) )
+		                ->with_validation( $validations );
 
 
-        wp_ajax_helper()->handle( 'save-feed' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_feed' ) )
-            ->with_validation( $validations );
-
-        wp_ajax_helper()->handle( 'merchant-change' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ))
-            ->with_validation( $validations );
-
-        /**
-         * product taxonomies ajax
-         */
-        wp_ajax_helper()->handle( 'fetch-product-taxonomies' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'fetch_product_taxonomies' ) )
-            ->with_validation( $validations );
+		wp_ajax_helper()->handle( 'generate-promotion-feed' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_promotion_feed' ) )
+		                ->with_validation( $validations );
 
 
-        /**
-         * Stop Admin Notices
-         */
-        wp_ajax_helper()->handle( 'stop-notices' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'stop_notices' ) )
-            ->with_validation( $validations );
+		wp_ajax_helper()->handle( 'save-feed' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_feed' ) )
+		                ->with_validation( $validations );
 
-        /**
-         * Google Category Mapping
-         */
-        wp_ajax_helper()->handle( 'category-mapping' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping' ) )
-            ->with_validation( $validations );
+		wp_ajax_helper()->handle( 'merchant-change' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )
+		                ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'category-mapping-update' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_update' ) )
-            ->with_validation( $validations );
-
-        wp_ajax_helper()->handle( 'category-mapping-delete' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_delete' ) )
-            ->with_validation( $validations );
+		/**
+		 * product taxonomies ajax
+		 */
+		wp_ajax_helper()->handle( 'fetch-product-taxonomies' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'fetch_product_taxonomies' ) )
+		                ->with_validation( $validations );
 
 
-        /**
-         * Google merchant settings
-         */
-        wp_ajax_helper()->handle( 'google-merchant-settings' )
-            ->with_callback( array( 'Rex_Google_Merchant_Settings_Api', 'save_settings' ) )
-            ->with_validation( $validations );
+		/**
+		 * Stop Admin Notices
+		 */
+		wp_ajax_helper()->handle( 'stop-notices' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'stop_notices' ) )
+		                ->with_validation( $validations );
+
+		/**
+		 * Google Category Mapping
+		 */
+		wp_ajax_helper()->handle( 'category-mapping' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping' ) )
+		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'category-mapping-update' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_update' ) )
+		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'category-mapping-delete' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'category_mapping_delete' ) )
+		                ->with_validation( $validations );
 
 
-        /**
-         * Send to Google
-         * Merchant Center
-         */
-        wp_ajax_helper()->handle( 'send-to-google' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'send_to_google' ) )
-            ->with_validation( $validations );
+		/**
+		 * Google merchant settings
+		 */
+		wp_ajax_helper()->handle( 'google-merchant-settings' )
+		                ->with_callback( array( 'Rex_Google_Merchant_Settings_Api', 'save_settings' ) )
+		                ->with_validation( $validations );
 
 
-        /**
-         * Add custom field
-         * to product
-         */
-        wp_ajax_helper()->handle( 'rex-product-change-merchant-status' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_product_change_merchant_status' ) )
-            ->with_validation( $validations );
+		/**
+		 * Send to Google
+		 * Merchant Center
+		 */
+		wp_ajax_helper()->handle( 'send-to-google' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'send_to_google' ) )
+		                ->with_validation( $validations );
 
 
-        /**
-         * Database Update
-         */
-        wp_ajax_helper()->handle( 'rex-wpfm-database-update' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_wpfm_database_update' ) )
-            ->with_validation( $validations );
+		/**
+		 * Add custom field
+		 * to product
+		 */
+		wp_ajax_helper()->handle( 'rex-product-change-merchant-status' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_product_change_merchant_status' ) )
+		                ->with_validation( $validations );
 
 
-        /**
-         * Database Update
-         */
-        wp_ajax_helper()->handle( 'rex-wpfm-fetch-google-category' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'fetch_google_category' ) )
-            ->with_validation( $validations );
+		/**
+		 * Database Update
+		 */
+		wp_ajax_helper()->handle( 'rex-wpfm-database-update' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_wpfm_database_update' ) )
+		                ->with_validation( $validations );
 
 
-
-        /**
-         * update batch
-         */
-        wp_ajax_helper()->handle( 'rex-product-update-batch-size' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'update_batch_size' ) )
-            ->with_validation( $validations );
-
-
-        /**
-         * clear batch
-         */
-        wp_ajax_helper()->handle( 'rex-product-clear-batch' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'clear_batch' ) )
-            ->with_validation( $validations );
+		/**
+		 * Database Update
+		 */
+		wp_ajax_helper()->handle( 'rex-wpfm-fetch-google-category' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'fetch_google_category' ) )
+		                ->with_validation( $validations );
 
 
-        /**
-         * Show log
-         */
-        wp_ajax_helper()->handle( 'rex-product-feed-show-log' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_wpfm_log' ) )
-            ->with_validation( $validations );
+		/**
+		 * update batch
+		 */
+		wp_ajax_helper()->handle( 'rex-product-update-batch-size' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'update_batch_size' ) )
+		                ->with_validation( $validations );
 
 
-        /**
-         * Show black friday notices
-         */
-        wp_ajax_helper()->handle( 'wpfm_bf_notice_dismiss' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_bf_notice_dismiss' ) )
-            ->with_validation( $validations );
+		/**
+		 * clear batch
+		 */
+		wp_ajax_helper()->handle( 'rex-product-clear-batch' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'clear_batch' ) )
+		                ->with_validation( $validations );
 
 
-        wp_ajax_helper()->handle( 'wpfm-enable-fb-pixel' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_fb_pixel' ) )
-            ->with_validation( $validations );
+		/**
+		 * Show log
+		 */
+		wp_ajax_helper()->handle( 'rex-product-feed-show-log' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_wpfm_log' ) )
+		                ->with_validation( $validations );
 
 
-        wp_ajax_helper()->handle( 'save-fb-pixel-value' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_fb_pixel_value' ) )
-            ->with_validation( $validations );
+		/**
+		 * Show black friday notices
+		 */
+		wp_ajax_helper()->handle( 'wpfm_bf_notice_dismiss' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_bf_notice_dismiss' ) )
+		                ->with_validation( $validations );
 
 
-        wp_ajax_helper()->handle( 'rex-enable-log' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_log' ) )
-            ->with_validation( $validations );
+		wp_ajax_helper()->handle( 'wpfm-enable-fb-pixel' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_fb_pixel' ) )
+		                ->with_validation( $validations );
 
 
-        wp_ajax_helper()->handle( 'save-wpfm-transient' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_transient' ) )
-            ->with_validation( $validations );
+		wp_ajax_helper()->handle( 'save-fb-pixel-value' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_fb_pixel_value' ) )
+		                ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'purge-wpfm-transient-cache' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'purge_transient_cache' ) )
-            ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'allow-private-products' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'allow_private_products' ) )
-            ->with_validation( $validations );
+		wp_ajax_helper()->handle( 'rex-enable-log' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'wpfm_enable_log' ) )
+		                ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'bf-notice-dismiss' )
-            ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rt_black_friday_offer_notice_dismiss' ) )
-            ->with_validation( $validations );
 
-    }
+		wp_ajax_helper()->handle( 'save-wpfm-transient' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_transient' ) )
+		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'purge-wpfm-transient-cache' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'purge_transient_cache' ) )
+		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'allow-private-products' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'allow_private_products' ) )
+		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'bf-notice-dismiss' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rt_black_friday_offer_notice_dismiss' ) )
+		                ->with_validation( $validations );
+
+		/**
+		 * Trigger review request
+		 */
+		wp_ajax_helper()->handle( 'trigger-review-request' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_trigger_review_request' ) )
+		                ->with_validation( $validations );
+
+	}
 
 
     /**
@@ -301,17 +308,17 @@ class Rex_Product_Feed_Ajax {
      * @throws Exception
      */
     public static function show_feed_template( $merchant ){
-        
+
         $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
 
         if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
             $feed_rules = false;
         }
         $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
-        
+
 
         $feed_format = self::get_merchant_feed_format($merchant['merchant']);
-        
+
         ob_start();
         if( in_array($merchant['merchant'], apply_filters('wpfm_has_custom_feed_config', array()))) {
             do_action('wpfm_custom_metabox_display_'. $merchant['merchant'], $merchant['merchant'], $feed_template);
@@ -326,7 +333,7 @@ class Rex_Product_Feed_Ajax {
         if(!$selected_format) {
             $selected_format = $feed_format[0];
         }
-        
+
         return array(
             'success'       => true,
             'html'          => $result,
@@ -344,7 +351,7 @@ class Rex_Product_Feed_Ajax {
      * @since 5.42
      */
     public static function get_merchant_feed_format($merchant) {
-        
+
         $google_format = array(
             'google',
             'ciao',
@@ -411,7 +418,7 @@ class Rex_Product_Feed_Ajax {
         $google_local_product_inventory = array(
             'google_local_products_inventory',
         );
-        
+
         $google_local_product = array(
             'google_local_products',
         );
@@ -1092,5 +1099,21 @@ class Rex_Product_Feed_Ajax {
         return array(
             'success' => true,
         );
+    }
+
+
+    public static function rex_feed_trigger_review_request( $payload ) {
+
+	    $data = array(
+		    'show'      => isset( $payload[ 'show' ] ) ? $payload[ 'show' ] : '',
+		    'time'      => isset( $payload[ 'frequency' ] ) && $payload[ 'frequency' ] != 'never' ? time() : '',
+		    'frequency' => isset( $payload[ 'frequency' ] ) ? $payload[ 'frequency' ] : ''
+	    );
+
+	    update_option( 'rex_feed_review_request', $data );
+
+	    return array(
+		    'success' => true,
+	    );
     }
 }
