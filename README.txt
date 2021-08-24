@@ -86,6 +86,27 @@ With Facebook Pixel, you can track:
 - Add to cart button
 - Thank you page
 
+== Google Shopping ==
+
+With Product Feed Manager, you can easily create an accurate feed for Google Shopping. All the required Google Shopping Feed attributes will be loaded instantly once you select Google Shopping as the merchant. Just set the values for the required attributes for Google Shopping, and publish - your Google feed is ready.
+	
+Also, you will get the template for other Google services, such as, Google Shopping feed, Google Custom Search Ads feed, Google AdWords feed, Google Local Products feed, Google Local Products Inventory feed, Google Merchant Promotion Feed feed, Google Dynamic Search Ads feed, Google Shopping Actions feed, Google Manufacturer Center feed, Google Local Inventory Ads feed, Google Remarketing (DRM) feed, Google Review feed
+
+
+== Facebook Catalog / Instagram Shopping Feed ==
+Now with Product Feed Manager, you can easily create your Facebook Catalog/ Instagram feed in clicks. Just select Facebook Catalog/ Instagram Shopping from the merchant list, and you will get all the required Facebook catalog feed/ Instagram shopping feed attributes. 
+
+Just set the values to the Facebook catalog/ Instagram shopping feed attributes and publish the feed - Your Facebook product feed/ Instagram product feed will be ready in seconds.
+
+Facebook feed services: Facebook, Instagram
+
+== Bing Shopping Feed/ Bing Image Feed ==
+
+Want to generate Bing Shopping feed/ Bing Image Feed? just select Bing Shopping feed/ Bing Image feed from the merchant list, and you will get all the required Bing Shopping feed/ Bing Image feed attributes.
+
+Just set the Bing Shopping feed/ Bing Image Feed attributes values and publish the feed - your Bing Shopping feed/ Bing Image Feed will be ready to export.
+
+Bing feed services: Bing Shopping Feed, Bing Image Feed
 
 == Other Advantages ==
 
