@@ -377,7 +377,6 @@ class Rex_Product_Feed_Ajax {
             'amazon',
             'amazon',
         );
-
         $snapchat_format = array(
             'snapchat',
             'google_custom_search_ads',
@@ -414,15 +413,12 @@ class Rex_Product_Feed_Ajax {
         $connexity_format = array(
             'connexity',
         );
-
         $google_local_product_inventory = array(
             'google_local_products_inventory',
         );
-
         $google_local_product = array(
             'google_local_products',
         );
-
         $shopzilla = array(
             'shopzilla',
         );
@@ -452,6 +448,9 @@ class Rex_Product_Feed_Ajax {
         );
         $lesitedumif = array(
             'lesitedumif',
+        );
+        $shopee = array(
+            'shopee',
         );
 
 	    if ( in_array( $merchant, $google_format ) ) {
@@ -525,6 +524,9 @@ class Rex_Product_Feed_Ajax {
 	    }
         elseif ( in_array( $merchant, $bing_json_feed ) ) {
 		    return array( 'json' );
+	    }
+        elseif ( in_array( $merchant, $shopee ) ) {
+		    return array( 'csv', 'csv_semicolon' );
 	    }
 	    return array( 'xml', 'csv', 'csv_semicolon', 'text', 'tsv', 'json' );
     }
@@ -732,6 +734,7 @@ class Rex_Product_Feed_Ajax {
      */
     public static function rex_product_change_merchant_status($payload) {
         $merchants = get_option('rex_wpfm_merchant_status');
+        error_log(print_r($payload,1));
         if(!$merchants) {
             $latest_merchants = $payload;
         }else {

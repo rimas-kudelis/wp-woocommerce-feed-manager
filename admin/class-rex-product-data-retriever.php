@@ -84,6 +84,16 @@ class Rex_Product_Data_Retriever{
 
 
 	/**
+	 * Append variation
+	 *
+	 * @since    3.2
+	 * @access   private
+	 * @var      object    $aelia_currency
+	 */
+	protected $aelia_currency;
+
+
+	/**
 	 * check if debug is enabled
 	 *
 	 * @var Rex_Product_Data_Retriever $enable_log
@@ -121,6 +131,7 @@ class Rex_Product_Data_Retriever{
 		$this->feed_rules           = $feed->feed_rules;
 		$this->product_meta_keys    = $product_meta_keys;
 		$this->append_variation     = $feed->append_variation;
+		$this->aelia_currency       = $feed->aelia_currency;
 		$this->feed                 = $feed;
 		$this->wcml                 = false;
 		$this->wcml_currency        = '';
@@ -1878,7 +1889,7 @@ class Rex_Product_Data_Retriever{
 	 */
 	protected function get_converted_price( $price ) {
 		$from_currency = get_woocommerce_currency();
-		$to_currency = get_post_meta( $this->feed->get_feed_id(), 'rex_feed_aelia_currency', true );
+		$to_currency   = $this->aelia_currency;
 
 		return apply_filters( 'wc_aelia_cs_convert', $price, $from_currency, $to_currency );
 	}

@@ -97,9 +97,6 @@
         updateFormNameAtts($row, rowId, filter);
     });
 
-    var pro_filter_condition = ''
-    console.log(pro_filter_condition)
-
 
     /**
      * add new custom attributes
@@ -253,8 +250,6 @@
                             } else {
                                 $(this).removeAttr('disabled');
                             }
-                            // console.log(response.feed_format[0])
-                            // console.log(option_value)
                         });
                         var selected = $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val();
                         if (!selected) {
@@ -302,13 +297,15 @@
      */
     function get_product_number(event) {
         event.preventDefault();
-
+       
         var merchant_name = $('#rex_feed_merchant').find(':selected').val();
         if (merchant_name == '-1') {
-            alert('Please choose a merchant!');
+            alert('Please choose a merchant!pp');
+            
             return;
         }
 
+        
         if ($('.wpfm-field-mappings').find('tbody tr:first').css('display') == 'none') {
             $('.wpfm-field-mappings').find('tbody tr:first').remove();
         }
@@ -320,6 +317,8 @@
         $(this).addClass('disabled');
         $('.bwfm-progressbar, .progress-msg').fadeIn();
         $('.progress-msg span').html('Calculating products.....');
+
+
         wpAjaxHelperRequest('my-handle', $payload)
             .done(function(response) {
                 var per_batch = response.per_batch ? parseInt(response.per_batch) : 50;
@@ -472,7 +471,7 @@
     function generate_feed(product, offset, batch, per_batch, total_batch) {
 
         per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
-
+        $('#rex-feed-progress').show();
         var $payload = {
             merchant: $('#rex_feed_merchant').find(':selected').val(),
             feed_format: $('#rex_feed_feed_format').find(':selected').val(),
@@ -519,6 +518,7 @@
         }
         wpAjaxHelperRequest('generate-feed', $payload)
             .done(function(response) {
+                console.log(response)
                 console.log('Woohoo!');
                 var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if (response == 'false' || response == '') {
@@ -530,6 +530,35 @@
                     $(document).off('click', '#publish', get_product_number);
                     $('#publish').trigger('click');
 
+                } else if(response.msg == 'failForInvalidEntry'){
+                    alert("Please set proper value for the mandatory field like Shipping Id, Who made, When made, Taxonomy Id");
+                    $('#publishing-action span.spinner').removeClass('is-active');
+                    $('#publish').removeClass('disabled');
+                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
+                    $('#rex-feed-progress').hide();
+                    return false
+                } else if(response.msg == 'failToAuthorize'){
+                    alert("Fail to authorize with etsy, Need Authorization From Etsy");
+                    $('#publishing-action span.spinner').removeClass('is-active');
+                    $('#publish').removeClass('disabled');
+                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
+                    $('#rex-feed-progress').hide();
+                    return false
+                }else if(response.msg == 'failForAuthExpire'){
+                    alert("Expire you authorization with etsy, Need Authorization From Etsy");
+                    $('#publishing-action span.spinner').removeClass('is-active');
+                    $('#publish').removeClass('disabled');
+                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
+                    $('#rex-feed-progress').hide();
+                    return false
+                } else if(response.msg == 'failForEmptyProduct'){
+                    alert("Fail, No product is available");
+                    $('#publishing-action span.spinner').removeClass('is-active');
+                    $('#publish').removeClass('disabled');
+                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
+                    $('#rex-feed-progress').hide();
+
+                    return false
                 } else {
                     if (batch < batches) {
                         offset = offset + per_batch;

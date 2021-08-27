@@ -229,12 +229,16 @@ class Feed
                 } else {
                     if(in_array($itemNode->get('name'), $s_nodes)) {
                         if($itemNode->get('name') == 'media') {
+	                        $media = $feedItemNode->addChild('media');
                             if(is_array($itemNode->get('value'))) {
-                                $media = $feedItemNode->addChild('media');
                                 foreach ($itemNode->get('value') as $value) {
                                     $image = $media->addChild('image');
                                     $image->addAttribute('url', $value);
                                 }
+                            }
+                            else {
+	                            $image = $media->addChild('image');
+	                            $image->addAttribute('url', $itemNode->get('value'));
                             }
                         }else {
                             if(!isset($feedItemNode->children('admarkt',true)->budget)) {

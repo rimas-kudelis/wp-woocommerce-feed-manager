@@ -346,6 +346,7 @@ return array(
     'Rex_Product_Feed_Notices' => $baseDir . '/admin/class-rex-product-feed-notices.php',
     'Rex_Product_Feed_Other' => $baseDir . '/admin/feed/class-rex-product-feed-other.php',
     'Rex_Product_Feed_Rakuten' => $baseDir . '/admin/feed/class_rex_product_feed_rakuten.php',
+    'Rex_Product_Feed_Shopee' => $baseDir . '/admin/feed/class-rex-product-feed-shopee.php',
     'Rex_Product_Feed_Shopping' => $baseDir . '/admin/feed/class-rex-product-feed-shopping.php',
     'Rex_Product_Feed_Sooqr' => $baseDir . '/admin/feed/class-rex-product-feed-sooqr.php',
     'Rex_Product_Feed_Spartoo' => $baseDir . '/admin/feed/class-rex-product-feed-spartoo.php',

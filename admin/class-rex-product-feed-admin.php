@@ -1348,7 +1348,7 @@ class Rex_Product_Feed_Admin {
 		$post_action = isset( $_GET[ 'action' ] ) ? sanitize_text_field( $_GET[ 'action' ] ) : '';
 
 		if ( $post_type == 'product-feed' && $post_action == 'edit' ) {
-			remove_all_actions( 'admin_notices' );
+//			remove_all_actions( 'admin_notices' );
 		}
 	}
 }

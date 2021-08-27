@@ -472,6 +472,7 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Product_Feed_Notices' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-notices.php',
         'Rex_Product_Feed_Other' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-other.php',
         'Rex_Product_Feed_Rakuten' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_rakuten.php',
+        'Rex_Product_Feed_Shopee' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-shopee.php',
         'Rex_Product_Feed_Shopping' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-shopping.php',
         'Rex_Product_Feed_Sooqr' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-sooqr.php',
         'Rex_Product_Feed_Spartoo' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-spartoo.php',

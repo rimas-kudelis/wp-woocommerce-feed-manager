@@ -351,11 +351,16 @@ class Rex_Product_Metabox
             )
         );
         $merchants = get_option('rex_wpfm_merchant_status');
+        
         if ($merchants) {
+            
             $_merchants = array_merge($_merchants, $merchants);
+           
         }
+        
         $merchant_lists = [];
         $merchant_lists['-1'] = __('Please select merchant', 'rex-product-feed');
+        
         foreach ($_merchants as $key => $merchant) {
             if ($merchant['status']) {
                 if (array_key_exists('name', $merchant)) {
@@ -377,8 +382,9 @@ class Rex_Product_Metabox
          */
 
         reset($merchant_lists);
+        
         $default_merchant = key($merchant_lists);
-
+        
 
         $box = wpfm_new_cmb2_box(array(
             'id' => $this->prefix . 'conf',

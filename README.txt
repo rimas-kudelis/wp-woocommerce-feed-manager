@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.8
 Requires PHP: 7.0
-Stable tag:  6.7.0
+Stable tag:  6.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,12 +89,12 @@ With Facebook Pixel, you can track:
 == Google Shopping ==
 
 With Product Feed Manager, you can easily create an accurate feed for Google Shopping. All the required Google Shopping Feed attributes will be loaded instantly once you select Google Shopping as the merchant. Just set the values for the required attributes for Google Shopping, and publish - your Google feed is ready.
-	
+
 Also, you will get the template for other Google services, such as, Google Shopping feed, Google Custom Search Ads feed, Google AdWords feed, Google Local Products feed, Google Local Products Inventory feed, Google Merchant Promotion Feed feed, Google Dynamic Search Ads feed, Google Shopping Actions feed, Google Manufacturer Center feed, Google Local Inventory Ads feed, Google Remarketing (DRM) feed, Google Review feed
 
 
 == Facebook Catalog / Instagram Shopping Feed ==
-Now with Product Feed Manager, you can easily create your Facebook Catalog/ Instagram feed in clicks. Just select Facebook Catalog/ Instagram Shopping from the merchant list, and you will get all the required Facebook catalog feed/ Instagram shopping feed attributes. 
+Now with Product Feed Manager, you can easily create your Facebook Catalog/ Instagram feed in clicks. Just select Facebook Catalog/ Instagram Shopping from the merchant list, and you will get all the required Facebook catalog feed/ Instagram shopping feed attributes.
 
 Just set the values to the Facebook catalog/ Instagram shopping feed attributes and publish the feed - Your Facebook product feed/ Instagram product feed will be ready in seconds.
 
@@ -608,6 +608,12 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 6.7.1 (2021-08-27) =
+* Added: Shopee feed template added
+* Fixed: Marktplaats feed template updated
+* Fixed: Aelia Currency Switcher - PFM currency changing caching issue fixed
+
+
 = 6.7.0 (2021-08-24) =
 * Added: Trigger based review request
 * Added: Aelia Currency Converter for WooCommerce support added
@@ -621,6 +627,7 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Vivino feed template updated
 * Added: Bing Image feed template added
 * Compatibility Checked : WooCommerce 5.6.0
+
 
 = 6.6.9 (2021-08-11) =
 * Changelog: Fixed: PHP warning for empty attributes

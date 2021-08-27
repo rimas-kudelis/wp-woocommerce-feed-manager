@@ -1272,21 +1272,6 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'status' => 0,
                                     'name' => 'Hertie'
                                 ),
-//                                'etsy'     => array(
-//                                    'free'     => true,
-//                                    'status'   => 0,
-//                                    'name'     => 'Etsy'
-//                                ),
-//                                'okazii'     => array(
-//                                    'free'     => true,
-//                                    'status'   => 0,
-//                                    'name'     => 'Okazii'
-//                                ),
-//                                'pricepanda'     => array(
-//                                    'free'     => true,
-//                                    'status'   => 0,
-//                                    'name'     => 'Price Panda'
-//                                ),
                                 'webgains' => array(
                                     'free' => true,
                                     'status' => 0,
@@ -1346,6 +1331,11 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'free' => true,
                                     'status' => 0,
                                     'name' => 'Lesitedumif'
+                                ),
+                                'shopee' => array(
+                                    'free' => true,
+                                    'status' => 0,
+                                    'name' => 'Shopee'
                                 )
                             );
 

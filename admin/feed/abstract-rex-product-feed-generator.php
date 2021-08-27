@@ -294,6 +294,13 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
 
     /**
+     *
+     * @var Rex_Product_Feed_Abstract_Generator $aelia_currency
+     */
+    public $aelia_currency;
+
+
+    /**
      * @var $analytics
      */
     public $analytics;
@@ -353,6 +360,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->analytics                = $config['analytics'];
             $this->analytics_params         = $config['analytics_params'];
             $this->product_condition        = $config['product_condition'];
+	        $this->aelia_currency           = isset( $config[ 'rex_feed_aelia_currency' ] ) ? $config[ 'rex_feed_aelia_currency' ] : '';
             $this->prepare_products_args($config['info']);
         }
         else {
@@ -609,16 +617,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         $feed_rules       = array();
 
         parse_str( $config, $feed_rules );
-        $include_variable_product   = $feed_rules['rex_feed_variable_product'];
-        $include_variations         = $feed_rules['rex_feed_variations'];
-        $include_parent             = $feed_rules['rex_feed_parent_product'];
-        $include_variations_name    = $feed_rules['rex_feed_variation_product_name'];
-        $exclude_hidden_products    = $feed_rules['rex_feed_hidden_products'];
+	    $include_variable_product = $feed_rules[ 'rex_feed_variable_product' ];
+	    $include_variations       = $feed_rules[ 'rex_feed_variations' ];
+	    $include_parent           = $feed_rules[ 'rex_feed_parent_product' ];
+	    $include_variations_name  = $feed_rules[ 'rex_feed_variation_product_name' ];
+	    $exclude_hidden_products  = $feed_rules[ 'rex_feed_hidden_products' ];
+	    $this->aelia_currency     = isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ? $feed_rules[ 'rex_feed_aelia_currency' ] : '';
+
         if(isset($feed_rules['product_filter_condition'])){
             $this->product_filter_condition = $feed_rules['product_filter_condition'];
         }
-
-
 
         if ($include_variable_product == 'yes') {
             $this->variable_product = true;
@@ -642,6 +650,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->append_variation = 'yes';
         }else {
             $this->append_variation = 'no';
+        }
+
+        if ($exclude_hidden_products == 'yes') {
+            $this->exclude_hidden_products = true;
+        }else {
+            $this->exclude_hidden_products = false;
         }
 
         if ($exclude_hidden_products == 'yes') {
