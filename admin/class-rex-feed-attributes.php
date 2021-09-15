@@ -134,16 +134,24 @@ class Rex_Feed_Attributes {
             $attributes_3 = array(
                 'Perfect Brand' => array(
                     'perfect_brand'  => 'Product Brand',
-                    
                 ),
             );
             $attributes = array_merge($attributes, $attributes_3);
         }
         if(in_array('brands-for-woocommerce/woocommerce-brand.php',$plugins)){
             $attributes_4 = array(
+                'Brands for WooCommerce' => array(
+                    'woocommerce_brand_berocket'  => 'Brands for WooCommerce',
+                    
+                ),
+            );
+            $attributes = array_merge($attributes, $attributes_4);
+        }
+        if(in_array('woocommerce-brands/woocommerce-brands.php',$plugins)){
+            $attributes_4 = array(
                 'Woocommerce Brand' => array(
                     'woocommerce_brand'  => 'Woocommerce Brand',
-                    
+
                 ),
             );
             $attributes = array_merge($attributes, $attributes_4);

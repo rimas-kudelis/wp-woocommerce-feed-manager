@@ -236,11 +236,17 @@ class Rex_Product_Data_Retriever{
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_woodmart_att( $rule['meta_key'] );
-		}elseif ( 'meta' === $rule['type'] && $this->is_perfect_attr( $rule['meta_key'] ) ) {
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_perfect_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_perfect_attr( $rule['meta_key'] );
-		}elseif ( 'meta' === $rule['type'] && $this->is_wc_brand_attr( $rule['meta_key'] ) ) {
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_wc_brand_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_wc_brand_attr( $rule['meta_key'] );
-		}elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_berocket_brand_attr( $rule['meta_key'] ) ) {
+			$val = $this->set_berocket_brand_attr( $rule['meta_key'] );
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_image_att( $rule['meta_key']  );
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
@@ -340,11 +346,46 @@ class Rex_Product_Data_Retriever{
 		}
 		return $brnd;
 	}
+
+
 	/**
 	 * Set woocommerce brand attribute
 	 * @param key meta_key
 	 */
 	protected function set_wc_brand_attr( $key ) {
+		$brands = '';
+
+		if ( 'WC_Product_Variation' == get_class($this->product) ) {
+			$brands = wp_get_post_terms( $this->product->get_parent_id(), 'product_brand', array("fields" => "all") );
+		}
+		else{
+			$brands = wp_get_post_terms( $this->product->get_ID(), 'product_brand', array("fields" => "all") );
+		}
+
+		$brnd = '';
+		if(!empty($brands)){
+
+			$i = 0;
+			foreach($brands as $brand){
+				if($i == 0){
+					$brnd .= $brand->name;
+				}
+				else{
+					$brnd .= ', '.$brand->name;
+				}
+				$i++;
+			}
+		}
+
+		return $brnd;
+	}
+
+
+	/**
+	 * Set woocommerce brand attribute
+	 * @param key meta_key
+	 */
+	protected function set_berocket_brand_attr( $key ) {
 		$brands = '';
 
 		if ( 'WC_Product_Variation' == get_class($this->product) ) {
@@ -379,47 +420,54 @@ class Rex_Product_Data_Retriever{
 	 * @return float|int
 	 */
 	protected function get_condition_price( $key, $price ) {
+		$is_premium = apply_filters( 'wpfm_is_premium', false );
 
-		$rules = $this->feed_rules;
-		$condition = '';
-		foreach ( $rules as $rule ) {
-			if ( $rule[ 'meta_key' ] === $key ) {
-				$condition = $rule[ 'limit' ];
-				break;
+		if ( $is_premium ) {
+			$rules     = $this->feed_rules;
+			$condition = '';
+			foreach ( $rules as $rule ) {
+				if ( $rule[ 'meta_key' ] === $key ) {
+					$condition = $rule[ 'limit' ];
+					break;
+				}
 			}
-		}
-		$operator = $condition[ 0 ] == '+' || $condition[ 0 ] == '-' || $condition[ 0 ] == '*' || $condition[ 0 ] == '/' ? $condition[ 0 ] : '';
-		$addition = $operator != '' ? str_replace( $operator, '', $condition) : '';
 
-		$percentage = '';
-		if ( strlen( $addition) > 1 && $addition[ strlen( $addition) - 1 ] == '%' ) {
-			$percentage = $addition[ strlen( $addition) - 1 ];
-			$addition = str_replace( $addition[ strlen( $addition) - 1 ], '', $addition );
-			$addition = ( int ) $addition;
-			$addition = $addition / 100;
-		}
+			$operator       = ( strlen( $condition ) > 1 )
+			                  && ( $condition[ 0 ] == '+' || $condition[ 0 ] == '-' || $condition[ 0 ] == '*' || $condition[ 0 ] == '/' ) ? $condition[ 0 ] : '';
+			$addition       = $operator != '' ? str_replace( $operator, '', $condition ) : $condition;
+			$has_percentage = strlen( $addition ) > 1 && $addition[ strlen( $addition ) - 1 ] == '%' ? true : false;
 
-		$price = ( float ) $price ;
-		$percentage_price = '';
-		if ( $addition != '' && $operator != '' ) {
-			if ( $percentage != '' ) {
-				$percentage_price = $price * $addition;
+			if ( $has_percentage ) {
+				$addition   = str_replace( $addition[ strlen( $addition ) - 1 ], '', $addition );
+				$addition   = ( int ) $addition;
+				$addition   = $addition / 100;
 			}
-			switch ( $operator ) {
-				case '+':
-					$price = $percentage_price != '' ? $price + ( float ) $percentage_price : $price + ( float ) $addition;
-					break;
-				case '-':
-					$price = $percentage_price != '' ? $price - ( float ) $percentage_price : $price - ( float ) $addition;
-					break;
-				case '*':
-					$price = $percentage_price != '' ? $price * ( float ) $percentage_price : $price * ( float ) $addition;
-					break;
-				case '/':
-					$price = $percentage_price != '' ? $price / ( float ) $percentage_price : $price / ( float ) $addition;
-					break;
-				default:
-					break;
+
+			$price = ( float ) $price;
+
+			if ( ( $addition != '' && $operator != '' ) || $has_percentage ) {
+
+				$percentage_price = $has_percentage ? $price * $addition : '';
+
+				switch ( $operator ) {
+					case '+':
+						$price = $percentage_price != '' ? $price + ( float ) $percentage_price : $price + ( float ) $addition;
+						break;
+					case '-':
+						$price = $percentage_price != '' ? $price - ( float ) $percentage_price : $price - ( float ) $addition;
+						break;
+					case '*':
+						$price = $percentage_price != '' ? $price * ( float ) $percentage_price : $price * ( float ) $addition;
+						break;
+					case '/':
+						$price = $percentage_price != '' ? $price / ( float ) $percentage_price : $price / ( float ) $addition;
+						break;
+					default:
+						if ( $has_percentage ) {
+							$price = $percentage_price != '' ? $price - ( float ) $percentage_price : $price - ( float ) $addition;
+						}
+						break;
+				}
 			}
 		}
 
@@ -2074,7 +2122,10 @@ class Rex_Product_Data_Retriever{
 				}
 			}
 		} else{
-			$meta_value = get_post_meta($this->product->get_id(), $new_key, true);
+			$meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
+            if($new_key = 'rank_math_primary_product_cat'){
+                $meta_value = $meta_value != '' ? get_the_category_by_ID( $meta_value ) : '';
+            }
 			if(!$meta_value) {
 				$list = $this->get_product_attributes($this->product->get_id());
 				if(array_key_exists($new_key, $list)) {
@@ -2703,12 +2754,22 @@ class Rex_Product_Data_Retriever{
 	}
 
 	/**
-	 * Helper to check if a attribute is a Woocommerce Brand Attribute.
+	 * Helper to check if a attribute is a WooCommerce Attribute.
 	 *
 	 */
 	protected function is_wc_brand_attr( $key ) {
 		if(isset($this->product_meta_keys['Woocommerce Brand'])){
 			return array_key_exists( $key, $this->product_meta_keys['Woocommerce Brand'] );
+		}
+	}
+
+	/**
+	 * Helper to check if a attribute is a Brands for WooCommerce by BeRocket Attribute.
+	 *
+	 */
+	protected function is_berocket_brand_attr( $key ) {
+		if(isset($this->product_meta_keys['Brands for WooCommerce'])){
+			return array_key_exists( $key, $this->product_meta_keys['Brands for WooCommerce'] );
 		}
 	}
 

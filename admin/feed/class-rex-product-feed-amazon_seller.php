@@ -64,6 +64,8 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
             );
         }
 
+		$skip_row = get_post_meta( $this->get_feed_id(), 'rex_feed_skip_row', true );
+
         foreach( $this->products as $productId ) {
             $product = wc_get_product( $productId );
 
@@ -89,8 +91,16 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
 
                 foreach ($atts as $key => $value) {
                     if(in_array($key, $intersect_array)) {
-                        $item->$key($value); // invoke $key as method of $item object.
-                    }else {
+                        if ( $this->rex_feed_skip_row ) {
+	                        if ( $value != '' ) {
+	                        	$item->$key($value); // invoke $key as method of $item object.
+	                        }
+                        }
+                        else {
+	                        $item->$key($value); // invoke $key as method of $item object.
+                        }
+                    }
+                    else {
                         $item->$key(''); // invoke $key as method of $item object.
                     }
 
@@ -110,7 +120,14 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
                             $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                             $atts['parent_child'] = 'child';
                             foreach ($atts as $key => $value) {
-                                $item->$key($value); // invoke $key as method of $item object.
+	                            if ( $this->rex_feed_skip_row ) {
+		                            if ( $value != '' ) {
+			                            $item->$key($value); // invoke $key as method of $item object.
+		                            }
+	                            }
+	                            else {
+		                            $item->$key($value); // invoke $key as method of $item object.
+	                            }
                             }
                         }
                     }
@@ -122,7 +139,14 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
                 $atts['parent_child'] = '';
                 $item = RexShoppingCustom::createItem();
                 foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+	                if ( $this->rex_feed_skip_row ) {
+		                if ( $value != '' ) {
+			                $item->$key($value); // invoke $key as method of $item object.
+		                }
+	                }
+	                else {
+		                $item->$key($value); // invoke $key as method of $item object.
+	                }
                 }
             }
 
@@ -132,7 +156,14 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
 			        $item = RexShoppingCustom::createItem();
 			        $atts = $this->get_product_data($product, $product_meta_keys);
 			        foreach ($atts as $key => $value) {
-				        $item->$key($value); // invoke $key as method of $item object.
+				        if ( $this->rex_feed_skip_row ) {
+					        if ( $value != '' ) {
+						        $item->$key($value); // invoke $key as method of $item object.
+					        }
+				        }
+				        else {
+					        $item->$key($value); // invoke $key as method of $item object.
+				        }
 			        }
 		        }
 	        }

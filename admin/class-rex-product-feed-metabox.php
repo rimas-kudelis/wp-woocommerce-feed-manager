@@ -183,6 +183,22 @@ class Rex_Product_Metabox
             'default' => 'no',
         ));
 
+
+        /*
+         * Skipping rows if attribute's value is empty
+         */
+        $box->add_field(array(
+            'name' => __('Skip attributes with empty value', 'rex-product-feed'),
+            'desc' => __('Skip attributes with empty value', 'rex-product-feed'),
+            'id' => $this->prefix . 'skip_row',
+            'type' => 'radio_inline',
+            'options' => array(
+                'yes' => __('Yes', 'rex-product-feed'),
+                'no' => __('No', 'rex-product-feed'),
+            ),
+            'default' => 'no',
+        ));
+
         /**
          * Analytics parameters
          */
@@ -516,7 +532,6 @@ class Rex_Product_Metabox
      **/
     private function feed_file()
     {
-
         $box = wpfm_new_cmb2_box(array(
             'id' => $this->prefix . 'file_link',
             'title' => esc_html__('Feed URL', 'rex-product-feed'),
@@ -584,7 +599,7 @@ class Rex_Product_Metabox
 		$box = wpfm_new_cmb2_box(
 			array(
 				'id'           => $this->prefix . 'trigger_based_review_request',
-				'title'        => esc_html__( 'Feed URL', 'rex-product-feed' ),
+				'title'        => esc_html__( 'Review Request', 'rex-product-feed' ),
 				'object_types' => array( 'product-feed' ), // Post type
 				'context'      => 'side',
 				'priority'     => 'high'
@@ -671,12 +686,11 @@ class Rex_Product_Metabox
     public function after_field_xml_file_cb($field_args, $field)
     {
         $feed_url = get_post_meta($field->object_id, $this->prefix . 'xml_file', true);
-        // Only show feed url not empty.
+
         if (strlen($feed_url) > 0) {
-            $url = esc_url(get_post_meta($field->object_id, 'rex_feed_xml_file', true));
-            echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $url . '">
+            echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $feed_url . '">
               <i class="fa fa-external-link" aria-hidden="true"></i>' . __('View Feed', 'rex-product-feed') . '</a> ';
-            echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $url . '" download>
+            echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $feed_url . '" download>
             <i class="fa fa-download" aria-hidden="true"></i>' . __('Download Feed', 'rex-product-feed') . '</a>';
         }
     }

@@ -929,7 +929,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     continue;
                 }
             }
-
+			
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
@@ -937,7 +937,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
                     $item = RexShopping::createItem();
                     foreach ($atts as $key => $value) {
-                        $item->$key($value); // invoke $key as method of $item object.
+	                    if ( $this->rex_feed_skip_row ) {
+		                    if ( $value != '' ) {
+			                    $item->$key($value); // invoke $key as method of $item object.
+		                    }
+	                    }
+	                    else {
+		                    $item->$key($value); // invoke $key as method of $item object.
+	                    }
                     }
                 }
 
@@ -956,7 +963,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                                 foreach ($atts as $key => $value) {
-                                    $item->$key($value); // invoke $key as method of $item object.
+	                                if ( $this->rex_feed_skip_row ) {
+		                                if ( $value != '' ) {
+			                                $item->$key($value); // invoke $key as method of $item object.
+		                                }
+	                                }
+	                                else {
+		                                $item->$key($value); // invoke $key as method of $item object.
+	                                }
                                 }
                             }
                         }
@@ -969,7 +983,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = RexShopping::createItem();
                 foreach ($atts as $key => $value) {
-                    $item->$key($value); // invoke $key as method of $item object.
+	                if ( $this->rex_feed_skip_row ) {
+		                if ( $value != '' ) {
+			                $item->$key($value); // invoke $key as method of $item object.
+		                }
+	                }
+	                else {
+		                $item->$key($value); // invoke $key as method of $item object.
+	                }
                 }
             }
 
@@ -979,8 +1000,15 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     $item = RexShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     foreach ($atts as $key => $value) {
-                        $item->$key($value); // invoke $key as method of $item object.
-                    }
+	                    if ( $this->rex_feed_skip_row ) {
+		                    if ( $value != '' ) {
+			                    $item->$key($value); // invoke $key as method of $item object.
+		                    }
+	                    }
+	                    else {
+		                    $item->$key($value); // invoke $key as method of $item object.
+	                    }
+					} // invoke $key as method of $item object.
                 }
             }
 
@@ -991,7 +1019,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     $atts = $this->get_product_data( $product, $product_meta_keys );
                     // add all attributes for each product.
                     foreach ($atts as $key => $value) {
-                        $item->$key($value); // invoke $key as method of $item object.
+	                    if ( $this->rex_feed_skip_row ) {
+		                    if ( $value != '' ) {
+			                    $item->$key($value); // invoke $key as method of $item object.
+		                    }
+	                    }
+	                    else {
+		                    $item->$key($value); // invoke $key as method of $item object.
+	                    }
                     }
                 }
             }

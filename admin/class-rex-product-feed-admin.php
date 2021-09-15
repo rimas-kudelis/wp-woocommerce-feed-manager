@@ -212,15 +212,17 @@ class Rex_Product_Feed_Admin {
          */
 
         $db_version = get_option('rex_wpfm_db_version');
-        if($db_version < 3) {
-            wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery'), $this->version, false );
-            wp_localize_script( 'rex-wpfm-global-js', 'rex_wpfm_ajax',
-                array(
-                    'ajax_url' => admin_url( 'admin-ajax.php' ),
-                    'ajax_nonce' => wp_create_nonce('rex-wpfm-ajax'),
-                )
-            );
-        }
+	    if ( $db_version < 3 ) {
+		    wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery' ), $this->version, false );
+		    wp_localize_script(
+			    'rex-wpfm-global-js', 'rex_wpfm_ajax',
+			    array(
+				    'ajax_url'   => admin_url( 'admin-ajax.php' ),
+				    'ajax_nonce' => wp_create_nonce( 'rex-wpfm-ajax' ),
+				    'is_premium' => apply_filters( 'wpfm_is_premium', false )
+			    )
+		    );
+	    }
 
         $screen = get_current_screen();
         if( ($hook === 'edit.php' ) ){
@@ -1348,7 +1350,7 @@ class Rex_Product_Feed_Admin {
 		$post_action = isset( $_GET[ 'action' ] ) ? sanitize_text_field( $_GET[ 'action' ] ) : '';
 
 		if ( $post_type == 'product-feed' && $post_action == 'edit' ) {
-//			remove_all_actions( 'admin_notices' );
+			// remove_all_actions( 'admin_notices' );
 		}
 	}
 }

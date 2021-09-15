@@ -292,6 +292,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected $exclude_hidden_products;
 
+    /**
+     *
+     * @var Rex_Product_Feed_Abstract_Generator $rex_feed_skip_row
+     */
+    protected $rex_feed_skip_row;
+
 
     /**
      *
@@ -354,6 +360,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->variable_product         = $config['variable_product'];
             $this->append_variation         = $config['append_variations'];
             $this->exclude_hidden_products  = $config['exclude_hidden_products'];
+            $this->rex_feed_skip_row        = isset( $config['rex_feed_skip_row'] ) ? $config['rex_feed_skip_row'] : '';
             $this->wpml_language            = $config['wpml_language'];
             $this->wcml                     = $config['wcml'];
             $this->wcml_currency            = $config['wcml_currency'];
@@ -481,22 +488,19 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         if($args['products_scope']==='product_filter'){
             $ids = get_post_meta($this->id, 'rex_feed_product_filter_ids', true);
 
-            if(!$this->product_filter_condition){
+            if( !$this->product_filter_condition ){
                 $condition = get_post_meta($this->id, 'rex_feed_product_condition');
                 $condition_str = implode('',$condition);
 
                 if( $ids ) {
-                    foreach($ids as $id){
-                        if( $condition_str == 'inc' ){
-                            $this->products_args['post__in'] = $id;
-                        }else{
-                            $this->products_args['post__not_in'] = $id;
-                        }
-                    }
+	                if( $condition_str == 'inc' ){
+		                $this->products_args['post__in'] = $ids;
+	                }else{
+		                $this->products_args['post__not_in'] = $ids;
+	                }
                 }
 
             }else{
-                $i = 0;
 
                 if( isset( $args['data'] ) && $args['data'] ){
                     if( $this->product_filter_condition == 'inc' ){
@@ -505,24 +509,21 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     }else{
                         $this->products_args['post__not_in'] = $args['data'];
                     }
-                }else{
+                }
+                else{
                     if( $ids ) {
-                        foreach($ids as $id){
+	                    if( $this->product_filter_condition == 'inc' ){
 
-                            if( $this->product_filter_condition == 'inc' ){
-
-                                $this->products_args['post__in'] = $id;
-                            }else{
-                                $this->products_args['post__not_in'] = $id;
-                            }
-                            $i++;
-                        }
+		                    $this->products_args['post__in'] = $ids;
+	                    }else{
+		                    $this->products_args['post__not_in'] = $ids;
+	                    }
                     }
                 }
             }
         }
 
-        if($args['products_scope']==='featured') {
+        if( $args['products_scope'] === 'featured' ) {
             $this->products_args['post__in'] = wc_get_featured_product_ids();
         }
     }
@@ -622,6 +623,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 	    $include_parent           = $feed_rules[ 'rex_feed_parent_product' ];
 	    $include_variations_name  = $feed_rules[ 'rex_feed_variation_product_name' ];
 	    $exclude_hidden_products  = $feed_rules[ 'rex_feed_hidden_products' ];
+        $rex_feed_skip_row        = $feed_rules['rex_feed_skip_row'];
 	    $this->aelia_currency     = isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ? $feed_rules[ 'rex_feed_aelia_currency' ] : '';
 
         if(isset($feed_rules['product_filter_condition'])){
@@ -658,10 +660,10 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->exclude_hidden_products = false;
         }
 
-        if ($exclude_hidden_products == 'yes') {
-            $this->exclude_hidden_products = true;
+        if ($rex_feed_skip_row == 'yes') {
+            $this->rex_feed_skip_row = true;
         }else {
-            $this->exclude_hidden_products = false;
+            $this->rex_feed_skip_row = false;
         }
     }
 
@@ -743,7 +745,6 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_products() {
 
-
         if( class_exists( 'SitePress' ) ) {
             global $sitepress;
             if( $this->wpml_language ) {
@@ -767,10 +768,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             }
         }
 
-        $result = new WP_Query($this->products_args);
-        $this->products = $result->get_posts();
-
-        $condition = $this->product_filter_condition;
+	    $result         = new WP_Query( $this->products_args );
+	    $this->products = $result->get_posts();
+	    $condition      = $this->product_filter_condition;
 
         if($this->products_args['post__in']){
             if( $condition ){
@@ -783,13 +783,9 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if( $condition ){
                 update_post_meta($this->id, 'rex_feed_product_condition', $condition);
             }
-
             $result = new WP_Query($this->products_args);
             $this->products = $result->get_posts();
-
         }
-
-
         if( is_array( $this->products ) ) {
             $this->products = array_unique($this->products);
 
@@ -887,8 +883,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                     $op = ($i > 1)? 'OR' : '';
                     $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
                 }
-
-            };
+            }
             $where .= ' )';
         }
         if($wp_query->get('brand_equal_to')) {
@@ -897,13 +892,30 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $where .= ' AND (';
             foreach ($title_contain as $title) {
                 $post_id = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%".$title."%'");
-                foreach($post_id as $pi){
-                    $i = $i + 1;
-                    $op = ($i > 1)? 'OR' : '';
-                    $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
+                if (!empty($post_id)){
+                    foreach($post_id as $pi){
+                        $i = $i + 1;
+                        $op = ($i > 1)? 'OR' : '';
+                        $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi->post_id. '\'';
+                    }
+                }else{
+                    $post_id = $this->get_post_id_by_term($title);
+                    if (!empty($post_id)){
+                        foreach($post_id as $pi){
+                            $i = $i + 1;
+                            $op = ($i > 1)? 'OR' : '';
+                            $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi. '\'';
+                        }
+                    }else{
+                       $post_id = $this->get_post_by_attribute_name($title);
+                        foreach($post_id as $pi){
+                            $i = $i + 1;
+                            $op = ($i > 1)? 'OR' : '';
+                            $where .= ' '. $op. ' '. $wpdb->posts . '.ID = \'' . $pi. '\'';
+                        }
+                    }
                 }
-
-            };
+            }
             $where .= ' )';
         }
         if($wp_query->get('brand_dn_contain')) {
@@ -1978,6 +1990,60 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         // return
         return $res;
     }
+
+    /**
+     * Get post_id by taxonomy.
+     * @return array
+     * params $title
+     **/
+
+    public function get_post_id_by_term($title){
+        $term = get_term_by('name', $title, 'pwb-brand');
+        if (!empty($term)){
+            $args = array(
+                'post_type' => array('product','product_variation'),
+                'fields' => 'ids',
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'pwb-brand',
+                        'field' => 'term_id',
+                        'terms' => $term->term_id
+                    )
+                )
+            );
+            $query = new WP_Query( $args );
+            $post_id = $query->get_posts();
+            return $post_id;
+        }
+    }
+
+    /**
+     * Get post_id by attribute name.
+     * @param $title
+     * @return array post_id
+     */
+
+    public function get_post_by_attribute_name($title){
+        global $wpdb;
+        $query = $wpdb->prepare('SELECT term_id FROM '.$wpdb->prefix.'terms WHERE name =  %s',$title);
+        $term = $wpdb->get_results($query);
+        $term_tax = get_term( $term[0]->term_id );
+        $args = array(
+            'post_type' => array('product','product_variation'),
+            'fields' => 'ids',
+            'tax_query' => array(
+                array(
+                    'taxonomy' => $term_tax->taxonomy,
+                    'field' => 'term_id',
+                    'terms' => $term[0]->term_id
+                )
+            )
+        );
+        $query = new WP_Query( $args );
+        $post_id = $query->get_posts();
+        return $post_id;
+    }
+
 
     /**
      * Responsible for creating the feed.

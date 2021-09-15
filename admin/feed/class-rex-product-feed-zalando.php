@@ -120,7 +120,14 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
 
                 foreach ($atts as $att ) {
 	                foreach ( $att as $key => $value ) {
-		                $item->$key($value);
+		                if ( $this->rex_feed_skip_row ) {
+			                if ( $value != '' ) {
+				                $item->$key($value); // invoke $key as method of $item object.
+			                }
+		                }
+		                else {
+			                $item->$key($value); // invoke $key as method of $item object.
+		                }
 	                }
                     $json_array['product_model']['product_configs'][0]['product_simples'][] = $this->get_product_simples($att);
                 }
@@ -132,7 +139,14 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 foreach ( $atts as $key => $value ) {
-	                $item->$key($value);
+	                if ( $this->rex_feed_skip_row ) {
+		                if ( $value != '' ) {
+			                $item->$key($value); // invoke $key as method of $item object.
+		                }
+	                }
+	                else {
+		                $item->$key($value); // invoke $key as method of $item object.
+	                }
                 }
                 $json_array = $this->get_product_model($atts);
                 $json_array['product_model']['product_configs'][0]['product_simples'][] = $this->get_product_simples($atts);
@@ -145,7 +159,14 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
 			        $item = RexShopping::createItem();
 			        $atts = $this->get_product_data($product, $product_meta_keys);
 			        foreach ($atts as $key => $value) {
-				        $item->$key($value); // invoke $key as method of $item object.
+				        if ( $this->rex_feed_skip_row ) {
+					        if ( $value != '' ) {
+						        $item->$key($value); // invoke $key as method of $item object.
+					        }
+				        }
+				        else {
+					        $item->$key($value); // invoke $key as method of $item object.
+				        }
 			        }
 		        }
 	        }

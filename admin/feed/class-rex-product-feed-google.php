@@ -107,7 +107,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                             $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                         }
                         else {
-                            $item->$key($value); // invoke $key as method of $item object.
+	                        if ( $this->rex_feed_skip_row ) {
+		                        if ( $value != '' ) {
+			                        $item->$key($value); // invoke $key as method of $item object.
+		                        }
+	                        }
+	                        else {
+		                        $item->$key($value); // invoke $key as method of $item object.
+	                        }
                         }
                     }
                 }
@@ -136,7 +143,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                                     }
                                     else {
-                                        $item->$key($value); // invoke $key as method of $item object.
+	                                    if ( $this->rex_feed_skip_row ) {
+		                                    if ( $value != '' ) {
+			                                    $item->$key($value); // invoke $key as method of $item object.
+		                                    }
+	                                    }
+	                                    else {
+		                                    $item->$key($value); // invoke $key as method of $item object.
+	                                    }
                                     }
                                     if('item_group_id' == $key){
                                         $check_item_group_id = 1;
@@ -166,7 +180,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                     }
                     else {
-                        $item->$key($value); // invoke $key as method of $item object.
+	                    if ( $this->rex_feed_skip_row ) {
+		                    if ( $value != '' ) {
+			                    $item->$key($value); // invoke $key as method of $item object.
+		                    }
+	                    }
+	                    else {
+		                    $item->$key($value); // invoke $key as method of $item object.
+	                    }
                     }
                 }
             }
@@ -186,7 +207,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                             $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                         }
                         else {
-                            $item->$key($value); // invoke $key as method of $item object.
+	                        if ( $this->rex_feed_skip_row ) {
+		                        if ( $value != '' ) {
+			                        $item->$key($value); // invoke $key as method of $item object.
+		                        }
+	                        }
+	                        else {
+		                        $item->$key($value); // invoke $key as method of $item object.
+	                        }
                         }
                         if('item_group_id' == $key){
                             $check_item_group_id = 1;
@@ -213,7 +241,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                     }
                     else {
-                        $item->$key($value); // invoke $key as method of $item object.
+	                    if ( $this->rex_feed_skip_row ) {
+		                    if ( $value != '' ) {
+			                    $item->$key($value); // invoke $key as method of $item object.
+		                    }
+	                    }
+	                    else {
+		                    $item->$key($value); // invoke $key as method of $item object.
+	                    }
                     }
                 }
             }

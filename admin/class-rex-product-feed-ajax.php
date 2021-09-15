@@ -734,7 +734,7 @@ class Rex_Product_Feed_Ajax {
      */
     public static function rex_product_change_merchant_status($payload) {
         $merchants = get_option('rex_wpfm_merchant_status');
-        error_log(print_r($payload,1));
+
         if(!$merchants) {
             $latest_merchants = $payload;
         }else {

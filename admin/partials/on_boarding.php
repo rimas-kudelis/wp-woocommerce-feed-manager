@@ -11,10 +11,6 @@
  * @subpackage Rex_Product_Feed/admin/partials
  */
 
-
-//$is_premium_activated = apply_filters('wpfm_is_premium', false);
-
-
 $is_premium_activated = apply_filters('wpfm_is_premium_activate', false);
 $custom_field = get_option('rex-wpfm-product-custom-field');
 $amazon_custom_field = get_option('wpfm_amazon_fields', 'no');

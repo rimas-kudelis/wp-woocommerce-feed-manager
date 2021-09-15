@@ -99,6 +99,46 @@
 
 
     /**
+     * Add placeholder for dynamic pricing
+     */
+    $(document).on('click', '.meta-dropdown', function() {
+        var is_premium = rex_wpfm_ajax.is_premium;
+
+        if ( is_premium == 1 ) {
+            var rowId = $(this).parent().parent().attr('data-row-id');
+
+            $(document).on('change', 'select[name="fc[' + rowId + '][meta_key]"]', function() {
+                var value_selected = $(this).val();
+                var prices = [
+                    'price',
+                    'current_price',
+                    'sale_price',
+                    'price_with_tax',
+                    'current_price_with_tax',
+                    'sale_price_with_tax',
+                    'price_excl_tax',
+                    'current_price_excl_tax',
+                    'sale_price_excl_tax'
+                ];
+
+
+                if ( $.inArray( value_selected, prices ) !== -1 ) {
+                    $('input[name="fc[' + rowId + '][limit]"]').attr( 'placeholder', 'Update Price i.e. +25%');
+                    $('input[name="fc[' + rowId + '][limit]"]').addClass( 'dynamic-placeholder' );
+                    $(this).addClass( 'dynamic-placeholder' );
+                }
+                else {
+                    $('input[name="fc[' + rowId + '][limit]"]').removeAttr( 'placeholder' );
+                    $('input[name="fc[' + rowId + '][limit]"]').removeClass( 'dynamic-placeholder' );
+                    $(this).removeClass( 'dynamic-placeholder' );
+                }
+            });
+        }
+    });
+    
+
+
+    /**
      * add new custom attributes
      */
     $(document).on('click', '#rex-new-custom-attr', function() {
@@ -264,6 +304,41 @@
                     $('.rex-loading-spinner').css('display', 'none');
                     $('#rex_feed_conf .cmb2-id-rex-feed-config-heading').css('display', 'block');
                     $('#rex-new-attr, #rex-new-custom-attr').css('display', 'inline-block');
+
+                    // Dynamic pricing
+                    var is_premium = rex_wpfm_ajax.is_premium;
+
+                    if ( is_premium == 1 ) {
+                        var meta_value_selects = $('div.meta-dropdown').children();
+                        var rows = meta_value_selects.length - 1;
+                        for ( var rowId = 0; rowId < rows; rowId++ ) {
+                            var selected_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
+
+                            var prices = [
+                                'price',
+                                'current_price',
+                                'sale_price',
+                                'price_with_tax',
+                                'current_price_with_tax',
+                                'sale_price_with_tax',
+                                'price_excl_tax',
+                                'current_price_excl_tax',
+                                'sale_price_excl_tax'
+                            ];
+
+                            if ( $.inArray( selected_val, prices ) !== -1 ) {
+                                $('input[name="fc[' + rowId + '][limit]"]').attr( 'placeholder', 'Update Price i.e. +25%');
+                                $('input[name="fc[' + rowId + '][limit]"]').addClass( 'dynamic-placeholder' );
+                                $('select[name="fc[' + rowId + '][meta_key]"]').addClass( 'dynamic-placeholder' );
+                            }
+                            else {
+                                $('input[name="fc[' + rowId + '][limit]"]').removeAttr( 'placeholder' );
+                                $('input[name="fc[' + rowId + '][limit]"]').removeClass( 'dynamic-placeholder' );
+                                $('select[name="fc[' + rowId + '][meta_key]"]').removeClass( 'dynamic-placeholder' );
+                            }
+                        }
+                    }
+                    // Dynamic pricing
                 })
                 .fail(function(response) {
                     $('.rex-loading-spinner').css('display', 'none');
@@ -317,7 +392,6 @@
         $(this).addClass('disabled');
         $('.bwfm-progressbar, .progress-msg').fadeIn();
         $('.progress-msg span').html('Calculating products.....');
-
 
         wpAjaxHelperRequest('my-handle', $payload)
             .done(function(response) {
@@ -530,26 +604,37 @@
                     $(document).off('click', '#publish', get_product_number);
                     $('#publish').trigger('click');
 
-                } else if(response.msg == 'failForInvalidEntry'){
-                    alert("Please set proper value for the mandatory field like Shipping Id, Who made, When made, Taxonomy Id");
+                } else if(response.msg == 'failForInvaidEntry'){
+                    alert("Please set proper values for the mandatory field like Shipping Id, Who made, When made, Taxonomy Id.");
                     $('#publishing-action span.spinner').removeClass('is-active');
                     $('#publish').removeClass('disabled');
                     $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
                     $('#rex-feed-progress').hide();
+                    
                     return false
                 } else if(response.msg == 'failToAuthorize'){
-                    alert("Fail to authorize with etsy, Need Authorization From Etsy");
+                    alert("No Authorization detected, Need Authorization From Etsy first.");
                     $('#publishing-action span.spinner').removeClass('is-active');
                     $('#publish').removeClass('disabled');
                     $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
                     $('#rex-feed-progress').hide();
+                    
                     return false
                 }else if(response.msg == 'failForAuthExpire'){
-                    alert("Expire you authorization with etsy, Need Authorization From Etsy");
+                    alert("Expire you authorization with etsy, Need Authorization From Etsy first.");
                     $('#publishing-action span.spinner').removeClass('is-active');
                     $('#publish').removeClass('disabled');
                     $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
                     $('#rex-feed-progress').hide();
+                    
+                    return false
+                }else if(response.msg == 'failForEmptyProduct'){
+                    alert("Product sending failed - No available products");
+                    $('#publishing-action span.spinner').removeClass('is-active');
+                    $('#publish').removeClass('disabled');
+                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
+                    $('#rex-feed-progress').hide();
+                    
                     return false
                 } else if(response.msg == 'failForEmptyProduct'){
                     alert("Fail, No product is available");

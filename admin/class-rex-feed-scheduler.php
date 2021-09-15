@@ -217,12 +217,12 @@ class Rex_Feed_Scheduler {
 	    $feed_format             = get_post_meta( $feed_id, 'rex_feed_feed_format', true ) ?
 		    get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
 	    $terms_array             = array();
+	    $ignored_scope           = array( 'all', 'filter', 'product_filter', 'featured', '' );
 
-	    if ( $product_scope !== 'all' && $product_scope !== 'filter' ) {
+	    if ( ! in_array( $product_scope, $ignored_scope) ) {
 		    $terms = wp_get_post_terms( $feed_id, $product_scope );
 		    if ( $terms ) {
 			    foreach ( $terms as $term ) {
-
 				    $terms_array[] = $term->slug;
 			    }
 		    }

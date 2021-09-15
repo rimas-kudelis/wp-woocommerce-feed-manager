@@ -132,7 +132,14 @@ class Rex_Product_Feed_Google_merchant_promotion {
         }
 
         foreach ($atts as $key => $value) {
-            $item->$key($value);
+	        if ( $this->rex_feed_skip_row ) {
+		        if ( $value != '' ) {
+			        $item->$key($value); // invoke $key as method of $item object.
+		        }
+	        }
+	        else {
+		        $item->$key($value); // invoke $key as method of $item object.
+	        }
         }
 
         if ($this->feed_format === 'xml') {

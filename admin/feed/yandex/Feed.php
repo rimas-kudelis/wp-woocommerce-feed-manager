@@ -198,7 +198,6 @@ class Feed
                 }
             }
 
-            $this->feed->addChild('offers');
             $this->channelCreated = true;
         }
     }
