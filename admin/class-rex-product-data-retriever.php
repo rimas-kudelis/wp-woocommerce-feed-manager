@@ -209,11 +209,13 @@ class Rex_Product_Data_Retriever{
 						$this->data[ $rule['attr'] ] = $this->set_val( $rule );
 					}
 				}
-			}elseif (array_key_exists('cust_attr', $rule)) {
+			}
+			elseif (array_key_exists('cust_attr', $rule)) {
 				if($rule['cust_attr']) {
 					$this->data[$rule['cust_attr']] = $this->set_val( $rule );
 				}
-			}else {
+			}
+			else {
 				$this->data[ $rule['attr'] ] = $this->set_val( $rule );
 			}
 		}
@@ -232,7 +234,7 @@ class Rex_Product_Data_Retriever{
 			$val = $rule['st_value'];
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
-			$val = $this->set_pr_att( $rule['meta_key'] , $rule['escape'] );
+			$val = $this->set_pr_att( $rule['meta_key'] , $rule['escape'], $rule['attr'] );
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_woodmart_att( $rule['meta_key'] );
@@ -419,14 +421,15 @@ class Rex_Product_Data_Retriever{
 	 * @param $price
 	 * @return float|int
 	 */
-	protected function get_condition_price( $key, $price ) {
+	protected function get_condition_price( $attr, $price ) {
 		$is_premium = apply_filters( 'wpfm_is_premium', false );
 
 		if ( $is_premium ) {
 			$rules     = $this->feed_rules;
 			$condition = '';
+
 			foreach ( $rules as $rule ) {
-				if ( $rule[ 'meta_key' ] === $key ) {
+				if ( $rule[ 'attr' ] === $attr ) {
 					$condition = $rule[ 'limit' ];
 					break;
 				}
@@ -479,7 +482,7 @@ class Rex_Product_Data_Retriever{
 	 *
 	 * @since    1.0.0
 	 */
-	protected function set_pr_att( $key, $rule = 'default' ) {
+	protected function set_pr_att( $key, $rule = 'default', $attr = '' ) {
 
 		switch ( $key ) {
 			case 'id':
@@ -561,10 +564,10 @@ class Rex_Product_Data_Retriever{
 							$_price = $this->get_converted_price( $_price );
 						}
 
-						return $this->get_condition_price( $key, $_price );
+						return $this->get_condition_price( $attr, $_price );
 					}
 					else {
-						$_price = $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'regular') );
+						$_price = $this->get_condition_price( $attr, $this->get_grouped_price($this->product, 'regular') );
 
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
@@ -599,14 +602,14 @@ class Rex_Product_Data_Retriever{
 						return $_price;
 					}else {
 						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							$_price = $this->get_condition_price( $key, $_pr->get_composite_price() );
+							$_price = $this->get_condition_price( $attr, $_pr->get_composite_price() );
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
 							return wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 						else {
-							$_price = $this->get_condition_price( $key, $_pr->get_composite_regular_price() );
+							$_price = $this->get_condition_price( $attr, $_pr->get_composite_regular_price() );
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
@@ -634,9 +637,9 @@ class Rex_Product_Data_Retriever{
 									$_price = $this->get_converted_price( $_price );
 								}
 
-								return $this->get_condition_price( $key, $_price );
+								return $this->get_condition_price( $attr, $_price );
 							}else {
-								$_price = $this->get_condition_price( $key, $_variation_product->get_regular_price() );
+								$_price = $this->get_condition_price( $attr, $_variation_product->get_regular_price() );
 								if ( $this->is_aelia_active() ){
 									$_price = $this->get_converted_price( $_price );
 								}
@@ -656,9 +659,9 @@ class Rex_Product_Data_Retriever{
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
-							return $this->get_condition_price( $key, $_price );
+							return $this->get_condition_price( $attr, $_price );
 						}else {
-							$_price = $this->get_condition_price( $key, $this->product->get_variation_regular_price() );
+							$_price = $this->get_condition_price( $attr, $this->product->get_variation_regular_price() );
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
@@ -679,9 +682,9 @@ class Rex_Product_Data_Retriever{
 								$_price = $this->get_converted_price( $_price );
 							}
 
-							return $this->get_condition_price( $key, $_price );
+							return $this->get_condition_price( $attr, $_price );
 						}
-						$_price = $this->get_condition_price( $key, $this->product->get_variation_regular_price() );
+						$_price = $this->get_condition_price( $attr, $this->product->get_variation_regular_price() );
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -693,7 +696,7 @@ class Rex_Product_Data_Retriever{
 					if ( $this->is_aelia_active() ){
 						$_price = $this->get_converted_price( $_price );
 					}
-					return $this->get_condition_price( $key, $_price );
+					return $this->get_condition_price( $attr, $_price );
 				}
 
 
@@ -709,10 +712,10 @@ class Rex_Product_Data_Retriever{
 					if ( $this->is_aelia_active() ){
 						$_price = $this->get_converted_price( $_price );
 					}
-					return $this->get_condition_price( $key, $_price );
+					return $this->get_condition_price( $attr, $_price );
 
 				}else {
-					$_price = $this->get_condition_price( $key, $this->product->get_regular_price() );
+					$_price = $this->get_condition_price( $attr, $this->product->get_regular_price() );
 					if ( $this->is_aelia_active() ){
 						$_price = $this->get_converted_price( $_price );
 					}
@@ -735,9 +738,9 @@ class Rex_Product_Data_Retriever{
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
-							return $this->get_condition_price( $key, $_price );
+							return $this->get_condition_price( $attr, $_price );
 						}else {
-							$_price = $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'price') );
+							$_price = $this->get_condition_price( $attr, $this->get_grouped_price($this->product, 'price') );
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
@@ -758,9 +761,9 @@ class Rex_Product_Data_Retriever{
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
-							return $this->get_condition_price( $key, $_price );
+							return $this->get_condition_price( $attr, $_price );
 						}else {
-							$_price = $this->get_condition_price( $key, $_pr->get_composite_price() );
+							$_price = $this->get_condition_price( $attr, $_pr->get_composite_price() );
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
@@ -784,9 +787,9 @@ class Rex_Product_Data_Retriever{
 									if ( $this->is_aelia_active() ){
 										$_price = $this->get_converted_price( $_price );
 									}
-									return $this->get_condition_price( $key, $_price );
+									return $this->get_condition_price( $attr, $_price );
 								}else {
-									$_price = $this->get_condition_price( $key, $_variation_product->get_price() );
+									$_price = $this->get_condition_price( $attr, $_variation_product->get_price() );
 									if ( $this->is_aelia_active() ){
 										$_price = $this->get_converted_price( $_price );
 									}
@@ -807,9 +810,9 @@ class Rex_Product_Data_Retriever{
 								if ( $this->is_aelia_active() ){
 									$_price = $this->get_converted_price( $_price );
 								}
-								return $this->get_condition_price( $key, $_price );
+								return $this->get_condition_price( $attr, $_price );
 							}else{
-								$_price = $this->get_condition_price( $key, $this->product->get_price() );
+								$_price = $this->get_condition_price( $attr, $this->product->get_price() );
 								if ( $this->is_aelia_active() ){
 									$_price = $this->get_converted_price( $_price );
 								}
@@ -830,9 +833,9 @@ class Rex_Product_Data_Retriever{
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
-						return $this->get_condition_price( $key, $_price );
+						return $this->get_condition_price( $attr, $_price );
 					}else {
-						$_price = $this->get_condition_price( $key, $this->product->get_price() );
+						$_price = $this->get_condition_price( $attr, $this->product->get_price() );
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -923,9 +926,9 @@ class Rex_Product_Data_Retriever{
 								if ( $this->is_aelia_active() ){
 									$_price = $this->get_converted_price( $_price );
 								}
-								return $this->get_condition_price( $key, $_price );
+								return $this->get_condition_price( $attr, $_price );
 							}else {
-								$_price = $this->get_condition_price( $key, $sale_price );
+								$_price = $this->get_condition_price( $attr, $sale_price );
 								if ( $this->is_aelia_active() ){
 									$_price = $this->get_converted_price( $_price );
 								}
@@ -945,9 +948,9 @@ class Rex_Product_Data_Retriever{
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
-						return $this->get_condition_price( $key, $_price );
+						return $this->get_condition_price( $attr, $_price );
 					}else {
-						$_price = $this->get_condition_price( $key, $sale_price );
+						$_price = $this->get_condition_price( $attr, $sale_price );
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -994,13 +997,13 @@ class Rex_Product_Data_Retriever{
 								$_price = $this->get_converted_price( $_price );
 							}
 
-							return $this->get_condition_price( $key, $_price );
+							return $this->get_condition_price( $attr, $_price );
 						}else {
 
 							if ( $this->is_aelia_active() ){
 								$sale_price = $this->get_converted_price( $sale_price );
 							}
-							return $this->get_condition_price( $key, $sale_price );
+							return $this->get_condition_price( $attr, $sale_price );
 						}
 					}
 					return '';
@@ -1047,9 +1050,9 @@ class Rex_Product_Data_Retriever{
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
-							return $this->get_condition_price( $key, $_price );
+							return $this->get_condition_price( $attr, $_price );
 						}else {
-							$_price = $this->get_condition_price( $key, $_pr->get_sale_price() );
+							$_price = $this->get_condition_price( $attr, $_pr->get_sale_price() );
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
@@ -1098,9 +1101,9 @@ class Rex_Product_Data_Retriever{
 								if ( $this->is_aelia_active() ){
 									$_price = $this->get_converted_price( $_price );
 								}
-								return $this->get_condition_price( $key, $_price );
+								return $this->get_condition_price( $attr, $_price );
 							}else {
-								$_price = $this->get_condition_price( $key, $sale_price );
+								$_price = $this->get_condition_price( $attr, $sale_price );
 								if ( $this->is_aelia_active() ){
 									$_price = $this->get_converted_price( $_price );
 								}
@@ -1123,13 +1126,13 @@ class Rex_Product_Data_Retriever{
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
-							return $this->get_condition_price( $key, $_price );
+							return $this->get_condition_price( $attr, $_price );
 						}else {
 
 							if ( $this->is_aelia_active() ){
 								$sale_price = $this->get_converted_price( $sale_price );
 							}
-							return $this->get_condition_price( $key, $sale_price );
+							return $this->get_condition_price( $attr, $sale_price );
 						}
 					}
 
@@ -1151,9 +1154,9 @@ class Rex_Product_Data_Retriever{
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
-						return $this->get_condition_price( $key, $_price );
+						return $this->get_condition_price( $attr, $_price );
 					}else {
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'regular') ) ) );
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $attr, $this->get_grouped_price($this->product, 'regular') ) ) );
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1180,18 +1183,18 @@ class Rex_Product_Data_Retriever{
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
-						return $this->get_condition_price( $key, $_price );
+						return $this->get_condition_price( $attr, $_price );
 					}else {
 
 						if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-							$_price = $this->get_condition_price( $key, $_pr->get_composite_price() );
+							$_price = $this->get_condition_price( $attr, $_pr->get_composite_price() );
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
 							return  wc_format_decimal( $_price, wc_get_price_decimals());
 						}
 						else {
-							$_price = $this->get_condition_price( $key, $_pr->get_composite_regular_price() );
+							$_price = $this->get_condition_price( $attr, $_pr->get_composite_regular_price() );
 							if ( $this->is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
@@ -1211,9 +1214,9 @@ class Rex_Product_Data_Retriever{
 					if ( $this->is_aelia_active() ){
 						$_price = $this->get_converted_price( $_price );
 					}
-					return $this->get_condition_price( $key, $_price );
+					return $this->get_condition_price( $attr, $_price );
 				}else {
-					$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->product->get_regular_price() ) ) );
+					$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $attr, $this->product->get_regular_price() ) ) );
 					if ( $this->is_aelia_active() ){
 						$_price = $this->get_converted_price( $_price );
 					}
@@ -1235,9 +1238,9 @@ class Rex_Product_Data_Retriever{
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
-						return $this->get_condition_price( $key, $_price );
+						return $this->get_condition_price( $attr, $_price );
 					}else {
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->get_grouped_price($this->product, 'price') ) ) );;
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $attr, $this->get_grouped_price($this->product, 'price') ) ) );;
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1258,9 +1261,9 @@ class Rex_Product_Data_Retriever{
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
-						return $this->get_condition_price( $key, $_price );
+						return $this->get_condition_price( $attr, $_price );
 					}else {
-						$_price = $this->get_condition_price( $key, $_pr->get_composite_price() );
+						$_price = $this->get_condition_price( $attr, $_pr->get_composite_price() );
 						if ( $this->is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1279,9 +1282,9 @@ class Rex_Product_Data_Retriever{
 					if ( $this->is_aelia_active() ){
 						$_price = $this->get_converted_price( $_price );
 					}
-					return $this->get_condition_price( $key, $_price );
+					return $this->get_condition_price( $attr, $_price );
 				}else {
-					$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $key, $this->product->get_price() ) ) );
+					$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $attr, $this->product->get_price() ) ) );
 					if ( $this->is_aelia_active() ){
 						$_price = $this->get_converted_price( $_price );
 					}
@@ -1662,16 +1665,16 @@ class Rex_Product_Data_Retriever{
 
 			case 'parent_desc':
 
-			    if( $this->is_children() ) {
-			        $parent_product = wc_get_product( $this->product->get_parent_id() );
+				if( $this->is_children() ) {
+					$parent_product = wc_get_product( $this->product->get_parent_id() );
 
-                    if ( is_object( $parent_product ) ) {
+					if ( is_object( $parent_product ) ) {
 
-                        return $this->remove_short_codes( $parent_product->get_description() );
-                    }
-                }
+						return $this->remove_short_codes( $parent_product->get_description() );
+					}
+				}
 
-			    return $this->product->get_description();
+				return $this->product->get_description();
 				break;
 
 			case 'short_description':
@@ -1790,11 +1793,11 @@ class Rex_Product_Data_Retriever{
 				return $this->get_availability(); break;
 
 			case 'availability_zero_three':
-			    $if_available = $this->get_availability();
-			    if ( 'out_of_stock' == $if_available ) {
-			        return '3';
-                }
-			    return '0'; break;
+				$if_available = $this->get_availability();
+				if ( 'out_of_stock' == $if_available ) {
+					return '3';
+				}
+				return '0'; break;
 
 			case 'availability_underscore':
 				return $this->get_availability_underscore(); break;
@@ -2111,7 +2114,8 @@ class Rex_Product_Data_Retriever{
 		if ( 'WC_Product_Variation' == get_class($this->product) ) {
 			if($new_key === '_wpfm_product_brand') {
 				$meta_value = get_post_meta($this->product->get_parent_id(), $new_key, true);
-			}else {
+			}
+			else {
 				$meta_value = get_post_meta($this->product->get_id(), $new_key, true);
 				// need to check if these attributes value is assigned to the mother product
 				if(!$meta_value) {
@@ -2121,18 +2125,19 @@ class Rex_Product_Data_Retriever{
 					}
 				}
 			}
-		} else{
+		}
+		else{
 			$meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
-            if($new_key = 'rank_math_primary_product_cat'){
-                $meta_value = $meta_value != '' ? get_the_category_by_ID( $meta_value ) : '';
-            }
+			if( 'rank_math_primary_product_cat' === $new_key ){
+				$meta_value = $meta_value != '' ? get_the_category_by_ID( $meta_value ) : '';
+			}
 			if(!$meta_value) {
 				$list = $this->get_product_attributes($this->product->get_id());
+
 				if(array_key_exists($new_key, $list)) {
 					$meta_value = str_replace('|', ',', $list[$new_key]);
 				}
 			}
-
 		}
 
 		if ( is_plugin_active( 'woo-discount-rules/woo-discount-rules.php' ) ) {

@@ -3,9 +3,9 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuten,skroutz, skroutz.gr, walmart,google shopping feed, facebook catalog, feed, fruugo, bing image feed, bing shopping, bonanza, bestprice, bestprice.gr, yml, yandex, market, yandex market, yandex turbo, export, yandex feed, csv export, export csv, export xml, ean, gtin, isbn, upc
 Requires at least: 4.7
-Tested up to:  5.8
+Tested up to:  5.8.1
 Requires PHP: 7.0
-Stable tag:  6.7.2
+Stable tag:  6.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,9 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 6.7.3 (2021-09-23) =
+* Fixed: Unique Product Identifiers not working bug fixed
 
 = 6.7.2 (2021-09-15) =
 * Fixed: Filter by Manufacturer isn't working for Product Attributes issue fixed

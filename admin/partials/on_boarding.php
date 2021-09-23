@@ -1332,7 +1332,47 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'free' => true,
                                     'status' => 0,
                                     'name' => 'Shopee'
-                                )
+                                ),
+                                'connexity'                    => array(
+		                            'free'   => true,
+		                            'status' => 0,
+		                            'name'   => 'Connexity'
+	                            ),
+	                            'amazon_it_collane'            => array(
+		                            'free'   => true,
+		                            'status' => 0,
+		                            'name'   => 'Amazon.it Collane'
+	                            ),
+	                            'amazon_accessories_and_scarf' => array(
+		                            'free'   => true,
+		                            'status' => 0,
+		                            'name'   => 'Amazon Accessories And Scarf'
+                                ),
+                                'ebay_seller'                  => array(
+		                            'free'   => true,
+		                            'status' => 0,
+		                            'name'   => 'eBay Seller Center'
+	                            ),
+	                            'ebay_seller_tickets'          => array(
+		                            'free'   => true,
+		                            'status' => 0,
+		                            'name'   => 'eBay Seller Center (Event tickets)'
+	                            ),
+	                            'bol'                          => array(
+		                            'free'   => true,
+		                            'status' => 0,
+		                            'name'   => 'Bol.com'
+	                            ),
+	                            'wish'                         => array(
+		                            'free'   => true,
+		                            'status' => 0,
+		                            'name'   => 'Wish.com'
+	                            ),
+	                            'fruugo'                       => array(
+		                            'free'   => true,
+		                            'status' => 0,
+		                            'name'   => 'Fruugo'
+	                            ),
                             );
 
                             $_pro_merchants = array(
@@ -1351,51 +1391,12 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
 		                            'status' => 0,
 		                            'name'   => 'eBay (MIP)'
 	                            ),
-	                            'ebay_seller'                  => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'eBay Seller Center'
-	                            ),
-	                            'ebay_seller_tickets'          => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'eBay Seller Center (Event tickets)'
-	                            ),
-	                            'bol'                          => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Bol.com'
-	                            ),
-	                            'wish'                         => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Wish.com'
-	                            ),
-	                            'fruugo'                       => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Fruugo'
-	                            ),
 	                            'leguide'                      => array(
 		                            'free'   => false,
 		                            'status' => 0,
 		                            'name'   => 'Leguide'
 	                            ),
-	                            'connexity'                    => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Connexity'
-	                            ),
-	                            'amazon_it_collane'            => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Amazon.it Collane'
-	                            ),
-	                            'amazon_accessories_and_scarf' => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Amazon Accessories And Scarf'
-	                            )
+	                            
 
                             );
                             $_merchants = array_merge($_merchants, $_pro_merchants);

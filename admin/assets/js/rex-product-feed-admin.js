@@ -604,7 +604,7 @@
                     $(document).off('click', '#publish', get_product_number);
                     $('#publish').trigger('click');
 
-                } else if(response.msg == 'failForInvaidEntry'){
+                } else if(response.msg == 'failForInvalidEntry'){
                     alert("Please set proper values for the mandatory field like Shipping Id, Who made, When made, Taxonomy Id.");
                     $('#publishing-action span.spinner').removeClass('is-active');
                     $('#publish').removeClass('disabled');
