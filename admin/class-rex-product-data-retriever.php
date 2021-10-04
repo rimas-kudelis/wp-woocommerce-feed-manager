@@ -112,6 +112,7 @@ class Rex_Product_Data_Retriever{
 	protected $wcml_currency;
 
 	public $discount_manage;
+	public $feed_merchant;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -132,6 +133,7 @@ class Rex_Product_Data_Retriever{
 		$this->product_meta_keys    = $product_meta_keys;
 		$this->append_variation     = $feed->append_variation;
 		$this->aelia_currency       = $feed->aelia_currency;
+		$this->feed_merchant        = $feed->merchant;
 		$this->feed                 = $feed;
 		$this->wcml                 = false;
 		$this->wcml_currency        = '';
@@ -265,6 +267,9 @@ class Rex_Product_Data_Retriever{
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_glami_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_glami_att( $rule['meta_key']  );
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_dropship_attr( $rule['meta_key'] ) ) {
+			$val = $this->set_dropship_att( $rule['meta_key']  );
 		}
 
 		// maybe escape
@@ -482,7 +487,7 @@ class Rex_Product_Data_Retriever{
 	 *
 	 * @since    1.0.0
 	 */
-	protected function set_pr_att( $key, $rule = 'default', $attr = '' ) {
+	protected function set_pr_att( $key, $rule = 'default', $attr='' ) {
 
 		switch ( $key ) {
 			case 'id':
@@ -506,40 +511,39 @@ class Rex_Product_Data_Retriever{
 				return $pr_id; break;
 
 			case 'title':
-				if($this->append_variation === 'no') {
-					if($this->product->is_type('variation')) {
-						/*$pr_id = $this->product->get_parent_id();*/
-
-						return $this->product->get_title();
+				if ( $this->append_variation === 'no' ) {
+					if ( $this->product->is_type( 'variation' ) ) {
+						$title = $this->product->get_title();
+						return $title;
 					}
 
-					return $this->product->get_name();
+					$title = $this->product->get_name();
+					return $title;
 				}
 				else {
-					if ($this->is_children()) {
-						$_product = wc_get_product( $this->product );
+					if ( $this->is_children() ) {
+						$_product     = wc_get_product( $this->product );
 						$attr_summary = $_product->get_attribute_summary();
-						$attr_array = explode(",", $attr_summary);
+						$attr_array   = explode( ",", $attr_summary );
 
-						$each_child_attr= [];
-						foreach ($attr_array as $ata){
-							$attr = strpbrk($ata,":");
-							$each_child_attr[]=$attr;
+						$each_child_attr = [];
+						foreach ( $attr_array as $ata ) {
+							$attr              = strpbrk( $ata, ":" );
+							$each_child_attr[] = $attr;
 						}
 
-						$each_child_attr_two= [];
-						foreach ($each_child_attr as $eca){
-							$each_child_attr_two[]= str_replace(": "," ",$eca);
+						$each_child_attr_two = [];
+						foreach ( $each_child_attr as $eca ) {
+							$each_child_attr_two[] = str_replace( ": ", " ", $eca );
 						}
 
 						$_title = $this->product->get_title() . " - ";
-						$_title = $_title . implode(', ', $each_child_attr_two);
-
-
+						$_title = $_title . implode( ', ', $each_child_attr_two );
 						return $_title;
-
-					}else {
-						return $this->product->get_name();
+					}
+					else {
+						$title = $this->product->get_name();
+						return $title;
 					}
 				}
 				break;
@@ -1918,6 +1922,17 @@ class Rex_Product_Data_Retriever{
 		}
 	}
 
+	// protected function get_custom_title( $title, $product ) {
+
+	// 	if ( $this->feed_merchant === 'trovaprezzi' ) {
+	// 		$size = $product->get_attribute( 'size' );
+
+	// 		return $size !== '' ? $title . ' - ' . $size : $title;
+	// 	}
+
+	// 	return $title;
+	// }
+
 
 	/**
 	 * @desc check if aelia is active.
@@ -2083,6 +2098,17 @@ class Rex_Product_Data_Retriever{
 		return $value;
 	}
 
+
+	/**
+	 * Set a Dropship attribute.
+	 */
+	protected function set_dropship_att( $key ) {
+		if ( 'WC_Product_Variation' == get_class($this->product) ) {
+			return get_post_meta($this->product->get_parent_id(), $key, true);
+		}
+		return get_post_meta($this->product->get_id(), $key, true);
+	}
+
 	/**
 	 * Set a Product Dynamic attribute.
 	 *
@@ -2120,14 +2146,23 @@ class Rex_Product_Data_Retriever{
 				// need to check if these attributes value is assigned to the mother product
 				if(!$meta_value) {
 					$list = $this->get_product_attributes($this->product->get_parent_id());
+
 					if(array_key_exists($new_key, $list)) {
 						$meta_value = str_replace('|', ',', $list[$new_key]);
+					}
+					else {
+						$acf_field = get_post_meta( $this->product->get_parent_id(), '_' . $new_key, true );
+
+						if ( $acf_field !== '' && preg_match( '/field_/', $acf_field ) ) {
+							$meta_value  = get_post_meta($this->product->get_parent_id(), $new_key, true);
+						}
 					}
 				}
 			}
 		}
 		else{
 			$meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
+
 			if( 'rank_math_primary_product_cat' === $new_key ){
 				$meta_value = $meta_value != '' ? get_the_category_by_ID( $meta_value ) : '';
 			}
@@ -2161,6 +2196,7 @@ class Rex_Product_Data_Retriever{
 			}
 		}
 
+		$meta_value = is_array( $meta_value ) && !empty( $meta_value ) ? implode( ', ', $meta_value ) : $meta_value;
 		return apply_filters("product_custom_att_value_{$new_key}", $meta_value, $new_key, $this->product);
 
 	}
@@ -2811,6 +2847,13 @@ class Rex_Product_Data_Retriever{
 	 */
 	protected function is_glami_attr( $key ) {
 		return array_key_exists( $key, $this->product_meta_keys['Glami Attributes'] );
+	}
+
+	/**
+	 * Helper to check if a attribute is a Dropship Attribute.
+	 */
+	protected function is_dropship_attr( $key ) {
+		return array_key_exists( $key, $this->product_meta_keys['Dropship by Mantella'] );
 	}
 
 

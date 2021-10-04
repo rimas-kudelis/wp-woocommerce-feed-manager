@@ -234,6 +234,7 @@ class Feed
      */
     private function addItemsToFeed()
     {
+        
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
             if ( $this->channelName && !empty($this->channelName) ) {
@@ -262,6 +263,7 @@ class Feed
      */
     private function addItemsToFeedText() {
         $str = '';
+        
         if(count($this->items)){
             $this->items_row[] = array_keys(end($this->items)->nodes());
             foreach ($this->items as $item) {
@@ -277,8 +279,42 @@ class Feed
                 }
                 $this->items_row[] = $row;
             }
+            // if($batch != 1){
+            //     unset($this->items_row[0]);
+            // }
             foreach ($this->items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
+            }
+        }
+        return $str;
+    }
+    
+    /**
+     * add items to text feed
+     *
+     * @return string
+     */
+    private function addItemsToFeedTextPipe() {
+        $str = '';
+        if(count($this->items)){
+            $this->items_row[] = array_keys(end($this->items)->nodes());
+            foreach ($this->items as $item) {
+                $row = array();
+                foreach ($item->nodes() as $itemNode) {
+                    if (is_array($itemNode)) {
+                        foreach ($itemNode as $node) {
+                            $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $node->get('value'));
+                        }
+                    } else {
+                        $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $itemNode->get('value'));
+                    }
+                }
+                $this->items_row[] = $row;
+            }
+            
+            foreach ($this->items_row as $fields) {   
+                $str .= implode("|", $fields) . "\n";
+
             }
         }
         return $str;
@@ -403,10 +439,20 @@ class Feed
      */
     public function asTxt($output = false)
     {
-
         if (ob_get_contents()) ob_end_clean();
         $str = $this->addItemsToFeedText();
-
+        return $str;
+    }
+    
+    /**
+     * Generate Txt feed
+     * @param bool $output
+     * @return string
+     */
+    public function asTxtPipe($output = false)
+    {
+        if (ob_get_contents()) ob_end_clean();
+        $str = $this->addItemsToFeedTextPipe();
         return $str;
     }
 

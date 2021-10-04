@@ -97,6 +97,16 @@ class Rex_Product_Feed_Activator {
                 'status'    => 1,
                 'name'  => 'Bing'
             ),
+            'cercavino'  => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Cercavino'
+            ),
+            'trovino'  => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Trovino'
+            ),
             'kelkoo'       => array(
                 'free'  => true,
                 'status'    => 1,

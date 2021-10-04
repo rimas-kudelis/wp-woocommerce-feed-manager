@@ -22,7 +22,6 @@ class Rex_Product_Feed_Factory {
     private static $bestprice_format;
     private static $DealsForU;
     private static $spartooFr;
-    private static $google_local_inventory_ads_format;
 
     public static function build( $config, $bypass = false , $product_ids = array()){
         
@@ -48,6 +47,7 @@ class Rex_Product_Feed_Factory {
                 'nextag',
                 'pricegrabber',
                 'bing',
+                'cercavino',
                 'kelkoo',
                 'amazon',
                 'ebay',
@@ -65,8 +65,6 @@ class Rex_Product_Feed_Factory {
                 'scoupz',
                 'kelkoonl',
                 'uvinum',
-                /*'idealo',*/
-                // 'rakuten',
                 'pricesearcher',
                 'pricemasher',
                 'google_dsa',
@@ -184,13 +182,13 @@ class Rex_Product_Feed_Factory {
                 'webgains',
                 'vidaXL',
                 'mydeal',
+                'trovino',
             )
         );
         self::$google_format = array(
             'google',
             'ciao',
             'liveintent',
-            'pinterest',
             'google_shopping_actions',
             'google_merchant_promotion',
             'google_express',
@@ -215,22 +213,17 @@ class Rex_Product_Feed_Factory {
         self::$mirakl_format = array(
             'mirakl'
         );
-
         self::$DealsForU = array(
             'DealsForU'
         );
         self::$spartooFr = array(
             'spartooFr'
         );
-        // self::$google_local_inventory_ads_format = array(
-        //     'google_local_inventory_ads'
-        // );
 
         if ( in_array( $config['merchant'], self::$other_merchants ) ) {
             $className = 'Rex_Product_Feed_Other';
         }
         elseif (in_array( $config['merchant'], self::$google_format )) {
-
             $className = 'Rex_Product_Feed_Google';
         }
         elseif (in_array( $config['merchant'], self::$facebook_format )) {
@@ -254,6 +247,9 @@ class Rex_Product_Feed_Factory {
         }
         elseif ($config['merchant'] === 'admitad') {
             $className = 'Rex_Product_Feed_Yandex';
+        }
+        elseif ($config['merchant'] === 'pinterest') {
+            $className = 'Rex_Product_Feed_Pinterest';
         }
         else{
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );

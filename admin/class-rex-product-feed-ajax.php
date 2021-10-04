@@ -259,16 +259,18 @@ class Rex_Product_Feed_Ajax {
      */
     public static function get_product_number($payload) {
         $is_premium = apply_filters('wpfm_is_premium', false);
-        $products = apply_filters('wpfm_get_total_number_of_products',
-            array('products'  => 50)
+        $products   = apply_filters('wpfm_get_total_number_of_products',
+            array(
+                    'products'  => 50
+            )
         );
         $per_page = get_option('rex-wpfm-product-per-batch', 50);
         $posts_per_page = $is_premium ? (int)$per_page : ((int)$per_page >= 50 ? 50 : (int)$per_page);
 
         $info = array(
-            'products' => $products['products'],
-            'per_batch' => $posts_per_page,
-            'total_batch' => ceil($products['products']/(int)$posts_per_page)
+            'products'      => $products['products'],
+            'per_batch'     => $posts_per_page,
+            'total_batch'   => ceil($products['products']/(int)$posts_per_page)
         );
 
         return $info;
@@ -425,6 +427,12 @@ class Rex_Product_Feed_Ajax {
         $bing = array(
             'bing',
         );
+        $cercavino = array(
+            'cercavino',
+        );
+        $trovino = array(
+            'trovino',
+        );
         $bing_json_feed = array(
             'bing_image',
         );
@@ -500,6 +508,10 @@ class Rex_Product_Feed_Ajax {
 	    }
         elseif ( in_array( $merchant, $bing ) ) {
 		    return array( 'text' );
+	    }elseif ( in_array( $merchant, $cercavino ) ) {
+		    return array( 'text_pipe','text' );
+	    }elseif ( in_array( $merchant, $trovino ) ) {
+		    return array( 'text_pipe' );
 	    }
         elseif ( in_array( $merchant, $ibud ) ) {
 		    return array( 'xml' );
@@ -528,7 +540,7 @@ class Rex_Product_Feed_Ajax {
         elseif ( in_array( $merchant, $shopee ) ) {
 		    return array( 'csv', 'csv_semicolon' );
 	    }
-	    return array( 'xml', 'csv', 'csv_semicolon', 'text', 'tsv', 'json' );
+	    return array( 'xml', 'csv', 'csv_semicolon', 'text','text_pipe', 'tsv', 'json' );
     }
 
 

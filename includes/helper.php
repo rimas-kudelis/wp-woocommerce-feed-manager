@@ -117,6 +117,8 @@ if( !function_exists('wpfm_run_schedule_update') ) {
 					$wpml                    = get_post_meta( $feed_id, 'rex_feed_wpml_language', true ) ? get_post_meta( $feed_id, 'rex_feed_wpml_language', true ) : '';
 					$feed_format             = get_post_meta( $feed_id, 'rex_feed_feed_format', true ) ?
 						get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
+					$aelia_currency          = get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
+					$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
 
 					if ( $product_scope !== 'all' && $product_scope !== 'filter' ) {
 						$terms = wp_get_post_terms( $feed_id, $product_scope );
@@ -150,6 +152,8 @@ if( !function_exists('wpfm_run_schedule_update') ) {
 						'parent_product'          => $parent_product,
 						'exclude_hidden_products' => $exclude_hidden_products,
 						'wpml_language'           => $wpml,
+						'aelia_currency'          => $aelia_currency,
+						'skip_row'                => $skip_row,
 					);
 					try {
 						$merchant = Rex_Product_Feed_Factory::build( $payload, true );

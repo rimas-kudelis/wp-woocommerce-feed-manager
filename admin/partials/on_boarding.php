@@ -498,6 +498,16 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                     'status' => 1,
                                     'name' => 'Bing'
                                 ),
+                                'cercavino' => array(
+                                    'free' => true,
+                                    'status' => 1,
+                                    'name' => 'Cercavino'
+                                ),
+                                'trovino' => array(
+                                    'free' => true,
+                                    'status' => 1,
+                                    'name' => 'Trovino'
+                                ),
                                 'bing_image' => array(
                                     'free' => true,
                                     'status' => 0,

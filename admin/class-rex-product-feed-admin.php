@@ -217,9 +217,10 @@ class Rex_Product_Feed_Admin {
 		    wp_localize_script(
 			    'rex-wpfm-global-js', 'rex_wpfm_ajax',
 			    array(
-				    'ajax_url'   => admin_url( 'admin-ajax.php' ),
-				    'ajax_nonce' => wp_create_nonce( 'rex-wpfm-ajax' ),
-				    'is_premium' => apply_filters( 'wpfm_is_premium', false )
+				    'ajax_url'             => admin_url( 'admin-ajax.php' ),
+				    'category_mapping_url' => admin_url( 'admin.php?page=category_mapping' ),
+				    'ajax_nonce'           => wp_create_nonce( 'rex-wpfm-ajax' ),
+				    'is_premium'           => apply_filters( 'wpfm_is_premium', false )
 			    )
 		    );
 	    }
@@ -664,6 +665,16 @@ class Rex_Product_Feed_Admin {
                 'free'  => true,
                 'status'    => 1,
                 'name'  => 'Bing'
+            ),
+            'cercavino'         => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Cercavino'
+            ),
+            'trovino'         => array(
+                'free'  => true,
+                'status'    => 1,
+                'name'  => 'Trovino'
             ),
             'kelkoo'       => array(
                 'free'  => true,

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.8.1
 Requires PHP: 7.0
-Stable tag:  6.7.3
+Stable tag:  6.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,16 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 6.7.4 (2021-10-04) =
+* Fixed: UTF-8 CSV issue updated
+* Fixed: Fatal Error (Conflict with Google) fixed
+* Fixed: Move some merchants from Pro to free
+* Fixed: Pinterest feed template updated
+* Added: Trovino.it feed template added
+* Added: Cercavino feed template added
+* Added: Dropship Mantle plugin support added
+
 
 = 6.7.3 (2021-09-23) =
 * Fixed: Unique Product Identifiers not working bug fixed

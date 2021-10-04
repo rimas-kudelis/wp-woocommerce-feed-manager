@@ -228,7 +228,7 @@ class Rex_Product_Filter {
      * @param $name
      * @param string $selected
      */
-    public function printSelectDropdown( $key, $name, $selected = '' ){
+    public function printSelectDropdown( $key, $name, $selected = '', $class = '' ){
 
         if ( $name === 'if' ) {
             $items = $this->product_meta_keys;
@@ -240,7 +240,7 @@ class Rex_Product_Filter {
             return;
         }
 
-        echo '<select name="ff['.$key.'][' . esc_attr( $name ) . ']" >';
+        echo '<select class="' .esc_attr( $class ). '" name="ff['.$key.'][' . esc_attr( $name ) . ']" >';
         if($name === 'rules')
             echo "<option value='or'>Please Select</option>";
         else

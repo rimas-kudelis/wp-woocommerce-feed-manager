@@ -70,7 +70,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      * @access   protected
      * @var      Rex_Product_Feed_Abstract_Generator    $merchant    Contains merchant name of the feed.
      */
-    protected $merchant;
+    public $merchant;
 
     /**
      * The feed format.
@@ -326,6 +326,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
     public $product_meta_keys;
     public $product_condition;
+    public $feed_merchant;
 
 
     /**
@@ -360,14 +361,14 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             $this->variable_product         = $config['variable_product'];
             $this->append_variation         = $config['append_variations'];
             $this->exclude_hidden_products  = $config['exclude_hidden_products'];
-            $this->rex_feed_skip_row        = isset( $config['rex_feed_skip_row'] ) ? $config['rex_feed_skip_row'] : '';
+            $this->rex_feed_skip_row        = isset( $config['skip_row'] ) ? $config['skip_row'] : '';
             $this->wpml_language            = $config['wpml_language'];
             $this->wcml                     = $config['wcml'];
             $this->wcml_currency            = $config['wcml_currency'];
             $this->analytics                = $config['analytics'];
             $this->analytics_params         = $config['analytics_params'];
             $this->product_condition        = $config['product_condition'];
-	        $this->aelia_currency           = isset( $config[ 'rex_feed_aelia_currency' ] ) ? $config[ 'rex_feed_aelia_currency' ] : '';
+	        $this->aelia_currency           = isset( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : '';
             $this->prepare_products_args($config['info']);
         }
         else {
@@ -616,14 +617,15 @@ abstract class Rex_Product_Feed_Abstract_Generator {
      */
     protected function setup_feed_meta( $config ){
         $feed_rules       = array();
-
         parse_str( $config, $feed_rules );
+
 	    $include_variable_product = $feed_rules[ 'rex_feed_variable_product' ];
 	    $include_variations       = $feed_rules[ 'rex_feed_variations' ];
 	    $include_parent           = $feed_rules[ 'rex_feed_parent_product' ];
 	    $include_variations_name  = $feed_rules[ 'rex_feed_variation_product_name' ];
 	    $exclude_hidden_products  = $feed_rules[ 'rex_feed_hidden_products' ];
         $rex_feed_skip_row        = $feed_rules['rex_feed_skip_row'];
+	    $this->feed_merchant      = isset( $feed_rules[ 'rex_feed_merchant' ] ) ? $feed_rules[ 'rex_feed_merchant' ] : '';
 	    $this->aelia_currency     = isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ? $feed_rules[ 'rex_feed_aelia_currency' ] : '';
 
         if(isset($feed_rules['product_filter_condition'])){
@@ -1274,10 +1276,14 @@ abstract class Rex_Product_Feed_Abstract_Generator {
 
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
-
+            $this->feed = str_replace(
+                array('&#8226;', '&#8221;', '&#8220;', '&#8217;', '&#8216;', '&trade;', '&reg;', '&deg;', ''),
+                array('•', '”', '“', '’', '‘', '™', '®', '°', "\n"),
+                $this->feed);
             if( file_exists($file) ) {
                 if( $this->batch == 1) {
                     $feed = new DOMDocument;
+
                     $feed->loadXML($this->feed);
 
                     $this->feed = $feed->saveXML($feed, LIBXML_NOEMPTYTAG);
@@ -1299,15 +1305,16 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 return file_put_contents($file, $this->feed, FILE_APPEND) ? 'true' : 'false';
             }
         }
-        elseif ($format === 'text'){
+        elseif ($format === 'text' || $format === 'text_pipe'){
 
 
             $this->feed = iconv("UTF-8", "Windows-1252//IGNORE", $this->feed);
-
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
             update_post_meta($this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.txt");
             update_post_meta($this->id, 'rex_feed_merchant', $this->merchant);
-
+            if($this->batch != 1){
+                $this->feed = substr($this->feed, strpos($this->feed, "\n") + 1);
+            }
             if( file_exists($file) ) {
                 if($this->batch == 1) {
                     return file_put_contents($file, $this->feed) ? 'true' : 'false';
@@ -1475,7 +1482,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $feed_string_footer .= '</vivino-product-list>';
             }
         }
-        elseif ($this->merchant === 'sooqr'|| $this->merchant === 'pricegrabber' || $this->merchant === 'bonanza' ) {
+        elseif ($this->merchant === 'sooqr'|| $this->merchant === 'pricegrabber'
+                || $this->merchant === 'bonanza' || $this->merchant === 'awin' ) {
             $node = $feed->getElementsByTagName("product");
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</products>';

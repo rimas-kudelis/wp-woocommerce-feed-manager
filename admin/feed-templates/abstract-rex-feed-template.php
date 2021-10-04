@@ -155,7 +155,7 @@ abstract class Rex_Feed_Abstract_Template {
      * @param $name
      * @param string $selected
      */
-    public function printSelectDropdown( $key, $name, $selected = '' ){
+    public function printSelectDropdown( $key, $name, $selected = '', $class = '' ){
 
         if ( $name === 'attr' ) {
             $items = $this->attributes;
@@ -166,7 +166,7 @@ abstract class Rex_Feed_Abstract_Template {
         }else{
             return;
         }
-        echo '<select  name="fc['.$key.'][' . esc_attr( $name ) . ']" >';
+        echo '<select class="' .esc_attr( $class ). '" name="fc['.$key.'][' . esc_attr( $name ) . ']" >';
         echo "<option value=''>Please Select</option>";
         $i = 1;
         foreach ($items as $groupLabel => $group) {

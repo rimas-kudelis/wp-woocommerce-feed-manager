@@ -340,6 +340,16 @@ class Rex_Product_Metabox
                 'status' => 1,
                 'name' => 'Bing'
             ),
+            'cercavino' => array(
+                'free' => true,
+                'status' => 1,
+                'name' => 'Cercavino'
+            ),
+            'trovino' => array(
+                'free' => true,
+                'status' => 1,
+                'name' => 'Trovino'
+            ),
             'kelkoo' => array(
                 'free' => true,
                 'status' => 1,
@@ -428,6 +438,7 @@ class Rex_Product_Metabox
 	        'options' => array(
 		        'xml'           => __( 'XML', 'rex-product-feed' ),
 		        'text'          => __( 'TEXT', 'rex-product-feed' ),
+		        'text_pipe'     => __( 'TEXT (Pipe "|" Separator)', 'rex-product-feed' ),
 		        'csv'           => __( 'CSV (default)', 'rex-product-feed' ),
 		        'csv_semicolon' => __( 'CSV (";" separator)', 'rex-product-feed' ),
 		        'tsv'           => __( 'TSV', 'rex-product-feed' ),
@@ -869,7 +880,7 @@ class Rex_Product_Metabox
 	    if ( $format === 'xml' ) {
 		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.xml";
 	    }
-	    elseif ( $format === 'text' ) {
+	    elseif ( $format === 'text' || $format === 'text_pipe') {
 		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.txt";
 	    }
 	    elseif ( $format === 'csv' || $format === 'csv_semicolon' ) {

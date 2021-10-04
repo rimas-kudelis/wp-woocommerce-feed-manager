@@ -138,6 +138,7 @@ class Rex_Feed_Attributes {
             );
             $attributes = array_merge($attributes, $attributes_3);
         }
+
         if(in_array('brands-for-woocommerce/woocommerce-brand.php',$plugins)){
             $attributes_4 = array(
                 'Brands for WooCommerce' => array(
@@ -157,6 +158,18 @@ class Rex_Feed_Attributes {
             $attributes = array_merge($attributes, $attributes_4);
         }
 
+	    if(in_array('dropship/mantella.php', $plugins)){
+		    $attributes_4 = array(
+			    'Dropship by Mantella' => array(
+				    '_mantella_ean_number'               => 'EAN Code',
+				    '_mantella_ean_number_show_in_front' => 'View on Frontend [EAN]',
+				    '_mantella_brand'                    => 'Brand',
+				    '_mantella_brand_show_in_front'      => 'Brand View on Frontend'
+			    ),
+		    );
+		    $attributes   = array_merge( $attributes, $attributes_4 );
+	    }
+
 
         // Get product attributes
         $_attributes = self::get_product_attributes();
@@ -171,10 +184,10 @@ class Rex_Feed_Attributes {
         $attributes['Product Dynamic Attributes'] = $_dynamic_attributes;
 
 
-        // Get product dynamic attributes
+        // Get product custom attributes
         $_custom_attributes = self::get_product_custom_attributes();
 
-	    if(in_array('woo-discount-rules/woo-discount-rules.php',$plugins)){
+	    if(in_array('woo-discount-rules/woo-discount-rules.php', $plugins)){
 		    $woo_discount_rules = array(
 			    'woo_discount_rules_price'  => 'Woo Discount Rules - Price',
 			    'woo_discount_rules_expire_date'  => 'Woo Discount Rules - Expire Date',
@@ -335,6 +348,7 @@ class Rex_Feed_Attributes {
             }
             wpfm_set_cached_data( 'product_custom_attributes', $attributes );
         }
+        
         return $attributes;
     }
 }

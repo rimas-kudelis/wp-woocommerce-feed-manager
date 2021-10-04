@@ -135,7 +135,6 @@
             });
         }
     });
-    
 
 
     /**
@@ -346,7 +345,6 @@
                     console.log(response.statusText);
                 });
         }
-
     });
 
     function get_checkbox_val(name) {
@@ -375,12 +373,10 @@
        
         var merchant_name = $('#rex_feed_merchant').find(':selected').val();
         if (merchant_name == '-1') {
-            alert('Please choose a merchant!pp');
-            
+            alert('Please choose a merchant!');
             return;
         }
 
-        
         if ($('.wpfm-field-mappings').find('tbody tr:first').css('display') == 'none') {
             $('.wpfm-field-mappings').find('tbody tr:first').remove();
         }

@@ -254,6 +254,30 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => true,
             'datetime'   => true,
         ),
+        "cercavino" => array(
+            'container'  => true,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => true,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => true,
+            'datetime'   => true,
+        ),
+        "trovino" => array(
+            'container'  => true,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => true,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => true,
+            'datetime'   => true,
+        ),
         "emag" => array(
             'container'  => true,
             'item_wrapper'  => 'product',
@@ -302,18 +326,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
-        // "heureka" => array(
-        //     'container'  => false,
-        //     'item_wrapper'  => 'SHOPITEM',
-        //     'items_wrapper' => 'SHOP',
-        //     'namespace' => null,
-        //     'namespace_prefix' => '',
-        //     'stand_alone'   => false,
-        //     'version' => '',
-        //     'wrapper_el'   => '',
-        //     'wrapper'   => false,
-        //     'datetime'   => false,
-        // ),
         "homebook" => array(
             'container'  => false,
             'item_wrapper'  => 'offer',
@@ -772,18 +784,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'   => false,
             'datetime'   => false,
         ),
-        // "zbozi" => array(
-        //     'container'  => false,
-        //     'item_wrapper'  => 'SHOPITEM',
-        //     'items_wrapper' => 'SHOP',
-        //     'namespace' => 'http://www.zbozi.cz/ns/offer/1.0',
-        //     'namespace_prefix' => '',
-        //     'stand_alone'   => false,
-        //     'version' => '',
-        //     'wrapper_el'   => '',
-        //     'wrapper'   => false,
-        //     'datetime'   => false,
-        // ),
+        "awin" => array(
+	        'container'  => false,
+	        'item_wrapper'  => 'product',
+	        'items_wrapper' => 'products',
+	        'namespace' => null,
+	        'namespace_prefix' => '',
+	        'stand_alone'   => false,
+	        'version' => '',
+	        'wrapper_el'   => '',
+	        'wrapper'   => false,
+	        'datetime'   => false,
+        ),
     );
     /**
      * Get version
@@ -1031,7 +1043,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
         }
-
+     
         $total_products = array(
             'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variation_products) + (int) count($group_products) + (int) count($variable_parent),
             'simple' => (int) $total_products['simple'] + (int) count($simple_products),
@@ -1054,6 +1066,8 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             return RexShopping::asRss();
         } elseif ($this->feed_format === 'text') {
             return RexShopping::asTxt();
+        } elseif ($this->feed_format === 'text_pipe') {
+            return RexShopping::asTxtPipe();
         } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
             return RexShopping::asCsv();
         }
@@ -1093,31 +1107,21 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		else if ( $this->merchant === 'hertie' ) {
 			$this->feed = str_replace( '</Katalog>', '', $this->feed );
 		}
-		else if ( $this->merchant === 'beslist' || $this->merchant === 'cdiscount' || $this->merchant === 'kieskeurig'
-		          || $this->merchant === 'kauftipp'
-		          || $this->merchant === 'kuantokusta'
-		          || $this->merchant === 'kelkoonl'
-		          || $this->merchant === 'mydeal'
-		          || $this->merchant === 'prisjkat'
-		          || $this->merchant === 'pricefalls'
-		          || $this->merchant === 'pricerunner'
-		          || $this->merchant === 'nextag'
-		          || $this->merchant === 'rakuten_advertising'
-		          || $this->merchant === 'shopee'
-		          || $this->merchant === 'vidaXL'
-		          || $this->merchant === 'rss'
-		          || $this->merchant === 'pricegrabber'
-		          || $this->merchant === 'google_dsa'
-		          || $this->merchant === 'google_Ad'
-		          || $this->merchant === 'shopmania'
-		          || $this->merchant === 'favi'
-		          || $this->merchant === 'custom'
-		          || $this->merchant === 'deltaprojects'
-		          || $this->merchant === 'kelkoo'
-		          || $this->merchant === 'billiger'
-		          || $this->merchant === 'bonanza'
-		          || $this->merchant === 'become'
+		else if ( $this->merchant === 'beslist' || $this->merchant === 'cdiscount'
+		          || $this->merchant === 'kieskeurig' || $this->merchant === 'kauftipp'
+		          || $this->merchant === 'kuantokusta' || $this->merchant === 'kelkoonl'
+		          || $this->merchant === 'mydeal' || $this->merchant === 'prisjkat'
+		          || $this->merchant === 'pricefalls' || $this->merchant === 'pricerunner'
+		          || $this->merchant === 'nextag' || $this->merchant === 'rakuten_advertising'
+		          || $this->merchant === 'shopee' || $this->merchant === 'vidaXL'
+		          || $this->merchant === 'rss' || $this->merchant === 'pricegrabber'
+		          || $this->merchant === 'google_dsa' || $this->merchant === 'google_Ad'
+		          || $this->merchant === 'shopmania' || $this->merchant === 'favi'
+		          || $this->merchant === 'custom' || $this->merchant === 'deltaprojects'
+		          || $this->merchant === 'kelkoo' || $this->merchant === 'billiger'
+		          || $this->merchant === 'bonanza' || $this->merchant === 'become'
 		          || $this->merchant === 'adroll'
+		          || $this->merchant === 'awin'
 		) {
 			$this->feed = str_replace( '</products>', '', $this->feed );
 		}
@@ -1136,9 +1140,10 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		else if ( $this->merchant === 'bloomville' ) {
 			$this->feed = str_replace( '</CourseTemplates>', '', $this->feed );
 		}
-		else if ( $this->merchant === 'drm' || $this->merchant === 'job_board_io' || $this->merchant === 'ladenzeile'
-		          || $this->merchant === 'shopalike'
-		          || $this->merchant === 'whiskymarketplace' ) {
+		else if ( $this->merchant === 'drm' || $this->merchant === 'job_board_io'
+		          || $this->merchant === 'ladenzeile' || $this->merchant === 'shopalike'
+		          || $this->merchant === 'whiskymarketplace'
+		) {
 			$this->feed = str_replace( '</items>', '', $this->feed );
 		}
 		else if ( $this->merchant === 'domodi' ) {
