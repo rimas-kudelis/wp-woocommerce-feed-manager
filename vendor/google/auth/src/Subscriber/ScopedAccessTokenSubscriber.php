@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Subscriber;
+namespace RexGoogle\Auth\Subscriber;
 
-use Google\Auth\CacheTrait;
-use GuzzleHttp\Event\BeforeEvent;
-use GuzzleHttp\Event\RequestEvents;
-use GuzzleHttp\Event\SubscriberInterface;
+use RexGoogle\Auth\CacheTrait;
+use RexGuzzleHttp\Event\BeforeEvent;
+use RexGuzzleHttp\Event\RequestEvents;
+use RexGuzzleHttp\Event\SubscriberInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**
@@ -107,15 +107,15 @@ class ScopedAccessTokenSubscriber implements SubscriberInterface
      *
      * Example:
      * ```
-     * use google\appengine\api\app_identity\AppIdentityService;
-     * use Google\Auth\Subscriber\ScopedAccessTokenSubscriber;
-     * use GuzzleHttp\Client;
+     * use RexGoogle\appengine\api\app_identity\AppIdentityService;
+     * use RexGoogle\Auth\Subscriber\ScopedAccessTokenSubscriber;
+     * use RexGuzzleHttp\Client;
      *
      * $scope = 'https://www.googleapis.com/auth/taskqueue'
      * $subscriber = new ScopedAccessToken(
      *     'AppIdentityService::getAccessToken',
      *     $scope,
-     *     ['prefix' => 'Google\Auth\ScopedAccessToken::'],
+     *     ['prefix' => 'RexGoogle\Auth\ScopedAccessToken::'],
      *     $cache = new Memcache()
      * );
      *

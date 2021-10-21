@@ -251,6 +251,9 @@ class Rex_Product_Feed_Factory {
         elseif ($config['merchant'] === 'pinterest') {
             $className = 'Rex_Product_Feed_Pinterest';
         }
+        elseif ($config['merchant'] === 'gulog_gratis') {
+            $className = 'Rex_Product_Feed_Gulog_gratis';
+        }
         else{
             $className = 'Rex_Product_Feed_'. ucfirst( str_replace(' ', '', $config['merchant'] ) );
         }

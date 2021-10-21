@@ -1,6 +1,6 @@
 <?php
 
-namespace GuzzleHttp\Promise;
+namespace RexGuzzleHttp\Promise;
 
 final class Create
 {

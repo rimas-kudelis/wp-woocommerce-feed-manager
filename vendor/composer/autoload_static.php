@@ -24,6 +24,14 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         array (
             'phpseclib\\' => 10,
         ),
+        'R' => 
+        array (
+            'RexGuzzleHttp\\Psr7\\' => 19,
+            'RexGuzzleHttp\\Promise\\' => 22,
+            'RexGuzzleHttp\\' => 14,
+            'RexGoogle\\Auth\\' => 15,
+            'RexGoogle\\' => 10,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -35,14 +43,6 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'M' => 
         array (
             'Monolog\\' => 8,
-        ),
-        'G' => 
-        array (
-            'GuzzleHttp\\Psr7\\' => 16,
-            'GuzzleHttp\\Promise\\' => 19,
-            'GuzzleHttp\\' => 11,
-            'Google\\Auth\\' => 12,
-            'Google\\' => 7,
         ),
         'F' => 
         array (
@@ -62,6 +62,26 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'phpseclib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'RexGuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'RexGuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'RexGuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'RexGoogle\\Auth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/auth/src',
+        ),
+        'RexGoogle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/apiclient/src',
         ),
         'Psr\\Log\\' => 
         array (
@@ -86,26 +106,6 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
-        ),
-        'GuzzleHttp\\Psr7\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
-        ),
-        'GuzzleHttp\\Promise\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
-        ),
-        'GuzzleHttp\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
-        ),
-        'Google\\Auth\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/google/auth/src',
-        ),
-        'Google\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/google/apiclient/src',
         ),
         'Firebase\\JWT\\' => 
         array (
@@ -158,6 +158,10 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'RexTheme\\GoogleLocalProducts\\Node' => __DIR__ . '/../..' . '/admin/feed/google-local-products/Node.php',
         'RexTheme\\GrupozapShoppingFeed\\Containers\\GrupozapShopping' => __DIR__ . '/../..' . '/admin/feed/grupo_zap/Containers/GrupozapShopping.php',
         'RexTheme\\GrupozapShopping\\Grupozap\\Feed' => __DIR__ . '/../..' . '/admin/feed/grupo_zap/Feed.php',
+        'RexTheme\\GulogGratis\\Containers\\GulogGratis' => __DIR__ . '/../..' . '/admin/feed/gulog_gratis/Containers/GulogGratis.php',
+        'RexTheme\\GulogGratis\\Feed' => __DIR__ . '/../..' . '/admin/feed/gulog_gratis/Feed.php',
+        'RexTheme\\GulogGratis\\Item' => __DIR__ . '/../..' . '/admin/feed/gulog_gratis/Item.php',
+        'RexTheme\\GulogGratis\\Node' => __DIR__ . '/../..' . '/admin/feed/gulog_gratis/Node.php',
         'RexTheme\\MarktPlaatsShoppingFeed\\Containers\\MarktPlaatsShopping' => __DIR__ . '/../..' . '/admin/feed/marktplaats/Containers/MarktPlaatsShopping.php',
         'RexTheme\\MarktPlaatsShoppingFeed\\Feed' => __DIR__ . '/../..' . '/admin/feed/marktplaats/Feed.php',
         'RexTheme\\MarktPlaatsShoppingFeed\\Item' => __DIR__ . '/../..' . '/admin/feed/marktplaats/Item.php',
@@ -334,6 +338,7 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Feed_Template_Grosshandel' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-grosshandel.php',
         'Rex_Feed_Template_Grupo_zap' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-grupo-zap.php',
         'Rex_Feed_Template_Guenstiger' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-guenstiger.php',
+        'Rex_Feed_Template_Gulog_gratis' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-guloggratis.php',
         'Rex_Feed_Template_Hardware' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hardware.php',
         'Rex_Feed_Template_Hatch' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hatch.php',
         'Rex_Feed_Template_Hertie' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-hertie.php',
@@ -469,6 +474,7 @@ class ComposerStaticInite6535d7c18c8a1bdbc5df6a44ada86eb
         'Rex_Product_Feed_Google_local_products_inventory' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-google_local_products_inventory.php',
         'Rex_Product_Feed_Google_merchant_promotion' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-google_merchant_promotion.php',
         'Rex_Product_Feed_Grupo_zap' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-grupo_zap.php',
+        'Rex_Product_Feed_Gulog_gratis' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-gulog-gratis.php',
         'Rex_Product_Feed_Heureka' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_heureka.php',
         'Rex_Product_Feed_Ibud' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_ibud.php',
         'Rex_Product_Feed_Idealo' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed_idealo.php',

@@ -1,8 +1,8 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\Uri;
+use RexGuzzleHttp\Psr7\Uri;
 
 /**
  * @covers GuzzleHttp\Psr7\Uri
@@ -668,7 +668,7 @@ class UriTest extends BaseTest
         // should not use late static binding to access private static members.
         // If they do, this will fatal.
         $this->assertInstanceOf(
-            'GuzzleHttp\Tests\Psr7\ExtendedUriTest',
+            'RexGuzzleHttp\Tests\Psr7\ExtendedUriTest',
             new ExtendedUriTest('http://h:9/')
         );
     }

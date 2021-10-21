@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Subscriber;
+namespace RexGoogle\Auth\Subscriber;
 
-use Google\Auth\FetchAuthTokenInterface;
-use Google\Auth\GetQuotaProjectInterface;
-use GuzzleHttp\Event\BeforeEvent;
-use GuzzleHttp\Event\RequestEvents;
-use GuzzleHttp\Event\SubscriberInterface;
+use RexGoogle\Auth\FetchAuthTokenInterface;
+use RexGoogle\Auth\GetQuotaProjectInterface;
+use RexGuzzleHttp\Event\BeforeEvent;
+use RexGuzzleHttp\Event\RequestEvents;
+use RexGuzzleHttp\Event\SubscriberInterface;
 
 /**
  * AuthTokenSubscriber is a Guzzle Subscriber that adds an Authorization header
@@ -81,9 +81,9 @@ class AuthTokenSubscriber implements SubscriberInterface
      *
      * Example:
      * ```
-     * use GuzzleHttp\Client;
-     * use Google\Auth\OAuth2;
-     * use Google\Auth\Subscriber\AuthTokenSubscriber;
+     * use RexGuzzleHttp\Client;
+     * use RexGoogle\Auth\OAuth2;
+     * use RexGoogle\Auth\Subscriber\AuthTokenSubscriber;
      *
      * $config = [..<oauth config param>.];
      * $oauth2 = new OAuth2($config)

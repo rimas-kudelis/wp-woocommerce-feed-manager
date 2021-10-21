@@ -725,6 +725,11 @@ class Rex_Product_Feed_Admin {
                 'free'  => true,
                 'status'    => 1,
                 'name'  => 'Mirakl'
+            ),
+            'gulog_gratis'     => array(
+                'free'  => true,
+                'status'    => 0,
+                'name'  => 'GulogGratis.dk'
             )
         );
         $array = array_merge($free_merchants, $array);

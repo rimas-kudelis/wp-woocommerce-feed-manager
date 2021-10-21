@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Cache;
+namespace RexGoogle\Auth\Cache;
 
 use Psr\Cache\CacheItemInterface;
 

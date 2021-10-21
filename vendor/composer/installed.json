@@ -323,7 +323,7 @@
         "installation-source": "source",
         "autoload": {
             "psr-4": {
-                "Google\\": "src/"
+                "RexGoogle\\": "src/"
             },
             "files": [
                 "src/aliases.php"
@@ -420,7 +420,7 @@
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "Google\\Auth\\": "src"
+                "RexGoogle\\Auth\\": "src"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -481,7 +481,7 @@
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "GuzzleHttp\\": "src/"
+                "RexGuzzleHttp\\": "src/"
             },
             "files": [
                 "src/functions_include.php"
@@ -566,7 +566,7 @@
         "installation-source": "source",
         "autoload": {
             "psr-4": {
-                "GuzzleHttp\\Promise\\": "src/"
+                "RexGuzzleHttp\\Promise\\": "src/"
             },
             "files": [
                 "src/functions_include.php"
@@ -628,7 +628,7 @@
         "installation-source": "source",
         "autoload": {
             "psr-4": {
-                "GuzzleHttp\\Psr7\\": "src/"
+                "RexGuzzleHttp\\Psr7\\": "src/"
             },
             "files": [
                 "src/functions_include.php"

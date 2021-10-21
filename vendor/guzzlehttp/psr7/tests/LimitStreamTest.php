@@ -1,12 +1,12 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\FnStream;
-use GuzzleHttp\Psr7\Stream;
-use GuzzleHttp\Psr7\LimitStream;
-use GuzzleHttp\Psr7\NoSeekStream;
+use RexGuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\FnStream;
+use RexGuzzleHttp\Psr7\Stream;
+use RexGuzzleHttp\Psr7\LimitStream;
+use RexGuzzleHttp\Psr7\NoSeekStream;
 
 /**
  * @covers GuzzleHttp\Psr7\LimitStream

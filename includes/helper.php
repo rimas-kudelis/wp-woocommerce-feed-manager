@@ -207,11 +207,30 @@ if(!function_exists('wpfm_set_cached_data')) {
 }
 
 
-
-
 if ( ! function_exists( 'wpfm_purge_cached_data' ) ) {
     function wpfm_purge_cached_data() {
         global $wpdb;
         $wpdb->query( "DELETE FROM $wpdb->options WHERE ({$wpdb->options}.option_name LIKE '_transient_timeout__wpfm_cache%') OR ({$wpdb->options}.option_name LIKE '_transient__wpfm_cache_%')" ); // phpcs:ignore
     }
+}
+
+
+if ( ! function_exists( 'wpfm_is_wpml_active' ) ) {
+	/**
+	 * @desc check if wpml is active.
+	 *
+	 * @return bool
+	 */
+	function wpfm_is_wpml_active(){
+		$active_plugings             = get_option( 'active_plugins' );
+		$wpml                        = 'woocommerce-multilingual/wpml-woocommerce.php';
+		$sitepress                   = 'sitepress-multilingual-cms/sitepress.php';
+		$wpml_string_translation     = 'wpml-string-translation/plugin.php';
+		$wpml_translation_management = 'wpml-translation-management/plugin.php';
+
+		return in_array( $wpml, $active_plugings )
+		       && in_array( $sitepress, $active_plugings )
+		       && in_array( $wpml_string_translation, $active_plugings )
+		       && in_array( $wpml_translation_management, $active_plugings );
+	}
 }

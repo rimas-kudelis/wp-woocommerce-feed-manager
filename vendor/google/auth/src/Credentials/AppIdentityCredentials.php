@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Credentials;
+namespace RexGoogle\Auth\Credentials;
 
 /*
  * The AppIdentityService class is automatically defined on App Engine,
  * so including this dependency is not necessary, and will result in a
  * PHP fatal error in the App Engine environment.
  */
-use google\appengine\api\app_identity\AppIdentityService;
-use Google\Auth\CredentialsLoader;
-use Google\Auth\ProjectIdProviderInterface;
-use Google\Auth\SignBlobInterface;
+use RexGoogle\appengine\api\app_identity\AppIdentityService;
+use RexGoogle\Auth\CredentialsLoader;
+use RexGoogle\Auth\ProjectIdProviderInterface;
+use RexGoogle\Auth\SignBlobInterface;
 
 /**
  * AppIdentityCredentials supports authorization on Google App Engine.
@@ -35,10 +35,10 @@ use Google\Auth\SignBlobInterface;
  *
  * Example:
  * ```
- * use Google\Auth\Credentials\AppIdentityCredentials;
- * use Google\Auth\Middleware\AuthTokenMiddleware;
- * use GuzzleHttp\Client;
- * use GuzzleHttp\HandlerStack;
+ * use RexGoogle\Auth\Credentials\AppIdentityCredentials;
+ * use RexGoogle\Auth\Middleware\AuthTokenMiddleware;
+ * use RexGuzzleHttp\Client;
+ * use RexGuzzleHttp\HandlerStack;
  *
  * $gae = new AppIdentityCredentials('https://www.googleapis.com/auth/books');
  * $middleware = new AuthTokenMiddleware($gae);

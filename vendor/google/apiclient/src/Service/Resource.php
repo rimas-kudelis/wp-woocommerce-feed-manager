@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-namespace Google\Service;
+namespace RexGoogle\Service;
 
-use Google\Model;
-use Google\Http\MediaFileUpload;
-use Google\Exception as GoogleException;
-use Google\Utils\UriTemplate;
-use GuzzleHttp\Psr7\Request;
+use RexGoogle\Model;
+use RexGoogle\Http\MediaFileUpload;
+use RexGoogle\Exception as GoogleException;
+use RexGoogle\Utils\UriTemplate;
+use RexGuzzleHttp\Psr7\Request;
 
 /**
  * Implements the actual methods/resources of the discovered Google API using magic function

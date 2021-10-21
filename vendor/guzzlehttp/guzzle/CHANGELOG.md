@@ -74,7 +74,7 @@
 * Improvement: Always include the Content-Length if there's a body [#1721](https://github.com/guzzle/guzzle/pull/1721)
 * Feature: Added convenience method to access a cookie by name [#1318](https://github.com/guzzle/guzzle/pull/1318)
 * Bug fix: Fill `CURLOPT_CAPATH` and `CURLOPT_CAINFO` properly [#1684](https://github.com/guzzle/guzzle/pull/1684)
-* Improvement:  	Use `\GuzzleHttp\Promise\rejection_for` function instead of object init [#1827](https://github.com/guzzle/guzzle/pull/1827)
+* Improvement:  	Use `\RexGuzzleHttp\Promise\rejection_for` function instead of object init [#1827](https://github.com/guzzle/guzzle/pull/1827)
 
 
 + Minor code cleanups, documentation fixes and clarifications.
@@ -230,7 +230,7 @@
 ## 6.0.0-beta.1
 
 * Requires PHP >= 5.5
-* Updated to use PSR-7
+* Updated to use Psr-7
   * Requires immutable messages, which basically means an event based system
     owned by a request instance is no longer possible.
   * Utilizing the [Guzzle PSR-7 package](https://github.com/guzzle/psr7).

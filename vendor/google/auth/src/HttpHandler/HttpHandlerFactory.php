@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Google\Auth\HttpHandler;
+namespace RexGoogle\Auth\HttpHandler;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
+use RexGuzzleHttp\Client;
+use RexGuzzleHttp\ClientInterface;
 
 class HttpHandlerFactory
 {
@@ -33,9 +33,9 @@ class HttpHandlerFactory
         $client = $client ?: new Client();
 
         $version = null;
-        if (defined('GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
+        if (defined('RexGuzzleHttp\ClientInterface::MAJOR_VERSION')) {
             $version = ClientInterface::MAJOR_VERSION;
-        } elseif (defined('GuzzleHttp\ClientInterface::VERSION')) {
+        } elseif (defined('RexGuzzleHttp\ClientInterface::VERSION')) {
             $version = (int) substr(ClientInterface::VERSION, 0, 1);
         }
 

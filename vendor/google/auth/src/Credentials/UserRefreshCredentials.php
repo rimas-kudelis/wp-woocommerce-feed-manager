@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Credentials;
+namespace RexGoogle\Auth\Credentials;
 
-use Google\Auth\CredentialsLoader;
-use Google\Auth\GetQuotaProjectInterface;
-use Google\Auth\OAuth2;
+use RexGoogle\Auth\CredentialsLoader;
+use RexGoogle\Auth\GetQuotaProjectInterface;
+use RexGoogle\Auth\OAuth2;
 
 /**
  * Authenticates requests using User Refresh credentials.

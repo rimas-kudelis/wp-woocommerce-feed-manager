@@ -796,6 +796,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 	        'wrapper'   => false,
 	        'datetime'   => false,
         ),
+        "gulog_gratis" => array(
+	        'container'  => false,
+	        'item_wrapper'  => 'ad',
+	        'items_wrapper' => 'ads',
+	        'namespace' => null,
+	        'namespace_prefix' => '',
+	        'stand_alone'   => false,
+	        'version' => '',
+	        'wrapper_el'   => '',
+	        'wrapper'   => false,
+	        'datetime'   => false,
+        ),
     );
     /**
      * Get version
@@ -1169,6 +1181,9 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		}
 		else if ( $this->merchant === 'vivino' ) {
 			$this->feed = str_replace( '</vivino-product-list>', '', $this->feed );
+		}
+		else if ( $this->merchant === 'gulog_gratis' ) {
+			$this->feed = str_replace( '</ads>', '', $this->feed );
 		}
 		else {
 			$this->feed = str_replace( '</channel></rss>', '', $this->feed );

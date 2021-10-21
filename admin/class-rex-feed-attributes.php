@@ -174,6 +174,9 @@ class Rex_Feed_Attributes {
         // Get product attributes
         $_attributes = self::get_product_attributes();
         $attributes['Product Attributes'] = $_attributes;
+        $attributes['Date Attributes'] = array(
+        	'last_updated' => 'Last Modified Date'
+        );
         $attributes['Glami Attributes'] = array(
             'param_size'     => 'Value - Size'
         );

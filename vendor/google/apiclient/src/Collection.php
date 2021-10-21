@@ -1,6 +1,6 @@
 <?php
 
-namespace Google;
+namespace RexGoogle;
 
 /**
  * Extension to the regular Google\Model that automatically

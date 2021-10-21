@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-namespace Google\Http;
+namespace RexGoogle\Http;
 
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use Google\Client;
-use Google\Task\Runner;
-use Google\Service\Exception as GoogleServiceException;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Response;
+use RexGoogle\Auth\HttpHandler\HttpHandlerFactory;
+use RexGoogle\Client;
+use RexGoogle\Task\Runner;
+use RexGoogle\Service\Exception as GoogleServiceException;
+use RexGuzzleHttp\ClientInterface;
+use RexGuzzleHttp\Exception\RequestException;
+use RexGuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -89,7 +89,7 @@ class REST
 
       $response = $e->getResponse();
       // specific checking for Guzzle 5: convert to PSR7 response
-      if ($response instanceof \GuzzleHttp\Message\ResponseInterface) {
+      if ($response instanceof \RexGuzzleHttp\Message\ResponseInterface) {
         $response = new Response(
             $response->getStatusCode(),
             $response->getHeaders() ?: [],

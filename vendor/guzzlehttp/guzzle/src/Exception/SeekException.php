@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp\Exception;
+namespace RexGuzzleHttp\Exception;
 
 use Psr\Http\Message\StreamInterface;
 

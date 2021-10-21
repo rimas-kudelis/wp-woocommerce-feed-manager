@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-namespace Google\AuthHandler;
+namespace RexGoogle\AuthHandler;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
+use RexGuzzleHttp\Client;
+use RexGuzzleHttp\ClientInterface;
 use Exception;
 
 class AuthHandlerFactory
@@ -32,9 +32,9 @@ class AuthHandlerFactory
   public static function build($cache = null, array $cacheConfig = [])
   {
     $guzzleVersion = null;
-    if (defined('\GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
+    if (defined('\RexGuzzleHttp\ClientInterface::MAJOR_VERSION')) {
       $guzzleVersion = ClientInterface::MAJOR_VERSION;
-    } elseif (defined('\GuzzleHttp\ClientInterface::VERSION')) {
+    } elseif (defined('\RexGuzzleHttp\ClientInterface::VERSION')) {
       $guzzleVersion = (int) substr(ClientInterface::VERSION, 0, 1);
     }
 

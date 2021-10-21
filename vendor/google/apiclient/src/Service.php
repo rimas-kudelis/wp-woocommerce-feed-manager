@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-namespace Google;
+namespace RexGoogle;
 
-use Google\Http\Batch;
+use RexGoogle\Http\Batch;
 use TypeError;
 
 class Service

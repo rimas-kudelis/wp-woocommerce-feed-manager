@@ -39,12 +39,12 @@ why the promise cannot be fulfilled.
 
 ## Callbacks
 
-Callbacks are registered with the `then` method by providing an optional 
+Callbacks are registered with the `then` method by providing an optional
 `$onFulfilled` followed by an optional `$onRejected` function.
 
 
 ```php
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 $promise = new Promise();
 $promise->then(
@@ -73,7 +73,7 @@ all of the onFulfilled callbacks (resolving a promise with a rejected promise
 will reject the promise and trigger the `$onRejected` callbacks).
 
 ```php
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 $promise = new Promise();
 $promise
@@ -103,7 +103,7 @@ has been fulfilled. The next promise in the chain will be invoked with the
 resolved value of the promise.
 
 ```php
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 $promise = new Promise();
 $nextPromise = new Promise();
@@ -129,7 +129,7 @@ When a promise is rejected, the `$onRejected` callbacks are invoked with the
 rejection reason.
 
 ```php
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 $promise = new Promise();
 $promise->then(null, function ($reason) {
@@ -146,7 +146,7 @@ If an exception is thrown in an `$onRejected` callback, subsequent
 `$onRejected` callbacks are invoked with the thrown exception as the reason.
 
 ```php
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 $promise = new Promise();
 $promise->then(null, function ($reason) {
@@ -163,8 +163,8 @@ You can also forward a rejection down the promise chain by returning a
 `$onRejected` callback.
 
 ```php
-use GuzzleHttp\Promise\Promise;
-use GuzzleHttp\Promise\RejectedPromise;
+use RexGuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\RejectedPromise;
 
 $promise = new Promise();
 $promise->then(null, function ($reason) {
@@ -181,7 +181,7 @@ does not return a rejected promise, downstream `$onFulfilled` callbacks are
 invoked using the value returned from the `$onRejected` callback.
 
 ```php
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 $promise = new Promise();
 $promise
@@ -245,7 +245,7 @@ $promise->reject('foo');
 $promise->wait();
 ```
 
-> PHP Fatal error:  Uncaught exception 'GuzzleHttp\Promise\RejectionException' with message 'The promise was rejected with value: foo'
+> PHP Fatal error:  Uncaught exception 'RexGuzzleHttp\Promise\RejectionException' with message 'The promise was rejected with value: foo'
 
 
 ## Unwrapping a promise
@@ -295,7 +295,7 @@ that is expected to cancel the computation of a promise. It is invoked when the
 `cancel()` method of a promise is called.
 
 ```php
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 $promise = new Promise(
     function () use (&$promise) {
@@ -313,17 +313,17 @@ assert('waited' === $promise->wait());
 A promise has the following methods:
 
 - `then(callable $onFulfilled, callable $onRejected) : PromiseInterface`
-  
+
   Appends fulfillment and rejection handlers to the promise, and returns a new promise resolving to the return value of the called handler.
 
 - `otherwise(callable $onRejected) : PromiseInterface`
-  
+
   Appends a rejection handler callback to the promise, and returns a new promise resolving to the return value of the callback if it is called, or to its original fulfillment value if the promise is instead fulfilled.
 
 - `wait($unwrap = true) : mixed`
 
   Synchronously waits on the promise to complete.
-  
+
   `$unwrap` controls whether or not the value of the promise is returned for a
   fulfilled promise or if an exception is thrown if the promise is rejected.
   This is set to `true` by default.
@@ -355,7 +355,7 @@ A fulfilled promise can be created to represent a promise that has been
 fulfilled.
 
 ```php
-use GuzzleHttp\Promise\FulfilledPromise;
+use RexGuzzleHttp\Promise\FulfilledPromise;
 
 $promise = new FulfilledPromise('value');
 
@@ -372,7 +372,7 @@ A rejected promise can be created to represent a promise that has been
 rejected.
 
 ```php
-use GuzzleHttp\Promise\RejectedPromise;
+use RexGuzzleHttp\Promise\RejectedPromise;
 
 $promise = new RejectedPromise('Error');
 
@@ -449,7 +449,7 @@ resolved iteratively, allowing for "infinite" then chaining.
 <?php
 require 'vendor/autoload.php';
 
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 $parent = new Promise();
 $p = $parent;

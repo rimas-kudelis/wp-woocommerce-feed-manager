@@ -596,7 +596,7 @@ abstract class Rex_Product_Feed_Abstract_Generator {
         }
 
 
-        if( class_exists( 'SitePress' ) && function_exists( 'wcml_loader' ) ) {
+        if( wpfm_is_wpml_active() ) {
             $wcml_currency    = isset($feed_rules['rex_feed_wcml_currency']) ? $feed_rules['rex_feed_wcml_currency'] : '';
             update_post_meta( $this->id, 'rex_feed_wcml_currency', $wcml_currency );
         }
@@ -1789,6 +1789,12 @@ abstract class Rex_Product_Feed_Abstract_Generator {
             if($this->batch == $this->tbatch) {
                 $feed_string_footer .= '</channel></rss>';
             }
+        }elseif ($this->merchant === 'gulog_gratis') {
+            $node = $feed->getElementsByTagName("ad");
+
+            if($this->batch == $this->tbatch) {
+                $feed_string_footer .= '</ads>';
+            }
         }
         else {
             $node = $feed->getElementsByTagName("item");
@@ -1888,6 +1894,8 @@ abstract class Rex_Product_Feed_Abstract_Generator {
                 $parent = $orgdoc->getElementsByTagName('Artikel')->item(0);
             }elseif ($this->merchant === 'google_local_inventory_ads') {
                 $parent = $orgdoc->getElementsByTagName('shop')->item(0);
+            }elseif ($this->merchant === 'gulog_gratis') {
+                $parent = $orgdoc->getElementsByTagName('ad')->item(0);
             }
             else {
                 $parent = $orgdoc->getElementsByTagName('products')->item(0);

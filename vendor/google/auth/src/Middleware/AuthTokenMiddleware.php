@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Middleware;
+namespace RexGoogle\Auth\Middleware;
 
-use Google\Auth\FetchAuthTokenInterface;
-use Google\Auth\GetQuotaProjectInterface;
+use RexGoogle\Auth\FetchAuthTokenInterface;
+use RexGoogle\Auth\GetQuotaProjectInterface;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -69,10 +69,10 @@ class AuthTokenMiddleware
     /**
      * Updates the request with an Authorization header when auth is 'google_auth'.
      *
-     *   use Google\Auth\Middleware\AuthTokenMiddleware;
-     *   use Google\Auth\OAuth2;
-     *   use GuzzleHttp\Client;
-     *   use GuzzleHttp\HandlerStack;
+     *   use RexGoogle\Auth\Middleware\AuthTokenMiddleware;
+     *   use RexGoogle\Auth\OAuth2;
+     *   use RexGuzzleHttp\Client;
+     *   use RexGuzzleHttp\HandlerStack;
      *
      *   $config = [..<oauth config param>.];
      *   $oauth2 = new OAuth2($config)

@@ -78,9 +78,9 @@ As long as you update the environment variable below to point to *your* JSON
 credentials file, the following code should output a list of your Drive files.
 
 ```php
-use Google\Auth\ApplicationDefaultCredentials;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
+use RexGoogle\Auth\ApplicationDefaultCredentials;
+use RexGuzzleHttp\Client;
+use RexGuzzleHttp\HandlerStack;
 
 // specify the path to your application credentials
 putenv('GOOGLE_APPLICATION_CREDENTIALS=/path/to/my/credentials.json');
@@ -131,9 +131,9 @@ this, use the static method `getIdTokenMiddleware` on
 `ApplicationDefaultCredentials`.
 
 ```php
-use Google\Auth\ApplicationDefaultCredentials;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
+use RexGoogle\Auth\ApplicationDefaultCredentials;
+use RexGuzzleHttp\Client;
+use RexGuzzleHttp\HandlerStack;
 
 // specify the path to your application credentials
 putenv('GOOGLE_APPLICATION_CREDENTIALS=/path/to/my/credentials.json');
@@ -178,7 +178,7 @@ If you are [using Google ID tokens to authenticate users][google-id-tokens], use
 the `Google\Auth\AccessToken` class to verify the ID token:
 
 ```php
-use Google\Auth\AccessToken;
+use RexGoogle\Auth\AccessToken;
 
 $auth = new AccessToken();
 $auth->verify($idToken);
@@ -190,7 +190,7 @@ appropriate certificate URL for IAP. This is because IAP signs the ID
 tokens with a different key than the Google Identity service:
 
 ```php
-use Google\Auth\AccessToken;
+use RexGoogle\Auth\AccessToken;
 
 $auth = new AccessToken();
 $auth->verify($idToken, [

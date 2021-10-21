@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace RexGoogle\Auth;
 
-use Google\Auth\HttpHandler\HttpClientCache;
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use GuzzleHttp\Psr7;
+use RexGoogle\Auth\HttpHandler\HttpClientCache;
+use RexGoogle\Auth\HttpHandler\HttpHandlerFactory;
+use RexGuzzleHttp\Psr7;
 
 /**
  * Tools for using the IAM API.

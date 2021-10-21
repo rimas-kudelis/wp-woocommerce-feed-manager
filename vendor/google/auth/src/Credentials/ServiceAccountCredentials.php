@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Credentials;
+namespace RexGoogle\Auth\Credentials;
 
-use Google\Auth\CredentialsLoader;
-use Google\Auth\GetQuotaProjectInterface;
-use Google\Auth\OAuth2;
-use Google\Auth\ProjectIdProviderInterface;
-use Google\Auth\ServiceAccountSignerTrait;
-use Google\Auth\SignBlobInterface;
+use RexGoogle\Auth\CredentialsLoader;
+use RexGoogle\Auth\GetQuotaProjectInterface;
+use RexGoogle\Auth\OAuth2;
+use RexGoogle\Auth\ProjectIdProviderInterface;
+use RexGoogle\Auth\ServiceAccountSignerTrait;
+use RexGoogle\Auth\SignBlobInterface;
 use InvalidArgumentException;
 
 /**
@@ -37,10 +37,10 @@ use InvalidArgumentException;
  *
  * Use it with AuthTokenMiddleware to authorize http requests:
  *
- *   use Google\Auth\Credentials\ServiceAccountCredentials;
- *   use Google\Auth\Middleware\AuthTokenMiddleware;
- *   use GuzzleHttp\Client;
- *   use GuzzleHttp\HandlerStack;
+ *   use RexGoogle\Auth\Credentials\ServiceAccountCredentials;
+ *   use RexGoogle\Auth\Middleware\AuthTokenMiddleware;
+ *   use RexGuzzleHttp\Client;
+ *   use RexGuzzleHttp\HandlerStack;
  *
  *   $sa = new ServiceAccountCredentials(
  *       'https://www.googleapis.com/auth/taskqueue',

@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp;
+namespace RexGuzzleHttp;
 
 /**
  * This class contains a list of built-in Guzzle request options.

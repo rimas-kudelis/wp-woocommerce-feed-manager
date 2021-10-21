@@ -1,8 +1,8 @@
 <?php
 
-namespace GuzzleHttp\Promise\Tests;
+namespace RexGuzzleHttp\Promise\Tests;
 
-use GuzzleHttp\Promise\AggregateException;
+use RexGuzzleHttp\Promise\AggregateException;
 use PHPUnit\Framework\TestCase;
 
 class AggregateExceptionTest extends TestCase

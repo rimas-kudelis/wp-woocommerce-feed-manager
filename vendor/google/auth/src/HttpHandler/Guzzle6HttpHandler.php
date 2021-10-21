@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Google\Auth\HttpHandler;
+namespace RexGoogle\Auth\HttpHandler;
 
-use GuzzleHttp\ClientInterface;
+use RexGuzzleHttp\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -53,7 +53,7 @@ class Guzzle6HttpHandler
      * @param RequestInterface $request
      * @param array $options
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @return \RexGuzzleHttp\Promise\PromiseInterface
      */
     public function async(RequestInterface $request, array $options = [])
     {

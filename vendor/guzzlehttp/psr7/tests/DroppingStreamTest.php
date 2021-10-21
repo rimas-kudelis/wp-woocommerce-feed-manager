@@ -1,9 +1,9 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\BufferStream;
-use GuzzleHttp\Psr7\DroppingStream;
+use RexGuzzleHttp\Psr7\BufferStream;
+use RexGuzzleHttp\Psr7\DroppingStream;
 
 class DroppingStreamTest extends BaseTest
 {

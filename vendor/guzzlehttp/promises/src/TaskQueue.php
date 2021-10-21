@@ -1,6 +1,6 @@
 <?php
 
-namespace GuzzleHttp\Promise;
+namespace RexGuzzleHttp\Promise;
 
 /**
  * A task queue that executes tasks in a FIFO order.

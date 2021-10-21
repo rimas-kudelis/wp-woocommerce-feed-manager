@@ -1,9 +1,9 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace RexGuzzleHttp\Handler;
 
-use GuzzleHttp\Exception\InvalidArgumentException;
-use GuzzleHttp\Promise as P;
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Exception\InvalidArgumentException;
+use RexGuzzleHttp\Promise as P;
+use RexGuzzleHttp\Promise\Promise;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -102,7 +102,7 @@ class CurlMultiHandler
     {
         // Add any delayed handles if needed.
         if ($this->delays) {
-            $currentTime = \GuzzleHttp\_current_time();
+            $currentTime = \RexGuzzleHttp\_current_time();
             foreach ($this->delays as $id => $delay) {
                 if ($currentTime >= $delay) {
                     unset($this->delays[$id]);
@@ -154,7 +154,7 @@ class CurlMultiHandler
         if (empty($easy->options['delay'])) {
             curl_multi_add_handle($this->_mh, $easy->handle);
         } else {
-            $this->delays[$id] = \GuzzleHttp\_current_time() + ($easy->options['delay'] / 1000);
+            $this->delays[$id] = \RexGuzzleHttp\_current_time() + ($easy->options['delay'] / 1000);
         }
     }
 
@@ -206,7 +206,7 @@ class CurlMultiHandler
 
     private function timeToNext()
     {
-        $currentTime = \GuzzleHttp\_current_time();
+        $currentTime = \RexGuzzleHttp\_current_time();
         $nextTime = PHP_INT_MAX;
         foreach ($this->delays as $time) {
             if ($time < $nextTime) {

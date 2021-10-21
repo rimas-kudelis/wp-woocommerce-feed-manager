@@ -1,10 +1,10 @@
 <?php
 
-namespace GuzzleHttp\Promise\Tests;
+namespace RexGuzzleHttp\Promise\Tests;
 
-use GuzzleHttp\Promise as P;
-use GuzzleHttp\Promise\FulfilledPromise;
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise as P;
+use RexGuzzleHttp\Promise\FulfilledPromise;
+use RexGuzzleHttp\Promise\Promise;
 use PHPUnit\Framework\TestCase;
 
 /**

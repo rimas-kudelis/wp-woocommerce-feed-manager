@@ -1,9 +1,9 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\Response;
+use RexGuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\Response;
 
 /**
  * @covers GuzzleHttp\Psr7\MessageTrait

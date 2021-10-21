@@ -1,15 +1,15 @@
 <?php
 
-namespace Google\AuthHandler;
+namespace RexGoogle\AuthHandler;
 
-use Google\Auth\CredentialsLoader;
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use Google\Auth\FetchAuthTokenCache;
-use Google\Auth\Middleware\AuthTokenMiddleware;
-use Google\Auth\Middleware\ScopedAccessTokenMiddleware;
-use Google\Auth\Middleware\SimpleMiddleware;
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
+use RexGoogle\Auth\CredentialsLoader;
+use RexGoogle\Auth\HttpHandler\HttpHandlerFactory;
+use RexGoogle\Auth\FetchAuthTokenCache;
+use RexGoogle\Auth\Middleware\AuthTokenMiddleware;
+use RexGoogle\Auth\Middleware\ScopedAccessTokenMiddleware;
+use RexGoogle\Auth\Middleware\SimpleMiddleware;
+use RexGuzzleHttp\Client;
+use RexGuzzleHttp\ClientInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**

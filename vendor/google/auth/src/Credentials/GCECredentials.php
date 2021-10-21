@@ -15,20 +15,20 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Credentials;
+namespace RexGoogle\Auth\Credentials;
 
-use Google\Auth\CredentialsLoader;
-use Google\Auth\GetQuotaProjectInterface;
-use Google\Auth\HttpHandler\HttpClientCache;
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use Google\Auth\Iam;
-use Google\Auth\ProjectIdProviderInterface;
-use Google\Auth\SignBlobInterface;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\Psr7\Request;
+use RexGoogle\Auth\CredentialsLoader;
+use RexGoogle\Auth\GetQuotaProjectInterface;
+use RexGoogle\Auth\HttpHandler\HttpClientCache;
+use RexGoogle\Auth\HttpHandler\HttpHandlerFactory;
+use RexGoogle\Auth\Iam;
+use RexGoogle\Auth\ProjectIdProviderInterface;
+use RexGoogle\Auth\SignBlobInterface;
+use RexGuzzleHttp\Exception\ClientException;
+use RexGuzzleHttp\Exception\ConnectException;
+use RexGuzzleHttp\Exception\RequestException;
+use RexGuzzleHttp\Exception\ServerException;
+use RexGuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
 
 /**
@@ -37,10 +37,10 @@ use InvalidArgumentException;
  * It can be used to authorize requests using the AuthTokenMiddleware, but will
  * only succeed if being run on GCE:
  *
- *   use Google\Auth\Credentials\GCECredentials;
- *   use Google\Auth\Middleware\AuthTokenMiddleware;
- *   use GuzzleHttp\Client;
- *   use GuzzleHttp\HandlerStack;
+ *   use RexGoogle\Auth\Credentials\GCECredentials;
+ *   use RexGoogle\Auth\Middleware\AuthTokenMiddleware;
+ *   use RexGuzzleHttp\Client;
+ *   use RexGuzzleHttp\HandlerStack;
  *
  *   $gce = new GCECredentials();
  *   $middleware = new AuthTokenMiddleware($gce);

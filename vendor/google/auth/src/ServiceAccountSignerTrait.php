@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace RexGoogle\Auth;
 
 use phpseclib\Crypt\RSA;
 

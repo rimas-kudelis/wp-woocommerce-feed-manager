@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace RexGoogle\Auth;
 
 use DomainException;
-use Google\Auth\Credentials\AppIdentityCredentials;
-use Google\Auth\Credentials\GCECredentials;
-use Google\Auth\Credentials\ServiceAccountCredentials;
-use Google\Auth\HttpHandler\HttpClientCache;
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use Google\Auth\Middleware\AuthTokenMiddleware;
-use Google\Auth\Subscriber\AuthTokenSubscriber;
-use GuzzleHttp\Client;
+use RexGoogle\Auth\Credentials\AppIdentityCredentials;
+use RexGoogle\Auth\Credentials\GCECredentials;
+use RexGoogle\Auth\Credentials\ServiceAccountCredentials;
+use RexGoogle\Auth\HttpHandler\HttpClientCache;
+use RexGoogle\Auth\HttpHandler\HttpHandlerFactory;
+use RexGoogle\Auth\Middleware\AuthTokenMiddleware;
+use RexGoogle\Auth\Subscriber\AuthTokenSubscriber;
+use RexGuzzleHttp\Client;
 use InvalidArgumentException;
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -47,9 +47,9 @@ use Psr\Cache\CacheItemPoolInterface;
  * This allows it to be used as follows with GuzzleHttp\Client:
  *
  * ```
- * use Google\Auth\ApplicationDefaultCredentials;
- * use GuzzleHttp\Client;
- * use GuzzleHttp\HandlerStack;
+ * use RexGoogle\Auth\ApplicationDefaultCredentials;
+ * use RexGuzzleHttp\Client;
+ * use RexGuzzleHttp\HandlerStack;
  *
  * $middleware = ApplicationDefaultCredentials::getMiddleware(
  *     'https://www.googleapis.com/auth/taskqueue'

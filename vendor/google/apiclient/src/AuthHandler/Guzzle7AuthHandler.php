@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Google\AuthHandler;
+namespace RexGoogle\AuthHandler;
 
 /**
 * This supports Guzzle 7

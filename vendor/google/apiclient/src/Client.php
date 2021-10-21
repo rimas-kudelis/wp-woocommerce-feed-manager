@@ -15,23 +15,23 @@
  * limitations under the License.
  */
 
-namespace Google;
+namespace RexGoogle;
 
-use Google\AccessToken\Revoke;
-use Google\AccessToken\Verify;
-use Google\Auth\ApplicationDefaultCredentials;
-use Google\Auth\Cache\MemoryCacheItemPool;
-use Google\Auth\CredentialsLoader;
-use Google\Auth\FetchAuthTokenCache;
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use Google\Auth\OAuth2;
-use Google\Auth\Credentials\ServiceAccountCredentials;
-use Google\Auth\Credentials\UserRefreshCredentials;
-use Google\AuthHandler\AuthHandlerFactory;
-use Google\Http\REST;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Ring\Client\StreamHandler;
+use RexGoogle\AccessToken\Revoke;
+use RexGoogle\AccessToken\Verify;
+use RexGoogle\Auth\ApplicationDefaultCredentials;
+use RexGoogle\Auth\Cache\MemoryCacheItemPool;
+use RexGoogle\Auth\CredentialsLoader;
+use RexGoogle\Auth\FetchAuthTokenCache;
+use RexGoogle\Auth\HttpHandler\HttpHandlerFactory;
+use RexGoogle\Auth\OAuth2;
+use RexGoogle\Auth\Credentials\ServiceAccountCredentials;
+use RexGoogle\Auth\Credentials\UserRefreshCredentials;
+use RexGoogle\AuthHandler\AuthHandlerFactory;
+use RexGoogle\Http\REST;
+use RexGuzzleHttp\Client as GuzzleClient;
+use RexGuzzleHttp\ClientInterface;
+use RexGuzzleHttp\Ring\Client\StreamHandler;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerInterface;
@@ -1161,9 +1161,9 @@ class Client
   protected function createDefaultHttpClient()
   {
     $guzzleVersion = null;
-    if (defined('\GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
+    if (defined('\RexGuzzleHttp\ClientInterface::MAJOR_VERSION')) {
       $guzzleVersion = ClientInterface::MAJOR_VERSION;
-    } elseif (defined('\GuzzleHttp\ClientInterface::VERSION')) {
+    } elseif (defined('\RexGuzzleHttp\ClientInterface::VERSION')) {
       $guzzleVersion = (int)substr(ClientInterface::VERSION, 0, 1);
     }
 

@@ -21,7 +21,7 @@ decorators.
 Reads from multiple streams, one after the other.
 
 ```php
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 $a = Psr7\Utils::streamFor('abc, ');
 $b = Psr7\Utils::streamFor('123.');
@@ -45,7 +45,7 @@ what the configured high water mark of the stream is, or the maximum
 preferred size of the buffer.
 
 ```php
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 // When more than 1024 bytes are in the buffer, it will begin returning
 // false to writes. This is an indication that writers should slow down.
@@ -63,7 +63,7 @@ a PHP temp stream so that previously read bytes are cached first in memory,
 then on disk.
 
 ```php
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 $original = Psr7\Utils::streamFor(fopen('http://www.google.com', 'r'));
 $stream = new Psr7\CachingStream($original);
@@ -86,7 +86,7 @@ Stream decorator that begins dropping data once the size of the underlying
 stream becomes too full.
 
 ```php
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 // Create an empty stream
 $stream = Psr7\Utils::streamFor();
@@ -110,7 +110,7 @@ to create a concrete class for a simple extension point.
 
 ```php
 
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 $stream = Psr7\Utils::streamFor('hi');
 $fnStream = Psr7\FnStream::decorate($stream, [
@@ -146,7 +146,7 @@ Lazily reads or writes to a file that is opened only after an IO operation
 take place on the stream.
 
 ```php
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 $stream = new Psr7\LazyOpenStream('/path/to/file', 'r');
 // The file has not yet been opened...
@@ -165,7 +165,7 @@ This can be useful for breaking a large file into smaller pieces to be sent in
 chunks (e.g. Amazon S3's multipart upload API).
 
 ```php
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 $original = Psr7\Utils::streamFor(fopen('/tmp/test.txt', 'r+'));
 echo $original->getSize();
@@ -195,7 +195,7 @@ multipart/form-data stream.
 NoSeekStream wraps a stream and does not allow seeking.
 
 ```php
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 $original = Psr7\Utils::streamFor('foo');
 $noSeek = new Psr7\NoSeekStream($original);
@@ -238,7 +238,7 @@ byte is read from a stream. This could be implemented by overriding the
 
 ```php
 use Psr\Http\Message\StreamInterface;
-use GuzzleHttp\Psr7\StreamDecoratorTrait;
+use RexGuzzleHttp\Psr7\StreamDecoratorTrait;
 
 class EofCallbackStream implements StreamInterface
 {
@@ -269,7 +269,7 @@ class EofCallbackStream implements StreamInterface
 This decorator could be added to any existing stream and used like so:
 
 ```php
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 $original = Psr7\Utils::streamFor('foo');
 
@@ -295,7 +295,7 @@ Use the `GuzzleHttp\Psr7\StreamWrapper::getResource()` method to create a PHP
 stream from a PSR-7 stream.
 
 ```php
-use GuzzleHttp\Psr7\StreamWrapper;
+use RexGuzzleHttp\Psr7\StreamWrapper;
 
 $stream = GuzzleHttp\Psr7\Utils::streamFor('hello!');
 $resource = StreamWrapper::getResource($stream);

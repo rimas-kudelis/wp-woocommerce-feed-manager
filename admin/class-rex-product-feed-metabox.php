@@ -257,7 +257,7 @@ class Rex_Product_Metabox
         ));
 
 
-        if( class_exists( 'SitePress' ) && function_exists( 'wcml_loader' ) ) {
+        if( wpfm_is_wpml_active() ) {
             global $sitepress, $woocommerce_wpml;
             $wcml_settings = get_option('_wcml_settings');
             $wcml_currencies = $wcml_settings['currency_options'];

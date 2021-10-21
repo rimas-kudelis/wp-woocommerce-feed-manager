@@ -1,8 +1,8 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\BufferStream;
+use RexGuzzleHttp\Psr7\BufferStream;
 
 class BufferStreamTest extends BaseTest
 {

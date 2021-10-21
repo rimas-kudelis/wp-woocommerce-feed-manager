@@ -16,15 +16,15 @@
  * limitations under the License.
  */
 
-namespace Google\AccessToken;
+namespace RexGoogle\AccessToken;
 
 use Firebase\JWT\ExpiredException as ExpiredExceptionV3;
 use Firebase\JWT\SignatureInvalidException;
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
+use RexGuzzleHttp\Client;
+use RexGuzzleHttp\ClientInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use Google\Auth\Cache\MemoryCacheItemPool;
-use Google\Exception as GoogleException;
+use RexGoogle\Auth\Cache\MemoryCacheItemPool;
+use RexGoogle\Exception as GoogleException;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 use DateTime;

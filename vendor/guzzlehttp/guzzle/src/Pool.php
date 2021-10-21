@@ -1,9 +1,9 @@
 <?php
-namespace GuzzleHttp;
+namespace RexGuzzleHttp;
 
-use GuzzleHttp\Promise\EachPromise;
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Promise\PromisorInterface;
+use RexGuzzleHttp\Promise\EachPromise;
+use RexGuzzleHttp\Promise\PromiseInterface;
+use RexGuzzleHttp\Promise\PromisorInterface;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -51,7 +51,7 @@ class Pool implements PromisorInterface
             $opts = [];
         }
 
-        $iterable = \GuzzleHttp\Promise\iter_for($requests);
+        $iterable = \RexGuzzleHttp\Promise\iter_for($requests);
         $requests = function () use ($iterable, $client, $opts) {
             foreach ($iterable as $key => $rfn) {
                 if ($rfn instanceof RequestInterface) {

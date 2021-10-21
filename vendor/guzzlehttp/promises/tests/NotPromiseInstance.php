@@ -1,9 +1,9 @@
 <?php
 
-namespace GuzzleHttp\Promise\Tests;
+namespace RexGuzzleHttp\Promise\Tests;
 
-use GuzzleHttp\Promise\Promise;
-use GuzzleHttp\Promise\PromiseInterface;
+use RexGuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\PromiseInterface;
 
 class NotPromiseInstance extends Thennable implements PromiseInterface
 {

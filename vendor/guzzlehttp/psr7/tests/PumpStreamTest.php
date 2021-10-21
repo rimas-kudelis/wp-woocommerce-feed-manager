@@ -1,10 +1,10 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\LimitStream;
-use GuzzleHttp\Psr7\PumpStream;
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\LimitStream;
+use RexGuzzleHttp\Psr7\PumpStream;
+use RexGuzzleHttp\Psr7;
 
 class PumpStreamTest extends BaseTest
 {

@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Credentials;
+namespace RexGoogle\Auth\Credentials;
 
-use Google\Auth\CredentialsLoader;
-use Google\Auth\GetQuotaProjectInterface;
-use Google\Auth\OAuth2;
-use Google\Auth\ProjectIdProviderInterface;
-use Google\Auth\ServiceAccountSignerTrait;
-use Google\Auth\SignBlobInterface;
+use RexGoogle\Auth\CredentialsLoader;
+use RexGoogle\Auth\GetQuotaProjectInterface;
+use RexGoogle\Auth\OAuth2;
+use RexGoogle\Auth\ProjectIdProviderInterface;
+use RexGoogle\Auth\ServiceAccountSignerTrait;
+use RexGoogle\Auth\SignBlobInterface;
 
 /**
  * Authenticates requests using Google's Service Account credentials via

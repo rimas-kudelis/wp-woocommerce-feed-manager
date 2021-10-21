@@ -137,7 +137,7 @@ class Rex_Product_Data_Retriever{
 		$this->feed                 = $feed;
 		$this->wcml                 = false;
 		$this->wcml_currency        = '';
-		if( class_exists( 'SitePress' ) && function_exists( 'wcml_loader' ) ) {
+		if( wpfm_is_wpml_active() ) {
 			$this->wcml = true;
 			$this->wcml_currency = $this->feed->wcml_currency;
 		}
@@ -236,7 +236,9 @@ class Rex_Product_Data_Retriever{
 			$val = $rule['st_value'];
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
-			$val = $this->set_pr_att( $rule['meta_key'] , $rule['escape'], $rule['attr'] );
+			$attr   = isset( $rule[ 'attr' ] ) ? $rule[ 'attr' ] : '';
+			$escape = isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '';
+			$val = $this->set_pr_att( $rule['meta_key'] , $escape, $attr );
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_woodmart_att( $rule['meta_key'] );
@@ -270,6 +272,9 @@ class Rex_Product_Data_Retriever{
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_dropship_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_dropship_att( $rule['meta_key']  );
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_date_attr( $rule['meta_key'] ) ) {
+			$val = $this->set_date_att( $rule['meta_key']  );
 		}
 
 		// maybe escape
@@ -2109,6 +2114,18 @@ class Rex_Product_Data_Retriever{
 		return get_post_meta($this->product->get_id(), $key, true);
 	}
 
+
+	/**
+	 * Set a Date attributes.
+	 */
+	protected function set_date_att( $key ) {
+		if ( 'WC_Product_Variation' == get_class( $this->product ) ) {
+			$_pr = wc_get_product( $this->product->get_parent_id() );
+			return $_pr->get_date_modified()->date('Y-m-d') . 'T' . $_pr->get_date_modified()->date('H:i:s') . 'Z';
+		}
+		return $this->product->get_date_modified()->date('Y-m-d') . 'T' . $this->product->get_date_modified()->date('H:i:s') . 'Z';
+	}
+
 	/**
 	 * Set a Product Dynamic attribute.
 	 *
@@ -2846,14 +2863,17 @@ class Rex_Product_Data_Retriever{
 	 * Helper to check if a attribute is a Glami Attribute.
 	 */
 	protected function is_glami_attr( $key ) {
-		return array_key_exists( $key, $this->product_meta_keys['Glami Attributes'] );
+		return isset( $this->product_meta_keys['Glami Attributes'] )
+			? array_key_exists( $key, $this->product_meta_keys['Glami Attributes'] ) : false;
 	}
 
 	/**
 	 * Helper to check if a attribute is a Dropship Attribute.
 	 */
 	protected function is_dropship_attr( $key ) {
-		return array_key_exists( $key, $this->product_meta_keys['Dropship by Mantella'] );
+
+		return isset( $this->product_meta_keys['Dropship by Mantella'] )
+			? array_key_exists( $key, $this->product_meta_keys['Dropship by Mantella'] ) : false;
 	}
 
 
@@ -2884,6 +2904,15 @@ class Rex_Product_Data_Retriever{
 	protected function is_product_category_mapper_attr( $key ) {
 
 		return array_key_exists( $key, $this->product_meta_keys['Category Map'] );
+	}
+
+	/**
+	 * Helper to check if a attribute is a Category Mapper.
+	 *
+	 * @since    1.0.0
+	 */
+	protected function is_date_attr( $key ) {
+		return array_key_exists( $key, $this->product_meta_keys['Date Attributes'] );
 	}
 
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7;
 
 class HeaderTest extends BaseTest
 {

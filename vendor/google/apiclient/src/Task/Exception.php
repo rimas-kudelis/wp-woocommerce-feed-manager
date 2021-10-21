@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-namespace Google\Task;
+namespace RexGoogle\Task;
 
-use Google\Exception as GoogleException;
+use RexGoogle\Exception as GoogleException;
 
 class Exception extends GoogleException
 {

@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\HttpHandler;
+namespace RexGoogle\Auth\HttpHandler;
 
-use GuzzleHttp\ClientInterface;
+use RexGuzzleHttp\ClientInterface;
 
 /**
  * Stores an HTTP Client in order to prevent multiple instantiations.

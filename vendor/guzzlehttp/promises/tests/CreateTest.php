@@ -1,12 +1,12 @@
 <?php
 
-namespace GuzzleHttp\Promise\Tests;
+namespace RexGuzzleHttp\Promise\Tests;
 
-use GuzzleHttp\Promise as P;
-use GuzzleHttp\Promise\FulfilledPromise;
-use GuzzleHttp\Promise\Promise;
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Promise\RejectedPromise;
+use RexGuzzleHttp\Promise as P;
+use RexGuzzleHttp\Promise\FulfilledPromise;
+use RexGuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\PromiseInterface;
+use RexGuzzleHttp\Promise\RejectedPromise;
 use PHPUnit\Framework\TestCase;
 
 class CreateTest extends TestCase

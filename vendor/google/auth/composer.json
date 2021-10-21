@@ -29,12 +29,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Google\\Auth\\": "src"
+      "RexGoogle\\Auth\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Google\\Auth\\Tests\\": "tests"
+      "RexGoogle\\Auth\\Tests\\": "tests"
     }
   }
 }

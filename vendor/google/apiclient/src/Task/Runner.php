@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-namespace Google\Task;
+namespace RexGoogle\Task;
 
-use Google\Service\Exception as GoogleServiceException;
-use Google\Task\Exception as GoogleTaskException;
+use RexGoogle\Service\Exception as GoogleServiceException;
+use RexGoogle\Task\Exception as GoogleTaskException;
 
 /**
  * A task runner with exponential backoff support.

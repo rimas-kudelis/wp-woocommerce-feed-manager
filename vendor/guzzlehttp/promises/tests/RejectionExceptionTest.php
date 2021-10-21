@@ -1,8 +1,8 @@
 <?php
 
-namespace GuzzleHttp\Promise\Tests;
+namespace RexGuzzleHttp\Promise\Tests;
 
-use GuzzleHttp\Promise\RejectionException;
+use RexGuzzleHttp\Promise\RejectionException;
 use PHPUnit\Framework\TestCase;
 
 /**

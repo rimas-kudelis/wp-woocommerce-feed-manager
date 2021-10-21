@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace RexGoogle\Auth;
 
-use Google\Auth\HttpHandler\HttpClientCache;
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\Request;
+use RexGoogle\Auth\HttpHandler\HttpClientCache;
+use RexGoogle\Auth\HttpHandler\HttpHandlerFactory;
+use RexGuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

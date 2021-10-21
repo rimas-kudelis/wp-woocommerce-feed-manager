@@ -1,9 +1,9 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\NoSeekStream;
-use GuzzleHttp\Psr7\Stream;
+use RexGuzzleHttp\Psr7\NoSeekStream;
+use RexGuzzleHttp\Psr7\Stream;
 
 /**
  * @covers GuzzleHttp\Psr7\Stream
@@ -382,9 +382,9 @@ class StreamTest extends BaseTest
     }
 }
 
-namespace GuzzleHttp\Psr7;
+namespace RexGuzzleHttp\Psr7;
 
-use GuzzleHttp\Tests\Psr7\StreamTest;
+use RexGuzzleHttp\Tests\Psr7\StreamTest;
 
 function fread($handle, $length)
 {

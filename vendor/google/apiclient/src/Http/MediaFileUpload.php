@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-namespace Google\Http;
+namespace RexGoogle\Http;
 
-use Google\Client;
-use Google\Http\REST;
-use Google\Exception as GoogleException;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
+use RexGoogle\Client;
+use RexGoogle\Http\REST;
+use RexGoogle\Exception as GoogleException;
+use RexGuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\Request;
+use RexGuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
 
 /**

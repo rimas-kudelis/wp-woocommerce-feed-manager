@@ -16,13 +16,13 @@
  * limitations under the License.
  */
 
-namespace Google\AccessToken;
+namespace RexGoogle\AccessToken;
 
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use Google\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\Request;
+use RexGoogle\Auth\HttpHandler\HttpHandlerFactory;
+use RexGoogle\Client;
+use RexGuzzleHttp\ClientInterface;
+use RexGuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\Request;
 
 /**
  * Wrapper around Google Access Tokens which provides convenience functions

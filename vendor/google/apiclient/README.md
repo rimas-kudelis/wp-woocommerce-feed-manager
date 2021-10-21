@@ -61,7 +61,7 @@ you want to keep in `composer.json`:
         "google/apiclient": "^2.7"
     },
     "scripts": {
-        "post-update-cmd": "Google\\Task\\Composer::cleanup"
+        "post-update-cmd": "RexGoogle\\Task\\Composer::cleanup"
     },
     "extra": {
         "google/apiclient-services": [
@@ -388,7 +388,7 @@ Google API Client uses [Guzzle](http://docs.guzzlephp.org/) as its default HTTP 
 Let's say, for instance, we wished to apply a referrer to each request.
 
 ```php
-use GuzzleHttp\Client;
+use RexGuzzleHttp\Client;
 
 $httpClient = new Client([
     'headers' => [

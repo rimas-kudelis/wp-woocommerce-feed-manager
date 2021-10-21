@@ -1,10 +1,10 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
 use Psr\Http\Message\StreamInterface;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\StreamDecoratorTrait;
+use RexGuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\StreamDecoratorTrait;
 
 class Str implements StreamInterface
 {

@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace RexGoogle\Auth;
 
-use Google\Auth\Credentials\InsecureCredentials;
-use Google\Auth\Credentials\ServiceAccountCredentials;
-use Google\Auth\Credentials\UserRefreshCredentials;
-use GuzzleHttp\ClientInterface;
+use RexGoogle\Auth\Credentials\InsecureCredentials;
+use RexGoogle\Auth\Credentials\ServiceAccountCredentials;
+use RexGoogle\Auth\Credentials\UserRefreshCredentials;
+use RexGuzzleHttp\ClientInterface;
 
 /**
  * CredentialsLoader contains the behaviour used to locate and find default
@@ -63,11 +63,11 @@ abstract class CredentialsLoader implements
      */
     private static function getGuzzleMajorVersion()
     {
-        if (defined('GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
+        if (defined('RexGuzzleHttp\ClientInterface::MAJOR_VERSION')) {
             return ClientInterface::MAJOR_VERSION;
         }
 
-        if (defined('GuzzleHttp\ClientInterface::VERSION')) {
+        if (defined('RexGuzzleHttp\ClientInterface::VERSION')) {
             return (int) substr(ClientInterface::VERSION, 0, 1);
         }
 
@@ -166,7 +166,7 @@ abstract class CredentialsLoader implements
      * @param array $httpClientOptions (optional) Array of request options to apply.
      * @param callable $httpHandler (optional) http client to fetch the token.
      * @param callable $tokenCallback (optional) function to be called when a new token is fetched.
-     * @return \GuzzleHttp\Client
+     * @return \RexGuzzleHttp\Client
      */
     public static function makeHttpClient(
         FetchAuthTokenInterface $fetcher,
@@ -175,7 +175,7 @@ abstract class CredentialsLoader implements
         callable $tokenCallback = null
     ) {
         if (self::getGuzzleMajorVersion() === 5) {
-            $client = new \GuzzleHttp\Client($httpClientOptions);
+            $client = new \RexGuzzleHttp\Client($httpClientOptions);
             $client->setDefaultOption('auth', 'google_auth');
             $subscriber = new Subscriber\AuthTokenSubscriber(
                 $fetcher,
@@ -191,10 +191,10 @@ abstract class CredentialsLoader implements
             $httpHandler,
             $tokenCallback
         );
-        $stack = \GuzzleHttp\HandlerStack::create();
+        $stack = \RexGuzzleHttp\HandlerStack::create();
         $stack->push($middleware);
 
-        return new \GuzzleHttp\Client([
+        return new \RexGuzzleHttp\Client([
             'handler' => $stack,
             'auth' => 'google_auth',
         ] + $httpClientOptions);

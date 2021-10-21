@@ -1,10 +1,10 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
+use RexGuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\Request;
+use RexGuzzleHttp\Psr7\Uri;
 
 /**
  * @covers GuzzleHttp\Psr7\MessageTrait

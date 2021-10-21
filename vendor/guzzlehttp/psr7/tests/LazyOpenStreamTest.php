@@ -1,8 +1,8 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\LazyOpenStream;
+use RexGuzzleHttp\Psr7\LazyOpenStream;
 
 class LazyOpenStreamTest extends BaseTest
 {

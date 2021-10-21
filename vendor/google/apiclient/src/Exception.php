@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Google;
+namespace RexGoogle;
 
 use Exception as BaseException;
 

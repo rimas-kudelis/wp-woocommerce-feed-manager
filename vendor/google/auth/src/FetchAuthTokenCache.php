@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace RexGoogle\Auth;
 
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -131,7 +131,7 @@ class FetchAuthTokenCache implements
         if (!$this->fetcher instanceof SignBlobInterface) {
             throw new \RuntimeException(
                 'Credentials fetcher does not implement ' .
-                'Google\Auth\SignBlobInterface'
+                'RexGoogle\Auth\SignBlobInterface'
             );
         }
 
@@ -164,7 +164,7 @@ class FetchAuthTokenCache implements
         if (!$this->fetcher instanceof ProjectIdProviderInterface) {
             throw new \RuntimeException(
                 'Credentials fetcher does not implement ' .
-                'Google\Auth\ProvidesProjectIdInterface'
+                'RexGoogle\Auth\ProvidesProjectIdInterface'
             );
         }
 
@@ -189,7 +189,7 @@ class FetchAuthTokenCache implements
         if (!$this->fetcher instanceof UpdateMetadataInterface) {
             throw new \RuntimeException(
                 'Credentials fetcher does not implement ' .
-                'Google\Auth\UpdateMetadataInterface'
+                'RexGoogle\Auth\UpdateMetadataInterface'
             );
         }
 

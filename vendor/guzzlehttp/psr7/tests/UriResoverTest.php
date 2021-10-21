@@ -1,9 +1,9 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\Uri;
-use GuzzleHttp\Psr7\UriResolver;
+use RexGuzzleHttp\Psr7\Uri;
+use RexGuzzleHttp\Psr7\UriResolver;
 
 /**
  * @covers GuzzleHttp\Psr7\UriResolver

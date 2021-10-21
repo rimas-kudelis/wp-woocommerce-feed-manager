@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace RexGoogle\Auth;
 
 /**
  * Describes a Credentials object which supports updating request metadata

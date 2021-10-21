@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Middleware;
+namespace RexGoogle\Auth\Middleware;
 
-use Google\Auth\CacheTrait;
+use RexGoogle\Auth\CacheTrait;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\RequestInterface;
 
@@ -96,16 +96,16 @@ class ScopedAccessTokenMiddleware
      *   E.g this could be used to authenticate using the AppEngine
      *   AppIdentityService.
      *
-     *   use google\appengine\api\app_identity\AppIdentityService;
-     *   use Google\Auth\Middleware\ScopedAccessTokenMiddleware;
-     *   use GuzzleHttp\Client;
-     *   use GuzzleHttp\HandlerStack;
+     *   use RexGoogle\appengine\api\app_identity\AppIdentityService;
+     *   use RexGoogle\Auth\Middleware\ScopedAccessTokenMiddleware;
+     *   use RexGuzzleHttp\Client;
+     *   use RexGuzzleHttp\HandlerStack;
      *
      *   $scope = 'https://www.googleapis.com/auth/taskqueue'
      *   $middleware = new ScopedAccessTokenMiddleware(
      *       'AppIdentityService::getAccessToken',
      *       $scope,
-     *       [ 'prefix' => 'Google\Auth\ScopedAccessToken::' ],
+     *       [ 'prefix' => 'RexGoogle\Auth\ScopedAccessToken::' ],
      *       $cache = new Memcache()
      *   );
      *   $stack = HandlerStack::create();

@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace RexGoogle\Auth;
 
-use Google\Auth\Credentials\GCECredentials;
+use RexGoogle\Auth\Credentials\GCECredentials;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**

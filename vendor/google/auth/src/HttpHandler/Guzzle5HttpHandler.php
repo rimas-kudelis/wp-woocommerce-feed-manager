@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Google\Auth\HttpHandler;
+namespace RexGoogle\Auth\HttpHandler;
 
 use Exception;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Message\ResponseInterface as Guzzle5ResponseInterface;
-use GuzzleHttp\Promise\Promise;
-use GuzzleHttp\Promise\RejectedPromise;
-use GuzzleHttp\Psr7\Response;
+use RexGuzzleHttp\ClientInterface;
+use RexGuzzleHttp\Message\ResponseInterface as Guzzle5ResponseInterface;
+use RexGuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\RejectedPromise;
+use RexGuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -65,7 +65,7 @@ class Guzzle5HttpHandler
      */
     public function async(RequestInterface $request, array $options = [])
     {
-        if (!class_exists('GuzzleHttp\Promise\Promise')) {
+        if (!class_exists('RexGuzzleHttp\Promise\Promise')) {
             throw new Exception('Install guzzlehttp/promises to use async with Guzzle 5');
         }
 

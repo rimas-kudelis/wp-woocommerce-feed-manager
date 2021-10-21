@@ -1,6 +1,6 @@
 <?php
 
-namespace GuzzleHttp\Promise;
+namespace RexGuzzleHttp\Promise;
 
 /**
  * A promise that has been rejected.

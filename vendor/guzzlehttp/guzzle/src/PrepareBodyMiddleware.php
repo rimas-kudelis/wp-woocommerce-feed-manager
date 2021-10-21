@@ -1,8 +1,8 @@
 <?php
-namespace GuzzleHttp;
+namespace RexGuzzleHttp;
 
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Promise\PromiseInterface;
+use RexGuzzleHttp\Psr7;
 use Psr\Http\Message\RequestInterface;
 
 /**

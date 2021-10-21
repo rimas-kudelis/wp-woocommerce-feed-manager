@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp;
+namespace RexGuzzleHttp;
 
 /**
  * Expands URI templates. Userland implementation of PECL uri_template.

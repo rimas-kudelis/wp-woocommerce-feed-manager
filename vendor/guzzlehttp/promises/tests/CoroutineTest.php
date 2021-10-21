@@ -1,11 +1,11 @@
 <?php
 
-namespace GuzzleHttp\Promise\Tests;
+namespace RexGuzzleHttp\Promise\Tests;
 
-use GuzzleHttp\Promise as P;
-use GuzzleHttp\Promise\Coroutine;
-use GuzzleHttp\Promise\Promise;
-use GuzzleHttp\Promise\PromiseInterface;
+use RexGuzzleHttp\Promise as P;
+use RexGuzzleHttp\Promise\Coroutine;
+use RexGuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\PromiseInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 

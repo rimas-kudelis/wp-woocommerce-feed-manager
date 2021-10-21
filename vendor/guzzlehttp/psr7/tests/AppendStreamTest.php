@@ -1,9 +1,9 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\AppendStream;
-use GuzzleHttp\Psr7;
+use RexGuzzleHttp\Psr7\AppendStream;
+use RexGuzzleHttp\Psr7;
 
 class AppendStreamTest extends BaseTest
 {

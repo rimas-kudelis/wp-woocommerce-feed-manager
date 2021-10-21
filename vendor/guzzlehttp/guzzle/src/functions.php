@@ -1,11 +1,11 @@
 <?php
-namespace GuzzleHttp;
+namespace RexGuzzleHttp;
 
-use GuzzleHttp\Exception\InvalidArgumentException;
-use GuzzleHttp\Handler\CurlHandler;
-use GuzzleHttp\Handler\CurlMultiHandler;
-use GuzzleHttp\Handler\Proxy;
-use GuzzleHttp\Handler\StreamHandler;
+use RexGuzzleHttp\Exception\InvalidArgumentException;
+use RexGuzzleHttp\Handler\CurlHandler;
+use RexGuzzleHttp\Handler\CurlMultiHandler;
+use RexGuzzleHttp\Handler\Proxy;
+use RexGuzzleHttp\Handler\StreamHandler;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -118,7 +118,7 @@ function choose_handler()
             ? Proxy::wrapStreaming($handler, new StreamHandler())
             : new StreamHandler();
     } elseif (!$handler) {
-        throw new \RuntimeException('GuzzleHttp requires cURL, the '
+        throw new \RuntimeException('RexGuzzleHttp requires cURL, the '
             . 'allow_url_fopen ini setting, or a custom HTTP handler.');
     }
 
@@ -135,7 +135,7 @@ function default_user_agent()
     static $defaultAgent = '';
 
     if (!$defaultAgent) {
-        $defaultAgent = 'GuzzleHttp/' . Client::VERSION;
+        $defaultAgent = 'RexGuzzleHttp/' . Client::VERSION;
         if (extension_loaded('curl') && function_exists('curl_version')) {
             $defaultAgent .= ' curl/' . \curl_version()['version'];
         }

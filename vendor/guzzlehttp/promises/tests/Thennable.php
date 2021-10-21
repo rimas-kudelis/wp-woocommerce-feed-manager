@@ -1,8 +1,8 @@
 <?php
 
-namespace GuzzleHttp\Promise\Tests;
+namespace RexGuzzleHttp\Promise\Tests;
 
-use GuzzleHttp\Promise\Promise;
+use RexGuzzleHttp\Promise\Promise;
 
 class Thennable
 {

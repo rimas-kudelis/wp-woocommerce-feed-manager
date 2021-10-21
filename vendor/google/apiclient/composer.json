@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Google\\": "src/"
+            "RexGoogle\\": "src/"
         },
         "files": [
             "src/aliases.php"

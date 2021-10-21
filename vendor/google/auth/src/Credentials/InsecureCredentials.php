@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Credentials;
+namespace RexGoogle\Auth\Credentials;
 
-use Google\Auth\FetchAuthTokenInterface;
+use RexGoogle\Auth\FetchAuthTokenInterface;
 
 /**
  * Provides a set of credentials that will always return an empty access token.

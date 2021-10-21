@@ -1,10 +1,10 @@
 <?php
 
-namespace GuzzleHttp\Tests\Psr7;
+namespace RexGuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\ServerRequest;
-use GuzzleHttp\Psr7\UploadedFile;
-use GuzzleHttp\Psr7\Uri;
+use RexGuzzleHttp\Psr7\ServerRequest;
+use RexGuzzleHttp\Psr7\UploadedFile;
+use RexGuzzleHttp\Psr7\Uri;
 
 /**
  * @covers GuzzleHttp\Psr7\ServerRequest

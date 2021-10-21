@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Subscriber;
+namespace RexGoogle\Auth\Subscriber;
 
-use GuzzleHttp\Event\BeforeEvent;
-use GuzzleHttp\Event\RequestEvents;
-use GuzzleHttp\Event\SubscriberInterface;
+use RexGuzzleHttp\Event\BeforeEvent;
+use RexGuzzleHttp\Event\RequestEvents;
+use RexGuzzleHttp\Event\SubscriberInterface;
 
 /**
  * SimpleSubscriber is a Guzzle Subscriber that implements Google's Simple API
@@ -64,8 +64,8 @@ class SimpleSubscriber implements SubscriberInterface
      *
      * Example:
      * ```
-     * use Google\Auth\Subscriber\SimpleSubscriber;
-     * use GuzzleHttp\Client;
+     * use RexGoogle\Auth\Subscriber\SimpleSubscriber;
+     * use RexGuzzleHttp\Client;
      *
      * $my_key = 'is not the same as yours';
      * $subscriber = new SimpleSubscriber(['key' => $my_key]);

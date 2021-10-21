@@ -522,7 +522,7 @@ class Rex_Product_Feed_Ajax {
         elseif ( in_array( $merchant, $DealsForU ) ) {
 		    return array( 'xml' );
 	    }
-        elseif ( in_array( $merchant, $Bestprice ) ) {
+        elseif ( in_array( $merchant, $Bestprice ) || $merchant === 'gulog_gratis' ) {
 		    return array( 'xml' );
 	    }
         elseif ( in_array( $merchant, $spartooFr ) ) {
@@ -792,7 +792,7 @@ class Rex_Product_Feed_Ajax {
 
             $target->setLanguage($payload['language']);
             $target->setCountry($payload['country']);
-            if(count($payload['destination'])){
+            if(isset( $payload['destination'] ) && count($payload['destination'])){
                 $target->setIncludedDestinations($payload['destination']);
             }
 
