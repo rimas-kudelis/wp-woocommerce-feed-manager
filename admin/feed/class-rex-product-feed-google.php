@@ -32,7 +32,6 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         GoogleShopping::description($this->desc);
 
         $this->generate_product_feed();
-
 	    $this->feed = $this->returnFinalProduct();
 
         if ($this->batch >= $this->tbatch ) {
@@ -83,6 +82,16 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     continue;
                 }
             }
+
+	        if ( !$this->include_out_of_stock ) {
+		        if ( !$product->is_in_stock() ) {
+			        continue;
+		        }
+		        elseif ( $product->is_on_backorder() ) {
+			        continue;
+		        }
+	        }
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
@@ -98,7 +107,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                             $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                         }
                         else {
-	                        if ( $this->rex_feed_skip_row ) {
+	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                        if ( $value != '' ) {
 			                        $item->$key($value); // invoke $key as method of $item object.
 		                        }
@@ -134,7 +143,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                                     }
                                     else {
-	                                    if ( $this->rex_feed_skip_row ) {
+	                                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                                    if ( $value != '' ) {
 			                                    $item->$key($value); // invoke $key as method of $item object.
 		                                    }
@@ -171,7 +180,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                     }
                     else {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -184,7 +193,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
-                if ($product->get_type() == 'variation') {
+                if ( $product->get_type() === 'variation' ) {
                     $variation_products[] = $productId;
                     $item = GoogleShopping::createItem();
                     $atts = $this->get_product_data( $product, $product_meta_keys );
@@ -198,7 +207,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                             $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                         }
                         else {
-	                        if ( $this->rex_feed_skip_row ) {
+	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                        if ( $value != '' ) {
 			                        $item->$key($value); // invoke $key as method of $item object.
 		                        }
@@ -218,7 +227,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $product->is_type( 'grouped' ) || $product->is_type( 'woosb' )){
+            if( $product->is_type( 'grouped' ) && $this->parent_product || $product->is_type( 'woosb' )){
                 $group_products[] = $productId;
                 $item = GoogleShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
@@ -232,7 +241,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                     }
                     else {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -255,6 +264,9 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         );
 
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+	    if ( $this->tbatch === $this->batch ) {
+		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+	    }
     }
 
 
@@ -303,9 +315,9 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
     {
         if ($this->feed_format === 'xml') {
             return GoogleShopping::asRss();
-        } elseif ($this->feed_format === 'text') {
+        } elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
             return GoogleShopping::asTxt();
-        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
+        } elseif ($this->feed_format === 'csv') {
             return GoogleShopping::asCsv();
         }
         return GoogleShopping::asRss();

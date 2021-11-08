@@ -152,13 +152,12 @@ class Rex_Feed_Attributes {
             $attributes_4 = array(
                 'Woocommerce Brand' => array(
                     'woocommerce_brand'  => 'Woocommerce Brand',
-
                 ),
             );
             $attributes = array_merge($attributes, $attributes_4);
         }
 
-	    if(in_array('dropship/mantella.php', $plugins)){
+	    if(in_array('dropship-plugin/mantella.php', $plugins)){
 		    $attributes_4 = array(
 			    'Dropship by Mantella' => array(
 				    '_mantella_ean_number'               => 'EAN Code',
@@ -283,9 +282,8 @@ class Rex_Feed_Attributes {
      */
     public static function get_product_custom_attributes() {
         $attributes = wpfm_get_cached_data( 'product_custom_attributes' );
-        $attributes = false;
-        if ( false === $attributes ) {
-            
+
+        if ( !$attributes ) {
             global $wpdb;
             $list = array();
             $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
@@ -329,7 +327,7 @@ class Rex_Feed_Attributes {
                     }
                 }
             }
-            
+
             foreach( $attributes as $key => $attr){
                 
                 $clean_value = str_replace("_", "",$key);

@@ -34,12 +34,12 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
 
         $this->generate_product_feed();
 
-	    if ( $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+	    if ( $this->feed_format === 'csv' ) {
 		    $this->feed = $this->returnFinalProduct();
 	    }
 
         if ($this->batch >= $this->tbatch ) {
-        	if ( $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+        	if ( $this->feed_format === 'csv' ) {
 		        $this->save_feed($this->feed_format );
 	        }
         	else {
@@ -49,7 +49,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 'msg' => 'finish'
             );
         }else {
-	        if ( $this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon' ) {
+	        if ( $this->feed_format === 'csv' ) {
 		        return $this->save_feed($this->feed_format );
 	        }
             return $this->save_json_feed('json');
@@ -83,6 +83,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 'group' => 0,
             );
         }
+
         foreach( $this->products as $productId ) {
             $product = wc_get_product( $productId );
 
@@ -95,6 +96,15 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                     continue;
                 }
             }
+
+	        if ( !$this->include_out_of_stock ) {
+		        if ( !$product->is_in_stock() ) {
+			        continue;
+		        }
+		        elseif ( $product->is_on_backorder() ) {
+			        continue;
+		        }
+	        }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 $variable_parent[] = $productId;
@@ -120,7 +130,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
 
                 foreach ($atts as $att ) {
 	                foreach ( $att as $key => $value ) {
-		                if ( $this->rex_feed_skip_row ) {
+		                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 			                if ( $value != '' ) {
 				                $item->$key($value); // invoke $key as method of $item object.
 			                }
@@ -139,7 +149,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 foreach ( $atts as $key => $value ) {
-	                if ( $this->rex_feed_skip_row ) {
+	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                if ( $value != '' ) {
 			                $item->$key($value); // invoke $key as method of $item object.
 		                }
@@ -154,12 +164,12 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
-		        if ($product->get_type() == 'variation') {
+		        if ( $product->get_type() === 'variation' ) {
 			        $variation_products[] = $productId;
 			        $item = RexShopping::createItem();
 			        $atts = $this->get_product_data($product, $product_meta_keys);
 			        foreach ($atts as $key => $value) {
-				        if ( $this->rex_feed_skip_row ) {
+				        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 					        if ( $value != '' ) {
 						        $item->$key($value); // invoke $key as method of $item object.
 					        }
@@ -181,6 +191,9 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
         );
 
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+	    if ( $this->tbatch === $this->batch ) {
+		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+	    }
     }
 
 
@@ -296,9 +309,9 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
 
 		if ($this->feed_format === 'xml') {
 			return RexShopping::asRss();
-		} elseif ($this->feed_format === 'text') {
+		} elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
 			return RexShopping::asTxt();
-		} elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
+		} elseif ($this->feed_format === 'csv') {
 			return RexShopping::asCsv();
 		}
 		return RexShopping::asRss();

@@ -19,9 +19,7 @@
     "autoload": {
         "classmap": ["admin/", "includes/library/GoogleShoppingFeed/"],
         "files": [
-            "vendor/johnbillion/extended-cpts/extended-cpts.php",
-            "includes/library/cmb2/init.php",
-            "includes/library/cmb2-conditionals/cmb2-conditionals.php"
+            "vendor/johnbillion/extended-cpts/extended-cpts.php"
         ]
     },
     "require-dev": {

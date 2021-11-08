@@ -100,6 +100,15 @@ class Rex_Product_Feed_Bing_image extends Rex_Product_Feed_Abstract_Generator
 				}
 			}
 
+			if ( !$this->include_out_of_stock ) {
+				if ( !$product->is_in_stock() ) {
+					continue;
+				}
+				elseif ( $product->is_on_backorder() ) {
+					continue;
+				}
+			}
+
 			if ( $product->is_type( 'variable' ) && $product->has_child() ) {
 				$variable_parent[] = $productId;
 				$parent_atts       = $this->get_product_data( $product, $product_meta_keys );
@@ -149,6 +158,9 @@ class Rex_Product_Feed_Bing_image extends Rex_Product_Feed_Abstract_Generator
 
 		$this->feed[ 'itemCount' ] = $total_products[ 'total' ];
 		update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+		if ( $this->tbatch === $this->batch ) {
+			update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+		}
 	}
 
 	/**

@@ -94,10 +94,12 @@ class Rex_Google_Merchant_Settings_Api {
                 <div class="single-merchant-block">
                     <header>
                         <h2 class="title">'. __("You are not authorized.", "rex-product-feed") .'</h2>
-                        <img src="'. WPFM_PLUGIN_DIR_URL . "admin/icon/danger.png" . '" class="title-icon" alt="bwf-documentation">
+                        <img src="'. WPFM_PLUGIN_ASSETS_FOLDER . "/icon/danger.png" . '" class="title-icon" alt="bwf-documentation">
                     </header>
                     <div class="body">
                         <p>'.  __('Your access token has expired. This application uses OAuth 2.0 to Access Google APIs. Please insert the information below and authenticate token for Google Merchant Shop. Generated access token expires after 3600 sec.', 'rex-product-feed').'</p>
+                        <p class="single-merchant-bold">'.  __('This session expiration is set by Google. You only need to authorize while submitting a new feed.', 'rex-product-feed').'</p>
+                        <p class="single-merchant-bold">'.  __('You can ignore this if you\'ve already submitted your feed to Google.', 'rex-product-feed').'</p>
                         '.$btn_html.'
                     </div>
                 </div>

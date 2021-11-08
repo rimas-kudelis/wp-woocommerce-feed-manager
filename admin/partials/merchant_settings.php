@@ -1,32 +1,33 @@
 <?php
-
-
 require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
 
 $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
 
-$html = '';
-$disable = '';
-$client_id = $rex_google_merchant::$client_id;
+$page          = isset( $_GET[ 'page' ] ) ? $_GET[ 'page' ] : '';
+$html          = '';
+$disable       = '';
+$client_id     = $rex_google_merchant::$client_id;
 $client_secret = $rex_google_merchant::$client_secret;
-$merchant_id = $rex_google_merchant::$merchant_id;
-$redirect_uri = admin_url( 'admin.php?page=merchant_settings' );
+$merchant_id   = $rex_google_merchant::$merchant_id;
+$redirect_uri  = admin_url( 'admin.php?page=merchant_settings' );
 
-if(isset($_GET['code'])){
-    $code = sanitize_text_field($_GET['code']);
-    $rex_google_merchant->save_access_token($_GET['code']);
+if ( isset( $_GET[ 'code' ] ) && $page === 'merchant_settings' ) {
+	$code = sanitize_text_field( $_GET[ 'code' ] );
+	$rex_google_merchant->save_access_token( $_GET[ 'code' ] );
 }
 
-if (!($rex_google_merchant->is_authenticate())){
-    if($client_id && $client_secret && $merchant_id)
-        $html  = $rex_google_merchant->get_access_token_html();
-}else{
-    $html = $rex_google_merchant->authorization_success_html();
+if ( !( $rex_google_merchant->is_authenticate() ) ) {
+	if ( $client_id && $client_secret && $merchant_id ) {
+		$html = $rex_google_merchant->get_access_token_html();
+	}
 }
-//$html = $rex_google_merchant->authorization_success_html();
-if($client_id && $client_secret && $merchant_id)
-    $disable = 'disabled';
+else {
+	$html = $rex_google_merchant->authorization_success_html();
+}
 
+if ( $client_id && $client_secret && $merchant_id ) {
+	$disable = 'disabled';
+}
 ?>
 
     <div class="merchant-settings">
@@ -77,16 +78,16 @@ if($client_id && $client_secret && $merchant_id)
         </div>
         <!-- left-merchant -->
 
-        <div class="right-merchant">
-            <div class="single-merchant-area">
-                <div class="single-merchant-block">
-                    <div class="video-container">
-                        <iframe width="853" height="480" src="//www.youtube.com/embed/CVMqRunbW5g" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
+<!--        <div class="right-merchant">-->
+<!--            <div class="single-merchant-area">-->
+<!--                <div class="single-merchant-block">-->
+<!--                    <div class="video-container">-->
+<!--                        <iframe width="853" height="480" src="//www.youtube.com/embed/CVMqRunbW5g" frameborder="0" allowfullscreen></iframe>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <!-- single-merchant-area -->
-        </div>
+<!--        </div>-->
         <!-- right-merchant -->
 
     </div>

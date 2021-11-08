@@ -276,8 +276,8 @@ class Rex_Product_Filter {
      * @param string $name
      * @param string $val
      */
-    public function printInput( $key, $name = '', $val = '' ){
-        echo '<input type="text" name="ff['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '"">';
+    public function printInput( $key, $name = '', $val = '', $class = '' ){
+        echo '<input type="text" class="'. esc_attr( $class ) .'" name="ff['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '">';
     }
 
 

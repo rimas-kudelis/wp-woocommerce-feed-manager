@@ -201,11 +201,10 @@ class Feed
         }
     }
 
-
     private function addItemsToFeedText() {
         $str = '';
         if(count($this->items)){
-            $this->items_row[] = array_keys(end($this->items)->nodes());
+            $items_row[] = array_keys(end($this->items)->nodes());
             foreach ($this->items as $item) {
                 $row = array();
                 foreach ($item->nodes() as $itemNode) {
@@ -217,9 +216,9 @@ class Feed
                         $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $itemNode->get('value'));
                     }
                 }
-                $this->items_row[] = $row;
+                $items_row[] = $row;
             }
-            foreach ($this->items_row as $fields) {
+            foreach ($items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
             }
         }
@@ -227,11 +226,11 @@ class Feed
     }
 
     private function addItemsToFeedCSV(){
-
+	    $items_row = array();
         if(count($this->items)){
-            $this->items_row[] = array_keys(end($this->items)->nodes());
-            if(!in_array('item_group_id', $this->items_row[0])) $this->items_row[0][] = 'item_group_id';
-            $length = count($this->items_row[0]);
+            $items_row[] = array_keys(end($this->items)->nodes());
+            if(!in_array('item_group_id', $items_row[0])) $items_row[0][] = 'item_group_id';
+            $length = count($items_row[0]);
             foreach ($this->items as $item) {
                 $row = array();
                 foreach ($item->nodes() as $itemNode) {
@@ -246,21 +245,19 @@ class Feed
                 if((count($row)+1) == $length) {
                     $row[$length-1] = '';
                 }
-                $this->items_row[] = $row;
+                $items_row[] = $row;
             }
 
             $str = '';
-            foreach ($this->items_row as $fields) {
+            foreach ($items_row as $fields) {
                 if(!$fields[$length-1]) {
                     $str .= implode("\t", $fields) . ",\n";
                 }else {
                     $str .= implode("\t", $fields) . "\n";
                 }
-
             }
         }
-
-        return $this->items_row;
+        return $items_row;
     }
 
     /**
@@ -386,7 +383,6 @@ class Feed
      */
     public function asCsv($output = false)
     {
-
         ob_end_clean();
         $data = $this->addItemsToFeedCSV();
         if ($output) {

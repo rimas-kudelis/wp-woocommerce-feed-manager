@@ -72,11 +72,6 @@ class Rex_Product_Feed_Activator {
                 'status'    => 1,
                 'name'  => 'Facebook'
             ),
-            'amazon'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Amazon'
-            ),
             'adroll'       => array(
                 'free'  => true,
                 'status'    => 1,

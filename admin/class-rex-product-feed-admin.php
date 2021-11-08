@@ -188,7 +188,8 @@ class Rex_Product_Feed_Admin {
         if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->wpfm_pro_submenu)))) {
             wp_enqueue_style( 'font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version, 'all' );
-            wp_enqueue_style( 'style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.min.css', array(), $this->version, 'all' );
+            wp_enqueue_style($this->plugin_name.'-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version, 'all');
+            wp_enqueue_style( 'style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version, 'all' );
         }
     }
 
@@ -213,14 +214,37 @@ class Rex_Product_Feed_Admin {
 
         $db_version = get_option('rex_wpfm_db_version');
 	    if ( $db_version < 3 ) {
+            $current_screen = get_current_screen();
+
+            if ( gettype( $current_screen ) === 'object' && property_exists( $current_screen, 'base') && property_exists( $current_screen, 'post_type') ){
+                if ( $current_screen->base === 'post' && $current_screen->post_type === 'product-feed' ) {
+                    if ( $current_screen->action === 'add' ) {
+	                    $current_screen = 'add';
+                    }
+                    elseif ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'edit' ) {
+	                    $current_screen = 'rex_feed_edit';
+                    }
+                    else {
+	                    $current_screen = '';
+                    }
+                }
+                elseif ( $current_screen->base === 'product-feed_page_wpfm_dashboard' ) {
+	                $current_screen = $current_screen->base;
+                }
+            }
+            else {
+                $current_screen = '';
+            }
+
 		    wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery' ), $this->version, false );
 		    wp_localize_script(
 			    'rex-wpfm-global-js', 'rex_wpfm_ajax',
 			    array(
-				    'ajax_url'             => admin_url( 'admin-ajax.php' ),
-				    'category_mapping_url' => admin_url( 'admin.php?page=category_mapping' ),
-				    'ajax_nonce'           => wp_create_nonce( 'rex-wpfm-ajax' ),
-				    'is_premium'           => apply_filters( 'wpfm_is_premium', false )
+				    'ajax_url'       => admin_url( 'admin-ajax.php' ),
+				    'ajax_nonce'     => wp_create_nonce( 'rex-wpfm-ajax' ),
+				    'is_premium'     => apply_filters( 'wpfm_is_premium', false ),
+				    'feed_id'        => get_the_ID(),
+				    'current_screen' => $current_screen
 			    )
 		    );
 	    }
@@ -247,6 +271,12 @@ class Rex_Product_Feed_Admin {
                 true
             );
             wp_enqueue_script(
+                $this->plugin_name . '-select2',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/select2.min.js',
+                array( 'jquery' ),
+                $this->version
+            );
+            wp_enqueue_script(
                 $this->plugin_name,
                 WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-admin.js',
                 array( 'jquery' ),
@@ -267,25 +297,6 @@ class Rex_Product_Feed_Admin {
         }
     }
 
-    /**
-     * Remove a previously enqueued script by libraries
-     * for the admin area.
-     *
-     * @since    1.0.0
-     */
-    public function dequeue_scripts($hook) {
-        $screen = get_current_screen();
-        if ( $screen->post_type != 'product-feed' ) {
-            wp_dequeue_script( 'wpfm-cmb2-scripts' );
-            wp_dequeue_script( 'wpfm-cmb2-conditionals' );
-        }
-
-        if ( $screen->post_type == 'product-feed' ) {
-            wp_dequeue_script( 'cmb2-scripts' );
-            wp_dequeue_script( 'cmb2-conditionals' );
-        }
-    }
-
 
     /**
      * Register CPT for the Plugin
@@ -297,17 +308,16 @@ class Rex_Product_Feed_Admin {
     }
 
 
-    public function register_purge_button(){
-       
-        if( get_post_type() == 'product-feed' ){
+    public function register_purge_button( $post )
+    {
+        if( $post->post_type === 'product-feed' ){
             $html = '';
-            $html .= '<button id="btn_on_feed" style="background: #1fb3fb;"';
+            $html .= '<button id="btn_on_feed" ';
             $html .= 'class="wpfm-purge-cache btn_on_feed">Purge Cache';
-            $html .= '<i class="fa fa-spinner fa-pulse fa-fw"></i></button>';
+            $html .= '<i class="fa fa-spinner fa-pulse fa-fw" style="display: none"></i></button>';
             
             print $html;
         }
-        
     }
 
     /**
@@ -636,11 +646,6 @@ class Rex_Product_Feed_Admin {
                 'status'    => 1,
                 'name'  => 'Facebook'
             ),
-            'amazon'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Amazon'
-            ),
             'ebay'         => array(
                 'free'  => true,
                 'status'    => 1,
@@ -728,7 +733,7 @@ class Rex_Product_Feed_Admin {
             ),
             'gulog_gratis'     => array(
                 'free'  => true,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'GulogGratis.dk'
             )
         );
@@ -736,42 +741,42 @@ class Rex_Product_Feed_Admin {
         $pro_merchants = array(
             'ebay_mip'     => array(
                 'free'  => false,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'eBay (MIP)'
             ),
             'ebay_seller'     => array(
                 'free'  => false,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'eBay Seller Center'
             ),
             'bol'       => array(
                 'free'  => false,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'Bol.com'
             ),
             'wish'       => array(
                 'free'  => false,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'Wish.com'
             ),
             'fruugo'       => array(
                 'free'  => false,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'Fruugo'
             ),
             'leguide'       => array(
                 'free'  => false,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'Leguide'
             ),
             'connexity'       => array(
                 'free'  => false,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'Connexity'
             ),
             'drm'     => array(
                 'free'  => false,
-                'status'    => 0,
+                'status'    => 1,
                 'name'  => 'Google Remarketing (DRM)'
             )
 
@@ -958,89 +963,6 @@ class Rex_Product_Feed_Admin {
                 font-size: 20px;
             }
         </style>';
-    }
-
-
-    /**
-     * render cmb2 analytics param fields
-     * @param $field
-     * @param $value
-     * @param $object_id
-     * @param $object_type
-     * @param $field_type
-     */
-    public function cmb2_render_analytics_params_callback($field, $value, $object_id, $object_type, $field_type) {
-        $value = wp_parse_args( $value, array(
-            'utm_source'    => '',
-            'utm_medium'    => '',
-            'utm_campaign'  => '',
-            'utm_term'      => '',
-            'utm_content'   => '',
-        ) );
-        ?>
-
-        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_source' ); ?>"><?php echo __( 'Referrer', 'rex-product-feed' ); ?></label></p>
-            <?php echo $field_type->input( array(
-                'class' => 'cmb_text_small',
-                'name'  => $field_type->_name( '[utm_source]' ),
-                'id'    => $field_type->_id( '_utm_source' ),
-                'type'  => 'text',
-                'value' => $value['utm_source'],
-            ) ); ?>
-            <p class="cmb2-metabox-description"><?php echo __('The referrer: (e.g. google, newsletter)', 'rex-product-feed'); ?></p>
-        </div>
-
-        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_medium' ); ?>"><?php echo __( 'Medium', 'rex-product-feed' ); ?></label></p>
-            <?php echo $field_type->input( array(
-                'class' => 'cmb_text_small',
-                'name'  => $field_type->_name( '[utm_medium]' ),
-                'id'    => $field_type->_id( '_utm_medium' ),
-                'type'  => 'text',
-                'value' => $value['utm_medium'],
-            ) ); ?>
-            <p class="cmb2-metabox-description"><?php echo __('Marketing medium: (e.g. cpc, banner, email)', 'rex-product-feed'); ?></p>
-        </div>
-
-
-        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_campaign' ); ?>"><?php echo __( 'Campaign', 'rex-product-feed' ); ?></label></p>
-            <?php echo $field_type->input( array(
-                'class' => 'cmb_text_small',
-                'name'  => $field_type->_name( '[utm_campaign]' ),
-                'id'    => $field_type->_id( '_utm_campaign' ),
-                'type'  => 'text',
-                'value' => $value['utm_campaign'],
-            ) ); ?>
-            <p class="cmb2-metabox-description"><?php echo __('Product, promo code, or slogan (e.g. spring_sale)', 'rex-product-feed'); ?></p>
-        </div>
-
-        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_term' ); ?>"><?php echo __( 'Campaign term', 'rex-product-feed' ); ?></label></p>
-            <?php echo $field_type->input( array(
-                'class' => 'cmb_text_small',
-                'name'  => $field_type->_name( '[utm_term]' ),
-                'id'    => $field_type->_id( '_utm_term' ),
-                'type'  => 'text',
-                'value' => $value['utm_term'],
-            ) ); ?>
-            <p class="cmb2-metabox-description"><?php echo __('Identify the paid keywords', 'rex-product-feed'); ?></p>
-        </div>
-
-
-        <div class="alignleft"><p><label for="<?php echo $field_type->_id( '_utm_content' ); ?>"><?php echo __( 'Campaign content', 'rex-product-feed' ); ?></label></p>
-            <?php echo $field_type->input( array(
-                'class' => 'cmb_text_small',
-                'name'  => $field_type->_name( '[utm_content]' ),
-                'id'    => $field_type->_id( '_utm_content' ),
-                'type'  => 'text',
-                'value' => $value['utm_content'],
-            ) ); ?>
-            <p class="cmb2-metabox-description"><?php echo __('Use to differentiate ads', 'rex-product-feed'); ?></p>
-        </div>
-
-        <p class="clear">
-            <?php echo $field_type->_desc(true);?>
-        </p>
-
-        <?php
     }
 
 
@@ -1357,16 +1279,115 @@ class Rex_Product_Feed_Admin {
 	    }
     }
 
-	/**
-	 * Removes all actions from product feed edit page.
-	 */
-	public function rex_feed_remove_all_notices_from_pfm_edit_page()
-	{
-		$post_type   = isset( $_GET[ 'post' ] ) ? sanitize_text_field( get_post_type( $_GET[ 'post' ] ) ) : '';
-		$post_action = isset( $_GET[ 'action' ] ) ? sanitize_text_field( $_GET[ 'action' ] ) : '';
 
-		if ( $post_type == 'product-feed' && $post_action == 'edit' ) {
-			// remove_all_actions( 'admin_notices' );
+	/**
+	 * Save feed meta data on post saving as draft
+	 */
+	public function save_draft_feed_meta( $post_id, WP_Post $post )
+	{
+		if ( !current_user_can( "edit_post", $post_id ) ) {
+			return $post_id;
+		}
+
+		if ( defined( "DOING_AUTOSAVE" ) && DOING_AUTOSAVE ) {
+			return $post_id;
+		}
+
+		$slug = "product-feed";
+		if ( $slug != $post->post_type ) {
+			return $post_id;
+		}
+		if ( isset( $_POST[ 'rex_feed_schedule' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_schedule', $_POST[ 'rex_feed_schedule' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_products' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_products', $_POST[ 'rex_feed_products' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_variable_product' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_variable_product', $_POST[ 'rex_feed_variable_product' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_variations' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_variations', $_POST[ 'rex_feed_variations' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_parent_product' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_parent_product', $_POST[ 'rex_feed_parent_product' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_variation_product_name' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_variation_product_name', $_POST[ 'rex_feed_variation_product_name' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_hidden_products' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_hidden_products', $_POST[ 'rex_feed_hidden_products' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_skip_row' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_skip_row', $_POST[ 'rex_feed_skip_row' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_aelia_currency' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_aelia_currency', $_POST[ 'rex_feed_aelia_currency' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_wcml_currency' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_wcml_currency', $_POST[ 'rex_feed_wcml_currency' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_google_destination' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_google_destination', $_POST[ 'rex_feed_google_destination' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_google_target_country' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_google_target_country', $_POST[ 'rex_feed_google_target_country' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_google_target_language' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_google_target_language', $_POST[ 'rex_feed_google_target_language' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_google_schedule_month' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_google_schedule_month', $_POST[ 'rex_feed_google_schedule_month' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_google_schedule_week_day' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_google_schedule_week_day', $_POST[ 'rex_feed_google_schedule_week_day' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_google_schedule_time' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_google_schedule_time', $_POST[ 'rex_feed_google_schedule_time' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_ebay_seller_site_id' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_ebay_seller_site_id', $_POST[ 'rex_feed_ebay_seller_site_id' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_ebay_seller_country' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_ebay_seller_country', $_POST[ 'rex_feed_ebay_seller_country' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_ebay_seller_currency' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_ebay_seller_currency', $_POST[ 'rex_feed_ebay_seller_currency' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_analytics_params_options' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_analytics_params_options', $_POST[ 'rex_feed_analytics_params_options' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_analytics_params' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_analytics_params', $_POST[ 'rex_feed_analytics_params' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_product_filter_ids' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_product_filter_ids', $_POST[ 'rex_feed_product_filter_ids' ] );
+		}
+		if ( isset( $_POST[ 'product_filter_condition' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_product_condition', $_POST[ 'product_filter_condition' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_merchant' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_merchant', $_POST[ 'rex_feed_merchant' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_feed_format' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_feed_format', $_POST[ 'rex_feed_feed_format' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_separator' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_separator', $_POST[ 'rex_feed_separator' ] );
+		}
+		if ( isset( $_POST[ 'fc' ] ) ) {
+		    array_shift( $_POST[ 'fc' ] );
+			update_post_meta( $post_id, 'rex_feed_feed_config', $_POST[ 'fc' ] );
+		}
+		if ( isset( $_POST[ 'ff' ] ) ) {
+		    array_shift( $_POST[ 'ff' ] );
+			update_post_meta( $post_id, 'rex_feed_feed_config_filter', $_POST[ 'ff' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_cats' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_cats', $_POST[ 'rex_feed_cats' ] );
+		}
+		if ( isset( $_POST[ 'rex_feed_tags' ] ) ) {
+			update_post_meta( $post_id, 'rex_feed_tags', $_POST[ 'rex_feed_tags' ] );
 		}
 	}
 }

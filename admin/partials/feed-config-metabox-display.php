@@ -21,16 +21,16 @@ if ( ! isset($feed_template) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <thead>
-<tr>
-    <th class="" id="rex_feed_attr_head"><?php echo __('Attributes', 'rex-product-feed') ?><span>*</span></th>
-    <th class="" id="rex_feed_type_head"><?php echo __('Type', 'rex-product-feed') ?><span>*</span></th>
-    <th class="" id="rex_feed_val_head"><?php echo __('Value', 'rex-product-feed') ?><span>*</span></th>
-    <th class="" id="rex_feed_prefix_head"><?php echo __('Prefix', 'rex-product-feed') ?></th>
-    <th class="" id="rex_feed_suffix_head"><?php echo __('Suffix', 'rex-product-feed') ?><span>*</span></th>
-    <th class="" id="rex_feed_sanitization_head"><?php echo __('Output Sanitization', 'rex-product-feed') ?></th>
-    <th class="" id="rex_feed_output_limit_head"><?php echo __('Output Limit', 'rex-product-feed') ?></th>
-    <th class="" id="rex_feed_output_action_head"><?php echo __('Action', 'rex-product-feed') ?></th>
-</tr>
+    <tr>
+        <th class="" id="rex_feed_attr_head"><?php echo __('Required Attributes', 'rex-product-feed') ?><span>*</span></th>
+        <th class="" id="rex_feed_type_head"><?php echo __('Attribute Type', 'rex-product-feed') ?><span>*</span></th>
+        <th class="" id="rex_feed_val_head"><?php echo __('Assigned Values', 'rex-product-feed') ?><span>*</span></th>
+        <th class="" id="rex_feed_prefix_head"><?php echo __('Prefix', 'rex-product-feed') ?></th>
+        <th class="" id="rex_feed_suffix_head"><?php echo __('Suffix', 'rex-product-feed') ?></th>
+        <th class="" id="rex_feed_sanitization_head"><?php echo __('Output Filter', 'rex-product-feed') ?></th>
+        <th class="" id="rex_feed_output_limit_head"><?php echo __('Character Limit', 'rex-product-feed') ?></th>
+        <th class="" id="rex_feed_output_action_head"><?php echo __('Action', 'rex-product-feed') ?></th>
+    </tr>
 </thead>
 
 <tbody>

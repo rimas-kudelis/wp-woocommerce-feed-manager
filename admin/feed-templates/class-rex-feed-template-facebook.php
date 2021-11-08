@@ -91,7 +91,6 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
             'shipping_label'   => 'Shipping Label [shipping_label]',
         ),
 
-
         'Custom Label Attributes' => array(
             'custom_label_0' => 'Custom label 0 [custom_label_0]',
             'custom_label_1' => 'Custom label 1 [custom_label_1]',

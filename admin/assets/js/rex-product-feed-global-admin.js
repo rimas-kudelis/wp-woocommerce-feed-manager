@@ -137,6 +137,12 @@
     }
     $(document).on('click', '.rextheme-black-friday-offer .notice-dismiss', rextheme_bf_notice_dismiss);
 
+    $( document ).ready( function ( e ) {
+        if ( window.location.href.includes('edit.php') ) {
+            $( '#rex_feed_new_changes_msg_content' ).hide();
+        }
+    } );
+
 })( jQuery );
 
 

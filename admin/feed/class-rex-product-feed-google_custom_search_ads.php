@@ -38,9 +38,9 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
 
         if ($this->feed_format === 'xml') {
             $this->feed = RexShoppingGoogleCustomSearchAds::asRss();
-        } elseif ($this->feed_format === 'text') {
+        } elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
             $this->feed = RexShoppingGoogleCustomSearchAds::asTxt();
-        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
+        } elseif ($this->feed_format === 'csv') {
             $this->feed = RexShoppingGoogleCustomSearchAds::asCsv();
         } else {
             $this->feed = RexShoppingGoogleCustomSearchAds::asRss();
@@ -96,6 +96,16 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
                     continue;
                 }
             }
+
+	        if ( !$this->include_out_of_stock ) {
+		        if ( !$product->is_in_stock() ) {
+			        continue;
+		        }
+		        elseif ( $product->is_on_backorder() ) {
+			        continue;
+		        }
+	        }
+
             if ($product->is_type('variable') && $product->has_child()) {
                 if ($this->variable_product) {
                     $variable_parent[] = $productId;
@@ -109,7 +119,7 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
                         } elseif ($key == 'tax') {
                             $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                         } else {
-	                        if ( $this->rex_feed_skip_row ) {
+	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                        if ( $value != '' ) {
 			                        $item->$key($value); // invoke $key as method of $item object.
 		                        }
@@ -143,7 +153,7 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
                                     } elseif ($key == 'tax') {
                                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                                     } else {
-	                                    if ( $this->rex_feed_skip_row ) {
+	                                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                                    if ( $value != '' ) {
 			                                    $item->$key($value); // invoke $key as method of $item object.
 		                                    }
@@ -178,7 +188,7 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
                     } elseif ($key == 'tax') {
                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                     } else {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -191,7 +201,7 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
             }
 
             if ($this->product_scope === 'all' || $this->product_scope == 'product_filter') {
-                if ($product->get_type() == 'variation') {
+                if ( $product->get_type() === 'variation' ) {
                     $variation_products[] = $productId;
                     $item = RexShoppingGoogleCustomSearchAds::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
@@ -203,7 +213,7 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
                         } elseif ($key == 'tax') {
                             $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                         } else {
-	                        if ( $this->rex_feed_skip_row ) {
+	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                        if ( $value != '' ) {
 			                        $item->$key($value); // invoke $key as method of $item object.
 		                        }
@@ -235,7 +245,7 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
                     } elseif ($key == 'tax') {
                         $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
                     } else {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -257,6 +267,9 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
         );
 
         update_post_meta($this->id, 'rex_feed_total_products', $total_products);
+	    if ( $this->tbatch === $this->batch ) {
+		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+	    }
     }
 
 
@@ -312,9 +325,9 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
     {
         if ($this->feed_format === 'xml') {
             return RexShoppingGoogleCustomSearchAds::asRss();
-        } elseif ($this->feed_format === 'text') {
+        } elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
             return RexShoppingGoogleCustomSearchAds::asTxt();
-        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
+        } elseif ($this->feed_format === 'csv') {
             return RexShoppingGoogleCustomSearchAds::asCsv();
         }
         return RexShoppingGoogleCustomSearchAds::asRss();

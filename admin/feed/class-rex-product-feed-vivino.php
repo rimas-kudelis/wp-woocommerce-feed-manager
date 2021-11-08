@@ -75,6 +75,15 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
                 }
             }
 
+	        if ( !$this->include_out_of_stock ) {
+		        if ( !$product->is_in_stock() ) {
+			        continue;
+		        }
+		        elseif ( $product->is_on_backorder() ) {
+			        continue;
+		        }
+	        }
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
@@ -82,7 +91,7 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
                     $item = RexShopping::createItem();
                     foreach ($atts as $key => $value) {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -108,7 +117,7 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                                 foreach ($atts as $key => $value) {
-	                                if ( $this->rex_feed_skip_row ) {
+	                                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                                if ( $value != '' ) {
 			                                $item->$key($value); // invoke $key as method of $item object.
 		                                }
@@ -128,7 +137,7 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = RexShopping::createItem();
                 foreach ($atts as $key => $value) {
-	                if ( $this->rex_feed_skip_row ) {
+	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                if ( $value != '' ) {
 			                $item->$key($value); // invoke $key as method of $item object.
 		                }
@@ -140,12 +149,12 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
             }
 
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
-                if ($product->get_type() == 'variation') {
+                if ( $product->get_type() === 'variation' ) {
                     $variation_products[] = $productId;
                     $item = RexShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     foreach ($atts as $key => $value) {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -157,14 +166,14 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
                 }
             }
 
-            if( $product->is_type( 'grouped' ) ){
+            if( $product->is_type( 'grouped' ) && $this->parent_product ){
                 if($this->parent_product) {
                     $group_products[] = $productId;
                     $item = RexShopping::createItem();
                     $atts = $this->get_product_data( $product, $product_meta_keys );
                     // add all attributes for each product.
                     foreach ($atts as $key => $value) {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -185,6 +194,9 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+	    if ( $this->tbatch === $this->batch ) {
+		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+	    }
     }
 
 
@@ -197,9 +209,9 @@ class Rex_Product_Feed_Vivino extends Rex_Product_Feed_Other {
 
         if ($this->feed_format === 'xml') {
             return RexShopping::asRss();
-        } elseif ($this->feed_format === 'text') {
+        } elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
             return RexShopping::asTxt();
-        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
+        } elseif ($this->feed_format === 'csv') {
             return RexShopping::asCsv();
         }
         return RexShopping::asRss();

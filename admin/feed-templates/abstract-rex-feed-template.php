@@ -218,8 +218,8 @@ abstract class Rex_Feed_Abstract_Template {
      * @param string $name
      * @param string $val
      */
-    public function printInput( $key, $name = '', $val = '' ){
-        echo '<input type="text" name="fc['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '"">';
+    public function printInput( $key, $name = '', $val = '', $class = '' ){
+        echo '<input type="text" class="'. esc_attr( $class ) .'" name="fc['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '">';
     }
 
     /**

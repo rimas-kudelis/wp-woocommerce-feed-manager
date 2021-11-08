@@ -34,7 +34,6 @@ class Rex_Product_Feed_Factory {
                 'beslist',
                 'cdiscount',
                 'custom',
-                // 'heureka',
                 'kieskeurig',
                 'kleding',
                 'ladenzeile',
@@ -49,7 +48,6 @@ class Rex_Product_Feed_Factory {
                 'bing',
                 'cercavino',
                 'kelkoo',
-                'amazon',
                 'ebay',
                 'become' ,
                 'shopzilla',
@@ -232,7 +230,6 @@ class Rex_Product_Feed_Factory {
         elseif (in_array( $config['merchant'], self::$ibud_format )) {
             $className = 'Rex_Product_Feed_Ibud';
         }
-        
         elseif (in_array( $config['merchant'], self::$mirakl_format )) {
             $className = 'Rex_Product_Feed_Mirakl';
         }

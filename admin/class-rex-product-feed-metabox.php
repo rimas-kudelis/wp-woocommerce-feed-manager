@@ -1,5 +1,4 @@
 <?php
-use Aelia\WC\CurrencySwitcher\WC_Aelia_Currencies_Manager;
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -11,581 +10,328 @@ use Aelia\WC\CurrencySwitcher\WC_Aelia_Currencies_Manager;
  */
 class Rex_Product_Metabox
 {
-
-    private $prefix = 'rex_feed_';
-
-    /**
-     * Register all metaboxes.
-     *
-     * @since    1.0.0
-     */
-    public function register()
-    {
-        $is_premium = apply_filters('wpfm_is_premium_activate', false);
-        $this->products();
-        $this->feed_config();
-        $this->feed_file();
-        $this->google_merchant();
-        $this->rex_feed_trigger_based_review();
-        if (!$is_premium) $this->upgrade_notice();
-    }
-
-    /**
-     * Products Selection Metabox
-     *
-     * @since    1.0.0
-     */
-    private function products()
-    {
-        $box = wpfm_new_cmb2_box(array(
-            'id' => $this->prefix . 'products',
-            'title' => esc_html__('Products', 'rex-product-feed'),
-            'object_types' => array('product-feed'), // Post type
-        ));
+	private $prefix = 'rex_feed_';
 
 
-        /**
-         * Check if WooCommerce is active
-         **/
-
-        $box->add_field(array(
-            'name' => __('Products', 'rex-product-feed'),
-            'desc' => __('Select products to create feed for.', 'rex-product-feed'),
-            'id' => $this->prefix . 'products',
-            'type' => 'select',
-            'show_option_none' => true,
-            'default' => 'all',
-            'options' => array(
-                'all' => __('All Published Products', 'rex-product-feed'),
-                'featured' => __('All Featured Products', 'rex-product-feed'),
-                'filter' => __('Custom Filter', 'rex-product-feed'),
-                'product_cat' => __('Category Filter', 'rex-product-feed'),
-                'product_tag' => __('Tag Filter', 'rex-product-feed'),
-               'product_filter' => __('Product Filter', 'rex-product-feed'),
-            ),
-            'before_row' => array($this, 'progress_config_cb'),
-        ));
-
-        // filter product
-        $box->add_field(array(
-            'id' => $this->prefix . 'config_filter_title',
-            'name' => 'Configure Feed Filters and Rules',
-            'type' => 'title',
-            'after_row' => array($this, 'atts_filter_cb'),
-        ));
-
-        $box->add_field(array(
-            'id' => $this->prefix . 'product_taxonomies_block',
-            'name' => 'Product Taxonomies',
-            'type' => 'title',
-            'after_row' => array($this, 'product_taxonomies_cb'),
-        ));
-
-       do_action('wpfm_product_filter_field', $box, $this->prefix);
-
-        /*
-         * Schedule Time
-         */
-        $schedules = apply_filters('wpfm_option_schedules', array(
-            'no'        => __('No Interval', 'rex-product-feed'),
-            'hourly'    => __('Hourly', 'rex-product-feed'),
-            'daily'     => __('Daily', 'rex-product-feed'),
-            'weekly'    => __('Weekly', 'rex-product-feed'),
-        ));
-
-        $box->add_field(array(
-            'name' => __('Refresh Interval', 'rex-product-feed'),
-            'desc' => __('Feed Schedule Update', 'rex-product-feed'),
-            'id' => $this->prefix . 'schedule',
-            'type' => 'radio_inline',
-            'options' => $schedules,
-            'default' => 'no',
-        ));
-
-
-        /*
-         * Include/Exclude Variations
-         */
-        $box->add_field(array(
-            'name' => __('Include Variable Parent Product', 'rex-product-feed'),
-            'desc' => __('Include/Exclude Parent Variable Product', 'rex-product-feed'),
-            'id' => $this->prefix . 'variable_product',
-            'type' => 'radio_inline',
-            'options' => array(
-                'yes' => __('Yes', 'rex-product-feed'),
-                'no' => __('No', 'rex-product-feed'),
-            ),
-            'default' => 'no',
-        ));
-
-
-        /*
-         * Include/Exclude Variations
-         */
-        $box->add_field(array(
-            'name' => __('Include Product Variations', 'rex-product-feed'),
-            'desc' => __('Include/Exclude Products Variations', 'rex-product-feed'),
-            'id' => $this->prefix . 'variations',
-            'type' => 'radio_inline',
-            'options' => array(
-                'yes' => __('Yes', 'rex-product-feed'),
-                'no' => __('No', 'rex-product-feed'),
-            ),
-            'default' => 'yes',
-        ));
-
-
-        /**
-         * Variation product name
-         * with variation
-         */
-        $box->add_field(array(
-            'name' => __('Include variation product name', 'rex-product-feed'),
-            'desc' => __('It will add the all the variation name on product title. Will be applicable if there are more than two variation atrributes of a product.', 'rex-product-feed'),
-            'id' => $this->prefix . 'variation_product_name',
-            'type' => 'radio_inline',
-            'options' => array(
-                'yes' => __('Yes', 'rex-product-feed'),
-                'no' => __('No', 'rex-product-feed'),
-            ),
-            'default' => 'no',
-        ));
-
-
-        /*
-         * Exclude parent product (group product)
-         */
-        $box->add_field(array(
-            'name' => __('Include Parent Product (Grouped Product)', 'rex-product-feed'),
-            'desc' => __('Include/Exclude Parent Product', 'rex-product-feed'),
-            'id' => $this->prefix . 'parent_product',
-            'type' => 'radio_inline',
-            'options' => array(
-                'yes' => __('Yes', 'rex-product-feed'),
-                'no' => __('No', 'rex-product-feed'),
-            ),
-            'default' => 'yes',
-        ));
-
-
-        /*
-         * include hidden products
-         */
-        $box->add_field(array(
-            'name' => __('Exclude invisible/hidden products', 'rex-product-feed'),
-            'desc' => __('Exclude invisible/hidden products', 'rex-product-feed'),
-            'id' => $this->prefix . 'hidden_products',
-            'type' => 'radio_inline',
-            'options' => array(
-                'yes' => __('Yes', 'rex-product-feed'),
-                'no' => __('No', 'rex-product-feed'),
-            ),
-            'default' => 'no',
-        ));
-
-
-        /*
-         * Skipping rows if attribute's value is empty
-         */
-        $box->add_field(array(
-            'name' => __('Skip attributes with empty value', 'rex-product-feed'),
-            'desc' => __('Skip attributes with empty value', 'rex-product-feed'),
-            'id' => $this->prefix . 'skip_row',
-            'type' => 'radio_inline',
-            'options' => array(
-                'yes' => __('Yes', 'rex-product-feed'),
-                'no' => __('No', 'rex-product-feed'),
-            ),
-            'default' => 'no',
-        ));
-
-        /**
-         * Analytics parameters
-         */
-        $box->add_field(array(
-            'name' => __('Analytics parameters', 'rex-product-feed'),
-            'desc' => __('Check to activate utm params', 'rex-product-feed'),
-            'id' => $this->prefix . 'analytics_params_options',
-            'type' => 'checkbox',
-        ));
-
-
-	    $aelia_plugin            = 'woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php';
-	    $aelia_foundation_plugin = 'wc-aelia-foundation-classes/wc-aelia-foundation-classes.php';
-
-        if ( is_plugin_active( $aelia_plugin ) && is_plugin_active( $aelia_foundation_plugin ) ) {
-	        $aelia_settings = get_option( 'wc_aelia_currency_switcher' );
-	        $enabled_currency = is_array( $aelia_settings ) && isset( $aelia_settings[ 'enabled_currencies' ] )
-		        ? $aelia_settings[ 'enabled_currencies' ] : '';
-	        $aelia_world_currency = WC_Aelia_Currencies_Manager::world_currencies();
-	        $currency_options = array();
-
-	        if ( is_array( $enabled_currency ) && !empty( $enabled_currency ) ) {
-		        foreach ( $enabled_currency as $currency ) {
-			        if( array_key_exists( $currency, $aelia_world_currency) ){
-				        $currency_options[ $currency ] = $aelia_world_currency[ $currency ];
-			        }
-		        }
-	        }
-	        else{
-		        $currency_options = array( 'Please configure Aelia Currency Switcher!' );
-	        }
-
-	        /**
-	         * Aelia currency dropdown to convert.
-	         */
-	        $box->add_field(array(
-		        'name' => __('Aelia Currency', 'rex-product-feed'),
-		        'desc' => __('Select currency to convert', 'rex-product-feed'),
-		        'id' => $this->prefix . 'aelia_currency',
-		        'type' => 'select',
-		        'show_option_none' => false,
-		        'default' => get_woocommerce_currency(),
-		        'options' => $currency_options
-	        ));
-        }
-
-        $box->add_field(array(
-            'name' => __('Parameters', 'rex-product-feed'),
-            'desc' => '',
-            'id' => $this->prefix . 'analytics_params',
-            'type' => 'analytics_params',
-            'attributes' => array(
-                'data-conditional-id' => $this->prefix . 'analytics_params_options',
-                'data-conditional-value' => 'on',
-            ),
-        ));
-
-
-        if( wpfm_is_wpml_active() ) {
-            global $sitepress, $woocommerce_wpml;
-            $wcml_settings = get_option('_wcml_settings');
-            $wcml_currencies = $wcml_settings['currency_options'];
-
-            $currencies = array();
-            foreach ($wcml_currencies as $key => $value) {
-                $currencies[$key] = $key;
-            }
-            $first_key = '';
-            if( is_array($currencies )) {
-                reset($currencies);
-                $first_key = key($currencies);
-            }
-
-
-            $box->add_field( array(
-                'name'      => __( 'WCML Currency', 'rex-product-feed' ),
-                'desc'      => '',
-                'id'        => $this->prefix . 'wcml_currency',
-                'type'      => 'radio_inline',
-                'options'   => $currencies,
-                'default'   => $first_key,
-            ) );
-        }
-
-    }
-
-    /**
-     * Defines Metaboxes for Feed Configuration
-     *
-     * @return void
-     * @author RexTheme
-     **/
-    private function feed_config()
-    {
-
-        $_merchants = array(
-            'custom' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Custom'
-            ),
-            'google' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Google Shopping'
-            ),
-            'google_Ad' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Google AdWords'
-            ),
-            'facebook' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Facebook'
-            ),
-            'amazon' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Amazon'
-            ),
-            'adroll' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'AdRoll'
-            ),
-            'nextag' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Nextag'
-            ),
-            'pricegrabber' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Pricegrabber'
-            ),
-            'bing' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Bing'
-            ),
-            'cercavino' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Cercavino'
-            ),
-            'trovino' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Trovino'
-            ),
-            'kelkoo' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Kelkoo'
-            ),
-            'become' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Become'
-            ),
-            'shopzilla' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'ShopZilla'
-            ),
-            'shopping' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Shopping'
-            ),
-            'google_local_inventory_ads'=> array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Google Local Inventory Ads'
-            )
-        );
-        $merchants = get_option('rex_wpfm_merchant_status');
-        
-        if ($merchants) {
-            
-            $_merchants = array_merge($_merchants, $merchants);
-           
-        }
-        
-        $merchant_lists = [];
-        $merchant_lists['-1'] = __('Please select merchant', 'rex-product-feed');
-        
-        foreach ($_merchants as $key => $merchant) {
-            if ($merchant['status']) {
-                if (array_key_exists('name', $merchant)) {
-                    if ($key === 'google') {
-                        $merchant_lists[$key] = 'Google Shopping';
-                    } elseif ($key === 'google_Ad') {
-                        $merchant_lists[$key] = 'Google AdWords';
-                    } elseif ($key === 'drm') {
-                        $merchant_lists[$key] = 'Google Remarketing (DRM)';
-                    } else {
-                        $merchant_lists[$key] = $merchant['name'];
-                    }
-                }
-            }
-        }
-
-        /**
-         * result of bad planning
-         */
-
-        reset($merchant_lists);
-        
-        $default_merchant = key($merchant_lists);
-        
-
-        $box = wpfm_new_cmb2_box(array(
-            'id' => $this->prefix . 'conf',
-            'title' => esc_html__('Feed Configuration', 'rex-product-feed'),
-            'object_types' => array('product-feed'), // Post type
-        ));
-
-        $box->add_field(array(
-            'name' => __('Merchant Type', 'rex-product-feed'),
-            'desc' => __('Select Merchant Type of the Feed.', 'rex-product-feed'),
-            'id' => $this->prefix . 'merchant',
-            'type' => 'select',
-            'show_option_none' => false,
-            'default' => $default_merchant,
-            'options' => $merchant_lists,
-        ));
-
-        do_action('wpfm_merchant_settings_field', $box, $this->prefix);
-
-        $box->add_field(array(
-	        'name'    => __( 'File Format', 'rex-product-feed' ),
-	        'desc'    => __( 'Select Format of the Feed.', 'rex-product-feed' ),
-	        'id'      => $this->prefix . 'feed_format',
-	        'type'    => 'select',
-	        'options' => array(
-		        'xml'           => __( 'XML', 'rex-product-feed' ),
-		        'text'          => __( 'TEXT', 'rex-product-feed' ),
-		        'text_pipe'     => __( 'TEXT (Pipe "|" Separator)', 'rex-product-feed' ),
-		        'csv'           => __( 'CSV (default)', 'rex-product-feed' ),
-		        'csv_semicolon' => __( 'CSV (";" separator)', 'rex-product-feed' ),
-		        'tsv'           => __( 'TSV', 'rex-product-feed' ),
-		        'json'          => __( 'JSON', 'rex-product-feed' ),
-	        ),
-        ));
-
-        $box->add_field(array(
-            'id' => $this->prefix . 'config_heading',
-            'name' => 'Configure Feed Attributes and their values.',
-            'type' => 'title',
-            'after_row' => array($this, 'atts_config_cb'),
-        ));
-
-    }
-
-
-    /**
-     * Display Feed Config Metabox.
-     *
-     * @return void
-     * @author RexTheme
-     **/
-    public function atts_config_cb($field_args, $field)
-    {
-        echo '<div id="rex-feed-config" class="rex-feed-config">';
-        echo '<table id="config-table" class="responsive-table wpfm-field-mappings ">';
-        require plugin_dir_path(__FILE__) . 'partials/loading-spinner.php';
-        echo '</table>';
-        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large"><i class="fa fa-plus-circle"></i>' . __('Add New Attribute', 'rex-product-feed') . '</a>';
-        echo '<a id="rex-new-custom-attr" class="waves-effect waves-light btn-large"><i class="fa fa-plus-circle"></i>' . __('Add New Custom Attribute', 'rex-product-feed') . '</a>';
-        echo '</div>';
-    
-    }
-
-
-    /**
-     * Display Feed Config Metabox.
-     *
-     * @return void
-     * @author RexTheme
-     **/
-    public function progress_config_cb($field_args, $field)
-    {
-
-        echo '<div id="rex-feed-progress" class="rex-feed-progress">';
-        require plugin_dir_path(__FILE__) . 'partials/progress-bar.php';
-        echo '</div>';
-    }
-
-
-    /**
-     * Display Feed Filter Metabox.
-     *
-     * @return void
-     * @author RexTheme
-     **/
-    public function atts_filter_cb($field_args, $field)
-    {
-        $feed_filter_rules = get_post_meta($field->object_id, $this->prefix . 'feed_config_filter', true);
-        $feed_filter = new Rex_Product_Filter($feed_filter_rules);
-        echo '<div id="rex-feed-config-filter" class="rex-feed-config-filter">';
-        require plugin_dir_path(__FILE__) . 'partials/loading-spinner.php';
-        require plugin_dir_path(__FILE__) . 'partials/feed-config-metabox-display-filter.php';
-        echo '<br><a id="rex-new-attr" class="waves-effect waves-light btn-large "><i class="fa fa-plus-circle"></i>' . __('Add New Filter', 'rex-product-feed') . '</a>';
-        echo '</div>';
-    }
-
-
-    /**
-     * Display Product taxonomies
-     *
-     * @return void
-     * @author RexTheme
-     **/
-    public function product_taxonomies_cb($field_args, $field)
-    {
-        echo '<div id="rex-feed-product-taxonomies" class="rex-feed-product-taxonomies">';
-        echo '<div class="rex-feed-product-taxonomies-spinner" style="display: none; "><img src="' . WPFM_PLUGIN_ASSETS_FOLDER . 'icon/loader.gif" alt="spinner" /></div>';
-        echo '<div id="rex-feed-product-taxonomies-contents"></div>';
-        echo '</div>';
-    }
-
-
-    /**
-     * Display Feed Filter Metabox.
-     *
-     * @return void
-     * @author RexTheme
-     **/
-    public function product_tags_cb($field_args, $field)
-    {
-        echo '<div id="rex-feed-product-tags" class="rex-feed-product-tags">';
-        echo '</div>';
-    }
-
-    /**
-     * Defines Metaboxes for Feed
-     *
-     * @return void
-     * @author RexTheme
-     **/
-    private function feed_file()
-    {
-        $box = wpfm_new_cmb2_box(array(
-            'id' => $this->prefix . 'file_link',
-            'title' => esc_html__('Feed URL', 'rex-product-feed'),
-            'object_types' => array('product-feed'), // Post type
-            'context' => 'side',
-            'priority' => 'low'
-        ));
-
-        $box->add_field(array(
-            'name' => __('Your Feed URL', 'rex-product-feed'),
-            'desc' => __('', 'rex-product-feed'),
-            'id' => $this->prefix . 'xml_file',
-            'type' => 'text',
-            'sanitization_cb' => array($this, 'sanitize_xml_file'),
-            'after_field' => array($this, 'after_field_xml_file_cb'),
-            'default' => '',
-            'attributes' => array(
-                'readonly' => 'readonly',
-                'disabled' => 'disabled',
-            ),
-        ));
-    }
-
-    /**
-     * Defines Metaboxes for Trigger based review request
-     *
-     * @return void
-     * @author RexTheme
-     **/
-	private function rex_feed_trigger_based_review()
+	/**
+	 * Register all metaboxes.
+	 *
+	 * @since    1.0.0
+	 */
+	public function register()
 	{
-		$feed_id             = isset( $_GET[ 'post' ] ) ? sanitize_text_field( $_GET[ 'post' ] ) : '';
-		$show_review_request = array();
+		$is_premium = apply_filters( 'wpfm_is_premium_activate', false );
 
-		if ( $feed_id != '' ) {
-			$show_review_request = get_option( 'rex_feed_review_request' );
+		add_action( 'add_meta_boxes', array( $this, 'rex_feed_filter_settings_section' ) );
+		add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_config_section' ) );
+		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_settings_section' ) );
+		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_filters_section' ) );
+		add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_file_section' ) );
+
+		$post_id   = isset( $_GET[ 'post' ] ) ? $_GET[ 'post' ] : '';
+		$post_type = $post_id !== '' ? get_post_type( $post_id ) : '';
+
+		if ( $post_type === 'product-feed' ) {
+			$this->rex_feed_trigger_based_review_helper();
+        }
+
+        if ( $post_type === '' && isset( $_GET[ 'post_type' ] ) ) {
+            $post_type = $_GET[ 'post_type' ];
+        }
+        if ( $post_type === 'product-feed' ) {
+            $this->rex_feed_new_changes_message();
+        }
+
+		if ( $this->rex_feed_is_google_merchant() ) {
+			add_action( 'add_meta_boxes', array( $this, 'rex_feed_google_merchant_section' ) );
+		}
+		if ( !$is_premium ) {
+			add_action( 'add_meta_boxes', array( $this, 'rex_feed_upgrade_notice_section' ) );
+		}
+	}
+
+
+	/**
+	 * Check if current merchant is google
+	 */
+	private function rex_feed_is_google_merchant()
+	{
+		$feed_id = isset( $_GET['post'] ) ? $_GET['post'] : '';
+		$merchant = get_post_meta( $feed_id, 'rex_feed_merchant', true );
+		return 'google' === $merchant;
+	}
+
+
+	/**
+	 * Adding metabox for Filter & Settings button section
+	 */
+	public function rex_feed_filter_settings_section()
+	{
+		add_meta_box(
+			$this->prefix . 'head_btn',
+			'Add New Feed',
+			array( $this, 'rex_feed_generate_filter_settings_section' ),
+			'product-feed',
+			'normal',
+			'high'
+		);
+	}
+
+
+	/**
+	 * Generates the Add New Feed Heading
+	 * and Additional Filter & Settings Button
+	 */
+	public function rex_feed_generate_filter_settings_section()
+	{
+	    $troubleshoot_url = 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/';
+		echo '<h2>' . __( "Add New Feed", "rex-product-feed" ) . '</h2>';
+		echo '<div class="rex-feed-cofig-settings">';
+		echo '<a id="rex-feed-troubleshoot-btn" class="rex-fill-button" href="' . $troubleshoot_url . '" target="_blank"><i class="fa fa-exclamation-triangle"></i>' . __( 'Troubleshoot', 'rex-product-feed' ) . '</a>';
+		echo '<a id="rex-pr-filter-btn" class="rex-fill-button"><i class="fa fa-filter"></i>' . __( 'Product Filter', 'rex-product-feed' ) . '</a>';
+		echo '<a id="rex-feed-settings-btn" class="rex-fill-button"><i class="fa fa-cog"></i>' . __( 'Settings', 'rex-product-feed' ) . '</a>';
+		echo '</div>';
+	}
+
+
+	/**
+	 * Adding metaboxes for merchant, feed format
+	 * and feed separator dropdown list section
+	 * & also feed config table section
+	 */
+	public function rex_feed_feed_config_section()
+	{
+		add_meta_box(
+			$this->prefix . 'conf',
+			'Feed Configuration',
+			array( $this, 'rex_feed_generate_merchant_dropdown_section' ),
+			'product-feed',
+			'normal',
+			'core'
+		);
+		add_meta_box(
+			$this->prefix . 'progress_bar',
+			'Progress Bar',
+			array( $this, 'progress_config_cb' ),
+			'product-feed',
+			'normal',
+			'core'
+		);
+		add_meta_box(
+			$this->prefix . 'config_heading',
+			'Configure Feed Attributes and their values',
+			array( $this, 'rex_feed_generate_config_table' ),
+			'product-feed',
+			'normal',
+			'core'
+		);
+	}
+
+
+	/**
+	 * Generates the feed merchant, feed format and separator dropdown lists section
+	 */
+	public function rex_feed_generate_merchant_dropdown_section()
+	{
+		$saved_merchant   = get_post_meta( get_the_ID(), 'rex_feed_merchant', true );
+		$file_format      = get_post_meta( get_the_ID(), 'rex_feed_feed_format', true );
+
+		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-merchant-dropdown-section.php';
+
+		if ( wpfm_pro_compatibility() ) {
+			do_action( 'wpfm_merchant_settings_fields', $this->prefix );
+        }
+	}
+
+
+	/**
+	 * Generates the feed config table section
+	 */
+	public function rex_feed_generate_config_table()
+	{
+		?>
+        <table id="config-table" class="responsive-table wpfm-field-mappings">
+			<?php require_once plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';?>
+        </table>
+
+        <div id="rex-feed-footer-btn" class="rex-feed-footer-btn">
+            <a id="rex-new-attr" class="rex-new-custom-btn">
+		        <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-plus.php';?>
+		        <?php echo __( 'Add New Attribute', 'rex-product-feed' ) ?>
+            </a>
+            <a id="rex-new-custom-attr" class="rex-new-custom-btn">
+				<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-plus.php';?>
+				<?php echo __( 'Add New Custom Attribute', 'rex-product-feed' ) ?>
+            </a>
+        </div>
+
+		
+		<?php
+	}
+
+
+	/**
+	 * Adding metaboxes for product settings section
+	 */
+	public function rex_feed_product_settings_section()
+	{
+		add_meta_box(
+			$this->prefix . 'product_settings',
+			__('Settings', 'rex-product-feed'),
+			array( $this, 'rex_feed_generates_product_settings_section' ),
+			'product-feed',
+			'normal',
+			'core'
+		);
+	}
+
+
+	/**
+	 * Generates the product settings section
+	 */
+	public function rex_feed_generates_product_settings_section()
+	{
+		$schedules = apply_filters(
+			'wpfm_option_schedules', array(
+			'no'     => __( 'No Interval', 'rex-product-feed' ),
+			'hourly' => __( 'Hourly', 'rex-product-feed' ),
+			'daily'  => __( 'Daily', 'rex-product-feed' ),
+			'weekly' => __( 'Weekly', 'rex-product-feed' ),
+		) );
+		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-settings-section.php';
+	}
+
+
+	/**
+	 * Adding metaboxes for product filters section
+	 */
+	public function rex_feed_product_filters_section()
+	{
+		add_meta_box(
+			$this->prefix . 'product_filters',
+			'Filters',
+			array( $this, 'rex_feed_generates_product_filters_section' ),
+			'product-feed',
+			'normal',
+			'core'
+		);
+	}
+
+
+	/**
+	 * Generates the product filters section
+	 */
+	public function rex_feed_generates_product_filters_section()
+	{
+		$options = array(
+			'all'            => __( 'All Published Products', 'rex-product-feed' ),
+			'featured'       => __( 'All Featured Products', 'rex-product-feed' ),
+			'filter'         => __( 'Custom Filter', 'rex-product-feed' ),
+			'product_cat'    => __( 'Category Filter', 'rex-product-feed' ),
+			'product_tag'    => __( 'Tag Filter', 'rex-product-feed' )
+		);
+
+		if ( wpfm_pro_compatibility() ) {
+			$options = apply_filters( 'wpfm_product_filter_options', $options );
 		}
 
-		if ( !empty( $show_review_request ) && isset( $show_review_request[ 'show' ] ) && $show_review_request[ 'show' ] ) {
+		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-filter-header-section.php';
+        // rex-contnet-filter__header end
+
+		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-products-dropdown-section.php';
+        // rex-content-filter__area end
+
+		$this->rex_feed_custom_filter_section();
+		$this->rex_feed_product_taxonomies();
+
+        if ( wpfm_pro_compatibility() ) {
+	        do_action( 'wpfm_product_filter_fields', $this->prefix );
+        }
+	}
+
+
+	/**
+	 * Generates custom filters in product filter section
+	 **/
+	public function rex_feed_custom_filter_section()
+	{
+		$feed_filter_rules = get_post_meta( get_the_ID(), $this->prefix . 'feed_config_filter', true );
+		$feed_filter       = new Rex_Product_Filter( $feed_filter_rules );
+		?>
+
+        <div id="rex-feed-config-filter" class="rex-feed-config-filter" style="display: none; ">
+			<?php require_once plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php'; ?>
+			<?php require_once plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display-filter.php'; ?>
+            <a id="rex-new-filter" class="rex-new-custom-btn">
+				<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-dark-plus.php';?>
+				<?php echo __( 'Add New Filter', 'rex-product-feed' ) ?>
+            </a>
+        </div>
+		<?php
+	}
+
+
+	/**
+	 * Generates product categories and tags in product filter section
+	 **/
+	public function rex_feed_product_taxonomies()
+	{
+		echo '<div class="rex-feed-product-taxonomies-spinner" style="display: none; "><img src="' . WPFM_PLUGIN_ASSETS_FOLDER . 'icon/loader.gif" alt="spinner" /></div>';
+		echo '<div id="rex-feed-product-taxonomies" class="rex-feed-product-taxonomies">';
+		echo '</div>';
+	}
+
+
+	/**
+	 * Adding metaboxes for feed file section
+	 */
+	public function rex_feed_feed_file_section()
+	{
+		$feed_url = get_post_meta( get_the_ID(), $this->prefix . 'xml_file', true );
+
+		if ( strlen( $feed_url ) > 0 ) {
+			add_meta_box(
+				$this->prefix . 'file_link',
+				'Feed URL',
+				array( $this, 'rex_feed_generate_feed_file_section' ),
+				'product-feed',
+				'side',
+				'core'
+			);
+		}
+	}
+
+
+	/**
+	 * Generates the feed file section
+	 */
+	public function rex_feed_generate_feed_file_section()
+	{
+		$feed_url = get_post_meta( get_the_ID(), $this->prefix . 'xml_file', true );
+		$feed_url = esc_url( $feed_url );
+
+		echo '<h2>'. __( 'Your Feed URL', 'rex-product-feed' ) .'</h2>';
+		echo '<input type="text" name="'.$this->prefix.'xml_file" id="'.$this->prefix.'xml_file" value="'. $feed_url .'" disabled>';
+		echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $feed_url . '">
+              <i class="fa fa-external-link" aria-hidden="true"></i>' . __( 'View Feed', 'rex-product-feed' ) . '</a> ';
+		echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $feed_url . '" download>
+            <i class="fa fa-download" aria-hidden="true"></i>' . __( 'Download Feed', 'rex-product-feed' ) . '</a>';
+	}
+
+
+	/**
+	 * Helper function to decide if review request
+	 * metabox needs to be generated.
+	 **/
+	private function rex_feed_trigger_based_review_helper()
+	{
+		$show_review_request = get_option( 'rex_feed_review_request' );
+
+		if ( ! empty( $show_review_request ) && isset( $show_review_request[ 'show' ] ) && $show_review_request[ 'show' ] ) {
 
 			if ( isset( $show_review_request[ 'frequency' ] ) ) {
 				if ( $show_review_request[ 'frequency' ] == 'immediate' ) {
-					$this->rex_feed_generate_review_request();
+					add_action( 'admin_notices', array( $this, 'rex_feed_generate_review_request_section' ) );
 				}
                 elseif ( $show_review_request[ 'frequency' ] == 'one_week' ) {
 					$last_shown_date = $show_review_request[ 'time' ];
@@ -595,523 +341,171 @@ class Rex_Product_Metabox
 					$date_diff       = $last_shown_date->diff( $current_date );
 
 					if ( $date_diff->d > 7 ) {
-						$this->rex_feed_generate_review_request();
+						add_action( 'admin_notices', array( $this, 'rex_feed_generate_review_request_section' ) );
 					}
 				}
 			}
 		}
 	}
 
-	/**
-	 * Generates review request meta fields in Product Feed edit page.
-	 */
-	public function rex_feed_generate_review_request()
-	{
-		$box = wpfm_new_cmb2_box(
-			array(
-				'id'           => $this->prefix . 'trigger_based_review_request',
-				'title'        => esc_html__( 'Review Request', 'rex-product-feed' ),
-				'object_types' => array( 'product-feed' ), // Post type
-				'context'      => 'side',
-				'priority'     => 'high'
-			) );
 
-		$box->add_field(
-			array(
-				'name'        => __( '', 'rex-product-feed' ),
-				'desc'        => __( '', 'rex-product-feed' ),
-				'id'          => $this->prefix . 'review_request',
-				'type'        => '',
-				'after_field' => array( $this, 'rex_feed_review_request_body_content' ),
-				'default'     => '',
-			) );
+    /**
+     * Generates body contents for trigger based review request section
+     **/
+    public function rex_feed_generate_review_request_section()
+    {
+        require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-review-request-body-content.php';
+    }
+
+
+	/**
+	 * Helper function to decide if changes message should be displayed or not
+	 **/
+	private function rex_feed_new_changes_message()
+	{
+		$show = get_option( 'rex_feed_new_changes_msg' );
+
+		if ( empty( $show ) ) {
+            add_action( 'admin_notices', array( $this, 'rex_feed_generate_new_changes_message' ) );
+		}
 	}
 
 
-    /**
-     * Body contents for Trigger based review request
-     *
-     * @return void
-     * @author RexTheme
-     **/
-    public function rex_feed_review_request_body_content(){
-        ?>
-        <div id="rex_feed_review_request_body_content">
-            <input type="hidden" id="rex_feed_hidden_feed_id" value="<?php echo sanitize_text_field( $_GET[ 'post' ] ); ?>">
-            <h2>Rating</h2>
-            <p>Please do give us a<br>rating if you like using<br>our plugin. It will only<br>take 2 minutes.</p>
-            <div id="rex_feed_review_request_btn">
-                <a id="rex_rate_now" class="waves-effect waves-light btn-large" href="https://wordpress.org/plugins/best-woocommerce-feed/#reviews" target="_blank"><?php _e('Rate Now', 'rex-product-feed')?></a>
-                <a id="rex_rate_not_now" class="waves-effect waves-light btn-large"><?php _e('Not Now', 'rex-product-feed')?></a>
-                <a id="rex_rated_already" class="waves-effect waves-light btn-large"><?php _e('Already Rated', 'rex-product-feed')?></a>
-            </div>
-        </div>
-        <?php
-    }
-
-    private function upgrade_notice()
-    {
-
-        $box = wpfm_new_cmb2_box(array(
-            'id' => $this->prefix . 'upgrade_notice',
-            'title' => esc_html__('Why upgrade to Premium Version?', 'rex-product-feed'),
-            'object_types' => array('product-feed'), // Post type
-            'context' => 'side',
-            'priority' => 'low'
-        ));
-
-        $box->add_field(array(
-            'name' => '',
-            'type' => 'title',
-            'id' => $this->prefix . 'features_text',
-            'after_field' => array($this, 'after_field_upgrade_notice_cb'),
-        ));
-    }
+	/**
+	 * Generates body contents for new changes message section
+	 **/
+	public function rex_feed_generate_new_changes_message()
+	{
+		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-new-changes-message-body-content.php';
+	}
 
 
-    /**
-     * @param $field_args
-     * @param $field
-     */
-    public function after_field_upgrade_notice_cb($field_args, $field)
-    {
-
-        echo '<ol class="parent">';
-        echo '<li class="item">' . __('Supports more than 50 products.', 'rex-product-feed') . '</li>';
-        echo '<li class="item">' . __('Access to a elite support team.', 'rex-product-feed') . '</li>';
-        echo '<li class="item">' . __('Supports YITH brand attributes.', 'rex-product-feed') . '</li>';
-        echo '<li class="item">' . __('Dynamic Attribute.', 'rex-product-feed') . '</li>';
-        echo '<li class="item">' . __('Custom field support - Brand,GTIN,MPN,UPC,EAN,Size, Pattern, Material, Age Group, Gender.', 'rex-product-feed') . '</li>';
-        echo '<li class="item">' . __('Fix WooCommerce\'s (JSON-LD) structure data bug', 'rex-product-feed') . '</li>';
-        echo '</ol>';
-
-        echo '<a class="waves-effect waves-light btn" target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro">Upgrade to pro</a>';
-    }
+	/**
+	 * Adding metaboxe for google merchant section
+	 */
+	public function rex_feed_google_merchant_section() {
+		add_meta_box(
+			$this->prefix . 'google_merchant',
+			esc_html__( 'Send to Google Merchant', 'rex-product-feed' ),
+			array( $this, 'rex_feed_generate_google_merchant_section' ),
+			'product-feed',
+			'side',
+			'core'
+		);
+	}
 
 
-    /**
-     * Output a message if the current page has the id of "2" (the about page)
-     * @param object $field_args Current field args
-     * @param object $field Current field object
-     */
-    public function after_field_xml_file_cb($field_args, $field)
-    {
-        $feed_url = get_post_meta($field->object_id, $this->prefix . 'xml_file', true);
+	/**
+	 * Generates google merchant section
+	 **/
+	public function rex_feed_generate_google_merchant_section()
+	{
+		echo '<h2>' . __( 'Send to Google Merchant', 'rex-product-feed' ) . '</h2>';
+		$this->rex_feed_google_merchant_desc();
+		$destinations = array(
+			'Display Ads'      => __( 'Display Ads', 'rex-product-feed' ),
+			'Shopping Ads'     => __( 'Shopping Ads', 'rex-product-feed' ),
+			'Shopping Actions' => __( 'Shopping Actions', 'rex-product-feed' ),
+		);
 
-        if (strlen($feed_url) > 0) {
-            echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $feed_url . '">
-              <i class="fa fa-external-link" aria-hidden="true"></i>' . __('View Feed', 'rex-product-feed') . '</a> ';
-            echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $feed_url . '" download>
-            <i class="fa fa-download" aria-hidden="true"></i>' . __('Download Feed', 'rex-product-feed') . '</a>';
-        }
-    }
+		$schedules = array(
+			'monthly' => __( 'Monthly', 'rex-product-feed' ),
+			'weekly'  => __( 'Weekly', 'rex-product-feed' ),
+			'hourly'  => __( 'Hourly', 'rex-product-feed' ),
+		);
 
+		$month_array = range( 1, 31 );
+		array_unshift( $month_array, "" );
+		unset( $month_array[ 0 ] );
 
-    /**
-     * Defines Metaboxes for Google Merchant
-     *
-     * @return void
-     * @since 4.0.0
-     * @author RexTheme
-     **/
-    private function google_merchant()
-    {
+		$weeks = array(
+			'monday'    => 'Monday',
+			'tuesday'   => 'Tuesday',
+			'wednesday' => 'Wednesday',
+			'thursday'  => 'Thursday',
+			'friday'    => 'Friday',
+			'saturday'  => 'Saturday',
+			'sunday'    => 'Sunday',
+		);
 
-        $box = wpfm_new_cmb2_box(array(
-            'id' => $this->prefix . 'google_merchant',
-            'title' => esc_html__('Send to Google Merchant', 'rex-product-feed'),
-            'object_types' => array('product-feed'), // Post type
-            'context' => 'side',
-            'priority' => 'low',
-            'show_on_cb' => array($this, 'cmb_only_show_google'),
-        ));
-        $box->add_field(array(
-            'name' => __('Select Destination', 'rex-product'),
-            'id' => $this->prefix . 'google_destination',
-            'type' => 'multicheck',
-            'options' => array(
-                'Display ads' => 'Display ads',
-                'Shopping ads' => 'Shopping ads',
-                'Shopping Actions' => 'Shopping Actions',
-            ),
+		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-google-merchant.php';
 
-            'before_row' => array($this, 'google_merchant_desc'),
-        ));
-        $box->add_field(array(
-            'name' => __('Target Country', 'rex-product-feed'),
-            'id' => $this->prefix . 'google_target_country',
-            'type' => 'text',
-            'default' => 'US',
-            'attributes' => array(
-                'required' => 'required',
-            ),
-        ));
-
-        $box->add_field(array(
-            'name' => __('Target Language', 'rex-product-feed'),
-            'id' => $this->prefix . 'google_target_language',
-            'type' => 'text',
-            'default' => 'en',
-            'attributes' => array(
-                'required' => 'required',
-            ),
-        ));
-
-        $box->add_field(array(
-            'name' => __('Schedule', 'rex-product-feed'),
-            'id' => $this->prefix . 'google_schedule',
-            'type' => 'select',
-            'default' => 'hourly',
-            'options' => array(
-                'monthly' => __('Monthly', 'rex-product-feed'),
-                'weekly' => __('Weekly', 'rex-product-feed'),
-                'hourly' => __('Hourly', 'rex-product-feed'),
-            ),
-        ));
-
-        $month_array = range(1, 31);
-        array_unshift($month_array, "");
-        unset($month_array[0]);
-        $box->add_field(array(
-            'name' => __('Select day of month', 'rex-product-feed'),
-            'id' => $this->prefix . 'google_schedule_month',
-            'type' => 'select',
-            'default' => 1,
-            'options' => $month_array,
-            'attributes' => array(
-                'data-conditional-id' => $this->prefix . 'google_schedule',
-                'data-conditional-value' => 'monthly',
-            ),
-        ));
-
-        $box->add_field(array(
-            'name' => __('Select day of week', 'rex-product-feed'),
-            'id' => $this->prefix . 'google_schedule_week_day',
-            'type' => 'select',
-            'default' => 'monday',
-            'options' => array(
-                'monday' => 'Monday',
-                'tuesday' => 'Tuesday',
-                'wednesday' => 'Wednesday',
-                'thursday' => 'Thursday',
-                'friday' => 'Friday',
-                'saturday' => 'Saturday',
-                'sunday' => 'Sunday',
-            ),
-            'attributes' => array(
-                'data-conditional-id' => $this->prefix . 'google_schedule',
-                'data-conditional-value' => 'weekly',
-            ),
-        ));
-
-        $box->add_field(array(
-            'name' => __('Select Hour', 'rex-product-feed'),
-            'id' => $this->prefix . 'google_schedule_time',
-            'type' => 'select',
-            'default' => 1,
-            'options' => range(0, 23),
-            'after_field' => array($this, 'after_field_google_merchant_cb'),
-        ));
-    }
+		$this->rex_feed_after_field_google_merchant();
+	}
 
 
-    /**
-     * Output a message if the current page has the id of "2" (the about page)
-     * @param object $field_args Current field args
-     * @param object $field Current field object
-     */
-    function google_merchant_desc($field_args, $field)
-    {
-        echo sprintf(__('<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed'));
-    }
+	/**
+	 * Output a message if the feed merchant is google
+	 */
+	public function rex_feed_after_field_google_merchant()
+	{
+		$feed_merchant = get_post_meta( get_the_ID(), 'rex_feed_merchant', true );
 
-
-    /**
-     * Only display a metabox if the merchant is google
-     * @param object $cmb CMB2 object
-     * @return bool        True/false whether to show the metabox
-     */
-    public function cmb_only_show_google($feed)
-    {
-        $status = get_post_meta($feed->object_id, 'rex_feed_merchant', 1);
-        return 'google' === $status;
-    }
-
-
-    /**
-     * Output a message if the feed merchant is google
-     * @param object $field_args Current field args
-     * @param object $field Current field object
-     */
-    public function after_field_google_merchant_cb($field_args, $field)
-    {
-        $feed_merchant = get_post_meta($field->object_id, 'rex_feed_merchant', true);
-        // Only show feed url not empty.
-        if ($feed_merchant === 'google') {
-            $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
-            $message = __('Oops!! Access token has expired 😕. Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed');
-            if (!($rex_google_merchant->is_authenticate())) {
-                echo sprintf('<p class="google-status">%s <a href="%s">' . __('Authenticate', 'rex-product-feed') . '</a> </p>',
-                    $message,
-                    admin_url('admin.php?page=merchant_settings'));
-            } else {
-                echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
-                        ' . __('Send to google merchant', 'rex-product-feed') . '
+		if ( $feed_merchant === 'google' ) {
+			$rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
+			$message             = __( 'Oops!! Access token has expired 😕 Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed' );
+			if ( !( $rex_google_merchant->is_authenticate() ) ) {
+				echo sprintf(
+					'<p class="google-status">%s <a href="%s">' . __( 'Authenticate', 'rex-product-feed' ) . '</a> </p>',
+					$message,
+					admin_url( 'admin.php?page=merchant_settings' ) );
+			}
+			else {
+				echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
+                        ' . __( 'Send to google merchant', 'rex-product-feed' ) . '
                       </a> ';
-            }
-//            echo '<a class="btn-default" id="send-to-google" href="#">
-//                        '. __('Send to google merchant', 'rex-product-feed') .'
-//                      </a> ';
-            echo '<div class="rex-google-status"></div>';
-        }
-    }
+			}
+			echo '<div class="rex-google-status"></div>';
+		}
+	}
 
 
-    /**
-     * Update the XML File URL on Sanitization Hook.
-     *
-     * @return string
-     * @author RexTheme
-     **/
-    public function sanitize_xml_file($value, $field_args, $field)
-    {
-	    $format = $field->data_to_save[ 'rex_feed_feed_format' ];
-	    $path   = wp_upload_dir();
-	    if ( $format === 'xml' ) {
-		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.xml";
-	    }
-	    elseif ( $format === 'text' || $format === 'text_pipe') {
-		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.txt";
-	    }
-	    elseif ( $format === 'csv' || $format === 'csv_semicolon' ) {
-		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.csv";
-	    }
-	    elseif ( $format === 'json' ) {
-		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.json";
-	    }
-	    elseif ( $format === 'tsv' ) {
-		    $path = $path[ 'baseurl' ] . '/rex-feed' . "/feed-{$field->object_id}.tsv";
-	    }
-	    return esc_url( $path );
-    }
+	/**
+	 * Output a message if the current page has the id of "2" (the about page)
+	 */
+	public function rex_feed_google_merchant_desc()
+	{
+		echo sprintf( __( '<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed' ) );
+	}
 
 
-    /**
-     * @param $args
-     * @param $defaults
-     * @param $field_object
-     * @param $field_types_object
-     * @return mixed
-     */
-    public function wpfm_merchant_dropdown($args, $defaults, $field_object, $field_types_object)
-    {
-
-        $is_premium = apply_filters('wpfm_is_premium', false);
-        if ($is_premium)
-            return $args;
-
-        // Only do this for the field we want (vs all select fields)
-        if ('rex_feed_merchant' != $field_types_object->_id()) {
-            return $args;
-        }
-
-        // free vs pro merchants
-        $merchants = apply_filters('wpfm_available_merchants_status', get_option('rex_wpfm_merchant_status'));
-        $_merchants = array(
-            'custom' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Custom'
-            ),
-            'google' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Google Shopping'
-            ),
-            'google_Ad' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Google AdWords'
-            ),
-            'facebook' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Facebook'
-            ),
-            'amazon' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Amazon'
-            ),
-            'ebay' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'eBay'
-            ),
-            'adroll' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'AdRoll'
-            ),
-            'nextag' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Nextag'
-            ),
-            'pricegrabber' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Pricegrabber'
-            ),
-            'bing' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Bing'
-            ),
-            'kelkoo' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Kelkoo'
-            ),
-            'become' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Become'
-            ),
-            'shopzilla' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'ShopZilla'
-            ),
-            'shopping' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Shopping'
-            ),
-            'ibud' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Ibud'
-            ),
-            'DealsForU' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Deals4u.gr'
-            ),
-            'Bestprice' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Bestprice'
-            ),
-            'spartooFr' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'SpartooFr'
-            ),
-            'mirakl' => array(
-                'free' => true,
-                'status' => 1,
-                'name' => 'Mirakl'
-            )
-        );
-        if ($merchants) {
-            $_merchants = array_merge($_merchants, $merchants);
-        }
-        $_pro_merchants = array(
-            'ebay_mip' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'eBay (MIP)'
-            ),
-            'ebay_seller' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'eBay Seller Center'
-            ),
-            'ebay_seller_tickets' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'eBay Seller Center (Event tickets)'
-            ),
-            'bol' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'Bol.com'
-            ),
-            'wish' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'Wish.com'
-            ),
-            'fruugo' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'Fruugo'
-            ),
-            'leguide' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'Leguide'
-            ),
-            'connexity' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'Connexity'
-            ),
-            'drm' => array(
-                'free' => false,
-                'status' => 0,
-                'name' => 'Google Remarketing (DRM)'
-            )
-
-        );
-        $_merchants = array_merge($_merchants, $_pro_merchants);
-
-        if (!$is_premium) {
-            $_merchants = array_merge($_merchants, $_pro_merchants);
-        }
+	/**
+	 * Adding metaboxe for upgrade notice for pro section
+	 */
+	public function rex_feed_upgrade_notice_section()
+	{
+		add_meta_box(
+			$this->prefix . 'upgrade_notice',
+			esc_html__( 'Upgrade Notice', 'rex-product-feed' ),
+			array( $this, 'rex_feed_generate_upgrade_notice_section' ),
+			'product-feed',
+			'side',
+			'core'
+		);
+	}
 
 
-        /**
-         * result of bad planning
-         */
-        $_merchants['google']['name'] = 'Google Shopping';
-        $_merchants['google_Ad']['name'] = 'Google AdWords';
-        if (array_key_exists('drm', $_merchants))
-            $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
-        if (array_key_exists('kelkoonl', $_merchants))
-            $_merchants['kelkoonl']['name'] = 'Kelkoo.nl';
+	/**
+	 * Generates upgrade notice for pro section
+	 **/
+	public function rex_feed_generate_upgrade_notice_section()
+	{
+		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-upgrade-to-pro-notice-section.php';
+	}
 
+//  ==================================================
 
-        $saved_value = $field_object->escaped_value();
-        $value = $saved_value ? $saved_value : $field_object->args('default');
-        $options_string = '';
-        $options_string .= $field_types_object->select_option(array(
-            'label' => __('Select an option'),
-            'value' => '',
-            'checked' => !$value,
-            'disabled' => false
-        ));
+	/**
+	 * Display Feed Config Metabox.
+	 *
+	 * @return void
+	 * @author RexTheme
+	 **/
+	public function progress_config_cb()
+	{
 
-        if (array_key_exists($value, $_pro_merchants)) {
-            $value = array_keys($_merchants)[1];
-        }
-
-        foreach ($_merchants as $key => $merchant) {
-            if ($merchant['free']) {
-                if ($merchant['status']) {
-                    $options_string .= sprintf("\t" . '<option value="%s" %s>%s</option>', $key, selected($value, $key, false), $merchant['name']) . "\n";
-                }
-            } else
-                $options_string .= sprintf("\t" . '<option class="pro-merchants" value="%s"  disabled>%s</option>', $key, $merchant['name']) . "\n";
-        }
-
-        reset($_merchants);
-        $default_merchant = key($_merchants);
-
-        $defaults['options'] = $options_string;
-        $defaults['default'] = $default_merchant;
-
-        return $defaults;
-    }
+		echo '<div id="rex-feed-progress" class="rex-feed-progress">';
+		require_once plugin_dir_path( __FILE__ ) . 'partials/progress-bar.php';
+		echo '</div>';
+	}
 }

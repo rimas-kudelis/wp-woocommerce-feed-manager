@@ -64,8 +64,6 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
             );
         }
 
-		$skip_row = get_post_meta( $this->get_feed_id(), 'rex_feed_skip_row', true );
-
         foreach( $this->products as $productId ) {
             $product = wc_get_product( $productId );
 
@@ -79,6 +77,15 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
                 }
             }
 
+	        if ( !$this->include_out_of_stock ) {
+		        if ( !$product->is_in_stock() ) {
+			        continue;
+		        }
+		        elseif ( $product->is_on_backorder() ) {
+			        continue;
+		        }
+	        }
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 $variable_parent[] = $productId;
                 $variable_product = new WC_Product_Variable($productId);
@@ -91,7 +98,7 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
 
                 foreach ($atts as $key => $value) {
                     if(in_array($key, $intersect_array)) {
-                        if ( $this->rex_feed_skip_row ) {
+                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 	                        if ( $value != '' ) {
 	                        	$item->$key($value); // invoke $key as method of $item object.
 	                        }
@@ -120,7 +127,7 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
                             $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                             $atts['parent_child'] = 'child';
                             foreach ($atts as $key => $value) {
-	                            if ( $this->rex_feed_skip_row ) {
+	                            if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                            if ( $value != '' ) {
 			                            $item->$key($value); // invoke $key as method of $item object.
 		                            }
@@ -139,7 +146,7 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
                 $atts['parent_child'] = '';
                 $item = RexShoppingCustom::createItem();
                 foreach ($atts as $key => $value) {
-	                if ( $this->rex_feed_skip_row ) {
+	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                if ( $value != '' ) {
 			                $item->$key($value); // invoke $key as method of $item object.
 		                }
@@ -151,12 +158,12 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
             }
 
 	        if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
-		        if ($product->get_type() == 'variation') {
+		        if ( $product->get_type() === 'variation' ) {
 			        $variation_products[] = $productId;
 			        $item = RexShoppingCustom::createItem();
 			        $atts = $this->get_product_data($product, $product_meta_keys);
 			        foreach ($atts as $key => $value) {
-				        if ( $this->rex_feed_skip_row ) {
+				        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 					        if ( $value != '' ) {
 						        $item->$key($value); // invoke $key as method of $item object.
 					        }
@@ -178,6 +185,9 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+	    if ( $this->tbatch === $this->batch ) {
+		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+	    }
     }
 
     /**
@@ -185,7 +195,7 @@ class Rex_Product_Feed_Amazon_seller extends Rex_Product_Feed_Abstract_Generator
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-        if($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon'){
+        if($this->feed_format === 'csv'){
             return RexShoppingCustom::asCSVFeeds($this->batch);
         }elseif ($this->feed_format==='tsv'){
             return RexShoppingCustom::asTSVFeeds($this->batch);

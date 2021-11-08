@@ -89,7 +89,7 @@ class Rex_Product_Feed_Gulog_gratis extends Rex_Product_Feed_Other {
 					$item = GulogGratis::createItem();
 					$item->id($productId);
 					foreach ($atts as $key => $value) {
-						if ( $this->rex_feed_skip_row ) {
+						if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 							if ( $value != '' ) {
 								$item->$key($value); // invoke $key as method of $item object.
 							}
@@ -116,7 +116,7 @@ class Rex_Product_Feed_Gulog_gratis extends Rex_Product_Feed_Other {
 								$variation_product = wc_get_product( $variation );
 								$atts = $this->get_product_data( $variation_product, $product_meta_keys );
 								foreach ($atts as $key => $value) {
-									if ( $this->rex_feed_skip_row ) {
+									if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 										if ( $value != '' ) {
 											$item->$key($value); // invoke $key as method of $item object.
 										}
@@ -137,7 +137,7 @@ class Rex_Product_Feed_Gulog_gratis extends Rex_Product_Feed_Other {
 				$item = GulogGratis::createItem();
 				$item->id($productId);
 				foreach ($atts as $key => $value) {
-					if ( $this->rex_feed_skip_row ) {
+					if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 						if ( $value != '' ) {
 							$item->$key($value); // invoke $key as method of $item object.
 						}
@@ -155,7 +155,7 @@ class Rex_Product_Feed_Gulog_gratis extends Rex_Product_Feed_Other {
 					$item->id($productId);
 					$atts = $this->get_product_data($product, $product_meta_keys);
 					foreach ($atts as $key => $value) {
-						if ( $this->rex_feed_skip_row ) {
+						if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 							if ( $value != '' ) {
 								$item->$key($value); // invoke $key as method of $item object.
 							}
@@ -167,7 +167,7 @@ class Rex_Product_Feed_Gulog_gratis extends Rex_Product_Feed_Other {
 				}
 			}
 
-			if( $product->is_type( 'grouped' ) || $product->is_type( 'woosb' )){
+			if( $product->is_type( 'grouped' ) && $this->parent_product || $product->is_type( 'woosb' )){
 				if($this->parent_product) {
 					$group_products[] = $productId;
 					$item = GulogGratis::createItem();
@@ -175,7 +175,7 @@ class Rex_Product_Feed_Gulog_gratis extends Rex_Product_Feed_Other {
 					$atts = $this->get_product_data( $product, $product_meta_keys );
 					// add all attributes for each product.
 					foreach ($atts as $key => $value) {
-						if ( $this->rex_feed_skip_row ) {
+						if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 							if ( $value != '' ) {
 								$item->$key($value); // invoke $key as method of $item object.
 							}
@@ -208,11 +208,11 @@ class Rex_Product_Feed_Gulog_gratis extends Rex_Product_Feed_Other {
 
 		if ($this->feed_format === 'xml') {
 			return GulogGratis::asRss();
-		} elseif ($this->feed_format === 'text') {
+		} elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
 			return GulogGratis::asTxt();
 		} elseif ($this->feed_format === 'text_pipe') {
 			return GulogGratis::asTxtPipe();
-		} elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
+		} elseif ($this->feed_format === 'csv') {
 			return GulogGratis::asCsv();
 		}
 		return GulogGratis::asRss();

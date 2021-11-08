@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.8.1
 Requires PHP: 7.0
-Stable tag:  6.7.5
+Stable tag:  7.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -439,7 +439,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 * Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender, Color)
 * Ability To Exclude Tax From Structured Data Prices
 * Option To Fix WooCommerce's (Json-Ld) Structured Data Bug
-* 9 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)
+* 6 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)
 * Auto-suggestion Product Filter
 
 **Supported Merchants In Pro Version**
@@ -707,11 +707,18 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.0.0 (2021-11-08) =
+* Added: New user interface
+* Added: Exclude out of stock products option added
+* Added: WPFM custom fields are added for the grouped and the affiliate products
+* Fixed: eBay feed fix
+* Fixed: Guloggratis.dk feed template updated
+* Fixed: WooComposite plugin not working issue fixed
+
 = 6.7.5 (2021-10-21) =
 * Added: GulogGratis.dk
 * Fixed: Dropship Mantel plugin error fixed
 * Fixed: WPML PHP error fixed
-
 
 = 6.7.4 (2021-10-04) =
 * Fixed: UTF-8 CSV issue updated

@@ -162,7 +162,6 @@ class Rex_Feed_Scheduler {
      * @since    2.0.0
      */
     public function rex_feed_cron_handler() {
-
         $this->configure_merchant_object(true );
         $this->start_batch_processing();
     }
@@ -206,6 +205,7 @@ class Rex_Feed_Scheduler {
 		$analytics_params        = $analytics === 'on' ? get_post_meta( $feed_id, 'rex_feed_analytics_params', true ) : [];
 		$feed_filter             = get_post_meta( $feed_id, 'rex_feed_feed_config_filter', true );
 		$product_scope           = get_post_meta( $feed_id, 'rex_feed_products', true );
+		$include_out_of_stock    = get_post_meta( $feed_id, 'rex_feed_include_out_of_stock', true );
 		$include_variations      = get_post_meta( $feed_id, 'rex_feed_variations', true ) === 'yes';
 		$variable_product        = get_post_meta( $feed_id, 'rex_feed_variable_product', true ) === 'yes';
 		$parent_product          = get_post_meta( $feed_id, 'rex_feed_parent_product', true ) === 'yes';
@@ -218,6 +218,8 @@ class Rex_Feed_Scheduler {
 			get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
 		$aelia_currency          = get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
 		$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
+		$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
+
 		$terms_array             = array();
 		$ignored_scope           = array( 'all', 'filter', 'product_filter', 'featured', '' );
 
@@ -230,7 +232,7 @@ class Rex_Feed_Scheduler {
 			}
 		}
 
-		$payload = array(
+		return array(
 			'merchant'                => $merchant,
 			'feed_format'             => $feed_format,
 			'feed_config'             => $feed_config,
@@ -250,6 +252,7 @@ class Rex_Feed_Scheduler {
 			'feed_filter'             => $feed_filter,
 			'product_condition'       => $product_condition,
 			'include_variations'      => $include_variations,
+			'include_out_of_stock'    => $include_out_of_stock,
 			'variable_product'        => $variable_product,
 			'parent_product'          => $parent_product,
 			'exclude_hidden_products' => $exclude_hidden_products,
@@ -260,10 +263,8 @@ class Rex_Feed_Scheduler {
 			'analytics_params'        => $analytics_params,
 			'aelia_currency'          => $aelia_currency,
 			'skip_row'                => $skip_row,
+			'feed_separator'          => $feed_separator
 		);
-
-
-		return $payload;
 	}
 
 
@@ -275,13 +276,12 @@ class Rex_Feed_Scheduler {
      * @param string $schedule
      */
     private function configure_merchant_object( $cron = false, $schedule = 'hourly' ) {
-
 	    $this->feed_ids = $this->get_feeds( $schedule );
 
 	    if ( $this->feed_ids ) {
 		    foreach ( $this->feed_ids as $key => $feed_id ) {
 
-			    $products_info = Rex_Product_Feed_Ajax::get_product_number( array() );
+			    $products_info = Rex_Product_Feed_Ajax::get_product_number( array( 'feed_id' => $feed_id ) );
 			    $per_batch     = $products_info[ 'per_batch' ];
 			    $total_batches = $products_info[ 'total_batch' ];
 			    $offset        = 0;
@@ -417,6 +417,7 @@ class Rex_Feed_Scheduler {
 			    }*/
 		    }
 	    }
+
 	    $this->background_process->save()->dispatch();
     }
 

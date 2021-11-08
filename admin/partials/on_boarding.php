@@ -11,29 +11,26 @@
  * @subpackage Rex_Product_Feed/admin/partials
  */
 
-$is_premium_activated = apply_filters('wpfm_is_premium_activate', false);
-$custom_field = get_option('rex-wpfm-product-custom-field');
-$amazon_custom_field = get_option('wpfm_amazon_fields', 'no');
-$pa_field = get_option('rex-wpfm-product-pa-field');
-$structured_data = get_option('rex-wpfm-product-structured-data');
-$exclude_tax = get_option('rex-wpfm-product-structured-data-exclude-tax');
-$wpfm_cache_ttl = get_option('wpfm_cache_ttl', 3 * HOUR_IN_SECONDS);
-$wpfm_allow_private_products = get_option('wpfm_allow_private', 'no');
+$is_premium_activated        = apply_filters( 'wpfm_is_premium', false );
+$custom_field                = get_option( 'rex-wpfm-product-custom-field' );
+$pa_field                    = get_option( 'rex-wpfm-product-pa-field' );
+$structured_data             = get_option( 'rex-wpfm-product-structured-data' );
+$exclude_tax                 = get_option( 'rex-wpfm-product-structured-data-exclude-tax' );
+$wpfm_cache_ttl              = get_option( 'wpfm_cache_ttl', 3 * HOUR_IN_SECONDS );
+$wpfm_allow_private_products = get_option( 'wpfm_allow_private', 'no' );
 
-if ($is_premium_activated) {
-    $per_batch = get_option('rex-wpfm-product-per-batch', 50);
-} else {
-    $per_batch = get_option('rex-wpfm-product-per-batch', 50) > 50 ? 50 : get_option('rex-wpfm-product-per-batch', 50);
+if ( $is_premium_activated ) {
+	$per_batch = get_option( 'rex-wpfm-product-per-batch', 50 );
+}
+else {
+	$per_batch = get_option( 'rex-wpfm-product-per-batch', 50 ) > 50 ? 50 : get_option( 'rex-wpfm-product-per-batch', 50 );
 }
 
-$wpfm_fb_pixel_enabled = get_option('wpfm_fb_pixel_enabled', 'no');
-$wpfm_fb_pixel_data = get_option('wpfm_fb_pixel_value');
-$wpfm_enable_log = get_option('wpfm_enable_log');
+$wpfm_fb_pixel_enabled = get_option( 'wpfm_fb_pixel_enabled', 'no' );
+$wpfm_fb_pixel_data    = get_option( 'wpfm_fb_pixel_value' );
+$wpfm_enable_log       = get_option( 'wpfm_enable_log' );
 
-$pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/');
-
-//$wpfm_drm_pixel_enabled = get_option('wpfm_drm_pixel_enabled', 'no');
-//$wpfm_drm_pixel_data = get_option('wpfm_drm_pixel_value');
+$pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
 ?>
 
 <div class="columns">
@@ -259,8 +256,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
 
                                         <div class="rex-general__logo-block">
                                             <div class="upgrade-pro">
-                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/logo-4.png' ?>"
-                                                     alt="logo" class="img-fluid">
+                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm_logo.png' ?>" alt="wpfm-logo" class="img-fluid">
 
                                                 <?php if (!$is_premium_activated) { ?>
                                                     <a class="btn-default"
@@ -381,19 +377,19 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                            target="_blank"><?php echo __('Get It Now', 'rex-product-feed') ?></a>
                                     </div>
                                 </div>
-                                <!--                                  rex-general__single-block-->
+                                <!--rex-general__single-block-->
 
                                 <div class="rex-general__single-block vas">
                                     <div class="header">
-                                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/variation-swatch.png' ?>"
+                                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfunnels-logo.png' ?>"
                                              class="title-icon" alt="variation-swatch">
-                                        <h4><?php echo __('Variation Swatches', 'rex-product-feed') ?></h4>
+                                        <h4><?php echo __('WPFunnels', 'rex-product-feed') ?></h4>
                                     </div>
 
                                     <div class="body">
-                                        <p><?php _e('Use engaging color, image, or text swatches to display your product variations and make your product page more attractive.', 'rex-product-feed'); ?></p>
+                                        <p><?php _e('Create highly converting Sales Funnels within WordPress using a visual drag and drop funnel builder and increase your online sales revenue easily.', 'rex-product-feed'); ?></p>
                                         <a class="btn-default"
-                                           href="<?php echo apply_filters('wpfm_variation_link', 'https://wordpress.org/plugins/rex-variation-swatches-for-woocommerce/'); ?>"
+                                           href="<?php echo apply_filters('wpfm_wpfunnels_link', 'https://wordpress.org/plugins/wpfunnels/'); ?>"
                                            target="_blank"><?php echo __('Get It Now', 'rex-product-feed') ?></a>
                                     </div>
                                 </div>
@@ -417,1014 +413,14 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                             <h3 class="merchant-title"><?php echo __('Available Merchants', 'rex-product-feed') ?></h3>
                             <?php
                             // free vs pro merchants
-                            $_merchants = array(
-	                            'custom'                          => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Custom'
-	                            ),
-	                            'google'                          => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Google Shopping'
-	                            ),
-	                            'google_custom_search_ads'        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Google Custom Search Ads'
-	                            ),
-	                            'google_Ad'                       => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Google Dynamic Display Ads'
-	                            ),
-	                            'google_local_products'           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Google Local Products'
-	                            ),
-	                            'google_local_products_inventory' => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Google Local Products Inventory'
-	                            ),
-	                            'google_merchant_promotion'       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Google Merchant Promotion Feed'
-	                            ),
-	                            'google_dsa'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Google Dynamic Search Ads'
-	                            ),
-	                            'google_shopping_actions'         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Google Shopping Actions'
-	                            ),
-	                            'facebook'                        => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Facebook'
-	                            ),
-	                            'instagram'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Instagram (by Facebook)'
-	                            ),
-	                            'amazon_seller'                   => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Amazon Seller'
-	                            ),
-	                            'adroll'                          => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'AdRoll'
-	                            ),
-	                            'nextag'                          => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Nextag'
-	                            ),
-	                            'pricegrabber'                    => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Pricegrabber'
-	                            ),
-	                            'bing'                            => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Bing'
-	                            ),
-	                            'cercavino'                       => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Cercavino'
-	                            ),
-	                            'trovino'                         => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Trovino'
-	                            ),
-	                            'bing_image'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Bing Image'
-	                            ),
-	                            'kelkoo'                          => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Kelkoo'
-	                            ),
-	                            'become'                          => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Become'
-	                            ),
-	                            'shopzilla'                       => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'ShopZilla'
-	                            ),
-	                            'shopping'                        => array(
-		                            'free'   => true,
-		                            'status' => 1,
-		                            'name'   => 'Shopping'
-	                            ),
-	                            'pricerunner'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'PriceRunner'
-	                            ),
-	                            'billiger'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Billiger'
-	                            ),
-	                            'vergelijk'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Vergelijk'
-	                            ),
-	                            'marktplaats'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Marktplaats'
-	                            ),
-	                            'beslist'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Beslist'
-	                            ),
-	                            'daisycon'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Daisycon'
-	                            ),
-	                            'twenga'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Twenga'
-	                            ),
-	                            'kieskeurig'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kieskeurig.nl'
-	                            ),
-	                            'yandex'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Yandex'
-	                            ),
-	                            'spartoo'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Spartoo.nl'
-	                            ),
-	                            'spartooFr'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'SpartooFr'
-	                            ),
-	                            'tweakers'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Tweakers.nl'
-	                            ),
-	                            'sooqr'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Sooqr'
-	                            ),
-	                            'heureka'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Heureka'
-	                            ),
-	                            'koopkeus'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Koopkeus'
-	                            ),
-	                            'scoupz'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Scoupz'
-	                            ),
-	                            'cdiscount'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Cdiscount'
-	                            ),
-	                            'kelkoonl'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kelkoo.nl'
-	                            ),
-	                            'uvinum'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Uvinum / DrinsksAndCo'
-	                            ),
-	                            'idealo'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Idealo'
-	                            ),
-	                            'rakuten'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Rakuten'
-	                            ),
-	                            'pricesearcher'                   => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Pricesearcher'
-	                            ),
-	                            'pricemasher'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Pricemasher'
-	                            ),
-	                            'pinterest'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Pinterest'
-	                            ),
-	                            'fashionchick'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Fashionchick'
-	                            ),
-	                            'ceneo'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Ceneo'
-	                            ),
-	                            'choozen'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Choozen'
-	                            ),
-	                            'rss'                             => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'RSS'
-	                            ),
-	                            'ciao'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Ciao'
-	                            ),
-	                            'prisjkat'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Pricespy/Prisjkat'
-	                            ),
-	                            'crowdfox'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Crowdfox'
-	                            ),
-	                            'powerreviews'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'PowerReviews'
-	                            ),
-	                            'trovaprezzi'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Trovaprezzi'
-	                            ),
-	                            'zbozi'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Zbozi'
-	                            ),
-	                            'liveintent'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'LiveIntent'
-	                            ),
-	                            'skroutz'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Skroutz'
-	                            ),
-	                            'otto'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Otto'
-	                            ),
-	                            'sears'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Sears'
-	                            ),
-	                            'ammoseek'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'AmmoSeek'
-	                            ),
-	                            'fnac'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Fnac'
-	                            ),
-	                            'zalando'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Zalando'
-	                            ),
-	                            'zalando_stock_update'            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Zalando Stock Update'
-	                            ),
-	                            'pixmania'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Pixmania'
-	                            ),
-	                            'coolblue'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Coolblue'
-	                            ),
-	                            'shopmania'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'ShopMania'
-	                            ),
-	                            'kleding'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kleding'
-	                            ),
-	                            'ladenzeile'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Ladenzeile'
-	                            ),
-	                            'preis'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Preis'
-	                            ),
-	                            'winesearcher'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Winesearcher'
-	                            ),
-	                            'walmart'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Walmart'
-	                            ),
-	                            'snapchat'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Snapchat'
-	                            ),
-	                            'verizon'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Yahoo/Verizon Dynamic Product Ads'
-	                            ),
-	                            'kelkoo_group'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kelkoo Group'
-	                            ),
-	                            'target'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Target'
-	                            ),
-	                            'pepperjam'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Pepperjam'
-	                            ),
-	                            'cj_affiliate'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'CJ Affiliate'
-	                            ),
-	                            'guenstiger'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Guenstiger'
-	                            ),
-	                            'hood'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Hood'
-	                            ),
-	                            'livingo'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Livingo'
-	                            ),
-	                            'jet'                             => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Jet'
-	                            ),
-	                            'bonanza'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Bonanza'
-	                            ),
-	                            'adcell'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Adcell'
-	                            ),
-	                            'adform'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Adform'
-	                            ),
-	                            'stylefruits'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Stylefruits'
-	                            ),
-	                            'medizinfuchs'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Medizinfuchs'
-	                            ),
-	                            'moebel'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Moebel'
-	                            ),
-	                            'restposten'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Restposten'
-	                            ),
-	                            'sparmedo'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Sparmedo'
-	                            ),
-	                            'whiskymarketplace'               => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Whiskymarketplace'
-	                            ),
-	                            'newegg'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'NewEgg'
-	                            ),
-	                            '123i'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => '123I'
-	                            ),
-	                            'adcrowd'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Adcrowd'
-	                            ),
-	                            'bikeexchange'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Bike Exchange'
-	                            ),
-	                            'cenowarka'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Cenowarka'
-	                            ),
-	                            'cezigue'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Cezigue'
-	                            ),
-	                            'check24'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Check24'
-	                            ),
-	                            'clang'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Clang'
-	                            ),
-	                            'cherchons'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Cherchons'
-	                            ),
-	                            'boetiek'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Boetiek B.V'
-	                            ),
-	                            'comparer'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Comparer'
-	                            ),
-	                            'converto'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Converto'
-	                            ),
-	                            'coolshop'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Coolshop'
-	                            ),
-	                            'commerce_connector'              => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Commerce Connector'
-	                            ),
-	                            'everysize'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Everysize'
-	                            ),
-	                            'encuentraprecios'                => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Encuentraprecios'
-	                            ),
-	                            'geizhals'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Geizhals'
-	                            ),
-	                            'geizkragen'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Geizkragen'
-	                            ),
-	                            'giftboxx'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Giftboxx'
-	                            ),
-	                            'go_banana'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Go Banana'
-	                            ),
-	                            'goed_geplaatst'                  => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Goed Geplaatst'
-	                            ),
-	                            'grosshandel'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Grosshandel'
-	                            ),
-	                            'hardware'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Hardware.info'
-	                            ),
-	                            'hatch'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Hatch'
-	                            ),
-	                            'hintaopas'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Hintaopas'
-	                            ),
-	                            'fyndiq'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Fyndiq.se'
-	                            ),
-	                            'fasha'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Fasha'
-	                            ),
-	                            'realde'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Real.de'
-	                            ),
-	                            'hintaseuranta'                   => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Hintaseuranta'
-	                            ),
-	                            'family_blend'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Family Blend'
-	                            ),
-	                            'hitmeister'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Hitmeister'
-	                            ),
-	                            'lazada'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Lazada'
-	                            ),
-	                            'get_price'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'GetPrice.com.au'
-	                            ),
-	                            'home_tiger'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'HomeTiger'
-	                            ),
-	                            'jurkjes'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Jurkjes.nl'
-	                            ),
-	                            'kiesproduct'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kiesproduct'
-	                            ),
-	                            'kiyoh'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kiyoh'
-	                            ),
-	                            'kompario'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kompario'
-	                            ),
-	                            'kwanko'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kwanko'
-	                            ),
-	                            'ledenicheur'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Le Dénicheur'
-	                            ),
-	                            'les_bonnes_bouilles'             => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Les Bonnes Bouilles'
-	                            ),
-	                            'lions_home'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Lions Home'
-	                            ),
-	                            'locamo'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Locamo'
-	                            ),
-	                            'logicsale'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Logicsale'
-	                            ),
-	                            'google_manufacturer_center'      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Google Manufacturer Center'
-	                            ),
-	                            'pronto'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Pronto'
-	                            ),
-	                            'awin'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Awin'
-	                            ),
-	                            'indeed'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Indeed'
-	                            ),
-	                            'incurvy'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Incurvy'
-	                            ),
-	                            'jobbird'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Jobbird'
-	                            ),
-	                            'job_board_io'                    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'JobBoard.io'
-	                            ),
-	                            'joblift'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Joblift'
-	                            ),
-	                            'kuantokusta'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'KuantoKusta'
-	                            ),
-	                            'kauftipp'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Kauftipp'
-	                            ),
-	                            'vivino'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Vivino'
-	                            ),
-	                            'rakuten_advertising'             => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Rakuten Advertising'
-	                            ),
-	                            'pricefalls'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Pricefalls Feed'
-	                            ),
-	                            'clubic'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Clubic'
-	                            ),
-	                            'criteo'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Criteo'
-	                            ),
-	                            'shopalike'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Shopalike'
-	                            ),
-	                            'compartner'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Compartner'
-	                            ),
-	                            'adtraction'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Adtraction'
-	                            ),
-	                            'admitad'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Admitad'
-	                            ),
-	                            'bloomville'                      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Bloomville'
-	                            ),
-	                            'datatrics'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Datatrics'
-	                            ),
-	                            'deltaprojects'                   => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Delta Projects'
-	                            ),
-	                            'drezzy'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Drezzy'
-	                            ),
-	                            'domodi'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Domodi'
-	                            ),
-	                            'doofinder'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Doofinder'
-	                            ),
-	                            'homebook'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Homebook.pl'
-	                            ),
-	                            'homedeco'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Home Deco'
-	                            ),
-	                            'glami'                           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Glami'
-	                            ),
-	                            'fashiola'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Fashiola'
-	                            ),
-	                            'emarts'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Emarts'
-	                            ),
-	                            'epoq'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Epoq'
-	                            ),
-	                            'grupo_zap'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Grupo Zap'
-	                            ),
-	                            'emag'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Emag'
-	                            ),
-	                            'lyst'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Lyst'
-	                            ),
-	                            'listupp'                         => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Listupp'
-	                            ),
-	                            'hertie'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Hertie'
-	                            ),
-	                            'webgains'                        => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => ' Webgains'
-	                            ),
-	                            'vidaXL'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'VidaXL'
-	                            ),
-	                            'mydeal'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'My Deal'
-	                            ),
-	                            'amazon_seller_bed_amp'           => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Amazon Seller Bed&Amp'
-	                            ),
-	                            'idealo_de'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Idealo.de'
-	                            ),
-	                            'favi'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Favi - Compari & Árukereső'
-	                            ),
-	                            'ibud'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Ibud'
-	                            ),
-	                            'google_local_inventory_ads'      => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Google Local Inventory Ads'
-	                            ),
-	                            'DealsForU'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Deals4u.gr'
-	                            ),
-	                            'Bestprice'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Bestprice'
-	                            ),
-	                            'mirakl'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Mirakl'
-	                            ),
-	                            'lesitedumif'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Lesitedumif'
-	                            ),
-	                            'shopee'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Shopee'
-	                            ),
-	                            'connexity'                       => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Connexity'
-	                            ),
-	                            'amazon_it_collane'               => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Amazon.it Collane'
-	                            ),
-	                            'amazon_accessories_and_scarf'    => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Amazon Accessories And Scarf'
-	                            ),
-	                            'ebay_seller'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'eBay Seller Center'
-	                            ),
-	                            'ebay_seller_tickets'             => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'eBay Seller Center (Event tickets)'
-	                            ),
-	                            'bol'                             => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Bol.com'
-	                            ),
-	                            'wish'                            => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Wish.com'
-	                            ),
-	                            'fruugo'                          => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'Fruugo'
-	                            ),
-	                            'gulog_gratis'                     => array(
-		                            'free'   => true,
-		                            'status' => 0,
-		                            'name'   => 'GulogGratis.dk'
-	                            ),
-                            );
-
-                            $_pro_merchants = array(
-	                            'drm'                          => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Google Remarketing (DRM)'
-	                            ),
-	                            'google_review'                => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Google Review'
-	                            ),
-	                            'ebay_mip'                     => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'eBay (MIP)'
-	                            ),
-	                            'leguide'                      => array(
-		                            'free'   => false,
-		                            'status' => 0,
-		                            'name'   => 'Leguide'
-	                            ),
-	                            
-
-                            );
-                            $_merchants = array_merge($_merchants, $_pro_merchants);
-
-                            $merchants = get_option('rex_wpfm_merchant_status');
-
-                            if ($merchants) {
-                                $_merchants = array_merge($_merchants, $merchants);
-                            }
+                            $all_merchants  = wpfm_get_merchant_lits();
+                            $_merchants     = $all_merchants[ 'popular' ];
 
                             if (!$is_premium_activated) {
-                                $_merchants = array_merge($_merchants, $_pro_merchants);
+	                            $_merchants = array_merge($_merchants, $all_merchants[ 'pro_merchants' ]);
                             }
+
+                            $_merchants = array_merge($_merchants, $all_merchants[ 'free_merchants' ]);
 
 
                             /**
@@ -1433,8 +429,6 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                             $_merchants['google']['name'] = 'Google Shopping';
                             $_merchants['google_Ad']['name'] = 'Google AdWords';
                             $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
-
-                            $_merchants = apply_filters('rex_wpfm_all_merchant',$_merchants);
                             
                             ?>
                             <?php foreach ($_merchants as $key => $merchant):?>
@@ -1466,24 +460,24 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                         <?php } ?>
 
                                         <span class="title"><?php echo $merchant['name']; ?></span>
-                                        <?php
-                                        $checked = $merchant['status'] ? 'checked' : '';
-                                        $is_free = $merchant['free'] ? true : false;
-                                        $name = $merchant['name'];
-
-                                        ?>
-                                        <div class="switch <?php echo $disabled; ?>">
-                                            <div class="wpfm-switcher">
-                                                <input class="switch-input merchant-change"
-                                                       type="checkbox" <?php echo $checked; ?> <?php echo $disabled; ?>
-                                                       id="switcher-<?php echo strtolower($key); ?>"
-                                                       data-value="<?php echo $key; ?>"
-                                                       data-is-free="<?php echo $is_free; ?>"
-                                                       data-name="<?php echo ucfirst($name); ?>">
-                                                <label class="lever"
-                                                       for="switcher-<?php echo strtolower($key); ?>"></label>
-                                            </div>
-                                        </div>
+<!--                                        --><?php
+//                                        $checked = $merchant['status'] ? 'checked' : '';
+//                                        $is_free = $merchant['free'] ? true : false;
+//                                        $name = $merchant['name'];
+//
+//                                        ?>
+<!--                                        <div class="switch --><?php //echo $disabled; ?><!--">-->
+<!--                                            <div class="wpfm-switcher">-->
+<!--                                                <input class="switch-input merchant-change"-->
+<!--                                                       type="checkbox" --><?php //echo $checked; ?><!-- --><?php //echo $disabled; ?>
+<!--                                                       id="switcher---><?php //echo strtolower($key); ?><!--"-->
+<!--                                                       data-value="--><?php //echo $key; ?><!--"-->
+<!--                                                       data-is-free="--><?php //echo $is_free; ?><!--"-->
+<!--                                                       data-name="--><?php //echo ucfirst($name); ?><!--">-->
+<!--                                                <label class="lever"-->
+<!--                                                       for="switcher---><?php //echo strtolower($key); ?><!--"></label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
                                     </div>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -1504,7 +498,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                             <h3 class="merchant-title"><?php echo __('Controls', 'rex-product-feed'); ?> </h3>
 
                             <div class="single-merchant product-batch">
-                                <span class="title"><?php echo __('Product(s) per batch', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Product(s) per batch (Free users cannot generate more than 50 products. For free users it will run only 1 batch)', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <form id="wpfm-per-batch" class="wpfm-per-batch">
                                         <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch"
@@ -1564,33 +558,6 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                         <button type="submit" class="save-fb-pixel"><span>save</span> <i
                                                     class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                     </form>
-                                </div>
-                            </div>
-
-                            <div class="single-merchant exclude-tax <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
-                                <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro"
-                                       class="wpfm-pro-cta">
-                                        <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
-                                    </a>
-                                <?php } ?>
-
-                                <span class="title"><?php echo __('Add custom fields for Amazon', 'rex-product-feed'); ?></span>
-                                <div class="switch">
-                                    <?php
-                                    if (!$is_premium_activated) {
-                                        $disabled = 'disabled';
-                                        $checked = '';
-                                    } else {
-                                        $disabled = '';
-                                        $checked = $amazon_custom_field === 'yes' ? 'checked' : '';
-                                    }
-                                    ?>
-                                    <div class="wpfm-switcher">
-                                        <input class="switch-input" type="checkbox"
-                                               id="rex-product-custom-field-amazon" <?php echo $checked; ?> <?php echo $disabled; ?>>
-                                        <label class="lever" for="rex-product-custom-field-amazon"></label>
-                                    </div>
                                 </div>
                             </div>
 
@@ -1707,36 +674,6 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                 </div>
                             </div>
 
-
-                            <div class="single-merchant detailed-product detailed-merchants">
-                                <span class="title"><?php echo __('WPFM cache TTL', 'rex-product-feed'); ?></span>
-                                <div class="wpfm-dropdown">
-                                    <form id="wpfm-transient-settings" class="wpfm-transient-settings">
-                                        <select id="wpfm_cache_ttl" name="wpfm_cache_ttl">
-                                            <option value="0" <?php selected($wpfm_cache_ttl, 0); ?>><?php echo __('No Expiration', 'rex-product-feed'); ?></option>
-                                            <option value="3600" <?php selected($wpfm_cache_ttl, 3600); ?>>1 hour
-                                            </option>
-                                            <option value="10800" <?php selected($wpfm_cache_ttl, 10800); ?>>3 hours
-                                            </option>
-                                            <option value="21600" <?php selected($wpfm_cache_ttl, 21600); ?>>6 hours
-                                            </option>
-                                            <option value="43200" <?php selected($wpfm_cache_ttl, 43200); ?>>12 hours
-                                            </option>
-                                            <option value="86400" <?php selected($wpfm_cache_ttl, 86400); ?>>24 hours
-                                            </option>
-                                            <option value="604800" <?php selected($wpfm_cache_ttl, 604800); ?>>1 week
-                                            </option>
-                                        </select>
-                                        <span class="helper-text"><?php echo __('When the cache will be expired.', 'rex-product-feed'); ?></span>
-                                        <button type="submit" class="save-transient-button"><span>save</span> <i
-                                                    class="fa fa-spinner fa-pulse fa-fw"></i></button>
-                                    </form>
-                                    <button id="wpfm-purge-cache"
-                                            class="wpfm-purge-cache"><?php echo __('Purge Cache', 'rex-product-feed'); ?>
-                                        <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
-                                </div>
-                            </div>
-
                             <div class="single-merchant detailed-product">
                                 <span class="title"><?php echo __('Allow private products', 'rex-product-feed'); ?></span>
                                 <div class="switch">
@@ -1749,6 +686,30 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                                id="rex-product-allow-private" <?php echo $checked; ?> <?php echo $disabled; ?>>
                                         <label class="lever" for="rex-product-allow-private"></label>
                                     </div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-merchant detailed-product detailed-merchants">
+                                <span class="title"><?php echo __('WPFM cache TTL', 'rex-product-feed'); ?></span>
+                                <div class="wpfm-dropdown">
+                                    <form id="wpfm-transient-settings" class="wpfm-transient-settings">
+                                        <select id="wpfm_cache_ttl" name="wpfm_cache_ttl">
+                                            <option value="0" <?php selected($wpfm_cache_ttl, 0); ?>><?php echo __('No Expiration', 'rex-product-feed'); ?></option>
+                                            <option value="3600" <?php selected($wpfm_cache_ttl, 3600); ?>>1 hour</option>
+                                            <option value="10800" <?php selected($wpfm_cache_ttl, 10800); ?>>3 hours</option>
+                                            <option value="21600" <?php selected($wpfm_cache_ttl, 21600); ?>>6 hours</option>
+                                            <option value="43200" <?php selected($wpfm_cache_ttl, 43200); ?>>12 hours</option>
+                                            <option value="86400" <?php selected($wpfm_cache_ttl, 86400); ?>>24 hours</option>
+                                            <option value="604800" <?php selected($wpfm_cache_ttl, 604800); ?>>1 week</option>
+                                        </select>
+                                        <span class="helper-text"><?php echo __('When the cache will be expired.', 'rex-product-feed'); ?></span>
+                                        <button type="submit" class="save-transient-button"><span>save</span> <i
+                                                    class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                    </form>
+                                    <button id="wpfm-purge-cache" class="wpfm-purge-cache"><?php echo __('Purge Cache', 'rex-product-feed'); ?>
+                                        <i class="fa fa-spinner fa-pulse fa-fw"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1890,7 +851,7 @@ $pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-wooco
                                         <li class="item"><?php echo __('Ability To Exclude Tax From Structured Data Prices', 'rex-product-feed'); ?></li>
                                         <li class="item"><?php echo __('Option To Fix WooCommerce’s (Json-Ld) Structured Data Bug', 'rex-product-feed'); ?></li>
                                         <li class="item"><?php echo __('Custom Batch configuration', 'rex-product-feed'); ?></li>
-                                        <li class="item"><?php echo __('9 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)', 'rex-product-feed'); ?></li>
+                                        <li class="item"><?php echo __('6 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)', 'rex-product-feed'); ?></li>
                                     </ul>
                                     <a href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro"
                                        target="_blank"

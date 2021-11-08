@@ -79,6 +79,15 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
+	        if ( !$this->include_out_of_stock ) {
+		        if ( !$product->is_in_stock() ) {
+			        continue;
+		        }
+		        elseif ( $product->is_on_backorder() ) {
+			        continue;
+		        }
+	        }
+
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
@@ -87,7 +96,7 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                     $atts = $this->get_product_data( $variable_product, $product_meta_keys );
                     $item = DaisyConShopping::createItem();
                     foreach ($atts as $key => $value) {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -111,7 +120,7 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                                 $variation_product = wc_get_product( $variation );
                                 $atts = $this->get_product_data( $variation_product, $product_meta_keys );
                                 foreach ($atts as $key => $value) {
-	                                if ( $this->rex_feed_skip_row ) {
+	                                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                                if ( $value != '' ) {
 			                                $item->$key($value); // invoke $key as method of $item object.
 		                                }
@@ -131,7 +140,7 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 $item = DaisyConShopping::createItem();
                 foreach ($atts as $key => $value) {
-	                if ( $this->rex_feed_skip_row ) {
+	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                if ( $value != '' ) {
 			                $item->$key($value); // invoke $key as method of $item object.
 		                }
@@ -143,12 +152,12 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
-                if ($product->get_type() == 'variation') {
+                if ( $product->get_type() === 'variation' ) {
                     $variation_products[] = $productId;
                     $item = DaisyConShopping::createItem();
                     $atts = $this->get_product_data($product, $product_meta_keys);
                     foreach ($atts as $key => $value) {
-	                    if ( $this->rex_feed_skip_row ) {
+	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                    if ( $value != '' ) {
 			                    $item->$key($value); // invoke $key as method of $item object.
 		                    }
@@ -160,13 +169,13 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if( $product->is_type( 'grouped' ) || $product->is_type( 'woosb' )){
+            if( $product->is_type( 'grouped' ) && $this->parent_product || $product->is_type( 'woosb' )){
                 $group_products[] = $productId;
                 $item = DaisyConShopping::createItem();
                 $atts = $this->get_product_data( $product, $product_meta_keys );
                 // add all attributes for each product.
                 foreach ($atts as $key => $value) {
-	                if ( $this->rex_feed_skip_row ) {
+	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		                if ( $value != '' ) {
 			                $item->$key($value); // invoke $key as method of $item object.
 		                }
@@ -187,6 +196,9 @@ class Rex_Product_Feed_Daisycon extends Rex_Product_Feed_Abstract_Generator {
         );
 
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+	    if ( $this->tbatch === $this->batch ) {
+		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+	    }
     }
 
     public function footer_replace() {

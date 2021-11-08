@@ -1,21 +1,20 @@
-(function($) {
+(function ( $ ) {
     'use strict';
 
     var progressWidth = 0;
     var deferred = $.Deferred();
     var promise = deferred.promise();
 
-    $(function() {
-        $(".meter > span").each(function() {
-            $(this)
-                .data("origWidth", $(this).width())
-                .width(0)
-                .animate({
-                    width: $(this).data("origWidth")
-                }, 1200);
-        });
-    });
-
+    $( function () {
+        $( ".meter > span" ).each( function () {
+            $( this )
+                .data( "origWidth", $( this ).width() )
+                .width( 0 )
+                .animate( {
+                    width: $( this ).data( "origWidth" )
+                }, 1200 );
+        } );
+    } );
 
     /**
      * All of the code for your admin-facing JavaScript source
@@ -45,70 +44,64 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
-    $(document).ready(function() {
-        $('#rex_feed_products select, #cmb2-metabox-rex_feed_google_merchant select').niceSelect();
-        //$('.ui-timepicker-select').formSelect('destroy');
-
-        if ($('#rex_feed_xml_file').val() == '') {
-            $('#rex_feed_file_link').slideUp('fast');
+    $( document ).on( 'ready', function ( event ) {
+        if ( rex_wpfm_ajax.current_screen === 'rex_feed_edit' ) {
+            rex_feed_niceselect( event );
+            rex_feed_ebay_seller_fields();
+            rex_feed_load_config_table( event );
+            rex_feed_show_analytics_params( event );
+            rex_feed_view_filter_metaboxes( event );
         }
+        else if ( rex_wpfm_ajax.current_screen === 'add' ) {
+            rex_feed_load_config_table( event );
+        }
+        else if ( rex_wpfm_ajax.current_screen === 'product-feed_page_wpfm_dashboard' ) {
+            rex_feed_settings_tab( event );
+        }
+        rex_feed_show_review_request( event );
 
-
-        //---------popup when click disabled input-------
-        $(".single-merchant.wpfm-pro .wpfm-pro-cta").on("click", function(e) {
-            e.preventDefault();
-            $(".premium-merchant-alert").addClass("show-alert");
+        $('.rex-merchant-list-select2').select2({
+            placeholder: "Select your merchant",
         });
-
-        $(".premium-merchant-alert .close, .premium-merchant-alert button.close, .premium-merchant-alert").on("click", function() {
-            $(".premium-merchant-alert").removeClass("show-alert");
-        });
-
-        $(".premium-merchant-alert .alert-box").on("click", function(e) {
-            e.stopPropagation();
-        });
-
-
-    });
+    } );
 
     /**
      * Add a new table-row and update it's
      */
-    $(document).on('click', '#rex-new-attr', function() {
-        var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
-        rowId = parseInt(rowId) + 1;
-        var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
-        var parent = $(this).siblings('#config-table').parent();
+    $( document ).on( 'click', '#rex-new-attr', function () {
+        var rowId = $( this ).parent().siblings( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
+        rowId = parseInt( rowId ) + 1;
+        var lastrow = $( this ).parent().siblings( '#config-table' ).find( 'tbody tr:last' );
+        var parent = $( this ).parent().siblings( '#config-table' ).parent();
 
-        if (parent.hasClass('rex-feed-config-filter')) {
+        if ( parent.hasClass( 'rex-feed-config-filter' ) ) {
             var filter = true;
         } else {
             filter = false;
         }
-        $(this).siblings('#config-table').find('tbody tr:first')
+        $( this ).parent().siblings( '#config-table' ).find( 'tbody tr:first' )
             .clone()
-            .insertAfter(lastrow)
-            .attr('data-row-id', rowId)
+            .insertAfter( lastrow )
+            .attr( 'data-row-id', rowId )
             .show();
 
-        var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");
-        $row.find('ul.dropdown-content.select-dropdown, .caret, .select-dropdown ').remove();
+        var $row = $( this ).parent().siblings( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
+        $row.find( 'ul.dropdown-content.select-dropdown, .caret, .select-dropdown ' ).remove();
 
-        updateFormNameAtts($row, rowId, filter);
-    });
-
+        updateFormNameAtts( $row, rowId, filter );
+    } );
 
     /**
      * Add placeholder for dynamic pricing
      */
-    $(document).on('click', '.meta-dropdown', function() {
+    $( document ).on( 'click', '.meta-dropdown', function () {
         var is_premium = rex_wpfm_ajax.is_premium;
 
         if ( is_premium == 1 ) {
-            var rowId = $(this).parent().parent().attr('data-row-id');
+            var rowId = $( this ).parent().parent().attr( 'data-row-id' );
 
-            $(document).on('change', 'select[name="fc[' + rowId + '][meta_key]"]', function() {
-                var value_selected = $(this).val();
+            $( document ).on( 'change', 'select[name="fc[' + rowId + '][meta_key]"]', function () {
+                var value_selected = $( this ).val();
                 var prices = [
                     'price',
                     'current_price',
@@ -123,412 +116,617 @@
 
 
                 if ( $.inArray( value_selected, prices ) !== -1 ) {
-                    $('input[name="fc[' + rowId + '][limit]"]').attr( 'placeholder', 'Update Price i.e. +25%');
-                    $('input[name="fc[' + rowId + '][limit]"]').addClass( 'dynamic-placeholder' );
-                    $(this).addClass( 'dynamic-placeholder' );
+                    $( 'input[name="fc[' + rowId + '][limit]"]' ).attr( 'placeholder', 'Update Price i.e. +25%' );
+                    $( 'input[name="fc[' + rowId + '][limit]"]' ).addClass( 'dynamic-placeholder' );
+                    $( this ).addClass( 'dynamic-placeholder' );
+                } else {
+                    $( 'input[name="fc[' + rowId + '][limit]"]' ).removeAttr( 'placeholder' );
+                    $( 'input[name="fc[' + rowId + '][limit]"]' ).removeClass( 'dynamic-placeholder' );
+                    $( this ).removeClass( 'dynamic-placeholder' );
                 }
-                else {
-                    $('input[name="fc[' + rowId + '][limit]"]').removeAttr( 'placeholder' );
-                    $('input[name="fc[' + rowId + '][limit]"]').removeClass( 'dynamic-placeholder' );
-                    $(this).removeClass( 'dynamic-placeholder' );
-                }
-            });
+            } );
         }
-    });
-
+    } );
 
     /**
      * add new custom attributes
      */
-    $(document).on('click', '#rex-new-custom-attr', function() {
-        // var rowId = $(this).siblings('#config-table').find('tbody tr').length;
-        var rowId = $(this).siblings('#config-table').find('tbody tr').last().attr('data-row-id');
-        rowId = parseInt(rowId) + 1;
-        var lastrow = $(this).siblings('#config-table').find('tbody tr:last');
-        var parent = $(this).siblings('#config-table').parent();
+    $( document ).on( 'click', '#rex-new-custom-attr', function () {
+        var rowId = $( this ).parent().siblings( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
+        console.log( rowId );
+        rowId = parseInt( rowId ) + 1;
+        var lastrow = $( this ).parent().siblings( '#config-table' ).find( 'tbody tr:last' );
+        var parent = $( this ).parent().siblings( '#config-table' ).parent();
 
-        if (parent.hasClass('rex-feed-config-filter')) {
+        if ( parent.hasClass( 'rex-feed-config-filter' ) ) {
             var filter = true;
         } else {
             filter = false;
         }
 
-        $(this).siblings('#config-table').find('tbody tr:first')
+        $( this ).parent().siblings( '#config-table' ).find( 'tbody tr:first' )
             .clone()
-            .insertAfter(lastrow)
-            .attr('data-row-id', rowId)
+            .insertAfter( lastrow )
+            .attr( 'data-row-id', rowId )
             .show();
 
 
-        var $row = $(this).siblings('#config-table').find("[data-row-id='" + rowId + "']");
-        $row.find('ul.dropdown-content.select-dropdown, .caret, .select-dropdown ').remove();
+        var $row = $( this ).parent().siblings( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
+        $row.find( 'ul.dropdown-content.select-dropdown, .caret, .select-dropdown ' ).remove();
 
-        $row.find('td:eq(0)').empty();
-        $row.find('td:eq(0)').append('<input type="text" name="fc[0][cust_attr]" value="">');
+        $row.find( 'td:eq(0)' ).empty();
+        $row.find( 'td:eq(0)' ).append( '<input type="text" name="fc[0][cust_attr]" value="">' );
         // $row.find('input, select').val('');
 
-        updateFormNameAtts($row, rowId, filter);
-    });
+        updateFormNameAtts( $row, rowId, filter );
+    } );
 
+    /**
+     * add new custom attributes
+     */
+    $( document ).on( 'click', '#rex-new-filter', function () {
+        var rowId = $( this ).siblings( '.rex__filter-table' ).children( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
+        rowId = parseInt( rowId ) + 1;
+        var lastrow = $( this ).siblings( '.rex__filter-table' ).children( '#config-table' ).find( 'tbody tr:last' );
+
+        $( this ).siblings( '.rex__filter-table' ).children( '#config-table' ).find( 'tbody tr:first' )
+            .clone()
+            .insertAfter( lastrow )
+            .attr( 'data-row-id', rowId )
+            .show();
+
+        var $row = $( this ).siblings( '.rex__filter-table' ).children( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
+        $row.find( 'ul.dropdown-content.select-dropdown, .caret, .select-dropdown ' ).remove();
+
+        updateFormNameAtts( $row, rowId, true );
+    } );
 
     /**
      * Delete a table-row and update all row-id
      * beneath it and their input attributes names.
      */
-    $(document).on('click', '#config-table .delete-row', function() {
+    $( document ).on( 'click', '#config-table .delete-row', function () {
 
         var $nextRows, rowId;
 
-        var table = $(this).closest('table');
+        var table = $( this ).closest( 'table' );
         var parent = table.parent();
 
         // delete row and get it's row-id
-        rowId = $(this).closest('tr').remove().data('row-id');
+        rowId = $( this ).closest( 'tr' ).remove().data( 'row-id' );
 
-        if (parent.hasClass('rex-feed-config-filter')) {
+        if ( parent.hasClass( 'rex-feed-config-filter' ) ) {
             var filter = true;
         } else {
             filter = false;
         }
 
         // Gell the next rows
-        if (rowId == 0) {
-            $nextRows = $('#config-table tbody').children();
+        if ( rowId == 0 ) {
+            $nextRows = $( '#config-table tbody' ).children();
         } else {
-            $nextRows = $('#config-table').find("[data-row-id='" + (rowId - 1) + "']").nextAll('tr');
+            $nextRows = $( '#config-table' ).find( "[data-row-id='" + (rowId - 1) + "']" ).nextAll( 'tr' );
         }
 
         // Update their row-id and name attributes
-        $nextRows.each(function(index, el) {
-            if (!$(el).css('display') == 'none') {
-                $(el).attr('data-row-id', rowId);
-                updateFormNameAtts($(el), rowId, filter);
+        $nextRows.each( function ( index, el ) {
+            if ( !$( el ).css( 'display' ) == 'none' ) {
+                $( el ).attr( 'data-row-id', rowId );
+                updateFormNameAtts( $( el ), rowId, filter );
                 rowId++;
             }
 
-        });
-    });
+        } );
+    } );
+
+    $( document ).on( "click", "#wpfm-clear-batch", wpfm_clear_batch );
+
+    $( document ).on( "click", "#wpfm-log-copy", wpfm_copy_log );
+
+    $( document ).on( 'click', '#publish', get_product_number );
+
+    $( document ).on( 'click', '#send-to-google', send_to_google );
+
+    $( document ).on( 'click', '.rex-reset-btn', reset_form );
+
+    $( document ).on( "click", "#wpfm-purge-cache", purge_transient_cache );
+
+    $( document ).on( "click", "#btn_on_feed", purge_transient_cache_on_feed );
+
+    // Trigger Based Review Request
+    $( document ).on( 'click', '#rex_rate_now, #rex_rate_not_now, #rex_rated_already', function ( e ) {
+        var btn_id = $( this ).attr( 'id' );
+        var show = true;
+        var frequency = '';
+
+        if ( btn_id == 'rex_rate_now' || btn_id == 'rex_rated_already' ) {
+            if ( btn_id == 'rex_rated_already' )
+                e.preventDefault();
+
+            var show = false;
+            var frequency = 'never';
+        } else if ( btn_id == 'rex_rate_not_now' ) {
+            e.preventDefault();
+            var feed_id = $( '#rex_feed_hidden_feed_id' ).val();
+            var show = false;
+            var frequency = 'one_week';
+        }
+
+        var payload = {
+            show: show,
+            frequency: frequency
+        };
+
+        wpAjaxHelperRequest( 'trigger-review-request', payload )
+            .success( function ( response ) {
+                $( '#rex_feed_review_request_body_content' ).fadeOut();
+                console.log( 'Woohoo! Awesome!!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+                console.log( 'response.statusText' );
+            } );
+    } );
+    // Trigger Based Review Request ENDS
+
+    // New changes messages
+    $( document ).on( 'click', '#view_changes_btn', function ( e ) {
+        wpAjaxHelperRequest( 'new-changes-message' )
+            .success( function ( response ) {
+                $( '#rex_feed_new_changes_msg_content' ).fadeOut();
+                console.log( 'Woohoo! Awesome!!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+                console.log( 'response.statusText' );
+            } );
+    } );
+    // New changes messages ENDS
+
+    $( document ).on( 'click', '#rex-feed-settings-btn', function () {
+        $( '#rex_feed_product_settings' ).addClass( 'show-settings' );
+    } );
+
+    $( document ).on( 'click', '.rex-contnet-setting__close-icon', function ( e ) {
+        e.preventDefault();
+        $( '#rex_feed_product_settings' ).removeClass( 'show-settings' );
+    } );
+
+    $( document ).on( 'click', '#rex-feed-settings-btn', function () {
+        $( '#rex_feed_product_settings' ).addClass( 'show-settings' );
+    } );
+
+    $( document ).on( 'click', '.rex-contnet-setting__icon-close', function ( e ) {
+        e.preventDefault();
+        $( '#rex_feed_product_settings' ).removeClass( 'show-settings' );
+    } );
+
+    $( document ).on( 'click', '#rex-pr-filter-btn', function () {
+        $( '#rex_feed_product_filters' ).addClass( 'show-filters' );
+    } );
+
+    $( document ).on( 'click', '.rex-contnet-filter__close-icon', function ( e ) {
+        e.preventDefault();
+        $( '#rex_feed_product_filters' ).removeClass( 'show-filters' );
+    } );
+
+    $( document ).on( 'click', '#rex-pr-filter-btn', function () {
+        $( '#rex_feed_product_filters' ).addClass( 'show-filters' );
+    } );
+
+    $( document ).on( 'click', '.rex-contnet-setting__icon-close', function ( e ) {
+        e.preventDefault();
+        $( '#rex_feed_product_filters' ).removeClass( 'show-filters' );
+    } );
+
+    /**
+     * Event listener for Analytics Parameter options functionality.
+     */
+    $( document ).on( 'change', '#rex_feed_analytics_params_options', rex_feed_show_analytics_params );
+
+    /**
+     * Event listener for Attribute type change functionality.
+     */
+    $( document ).on( 'change', 'select.type-dropdown', function () {
+        var selected = $( this ).find( 'option:selected' ).val();
+        if ( selected == 'static' ) {
+            $( this ).closest( 'td' ).next( 'td' ).find( '.meta-dropdown' ).hide();
+            $( this ).closest( 'td' ).next( 'td' ).find( '.static-input' ).show();
+        } else {
+            $( this ).closest( 'td' ).next( 'td' ).find( '.static-input' ).hide();
+            $( this ).closest( 'td' ).next( 'td' ).find( '.meta-dropdown' ).show();
+        }
+    } );
+
+    /**
+     * Event listener for Filter Product.
+     */
+    $( document ).on( 'change', '#rex_feed_products', rex_feed_view_filter_metaboxes );
+
+    /**
+     * Event listener for Merchant change functionality.
+     */
+    $( document ).on( 'change', '#rex_feed_merchant', function () {
+        rex_feed_load_config_table();
+        rex_feed_ebay_seller_fields();
+    } );
+
+    /**
+     * Event listener for Google schedule change change functionality.
+     */
+    $( document ).on( 'change', '#rex_feed_google_schedule', function () {
+        var schedule = $( '#rex_feed_google_schedule' ).find( ':selected' ).val();
+
+        if ( schedule == 'monthly' ) {
+            $( '#rex_feed_google_schedule_month__content' ).show();
+            $( '#rex_feed_google_schedule_week_day__content' ).hide();
+            $( '#rex_feed_google_schedule_time__content' ).hide();
+        } else if ( schedule == 'weekly' ) {
+            $( '#rex_feed_google_schedule_month__content' ).hide();
+            $( '#rex_feed_google_schedule_week_day__content' ).show();
+            $( '#rex_feed_google_schedule_time__content' ).hide();
+        } else if ( schedule == 'hourly' ) {
+            $( '#rex_feed_google_schedule_month__content' ).hide();
+            $( '#rex_feed_google_schedule_week_day__content' ).hide();
+            $( '#rex_feed_google_schedule_time__content' ).show();
+        }
+    } );
+
+    /**
+     * Event listener for Feed format change for CSV functionality.
+     */
+    $( document ).on( 'change', '#rex_feed_feed_format', function () {
+        var feed_format = $( this ).find( ':selected' ).val();
+
+        if ( feed_format === 'csv' ) {
+            $( '.rex-feed-feed-separator' ).show();
+        } else {
+            $( '.rex-feed-feed-separator' ).hide();
+        }
+
+    } );
+
+    // $( document ).on( 'change', '.merchant-change', product_feed_change_merchant_status );
+
+    $( document ).on( 'change', '#wpfm_fb_pixel', enable_fb_pixel );
+
+    $( document ).on( 'change', '#wpfm_enable_log', wpfm_enable_log );
+
+    $( document ).on( 'change', '#rex-product-allow-private', allow_private );
+
+    $( document ).on( 'submit', '#rex-google-merchant', save_google_merchant_settings );
+
+    $( document ).on( "submit", "#wpfm-per-batch", update_per_batch );
+
+    $( document ).on( "submit", "#wpfm-error-log-form", show_wpfm_error_log );
+
+    $( document ).on( "submit", "#wpfm-fb-pixel", save_fb_pixel_id );
+
+    $( document ).on( "submit", "#wpfm-transient-settings", save_wpfm_transient );
+
+
+    // ==================================================================
+
+
+    function rex_feed_niceselect( event ) {
+        $( '#rex_feed_products select' ).niceSelect();
+        if ( $( '#rex_feed_xml_file' ).val() === '' ) {
+            $( '#rex_feed_file_link' ).slideUp( 'fast' );
+        }
+
+
+        //---------popup when click disabled input-------
+        $( ".single-merchant.wpfm-pro .wpfm-pro-cta" ).on( "click", function ( e ) {
+            e.preventDefault();
+            $( ".premium-merchant-alert" ).addClass( "show-alert" );
+        } );
+
+        $( ".premium-merchant-alert .close, .premium-merchant-alert button.close, .premium-merchant-alert" ).on( "click", function () {
+            $( ".premium-merchant-alert" ).removeClass( "show-alert" );
+        } );
+
+        $( ".premium-merchant-alert .alert-box" ).on( "click", function ( e ) {
+            e.stopPropagation();
+        } );
+    }
 
     /**
      * Function for updating select and input box name
      * attribute under a table-row.
      */
-    function updateFormNameAtts($row, rowId, filter) {
+    function updateFormNameAtts( $row, rowId, filter ) {
         var name, $el;
-        $el = $row.find('input, select');
-        $el.each(function(index, item) {
-            name = $(item).attr('name');
-            if ($(item).parent().hasClass('static-input')) {
-                $(item).parent().hide();
+        $el = $row.find( 'input, select' );
+        $el.each( function ( index, item ) {
+            name = $( item ).attr( 'name' );
+            if ( $( item ).parent().hasClass( 'static-input' ) ) {
+                $( item ).parent().hide();
             }
-            if (name != undefined) {
+            if ( name != undefined ) {
                 // get new name via regex
-                if (filter) {
-                    name = name.replace(/^ff\[\d+\]/, 'ff[' + rowId + ']');
-                    $(item).attr('name', name);
+                if ( filter ) {
+                    name = name.replace( /^ff\[\d+\]/, 'ff[' + rowId + ']' );
+                    $( item ).attr( 'name', name );
                 } else {
-                    name = name.replace(/^fc\[\d+\]/, 'fc[' + rowId + ']');
-                    $(item).attr('name', name);
+                    name = name.replace( /^fc\[\d+\]/, 'fc[' + rowId + ']' );
+                    $( item ).attr( 'name', name );
                 }
 
             }
-        });
+        } );
     }
 
+    function rex_feed_show_analytics_params( event ) {
+        var checked = $( '#rex_feed_analytics_params_options' ).prop( "checked" );
 
-    /**
-     * Event listener for Attribute type change functionality.
-     */
-    $(document).on('change', 'select.type-dropdown', function() {
-        var selected = $(this).find('option:selected').val();
-        if (selected == 'static') {
-            $(this).closest('td').next('td').find('.meta-dropdown').hide();
-            $(this).closest('td').next('td').find('.static-input').show();
+        if ( checked === true ) {
+            $( '.rex_feed_analytics_params' ).show();
         } else {
-            $(this).closest('td').next('td').find('.static-input').hide();
-            $(this).closest('td').next('td').find('.meta-dropdown').show();
+            $( '.rex_feed_analytics_params' ).hide();
         }
-    });
+    }
 
-    /**
-     * Event listener for Filter Product.
-     */
-    $(document).on('change', '#rex_feed_products', function() {
-        var selected = $('#rex_feed_products').find(':selected').val();
-        if (selected == 'filter') {
-            $('.cmb2-id-rex-feed-config-filter-title').show();
-            $('#rex-feed-config-filter').show();
-        } else {
-            $('.cmb2-id-rex-feed-config-filter-title').hide();
-            $('#rex-feed-config-filter').hide();
-        }
-    });
+    function rex_feed_load_config_table( event ) {
+        var $confBox = $( '#rex_feed_config_heading .inside' );
+        var merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
 
-    /**
-     * Event listener for Merchant change functionality.
-     */
-    $(document).on('change', '#rex_feed_merchant', function() {
-        var $confBox = $('.rex-feed-config');
-        var merchant_name = $('#rex_feed_merchant').find(':selected').val();
-
-        if (merchant_name !== '-1') {
-            $confBox.find('.rex-loading-spinner').css('display', 'flex');
+        if ( merchant_name !== '-1' ) {
+            $confBox.find( '.rex-loading-spinner' ).css( 'display', 'flex' );
             var $payload = {
-                merchant: $('#rex_feed_merchant').find(':selected').val(),
-                post_id: $('#post_ID').val(),
+                merchant: $( '#rex_feed_merchant' ).find( ':selected' ).val(),
+                post_id: $( '#post_ID' ).val(),
             };
-            
-            wpAjaxHelperRequest('merchant-change', $payload)
-                .done(function(response) {
-                    if (response) {
-                        $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select option').each(function() {
-                            var option_value = $(this).val();
-                            if (jQuery.inArray(option_value, response.feed_format) === -1) {
-                                $(this).removeAttr('selected');
-                                $(this).attr('disabled', 'disabled');
+
+            wpAjaxHelperRequest( 'merchant-change', $payload )
+                .done( function ( response ) {
+                    if ( response ) {
+                        $( '.rex-feed-feed-format' ).find( '.rex_feed_feed-format option' ).each( function () {
+                            var option_value = $( this ).val();
+                            if ( jQuery.inArray( option_value, response.feed_format ) === -1 ) {
+                                $( this ).removeAttr( 'selected' );
+                                $( this ).attr( 'disabled', 'disabled' );
                             } else {
-                                $(this).removeAttr('disabled');
+                                $( this ).removeAttr( 'disabled' );
                             }
-                        });
-                        var selected = $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val();
-                        if (!selected) {
-                            $('.cmb2-id-rex-feed-feed-format').find('.cmb2_select').val(response.feed_format[0]);
+                        } );
+
+                        $( '.rex-feed-feed-separator' ).find( '#rex_feed_separator option' ).each( function () {
+                            var option_value = $( this ).val();
+                            if ( jQuery.inArray( option_value, response.feed_separator ) === -1 ) {
+                                $( this ).removeAttr( 'selected' );
+                                $( this ).attr( 'disabled', 'disabled' );
+                            } else {
+                                $( this ).removeAttr( 'disabled' );
+                            }
+                        } );
+
+                        var selected = $( '.rex-feed-feed-format' ).find( '.rex_feed_feed-format' ).val();
+                        var selected_sep = $( '.rex-feed-feed-separator' ).find( '#rex_feed_separator' ).val();
+
+                        if ( !selected ) {
+                            $( '.rex-feed-feed-format' ).find( '.rex_feed_feed-format' ).val( response.feed_format[ 0 ] );
+                        }
+                        if ( !selected_sep ) {
+                            $( '.rex-feed-feed-separator' ).find( '#rex_feed_separator' ).val( response.feed_separator[ 0 ] );
+                        }
+
+                        if ( selected === 'csv' ) {
+                            $( '.rex-feed-feed-separator' ).fadeIn();
+                        }
+                        else if ( merchant_name === 'trovino' || merchant_name === 'cercavino' ) {
+                            $( '.rex-feed-feed-separator' ).fadeIn();
+                        }
+                        else {
+                            $( '.rex-feed-feed-separator' ).fadeOut();
                         }
                     }
 
                     $confBox.fadeOut();
-                    var configTable = document.getElementsByClassName("wpfm-field-mappings")[0];
+                    var configTable = document.getElementsByClassName( "wpfm-field-mappings" )[ 0 ];
                     configTable.innerHTML = response.html;
+
                     $confBox.fadeIn();
-                    $('.rex-loading-spinner').css('display', 'none');
-                    $('#rex_feed_conf .cmb2-id-rex-feed-config-heading').css('display', 'block');
-                    $('#rex-new-attr, #rex-new-custom-attr').css('display', 'inline-block');
+                    $( '#rex_feed_config_heading .inside #config-table' ).fadeIn();
 
-                    // Dynamic pricing
-                    var is_premium = rex_wpfm_ajax.is_premium;
+                    $( '.rex-loading-spinner' ).css( 'display', 'none' );
+                    $( '#rex_feed_config_heading #rex-feed-footer-btn' ).css( 'border-radius', '0 0 10px 10px' );
 
-                    if ( is_premium == 1 ) {
-                        var meta_value_selects = $('div.meta-dropdown').children();
-                        var rows = meta_value_selects.length - 1;
-                        for ( var rowId = 0; rowId < rows; rowId++ ) {
-                            var selected_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
+                    $( '#rex_feed_conf .rex-feed-config-heading' ).css( 'display', 'block' );
+                    $( '#rex-new-attr, #rex-new-custom-attr' ).css( 'display', 'inline-block' );
 
-                            var prices = [
-                                'price',
-                                'current_price',
-                                'sale_price',
-                                'price_with_tax',
-                                'current_price_with_tax',
-                                'sale_price_with_tax',
-                                'price_excl_tax',
-                                'current_price_excl_tax',
-                                'sale_price_excl_tax'
-                            ];
+                    dynamic_pricing( event );
+                } )
+                .fail( function ( response ) {
+                    $( '.rex-loading-spinner' ).css( 'display', 'none' );
+                    console.log( 'Uh, oh! Merchant change returned error!' );
+                    console.log( response.statusText );
+                } );
+        }
+        else {
+            $confBox.find( '#config-table' ).css( 'display', 'none' );
+            $( '#rex_feed_config_heading #rex-feed-footer-btn' ).css( 'border-radius', '11px' );
+        }
+    }
 
-                            if ( $.inArray( selected_val, prices ) !== -1 ) {
-                                $('input[name="fc[' + rowId + '][limit]"]').attr( 'placeholder', 'Update Price i.e. +25%');
-                                $('input[name="fc[' + rowId + '][limit]"]').addClass( 'dynamic-placeholder' );
-                                $('select[name="fc[' + rowId + '][meta_key]"]').addClass( 'dynamic-placeholder' );
-                            }
-                            else {
-                                $('input[name="fc[' + rowId + '][limit]"]').removeAttr( 'placeholder' );
-                                $('input[name="fc[' + rowId + '][limit]"]').removeClass( 'dynamic-placeholder' );
-                                $('select[name="fc[' + rowId + '][meta_key]"]').removeClass( 'dynamic-placeholder' );
+    function rex_feed_view_filter_metaboxes( event ) {
+        var $payload = {
+            feed_id: rex_wpfm_ajax.feed_id
+        }
+
+        $( '#rex-feed-product-taxonomies' ).hide();
+        $( '#rex-feed-config-filter' ).hide();
+        $( '.rex-feed-tags-wrapper' ).hide();
+        $( '.rex-feed-product-filter-ids__area' ).hide();
+        $( ".rex-feed-product-taxonomies-spinner" ).fadeIn();
+
+        wpAjaxHelperRequest( 'rex-feed-load-taxonomies', $payload )
+            .done( function ( response ) {
+                if ( response ) {
+                    if ( response.success ) {
+                        var selected = $( '#rex_feed_products' ).find( ':selected' ).val();
+
+                        if ( selected === 'all' || selected === 'featured' ) {
+                            $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                            $( '#rex-feed-product-taxonomies' ).hide();
+                            $( '#rex-feed-config-filter' ).hide();
+                            $( '.rex-feed-tags-wrapper' ).hide();
+                            $( '.rex-feed-product-filter-ids__area' ).hide();
+                        }
+                        else if ( selected === 'filter' ) {
+                            $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                            $( '#rex-feed-product-taxonomies' ).hide();
+                            $( '.rex-feed-product-filter-ids__area' ).hide();
+                            $( '#rex-feed-config-filter' ).show();
+                        }
+                        else if ( selected === 'product_cat' || selected === 'product_tag' ) {
+                            $( '#rex-feed-product-taxonomies' ).append( response.html_content );
+                            $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                            $( '.rex-feed-product-filter-ids__area' ).hide();
+                            $( '#rex-feed-config-filter' ).hide();
+                            $( '#rex-feed-product-taxonomies' ).show();
+                            if ( selected === 'product_cat' ) {
+                                $( '#rex-feed-product-tags' ).hide();
+                                $( '#rex-feed-product-cats' ).show();
+                            } else {
+                                $( '#rex-feed-product-cats' ).hide();
+                                $( '#rex-feed-product-tags' ).show();
                             }
                         }
-                    }
-                    // Dynamic pricing
-                })
-                .fail(function(response) {
-                    $('.rex-loading-spinner').css('display', 'none');
-                    console.log('Uh, oh! Merchant change returned error!');
-                    console.log(response.statusText);
-                });
-        }
-    });
+                        else if ( selected === 'product_filter' ) {
+                            $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                            $( '#rex-feed-config-filter' ).hide();
+                            $( '#rex-feed-product-taxonomies' ).hide();
+                            $( '.select2-search__field' ).removeAttr('style')
+                            $( '.rex-feed-product-filter-ids__area' ).show();
 
-    function get_checkbox_val(name) {
+                            /*var excluede_variable = $('#rex_feed_variable_product1').attr('checked');
+                            console.log(excluede_variable);*/
+                        }
+
+                        $( ".rex-feed-product-taxonomies-spinner" ).fadeOut();
+                    }
+                }
+            } )
+            .fail( function ( response ) {
+                $( ".rex-feed-product-taxonomies-spinner" ).fadeOut();
+
+                $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                $( '#rex-feed-product-taxonomies' ).hide();
+                $( '#rex-feed-config-filter' ).hide();
+                $( '.rex-feed-tags-wrapper' ).hide();
+                $( '.rex-feed-product-filter-ids__area' ).hide();
+
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            } );
+    }
+
+    /**
+     * Dynamic pricing
+     * @param event
+     */
+    function dynamic_pricing( event ) {
+        var is_premium = rex_wpfm_ajax.is_premium;
+
+        if ( is_premium == 1 ) {
+            var meta_value_selects = $( 'div.meta-dropdown' ).children();
+            var rows = meta_value_selects.length - 1;
+            for ( var rowId = 0; rowId < rows; rowId++ ) {
+                var selected_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
+
+                var prices = [
+                    'price',
+                    'current_price',
+                    'sale_price',
+                    'price_with_tax',
+                    'current_price_with_tax',
+                    'sale_price_with_tax',
+                    'price_excl_tax',
+                    'current_price_excl_tax',
+                    'sale_price_excl_tax'
+                ];
+
+                if ( $.inArray( selected_val, prices ) !== -1 ) {
+                    $( 'input[name="fc[' + rowId + '][limit]"]' ).attr( 'placeholder', 'Update Price i.e. +25%' );
+                    $( 'input[name="fc[' + rowId + '][limit]"]' ).addClass( 'dynamic-placeholder' );
+                    $( 'select[name="fc[' + rowId + '][meta_key]"]' ).addClass( 'dynamic-placeholder' );
+                } else {
+                    $( 'input[name="fc[' + rowId + '][limit]"]' ).removeAttr( 'placeholder' );
+                    $( 'input[name="fc[' + rowId + '][limit]"]' ).removeClass( 'dynamic-placeholder' );
+                    $( 'select[name="fc[' + rowId + '][meta_key]"]' ).removeClass( 'dynamic-placeholder' );
+                }
+            }
+        }
+        // Dynamic pricing
+    }
+
+    /**
+     * Event listener for Merchant change for eBay sellers functionality.
+     */
+    function rex_feed_ebay_seller_fields() {
+        var merchant = $( '#rex_feed_merchant' ).find( ':selected' ).val();
+
+        if ( merchant === 'ebay_seller' || merchant === 'ebay_seller_tickets' ) {
+            $( '.rex_feed_ebay_seller_fields' ).fadeIn();
+        } else {
+            $( '.rex_feed_ebay_seller_fields' ).fadeOut();
+        }
+    }
+
+    function get_checkbox_val( name ) {
         var items = 'input[name="rex_feed_' + name + '[]"]';
         var vals = [];
 
-        $(items).each(function() {
-            if ($(this).prop('checked') == true) {
-                vals.push($(this).val());
+        $( items ).each( function () {
+            if ( $( this ).prop( 'checked' ) == true ) {
+                vals.push( $( this ).val() );
             }
-        });
+        } );
 
         return vals;
     }
-
-
-    // $(document).on('click', '#publish', save_feed);
-
 
     /**
      * Start the feed processing
      * @param event
      */
-    function get_product_number(event) {
+    function get_product_number( event ) {
         event.preventDefault();
-       
-        var merchant_name = $('#rex_feed_merchant').find(':selected').val();
-        if (merchant_name == '-1') {
-            alert('Please choose a merchant!');
+        var merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
+
+        if ( merchant_name == '-1' ) {
+            alert( 'Please choose a merchant!' );
             return;
         }
 
-        if ($('.wpfm-field-mappings').find('tbody tr:first').css('display') == 'none') {
-            $('.wpfm-field-mappings').find('tbody tr:first').remove();
+        if ( $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).css( 'display' ) == 'none' ) {
+            $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).remove();
         }
-        $('#wpfm-feed-clock').stopwatch().stopwatch('start');
-        var merchant = $('#rex_feed_merchant').find(':selected').val();
 
-        var $payload = {};
-        $('#publishing-action span.spinner').addClass('is-active');
-        $(this).addClass('disabled');
-        $('.bwfm-progressbar, .progress-msg').fadeIn();
-        $('.progress-msg span').html('Calculating products.....');
-
-        wpAjaxHelperRequest('my-handle', $payload)
-            .done(function(response) {
-                var per_batch = response.per_batch ? parseInt(response.per_batch) : 50;
-                // if (merchant !== 'google_merchant_promotion') {
-                //     generate_feed(response.products, 0, 1, per_batch, response.total_batch);
-                // } else {
-                //     generate_promotion_feed(response.products, 0, 1, per_batch, response.total_batch);
-                // }
-                generate_feed(response.products, 0, 1, per_batch, response.total_batch);
-
-            })
-            .fail(function(response) {
-                $('#publishing-action span.spinner').removeClass('is-active');
-                $('#publish').removeClass('disabled');
-                console.log('Uh, oh!');
-                console.log(response.statusText);
-            });
-    }
-
-    $(document).on('click', '#publish', get_product_number);
-
-
-    /**
-     * generate promotion feed
-     */
-    function generate_promotion_feed(product, offset, batch, per_batch, total_batch) {
-        // var $payload = {
-        //     merchant: $('#rex_feed_merchant').find(':selected').val(),
-        //     feed_format: $('#rex_feed_feed_format').find(':selected').val(),
-        //     localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
-        //     ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
-        //     info: {
-        //         post_id: $('#post_ID').val(),
-        //         title: $('#title').val(),
-        //         desc: $('#title').val(),
-        //     },
-        //     products: {
-        //         products_scope: $('#rex_feed_products').find(':selected').val(),
-        //         tags: get_checkbox_val('tags'),
-        //         cats: get_checkbox_val('cats'),
-        //     },
-        //
-        //     feed_config: $('form').serialize(),
-        // };
-        //
-        // wpAjaxHelperRequest('generate-promotion-feed', $payload)
-        //     .success(function (response) {
-        //         console.log('Woohoo!');
-        //         console.log(response);
-        //         $('#publish').removeClass('disabled');
-        //         $(document).off('click', '#publish', get_product_number);
-        //         $('#publish').trigger('click');
-        //     })
-        //     .error(function (response) {
-        //         $('#publishing-action span.spinner').removeClass('is-active');
-        //         $('#publish').removeClass('disabled');
-        //         console.log('Uh, oh!');
-        //         console.log(response.statusText);
-        //     });
-
-
-        per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
+        $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'start' );
+        var merchant = $( '#rex_feed_merchant' ).find( ':selected' ).val();
 
         var $payload = {
-            merchant: $('#rex_feed_merchant').find(':selected').val(),
-            feed_format: $('#rex_feed_feed_format').find(':selected').val(),
-            localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
-            ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
-
-            info: {
-                post_id: $('#post_ID').val(),
-                title: $('#title').val(),
-                desc: $('#title').val(),
-                offset: offset,
-                batch: batch,
-                total_batch: total_batch,
-                per_batch: per_batch,
-            },
-
-            products: {
-                products_scope: $('#rex_feed_products').find(':selected').val(),
-                tags: get_checkbox_val('tags'),
-                cats: get_checkbox_val('cats'),
-                data: $('#rex_feed_product_filter_ids').val(),
-            },
-
-            feed_config: $('form').serialize(),
+            feed_id: rex_wpfm_ajax.feed_id,
+            feed_config: $( 'form' ).serialize()
         };
-        var batches = total_batch;
-        console.log('Total Batch: ' + batches);
-        console.log('Total Product(s): ' + product);
-        console.log('Processing Batch Number: ' + batch);
-        console.log('Offset Number: ' + offset);
+        $( '#publishing-action span.spinner' ).addClass( 'is-active' );
+        $( this ).addClass( 'disabled' );
+        $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeIn();
+        $( '.rex-feed-progressbar, .progress-msg' ).fadeIn();
+        $( '.progress-msg span' ).html( 'Calculating products.....' );
 
-        var progressbar = 100 / batches;
-        progressWidth = progressWidth + progressbar;
-        if (progressWidth > 100) {
-            progressWidth = 100;
-        }
-
-        if (progressWidth >= 100) {
-            $('.progress-msg span').html('Generating feed. Please wait.....');
-        } else {
-            $('.progress-msg span').html('Processing feed.....');
-        }
-        wpAjaxHelperRequest('generate-promotion-feed', $payload)
-            .success(function(response) {
-                console.log('Woohoo!');
-                var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-                if (response == 'false' || response == '') {
-                    generate_promotion_feed(product, offset, batch, per_batch, total_batch);
-                } else if (response.msg == 'finish') {
-                    feed_progressBar(progressWidth);
-                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                    $('#publish').removeClass('disabled');
-                    $(document).off('click', '#publish', get_product_number);
-                    $('#publish').trigger('click');
-
-                } else {
-                    if (batch < batches) {
-                        offset = offset + per_batch;
-                        batch++;
-                        feed_progressBar(progressWidth);
-                        generate_promotion_feed(product, offset, batch, per_batch, total_batch);
-                    }
-
-                }
-            })
-            .error(function(response) {
-                $(".progressbar-bar").css('background', '#ff0000');
-                $(".progressbar-bar").css('border-color', '#ff0000');
-                $(".progress-msg span").css('color', '#ff0000');
-                $(".progress-msg i").css('color', '#ff0000');
-                $(".progress-msg span").html(response.statusText);
-                $('#publishing-action span.spinner').removeClass('is-active');
-                $('#publish').removeClass('disabled');
-                $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                console.log('Uh, oh!');
-                console.log(response.statusText);
-            });
+        wpAjaxHelperRequest( 'my-handle', $payload )
+            .done( function ( response ) {
+                var per_batch = response.per_batch ? parseInt( response.per_batch ) : 50;
+                generate_feed( response.products, 0, 1, per_batch, response.total_batch );
+            } )
+            .fail( function ( response ) {
+                $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
+                $( '#publish' ).removeClass( 'disabled' );
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
 
     /**
@@ -537,21 +735,22 @@
      * @param offset
      * @param batch
      * @param per_batch
+     * @param total_batch
      */
-    function generate_feed(product, offset, batch, per_batch, total_batch) {
+    function generate_feed( product, offset, batch, per_batch, total_batch ) {
 
         per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
-        $('#rex-feed-progress').show();
+        $( '#rex-feed-progress' ).show();
         var $payload = {
-            merchant: $('#rex_feed_merchant').find(':selected').val(),
-            feed_format: $('#rex_feed_feed_format').find(':selected').val(),
-            localization: $('#rex_feed_ebay_mip_localization').find(':selected').val(),
-            ebay_cat_id: $('#rex_feed_ebay_seller_category').val(),
+            merchant: $( '#rex_feed_merchant' ).find( ':selected' ).val(),
+            feed_format: $( '#rex_feed_feed_format' ).find( ':selected' ).val(),
+            localization: $( '#rex_feed_ebay_mip_localization' ).find( ':selected' ).val(),
+            ebay_cat_id: $( '#rex_feed_ebay_seller_category' ).val(),
 
             info: {
-                post_id: $('#post_ID').val(),
-                title: $('#title').val(),
-                desc: $('#title').val(),
+                post_id: $( '#post_ID' ).val(),
+                title: $( '#title' ).val(),
+                desc: $( '#title' ).val(),
                 offset: offset,
                 batch: batch,
                 total_batch: total_batch,
@@ -559,414 +758,467 @@
             },
 
             products: {
-                products_scope: $('#rex_feed_products').find(':selected').val(),
-                tags: get_checkbox_val('tags'),
-                cats: get_checkbox_val('cats'),
-                data: $('#rex_feed_product_filter_ids').val(),
-                
+                products_scope: $( '#rex_feed_products' ).find( ':selected' ).val(),
+                tags: get_checkbox_val( 'tags' ),
+                cats: get_checkbox_val( 'cats' ),
+                data: $( '#rex_feed_product_filter_ids' ).val(),
             },
 
-            feed_config: $('form').serialize(),
+            feed_config: $( 'form' ).serialize(),
         };
-        
+
         var batches = total_batch;
-        console.log('Total Batch: ' + batches);
-        console.log('Total Product(s): ' + product);
-        console.log('Processing Batch Number: ' + batch);
-        console.log('Offset Number: ' + offset);
+        console.log( 'Total Batch: ' + batches );
+        console.log( 'Total Product(s): ' + product );
+        console.log( 'Processing Batch Number: ' + batch );
+        console.log( 'Offset Number: ' + offset );
 
         var progressbar = 100 / batches;
         progressWidth = progressWidth + progressbar;
-        if (progressWidth > 100) {
+        if ( progressWidth > 100 ) {
             progressWidth = 100;
         }
 
-        if (progressWidth >= 100) {
-            $('.progress-msg span').html('Generating feed. Please wait.....');
-        } else {
-            $('.progress-msg span').html('Processing feed.....');
+        if ( progressWidth >= 100 ) {
+            $( '.progress-msg span' ).html( 'Generating feed. Please wait....' );
         }
-        wpAjaxHelperRequest('generate-feed', $payload)
-            .done(function(response) {
-                console.log(response)
-                console.log('Woohoo!');
-                var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-                if (response == 'false' || response == '') {
-                    generate_feed(product, offset, batch, per_batch, total_batch);
-                } else if (response.msg == 'finish') {
-                    feed_progressBar(progressWidth);
-                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                    $('#publish').removeClass('disabled');
-                    $(document).off('click', '#publish', get_product_number);
-                    $('#publish').trigger('click');
+        else {
+            $( '.progress-msg span' ).html( 'Processing feed....' );
+        }
 
-                } else if(response.msg == 'failForInvalidEntry'){
-                    alert("Please set proper values for the mandatory field like Shipping Id, Who made, When made, Taxonomy Id.");
-                    $('#publishing-action span.spinner').removeClass('is-active');
-                    $('#publish').removeClass('disabled');
-                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                    $('#rex-feed-progress').hide();
-                    
-                    return false
-                } else if(response.msg == 'failToAuthorize'){
-                    alert("No Authorization detected, Need Authorization From Etsy first.");
-                    $('#publishing-action span.spinner').removeClass('is-active');
-                    $('#publish').removeClass('disabled');
-                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                    $('#rex-feed-progress').hide();
-                    
-                    return false
-                }else if(response.msg == 'failForAuthExpire'){
-                    alert("Expire you authorization with etsy, Need Authorization From Etsy first.");
-                    $('#publishing-action span.spinner').removeClass('is-active');
-                    $('#publish').removeClass('disabled');
-                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                    $('#rex-feed-progress').hide();
-                    
-                    return false
-                }else if(response.msg == 'failForEmptyProduct'){
-                    alert("Product sending failed - No available products");
-                    $('#publishing-action span.spinner').removeClass('is-active');
-                    $('#publish').removeClass('disabled');
-                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                    $('#rex-feed-progress').hide();
-                    
-                    return false
-                } else if(response.msg == 'failForEmptyProduct'){
-                    alert("Fail, No product is available");
-                    $('#publishing-action span.spinner').removeClass('is-active');
-                    $('#publish').removeClass('disabled');
-                    $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                    $('#rex-feed-progress').hide();
 
+        wpAjaxHelperRequest( 'generate-feed', $payload )
+            .done( function ( response ) {
+                console.log( 'Woohoo!' );
+                var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>Your feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+                if ( response == 'false' || response == '' ) {
+                    generate_feed( product, offset, batch, per_batch, total_batch );
+                }
+                else if ( response.msg == 'finish' ) {
+                    rex_feed_feed_progressBar( progressWidth );
+                    $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
+                    $( '#publish' ).removeClass( 'disabled' );
+                    $( document ).off( 'click', '#publish', get_product_number );
+                    $( '#publish' ).trigger( 'click' );
+                }
+                else if ( response.msg == 'failForInvalidEntry' ) {
+                    alert( "Please set proper values for the mandatory field like Shipping Id, Who made, When made, Taxonomy Id." );
+                    rex_feed_feed_generation_error_helper();
+                    $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeOut();
                     return false
-                } else {
-                    if (batch < batches) {
+                }
+                else if ( response.msg == 'failToAuthorize' ) {
+                    alert( "No Authorization detected, Need Authorization From Etsy first." );
+                    rex_feed_feed_generation_error_helper();
+                    $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeOut();
+                    return false
+                }
+                else if ( response.msg == 'failForAuthExpire' ) {
+                    alert( "Expire you authorization with etsy, Need Authorization From Etsy first." );
+                    rex_feed_feed_generation_error_helper();
+                    $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeOut();
+                    return false
+                }
+                else if ( response.msg == 'failForEmptyProduct' ) {
+                    alert( "Product sending failed - No available products" );
+                    rex_feed_feed_generation_error_helper();
+                    $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeOut();
+                    return false
+                }
+                else {
+                    if ( batch < batches ) {
                         offset = offset + per_batch;
                         batch++;
-                        feed_progressBar(progressWidth);
-                        generate_feed(product, offset, batch, per_batch, total_batch);
+                        rex_feed_feed_progressBar( progressWidth );
+                        generate_feed( product, offset, batch, per_batch, total_batch );
+                    }
+                }
+            } )
+            .fail( function ( response ) {
+                $( ".progressbar-bar" ).css( 'background', '#ff0000' );
+                $( ".progressbar-bar" ).css( 'border-color', '#ff0000' );
+                $( ".progress-msg span" ).css( 'color', '#ff0000' );
+                $( ".progress-msg i" ).css( 'color', '#ff0000' );
+                $( ".progress-msg span" ).html( response.statusText );
+                $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
+                $( '#publish' ).removeClass( 'disabled' );
+                $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            } );
+    }
+
+    /**
+     * generate promotion feed
+     */
+    function generate_promotion_feed( product, offset, batch, per_batch, total_batch ) {
+        per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
+
+        var $payload = {
+            merchant: $( '#rex_feed_merchant' ).find( ':selected' ).val(),
+            feed_format: $( '#rex_feed_feed_format' ).find( ':selected' ).val(),
+            localization: $( '#rex_feed_ebay_mip_localization' ).find( ':selected' ).val(),
+            ebay_cat_id: $( '#rex_feed_ebay_seller_category' ).val(),
+
+            info: {
+                post_id: $( '#post_ID' ).val(),
+                title: $( '#title' ).val(),
+                desc: $( '#title' ).val(),
+                offset: offset,
+                batch: batch,
+                total_batch: total_batch,
+                per_batch: per_batch,
+            },
+
+            products: {
+                products_scope: $( '#rex_feed_products' ).find( ':selected' ).val(),
+                tags: get_checkbox_val( 'tags' ),
+                cats: get_checkbox_val( 'cats' ),
+                data: $( '#rex_feed_product_filter_ids' ).val(),
+            },
+
+            feed_config: $( 'form' ).serialize(),
+        };
+        var batches = total_batch;
+        console.log( 'Total Batch: ' + batches );
+        console.log( 'Total Product(s): ' + product );
+        console.log( 'Processing Batch Number: ' + batch );
+        console.log( 'Offset Number: ' + offset );
+
+        var progressbar = 100 / batches;
+        progressWidth = progressWidth + progressbar;
+        if ( progressWidth > 100 ) {
+            progressWidth = 100;
+        }
+
+        if ( progressWidth >= 100 ) {
+            $( '.progress-msg span' ).html( 'Generating feed. Please wait.....' );
+        } else {
+            $( '.progress-msg span' ).html( 'Processing feed.....' );
+        }
+        wpAjaxHelperRequest( 'generate-promotion-feed', $payload )
+            .success( function ( response ) {
+                console.log( 'Woohoo!' );
+                var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+                if ( response == 'false' || response == '' ) {
+                    generate_promotion_feed( product, offset, batch, per_batch, total_batch );
+                } else if ( response.msg == 'finish' ) {
+                    rex_feed_feed_progressBar( progressWidth );
+                    $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
+                    $( '#publish' ).removeClass( 'disabled' );
+                    $( document ).off( 'click', '#publish', get_product_number );
+                    $( '#publish' ).trigger( 'click' );
+
+                } else {
+                    if ( batch < batches ) {
+                        offset = offset + per_batch;
+                        batch++;
+                        rex_feed_feed_progressBar( progressWidth );
+                        generate_promotion_feed( product, offset, batch, per_batch, total_batch );
                     }
 
                 }
-            })
-            .fail(function(response) {
-                $(".progressbar-bar").css('background', '#ff0000');
-                $(".progressbar-bar").css('border-color', '#ff0000');
-                $(".progress-msg span").css('color', '#ff0000');
-                $(".progress-msg i").css('color', '#ff0000');
-                $(".progress-msg span").html(response.statusText);
-                $('#publishing-action span.spinner').removeClass('is-active');
-                $('#publish').removeClass('disabled');
-                $('#wpfm-feed-clock').stopwatch().stopwatch('stop');
-                console.log('Uh, oh!');
-                console.log(response.statusText);
-            });
+            } )
+            .error( function ( response ) {
+                $( ".progressbar-bar" ).css( 'background', '#ff0000' );
+                $( ".progressbar-bar" ).css( 'border-color', '#ff0000' );
+                $( ".progress-msg span" ).css( 'color', '#ff0000' );
+                $( ".progress-msg i" ).css( 'color', '#ff0000' );
+                $( ".progress-msg span" ).html( response.statusText );
+                $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
+                $( '#publish' ).removeClass( 'disabled' );
+                $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
 
-    function feed_progressBar(width) {
+    function rex_feed_feed_generation_error_helper() {
+        $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
+        $( '#publish' ).removeClass( 'disabled' );
+        $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
+        $( '#rex-feed-progress' ).hide();
+    }
+
+    function rex_feed_feed_progressBar( width ) {
         var deferred = $.Deferred();
-        $('.progressbar-bar').animate({
-            width: Math.ceil(width) + '%'
-        }, 1000);
-        $('.progressbar-bar-percent').html(Math.ceil(width) + '%');
+
+        $( '.progressbar-bar' ).animate( {
+            width: Math.ceil( width ) + '%'
+        }, 1000 );
+        $( '.progressbar-bar-percent' ).html( Math.ceil( width ) + '%' );
         return deferred.promise();
     }
 
     /*
      * google merchant settings
      */
-    function save_google_merchant_settings(event) {
+    function save_google_merchant_settings( event ) {
         event.preventDefault();
-        $('.rex-loading-spinner').css('display', 'flex');
+        $( '.rex-loading-spinner' ).css( 'display', 'flex' );
         var payload = {
-            client_id: $(this).find('#client_id').val(),
-            client_secret: $(this).find('#client_secret').val(),
-            merchant_id: $(this).find('#merchant_id').val(),
+            client_id: $( this ).find( '#client_id' ).val(),
+            client_secret: $( this ).find( '#client_secret' ).val(),
+            merchant_id: $( this ).find( '#merchant_id' ).val(),
             merchant_settings: true
         };
-        wpAjaxHelperRequest('google-merchant-settings', payload)
-            .success(function(response) {
-                console.log('Woohoo!');
-                $('.merchant-action').html(response.html);
-                $('.rex-loading-spinner').css('display', 'none');
-            })
-            .error(function(response) {
-                console.log('Uh, oh!');
-                $('.rex-loading-spinner').css('display', 'none');
-                console.log(response.statusText);
-            });
+        wpAjaxHelperRequest( 'google-merchant-settings', payload )
+            .success( function ( response ) {
+                console.log( 'Woohoo!' );
+                $( '.merchant-action' ).html( response.html );
+                $( '.rex-loading-spinner' ).css( 'display', 'none' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh!' );
+                $( '.rex-loading-spinner' ).css( 'display', 'none' );
+                console.log( response.statusText );
+            } );
 
 
     }
-
-    $(document).on('submit', '#rex-google-merchant', save_google_merchant_settings);
 
     /*
      * Send feed to Google
      * Merchant Center
      */
-    function send_to_google(event) {
+    function send_to_google( event ) {
         event.preventDefault();
-        $('.rex-loading-spinner').css('display', 'flex');
-        var selected = [];
-        $('.cmb2-id-rex-feed-google-destination input:checked').each(function() {
+        $( '.rex-loading-spinner' ).css( 'display', 'flex' );
+        // var selected = [];
+        /*$('.rex-feed-google-destination input:checked').each(function() {
             selected.push($(this).val());
-        });
+        });*/
         var payload = {
-            feed_id: $('#post_ID').val(),
-            schedule: $('#rex_feed_google_schedule option:selected').val(),
-            destination: selected,
-            hour: $('#rex_feed_google_schedule_time option:selected').val(),
-            country: $('#rex_feed_google_target_country').val(),
-            language: $('#rex_feed_google_target_language').val()
+            feed_id: $( '#post_ID' ).val(),
+            schedule: $( '#rex_feed_google_schedule option:selected' ).val(),
+            /*destination: selected,*/
+            hour: $( '#rex_feed_google_schedule_time option:selected' ).val(),
+            country: $( '#rex_feed_google_target_country' ).val(),
+            language: $( '#rex_feed_google_target_language' ).val()
         };
 
-        if ($('#rex_feed_google_schedule option:selected').val() == 'monthly') {
-            payload['month'] = $('#rex_feed_google_schedule_month option:selected').val();
-            payload['day'] = '';
-        } else if ($('#rex_feed_google_schedule option:selected').val() == 'weekly') {
-            payload['day'] = $('#rex_feed_google_schedule_week_day option:selected').val();
-            payload['month'] = '';
+        if ( $( '#rex_feed_google_schedule option:selected' ).val() == 'monthly' ) {
+            payload[ 'month' ] = $( '#rex_feed_google_schedule_month option:selected' ).val();
+            payload[ 'day' ] = '';
+        } else if ( $( '#rex_feed_google_schedule option:selected' ).val() == 'weekly' ) {
+            payload[ 'day' ] = $( '#rex_feed_google_schedule_week_day option:selected' ).val();
+            payload[ 'month' ] = '';
         } else {
-            payload['month'] = '';
-            payload['day'] = '';
+            payload[ 'month' ] = '';
+            payload[ 'day' ] = '';
         }
-        $('.rex-google-status').removeClass('info');
-        $('.rex-google-status').removeClass('success');
-        $('.rex-google-status').removeClass('warning');
-        $('.rex-google-status').removeClass('error');
-        $('.rex-google-status').addClass('info');
-        $('.rex-google-status').show();
-        $('.rex-google-status').html('<p>Feed is sending. Please wait...</p>');
-        wpAjaxHelperRequest('send-to-google', payload)
-            .success(function(response) {
-                if (response.success) {
-                    $('.rex-google-status').removeClass('info');
-                    $('.rex-google-status').removeClass('success');
-                    $('.rex-google-status').removeClass('warning');
-                    $('.rex-google-status').removeClass('error');
-                    $('.rex-google-status').addClass('success');
-                    $('.rex-google-status').show();
-                    $('.rex-google-status').html('<p>Feed sent to google successfully.</p>');
-                    console.log('Woohoo!');
+        $( '.rex-google-status' ).removeClass( 'info' );
+        $( '.rex-google-status' ).removeClass( 'success' );
+        $( '.rex-google-status' ).removeClass( 'warning' );
+        $( '.rex-google-status' ).removeClass( 'error' );
+        $( '.rex-google-status' ).addClass( 'info' );
+        $( '.rex-google-status' ).show();
+        $( '.rex-google-status' ).html( '<p>Feed is sending. Please wait...</p>' );
+        wpAjaxHelperRequest( 'send-to-google', payload )
+            .success( function ( response ) {
+                if ( response.success ) {
+                    $( '.rex-google-status' ).removeClass( 'info' );
+                    $( '.rex-google-status' ).removeClass( 'success' );
+                    $( '.rex-google-status' ).removeClass( 'warning' );
+                    $( '.rex-google-status' ).removeClass( 'error' );
+                    $( '.rex-google-status' ).addClass( 'success' );
+                    $( '.rex-google-status' ).show();
+                    $( '.rex-google-status' ).html( '<p>Feed sent to google successfully.</p>' );
+                    console.log( 'Woohoo!' );
                     location.reload();
                 } else {
-                    $('.rex-google-status').removeClass('info');
-                    $('.rex-google-status').removeClass('success');
-                    $('.rex-google-status').removeClass('warning');
-                    $('.rex-google-status').removeClass('error');
-                    $('.rex-google-status').addClass('warning');
-                    $('.rex-google-status').show();
-                    $('.rex-google-status').html('<p>Feed not sent to google. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>');
-                    console.log(response)
+                    $( '.rex-google-status' ).removeClass( 'info' );
+                    $( '.rex-google-status' ).removeClass( 'success' );
+                    $( '.rex-google-status' ).removeClass( 'warning' );
+                    $( '.rex-google-status' ).removeClass( 'error' );
+                    $( '.rex-google-status' ).addClass( 'warning' );
+                    $( '.rex-google-status' ).show();
+                    $( '.rex-google-status' ).html( '<p>Feed not sent to google. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>' );
+                    console.log( response )
                 }
-            })
-            .error(function(response) {
-                $('.rex-google-status').removeClass('info');
-                $('.rex-google-status').removeClass('success');
-                $('.rex-google-status').removeClass('warning');
-                $('.rex-google-status').removeClass('error');
-                $('.rex-google-status').addClass('error');
-                $('.rex-google-status').show();
-                $('.rex-google-status').html('<p>Something wrong happened. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>');
-                console.log('Uh, oh!');
-                console.log(response);
-                console.log(response.statusText);
-            });
+            } )
+            .error( function ( response ) {
+                $( '.rex-google-status' ).removeClass( 'info' );
+                $( '.rex-google-status' ).removeClass( 'success' );
+                $( '.rex-google-status' ).removeClass( 'warning' );
+                $( '.rex-google-status' ).removeClass( 'error' );
+                $( '.rex-google-status' ).addClass( 'error' );
+                $( '.rex-google-status' ).show();
+                $( '.rex-google-status' ).html( '<p>Something wrong happened. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>' );
+                console.log( 'Uh, oh!' );
+                console.log( response );
+                console.log( response.statusText );
+            } );
     }
 
-    $(document).on('click', '#send-to-google', send_to_google);
-
-
-    function reset_form(event) {
+    function reset_form( event ) {
         event.preventDefault();
-        $(this).closest('form').find("input[type=text]").not(':disabled').val("");
-        $(this).closest('form').find("button[type=submit]").prop('disabled', false);
+        $( this ).closest( 'form' ).find( "input[type=text]" ).not( ':disabled' ).val( "" );
+        $( this ).closest( 'form' ).find( "button[type=submit]" ).prop( 'disabled', false );
     }
-
-    $(document).on('click', '.rex-reset-btn', reset_form);
-
 
     /**
      * Change merchant status
      */
     function product_feed_change_merchant_status() {
         var payload = {};
-        var $this = $(this);
-        var key = $this.attr('data-value');
-        var name = $this.attr('data-name');
-        var isfree = $this.attr('data-is-free');
-        if ($this.is(":checked")) {
-            payload[key] = {
+        var $this = $( this );
+        var key = $this.attr( 'data-value' );
+        var name = $this.attr( 'data-name' );
+        var isfree = $this.attr( 'data-is-free' );
+        if ( $this.is( ":checked" ) ) {
+            payload[ key ] = {
                 status: 1,
                 name: name,
                 free: isfree,
             };
         } else {
-            payload[key] = {
+            payload[ key ] = {
                 status: 0,
                 name: name,
                 free: isfree,
             };
         }
 
-       
-        wpAjaxHelperRequest('rex-product-change-merchant-status', payload)
-            .success(function(response) {
 
-                console.log('woohoo!');
-            })
-            .error(function(response) {
-                console.log('uh, oh!');
-                console.log(response.statusText);
-            });
+        wpAjaxHelperRequest( 'rex-product-change-merchant-status', payload )
+            .success( function ( response ) {
+
+                console.log( 'woohoo!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
-
-    $(document).on('change', '.merchant-change', product_feed_change_merchant_status);
-
 
     /**
      * Update product per batch
      * @param e
      */
-    function update_per_batch(e) {
+    function update_per_batch( e ) {
         e.preventDefault();
-        var $form = $(this);
-        $form.find("button.save-batch span").text("");
-        $form.find("button.save-batch i").show();
-        var per_batch = $form.find('#wpfm_product_per_batch').val();
-        wpAjaxHelperRequest('rex-product-update-batch-size', per_batch)
-            .success(function(response) {
-                $form.find("button.save-batch i").hide();
-                $form.find("button.save-batch span").text("saved");
-                setTimeout(function() {
-                    $form.find("button.save-batch span").text("save");
-                }, 1000);
-                console.log('woohoo!');
-            })
-            .error(function(response) {
-                $form.find("button.save-batch i").hide();
-                $form.find("button.save-batch span").text("failed");
-                setTimeout(function() {
-                    $form.find("button.save-batch span").text("save");
-                }, 1000);
-                console.log('uh, oh!');
-                console.log(response.statusText);
-            });
+        var $form = $( this );
+        $form.find( "button.save-batch span" ).text( "" );
+        $form.find( "button.save-batch i" ).show();
+        var per_batch = $form.find( '#wpfm_product_per_batch' ).val();
+        wpAjaxHelperRequest( 'rex-product-update-batch-size', per_batch )
+            .success( function ( response ) {
+                $form.find( "button.save-batch i" ).hide();
+                $form.find( "button.save-batch span" ).text( "saved" );
+                setTimeout( function () {
+                    $form.find( "button.save-batch span" ).text( "save" );
+                }, 1000 );
+                console.log( 'woohoo!' );
+            } )
+            .error( function ( response ) {
+                $form.find( "button.save-batch i" ).hide();
+                $form.find( "button.save-batch span" ).text( "failed" );
+                setTimeout( function () {
+                    $form.find( "button.save-batch span" ).text( "save" );
+                }, 1000 );
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
-
-    $(document).on("submit", "#wpfm-per-batch", update_per_batch);
-
 
     /**
      *
      * @param e
      */
-    function wpfm_clear_batch(e) {
+    function wpfm_clear_batch( e ) {
         e.preventDefault();
         var payload = {};
-        $(this).find("i").show();
-        wpAjaxHelperRequest('rex-product-clear-batch', payload)
-            .success(function(response) {
-                $("#wpfm-clear-batch").find("i").hide();
-            })
-            .error(function(response) {
-                console.log('uh, oh!');
-                console.log(response.statusText);
-            });
+        $( this ).find( "i" ).show();
+        wpAjaxHelperRequest( 'rex-product-clear-batch', payload )
+            .success( function ( response ) {
+                $( "#wpfm-clear-batch" ).find( "i" ).hide();
+            } )
+            .error( function ( response ) {
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
 
-    $(document).on("click", "#wpfm-clear-batch", wpfm_clear_batch);
-
-
     //----------setting tab-------
-    $(document).ready(function() {
-        $('ul.rex-settings-tabs li').click(function() {
-            var tab_id = $(this).attr('data-tab');
+    function rex_feed_settings_tab( event ) {
+        $( 'ul.rex-settings-tabs li' ).click( function () {
+            var tab_id = $( this ).attr( 'data-tab' );
 
-            $('ul.rex-settings-tabs li').removeClass('active');
-            $('.rex-settings-tab-content .tab-content').removeClass('active');
+            $( 'ul.rex-settings-tabs li' ).removeClass( 'active' );
+            $( '.rex-settings-tab-content .tab-content' ).removeClass( 'active' );
 
-            $(this).addClass('active');
-            $("#" + tab_id).addClass('active');
-        });
-
-    });
-
+            $( this ).addClass( 'active' );
+            $( "#" + tab_id ).addClass( 'active' );
+        } );
+    }
 
     /**
      * WPFM error log
      */
-    function show_wpfm_error_log(e) {
+    function show_wpfm_error_log( e ) {
         e.preventDefault();
-        var $form = $(this);
-        var log_key = $form.find('#wpfm-error-log option:selected').val();
+        var $form = $( this );
+        var log_key = $form.find( '#wpfm-error-log option:selected' ).val();
         var payload = {
             'logKey': log_key
         };
-        if (!log_key) {
-            $("#wpfm-log-copy").hide();
-            $('#log-viewer pre').html('');
+        if ( !log_key ) {
+            $( "#wpfm-log-copy" ).hide();
+            $( '#log-viewer pre' ).html( '' );
         } else {
-            wpAjaxHelperRequest('rex-product-feed-show-log', payload)
-                .success(function(response) {
-                    console.log('woohoo!');
+            wpAjaxHelperRequest( 'rex-product-feed-show-log', payload )
+                .success( function ( response ) {
+                    console.log( 'woohoo!' );
 
-                    $('#log-viewer pre').html(response.content);
-                    if (log_key) {
-                        $("#wpfm-log-copy").show();
+                    $( '#log-viewer pre' ).html( response.content );
+                    if ( log_key ) {
+                        $( "#wpfm-log-copy" ).show();
                     }
-                    $('#log-download').attr('href', response.file_url);
-                })
-                .error(function(response) {
+                    $( '#log-download' ).attr( 'href', response.file_url );
+                } )
+                .error( function ( response ) {
 
-                    console.log('uh, oh!');
-                    console.log(response.statusText);
-                });
+                    console.log( 'uh, oh!' );
+                    console.log( response.statusText );
+                } );
         }
 
     }
-
-    $(document).on("submit", "#wpfm-error-log-form", show_wpfm_error_log);
-
 
     /**
      * copy wpfm logs data
      *
      * @param event
      */
-    function wpfm_copy_log(event) {
+    function wpfm_copy_log( event ) {
         event.preventDefault();
-        var elm = document.getElementById("wpfm-log-content");
-        if (document.body.createTextRange) {
+        var elm = document.getElementById( "wpfm-log-content" );
+        if ( document.body.createTextRange ) {
             var range = document.body.createTextRange();
-            range.moveToElementText(elm);
+            range.moveToElementText( elm );
             range.select();
-            document.execCommand("Copy");
-            alert("Copied div content to clipboard");
-        } else if (window.getSelection) {
+            document.execCommand( "Copy" );
+            alert( "Copied div content to clipboard" );
+        } else if ( window.getSelection ) {
             var selection = window.getSelection();
             var range = document.createRange();
-            range.selectNodeContents(elm);
+            range.selectNodeContents( elm );
             selection.removeAllRanges();
-            selection.addRange(range);
-            document.execCommand("Copy");
-            alert("Copied div content to clipboard");
+            selection.addRange( range );
+            document.execCommand( "Copy" );
+            alert( "Copied div content to clipboard" );
         }
     }
-
-    $(document).on("click", "#wpfm-log-copy", wpfm_copy_log);
-
 
     /**
      * Enable/disable facebook pixel
      * @param event
      */
-    function enable_fb_pixel(event) {
+    function enable_fb_pixel( event ) {
         event.preventDefault();
         var payload = {};
-        if ($(this).is(":checked")) {
+        if ( $( this ).is( ":checked" ) ) {
             payload = {
                 wpfm_fb_pixel_enabled: 'yes',
             };
@@ -975,62 +1227,56 @@
                 wpfm_fb_pixel_enabled: 'no',
             };
         }
-        wpAjaxHelperRequest('wpfm-enable-fb-pixel', payload)
-            .success(function(response) {
-                if (response.data == 'enabled') {
-                    $('.wpfm-fb-pixel-field').removeClass('is-hidden');
+        wpAjaxHelperRequest( 'wpfm-enable-fb-pixel', payload )
+            .success( function ( response ) {
+                if ( response.data == 'enabled' ) {
+                    $( '.wpfm-fb-pixel-field' ).removeClass( 'is-hidden' );
                 } else {
-                    $('.wpfm-fb-pixel-field').addClass('is-hidden');
+                    $( '.wpfm-fb-pixel-field' ).addClass( 'is-hidden' );
                 }
-            })
-            .error(function(response) {
-                console.log('Uh, oh!');
-                console.log(response.statusText);
-            });
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
-
-    $(document).on('change', '#wpfm_fb_pixel', enable_fb_pixel);
-
 
     /**
      * Save FB pixel ID
      * @param e
      */
-    function save_fb_pixel_id(e) {
+    function save_fb_pixel_id( e ) {
         e.preventDefault();
-        var $form = $(this);
-        $form.find("button.save-fb-pixel span").text("");
-        $form.find("button.save-fb-pixel i").show();
-        var value = $form.find('#wpfm_fb_pixel').val();
-        wpAjaxHelperRequest('save-fb-pixel-value', value)
-            .success(function(response) {
-                $form.find("button.save-fb-pixel i").hide();
-                $form.find("button.save-fb-pixel span").text("saved");
-                setTimeout(function() {
-                    $form.find("button.save-fb-pixel span").text("save");
-                }, 1000);
-                console.log('woohoo!');
-            })
-            .error(function(response) {
-                $form.find("button.ssave-fb-pixel i").hide();
-                $form.find("button.save-fb-pixel span").text("failed");
-                setTimeout(function() {
-                    $form.find("button.save-fb-pixel span").text("save");
-                }, 1000);
-                console.log('uh, oh!');
-                console.log(response.statusText);
-            });
+        var $form = $( this );
+        $form.find( "button.save-fb-pixel span" ).text( "" );
+        $form.find( "button.save-fb-pixel i" ).show();
+        var value = $form.find( '#wpfm_fb_pixel' ).val();
+        wpAjaxHelperRequest( 'save-fb-pixel-value', value )
+            .success( function ( response ) {
+                $form.find( "button.save-fb-pixel i" ).hide();
+                $form.find( "button.save-fb-pixel span" ).text( "saved" );
+                setTimeout( function () {
+                    $form.find( "button.save-fb-pixel span" ).text( "save" );
+                }, 1000 );
+                console.log( 'woohoo!' );
+            } )
+            .error( function ( response ) {
+                $form.find( "button.ssave-fb-pixel i" ).hide();
+                $form.find( "button.save-fb-pixel span" ).text( "failed" );
+                setTimeout( function () {
+                    $form.find( "button.save-fb-pixel span" ).text( "save" );
+                }, 1000 );
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
-
-    $(document).on("submit", "#wpfm-fb-pixel", save_fb_pixel_id);
-
 
     /**
      * Log settings
      */
     function wpfm_enable_log() {
         var payload = {};
-        if ($(this).is(":checked")) {
+        if ( $( this ).is( ":checked" ) ) {
             payload = {
                 wpfm_enable_log: 'yes',
             };
@@ -1039,128 +1285,120 @@
                 wpfm_enable_log: 'no',
             };
         }
-        wpAjaxHelperRequest('rex-enable-log', payload)
-            .success(function(response) {
-                console.log('Woohoo!');
-            })
-            .error(function(response) {
-                console.log('Uh, oh!');
-                console.log(response.statusText);
-            });
+        wpAjaxHelperRequest( 'rex-enable-log', payload )
+            .success( function ( response ) {
+                console.log( 'Woohoo!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
-
-    $(document).on('change', '#wpfm_enable_log', wpfm_enable_log);
-
 
     /**
      * Save WPFM transient TTL
      * @param e
      */
-    function save_wpfm_transient(e) {
+    function save_wpfm_transient( e ) {
         e.preventDefault();
-        var $form = $(this);
-        $form.find("button.save-transient-button span").text("");
-        $form.find("button.save-transient-button i").show();
-        var value = $form.find('#wpfm_cache_ttl').val();
+        var $form = $( this );
+        $form.find( "button.save-transient-button span" ).text( "" );
+        $form.find( "button.save-transient-button i" ).show();
+        var value = $form.find( '#wpfm_cache_ttl' ).val();
         var payload = {
             value: value,
         };
-        wpAjaxHelperRequest('save-wpfm-transient', payload)
-            .success(function(response) {
-                $form.find("button.save-transient-button i").hide();
-                $form.find("button.save-transient-button span").text("saved");
-                setTimeout(function() {
-                    $form.find("button.save-transient-button span").text("save");
-                }, 1000);
-                console.log('woohoo!');
-            })
-            .error(function(response) {
-                $form.find("button.ssave-fb-pixel i").hide();
-                $form.find("button.save-fb-pixel span").text("failed");
-                setTimeout(function() {
-                    $form.find("button.save-fb-pixel span").text("save");
-                }, 1000);
-                console.log('uh, oh!');
-                console.log(response.statusText);
-            });
+        wpAjaxHelperRequest( 'save-wpfm-transient', payload )
+            .success( function ( response ) {
+                $form.find( "button.save-transient-button i" ).hide();
+                $form.find( "button.save-transient-button span" ).text( "saved" );
+                setTimeout( function () {
+                    $form.find( "button.save-transient-button span" ).text( "save" );
+                }, 1000 );
+                console.log( 'woohoo!' );
+            } )
+            .error( function ( response ) {
+                $form.find( "button.ssave-fb-pixel i" ).hide();
+                $form.find( "button.save-fb-pixel span" ).text( "failed" );
+                setTimeout( function () {
+                    $form.find( "button.save-fb-pixel span" ).text( "save" );
+                }, 1000 );
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
-
-    $(document).on("submit", "#wpfm-transient-settings", save_wpfm_transient);
-
 
     /**
      * purge WPFM cache
      *
      * @param e
      */
-    function purge_transient_cache(e) {
+    function purge_transient_cache( e ) {
         e.preventDefault();
         var payload = {};
-        var $el = $(this);
-        $el.find("i").show();
-        wpAjaxHelperRequest('purge-wpfm-transient-cache', payload)
-            .success(function(response) {
-                $el.find("i").hide();
-                console.log('woohoo!');
-            })
-            .error(function(response) {
-                $el.find("i").hide();
-                console.log('uh, oh!');
-                console.log(response.statusText);
-            });
+        var $el = $( this );
+        $el.find( "i" ).show();
+
+        wpAjaxHelperRequest( 'purge-wpfm-transient-cache', payload )
+            .success( function ( response ) {
+                $el.find( "i" ).hide();
+                console.log( 'woohoo!' );
+            } )
+            .error( function ( response ) {
+                $el.find( "i" ).hide();
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
 
-    function purge_transient_cache_on_feed(e) {
-        var publish = $('#publish').val();
-        if( 'Publish' == publish ){
-            var answer = window.confirm("All data will be lost?");
-            if (answer) {   
-            var payload = {};
-            var $el = $(this);
-            $el.find("i").show();
-            wpAjaxHelperRequest('purge-wpfm-transient-cache', payload)
-                .success(function(response) {
-                    $el.find("i").hide();
-                    console.log('woohoo!');
-                    location.reload();
-                })
-                .error(function(response) {
-                    $el.find("i").hide();
-                    console.log('uh, oh!');
-                    console.log(response.statusText);
-                });
-            }else{
-                e.preventDefault();
+    function purge_transient_cache_on_feed( e ) {
+        e.preventDefault();
+        var status = $( '#publish' ).val();
+
+        if ( 'Publish' === status ) {
+            var answer = window.confirm( "All data will be lost?" );
+            if ( answer ) {
+                var payload = {};
+                var $el = $( this );
+                $el.find( "i" ).show();
+
+                wpAjaxHelperRequest( 'purge-wpfm-transient-cache', payload )
+                    .success( function ( response ) {
+                        $el.find( "i" ).hide();
+                        console.log( 'woohoo!' );
+                        location.reload();
+                    } )
+                    .error( function ( response ) {
+                        $el.find( "i" ).hide();
+                        console.log( 'uh, oh!' );
+                        console.log( response.statusText );
+                    } );
             }
-        }else{ 
+        } else {
             var payload = {};
-            var $el = $(this);
-            $el.find("i").show();
-            wpAjaxHelperRequest('purge-wpfm-transient-cache', payload)
-                .success(function(response) {
-                    $el.find("i").hide();
-                    console.log('woohoo!');
+            var $el = $( this );
+            $el.find( "i" ).show();
+
+            wpAjaxHelperRequest( 'purge-wpfm-transient-cache', payload )
+                .success( function ( response ) {
+                    $el.find( "i" ).hide();
+                    console.log( 'woohoo!' );
                     location.reload();
-                })
-                .error(function(response) {
-                    $el.find("i").hide();
-                    console.log('uh, oh!');
-                    console.log(response.statusText);
-                });
+                } )
+                .error( function ( response ) {
+                    $el.find( "i" ).hide();
+                    console.log( 'uh, oh!' );
+                    console.log( response.statusText );
+                } );
         }
-        
     }
-
-    $(document).on("click", "#wpfm-purge-cache", purge_transient_cache);
-
-    $(document).on("click", "#btn_on_feed", purge_transient_cache_on_feed);
 
     /**
      * Enable private products
      */
     function allow_private() {
         var payload = {};
-        if ($(this).is(":checked")) {
+        if ( $( this ).is( ":checked" ) ) {
             payload = {
                 allow_private: 'yes',
             };
@@ -1169,136 +1407,20 @@
                 allow_private: 'no',
             };
         }
-        wpAjaxHelperRequest('allow-private-products', payload)
-            .success(function(response) {
-                console.log('Woohoo!');
-            })
-            .error(function(response) {
-                console.log('Uh, oh!');
-                console.log(response.statusText);
-            });
+        wpAjaxHelperRequest( 'allow-private-products', payload )
+            .success( function ( response ) {
+                console.log( 'Woohoo!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            } );
     }
 
-    $(document).on('change', '#rex-product-allow-private', allow_private);
-
-    // Trigger Based Review Request
-    $( document ).ready( function () {
-
-        $( document ).on( 'click', '#rex_rate_now, #rex_rate_not_now, #rex_rated_already', function ( e ) {
-            var btn_id = $( this ).attr( 'id' );
-            var show = true;
-            var frequency = '';
-
-            if ( btn_id == 'rex_rate_now' || btn_id == 'rex_rated_already' ) {
-                if ( btn_id == 'rex_rated_already' )
-                    e.preventDefault();
-
-                var feed_id = $( '#rex_feed_hidden_feed_id' ).val();
-                var show = false;
-                var frequency = 'never';
-            }
-            else if ( btn_id == 'rex_rate_not_now' ) {
-                e.preventDefault();
-                var feed_id = $( '#rex_feed_hidden_feed_id' ).val();
-                var show = false;
-                var frequency = 'one_week';
-            }
-
-            var payload = {
-                feed_id: feed_id,
-                show: show,
-                frequency: frequency
-            };
-
-            wpAjaxHelperRequest('trigger-review-request', payload)
-                .success(function(response) {
-                    $('#rex_feed_trigger_based_review_request').fadeOut();
-                    console.log('Woohoo! Awesome!!');
-                })
-                .error(function(response) {
-                    console.log('Uh, oh! Not Awesome!!');
-                    // console.log('response.statusText');
-                });
-        } );
-    } );
-    // Trigger Based Review Request ENDS
-
-})(jQuery);
-
-
-window.WPFM_Ajaxified_Product_Taxonomies = (function(window, document, $, undefined) {
-    'use strict';
-
-    var app = {};
-
-    app.cache = function() {
-        app.$metabox = $('#rex_feed_products');
-        app.$select_cat = app.$metabox.find('#rex_feed_products');
-    };
-
-    app.init = function() {
-        app.cache();
-        app.$select_cat.on('change', app.change_color);
-    };
-
-    app.change_color = function(evt) {
-        var that = $(this),
-            new_val = that.val();
-
-        if (new_val === 'all' || new_val === 'featured') {
-            $('.cmb2-id-rex-feed-config-filter-title').hide();
-            $('#rex-feed-product-taxonomies').hide();
-            $('.cmb2-id-rex-feed-tags-wrapper').hide();
-            $('.cmb2-id-product-filter-title').hide();
-            $('.cmb-type-product-filter').hide();
-        } else if (new_val === 'filter') {
-            $('.cmb2-id-rex-feed-config-filter-title').show();
-            $('#rex-feed-product-taxonomies').hide();
-            $('.cmb2-id-rex-feed-product-filter-title').hide();
-            $('.cmb-type-product-filter').hide();
-        } else if (new_val === 'product_cat' || new_val === 'product_tag') {
-            $('.cmb2-id-rex-feed-product-filter-title').hide();
-            $('.rex-feed-product-filters').hide();
-            $('.cmb-type-product-filter').hide();
-            $('#rex-feed-product-taxonomies').show();
-        } else if (new_val === 'product_filter') {
-            $('.cmb2-id-rex-feed-product-filter-title').show();
-            $('.cmb-type-product-filter').show();
-            $('.cmb2-id-rex-feed-config-filter-title').hide();
-            $('#rex-feed-product-taxonomies').hide();
+    function rex_feed_show_review_request( e ) {
+        var is_published = $( '#publish' ).val();
+        if ( is_published !== 'Publish' ){
+            $( '#rex_feed_review_request_body_content' ).fadeIn();
         }
-
-        $(".rex-feed-product-taxonomies-spinner").show();
-
-
-        if (new_val === 'product_cat' || new_val === 'product_tag') {
-            var payload = {
-                val: new_val,
-                postID: $('#post_ID').val()
-            };
-            var l10n = window.cmb2_l10;
-            wpAjaxHelperRequest('fetch-product-taxonomies', payload)
-                .success(function(response) {
-                    console.log('Woohoo!');
-                    if (response.data.hasContent) {
-                        $("#rex-feed-product-taxonomies-contents").html(response.data.html);
-                        $('<p><span class="button-secondary cmb-multicheck-toggle">' + l10n.strings.check_toggle + '</span></p>').insertBefore('.cmb2-checkbox-list:not(.no-select-all)');
-                        l10n.fields[response.data.hash] = response.data.js_data;
-                        $(".rex-feed-product-taxonomies-spinner").hide();
-                    }
-                })
-                .error(function(response) {
-                    console.log('Uh, oh!');
-                    console.log(response.statusText);
-                });
-        }
-
-        if (new_val === 'featured') {
-            $(".rex-feed-product-taxonomies-spinner").hide();
-        }
-    };
-
-    $(document).ready(app.init);
-
-    return app;
-})(window, document, jQuery);
+    }
+})( jQuery );

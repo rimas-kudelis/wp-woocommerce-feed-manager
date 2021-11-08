@@ -103,13 +103,13 @@ class Rex_Product_Feed_Google_merchant_promotion {
 
     public function make_feed($config) {
 
-        $this->config   = $config;
-        $this->id       =   $config['info']['post_id'];
-        $this->title    =   $config['info']['title'];
-        $this->desc     =   $config['info']['desc'];
-        $this->link     =   esc_url( home_url('/') );
-        $this->merchant = $config['merchant'];
-        $this->feed_format = $config['feed_format'];
+	    $this->config      = $config;
+	    $this->id          = $config[ 'info' ][ 'post_id' ];
+	    $this->title       = $config[ 'info' ][ 'title' ];
+	    $this->desc        = $config[ 'info' ][ 'desc' ];
+	    $this->link        = esc_url( home_url( '/' ) );
+	    $this->merchant    = $config[ 'merchant' ];
+	    $this->feed_format = $config[ 'feed_format' ];
         $this->setup_feed_rules($config['feed_config']);
 
         GoogleShopping::$container = null;
@@ -132,7 +132,7 @@ class Rex_Product_Feed_Google_merchant_promotion {
         }
 
         foreach ($atts as $key => $value) {
-	        if ( $this->rex_feed_skip_row ) {
+	        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 		        if ( $value != '' ) {
 			        $item->$key($value); // invoke $key as method of $item object.
 		        }
@@ -144,9 +144,9 @@ class Rex_Product_Feed_Google_merchant_promotion {
 
         if ($this->feed_format === 'xml') {
             $this->feed = GoogleShopping::asRss();
-        } elseif ($this->feed_format === 'text') {
+        } elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
             $this->feed = GoogleShopping::asTxt();
-        } elseif ($this->feed_format === 'csv' || $this->feed_format === 'csv_semicolon') {
+        } elseif ($this->feed_format === 'csv') {
             $this->feed = GoogleShopping::asCsv();
         }else {
             $this->feed = GoogleShopping::asRss();
@@ -185,7 +185,6 @@ class Rex_Product_Feed_Google_merchant_promotion {
         if ( !file_exists($path) ) {
             wp_mkdir_p($path);
         }
-
 
         if($format === 'xml'){
             $file = trailingslashit($path) . "feed-{$this->id}.xml";

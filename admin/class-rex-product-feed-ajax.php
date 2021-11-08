@@ -77,7 +77,6 @@ class Rex_Product_Feed_Ajax {
      */
 	public static function init()
 	{
-
 		$validations = array(
 			'logged_in' => true,
 			'user_can'  => 'manage_options',
@@ -104,13 +103,6 @@ class Rex_Product_Feed_Ajax {
 
 		wp_ajax_helper()->handle( 'merchant-change' )
 		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )
-		                ->with_validation( $validations );
-
-		/**
-		 * product taxonomies ajax
-		 */
-		wp_ajax_helper()->handle( 'fetch-product-taxonomies' )
-		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'fetch_product_taxonomies' ) )
 		                ->with_validation( $validations );
 
 
@@ -249,7 +241,20 @@ class Rex_Product_Feed_Ajax {
 		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_trigger_review_request' ) )
 		                ->with_validation( $validations );
 
-	}
+		/**
+		 * New changes message
+		 */
+		wp_ajax_helper()->handle( 'new-changes-message' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_new_changes_message' ) )
+		                ->with_validation( $validations );
+
+	    /**
+	     * Loads taxonomies
+	     */
+		wp_ajax_helper()->handle( 'rex-feed-load-taxonomies' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_load_taxonomies' ) )
+		                ->with_validation( $validations );
+    }
 
 
     /**
@@ -258,22 +263,17 @@ class Rex_Product_Feed_Ajax {
      * @since    2.0.0
      */
     public static function get_product_number($payload) {
-        $is_premium = apply_filters('wpfm_is_premium', false);
-        $products   = apply_filters('wpfm_get_total_number_of_products',
-            array(
-                    'products'  => 50
-            )
-        );
-        $per_page = get_option('rex-wpfm-product-per-batch', 50);
-        $posts_per_page = $is_premium ? (int)$per_page : ((int)$per_page >= 50 ? 50 : (int)$per_page);
+        $feed_id        = isset( $payload[ 'feed_id' ] ) ? $payload[ 'feed_id' ] : '';
+	    $is_premium     = apply_filters( 'wpfm_is_premium', false );
+	    $products       = apply_filters( 'wpfm_get_total_number_of_products', array( 'products' => 50 ), $feed_id );
+	    $per_page       = get_option( 'rex-wpfm-product-per-batch', 50 );
+	    $posts_per_page = $is_premium ? ( int ) $per_page : ( ( int ) $per_page >= 50 ? 50 : ( int ) $per_page );
 
-        $info = array(
-            'products'      => $products['products'],
-            'per_batch'     => $posts_per_page,
-            'total_batch'   => ceil($products['products']/(int)$posts_per_page)
-        );
-
-        return $info;
+	    return array(
+		    'products'    => $products[ 'products' ],
+		    'per_batch'   => $posts_per_page,
+		    'total_batch' => ceil( $products[ 'products' ] / (int) $posts_per_page )
+	    );
     }
 
 
@@ -309,21 +309,25 @@ class Rex_Product_Feed_Ajax {
      * @return false|string
      * @throws Exception
      */
-    public static function show_feed_template( $merchant ){
+    public static function show_feed_template( $merchant )
+    {
+	    $post_id       = isset( $merchant[ 'post_id' ] ) ? $merchant[ 'post_id' ] : '';
+	    $feed_rules    = get_post_meta( $post_id, 'rex_feed_feed_config', true );
+	    $merchant_name = isset( $merchant[ 'merchant' ] ) ? $merchant[ 'merchant' ] : '';
 
-        $feed_rules    = get_post_meta( $merchant['post_id'], 'rex_feed_feed_config', true );
-
-        if ( $merchant['merchant'] != get_post_meta( $merchant['post_id'], 'rex_feed_merchant', true ) ) {
+        if ( $merchant_name != get_post_meta( $post_id, 'rex_feed_merchant', true ) ) {
             $feed_rules = false;
         }
-        $feed_template = Rex_Feed_Template_Factory::build( $merchant['merchant'], $feed_rules );
 
-
-        $feed_format = self::get_merchant_feed_format($merchant['merchant']);
+        $feed_template = Rex_Feed_Template_Factory::build( $merchant_name, $feed_rules );
+        $feed_format = self::get_merchant_feed_format($merchant_name);
+        $feed_separator = self::get_feed_separator($merchant_name);
 
         ob_start();
-        if( in_array($merchant['merchant'], apply_filters('wpfm_has_custom_feed_config', array()))) {
-            do_action('wpfm_custom_metabox_display_'. $merchant['merchant'], $merchant['merchant'], $feed_template);
+        if( in_array($merchant_name, apply_filters('wpfm_has_custom_feed_config', array()))) {
+	        if ( wpfm_pro_compatibility() ) {
+		        do_action('wpfm_custom_metabox_display_'. $merchant_name, $merchant_name, $feed_template);
+            }
         }else {
             include plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
         }
@@ -336,12 +340,13 @@ class Rex_Product_Feed_Ajax {
             $selected_format = $feed_format[0];
         }
 
-        return array(
-            'success'       => true,
-            'html'          => $result,
-            'feed_format'   => $feed_format,
-            'select'        => $selected_format
-        );
+	    return array(
+		    'success'        => true,
+		    'html'           => $result,
+		    'feed_format'    => $feed_format,
+		    'feed_separator' => $feed_separator,
+		    'select'         => $selected_format
+	    );
     }
 
     /**
@@ -353,7 +358,6 @@ class Rex_Product_Feed_Ajax {
      * @since 5.42
      */
     public static function get_merchant_feed_format($merchant) {
-
         $google_format = array(
             'google',
             'ciao',
@@ -376,7 +380,6 @@ class Rex_Product_Feed_Ajax {
             'amazon_it_collane',
             'amazon_seller_bed_amp',
             'amazon_seller',
-            'amazon',
             'amazon',
         );
         $snapchat_format = array(
@@ -465,53 +468,55 @@ class Rex_Product_Feed_Ajax {
 		    return array( 'xml' );
 	    }
         elseif ( in_array( $merchant, $facebook_format ) ) {
-		    return array( 'xml', 'csv', 'csv_semicolon' );
+		    return array( 'xml', 'csv' );
 	    }
         elseif ( in_array( $merchant, $amazon_format ) ) {
-		    return array( 'csv', 'csv_semicolon', 'tsv', 'text' );
+		    return array( 'csv', 'tsv', 'text' );
 	    }
         elseif ( in_array( $merchant, $snapchat_format ) ) {
-		    return array( 'csv', 'csv_semicolon' );
+		    return array( 'csv' );
 	    }
         elseif ( in_array( $merchant, $printerst_format ) ) {
-		    return array( 'csv', 'csv_semicolon', 'tsv', 'xml' );
+		    return array( 'csv', 'tsv', 'xml' );
 	    }
         elseif ( in_array( $merchant, $Ebay_format ) ) {
-		    return array( 'csv', 'csv_semicolon' );
+		    return array( 'csv' );
 	    }
         elseif ( in_array( $merchant, $instagram_format ) ) {
-		    return array( 'xml', 'csv', 'csv_semicolon', 'tsv' );
+		    return array( 'xml', 'csv', 'tsv' );
 	    }
         elseif ( in_array( $merchant, $trovaprezzi_format ) ) {
-		    return array( 'xml', 'csv', 'csv_semicolon' );
+		    return array( 'xml', 'csv' );
 	    }
         elseif ( in_array( $merchant, $zalando_format ) ) {
 	        if ( $merchant === 'zalando_stock_update' ) {
 		        return array( 'csv_semicolon' );
             }
-		    return array( 'json', 'csv', 'csv_semicolon' );
+		    return array( 'json', 'csv' );
 	    }
         elseif ( in_array( $merchant, $wish_format ) ) {
-		    return array( 'csv', 'csv_semicolon', 'text' );
+		    return array( 'csv', 'text' );
 	    }
         elseif ( in_array( $merchant, $connexity_format ) ) {
-		    return array( 'csv', 'csv_semicolon', 'text' );
+		    return array( 'csv', 'text' );
 	    }
         elseif ( in_array( $merchant, $google_local_product_inventory ) ) {
 		    return array( 'xml', 'text' );
 	    }
         elseif ( in_array( $merchant, $google_local_product ) ) {
-		    return array( 'xml', 'text', 'csv', 'csv_semicolon' );
+		    return array( 'xml', 'text', 'csv' );
 	    }
         elseif ( in_array( $merchant, $shopzilla ) ) {
 		    return array( 'text' );
 	    }
         elseif ( in_array( $merchant, $bing ) ) {
 		    return array( 'text' );
-	    }elseif ( in_array( $merchant, $cercavino ) ) {
-		    return array( 'text_pipe','text' );
-	    }elseif ( in_array( $merchant, $trovino ) ) {
-		    return array( 'text_pipe' );
+	    }
+	    elseif ( in_array( $merchant, $cercavino ) ) {
+		    return array( 'text' );
+	    }
+	    elseif ( in_array( $merchant, $trovino ) ) {
+		    return array( 'text' );
 	    }
         elseif ( in_array( $merchant, $ibud ) ) {
 		    return array( 'xml' );
@@ -526,106 +531,146 @@ class Rex_Product_Feed_Ajax {
 		    return array( 'xml' );
 	    }
         elseif ( in_array( $merchant, $spartooFr ) ) {
-		    return array( 'xml', 'csv', 'csv_semicolon' );
+		    return array( 'xml', 'csv' );
 	    }
         elseif ( in_array( $merchant, $google_local_inventory_ads ) ) {
 		    return array( 'xml', 'text' );
 	    }
         elseif ( in_array( $merchant, $lesitedumif ) ) {
-		    return array( 'csv', 'csv_semicolon' );
+		    return array( 'csv' );
 	    }
         elseif ( in_array( $merchant, $bing_json_feed ) ) {
 		    return array( 'json' );
 	    }
         elseif ( in_array( $merchant, $shopee ) ) {
-		    return array( 'csv', 'csv_semicolon' );
+		    return array( 'csv' );
 	    }
-	    return array( 'xml', 'csv', 'csv_semicolon', 'text','text_pipe', 'tsv', 'json' );
+	    return array( 'xml', 'csv', 'text', 'tsv', 'json' );
     }
 
-
-    public static function fetch_product_taxonomies($payload) {
-        $val = sanitize_text_field($payload['val']);
-        $post_id = sanitize_text_field($payload['postID']);
-        $box = wpfm_cmb2_get_metabox('rex_feed_products', $post_id, 'product-feed');
-
-        if($val === 'product_cat') {
-            $box->add_field( array(
-                'name'           => 'Product Category',
-                'desc'           => 'Select Category',
-                'id'             => 'rex_feed_cats',
-                'taxonomy'       => 'product_cat',
-                'type'           => 'taxonomy_multicheck_inline',
-            ));
-            $field = $box->get_field('rex_feed_cats');
-            ob_start();
-            $field->render_field();
-            $content = ob_get_clean();
-            ob_end_clean();
-
-            $terms = wp_get_post_terms($post_id, 'product_cat');
-            $values = [];
-            $content = str_replace( 'checked="checked"', ' ', $content );
-            if($terms) {
-                foreach( $terms as $term ) {
-                    $values[] = $term->slug;
-                    if ( strpos( $content, 'value="' . $term->slug . '"' ) !== false ) {
-                        $content = str_replace( 'value="' . $term->slug . '"', 'value="' . $term->slug . '"' . ' checked="checked"', $content );
-                    }
-                }
-            }
-
-            wp_send_json_success(
-                array(
-                    'hasContent' => true,
-                    'html' => $content,
-                    'hash' => $field->hash_id(),
-                    'js_data' =>$field->js_data()
-                )
-            );
-        }elseif ($val === 'product_tag') {
-            $box->add_field( array(
-                'name'           => 'Product Tags',
-                'desc'           => 'Select Tags',
-                'id'             => 'rex_feed_tags',
-                'taxonomy'       => 'product_tag',
-                'type'           => 'taxonomy_multicheck_inline',
-            ));
-            $field = $box->get_field('rex_feed_tags');
-
-            ob_start();
-            $field->render_field();
-            $content = ob_get_clean();
-            ob_end_clean();
-
-            $terms = wp_get_post_terms($post_id, 'product_tag');
-            $values = [];
-            $content = str_replace( 'checked="checked"', ' ', $content );
-            if($terms) {
-                foreach( $terms as $term ) {
-                    $values[] = $term->slug;
-                    if ( strpos( $content, 'value="' . $term->slug . '"' ) !== false ) {
-                        $content = str_replace( 'value="' . $term->slug . '"', 'value="' . $term->slug . '"' . ' checked="checked"', $content );
-                    }
-                }
-            }
-
-            wp_send_json_success(
-                array(
-                    'hasContent' => true,
-                    'html' => $content,
-                    'hash' => $field->hash_id(),
-                    'js_data' =>$field->js_data()
-                )
-            );
-        }
-
-        wp_send_json_success(
-            array(
-                'hasContent' => false,
-            )
+    /**
+     * return feed separator based on
+     * merchant type
+     *
+     * @param $merchant
+     * @return array
+     */
+    public static function get_feed_separator($merchant) {
+        $google_format = array(
+            'google',
+            'ciao',
+            'liveintent',
+            'google_shopping_actions',
+            'google_express',
+            'criteo',
+            'compartner',
+            'doofinder',
+            'emarts',
+            'epoq',
+            'google_review'
         );
+        $facebook_format = array(
+            'facebook',
+            'ebay_mip',
+            'leguide',
+        );
+        $amazon_format = array(
+            'amazon_it_collane',
+            'amazon_seller_bed_amp',
+            'amazon_seller',
+            'amazon',
+        );
+        $snapchat_format = array(
+            'snapchat',
+            'google_custom_search_ads',
+
+        );
+        $printerst_format = array(
+            'pinterest',
+            'rakuten',
+        );
+        $Ebay_format = array(
+            'amazon_accessories_and_scarf',
+            'ebay_seller',
+            'lazada',
+            'bol',
+            'fruugo',
+            'idealo_de',
+            'idealo',
+
+        );
+        $instagram_format = array(
+            'instagram',
+
+        );
+        $trovaprezzi_format = array(
+            'trovaprezzi',
+        );
+        $zalando_format = array(
+            'zalando',
+            'zalando_stock_update'
+        );
+        $wish_format = array(
+            'wish',
+        );
+        $connexity_format = array(
+            'connexity',
+        );
+        $google_local_product_inventory = array(
+            'google_local_products_inventory',
+        );
+        $google_local_product = array(
+            'google_local_products',
+        );
+        $shopzilla = array(
+            'shopzilla',
+        );
+        $bing = array(
+            'bing',
+        );
+        $cercavino = array(
+            'cercavino',
+        );
+        $trovino = array(
+            'trovino',
+        );
+        $bing_json_feed = array(
+            'bing_image',
+        );
+        $ibud = array(
+            'ibud',
+        );
+        $mirakl = array(
+            'mirakl',
+        );
+        $google_local_inventory_ads = array(
+            'google_local_inventory_ads',
+        );
+        $DealsForU = array(
+            'DealsForU',
+        );
+        $Bestprice = array(
+            'Bestprice',
+        );
+        $spartooFr = array(
+            'spartooFr',
+        );
+        $lesitedumif = array(
+            'lesitedumif',
+        );
+        $shopee = array(
+            'shopee',
+        );
+
+	    if ( in_array( $merchant, $facebook_format ) ) {
+		    return array( 'comma', 'semi_colon' );
+	    }
+	    elseif ( in_array( $merchant, $trovino ) || in_array( $merchant, $cercavino ) ) {
+		    return array( 'pipe' );
+	    }
+	    return array( 'comma', 'semi_colon', 'pipe' );
     }
+
 
 
     public static function rex_feed_tags_render_row_cb( $field_args, $field ) {
@@ -636,14 +681,7 @@ class Rex_Product_Feed_Ajax {
         $value       = $field->escaped_value();
         $description = $field->args( 'description' );
         ?>
-        <div class="custom-field-row <?php echo $classes; ?>">
-            <!--            --><?php //echo sprintf(
-            //                "\t" . '<li> <label for="%s"> <input%s/> <span></span> %s </label></li>' . "\n",
-            //                $a['id'],
-            //                $this->concat_attrs( $a, array( 'label' ) ),
-            //                $a['label']
-            //            )?>
-        </div>
+        <div class="custom-field-row <?php echo $classes; ?>"></div>
         <?php
     }
 
@@ -763,113 +801,111 @@ class Rex_Product_Feed_Ajax {
      * @return array
      */
     public static function send_to_google($payload) {
-        $feed_id = $payload['feed_id'];
-        $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
-        if ($rex_google_merchant->is_authenticate()) {
-            $feed_url = get_post_meta( $feed_id, 'rex_feed_xml_file', true );
-            $feed_title = get_the_title($feed_id);
-            $client = $rex_google_merchant::get_client();
-            $client_id = $rex_google_merchant::$client_id;
-            $client_secret = $rex_google_merchant::$client_secret;
-            $merchant_id = $rex_google_merchant::$merchant_id;
+	    $feed_id             = $payload[ 'feed_id' ];
+	    $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
+	    if ( $rex_google_merchant->is_authenticate() ) {
+		    $feed_url      = get_post_meta( $feed_id, 'rex_feed_xml_file', true );
+		    $feed_title    = get_the_title( $feed_id );
+		    $client        = $rex_google_merchant::get_client();
+		    $client_id     = $rex_google_merchant::$client_id;
+		    $client_secret = $rex_google_merchant::$client_secret;
+		    $merchant_id   = $rex_google_merchant::$merchant_id;
 
 
-            $access_token = $rex_google_merchant->get_access_token();
-            $client->setClientId($client_id);
-            $client->setClientSecret($client_secret);
-            $client->setScopes( 'https://www.googleapis.com/auth/content' );
-            $client->setAccessToken($access_token);
+		    $access_token = $rex_google_merchant->get_access_token();
+		    $client->setClientId( $client_id );
+		    $client->setClientSecret( $client_secret );
+		    $client->setScopes( 'https://www.googleapis.com/auth/content' );
+		    $client->setAccessToken( $access_token );
 
-            /*
-             * Initialize service and datafeed
-             */
-            $service = new Google_Service_ShoppingContent($client);
-            $datafeed = new Google_Service_ShoppingContent_Datafeed();
-            $target = new Google_Service_ShoppingContent_DatafeedTarget();
+		    /*
+			 * Initialize service and datafeed
+			 */
+		    $service  = new Google_Service_ShoppingContent( $client );
+		    $datafeed = new Google_Service_ShoppingContent_Datafeed();
+		    $target   = new Google_Service_ShoppingContent_DatafeedTarget();
 
-            $name = $feed_title;
-            $filename = $name.uniqid();
+		    $name     = $feed_title;
+		    $filename = $name . uniqid();
 
-            $target->setLanguage($payload['language']);
-            $target->setCountry($payload['country']);
-            if(isset( $payload['destination'] ) && count($payload['destination'])){
-                $target->setIncludedDestinations($payload['destination']);
-            }
+		    $target->setLanguage( $payload[ 'language' ] );
+		    $target->setCountry( $payload[ 'country' ] );
+		    /*if ( count( $payload[ 'destination' ] ) ) {
+			    $target->setIncludedDestinations( $payload[ 'destination' ] );
+		    }*/
 
-            $datafeed->setName($name);
-            $datafeed->setContentType('products');
-            $datafeed->setAttributeLanguage($payload['language']);
-            $datafeed->setTargets([$target]);
+		    $datafeed->setName( $name );
+		    $datafeed->setContentType( 'products' );
+		    $datafeed->setAttributeLanguage( $payload[ 'language' ] );
+		    $datafeed->setTargets( [ $target ] );
 
-//            $datafeed->setContentLanguage($payload['language']);
-//            $datafeed->setIntendedDestinations(array('Shopping'));
-//            $datafeed->setTargetCountry($payload['country']);
-            if (!$rex_google_merchant->feed_exists($feed_id)){
-                $datafeed->setFileName($filename);
-            }else {
-                $datafeed->setFileName(get_post_meta($feed_id, 'rex_feed_google_data_feed_file_name', true));
-            }
+		    if ( !$rex_google_merchant->feed_exists( $feed_id ) ) {
+			    $datafeed->setFileName( $filename );
+		    }
+		    else {
+			    $datafeed->setFileName( get_post_meta( $feed_id, 'rex_feed_google_data_feed_file_name', true ) );
+		    }
 
+		    /*
+			 * Initialize Schedule
+			 */
+		    $fetch_schedule = new Google_Service_ShoppingContent_DatafeedFetchSchedule();
+		    if ( $payload[ 'schedule' ] === 'monthly' ) {
+			    $fetch_schedule->setDayOfMonth( $payload[ '' ] );
+		    }
+		    if ( $payload[ 'schedule' ] === 'weekly' ) {
+			    $fetch_schedule->setWeekday( $payload[ 'day' ] );
+		    }
+		    $fetch_schedule->setHour( $payload[ 'hour' ] );
+		    $fetch_schedule->setFetchUrl( $feed_url );
 
-            /*
-             * Initialize Schedule
-             */
-            $fetch_schedule = new Google_Service_ShoppingContent_DatafeedFetchSchedule();
-            if($payload['schedule'] === 'monthly') {
-                $fetch_schedule->setDayOfMonth($payload['']);
-            }
-            if($payload['schedule'] === 'weekly') {
-                $fetch_schedule->setWeekday($payload['day']);
-            }
-            $fetch_schedule->setHour($payload['hour']);
-            $fetch_schedule->setFetchUrl($feed_url);
+		    /*
+			 * initialize feed format
+			 */
+		    $format = new Google_Service_ShoppingContent_DatafeedFormat();
+		    $format->setFileEncoding( 'utf-8' );
+		    $datafeed->setFormat( $format );
+		    $datafeed->setFetchSchedule( $fetch_schedule );
 
-            /*
-             * initialize feed format
-             */
-            $format = new Google_Service_ShoppingContent_DatafeedFormat();
-            $format->setFileEncoding('utf-8');
-            $datafeed->setFormat($format);
-            $datafeed->setFetchSchedule($fetch_schedule);
+		    try {
+			    if ( $rex_google_merchant->feed_exists( $feed_id ) ) {
+				    $datafeedID = get_post_meta( $feed_id, 'rex_feed_google_data_feed_id', true );
+				    $datafeed->setId( $datafeedID );
+				    $service->datafeeds->update( $merchant_id, $datafeedID, $datafeed );
+			    }
+			    else {
+				    $datafeed         = $service->datafeeds->insert( $merchant_id, $datafeed );
+				    $datafeedID       = $datafeed->getId();
+				    $datafeedFileName = $datafeed->getFileName();
+				    update_post_meta( $feed_id, 'rex_feed_google_data_feed_id', $datafeedID );
+				    update_post_meta( $feed_id, 'rex_feed_google_data_feed_file_name', $datafeedFileName );
 
-            try {
-                if ($rex_google_merchant->feed_exists($feed_id)){
-                    $datafeedID = get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true);
-                    $datafeed->setId($datafeedID);
-                    $service->datafeeds->update($merchant_id, $datafeedID, $datafeed);
-                }else {
-                    $datafeed = $service->datafeeds->insert($merchant_id, $datafeed);
-                    $datafeedID = $datafeed->getId();
-                    $datafeedFileName = $datafeed->getFileName();
-                    update_post_meta($feed_id, 'rex_feed_google_data_feed_id',$datafeedID );
-                    update_post_meta($feed_id, 'rex_feed_google_data_feed_file_name',$datafeedFileName );
+			    }
+			    $service->datafeeds->fetchnow( $merchant_id, $datafeedID );
+		    }
+		    catch ( Exception $e ) {
+			    if ( is_wpfm_logging_enabled() ) {
+				    $log = wc_get_logger();
+				    $log->info( $e->getMessage(), array( 'source' => 'WPFM-google' ) );
+			    }
 
-                }
-                $service->datafeeds->fetchnow($merchant_id, $datafeedID);
-            }
-            catch(Exception $e) {
-                if(is_wpfm_logging_enabled()) {
-                    $log = wc_get_logger();
-                    $log->info($e->getMessage(), array('source' => 'WPFM-google'));
-                }
+			    $error  = json_decode( $e->getMessage() );
+			    $reason = $error->error->errors;
+			    return array(
+				    'success' => false,
+				    'message' => $error->error->message,
+				    'reason'  => $reason[ 0 ]->reason
+			    );
+		    }
+	    }
 
-                $error = json_decode($e->getMessage());
-                $reason = $error->error->errors;
-                return array(
-                    'success' => false,
-                    'message' => $error->error->message,
-                    'reason'  => $reason[0]->reason
-                );
-            }
-        }
-
-        update_post_meta($feed_id, 'rex_feed_google_schedule',$payload['schedule'] );
-        update_post_meta($feed_id, 'rex_feed_google_schedule_time',$payload['hour'] );
-        update_post_meta($feed_id, 'rex_feed_google_schedule_month',$payload['month'] );
-        update_post_meta($feed_id, 'rex_feed_google_schedule_week_day',$payload['day'] );
-        update_post_meta($feed_id, 'rex_feed_google_target_country',$payload['country'] );
-        update_post_meta($feed_id, 'rex_feed_google_target_language',$payload['language'] );
-        return array('success' => true);
+	    update_post_meta( $feed_id, 'rex_feed_google_schedule', $payload[ 'schedule' ] );
+	    update_post_meta( $feed_id, 'rex_feed_google_schedule_time', $payload[ 'hour' ] );
+	    update_post_meta( $feed_id, 'rex_feed_google_schedule_month', $payload[ 'month' ] );
+	    update_post_meta( $feed_id, 'rex_feed_google_schedule_week_day', $payload[ 'day' ] );
+	    update_post_meta( $feed_id, 'rex_feed_google_target_country', $payload[ 'country' ] );
+	    update_post_meta( $feed_id, 'rex_feed_google_target_language', $payload[ 'language' ] );
+	    return array( 'success' => true );
     }
 
 
@@ -1117,6 +1153,12 @@ class Rex_Product_Feed_Ajax {
     }
 
 
+	/**
+     * @desc Update into database - Trigger Based Review Request
+     *
+	 * @param $payload
+	 * @return bool[]
+	 */
     public static function rex_feed_trigger_review_request( $payload ) {
 
 	    $data = array(
@@ -1129,6 +1171,40 @@ class Rex_Product_Feed_Ajax {
 
 	    return array(
 		    'success' => true,
+	    );
+    }
+
+
+	/**
+     * @desc Update into database - New Changes Message
+     *
+	 * @return bool[]
+	 */
+    public static function rex_feed_new_changes_message() {
+	    update_option( 'rex_feed_new_changes_msg', 'hide' );
+
+	    return array(
+		    'success' => true,
+	    );
+    }
+
+
+	/**
+     * @desc Loads product taxonomies
+     *
+	 * @param $payload
+	 * @return bool[]
+	 */
+    public static function rex_feed_load_taxonomies( $payload ) {
+	    ob_start();
+	    $feed_id = ( int ) $payload['feed_id'];
+	    require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-taxonomies-section.php';
+	    $html_content = ob_get_contents();
+	    ob_get_clean();
+
+	    return array(
+		    'success'      => true,
+		    'html_content' => $html_content,
 	    );
     }
 }

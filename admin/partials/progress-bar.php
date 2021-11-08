@@ -13,10 +13,8 @@
 
 ?>
 
-
-
-<div class="bwfm-progressbar clearfix" style="display: none">
-    <div class="progressbar-bar" style="background: #1fb3fa"></div>
+<div class="rex-feed-progressbar clearfix" style="display: none">
+    <div class="progressbar-bar" style="height: 30px; width: 0; background: #1fb3fa; border-radius: 5px;"></div>
     <div class="progressbar-bar-percent">0</div>
 </div>
 

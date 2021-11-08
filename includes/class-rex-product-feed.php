@@ -153,20 +153,17 @@ class Rex_Product_Feed {
     private function define_admin_hooks() {
 
         global $rex_product_feed_database_update;
-        $rex_product_feed_database_update = new Rex_Product_Feed_Database_Update();
+	    $rex_product_feed_database_update = new Rex_Product_Feed_Database_Update();
+	    $plugin_admin                     = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
+	    $scheduler                        = new Rex_Feed_Scheduler();
 
-        $plugin_admin = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
-        $scheduler = new Rex_Feed_Scheduler();
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-        $this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'dequeue_scripts', 5 );
         $this->loader->add_action( 'init', $plugin_admin, 'register_cpt' );
-        // if ( get_post_type() == 'product-feed' ) {
-            $this->loader->add_action( 'post_submitbox_start', $plugin_admin, 'register_purge_button' );
-        // }
 
+	    $this->loader->add_action( 'post_submitbox_start', $plugin_admin, 'register_purge_button' );
 
-        $this->loader->add_action( 'wpfm_cmb2_admin_init', $plugin_admin, 'register_metaboxes' );
+        $this->loader->add_action( 'admin_init', $plugin_admin, 'register_metaboxes' );
 
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages');
@@ -195,7 +192,6 @@ class Rex_Product_Feed {
          * for data base update
          */
         $this->loader->add_action('wp_ajax_rex_wpfm_database_update', 'Rex_Product_Feed_Ajax', 'rex_wpfm_database_update');
-        $this->loader->add_filter( 'cmb2_render_analytics_params', $plugin_admin, 'cmb2_render_analytics_params_callback', 10, 5 );
         $this->loader->add_action( 'wp_footer', $plugin_admin, 'wpfm_enable_facebook_pixel' );
 
 
@@ -223,18 +219,16 @@ class Rex_Product_Feed {
 //        }
 //        $this->loader->add_action( "wpfm_regenerate_scheduled_feed", $scheduler, "wpfm_schedule_feed_processing", 10, 5 );
 
-
         /**
          * trigger admin notice for black friday
          */
 //         $this->loader->add_action( 'admin_notices', $plugin_admin, 'rt_black_friday_offer_notice' );
 
-
 	    /**
 	     * Trigger review request on new feed publish
 	     */
 	    $this->loader->add_action( 'publish_product-feed', $plugin_admin, 'rex_feed_show_review_request', 99999, 2 );
-	    $this->loader->add_action( 'admin_init', $plugin_admin, 'rex_feed_remove_all_notices_from_pfm_edit_page', 999999 );
+	    $this->loader->add_action( 'draft_product-feed', $plugin_admin, 'save_draft_feed_meta', 99999, 2 );
     }
 
 

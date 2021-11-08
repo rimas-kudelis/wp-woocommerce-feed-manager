@@ -83,7 +83,6 @@ class Rex_Product_CPT {
      * @since 6.1.2
      */
     public function fill_product_feed_columns( $column, $post_id ) {
-        
         switch ( $column ) {
             case 'merchant' :
                 echo ucwords( esc_html( str_replace('_', ' ' , get_post_meta( $post_id, 'rex_feed_merchant', true )) ) );
@@ -98,11 +97,22 @@ class Rex_Product_CPT {
                 if ( get_post_meta( $post_id, 'rex_feed_status', true ) ) {
 
                     if(get_post_meta( $post_id, 'rex_feed_status', true ) == 'processing') {
+                    	?>
+	                    <script>
+                            (function($) {
+	                            $(document).ready( function ( e ) {
+	                                var post_id = '<?php echo $post_id; ?>';
+	                                var id      = '#post-' + post_id;
+                                    $( id + ' .view_feed a' ).attr( 'disabled', 'disabled' );
+                                    $( id + ' .view_feed a' ).css( 'pointer-events', 'none' );
+                                } );
+                            })(jQuery);
+	                    </script>
+						<?php
                         echo '<div class="blink">'.ucwords( esc_html( get_post_meta( $post_id, 'rex_feed_status', true ) ) ).'<span>.</span><span>.</span><span>.</span></div>';
                     }else {
                         echo ucwords( esc_html( get_post_meta( $post_id, 'rex_feed_status', true ) ) );
                     }
-
                 }else {
                     echo 'Completed';
                 }
@@ -113,19 +123,25 @@ class Rex_Product_CPT {
                 echo '<a target="_blank" class="button" href="' . $url . '" download>Download</a>';
                 break;
             case 'total_products' :
-                $total_products = get_post_meta( $post_id, 'rex_feed_total_products', true ) ? get_post_meta($post_id, 'rex_feed_total_products', true ) : array(
-                    'total' => 0,
-                    'simple' => 0,
-                    'variable' => 0,
-                    'variable_parent' => 0,
-                    'group' => 0,
-                );
+	            $total_products = get_post_meta( $post_id, 'rex_feed_total_products', true )
+                    ? get_post_meta( $post_id, 'rex_feed_total_products', true ) : array(
+		            'total'           => 0,
+		            'simple'          => 0,
+		            'variable'        => 0,
+		            'variable_parent' => 0,
+		            'group'           => 0,
+	            );
 
-                if(!array_key_exists('variable_parent', $total_products)) {
-                    $total_products['variable_parent'] = 0;
-                }
+	            if ( !array_key_exists( 'variable_parent', $total_products ) ) {
+		            $total_products[ 'variable_parent' ] = 0;
+	            }
+
+	            $product_count = get_post_meta( $post_id, 'rex_feed_total_products_for_all_feed', true )
+                    ? get_post_meta( $post_id, 'rex_feed_total_products_for_all_feed', true ) : $total_products[ 'total' ];
+                $product_count = $product_count < $total_products[ 'total' ] ? $total_products[ 'total' ] : $product_count;
+
                 echo '<ul style="margin: 0;">';
-                echo '<li><b>' . __('Total products : ', 'rex-product-feed'). $total_products['total'] . '</b></li>';
+                echo '<li><b>' . __('Total products : ', 'rex-product-feed'). $total_products[ 'total' ] . '/'. $product_count .'</b></li>';
                 echo '<li><b>' . __('Simple products : ', 'rex-product-feed'). $total_products['simple'] . '</b></li>';
                 echo '<li><b>' . __('Variable parent : ', 'rex-product-feed'). $total_products['variable_parent'] . '</b></li>';
                 echo '<li><b>' . __('Variations : ', 'rex-product-feed'). $total_products['variable'] . '</b></li>';

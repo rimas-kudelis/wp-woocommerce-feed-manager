@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Product Feed Manager for WooCommerce helps you to sell more by uploading product feed to Google shopping, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
- * Version:           6.7.5
+ * Version:           7.0.0
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -39,34 +39,111 @@
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
+
 define('WPFM__FILE__', __FILE__ );
 define('WPFM_PLUGIN_BASE', plugin_basename( WPFM__FILE__ ) );
 define("WPFM_PLUGIN_DIR_URL", plugin_dir_url(__FILE__));
 define("WPFM_PLUGIN_DIR_PATH", plugin_dir_path( __FILE__ ));
 define("WPFM_PLUGIN_ASSETS_FOLDER", WPFM_PLUGIN_DIR_URL.'admin/assets/');
+define("WPFM_PLUGIN_ASSETS_FOLDER_PATH", WPFM_PLUGIN_DIR_PATH.'admin/assets/');
+define('WPFM_PRO_REQUIRED_VERSION', '6.0.0' );
+define('WPFM_ETSY_REQUIRED_VERSION', '1.0.1' );
+define('WPFM_PRO', '/best-woocommerce-feed-pro/rex-product-feed-pro.php' );
+define('WPFM_ETSY', '/etsy-integration/etsy-integration.php' );
 
 
 /**
  * Check if WooCommerce is active
  **/
 function rex_is_woocommerce_active(){
-    if(is_plugin_active( 'woocommerce/woocommerce.php' )){
-        return true;
-
-    }else{
-        return false;
-    }
-
+    $all_plugins = get_option( 'active_plugins' );
+    $woocommerce = 'woocommerce/woocommerce.php';
+	return in_array( $woocommerce, $all_plugins);
 }
+
+
+/**
+ * Check if WPFM Pro is compatible with new ui [version > 6.0.0]
+ *
+ * @return bool
+ */
+function wpfm_pro_compatibility() {
+	if ( wpfm_get_plugin_version( WPFM_PRO ) ) {
+		return ( wpfm_get_plugin_version( WPFM_PRO ) >= WPFM_PRO_REQUIRED_VERSION );
+	}
+	return false;
+}
+
+
+/**
+ * Check if WPFM ETSY is compatible with new ui [version > 6.0.0]
+ *
+ * @return bool
+ */
+function wpfm_etsy_compatibility() {
+	if ( wpfm_get_plugin_version( WPFM_ETSY ) ) {
+		return ( wpfm_get_plugin_version( WPFM_ETSY ) >= WPFM_ETSY_REQUIRED_VERSION );
+	}
+	return false;
+}
+
+
+/**
+ * Gets plugin version
+ *
+ * @param $file
+ * @return mixed|string
+ */
+function wpfm_get_plugin_version( $file ) {
+	$plugin_file = WP_PLUGIN_DIR . $file;
+
+	if ( file_exists( $plugin_file ) && function_exists( 'get_file_data' ) ) {
+		$plugin_data = get_file_data( $plugin_file, array('Version' => 'Version'), false );
+
+		if ( $plugin_data && is_array( $plugin_data ) && isset( $plugin_data[ 'Version' ] ) ) {
+			return $plugin_data[ 'Version' ];
+		}
+	}
+	return false;
+}
+
 
 /**
  * Run dependency check and abort if required.
  **/
 function rex_check_dependency(){
+    $wpfm_pro_abs = WP_PLUGIN_DIR . WPFM_PRO;
+    $wpfm_etsy_abs = WP_PLUGIN_DIR . WPFM_ETSY;
+
     if ( ! rex_is_woocommerce_active() ) {
         add_action( 'admin_init', 'rex_product_feed_deactivate' );
         add_action( 'admin_notices', 'rex_product_feed_admin_notice' );
     }
+
+    if ( ( file_exists( $wpfm_pro_abs ) && ! wpfm_pro_compatibility() ) || ( file_exists( $wpfm_etsy_abs ) && ! wpfm_etsy_compatibility() ) ) {
+	    add_action( 'admin_notices', 'wpfm_pro_update_notice' );
+    }
+}
+
+
+/**
+ * Prints a notice to update WPFM Pro [version > 6.7.5]
+ */
+function wpfm_pro_update_notice() {
+    $wpfm_pro_abs = WP_PLUGIN_DIR . WPFM_PRO;
+    $wpfm_etsy_abs = WP_PLUGIN_DIR . WPFM_ETSY;
+    $wpfm_pro = file_exists( $wpfm_pro_abs ) && ! wpfm_pro_compatibility() ? '<strong>WooCommerce Product Feed Manager Pro</strong>' : '';
+    $wpfm_etsy = file_exists( $wpfm_etsy_abs ) && ! wpfm_etsy_compatibility() ? '<strong>WooCommerce Product Feed Manager - Etsy Addon</strong>' : '';
+    $and = file_exists( $wpfm_pro_abs ) && ! wpfm_pro_compatibility() && file_exists( $wpfm_etsy_abs ) && ! wpfm_etsy_compatibility() ? ' and ' : '';
+
+    $message = __( 'It looks like you have an older version of ' . $wpfm_pro . $and . $wpfm_etsy . '. Please update ' . $wpfm_pro . $and . $wpfm_etsy . ' to the latest version to use <strong>Pro</strong> features properly.', 'rex-product-feed' );
+	?>
+	<div class="error">
+        <p>
+            <?php echo $message;?>
+        </p>
+	</div>
+	<?php
 }
 
 
@@ -148,6 +225,7 @@ function run_rex_product_feed() {
     $plugin = new Rex_Product_Feed();
     $plugin->run();
 
+	rex_check_dependency();
     /**
      * Notices
      */
@@ -212,3 +290,13 @@ function wpfm_top_pages_modify($pages) {
     return $pages;
 }
 add_filter('themify_top_pages', 'wpfm_top_pages_modify' );
+
+function wpfm_plugin_major_update_message( $data, $response ) {
+    if( isset( $data['upgrade_notice'] ) ) {
+        printf(
+            '<div class="update-message">%s</div>',
+            wpautop( $data['upgrade_notice'] )
+        );
+    }
+}
+add_action( 'in_plugin_update_message-best-woocommerce-feed/rex-product-feed.php', 'wpfm_plugin_major_update_message', 10, 2 );

@@ -253,17 +253,36 @@ class Feed
 			}
 
 			foreach ($item->nodes() as $itemNode) {
-				if (is_array($itemNode)) {
+				if ( is_array( $itemNode ) ) {
 					foreach ($itemNode as $node) {
 						$feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
 					}
-				} else {
+				}
+				else {
 					if ( $itemNode->get( 'name' ) === 'id' ) {
 						$feedItemNode->addAttribute( $itemNode->get( 'name' ), $itemNode->get( 'value' ));
 					}
 					elseif ( $itemNode->get( 'name' ) === 'images' ) {
 						$imageNode = $feedItemNode->addChild( $itemNode->get( 'name' ) );
-						$imageNode->addChild( 'image', $itemNode->get( 'value' ));
+
+						if ( strpos( $itemNode->get( 'value' ), ',' ) ) {
+							$value = explode( ',', $itemNode->get( 'value' ) );
+						}
+						elseif ( strpos( $itemNode->get( 'value' ), '|' ) ) {
+							$value = explode( '|', $itemNode->get( 'value' ) );
+						}
+						else {
+							$value = $itemNode->get( 'value' );
+						}
+
+						if ( is_array( $value ) ) {
+							foreach ( $value as $val ) {
+								$imageNode->addChild( 'image', $val );
+							}
+						}
+						else {
+							$imageNode->addChild( 'image', $itemNode->get( 'value' ) );
+						}
 					}
 					elseif ( in_array( $itemNode->get( 'name' ), $addresses ) ) {
 						if ( !array_key_exists( 'address', (array)$feedItemNode->children() ) ) {
