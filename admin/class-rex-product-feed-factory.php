@@ -181,6 +181,10 @@ class Rex_Product_Feed_Factory {
                 'vidaXL',
                 'mydeal',
                 'trovino',
+                'bol',
+                'leguide',
+                'connexity',
+                'drm'
             )
         );
         self::$google_format = array(

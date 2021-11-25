@@ -375,63 +375,28 @@ if ( ! function_exists( 'wpfm_get_merchant_lits' ) ) {
 				'name'   => 'Vivino'
 			),
 		);
-		$pro     = array(
-			'drm'           => array(
-				'free'   => false,
-				'status' => 1,
-				'name'   => 'Google Remarketing (DRM)'
-			),
-			'google_review' => array(
-				'free'   => false,
-				'status' => 1,
-				'name'   => 'Google Review'
-			),
-			'ebay_mip'      => array(
-				'free'   => false,
-				'status' => 1,
-				'name'   => 'eBay (MIP)'
-			),
-            'ebay_seller'                     => array(
+        $pro     = array(
+            'google_review' => array(
                 'free'   => false,
                 'status' => 1,
-                'name'   => 'eBay Seller Center'
+                'name'   => 'Google Review'
             ),
-            'ebay_seller_tickets'             => array(
+            'ebay_mip'      => array(
                 'free'   => false,
                 'status' => 1,
-                'name'   => 'eBay Seller Center (Event tickets)'
+                'name'   => 'eBay (MIP)'
             ),
-            'fruugo'    => array(
+            'drm'           => array(
                 'free'   => false,
                 'status' => 1,
-                'name'   => 'Fruugo'
+                'name'   => 'Google Remarketing (DRM)'
             ),
-			'leguide'                         => array(
-				'free'   => false,
-				'status' => 1,
-				'name'   => 'Leguide'
-			),
-            'bol'                             => array(
+            'leguide'                         => array(
                 'free'   => false,
                 'status' => 1,
-                'name'   => 'Bol.com'
+                'name'   => 'Leguide'
             ),
-            'connexity'                       => array(
-                'free'   => false,
-                'status' => 1,
-                'name'   => 'Connexity'
-            ),
-            'heureka'                         => array(
-                'free'   => false,
-                'status' => 1,
-                'name'   => 'Heureka'
-            ),
-            'wish'                            => array(
-                'free'   => false,
-                'status' => 1,
-                'name'   => 'Wish.com'
-            ),
-		);
+        );
 		$free    = array(
 			'google_custom_search_ads'        => array(
 				'free'   => true,
@@ -1298,6 +1263,41 @@ if ( ! function_exists( 'wpfm_get_merchant_lits' ) ) {
 				'status' => 1,
 				'name'   => 'GulogGratis.dk'
 			),
+            'ebay_seller'                     => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'eBay Seller Center'
+            ),
+            'ebay_seller_tickets'             => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'eBay Seller Center (Event tickets)'
+            ),
+            'fruugo'    => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'Fruugo'
+            ),
+            'bol'                             => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'Bol.com'
+            ),
+            'connexity'                       => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'Connexity'
+            ),
+            'heureka'                         => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'Heureka'
+            ),
+            'wish'                            => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'Wish.com'
+            ),
 		);
 
 		$merchants[ 'popular' ]        = $popular;

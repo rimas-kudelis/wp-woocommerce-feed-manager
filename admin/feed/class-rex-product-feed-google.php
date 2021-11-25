@@ -96,27 +96,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
-                    $item = GoogleShopping::createItem();
-                    $atts = $this->get_product_data( $variable_product, $product_meta_keys );
-                    $atts = $this->process_attributes_for_shipping_tax($atts);
-                    foreach ($atts as $key => $value) {
-                        if($key == 'shipping') {
-                            $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                        }
-                        elseif ($key == 'tax') {
-                            $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                        }
-                        else {
-	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                        if ( $value != '' ) {
-			                        $item->$key($value); // invoke $key as method of $item object.
-		                        }
-	                        }
-	                        else {
-		                        $item->$key($value); // invoke $key as method of $item object.
-	                        }
-                        }
-                    }
+                    $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
 
                 if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
@@ -130,36 +110,8 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = GoogleShopping::createItem();
                                 $variation_product = wc_get_product( $variation );
-                                $atts = $this->get_product_data( $variation_product, $product_meta_keys );
-                                $atts = $this->process_attributes_for_shipping_tax($atts);
-                                $check_item_group_id  = 0;
-                                foreach ($atts as $key => $value) {
-                                    if($key == 'shipping') {
-                                        $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                                    }
-                                    elseif ($key == 'tax') {
-                                        $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                                    }
-                                    else {
-	                                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                                    if ( $value != '' ) {
-			                                    $item->$key($value); // invoke $key as method of $item object.
-		                                    }
-	                                    }
-	                                    else {
-		                                    $item->$key($value); // invoke $key as method of $item object.
-	                                    }
-                                    }
-                                    if('item_group_id' == $key){
-                                        $check_item_group_id = 1;
-                                    }
-                                   
-                                }
-                                if($check_item_group_id == 0){
-                                    $item->item_group_id($variation_product->get_parent_id());
-                                }
+                                $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                             }
                         }
                     }
@@ -168,89 +120,19 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
 
             if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-
-                $item = GoogleShopping::createItem();
-                $atts = $this->process_attributes_for_shipping_tax($atts);
-                foreach ($atts as $key => $value) {
-                    if($key == 'shipping') {
-                        $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                    }
-                    elseif ($key == 'tax') {
-                        $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                    }
-                    else {
-	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                    if ( $value != '' ) {
-			                    $item->$key($value); // invoke $key as method of $item object.
-		                    }
-	                    }
-	                    else {
-		                    $item->$key($value); // invoke $key as method of $item object.
-	                    }
-                    }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
 
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
                 if ( $product->get_type() === 'variation' ) {
                     $variation_products[] = $productId;
-                    $item = GoogleShopping::createItem();
-                    $atts = $this->get_product_data( $product, $product_meta_keys );
-                    $atts = $this->process_attributes_for_shipping_tax($atts);
-                    $check_item_group_id = 0;
-                    foreach ($atts as $key => $value) {
-                        if($key == 'shipping') {
-                            $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                        }
-                        elseif ($key == 'tax') {
-                            $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                        }
-                        else {
-	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                        if ( $value != '' ) {
-			                        $item->$key($value); // invoke $key as method of $item object.
-		                        }
-	                        }
-	                        else {
-		                        $item->$key($value); // invoke $key as method of $item object.
-	                        }
-                        }
-                        if('item_group_id' == $key){
-                            $check_item_group_id = 1;
-                        }
-                       
-                    }
-                    if($check_item_group_id == 0){
-                        $item->item_group_id($product->get_parent_id());
-                    }
+                    $this->add_to_feed( $product, $product_meta_keys, 'variation' );
                 }
             }
 
             if( $product->is_type( 'grouped' ) && $this->parent_product || $product->is_type( 'woosb' )){
                 $group_products[] = $productId;
-                $item = GoogleShopping::createItem();
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                $atts = $this->process_attributes_for_shipping_tax($atts);
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    if($key == 'shipping') {
-                        $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                    }
-                    elseif ($key == 'tax') {
-                        $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                    }
-                    else {
-	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                    if ( $value != '' ) {
-			                    $item->$key($value); // invoke $key as method of $item object.
-		                    }
-	                    }
-	                    else {
-		                    $item->$key($value); // invoke $key as method of $item object.
-	                    }
-                    }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
             
         }
@@ -271,38 +153,109 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
 
 
     /**
-     * @param $atts
-     * @return array
+     * Adding items to feed
+     *
+     * @param $product
+     * @param $meta_keys
+     * @param string $product_type
+     * @since 7.0.1
      */
-    private function process_attributes_for_shipping_tax($atts) {
-        $shipping_attr = array('shipping_country', 'shipping_region', 'shipping_service', 'shipping_price');
-        $default_shipping_values = array(
-            'shipping_country' => '',
-            'shipping_service' => '',
-            'shipping_price' => '',
-            'shipping_region' => '',
-        );
+    private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
+        $item = GoogleShopping::createItem();
+        $attributes = $this->get_product_data( $product, $meta_keys );
+        $attributes = $this->process_attributes_for_shipping_tax( $attributes );
 
-        $tax_attr = array('tax_country', 'tax_region', 'tax_rate', 'tax_ship');
-        $default_tax_values = array(
-            'tax_country' => '',
-            'tax_ship' => '',
-            'tax_rate' => '',
-            'tax_region' => '',
-        );
+        if ( $product_type === 'variation' ) {
+            $check_item_group_id = 0;
+        }
 
-        foreach ($atts as $key => $value) {
-            if(in_array($key, $shipping_attr)) {
-                $atts['shipping'][$key] = $value;
-                unset($atts[$key]);
+        foreach ( $attributes as $key => $value ) {
+
+            if( preg_match( '/shipping/i', $key ) ) {
+                $shipping_country = isset( $value['shipping_country'] ) ? $value['shipping_country'] : '';
+                $shipping_service = isset( $value['shipping_service'] ) ? $value['shipping_service'] : '';
+                $shipping_price = isset( $value['shipping_price'] ) ? $value['shipping_price'] : '';
+                $shipping_region = isset( $value['shipping_region'] ) ? $value['shipping_region'] : '';
+                $key = 'shipping';
+                $item->$key($shipping_country, $shipping_service, $shipping_price, $shipping_region); // invoke $key as method of $item object.
+            }
+            elseif ($key === 'tax') {
+                $tax_country = isset( $value['tax_country'] ) ? $value['tax_country'] : '';
+                $tax_ship = isset( $value['tax_ship'] ) ? $value['tax_ship'] : '';
+                $tax_rate = isset( $value['tax_rate'] ) ? $value['tax_rate'] : '';
+                $tax_region = isset( $value['tax_region'] ) ? $value['tax_region'] : '';
+
+                $item->$key($tax_country, $tax_ship, $tax_rate, $tax_region); // invoke $key as method of $item object.
+            }
+            else {
+                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                    if ( $value != '' ) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
+                else {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
             }
 
-            if(in_array($key, $tax_attr)) {
-                $atts['tax'][$key] = $value;
-                unset($atts[$key]);
+            if( $product_type === 'variation' && 'item_group_id' == $key ) {
+                $check_item_group_id = 1;
             }
         }
-        return $atts;
+
+        if( $product_type === 'variation' && $check_item_group_id === 0){
+            $item->item_group_id($product->get_parent_id());
+        }
+    }
+
+
+    /**
+     * @param $attributes
+     * @return array
+     */
+    private function process_attributes_for_shipping_tax( $attributes ) {
+        $shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
+        $tax_attr = array( 'tax_country', 'tax_region', 'tax_rate', 'tax_ship' );
+        $backup_attr = array();
+
+        foreach ( $attributes as $key => $value ) {
+            $count = 1;
+            if( in_array( $key, $shipping_attr ) ) {
+                if ( is_array( $value ) && ! empty( $value ) ) {
+                    foreach ( $value as $val ) {
+                        $attributes[ 'shipping_' . $count++ ] = array();
+                    }
+                }
+                else {
+                    $attributes['shipping'][$key] = $value;
+                }
+                $backup_attr[ $key ] = $value;
+                unset( $attributes[ $key ] );
+            }
+
+            if( in_array( $key, $tax_attr ) ) {
+                $attributes['tax'][$key] = $value;
+                unset($attributes[$key]);
+            }
+        }
+
+        if( in_array( $key, $shipping_attr ) ) {
+            for ( $i = 0; $i <= count( $backup_attr ); $i++ ) {
+                if ( isset( $backup_attr[ 'shipping_country' ][ $i ] ) ) {
+                    $attributes[ 'shipping_' . ( $i + 1 ) ][ 'shipping_country' ] = $backup_attr[ 'shipping_country' ][ $i ];
+                }
+                if ( isset( $backup_attr[ 'shipping_region' ][ $i ] ) ) {
+                    $attributes[ 'shipping_' . ( $i + 1 ) ][ 'shipping_region' ] = $backup_attr[ 'shipping_region' ][ $i ];
+                }
+                if ( isset( $backup_attr[ 'shipping_service' ][ $i ] ) ) {
+                    $attributes[ 'shipping_' . ( $i + 1 ) ][ 'shipping_service' ] = $backup_attr[ 'shipping_service' ][ $i ];
+                }
+                if ( isset( $backup_attr[ 'shipping_price' ][ $i ] ) ) {
+                    $attributes[ 'shipping_' . ( $i + 1 ) ][ 'shipping_price' ] = $backup_attr[ 'shipping_price' ][ $i ];
+                }
+            }
+        }
+        return $attributes;
     }
 
 

@@ -3,9 +3,9 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuten,skroutz, skroutz.gr, walmart,google shopping feed, facebook catalog, feed, fruugo, bing image feed, bing shopping, bonanza, bestprice, bestprice.gr, yml, yandex, market, yandex market, yandex turbo, export, yandex feed, csv export, export csv, export xml, ean, gtin, isbn, upc
 Requires at least: 4.7
-Tested up to:  5.8.1
+Tested up to:  5.8.2
 Requires PHP: 7.0
-Stable tag:  7.0.0
+Stable tag:  7.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -707,6 +707,14 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.0.1 (2021-11-25) =
+* Added: Missing attribute suggestion alert feature added
+* Added: Multiple shipping attributes added to Google Shopping
+* Fixed: Sale price start and End date showing wrong value issue fixed
+* Fixed: Grouped product price value is changed from the total price to the lowest price
+* Fixed: Conflict with WPRocket issue fixed
+* Fixed: Settings top menu conflict with Czech and Dutch language issue fixed.
+
 = 7.0.0 (2021-11-08) =
 * Added: New user interface
 * Added: Exclude out of stock products option added
@@ -715,10 +723,12 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Guloggratis.dk feed template updated
 * Fixed: WooComposite plugin not working issue fixed
 
+
 = 6.7.5 (2021-10-21) =
-* Added: GulogGratis.dk
+* Added: GulogGratis.dk template
 * Fixed: Dropship Mantel plugin error fixed
 * Fixed: WPML PHP error fixed
+
 
 = 6.7.4 (2021-10-04) =
 * Fixed: UTF-8 CSV issue updated

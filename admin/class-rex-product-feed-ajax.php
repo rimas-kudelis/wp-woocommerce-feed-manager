@@ -693,8 +693,21 @@ class Rex_Product_Feed_Ajax {
      */
     public static function category_mapping($payload){
         $map_name = $payload['map_name'];
-        $map_name_hash = md5(sanitize_title($map_name).time());
-        $cat_map_array       = array();
+        $category_map = get_option('rex-wpfm-category-mapping') ? get_option('rex-wpfm-category-mapping') : array();
+        $status = 'success';
+        $wpfm_hash = isset( $payload[ 'hash' ] ) ? $payload[ 'hash' ] : '';
+
+        if ( $wpfm_hash !== '' && array_key_exists( $wpfm_hash, $category_map ) ) {
+            wpfm_purge_cached_data();
+            return $status;
+        }
+        if ( $wpfm_hash !== '' ) {
+            wpfm_purge_cached_data();
+            $status = 'reload';
+        }
+
+        $map_name_hash = $wpfm_hash !== '' ? $wpfm_hash : md5(sanitize_title($map_name).time());
+        $cat_map_array = array();
         parse_str( $payload['cat_map'], $cat_map_array );
         $config_array = array();
         $map_array = array();
@@ -712,10 +725,10 @@ class Rex_Product_Feed_Ajax {
 
         $map_array['map-name'] = $map_name;
         $map_array['map-config'] = $config_array;
-        $category_map = get_option('rex-wpfm-category-mapping') ? get_option('rex-wpfm-category-mapping') : array();
+
         $category_map[$map_name_hash] = $map_array;
         update_option('rex-wpfm-category-mapping', $category_map);
-        return 'success';
+        return $status;
     }
 
 
@@ -1206,5 +1219,42 @@ class Rex_Product_Feed_Ajax {
 		    'success'      => true,
 		    'html_content' => $html_content,
 	    );
+    }
+
+
+	/**
+     * Checks if there's any required attribute missing in Google Shopping Feed
+     *
+	 * @param $payload
+	 * @return bool[]
+	 */
+    public static function rex_feed_check_for_missing_attributes() {
+        $nonce = isset( $_POST[ 'security' ] ) ? $_POST[ 'security' ] : '';
+
+        if ( wp_verify_nonce( $nonce, 'rex-wpfm-ajax' ) ) {
+            $feed_config = array();
+            $config = isset( $_POST[ 'payload' ][ 'feed_config' ] ) ? $_POST[ 'payload' ][ 'feed_config' ] : '';
+            parse_str( $config, $feed_config );
+            $feed_config = isset( $feed_config[ 'fc' ] ) ? $feed_config[ 'fc' ] : '';
+            array_shift( $feed_config );
+            $feed_attr = array_column($feed_config, 'attr');
+            $required_attr = array('id', 'title', 'description', 'link', 'image_link', 'availability', 'price', 'brand', 'gtin', 'mpn');
+            $labels = array
+            (
+                'id' => 'Product Id [id]',
+                'title' => 'Product Title [title]',
+                'description' => 'Product Description [description]',
+                'link' => 'Product URL [link]',
+                'image_link' => 'Main Image [image_link]',
+                'availability' => 'Stock Status [availability]',
+                'price' => 'Regular Price [price]',
+                'brand' => 'Manufacturer [brand]',
+                'gtin' => 'GTIN [gtin]',
+                'mpn' => 'MPN [mpn]'
+            );
+
+            wp_send_json_success( array( 'feed_attr' => $feed_attr, 'feed_config' => $feed_config, 'req_attr' => $required_attr, 'labels' => $labels) );
+        }
+        wp_send_json_error( array( 'feed_attr' => '', 'feed_config' => '', 'req_attr' => '', 'labels' => '') );
     }
 }

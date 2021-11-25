@@ -204,10 +204,15 @@ class Rex_Product_Data_Retriever{
 						$this->data[ $rule['attr']][] = array(
 							'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
 							'value' => $this->set_val( $rule )
-
 						);
 					}else {
-						$this->data[ $rule['attr'] ] = $this->set_val( $rule );
+                        $google_shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
+                        if ( in_array( $rule[ 'attr' ], $google_shipping_attr ) ) {
+                            $this->data[ $rule['attr'] ][] = $this->set_val( $rule );
+                        }
+                        else {
+                            $this->data[ $rule['attr'] ] = $this->set_val( $rule );
+                        }
 					}
 				}
 			}
@@ -560,7 +565,7 @@ class Rex_Product_Data_Retriever{
 				if ($this->product->is_type( 'grouped' )) {
 					if($this->wcml) {
 						global $woocommerce_wpml;
-						$_price = apply_filters('wcml_raw_price_amount', wc_format_decimal($this->get_grouped_price($this->product, 'regular'), wc_get_price_decimals()), $this->wcml_currency);
+						$_price = apply_filters('wcml_raw_price_amount', wc_format_decimal($this->get_grouped_price($this->product, '_regular_price'), wc_get_price_decimals()), $this->wcml_currency);
 
 						//if WCML price is set manually
 						$_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -576,7 +581,7 @@ class Rex_Product_Data_Retriever{
 						return $this->get_condition_price( $attr, $_price );
 					}
 					else {
-						$_price = $this->get_condition_price( $attr, $this->get_grouped_price($this->product, 'regular') );
+						$_price = $this->get_condition_price( $attr, $this->get_grouped_price($this->product, '_regular_price') );
 
 						if ( wpfm_is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
@@ -736,7 +741,7 @@ class Rex_Product_Data_Retriever{
 					if ($this->product->is_type( 'grouped' )) {
 						if($this->wcml) {
 							global $woocommerce_wpml;
-							$_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal($this->get_grouped_price($this->product, 'price'), wc_get_price_decimals()), $this->wcml_currency);
+							$_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal($this->get_grouped_price($this->product, '_price'), wc_get_price_decimals()), $this->wcml_currency);
 
 							//if WCML price is set manually
 							$_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -748,7 +753,7 @@ class Rex_Product_Data_Retriever{
 							}
 							return $this->get_condition_price( $attr, $_price );
 						}else {
-							$_price = $this->get_condition_price( $attr, $this->get_grouped_price($this->product, 'price') );
+							$_price = $this->get_condition_price( $attr, $this->get_grouped_price($this->product, '_price') );
 							if ( wpfm_is_aelia_active() ){
 								$_price = $this->get_converted_price( $_price );
 							}
@@ -861,7 +866,7 @@ class Rex_Product_Data_Retriever{
 						}
 					}
 					if ($this->product->is_type( 'grouped' )) {
-						$sale_price = number_format( (float) $this->get_grouped_price( $this->product, 'sale' ), 2, '.', '' );
+						$sale_price = number_format( (float) $this->get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
 
 						if ( wpfm_is_aelia_active() ){
 							$sale_price = $this->get_converted_price( $sale_price );
@@ -971,7 +976,7 @@ class Rex_Product_Data_Retriever{
 
 				if (!defined('WAD_INITIALIZED') ) {
 					if ($this->product->is_type( 'grouped' ))
-						$sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '');
+						$sale_price = number_format((float)$this->get_grouped_price($this->product, '_sale_price'), 2, '.', '');
 					elseif ($this->product->is_type( 'composite' )) {
 						$sale_price =  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
 					}elseif ($this->product->is_type( 'variable' )) {
@@ -1028,7 +1033,7 @@ class Rex_Product_Data_Retriever{
 					}
 
 					if ($this->product->is_type( 'grouped' ))
-						$sale_price = number_format((float)$this->get_grouped_price($this->product, 'sale'), 2, '.', '') ;
+						$sale_price = number_format((float)$this->get_grouped_price($this->product, '_sale_price'), 2, '.', '') ;
 					elseif ($this->product->is_type( 'variable' )) {
 						$default_attributes = $this->get_default_attributes( $this->product );
 						if($default_attributes) {
@@ -1152,7 +1157,7 @@ class Rex_Product_Data_Retriever{
 				if ($this->product->is_type( 'grouped' )) {
 					if($this->wcml) {
 						global $woocommerce_wpml;
-						$_price         = apply_filters('wcml_raw_price_amount',wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'regular') ) ), $this->wcml_currency);
+						$_price         = apply_filters('wcml_raw_price_amount',wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_regular_price') ) ), $this->wcml_currency);
 
 						//if WCML price is set manually
 						$_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1164,7 +1169,7 @@ class Rex_Product_Data_Retriever{
 						}
 						return $this->get_condition_price( $attr, $_price );
 					}else {
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $attr, $this->get_grouped_price($this->product, 'regular') ) ) );
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $attr, $this->get_grouped_price($this->product, '_regular_price') ) ) );
 						if ( wpfm_is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1236,7 +1241,7 @@ class Rex_Product_Data_Retriever{
 				if ($this->product->is_type( 'grouped' )) {
 					if($this->wcml) {
 						global $woocommerce_wpml;
-						$_price         = apply_filters('wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'price') ) ), $this->wcml_currency);
+						$_price         = apply_filters('wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_price') ) ), $this->wcml_currency);
 
 						//if WCML price is set manually
 						$_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1248,7 +1253,7 @@ class Rex_Product_Data_Retriever{
 						}
 						return $this->get_condition_price( $attr, $_price );
 					}else {
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $attr, $this->get_grouped_price($this->product, 'price') ) ) );;
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_condition_price( $attr, $this->get_grouped_price($this->product, '_price') ) ) );;
 						if ( wpfm_is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1316,7 +1321,7 @@ class Rex_Product_Data_Retriever{
 						}
 						return $_price;
 					}else {
-						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) );
+						$_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_sale_price') ) );
 						if ( wpfm_is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1377,7 +1382,7 @@ class Rex_Product_Data_Retriever{
 				if ($this->product->is_type( 'grouped' )) {
 					if($this->wcml) {
 						global $woocommerce_wpml;
-						$_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'regular') ) ), $this->wcml_currency);
+						$_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_regular_price') ) ), $this->wcml_currency);
 
 						//if WCML price is set manually
 						$_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1389,7 +1394,7 @@ class Rex_Product_Data_Retriever{
 						}
 						return $_price;
 					}else {
-						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'regular') ) );
+						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_regular_price') ) );
 						if ( wpfm_is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1460,7 +1465,7 @@ class Rex_Product_Data_Retriever{
 				if ($this->product->is_type( 'grouped' )) {
 					if($this->wcml) {
 						global $woocommerce_wpml;
-						$_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'price') ) ), $this->wcml_currency);
+						$_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_price') ) ), $this->wcml_currency);
 
 						//if WCML price is set manually
 						$_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1472,7 +1477,7 @@ class Rex_Product_Data_Retriever{
 						}
 						return $_price;
 					}else {
-						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'price') ) );
+						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_price') ) );
 						if ( wpfm_is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1528,7 +1533,7 @@ class Rex_Product_Data_Retriever{
 				if ($this->product->is_type( 'grouped' )) {
 					if($this->wcml) {
 						global $woocommerce_wpml;
-						$_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) ), $this->wcml_currency);
+						$_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_sale_price') ) ), $this->wcml_currency);
 
 						//if WCML price is set manually
 						$_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1540,7 +1545,7 @@ class Rex_Product_Data_Retriever{
 						}
 						return $_price;
 					}else {
-						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, 'sale') ) );
+						$_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_sale_price') ) );
 						if ( wpfm_is_aelia_active() ){
 							$_price = $this->get_converted_price( $_price );
 						}
@@ -1850,10 +1855,14 @@ class Rex_Product_Data_Retriever{
 				return $this->product->get_rating_count(); break;
 
 			case 'sale_price_dates_from':
-				return date( get_option( 'date_format' ), $this->product->get_date_on_sale_from() ); break;
+                $date_starts = $this->product->get_date_on_sale_from();
+                $format = get_option( 'date_format' );
+				return !$date_starts ? $date_starts : date( $format, $date_starts->getTimestamp() );
 
 			case 'sale_price_dates_to':
-				return date( get_option( 'date_format' ), $this->product->get_date_on_sale_to() ); break;
+                $date_ends = $this->product->get_date_on_sale_to();
+                $format = get_option( 'date_format' );
+                return !$date_ends ? $date_ends : date( $format, $date_ends->getTimestamp());
 
 			case 'sale_price_effective_date':
 				$sale_price_dates_to        = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_to', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
@@ -1934,7 +1943,7 @@ class Rex_Product_Data_Retriever{
 	 * @return mixed|void
 	 */
 	protected function get_converted_price( $price ) {
-		$from_currency = get_woocommerce_currency();
+		$from_currency = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD';
 		$to_currency   = $this->aelia_currency;
 
 		try {
@@ -2938,22 +2947,15 @@ class Rex_Product_Data_Retriever{
 	 */
 	public function get_grouped_price($product, $type) {
 		$groupProductIds = $product->get_children();
-		$sum = 0;
+        $price = 999999;
+
 		if(!empty($groupProductIds)){
 			foreach($groupProductIds as $id){
-				$product = wc_get_product($id);
-				$regularPrice = $product->get_regular_price();
-				$currentPrice = $product->get_price();
-				if($type == "regular"){
-
-					$sum += (int)($regularPrice);
-				}else{
-					$sum += (int)$currentPrice;
-				}
+				$price = $price > get_post_meta( $id, $type, true ) ? get_post_meta( $id, $type, true ) : $price;
 			}
 		}
 
-		return $sum;
+		return $price;
 	}
 
 

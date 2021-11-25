@@ -156,6 +156,7 @@ class Rex_Product_Feed {
 	    $rex_product_feed_database_update = new Rex_Product_Feed_Database_Update();
 	    $plugin_admin                     = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
 	    $scheduler                        = new Rex_Feed_Scheduler();
+        $ajax                             = new Rex_Product_Feed_Ajax();
 
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -182,10 +183,6 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_action_wpfm_duplicate_post_as_draft', $plugin_admin, 'wpfm_duplicate_post_as_draft' );
         $this->loader->add_filter( 'page_row_actions', $plugin_admin, 'wpfm_duplicate_post_link',9,2);
 
-        /**
-         * new merchant status
-         */
-        $this->loader->add_filter( 'wpfm_available_merchants_status', $plugin_admin, 'wpfm_available_merchants_status', 10, 1 );
 
         /*
          * Custom ajax
@@ -229,6 +226,9 @@ class Rex_Product_Feed {
 	     */
 	    $this->loader->add_action( 'publish_product-feed', $plugin_admin, 'rex_feed_show_review_request', 99999, 2 );
 	    $this->loader->add_action( 'draft_product-feed', $plugin_admin, 'save_draft_feed_meta', 99999, 2 );
+
+        $this->loader->add_action( 'wp_ajax_nopriv_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
+        $this->loader->add_action( 'wp_ajax_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
     }
 
 

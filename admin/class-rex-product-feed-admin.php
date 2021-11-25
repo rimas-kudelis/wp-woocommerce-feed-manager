@@ -244,6 +244,7 @@ class Rex_Product_Feed_Admin {
 				    'ajax_nonce'     => wp_create_nonce( 'rex-wpfm-ajax' ),
 				    'is_premium'     => apply_filters( 'wpfm_is_premium', false ),
 				    'feed_id'        => get_the_ID(),
+                    'category_mapping_url' => admin_url( 'admin.php?page=category_mapping' ),
 				    'current_screen' => $current_screen
 			    )
 		    );
@@ -283,6 +284,12 @@ class Rex_Product_Feed_Admin {
                 $this->version,
                 true
             );
+            wp_localize_script(
+                $this->plugin_name, 'rex_wpfm_admin_translate_strings',
+                array(
+                    'google_cat_map_btn' => __( 'Configure Category Mapping', 'rex-product-feed' ),
+                )
+            );
             wp_enqueue_script(
                 'jquery-cookie',
                 'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/latest/js.cookie.min.js',
@@ -293,7 +300,21 @@ class Rex_Product_Feed_Admin {
         }
 
         if ($screen->id == $this->category_mapping_screen_hook_suffix) {
-            wp_enqueue_script( 'category-map', WPFM_PLUGIN_ASSETS_FOLDER . 'js/category-mapper.js', array( 'jquery', 'jquery-ui-autocomplete' ), $this->version, true );
+            wp_enqueue_script(
+                    'category-map',
+                    WPFM_PLUGIN_ASSETS_FOLDER . 'js/category-mapper.js',
+                    array( 'jquery', 'jquery-ui-autocomplete' ),
+                    $this->version,
+                    true
+            );
+            wp_localize_script(
+                'category-map', 'rex_wpfm_cat_map_translate_strings',
+                array(
+                    'update_btn' => __('Update', 'rex-product-feed'),
+                    'update_and_close_btn' => __('Update & Close', 'rex-product-feed'),
+                    'delete_btn' => __('Delete', 'rex-product-feed'),
+                )
+            );
         }
     }
 
@@ -619,179 +640,6 @@ class Rex_Product_Feed_Admin {
     }
 
 
-    /**
-     * Available merchants filter
-     * @param $array
-     * @return array
-     */
-    public function wpfm_available_merchants_status($array){
-        $free_merchants = array(
-            'custom'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Custom'
-            ),
-            'google'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Google'
-            ),
-            'google_Ad'    => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Google AD'
-            ),
-            'facebook'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Facebook'
-            ),
-            'ebay'         => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'eBay'
-            ),
-            'adroll'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'AdRoll'
-            ),
-            'nextag'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Nextag'
-            ),
-            'pricegrabber' => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Pricegrabber'
-            ),
-            'bing'         => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Bing'
-            ),
-            'cercavino'         => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Cercavino'
-            ),
-            'trovino'         => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Trovino'
-            ),
-            'kelkoo'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Kelkoo'
-            ),
-            'become'       => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Become'
-            ),
-            'shopzilla'    => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'ShopZilla'
-            ),
-            'shopping'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Shopping'
-            ),
-            'ibud'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Ibud'
-            ),
-            'google_local_inventory_ads'=> array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Google Local Inventory Ads'
-            ),
-            'DealsForU'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'DealsF4u.gr'
-            ),
-            'Bestprice'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Bestprice'
-            ),
-            'spartooFr'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'SpartooFr'
-            ),
-            'mirakl'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'Mirakl'
-            ),
-            'gulog_gratis'     => array(
-                'free'  => true,
-                'status'    => 1,
-                'name'  => 'GulogGratis.dk'
-            )
-        );
-        $array = array_merge($free_merchants, $array);
-        $pro_merchants = array(
-            'ebay_mip'     => array(
-                'free'  => false,
-                'status'    => 1,
-                'name'  => 'eBay (MIP)'
-            ),
-            'ebay_seller'     => array(
-                'free'  => false,
-                'status'    => 1,
-                'name'  => 'eBay Seller Center'
-            ),
-            'bol'       => array(
-                'free'  => false,
-                'status'    => 1,
-                'name'  => 'Bol.com'
-            ),
-            'wish'       => array(
-                'free'  => false,
-                'status'    => 1,
-                'name'  => 'Wish.com'
-            ),
-            'fruugo'       => array(
-                'free'  => false,
-                'status'    => 1,
-                'name'  => 'Fruugo'
-            ),
-            'leguide'       => array(
-                'free'  => false,
-                'status'    => 1,
-                'name'  => 'Leguide'
-            ),
-            'connexity'       => array(
-                'free'  => false,
-                'status'    => 1,
-                'name'  => 'Connexity'
-            ),
-            'drm'     => array(
-                'free'  => false,
-                'status'    => 1,
-                'name'  => 'Google Remarketing (DRM)'
-            )
-
-        );
-        foreach ($pro_merchants as $key=>$merchant) {
-            if(array_key_exists($key, $array)) {
-                unset($key, $merchant);
-            }else {
-                $array[$key] = $merchant;
-            }
-        }
-        return $array;
-    }
-
-
     /*
      * Admin Footer Styles
      */
@@ -972,7 +820,7 @@ class Rex_Product_Feed_Admin {
      */
     public function wpfm_enable_facebook_pixel() {
         global $product;
-        $currency = get_woocommerce_currency();
+        $currency = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD';
         $wpfm_fb_pixel_enabled = get_option('wpfm_fb_pixel_enabled', 'no');
         $viewContent = "";
         if($wpfm_fb_pixel_enabled == 'yes') {

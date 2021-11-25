@@ -4,6 +4,7 @@
     var progressWidth = 0;
     var deferred = $.Deferred();
     var promise = deferred.promise();
+    var config_btn = rex_wpfm_admin_translate_strings.google_cat_map_btn;
 
     $( function () {
         $( ".meter > span" ).each( function () {
@@ -59,10 +60,8 @@
             rex_feed_settings_tab( event );
         }
         rex_feed_show_review_request( event );
-
-        $('.rex-merchant-list-select2').select2({
-            placeholder: "Select your merchant",
-        });
+        rex_feed_merchant_list_select2( event );
+        // default_category_mapping( event );
     } );
 
     /**
@@ -284,40 +283,34 @@
     // New changes messages ENDS
 
     $( document ).on( 'click', '#rex-feed-settings-btn', function () {
+        $( '.post-type-product-feed #wpcontent .clear' ).remove();
+        $( '.post-type-product-feed #wpcontent' ).append( '<div id="body-overlay"></div>' );
+        $( '.post-type-product-feed #wpcontent' ).append( '<div class="clear"></div>' );
         $( '#rex_feed_product_settings' ).addClass( 'show-settings' );
     } );
 
     $( document ).on( 'click', '.rex-contnet-setting__close-icon', function ( e ) {
         e.preventDefault();
-        $( '#rex_feed_product_settings' ).removeClass( 'show-settings' );
-    } );
-
-    $( document ).on( 'click', '#rex-feed-settings-btn', function () {
-        $( '#rex_feed_product_settings' ).addClass( 'show-settings' );
-    } );
-
-    $( document ).on( 'click', '.rex-contnet-setting__icon-close', function ( e ) {
-        e.preventDefault();
+        $( '.post-type-product-feed #wpcontent #body-overlay' ).remove();
         $( '#rex_feed_product_settings' ).removeClass( 'show-settings' );
     } );
 
     $( document ).on( 'click', '#rex-pr-filter-btn', function () {
+        $( '.post-type-product-feed #wpcontent .clear' ).remove();
+        $( '.post-type-product-feed #wpcontent' ).append( '<div id="body-overlay"></div>' );
+        $( '.post-type-product-feed #wpcontent' ).append( '<div class="clear"></div>' );
         $( '#rex_feed_product_filters' ).addClass( 'show-filters' );
     } );
 
     $( document ).on( 'click', '.rex-contnet-filter__close-icon', function ( e ) {
         e.preventDefault();
+        $( '.post-type-product-feed #wpcontent #body-overlay' ).remove();
         $( '#rex_feed_product_filters' ).removeClass( 'show-filters' );
     } );
 
-    $( document ).on( 'click', '#rex-pr-filter-btn', function () {
-        $( '#rex_feed_product_filters' ).addClass( 'show-filters' );
-    } );
+    $( document ).on( 'click', '.rex_cat_map', expand_category_map);
 
-    $( document ).on( 'click', '.rex-contnet-setting__icon-close', function ( e ) {
-        e.preventDefault();
-        $( '#rex_feed_product_filters' ).removeClass( 'show-filters' );
-    } );
+    $( document ).on( 'click', 'ul.rex-settings-tabs li', rex_feed_settings_tab);
 
     /**
      * Event listener for Analytics Parameter options functionality.
@@ -393,6 +386,8 @@
     $( document ).on( 'change', '#wpfm_enable_log', wpfm_enable_log );
 
     $( document ).on( 'change', '#rex-product-allow-private', allow_private );
+
+    // $(document).on( 'change', '.attr-val-dropdown', category_mapping_button_on_change );
 
     $( document ).on( 'submit', '#rex-google-merchant', save_google_merchant_settings );
 
@@ -535,6 +530,10 @@
                     $( '#rex-new-attr, #rex-new-custom-attr' ).css( 'display', 'inline-block' );
 
                     dynamic_pricing( event );
+
+                    // if ( merchant_name === 'google' ){
+                    //     category_mapping_button( event );
+                    // }
                 } )
                 .fail( function ( response ) {
                     $( '.rex-loading-spinner' ).css( 'display', 'none' );
@@ -661,6 +660,41 @@
     }
 
     /**
+     * Category mapping button
+     * @param event
+     */
+    function category_mapping_button( event ) {
+        // Google category mapping button
+        var rows = $('.attr-dropdown').length - 1;
+        for ( var rowId = 1; rowId <= rows; rowId++ ) {
+            var attr_val = $( 'select[name="fc[' + rowId + '][attr]"]' ).val();
+            var meta_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
+            if ( 'google_product_category' === attr_val ) {
+                var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + meta_val;
+                $('select[name="fc[' + rowId + '][meta_key]"]').parent().append("<p style='font-size: 12px;margin-top: 10px;margin-left: 5px;' class='rex_cat_map' id='rex_cat_map_"+rowId+"' style='font-size: 10px'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+            }
+        }
+        // Google category mapping button ENDS
+    }
+
+    function category_mapping_button_on_change() {
+        var rowId = $(this).parent().parent().parent().attr('data-row-id');
+        var selected_val = $( this ).val();
+        if ( 'wpfm_google_product_category_default' === selected_val ) {
+            var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + selected_val;
+            $( this ).parent().append("<p id='rex_cat_map_"+rowId+"' style='font-size: 12px;margin-top: 10px;margin-left: 5px;'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+        }
+        else {
+            $( '#rex_cat_map_'+rowId ).remove();
+        }
+    }
+
+    function expand_category_map( e ) {
+        var cat_map_val = $( this ).parent().val();
+        console.log( cat_map_val );
+    }
+
+    /**
      * Event listener for Merchant change for eBay sellers functionality.
      */
     function rex_feed_ebay_seller_fields() {
@@ -692,41 +726,43 @@
      */
     function get_product_number( event ) {
         event.preventDefault();
-        var merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
+        if ( rex_feed_is_req_attr_missing() ) {
+            var merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
 
-        if ( merchant_name == '-1' ) {
-            alert( 'Please choose a merchant!' );
-            return;
+            if ( merchant_name == '-1' ) {
+                alert( 'Please choose a merchant!' );
+                return;
+            }
+
+            if ( $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).css( 'display' ) == 'none' ) {
+                $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).remove();
+            }
+
+            $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'start' );
+            var merchant = $( '#rex_feed_merchant' ).find( ':selected' ).val();
+
+            var $payload = {
+                feed_id: rex_wpfm_ajax.feed_id,
+                feed_config: $( 'form' ).serialize()
+            };
+            $( '#publishing-action span.spinner' ).addClass( 'is-active' );
+            $( this ).addClass( 'disabled' );
+            $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeIn();
+            $( '.rex-feed-progressbar, .progress-msg' ).fadeIn();
+            $( '.progress-msg span' ).html( 'Calculating products.....' );
+
+            wpAjaxHelperRequest( 'my-handle', $payload )
+                .done( function ( response ) {
+                    var per_batch = response.per_batch ? parseInt( response.per_batch ) : 50;
+                    generate_feed( response.products, 0, 1, per_batch, response.total_batch );
+                } )
+                .fail( function ( response ) {
+                    $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
+                    $( '#publish' ).removeClass( 'disabled' );
+                    console.log( 'Uh, oh!' );
+                    console.log( response.statusText );
+                } );
         }
-
-        if ( $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).css( 'display' ) == 'none' ) {
-            $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).remove();
-        }
-
-        $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'start' );
-        var merchant = $( '#rex_feed_merchant' ).find( ':selected' ).val();
-
-        var $payload = {
-            feed_id: rex_wpfm_ajax.feed_id,
-            feed_config: $( 'form' ).serialize()
-        };
-        $( '#publishing-action span.spinner' ).addClass( 'is-active' );
-        $( this ).addClass( 'disabled' );
-        $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeIn();
-        $( '.rex-feed-progressbar, .progress-msg' ).fadeIn();
-        $( '.progress-msg span' ).html( 'Calculating products.....' );
-
-        wpAjaxHelperRequest( 'my-handle', $payload )
-            .done( function ( response ) {
-                var per_batch = response.per_batch ? parseInt( response.per_batch ) : 50;
-                generate_feed( response.products, 0, 1, per_batch, response.total_batch );
-            } )
-            .fail( function ( response ) {
-                $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
-                $( '#publish' ).removeClass( 'disabled' );
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
-            } );
     }
 
     /**
@@ -1142,15 +1178,14 @@
 
     //----------setting tab-------
     function rex_feed_settings_tab( event ) {
-        $( 'ul.rex-settings-tabs li' ).click( function () {
+        if ( $( this ).length > 0 ) {
             var tab_id = $( this ).attr( 'data-tab' );
-
             $( 'ul.rex-settings-tabs li' ).removeClass( 'active' );
             $( '.rex-settings-tab-content .tab-content' ).removeClass( 'active' );
 
             $( this ).addClass( 'active' );
             $( "#" + tab_id ).addClass( 'active' );
-        } );
+        }
     }
 
     /**
@@ -1422,5 +1457,99 @@
         if ( is_published !== 'Publish' ){
             $( '#rex_feed_review_request_body_content' ).fadeIn();
         }
+    }
+
+    function rex_feed_merchant_list_select2( e ) {
+        $('.rex-merchant-list-select2').select2({
+            placeholder: "Select your merchant",
+        });
+    }
+
+    function rex_feed_is_req_attr_missing() {
+        var merchant_name = $('#rex_feed_merchant').find(':selected').val();
+        var status = true;
+
+        if (merchant_name === 'google') {
+            var missing_attr = [];
+            var payload = {
+                feed_config: $('form[id=post]').serialize()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: rex_wpfm_ajax.ajax_url,
+                data: {
+                    action: 'rex_feed_check_for_missing_attributes',
+                    security: rex_wpfm_ajax.ajax_nonce,
+                    payload: payload
+                },
+                dataType: 'JSON',
+                async: false,
+
+                success: function (response) {
+                    var attr_inx = 0;
+
+                    var req_attr = response.data.req_attr;
+                    var feed_attr = response.data.feed_attr;
+                    var feed_config = response.data.feed_config;
+                    var labels = response.data.labels;
+
+                    for (var i = 0; i < req_attr.length; i++) {
+                        if (!feed_attr.includes(req_attr[i])) {
+                            if ((req_attr[i] === 'gtin' && !feed_attr.includes('mpn')) || (req_attr[i] === 'mpn' && !feed_attr.includes('gtin'))) {
+                                missing_attr[attr_inx++] = labels[req_attr[i]];
+                            }
+                            else if ( req_attr[i] !== 'gtin' && req_attr[i] !== 'mpn' ) {
+                                missing_attr[attr_inx++] = labels[req_attr[i]];
+                            }
+                        } else {
+                            for (var j = 0; j < feed_config.length; j++) {
+                                if (feed_config[j]['attr'] === req_attr[i]) {
+                                    if (feed_config[j]['type'] === 'meta' && feed_config[j]['meta_key'] === '') {
+                                        missing_attr[attr_inx++] = labels[req_attr[i]];
+                                    } else if (feed_config[j]['type'] === 'static' && feed_config[j]['st_value'] === '') {
+                                        missing_attr[attr_inx++] = labels[req_attr[i]];
+                                    } else if (feed_config[j]['type'] === '') {
+                                        missing_attr[attr_inx++] = labels[req_attr[i]];
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ( missing_attr.length > 0 ) {
+                        missing_attr = missing_attr.join("\n  - ");
+                        missing_attr = '  - ' + missing_attr;
+                        status = confirm('Some required attributes are not configured properly.\n'+ missing_attr +'\nDo you still want to continue?');
+                    }
+                },
+                error: function (response) {
+                    alert('Error occured');
+                }
+            });
+        }
+        return status;
+    }
+
+    function default_category_mapping( e ) {
+        var default_name = 'Google Product Category [Default]';
+        var default_value = "category-75=&category-134=&category-39=&category-142=&category-83=&category-82=&category-88=&category-118=&category-107=&category-222=&category-161=&category-56=&category-76=&category-51=&category-90=&category-183=&category-89=&category-207=&category-121=&category-52=&category-77=&category-108=&category-119=&category-63=&category-210=&category-64=&category-124=&category-32=&category-30=&category-91=&category-184=&category-78=&category-197=&category-38=&category-120=&category-55=&category-95=&category-117=&category-65=&category-139=&category-81=&category-153=&category-96=&category-86=&category-31=&category-116=&category-60=&category-62=&category-50=&category-181=&category-33=&category-57=&category-15=&category-61=&category-87=&category-138=&category-37=&category-16=&category-19=&category-18=&category-17=&category-21=&category-20=";
+        var $payload = {
+            map_name: default_name,
+            cat_map: default_value,
+            hash: 'wpfm_google_product_category_default'
+        };
+
+        wpAjaxHelperRequest( 'category-mapping', $payload )
+            .success( function( response ) {
+                if ( response === 'reload' ) {
+                    location.reload()
+                }
+                console.log( 'Woohoo!' );
+            })
+            .error( function( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            });
     }
 })( jQuery );

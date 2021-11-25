@@ -15,7 +15,7 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 			<?php
 			$terms      = get_terms( array( 'taxonomy' => 'product_cat' ) );
 			$terms      = is_array( $terms ) ? $terms : array();
-			$post_terms = get_post_meta( $feed_id, 'rex_feed_cats', true );
+			$post_terms = wp_get_post_terms( $feed_id, 'product_cat', array( 'fields' => 'slugs' ) );
 			$post_terms = is_array( $post_terms ) ? $post_terms : array();
 			$index      = 1;
 
@@ -40,7 +40,7 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 			<?php
 			$terms      = get_terms( array( 'taxonomy' => 'product_tag' ) );
 			$terms      = is_array( $terms ) ? $terms : array();
-			$post_terms = get_post_meta( $feed_id, 'rex_feed_tags', true );
+            $post_terms = wp_get_post_terms( $feed_id, 'product_tag', array( 'fields' => 'slugs' ) );
 			$post_terms = is_array( $post_terms ) ? $post_terms : array();
 			$index      = 1;
 

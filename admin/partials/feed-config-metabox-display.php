@@ -44,7 +44,7 @@ $keyy = rand(999, 3000); ?>
     <td data-title="Value : ">
         <div class="meta-dropdown">
 			<?php
-			echo '<select name="fc['.$keyy.'][' . esc_attr( 'meta_key' ) . ']" >';
+			echo '<select class="attr-val-dropdown" name="fc['.$keyy.'][' . esc_attr( 'meta_key' ) . ']" >';
 			echo "<option value=''>Please Select</option>";
 			echo $feed_template->printProductAttributes();
 			echo "</select>";
@@ -87,7 +87,7 @@ $keyy = rand(999, 3000); ?>
         <td data-title="Value : ">
             <div class="meta-dropdown" <?php echo $hideMetaInput; ?>>
 				<?php
-				echo '<select name="fc['.$key.'][' . esc_attr( 'meta_key' ) . ']" >';
+				echo '<select class="attr-val-dropdown" name="fc['.$key.'][' . esc_attr( 'meta_key' ) . ']" >';
 				echo "<option value=''>Please Select</option>";
 				echo $feed_template->printProductAttributes($item['meta_key']);
 				echo "</select>";

@@ -38,7 +38,7 @@ if ( $client_id && $client_secret && $merchant_id ) {
                 <div class="single-merchant-block">
                     <div class="merchant-authorized-area">
                     </div>
-                    <h2 class="title"><?php echo __('Configure your google merchant', 'rex-product-feed'); ?></h2>
+                    <h2 class="title"><?php echo __('Google Merchant Center Authorization', 'rex-product-feed'); ?></h2>
                     <form class="rex-google-merchant" id="rex-google-merchant">
                         <div class="row">
                             <div class="input-field">

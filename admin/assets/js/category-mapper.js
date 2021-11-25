@@ -89,16 +89,21 @@ jQuery(document).ready(function($){
         var form = $(this).closest('form');
         var container = $(this).closest('.acordion-item');
         var map_name = container.find('.mapper_name_update');
+        var btn_id = $(this).attr('id');
         var $payload = {
             map_name: map_name.text(),
             cat_map: form.serialize(),
             map_key: map_name.attr('data-id')
         };
         $('.rex-loading-spinner').css('display', 'flex');
+
         wpAjaxHelperRequest( 'category-mapping-update', $payload )
             .success( function( response ) {
                 $('.rex-loading-spinner').css('display', 'none');
                 console.log( 'Woohoo!' );
+                if ( btn_id === 'update_close_mapping_cat' ) {
+                    self.close();
+                }
             })
             .error( function( response ) {
                 $('.rex-loading-spinner').css('display', 'none');
@@ -106,7 +111,7 @@ jQuery(document).ready(function($){
                 console.log( response.statusText );
             });
     }
-    $(document).on('click', '#update_mapping_cat', category_mapping_update);
+    $(document).on('click', '#update_mapping_cat, #update_close_mapping_cat', category_mapping_update);
 
 
 
@@ -215,4 +220,16 @@ jQuery(document).ready(function($){
     }
     $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
 
+    // var url = window.location.href;
+    // var cat_map_action_btns = "<button type=\"submit\" class=\"waves-effect waves-light btn-large green\" id=\"update_mapping_cat\"><i class=\"fa fa-pencil-square-o\"></i> "+rex_wpfm_cat_map_translate_strings.update_btn+"</button>";
+    // cat_map_action_btns += "<button type=\"submit\" class=\"waves-effect waves-light btn-large green\" id=\"update_close_mapping_cat\"><i class=\"fa fa-pencil-square-o\"></i> "+rex_wpfm_cat_map_translate_strings.update_and_close_btn+"</button>";
+    // cat_map_action_btns += "<button type=\"submit\" class=\"waves-effect waves-light btn-large red\" id=\"delete_mapping_cat\"><i class=\"fa fa-trash-o\"></i> "+rex_wpfm_cat_map_translate_strings.delete_btn+"</button>";
+    //
+    // if ( url.includes('&wpfm-expand=wpfm_google_product_category_default') ) {
+    //     var cat_update_actions = $( 'form.update_cat_map' ).children( '.cat-map-actions' );
+    //     cat_update_actions.empty();
+    //     cat_update_actions.append( cat_map_action_btns );
+    //
+    //     $( 'a[data-id=wpfm_google_product_category_default]' ).parent().next().slideDown(500);
+    // }
 }); 

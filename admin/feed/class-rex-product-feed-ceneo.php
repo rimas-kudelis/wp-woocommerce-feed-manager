@@ -190,7 +190,6 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
                         }
                     }
                 }
-
             }
 
             if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
@@ -210,24 +209,6 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
             }
 
             if($feed_if_val!== 'id' || $feed_if_val!== 'price'||$feed_if_val!== 'sale_price'){
-                if( $this->product_scope === 'all' || $this->product_scope === 'product_filter') {
-                    if ( $product->get_type() === 'variation' ) {
-                        $variation_products[] = $productId;
-                        $item = RexShoppingCeneo::createItem();
-                        $atts = $this->get_product_data($product, $product_meta_keys);
-                        foreach ($atts as $key => $value) {
-	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                        if ( $value != '' ) {
-			                        $item->$key($value); // invoke $key as method of $item object.
-		                        }
-	                        }
-	                        else {
-		                        $item->$key($value); // invoke $key as method of $item object.
-	                        }
-                        }
-                    }
-                }
-            }elseif($feed_if_val=== 'id'||$feed_if_val=== 'price'||$feed_if_val=== 'sale_price'){
                 if( $this->product_scope === 'all' || $this->product_scope === 'product_filter' || $this->product_scope === 'filter' ) {
                     if ( $product->get_type() === 'variation' ) {
                         $variation_products[] = $productId;

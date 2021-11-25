@@ -198,7 +198,7 @@ class Rex_Feed_Template_Google extends Rex_Feed_Abstract_Template {
             array(
                 'attr'     => 'google_product_category',
                 'type'     => 'meta',
-                'meta_key' => '',
+                'meta_key' => 'wpfm_google_product_category_default',
                 'st_value' => '',
                 'prefix'   => '',
                 'suffix'   => '',

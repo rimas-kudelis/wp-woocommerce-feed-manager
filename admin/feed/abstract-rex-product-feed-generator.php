@@ -687,6 +687,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         if ( isset( $feed_rules[ 'rex_feed_schedule' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_schedule', $feed_rules[ 'rex_feed_schedule' ] );
         }
+        if ( isset( $feed_rules[ 'rex_feed_merchant' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_merchant', $feed_rules[ 'rex_feed_merchant' ] );
+        }
         if ( isset( $feed_rules[ 'rex_feed_include_out_of_stock' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_include_out_of_stock', $feed_rules[ 'rex_feed_include_out_of_stock' ] );
         }
@@ -709,11 +712,26 @@ abstract class Rex_Product_Feed_Abstract_Generator
             update_post_meta( $this->id, 'rex_feed_hidden_products', $feed_rules[ 'rex_feed_hidden_products' ] );
         }
         if ( isset( $feed_rules[ 'rex_feed_cats' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_cats', $feed_rules[ 'rex_feed_cats' ] );
+            $cats = array();
+            foreach ( $feed_rules[ 'rex_feed_cats' ] as $cat ) {
+                $cats[] = get_term_by('name', $cat, 'product_cat' )->term_id;
+            }
+            wp_set_object_terms( $this->id, $cats, 'product_cat' );
+        }
+        else {
+            wp_set_object_terms( $this->id, array(), 'product_cat' );
         }
         if ( isset( $feed_rules[ 'rex_feed_tags' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_tags', $feed_rules[ 'rex_feed_tags' ] );
+            $tags = array();
+            foreach ( $feed_rules[ 'rex_feed_tags' ] as $tag ) {
+                $tags[] = get_term_by('name', $tag, 'product_tag' )->term_id;
+            }
+            wp_set_object_terms( $this->id, $tags, 'product_tag' );
         }
+        else {
+            wp_set_object_terms( $this->id, array(), 'product_tag' );
+        }
+
         if ( isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_aelia_currency', $feed_rules[ 'rex_feed_aelia_currency' ] );
         }
@@ -1395,7 +1413,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys )
     {
-
         $data     = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
         $all_data = $data->get_all_data();
 
@@ -1494,7 +1511,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $file = trailingslashit( $path ) . "feed-{$this->id}.xml";
 
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml" );
-            update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
+            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             $this->feed = wpfm_replace_special_char( $this->feed );
@@ -1531,7 +1548,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
             $file       = trailingslashit( $path ) . "feed-{$this->id}.txt";
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.txt" );
-            update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
+            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             if ( $this->batch != 1 ) {
@@ -1558,7 +1575,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
             $file = trailingslashit( $path ) . "feed-{$this->id}.tsv";
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv" );
-            update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
+            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             if ( file_exists( $file ) ) {
@@ -1580,7 +1597,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         elseif ( $format === 'csv' ) {
             $file = trailingslashit( $path ) . "feed-{$this->id}.csv";
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.csv" );
-            update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
+            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
             update_post_meta( $this->id, 'rex_feed_separator', $this->feed_separator );
 
@@ -1589,7 +1606,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         else {
             $file = trailingslashit( $path ) . "feed-{$this->id}.xml";
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml" );
-            update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
+            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             $this->feed = wpfm_replace_special_char( $this->feed );

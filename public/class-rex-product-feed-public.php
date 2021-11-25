@@ -89,7 +89,7 @@ class Rex_Product_Feed_Public {
 
 	public function wpfm_add_to_cart() {
         check_ajax_referer('wpfm_add_to_cart_nonce', 'security');
-        $currency = get_woocommerce_currency();
+        $currency = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD';
         $product_id = sanitize_text_field($_POST['product_id']);
         $product = wc_get_product( $product_id );
         if ( ! is_object( $product ) ) {

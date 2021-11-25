@@ -17,14 +17,6 @@ use RexTheme\RexShoppingFeed\Containers\RexShopping;
 
 class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 
-    /**
-     * Check if the merchants is valid or not
-     * @param $feed_merchants
-     * @return bool
-     */
-    public function is_valid_merchant(){
-        return array_key_exists($this->merchant, $this->feed_merchants)? true : false;
-    }
     private $feed_merchants = array(
         "123i" => array(
             'container'  => true,
@@ -785,30 +777,52 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'datetime'   => false,
         ),
         "awin" => array(
-	        'container'  => false,
-	        'item_wrapper'  => 'product',
-	        'items_wrapper' => 'products',
-	        'namespace' => null,
-	        'namespace_prefix' => '',
-	        'stand_alone'   => false,
-	        'version' => '',
-	        'wrapper_el'   => '',
-	        'wrapper'   => false,
-	        'datetime'   => false,
+            'container'  => false,
+            'item_wrapper'  => 'product',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
         ),
         "gulog_gratis" => array(
-	        'container'  => false,
-	        'item_wrapper'  => 'ad',
-	        'items_wrapper' => 'ads',
-	        'namespace' => null,
-	        'namespace_prefix' => '',
-	        'stand_alone'   => false,
-	        'version' => '',
-	        'wrapper_el'   => '',
-	        'wrapper'   => false,
-	        'datetime'   => false,
+            'container'  => false,
+            'item_wrapper'  => 'ad',
+            'items_wrapper' => 'ads',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
+        ),
+        "leguide" => array(
+            'container'  => false,
+            'item_wrapper'  => 'item',
+            'items_wrapper' => 'products',
+            'namespace' => null,
+            'namespace_prefix' => '',
+            'stand_alone'   => false,
+            'version' => '',
+            'wrapper_el'   => '',
+            'wrapper'   => false,
+            'datetime'   => false,
         ),
     );
+
+
+    /**
+     * Check if the merchants is valid or not
+     * @param $feed_merchants
+     * @return bool
+     */
+    public function is_valid_merchant(){
+        return array_key_exists($this->merchant, $this->feed_merchants)? true : false;
+    }
     /**
      * Get version
      *
@@ -1142,8 +1156,8 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		          || $this->merchant === 'custom' || $this->merchant === 'deltaprojects'
 		          || $this->merchant === 'kelkoo' || $this->merchant === 'billiger'
 		          || $this->merchant === 'bonanza' || $this->merchant === 'become'
-		          || $this->merchant === 'adroll'
-		          || $this->merchant === 'awin'
+		          || $this->merchant === 'adroll' || $this->merchant === 'awin'
+		          || $this->merchant === 'leguide'
 		) {
 			$this->feed = str_replace( '</products>', '', $this->feed );
 		}
