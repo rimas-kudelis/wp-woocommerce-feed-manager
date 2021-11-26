@@ -1,9 +1,9 @@
-=== Product Feed Manager for WooCommerce ===
+=== Product Feed Manager - WooCommerce to Google Shopping, Facebook, Yandex, Etsy & More ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuten,skroutz, skroutz.gr, walmart,google shopping feed, facebook catalog, feed, fruugo, bing image feed, bing shopping, bonanza, bestprice, bestprice.gr, yml, yandex, market, yandex market, yandex turbo, export, yandex feed, csv export, export csv, export xml, ean, gtin, isbn, upc
 Requires at least: 4.7
-Tested up to:  5.8.2
+Tested up to:  5.8.1
 Requires PHP: 7.0
 Stable tag:  7.0.1
 License: GPLv2 or later
@@ -699,8 +699,8 @@ WP Dashboard > Product Feed > Upgrade.
 3. Product Feed Controls Settings
 4. Supported Merchants List
 5. Refresh Interval Schedule
-6. Configure Feed Filters and Rules
-7. Product Filter
+6. Custom Filter
+7. Product Filter Options
 8. Add New and Custom Attributes
 9. Category Mapping
 10. Configure Google Merchant
