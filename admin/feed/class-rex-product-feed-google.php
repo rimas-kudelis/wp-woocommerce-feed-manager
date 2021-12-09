@@ -164,14 +164,14 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
         $item = GoogleShopping::createItem();
         $attributes = $this->get_product_data( $product, $meta_keys );
         $attributes = $this->process_attributes_for_shipping_tax( $attributes );
+        $shipping_labels = array( 'shipping_1', 'shipping_2', 'shipping_3', 'shipping_4' );
 
         if ( $product_type === 'variation' ) {
             $check_item_group_id = 0;
         }
 
         foreach ( $attributes as $key => $value ) {
-
-            if( preg_match( '/shipping/i', $key ) ) {
+            if( in_array( $key, $shipping_labels ) ) {
                 $shipping_country = isset( $value['shipping_country'] ) ? $value['shipping_country'] : '';
                 $shipping_service = isset( $value['shipping_service'] ) ? $value['shipping_service'] : '';
                 $shipping_price = isset( $value['shipping_price'] ) ? $value['shipping_price'] : '';

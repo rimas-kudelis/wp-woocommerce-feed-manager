@@ -331,6 +331,7 @@ class Feed
         if(count($this->items)){
 
             $this->items_row[] = array_keys(end($this->items)->nodes());
+
             foreach ($this->items as $item) {
                 $row = array();
                 foreach ($item->nodes() as $itemNode) {
@@ -345,6 +346,34 @@ class Feed
                 $this->items_row[] = $row;
             }
             
+            $str = '';
+            foreach ($this->items_row as $fields) {
+                $str .= implode("\t", $fields) . "\n";
+            }
+        }
+
+        return $this->items_row;
+    }
+
+    private function addItemsToFeedYML(){
+
+        if(count($this->items)){
+
+//            $this->items_row[] = array_keys(end($this->items)->nodes());
+            foreach ($this->items as $item) {
+                $row = array();
+                foreach ($item->nodes() as $itemNode) {
+                    if (is_array($itemNode)) {
+                        foreach ($itemNode as $node) {
+                            $row[$node->get('name')] = str_replace(array("\r\n", "\n", "\r"), ' ', $node->get('value'));
+                        }
+                    } else {
+                        $row[$itemNode->get('name')] = str_replace(array("\r\n", "\n", "\r"), ' ', $itemNode->get('value'));
+                    }
+                }
+                $this->items_row[] = $row;
+            }
+
             $str = '';
             foreach ($this->items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
@@ -438,6 +467,22 @@ class Feed
 
         ob_end_clean();
         $data = $this->addItemsToFeedCSV();
+        if ($output) {
+            die($data);
+        }
+        return $data;
+    }
+
+    /**
+     * Generate YML feed
+     * @param bool $output
+     * @return string
+     */
+    public function asYml($output = false)
+    {
+
+        ob_end_clean();
+        $data = $this->addItemsToFeedYML();
         if ($output) {
             die($data);
         }

@@ -26,19 +26,13 @@ class Rex_Feed_Attributes {
 	        'Primary Attributes' => array(
 		        'id'                             => 'Product Id',
 		        'title'                          => 'Product Title',
-		        'yoast_title'                    => 'Product Title [Yoast SEO]',
 		        'description'                    => 'Product Description',
 		        'parent_desc'                    => 'Product Description [Parent]',
-		        'yoast_meta_desc'                => 'Product Description [Yoast SEO]',
 		        'short_description'              => 'Product Short Description',
 		        'product_cats'                   => 'Product Categories',
 		        'product_cats_path'              => 'Product Categories Path (with separator ">")',
 		        'product_cats_path_pipe'         => 'Product Categories Path (with separator "|")',
-		        'yoast_primary_cats_path'        => 'Yoast Primary Category Path (with separator ">")',
-		        'yoast_primary_cats_pipe'        => 'Yoast Primary Category Path (with separator "|")',
-		        'yoast_primary_cats_comma'       => 'Yoast Primary Category Path (with separator ",")',
 		        'product_subcategory'            => 'Product Sub Categories Path (with separator ">")',
-		        'yoast_primary_cat'              => 'Yoast primary category',
 		        'link'                           => 'Product URL',
 		        'parent_url'                     => 'Parent Product URL',
 		        'condition'                      => 'Condition',
@@ -51,18 +45,6 @@ class Rex_Feed_Attributes {
 		        'availability_backorder'         => 'Availability (Backorder = backorder)',
 		        'availability_zero_three'        => 'Availability (0 - 3)',
 		        'quantity'                       => 'Quantity',
-		        'price'                          => 'Regular Price',
-		        'current_price'                  => 'Price',
-		        'sale_price'                     => 'Sale Price',
-		        'price_with_tax'                 => 'Regular price with tax',
-		        'current_price_with_tax'         => 'Price with tax',
-		        'sale_price_with_tax'            => 'Sale price with tax',
-		        'price_excl_tax'                 => 'Regular price excl. tax',
-		        'current_price_excl_tax'         => 'Price excl. tax',
-		        'sale_price_excl_tax'            => 'Sale price excl. tax',
-		        'price_db'                       => 'Regular Price (From DB)',
-		        'current_price_db'               => 'Price (From DB)',
-		        'sale_price_db'                  => 'Sale Price (From DB)',
 		        'weight'                         => 'Weight',
 		        'width'                          => 'Width',
 		        'height'                         => 'Height',
@@ -72,18 +54,29 @@ class Rex_Feed_Attributes {
 		        'rating_total'                   => 'Total Rating',
 		        'rating_average'                 => 'Average Rating',
 		        'product_tags'                   => 'Tags',
-		        'sale_price_dates_from'          => 'Sale Start Date',
-		        'sale_price_dates_to'            => 'Sale End Date',
-		        'sale_price_effective_date'      => 'Sale Price Effective Date',
 		        'identifier_exists'              => 'Identifier Exists Calculator',
 		        'in_stock'                       => 'In Stock (Y/N)',
 		        'promotion_id'                   => 'Promotion ID',
-		        'post_publish_date'              => 'Publish Date',
-		        'post_modified_date'             => 'Modified Date',
 		        'current_page'                   => 'Current Page',
 		        'author_name'                    => 'Author Name',
 		        'author_url'                     => 'Author URL',
 	        ),
+            'Product Attributes' => self::get_product_attributes(),
+            'Product Variation Attributes' => self::get_product_dynamic_attributes(),
+            'Price Attributes' => array(
+                'price'                  => 'Regular Price',
+                'current_price'          => 'Price',
+                'sale_price'             => 'Sale Price',
+                'price_with_tax'         => 'Regular price with tax',
+                'current_price_with_tax' => 'Price with tax',
+                'sale_price_with_tax'    => 'Sale price with tax',
+                'price_excl_tax'         => 'Regular price excl. tax',
+                'current_price_excl_tax' => 'Price excl. tax',
+                'sale_price_excl_tax'    => 'Sale price excl. tax',
+                'price_db'               => 'Regular Price (From DB)',
+                'current_price_db'       => 'Price (From DB)',
+                'sale_price_db'          => 'Sale Price (From DB)',
+            ),
 	        'Image Attributes' => array(
 		        'main_image'      => 'Main Image',
 		        'featured_image'  => 'Featured Image',
@@ -106,8 +99,18 @@ class Rex_Feed_Attributes {
 		        'image_9'         => 'Additional Image 9',
 		        'image_10'        => 'Additional Image 10',
 	        ),
+	        'Date Attributes' => array(
+                'post_publish_date'   => 'Publish Date',
+                'last_updated'        => 'Last Modified Date',
+                'sale_price_dates_from'          => 'Sale Start Date',
+                'sale_price_dates_to'            => 'Sale End Date',
+                'sale_price_effective_date'      => 'Sale Price Effective Date',
+	        ),
+	        'Glami Attributes' => array(
+                'param_size'     => 'Value - Size'
+	        ),
         );
-        
+
         $theme = wp_get_theme();
         if ( 'Woodmart' == $theme->name || 'Woodmart' == $theme->parent_theme ) {
             $attributes_2 = array(
@@ -138,7 +141,6 @@ class Rex_Feed_Attributes {
             );
             $attributes = array_merge($attributes, $attributes_3);
         }
-
         if(in_array('brands-for-woocommerce/woocommerce-brand.php',$plugins)){
             $attributes_4 = array(
                 'Brands for WooCommerce' => array(
@@ -156,7 +158,6 @@ class Rex_Feed_Attributes {
             );
             $attributes = array_merge($attributes, $attributes_4);
         }
-
 	    if(in_array('dropship-plugin/mantella.php', $plugins)){
 		    $attributes_4 = array(
 			    'Dropship by Mantella' => array(
@@ -168,35 +169,62 @@ class Rex_Feed_Attributes {
 		    );
 		    $attributes   = array_merge( $attributes, $attributes_4 );
 	    }
-
-
-        // Get product attributes
-        $_attributes = self::get_product_attributes();
-        $attributes['Product Attributes'] = $_attributes;
-        $attributes['Date Attributes'] = array(
-        	'last_updated' => 'Last Modified Date'
-        );
-        $attributes['Glami Attributes'] = array(
-            'param_size'     => 'Value - Size'
-        );
-
-
-        // Get product dynamic attributes
-        $_dynamic_attributes = self::get_product_dynamic_attributes();
-        $attributes['Product Dynamic Attributes'] = $_dynamic_attributes;
-
-
-        // Get product custom attributes
-        $_custom_attributes = self::get_product_custom_attributes();
-
+	    if( wpfm_is_yoast_active() ){
+		    $_attributes = array(
+			    'YOAST Attributes' => array(
+                    'yoast_title'                    => 'Product Title [Yoast SEO]',
+                    'yoast_primary_cat'              => 'Yoast Primary Category',
+                    'yoast_meta_desc'                => 'Product Description [Yoast SEO]',
+                    'yoast_primary_cats_path'        => 'Yoast Primary Category Path (with separator ">")',
+                    'yoast_primary_cats_pipe'        => 'Yoast Primary Category Path (with separator "|")',
+                    'yoast_primary_cats_comma'       => 'Yoast Primary Category Path (with separator ",")',
+			    ),
+		    );
+		    $attributes   = array_merge( $attributes, $_attributes );
+	    }
 	    if(in_array('woo-discount-rules/woo-discount-rules.php', $plugins)){
 		    $woo_discount_rules = array(
 			    'woo_discount_rules_price'  => 'Woo Discount Rules - Price',
 			    'woo_discount_rules_expire_date'  => 'Woo Discount Rules - Expire Date',
 		    );
-		    $_custom_attributes = array_merge($_custom_attributes, $woo_discount_rules);
+            $attributes = array_merge($attributes, $woo_discount_rules);
 	    }
-       
+        if( apply_filters('wpfm_is_premium_activate', false) ) {
+            $_attributes = array(
+                'WPFM Custom Attributes' => array(
+                    'custom_attributes__wpfm_product_brand'            => 'WPFM Product Brand',
+                    'custom_attributes__wpfm_product_gtin'              => 'WPFM Product GTIN',
+                    'custom_attributes__wpfm_product_mpn'              => 'WPFM Product MPN',
+                    'custom_attributes__wpfm_product_upc'              => 'WPFM Product UPC',
+                    'custom_attributes__wpfm_product_ean'              => 'WPFM Product EAN',
+                    'custom_attributes__wpfm_product_jan'              => 'WPFM Product JAN',
+                    'custom_attributes__wpfm_product_isbn'              => 'WPFM Product ISBN',
+                    'custom_attributes__wpfm_product_itf'              => 'WPFM Product ITF',
+                    'custom_attributes__wpfm_product_offer_price'              => 'WPFM Product Offer Price',
+                    'custom_attributes__wpfm_product_offer_effective_date'              => 'WPFM Product Offer Effective Date',
+                    'custom_attributes__wpfm_product_additional_info'              => 'WPFM Product Additional Info',
+                    'custom_attributes__wpfm_product_color'              => 'WPFM Product Color',
+                    'custom_attributes__wpfm_product_size'              => 'WPFM Product Size',
+                    'custom_attributes__wpfm_product_pattern'              => 'WPFM Product Pattern',
+                    'custom_attributes__wpfm_product_material'              => 'WPFM Product Material',
+                    'custom_attributes__wpfm_product_age_group'              => 'WPFM Product Age Group',
+                    'custom_attributes__wpfm_product_gender'              => 'WPFM Product Gender',
+                    'custom_attributes__wpfm_product_item_type'              => 'WPFM Product Item Type',
+                    'custom_attributes__wpfm_product_bullet_point_1'              => 'WPFM Product Bullet Point 1',
+                    'custom_attributes__wpfm_product_bullet_point_2'              => 'WPFM Product Bullet Point 2',
+                    'custom_attributes__wpfm_product_bullet_point_3'              => 'WPFM Product Bullet Point 3',
+                    'custom_attributes__wpfm_product_bullet_point_4'              => 'WPFM Product Bullet Point 4',
+                    'custom_attributes__wpfm_product_bullet_point_5'              => 'WPFM Product Bullet Point 5',
+                    'custom_attributes__wpfm_product_search_terms_1'              => 'WPFM Product Search Terms 1',
+                    'custom_attributes__wpfm_product_search_terms_2'              => 'WPFM Product Search Terms 2',
+                    'custom_attributes__wpfm_product_search_terms_3'              => 'WPFM Product Search Terms 3',
+                ),
+            );
+            $attributes   = array_merge( $attributes, $_attributes );
+        }
+
+        // Get product custom attributes
+        $_custom_attributes = self::get_product_custom_attributes();
         $attributes['Product Custom Attributes'] = $_custom_attributes;
 
 
@@ -277,8 +305,7 @@ class Rex_Feed_Attributes {
 
     /**
      * get product custom attributes
-     *
-     * @return array
+     * @return bool
      */
     public static function get_product_custom_attributes() {
         $attributes = wpfm_get_cached_data( 'product_custom_attributes' );
@@ -300,10 +327,9 @@ class Rex_Feed_Attributes {
             if (count($data)) {
                
                 foreach ($data as $key => $value) {
-                    if (!preg_match("/_product_attributes/i", $value->name)) {
+                    if (!preg_match("/_product_attributes/i", $value->name) && !preg_match("/_wpfm_/i", $value->name)) {
                         $value_display = str_replace("_", " ",$value->name);
                         $attributes["custom_attributes_" . $value->name] = ucfirst($value_display);
-                        
                     }else {
                         
                         $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta as postmeta

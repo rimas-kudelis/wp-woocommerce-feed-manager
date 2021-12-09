@@ -240,12 +240,18 @@ class Rex_Product_Data_Retriever{
 			$val = $rule['st_value'];
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
-			$attr   = isset( $rule[ 'attr' ] ) ? $rule[ 'attr' ] : '';
 			$escape = isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '';
-			$val = $this->set_pr_att( $rule['meta_key'] , $escape, $attr );
+			$val = $this->set_pr_att( $rule['meta_key'] , $escape );
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_woodmart_att( $rule['meta_key'] );
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_price_attr( $rule['meta_key'] ) ) {
+            $attr   = isset( $rule[ 'attr' ] ) ? $rule[ 'attr' ] : '';
+			$val = $this->set_price_attr( $rule['meta_key'], $attr );
+		}
+		elseif ( 'meta' === $rule['type'] && $this->is_yoast_attr( $rule['meta_key'] ) ) {
+			$val = $this->set_yoast_attr( $rule['meta_key'] );
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_perfect_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_perfect_attr( $rule['meta_key'] );
@@ -265,6 +271,9 @@ class Rex_Product_Data_Retriever{
 		elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_product_dynamic_att( $rule['meta_key']  );
 		}
+		elseif ( 'meta' === $rule['type'] && $this->is_wpfm_custom_attr( $rule['meta_key'] ) ) {
+			$val = $this->set_wpfm_custom_att( $rule['meta_key']  );
+		}
 		elseif ( 'meta' === $rule['type'] && $this->is_product_custom_attr( $rule['meta_key'] ) ) {
 			$val = $this->set_product_custom_att( $rule['meta_key']  );
 		}
@@ -278,7 +287,7 @@ class Rex_Product_Data_Retriever{
 			$val = $this->set_dropship_att( $rule['meta_key']  );
 		}
 		elseif ( 'meta' === $rule['type'] && $this->is_date_attr( $rule['meta_key'] ) ) {
-			$val = $this->set_date_att( $rule['meta_key']  );
+			$val = $this->set_date_attr( $rule['meta_key']  );
 		}
 
 		// maybe escape
@@ -315,6 +324,37 @@ class Rex_Product_Data_Retriever{
 		if('image_'.$id == $key){
 			return $this->get_woodmart_gallery($id);
 		}
+
+	}
+
+	/**
+	 * Set a YOAST attribute.
+	 *
+	 * @since    1.0.0
+	 */
+	protected function set_yoast_attr( $key ){
+		switch ( $key ){
+            case 'yoast_primary_cat':
+                return $this->get_yoast_primary_cat();
+
+            case 'yoast_title':
+                return preg_replace('/\s+/', ' ',$this->get_yoast_seo_title());
+
+            case 'yoast_meta_desc':
+                return $this->get_yoast_meta_description();
+
+            case 'yoast_primary_cats_path':
+                return $this->get_yoast_product_cats_with_seperator();
+
+            case 'yoast_primary_cats_pipe':
+                return $this->get_yoast_product_cats_with_seperator('', ' | ', '');
+
+            case 'yoast_primary_cats_comma':
+                return $this->get_yoast_product_cats_with_seperator('', ', ', '');
+
+            default:
+                return '';
+        }
 
 	}
 
@@ -496,7 +536,7 @@ class Rex_Product_Data_Retriever{
 	 *
 	 * @since    1.0.0
 	 */
-	protected function set_pr_att( $key, $rule = 'default', $attr='' ) {
+	protected function set_pr_att( $key, $rule = 'default' ) {
 
 		switch ( $key ) {
 			case 'id':
@@ -555,12 +595,235 @@ class Rex_Product_Data_Retriever{
 						return $title;
 					}
 				}
+
+			case 'description':
+				if(($this->is_children())):
+					$description = $this->product->get_description();
+					if(empty($description)) {
+						$_product = wc_get_product( $this->product->get_parent_id() );
+						if ( is_object( $_product ) ) {
+
+							return $this->remove_short_codes($_product->get_description());
+						}
+					}else {
+
+						return $this->remove_short_codes($description);
+					}
+				else:
+					// $des = preg_replace('/(?:\s\s+|\n|\t)/', ' ',$this->product->get_description());
+					return $this->remove_short_codes($this->product->get_description());
+				endif;
+
 				break;
 
-			case 'yoast_title':
-				$yoast_title = preg_replace('/\s+/', ' ',$this->get_yoast_seo_title());
-				return $yoast_title; break;
+			case 'parent_desc':
 
+				if( $this->is_children() ) {
+					$parent_product = wc_get_product( $this->product->get_parent_id() );
+
+					if ( is_object( $parent_product ) ) {
+
+						return $this->remove_short_codes( $parent_product->get_description() );
+					}
+				}
+
+				return $this->product->get_description();
+				break;
+
+			case 'short_description':
+				if(($this->is_children())):
+					$short_description = $this->product->get_short_description();
+					if(empty($short_description)) {
+						$_product = wc_get_product( $this->product->get_parent_id() );
+						if ( is_object( $_product ) ) {
+
+							return  $this->remove_short_codes($_product->get_short_description());
+						}
+					}else {
+
+						return $this->remove_short_codes($short_description);
+					}
+				else:
+					return $this->remove_short_codes($this->product->get_short_description()) ;
+				endif;
+				break;
+
+			case 'product_cats':
+				return $this->get_product_cats(); break;
+
+			case 'product_cats_path':
+				return $this->get_product_cats_with_seperator(); break;
+
+			case 'product_cats_path_pipe':
+				return $this->get_product_cats_with_seperator('', ' | ', ''); break;
+
+			case 'product_subcategory':
+				return $this->get_product_subcategory(); break;
+
+			case 'product_tags':
+				return $this->get_product_tags(); break;
+
+			case 'spartoo_product_cats':
+				return $this->get_spartoo_product_cats(); break;
+
+			case 'sooqr_cats':
+				return $this->get_product_cats_for_sooqr(); break;
+
+			case 'perfect_brand':
+				$brand = get_products_brands($this->product->get_id());
+				return $this->product->get_id(); break;
+
+			case 'link':
+
+				if($this->analytics_params) {
+					if ( ! empty( $this->analytics_params['utm_source'] ) &&
+					     ! empty( $this->analytics_params['utm_medium'] ) &&
+					     ! empty( $this->analytics_params['utm_campaign'] )
+					) {
+						if($rule === 'decode_url') {
+							return add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink())); break;
+						}
+						return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink()) )); break;
+					}
+					if($rule === 'decode_url') {
+						return urldecode($this->product->get_permalink()); break;
+					}
+					return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
+				}
+				if($rule === 'decode_url') {
+					return urldecode($this->product->get_permalink()); break;
+				}
+
+				return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
+
+			case 'parent_url':
+				$_pr = $this->product;
+				if ( 'WC_Product_Variation' == get_class($this->product) ) {
+					$_pr = wc_get_product($this->product->get_parent_id());
+				}
+				if($this->analytics_params) {
+					if ( ! empty( $this->analytics_params['utm_source'] ) &&
+					     ! empty( $this->analytics_params['utm_medium'] ) &&
+					     ! empty( $this->analytics_params['utm_campaign'] )
+					) {
+						if($rule === 'decode_url') {
+							return add_query_arg( array_filter( $this->analytics_params ), urldecode($_pr->get_permalink())); break;
+						}
+						return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($_pr->get_permalink()) )); break;
+					}
+					if($rule === 'decode_url') {
+						return urldecode($_pr->get_permalink()); break;
+					}
+					return $this->safeCharEncodeURL(urldecode($_pr->get_permalink())); break;
+				}
+				if($rule === 'decode_url') {
+					return urldecode($_pr->get_permalink()); break;
+				}
+				return $this->safeCharEncodeURL(urldecode($_pr->get_permalink())); break;
+
+			case 'condition':
+				return $this->get_condition(); break;
+
+			case 'item_group_id':
+				return $this->get_item_group_id(); break;
+
+			case 'availability':
+				return $this->get_availability(); break;
+
+			case 'availability_zero_three':
+				$if_available = $this->get_availability();
+				if ( 'out_of_stock' == $if_available ) {
+					return '3';
+				}
+				return '0'; break;
+
+			case 'availability_underscore':
+				return $this->get_availability_underscore(); break;
+
+			case 'availability_backorder_instock':
+				return $this->get_availability_backorder_instock(); break;
+
+			case 'availability_backorder':
+				return $this->get_availability_backorder(); break;
+
+			case 'quantity':
+				return $this->product->get_stock_quantity(); break;
+
+			case 'weight':
+				return $this->product->get_weight(); break;
+
+			case 'width':
+				return $this->product->get_width(); break;
+
+			case 'height':
+				return $this->product->get_height(); break;
+
+			case 'length':
+				return $this->product->get_length(); break;
+
+			case 'shipping_class':
+				return $this->product->get_shipping_class(); break;
+
+			case 'shipping_cost':
+				return $this->get_shipping_cost(); break;
+
+			case 'type':
+				return $this->product->get_type(); break;
+
+			case 'in_stock':
+				return $this->get_stock(); break;
+
+			case 'rating_average':
+				return $this->product->get_average_rating();
+
+			case 'rating_total':
+				return $this->product->get_rating_count();
+
+			case 'identifier_exists':
+				return $this->calculate_identifier_exists($this->data);
+
+			case 'current_page':
+				$product_id = '';
+				if ( $this->product->is_type('variation') ) {
+					$product_id = $this->product->get_parent_id();
+				}
+				else {
+					$product_id = $this->product->get_id();
+				}
+				return get_permalink( $product_id );
+
+			case 'author_name':
+				$author_id = '';
+				if ( $this->product->is_type('variation') ) {
+					$author_id = get_post_field( 'post_author', $this->product->get_parent_id() );
+				}
+				else {
+					$author_id = get_post_field( 'post_author', $this->product->get_id() );
+				}
+				return get_the_author_meta( 'display_name', $author_id );
+
+			case 'author_url':
+				$author_id = '';
+				if ( $this->product->is_type('variation') ) {
+					$author_id = get_post_field( 'post_author', $this->product->get_parent_id() );
+				}
+				else {
+					$author_id = get_post_field( 'post_author', $this->product->get_id() );
+				}
+				return get_author_posts_url( $author_id );
+
+			default: return ''; break;
+		}
+	}
+
+	/**
+	 * Set a price attribute.
+	 *
+	 * @since    1.0.0
+	 */
+	protected function set_price_attr( $key, $attr='' ) {
+
+		switch ( $key ) {
 			case 'price':
 				if ($this->product->is_type( 'grouped' )) {
 					if($this->wcml) {
@@ -734,7 +997,6 @@ class Rex_Product_Data_Retriever{
 					}
 					return wc_format_decimal(  $_price, wc_get_price_decimals());
 				}
-				break;
 
 			case 'current_price':
 				if (!defined('WAD_INITIALIZED') ) {
@@ -970,7 +1232,6 @@ class Rex_Product_Data_Retriever{
 						return  wc_format_decimal( $_price, wc_get_price_decimals());
 					}
 				}
-				break;
 
 			case 'sale_price':
 
@@ -1151,7 +1412,6 @@ class Rex_Product_Data_Retriever{
 
 					return '';
 				}
-				break;
 
 			case 'price_with_tax':
 				if ($this->product->is_type( 'grouped' )) {
@@ -1235,7 +1495,6 @@ class Rex_Product_Data_Retriever{
 					}
 					return  wc_format_decimal( $_price, wc_get_price_decimals() );
 				}
-				break;
 
 			case 'current_price_with_tax':
 				if ($this->product->is_type( 'grouped' )) {
@@ -1303,7 +1562,6 @@ class Rex_Product_Data_Retriever{
 					}
 					return wc_format_decimal( $_price, wc_get_price_decimals());
 				}
-				break;
 
 			case 'sale_price_with_tax':
 				if ($this->product->is_type( 'grouped' )) {
@@ -1375,7 +1633,6 @@ class Rex_Product_Data_Retriever{
 					}
 				}
 				return '';
-				break;
 
 			case 'price_excl_tax':
 
@@ -1459,7 +1716,6 @@ class Rex_Product_Data_Retriever{
 					}
 					return  wc_format_decimal( $_price, wc_get_price_decimals());
 				}
-				break;
 
 			case 'current_price_excl_tax':
 				if ($this->product->is_type( 'grouped' )) {
@@ -1527,7 +1783,6 @@ class Rex_Product_Data_Retriever{
 					}
 					return wc_format_decimal( $_price, wc_get_price_decimals());
 				}
-				break;
 
 			case 'sale_price_excl_tax':
 				if ($this->product->is_type( 'grouped' )) {
@@ -1618,7 +1873,6 @@ class Rex_Product_Data_Retriever{
 					}
 					return  wc_format_decimal( get_post_meta( $this->product->get_id(), $meta_key, true), wc_get_price_decimals());
 				}
-				break;
 
 			case 'current_price_db':
 				if($this->wcml) {
@@ -1634,7 +1888,6 @@ class Rex_Product_Data_Retriever{
 				}else {
 					return  wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true), wc_get_price_decimals());
 				}
-				break;
 
 			case 'sale_price_db':
 				$sale_price = get_post_meta( $this->product->get_id(), '_sale_price', true);
@@ -1654,284 +1907,8 @@ class Rex_Product_Data_Retriever{
 					}
 				}
 				return '';
-				break;
 
-			case 'description':
-				if(($this->is_children())):
-					$description = $this->product->get_description();
-					if(empty($description)) {
-						$_product = wc_get_product( $this->product->get_parent_id() );
-						if ( is_object( $_product ) ) {
-
-							return $this->remove_short_codes($_product->get_description());
-						}
-					}else {
-
-						return $this->remove_short_codes($description);
-					}
-				else:
-					// $des = preg_replace('/(?:\s\s+|\n|\t)/', ' ',$this->product->get_description());
-					return $this->remove_short_codes($this->product->get_description());
-				endif;
-
-				break;
-
-			case 'parent_desc':
-
-				if( $this->is_children() ) {
-					$parent_product = wc_get_product( $this->product->get_parent_id() );
-
-					if ( is_object( $parent_product ) ) {
-
-						return $this->remove_short_codes( $parent_product->get_description() );
-					}
-				}
-
-				return $this->product->get_description();
-				break;
-
-			case 'short_description':
-				if(($this->is_children())):
-					$short_description = $this->product->get_short_description();
-					if(empty($short_description)) {
-						$_product = wc_get_product( $this->product->get_parent_id() );
-						if ( is_object( $_product ) ) {
-
-							return  $this->remove_short_codes($_product->get_short_description());
-						}
-					}else {
-
-						return $this->remove_short_codes($short_description);
-					}
-				else:
-					return $this->remove_short_codes($this->product->get_short_description()) ;
-				endif;
-				break;
-
-			case 'yoast_meta_desc':
-				return $this->get_yoast_meta_description(); break;
-
-			case 'product_cats':
-				return $this->get_product_cats(); break;
-
-			case 'product_cats_path':
-				return $this->get_product_cats_with_seperator(); break;
-
-			case 'product_cats_path_pipe':
-				return $this->get_product_cats_with_seperator('', ' | ', ''); break;
-
-			case 'yoast_primary_cats_path':
-				return $this->get_yoast_product_cats_with_seperator(); break;
-
-			case 'yoast_primary_cats_pipe':
-				return $this->get_yoast_product_cats_with_seperator('', ' | ', ''); break;
-
-			case 'yoast_primary_cats_comma':
-				return $this->get_yoast_product_cats_with_seperator('', ', ', ''); break;
-
-			case 'product_subcategory':
-				return $this->get_product_subcategory(); break;
-
-			case 'product_tags':
-				return $this->get_product_tags(); break;
-
-			case 'yoast_primary_cat':
-				return $this->get_yoast_primary_cat(); break;
-
-			case 'spartoo_product_cats':
-				return $this->get_spartoo_product_cats(); break;
-
-			case 'sooqr_cats':
-				return $this->get_product_cats_for_sooqr(); break;
-
-			case 'perfect_brand':
-				$brand = get_products_brands($this->product->get_id());
-				return $this->product->get_id(); break;
-
-			case 'link':
-
-				if($this->analytics_params) {
-					if ( ! empty( $this->analytics_params['utm_source'] ) &&
-					     ! empty( $this->analytics_params['utm_medium'] ) &&
-					     ! empty( $this->analytics_params['utm_campaign'] )
-					) {
-						if($rule === 'decode_url') {
-							return add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink())); break;
-						}
-						return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink()) )); break;
-					}
-					if($rule === 'decode_url') {
-						return urldecode($this->product->get_permalink()); break;
-					}
-					return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
-				}
-				if($rule === 'decode_url') {
-					return urldecode($this->product->get_permalink()); break;
-				}
-
-				return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
-
-			case 'parent_url':
-				$_pr = $this->product;
-				if ( 'WC_Product_Variation' == get_class($this->product) ) {
-					$_pr = wc_get_product($this->product->get_parent_id());
-				}
-				if($this->analytics_params) {
-					if ( ! empty( $this->analytics_params['utm_source'] ) &&
-					     ! empty( $this->analytics_params['utm_medium'] ) &&
-					     ! empty( $this->analytics_params['utm_campaign'] )
-					) {
-						if($rule === 'decode_url') {
-							return add_query_arg( array_filter( $this->analytics_params ), urldecode($_pr->get_permalink())); break;
-						}
-						return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($_pr->get_permalink()) )); break;
-					}
-					if($rule === 'decode_url') {
-						return urldecode($_pr->get_permalink()); break;
-					}
-					return $this->safeCharEncodeURL(urldecode($_pr->get_permalink())); break;
-				}
-				if($rule === 'decode_url') {
-					return urldecode($_pr->get_permalink()); break;
-				}
-				return $this->safeCharEncodeURL(urldecode($_pr->get_permalink())); break;
-
-			case 'condition':
-				return $this->get_condition(); break;
-
-			case 'item_group_id':
-				return $this->get_item_group_id(); break;
-
-			case 'availability':
-				return $this->get_availability(); break;
-
-			case 'availability_zero_three':
-				$if_available = $this->get_availability();
-				if ( 'out_of_stock' == $if_available ) {
-					return '3';
-				}
-				return '0'; break;
-
-			case 'availability_underscore':
-				return $this->get_availability_underscore(); break;
-
-			case 'availability_backorder_instock':
-				return $this->get_availability_backorder_instock(); break;
-
-			case 'availability_backorder':
-				return $this->get_availability_backorder(); break;
-
-			case 'quantity':
-				return $this->product->get_stock_quantity(); break;
-
-			case 'weight':
-				return $this->product->get_weight(); break;
-
-			case 'width':
-				return $this->product->get_width(); break;
-
-			case 'height':
-				return $this->product->get_height(); break;
-
-			case 'length':
-				return $this->product->get_length(); break;
-
-			case 'shipping_class':
-				return $this->product->get_shipping_class(); break;
-
-			case 'shipping_cost':
-				return $this->get_shipping_cost(); break;
-
-			case 'type':
-				return $this->product->get_type(); break;
-
-			case 'in_stock':
-				return $this->get_stock(); break;
-
-			case 'rating_average':
-				return $this->product->get_average_rating(); break;
-
-			case 'rating_total':
-				return $this->product->get_rating_count(); break;
-
-			case 'sale_price_dates_from':
-                $date_starts = $this->product->get_date_on_sale_from();
-                $format = get_option( 'date_format' );
-				return !$date_starts ? $date_starts : date( $format, $date_starts->getTimestamp() );
-
-			case 'sale_price_dates_to':
-                $date_ends = $this->product->get_date_on_sale_to();
-                $format = get_option( 'date_format' );
-                return !$date_ends ? $date_ends : date( $format, $date_ends->getTimestamp());
-
-			case 'sale_price_effective_date':
-				$sale_price_dates_to        = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_to', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
-				$sale_price_dates_from      = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_from', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
-
-				if ( ! empty( $sale_price_dates_to ) && ! empty( $sale_price_dates_from ) ) {
-					$from   = date( "c", strtotime( $sale_price_dates_from ) );
-					$to     = date( "c", strtotime( $sale_price_dates_to ) );
-
-
-					return $from . '/' . $to;
-				}else {
-					return '';
-				}
-
-			case 'identifier_exists':
-				return $this->calculate_identifier_exists($this->data);
-
-			case 'post_publish_date':
-				$product_id = '';
-				if ( $this->product->is_type('variation') ) {
-					$product_id = $this->product->get_parent_id();
-				}
-				else {
-					$product_id = $this->product->get_id();
-				}
-				return get_the_date( '', $product_id ) . 'T' . get_the_time( 'g:i:s', $product_id ) . 'Z';
-
-			case 'post_modified_date':
-				$product_id = '';
-				if ( $this->product->is_type('variation') ) {
-					$product_id = $this->product->get_parent_id();
-				}
-				else {
-					$product_id = $this->product->get_id();
-				}
-				return get_the_modified_date( '', $product_id ) . 'T' . get_the_modified_time( 'g:i:s', $product_id ) . 'Z';
-
-			case 'current_page':
-				$product_id = '';
-				if ( $this->product->is_type('variation') ) {
-					$product_id = $this->product->get_parent_id();
-				}
-				else {
-					$product_id = $this->product->get_id();
-				}
-				return get_permalink( $product_id );
-
-			case 'author_name':
-				$author_id = '';
-				if ( $this->product->is_type('variation') ) {
-					$author_id = get_post_field( 'post_author', $this->product->get_parent_id() );
-				}
-				else {
-					$author_id = get_post_field( 'post_author', $this->product->get_id() );
-				}
-				return get_the_author_meta( 'display_name', $author_id );
-
-			case 'author_url':
-				$author_id = '';
-				if ( $this->product->is_type('variation') ) {
-					$author_id = get_post_field( 'post_author', $this->product->get_parent_id() );
-				}
-				else {
-					$author_id = get_post_field( 'post_author', $this->product->get_id() );
-				}
-				return get_author_posts_url( $author_id );
-
-			default: return ''; break;
+			default: return '';
 		}
 	}
 
@@ -2110,12 +2087,49 @@ class Rex_Product_Data_Retriever{
 	/**
 	 * Set a Date attributes.
 	 */
-	protected function set_date_att( $key ) {
-		if ( 'WC_Product_Variation' == get_class( $this->product ) ) {
-			$_pr = wc_get_product( $this->product->get_parent_id() );
-			return $_pr->get_date_modified()->date('Y-m-d') . 'T' . $_pr->get_date_modified()->date('H:i:s') . 'Z';
-		}
-		return $this->product->get_date_modified()->date('Y-m-d') . 'T' . $this->product->get_date_modified()->date('H:i:s') . 'Z';
+	protected function set_date_attr( $key ) {
+        switch ( $key ) {
+            case 'post_publish_date':
+                $product_id = '';
+                if ( $this->product->is_type('variation') ) {
+                    $product_id = $this->product->get_parent_id();
+                }
+                else {
+                    $product_id = $this->product->get_id();
+                }
+                return get_the_date( '', $product_id ) . 'T' . get_the_time( 'g:i:s', $product_id ) . 'Z';
+
+            case 'last_updated':
+                if ( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                    $_pr = wc_get_product( $this->product->get_parent_id() );
+                    return $_pr->get_date_modified()->date('Y-m-d') . 'T' . $_pr->get_date_modified()->date('H:i:s') . 'Z';
+                }
+                return $this->product->get_date_modified()->date('Y-m-d') . 'T' . $this->product->get_date_modified()->date('H:i:s') . 'Z';
+
+            case 'sale_price_dates_from':
+                $date_starts = $this->product->get_date_on_sale_from();
+                $format = get_option( 'date_format' );
+                return !$date_starts ? $date_starts : date( $format, $date_starts->getTimestamp() );
+
+            case 'sale_price_dates_to':
+                $date_ends = $this->product->get_date_on_sale_to();
+                $format = get_option( 'date_format' );
+                return !$date_ends ? $date_ends : date( $format, $date_ends->getTimestamp());
+
+            case 'sale_price_effective_date':
+                $sale_price_dates_to        = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_to', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
+                $sale_price_dates_from      = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_from', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
+
+                if ( ! empty( $sale_price_dates_to ) && ! empty( $sale_price_dates_from ) ) {
+                    $from   = date( "c", strtotime( $sale_price_dates_from ) );
+                    $to     = date( "c", strtotime( $sale_price_dates_to ) );
+
+
+                    return $from . '/' . $to;
+                }else {
+                    return '';
+                }
+        }
 	}
 
 	/**
@@ -2135,6 +2149,21 @@ class Rex_Product_Data_Retriever{
 			return $attr_name;
 		}
 		return '';
+	}
+
+	/**
+	 * Set a WPFM Custom attribute.
+	 *
+	 * @since    1.0.0
+	 */
+	protected function set_wpfm_custom_att( $key ) {
+        $key = str_replace( 'custom_attributes_', '', $key );
+		if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            return get_post_meta($this->product->get_parent_id(), $key, true);
+		}
+		else{
+			return get_post_meta( $this->product->get_id(), $key, true );
+		}
 	}
 
 	/**
@@ -2811,6 +2840,27 @@ class Rex_Product_Data_Retriever{
 		if(isset($this->product_meta_keys['Woodmart Image Gallery'])){
 			return array_key_exists( $key, $this->product_meta_keys['Woodmart Image Gallery'] );
 		}
+        return false;
+	}
+	/**
+	 * Helper to check if a attribute is a YOAST Attribute.
+	 *
+	 */
+	protected function is_yoast_attr( $key ) {
+		if(isset($this->product_meta_keys['YOAST Attributes'])){
+			return array_key_exists( $key, $this->product_meta_keys['YOAST Attributes'] );
+		}
+        return false;
+	}
+	/**
+	 * Helper to check if a attribute is a YOAST Attribute.
+	 *
+	 */
+	protected function is_price_attr( $key ) {
+		if(isset($this->product_meta_keys['Price Attributes'])){
+			return array_key_exists( $key, $this->product_meta_keys['Price Attributes'] );
+		}
+        return false;
 	}
 
 	/**
@@ -2821,6 +2871,7 @@ class Rex_Product_Data_Retriever{
 		if(isset($this->product_meta_keys['Woocommerce Brand'])){
 			return array_key_exists( $key, $this->product_meta_keys['Woocommerce Brand'] );
 		}
+        return false;
 	}
 
 	/**
@@ -2831,6 +2882,7 @@ class Rex_Product_Data_Retriever{
 		if(isset($this->product_meta_keys['Brands for WooCommerce'])){
 			return array_key_exists( $key, $this->product_meta_keys['Brands for WooCommerce'] );
 		}
+        return false;
 	}
 
 	/**
@@ -2841,6 +2893,7 @@ class Rex_Product_Data_Retriever{
 		if(isset($this->product_meta_keys['Perfect Brand'])){
 			return array_key_exists( $key, $this->product_meta_keys['Perfect Brand'] );
 		}
+        return false;
 	}
 
 	/**
@@ -2877,6 +2930,14 @@ class Rex_Product_Data_Retriever{
 			? array_key_exists( $key, $this->product_meta_keys['Dropship by Mantella'] ) : false;
 	}
 
+	/**
+	 * Helper to check if a attribute is a WPFM Custom Attribute.
+	 */
+	protected function is_wpfm_custom_attr( $key ) {
+		return isset( $this->product_meta_keys['WPFM Custom Attributes'] )
+			? array_key_exists( $key, $this->product_meta_keys['WPFM Custom Attributes'] ) : false;
+	}
+
 
 	/**
 	 * Helper to check if a attribute is a Product dynamic Attribute.
@@ -2884,7 +2945,7 @@ class Rex_Product_Data_Retriever{
 	 * @since    1.0.0
 	 */
 	protected function is_product_dynamic_attr( $key ) {
-		return array_key_exists( $key, $this->product_meta_keys['Product Dynamic Attributes'] );
+		return array_key_exists( $key, $this->product_meta_keys['Product Variation Attributes'] );
 	}
 
 
@@ -2903,7 +2964,6 @@ class Rex_Product_Data_Retriever{
 	 * @since    1.0.0
 	 */
 	protected function is_product_category_mapper_attr( $key ) {
-
 		return array_key_exists( $key, $this->product_meta_keys['Category Map'] );
 	}
 

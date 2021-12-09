@@ -17,13 +17,6 @@ use RexTheme\RexYandexShoppingFeed\Containers\RexShopping;
 
 class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
 
-    private $feed_merchants = array(
-        "nextag" => array(
-            'item_wrapper'  => 'product',
-            'items_wrapper' => 'products',
-        ),
-    );
-
     /**
      * Create Feed
      *
@@ -213,16 +206,6 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
 
 
     /**
-     * Check if the merchants is valid or not
-     * @param $feed_merchants
-     * @return bool
-     */
-    public function is_valid_merchant(){
-        return array_key_exists($this->merchant, $this->feed_merchants)? true : false;
-    }
-
-
-    /**
      * @return string
      */
     public function setItemWrapper()
@@ -242,7 +225,7 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
      */
     public function returnFinalProduct()
     {
-        if ($this->feed_format === 'xml') {
+        if ($this->feed_format === 'xml' || $this->feed_format === 'yml') {
             return RexShopping::asRss();
         } elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
             return RexShopping::asTxt();
@@ -288,7 +271,7 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
 
     //replace footer of feed
     public function footer_replace() {
-        $this->feed = str_replace('</offers></shop><offers/></yml_catalog>', '', $this->feed);
+        $this->feed = str_replace( '</offers></shop></yml_catalog>', '', $this->feed);
     }
 
 }

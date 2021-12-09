@@ -6,6 +6,12 @@
 body, html {
   height: auto;
 }
+body.post-type-product-feed,
+body.product-feed_page_wpfm_dashboard,
+body.product-feed_page_merchant_settings,
+body.product-feed_page_category_mapping {
+  direction: ltr;
+}
 
 .rex-onboarding {
   /*-----------heading tag Typogrpahy------------*/

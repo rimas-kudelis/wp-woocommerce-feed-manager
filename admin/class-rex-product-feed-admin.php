@@ -190,6 +190,7 @@ class Rex_Product_Feed_Admin {
             wp_enqueue_style( 'wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version, 'all' );
             wp_enqueue_style($this->plugin_name.'-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version, 'all');
             wp_enqueue_style( 'style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version, 'all' );
+            wp_style_add_data( 'style-css', 'rtl', 'replace' );
         }
     }
 

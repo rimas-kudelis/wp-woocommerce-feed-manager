@@ -140,7 +140,6 @@ class Rex_Product_Feed_Factory {
                 'lions_home',
                 'locamo',
                 'logicsale',
-                'google_manufacturer_center',
                 'pronto',
                 'awin',
                 'google_dynamic_display_ads',
@@ -200,6 +199,7 @@ class Rex_Product_Feed_Factory {
             'emarts',
             'epoq',
             'google_local_inventory_ads',
+            'google_manufacturer_center',
         );
         self::$facebook_format = array(
             'instagram',

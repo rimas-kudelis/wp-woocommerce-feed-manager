@@ -1,6 +1,4 @@
 <?php
-
-
 if ( ! function_exists( 'wpfm_hierarchical_product_category_tree' ) ) {
     /**
      * Print hierarchical product categories
@@ -266,6 +264,21 @@ if ( ! function_exists( 'wpfm_is_wpml_active' ) ) {
 	}
 }
 
+
+if ( ! function_exists( 'wpfm_is_yoast_active' ) ) {
+	/**
+	 * @desc check if YOAST is active.
+	 *
+	 * @return bool
+     * @since 7.0.0
+	 */
+	function wpfm_is_yoast_active(){
+		$active_plugings = get_option( 'active_plugins' );
+		$yoast           = 'wordpress-seo/wp-seo.php';
+
+		return in_array( $yoast, $active_plugings );
+	}
+}
 
 if ( ! function_exists( 'wpfm_generate_csv_feed' ) ) {
 	/**

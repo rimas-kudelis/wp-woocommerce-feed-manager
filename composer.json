@@ -22,8 +22,6 @@
             "vendor/johnbillion/extended-cpts/extended-cpts.php"
         ]
     },
-    "require-dev": {
-    },
     "config": {
         "platform-check": false
     }

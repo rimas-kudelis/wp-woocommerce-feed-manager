@@ -31,20 +31,23 @@ class Rex_Feed_Template_Google_manufacturer_center extends Rex_Feed_Abstract_Tem
                 'brand'       => 'Brand',
             ),
 
+            'Recommended Information' => array(
+                'mpn'                    => 'MPN',
+                'product_line'           => 'Product Line',
+                'additional_image_link'  => 'Additional Image Link',
+            ),
+
             'Additional Information' => array(
                 'product_name'            => 'Product Name',
                 'product_type'            => 'Product Type',
+                'product_highlights'      => 'Product Highlights',
+                'feature_description'     => 'Feature Description',
                 'video_link'              => 'Video Link',
                 'product_page_url'        => 'Product Page url',
                 'disclosure_date'         => 'Disclosure Date',
                 'release_date'            => 'Release Date',
                 'suggested_retail_price'  => 'Suggested Retail Price',
-            ),
-
-            'Recommended Information' => array(
-                'mpn'                    => 'MPN',
-                'product_line'           => 'Product Line',
-                'additional_image_link'  => 'Additional Image Link',
+                'rich_product_content'    => 'Rich Product Content',
             ),
 
         );

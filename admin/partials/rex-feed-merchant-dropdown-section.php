@@ -23,11 +23,12 @@
         </span>
 	</label>
 	<select name="<?php echo $this->prefix . 'feed_format'; ?>" id="<?php echo $this->prefix . 'feed_format'; ?>" class="<?php echo $this->prefix . 'feed-format'; ?>">
-		<option value="xml"><?php echo __( 'XML', 'rex-product-feed' ) ?></option>
+		<option value="xml" <?php echo $file_format === 'xml' ? 'selected' : '';?> ><?php echo __( 'XML', 'rex-product-feed' ) ?></option>
 		<option value="text" <?php echo $file_format === 'text' ? 'selected' : '';?> ><?php echo __( 'TEXT', 'rex-product-feed' ) ?></option>
 		<option value="csv" <?php echo $file_format === 'csv' ? 'selected' : '';?> ><?php echo __( 'CSV', 'rex-product-feed' ) ?></option>
 		<option value="tsv" <?php echo $file_format === 'tsv' ? 'selected' : '';?> ><?php echo __( 'TSV', 'rex-product-feed' ) ?></option>
 		<option value="json" <?php echo $file_format === 'json' ? 'selected' : '';?> ><?php echo __( 'JSON', 'rex-product-feed' ) ?></option>
+        <option value="yml" <?php echo $file_format === 'yml' ? 'selected' : '';?> ><?php echo __( 'YML (Yandex Market Language)', 'rex-product-feed' ) ?></option>
 	</select>
 </div>
 
@@ -38,7 +39,6 @@
             <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon;?>
             <p><?php _e( 'Select separator','rex-product-feed' ); ?></p>
         </span>
-
 	</label>
 	<?php
 	$saved_value        = get_post_meta( get_the_ID(), 'rex_feed_separator', true );

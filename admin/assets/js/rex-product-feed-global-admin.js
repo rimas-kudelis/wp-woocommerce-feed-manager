@@ -137,6 +137,29 @@
     }
     $(document).on('click', '.rextheme-black-friday-offer .notice-dismiss', rextheme_bf_notice_dismiss);
 
+    $(document).on('click', '.best-woocommerce-feed-deactivate-link', function ( e ) {
+        $( '.wd-dr-modal-footer a.dont-bother-me' ).hide();
+
+        var $payload = {
+            security: rex_wpfm_ajax.ajax_nonce
+        };
+
+        wpAjaxHelperRequest( 'rex-feed-get-appsero-options', $payload )
+            .success( function( response ) {
+                if (response.success) {
+                    $( 'ul.wd-de-reasons' ).empty();
+                    $( 'ul.wd-de-reasons' ).append( response.data.html );
+                }
+            })
+            .error( function( response ) {
+
+            });
+
+        if ( !$( '#appsero_new_assistance' ).length ) {
+            $( '.wd-dr-modal-body' ).append( '<p id="appsero_new_assistance">Need Support/Assistance? <a href="https://rextheme.com/support/" target="_blank">Click Here!</a></p>' );
+        }
+    });
+
     $( document ).ready( function ( e ) {
         if ( window.location.href.includes('edit.php') ) {
             $( '#rex_feed_new_changes_msg_content' ).hide();
