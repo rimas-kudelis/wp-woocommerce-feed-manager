@@ -989,7 +989,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $i             = 0;
             $where         .= ' AND (';
             foreach ( $title_contain as $title ) {
-                $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%" . $title . "%'" );
+                $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%" . $wpdb->esc_like( $title ) . "%'" );
                 foreach ( $post_id as $pi ) {
                     $i     = $i + 1;
                     $op    = ( $i > 1 ) ? 'OR' : '';
@@ -1003,7 +1003,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $i             = 0;
             $where         .= ' AND (';
             foreach ( $title_contain as $title ) {
-                $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%" . $title . "%'" );
+                $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%" . $wpdb->esc_like( $title ) . "%'" );
                 if ( !empty( $post_id ) ) {
                     foreach ( $post_id as $pi ) {
                         $i     = $i + 1;
@@ -1037,7 +1037,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $i             = 0;
             $where         .= ' AND (';
             foreach ( $title_contain as $title ) {
-                $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value NOT like '%" . $title . "%'" );
+                $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value NOT like '%" . $wpdb->esc_like( $title ) . "%'" );
                 foreach ( $post_id as $pi ) {
                     $i     = $i + 1;
                     $op    = ( $i > 1 ) ? 'OR' : '';
@@ -1052,7 +1052,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $i             = 0;
             $where         .= ' AND (';
             foreach ( $title_contain as $title ) {
-                $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%" . $title . "%'" );
+                $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%" . $wpdb->esc_like( $title ) . "%'" );
                 foreach ( $post_id as $pi ) {
                     $i     = $i + 1;
                     $op    = ( $i > 1 ) ? 'OR' : '';
