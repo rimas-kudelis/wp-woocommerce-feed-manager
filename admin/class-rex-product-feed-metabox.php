@@ -84,13 +84,7 @@ class Rex_Product_Metabox
 	 */
 	public function rex_feed_generate_filter_settings_section()
 	{
-	    $troubleshoot_url = 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/';
-		echo '<h2>' . __( "Add New Feed", "rex-product-feed" ) . '</h2>';
-		echo '<div class="rex-feed-cofig-settings">';
-		echo '<a id="rex-feed-troubleshoot-btn" class="rex-fill-button" href="' . $troubleshoot_url . '" target="_blank"><i class="fa fa-exclamation-triangle"></i>' . __( 'Troubleshoot', 'rex-product-feed' ) . '</a>';
-		echo '<a id="rex-pr-filter-btn" class="rex-fill-button"><i class="fa fa-filter"></i>' . __( 'Product Filter', 'rex-product-feed' ) . '</a>';
-		echo '<a id="rex-feed-settings-btn" class="rex-fill-button"><i class="fa fa-cog"></i>' . __( 'Settings', 'rex-product-feed' ) . '</a>';
-		echo '</div>';
+        require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-settings-body-content.php';
 	}
 
 

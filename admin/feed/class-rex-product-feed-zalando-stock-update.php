@@ -34,9 +34,7 @@ class Rex_Product_Feed_Zalando_stock_update extends Rex_Product_Feed_Abstract_Ge
 
 		$this->generate_product_feed();
 
-		if ( $this->feed_format === 'csv_semicolon' ) {
-			$this->feed = $this->returnFinalProduct();
-		}
+        $this->feed = $this->returnFinalProduct();
 
 		if ($this->batch >= $this->tbatch ) {
 			$this->save_feed($this->feed_format );

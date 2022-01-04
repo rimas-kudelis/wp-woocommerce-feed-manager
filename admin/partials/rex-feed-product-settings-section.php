@@ -315,6 +315,47 @@
 
 		<?php } ?>
 
+        <?php
+        if ( wpfm_is_wmc_active() ) {
+            $wmc_settings = class_exists( 'WOOMULTI_CURRENCY_Data' ) ? WOOMULTI_CURRENCY_Data::get_ins() : array();
+            $wmc_default_currency = !empty( $wmc_settings ) ? $wmc_settings->get_default_currency() : 'USD';
+            $wmc_currency_list = !empty( $wmc_settings ) ? $wmc_settings->currencies_list : array();
+            $wmc_world_currency = get_woocommerce_currencies();
+            $wmc_world_currency = is_array( $wmc_world_currency ) ? $wmc_world_currency : array();
+            $currency_options = array();
+
+            if ( is_array( $wmc_currency_list ) && !empty( $wmc_currency_list ) ) {
+                foreach ( $wmc_currency_list as $key => $value ) {
+                    if( array_key_exists( $key, $wmc_world_currency) ){
+                        $currency_options[ $key ] = $wmc_world_currency[ $key ];
+                    }
+                }
+            }
+            else{
+                $currency_options = array( 'Please configure WooCommerce Multi-Currency Switcher!' );
+            }
+            ?>
+            <div class="<?php echo $this->prefix . 'wmc_currency';?>">
+                <label for="<?php echo $this->prefix . 'wmc_currency';?>"><?php _e('WooCommerce Multi-Currency', 'rex-product-feed')?>
+                    <span class="rex_feed-tooltip">
+                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
+                    <p><?php _e( 'This option will convert all your product prices using WooCommerce Multi-Currency Switcher', 'rex-product-feed' ); ?></p>
+                </span>
+                </label>
+                <select name="<?php echo $this->prefix . 'wmc_currency';?>" id="<?php echo $this->prefix . 'wmc_currency';?>" class="">
+                    <?php
+                    $selected_price = get_post_meta( get_the_ID(), 'rex_feed_wmc_currency', true );
+                    $selected_price = $selected_price === '' ? $wmc_default_currency : $selected_price;
+                    foreach( $currency_options as $key => $value ) {
+                        $selected = $selected_price === $key ? ' selected' : '';
+                        echo '<option value="'. $key .'" '. $selected .'>'. $value .'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+
+        <?php } ?>
+
 		<div class="<?php echo $this->prefix . 'analytics_params_options';?>">
 			<label for="<?php echo $this->prefix . 'analytics_params_options_content';?>"><?php _e('Track Your Campaign', 'rex-product-feed')?>
 				<span class="rex_feed-tooltip">

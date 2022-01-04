@@ -567,6 +567,10 @@ class Rex_Product_Filter {
         $filter_args = array();
         $sql = '';
         $tax_query = array();
+        $cats_in = array();
+        $cats_not_in = array();
+        $tags_in = array();
+        $tags_not_in = array();
         foreach ($filter_mappings as $key => $filter) {
 
             $if = $filter['if'];
@@ -624,14 +628,18 @@ class Rex_Product_Filter {
                     if($then == 'inc') {
                         if($condition == 'contain' ) {
                             $filter_args['title_contain'][] = $value;
-                        }elseif ($condition == 'dn_contain') {
+                        }
+                        elseif ($condition == 'dn_contain') {
                             $filter_args['title_dn_contain'][] = $value;
-                        }elseif ($condition == 'equal_to') {
+                        }
+                        elseif ($condition == 'equal_to') {
                             $filter_args['title_equal_to'][] = $value;
-                        }elseif ($condition == 'nequal_to') {
+                        }
+                        elseif ($condition == 'nequal_to') {
                             $filter_args['title_nequal_to'][] = $value;
                         }
-                    }elseif ($then == 'exc') {
+                    }
+                    elseif ($then == 'exc') {
                         if($condition == 'contain' ) {
                             $filter_args['title_dn_contain'][] = $value;
                         }elseif ($condition == 'dn_contain') {
@@ -642,8 +650,8 @@ class Rex_Product_Filter {
                             $filter_args['title_equal_to'][] = $value;
                         }
                     }
-                    break; 
-                    
+                    break;
+
                 case 'manufacturer':
                     if($then == 'inc') {
                         if($condition == 'contain' ) {
@@ -666,7 +674,7 @@ class Rex_Product_Filter {
                             $filter_args['brand_nequal_to'][] = $value;
                         }
                     }
-                    
+
                     break;
 
                 //PRODUCT DESCRIPTION
@@ -964,7 +972,6 @@ class Rex_Product_Filter {
                     }
                     break;
 
-
                 //PRODUCT QUANTITY
                 case 'quantity':
                     if($then == 'inc') {
@@ -1133,7 +1140,6 @@ class Rex_Product_Filter {
                     }
                     break;
 
-
                 //PRODUCT PRICE
                 case 'price':
                     if($then == 'inc') {
@@ -1268,7 +1274,7 @@ class Rex_Product_Filter {
 
                         }elseif ($condition == 'less_than') {
                             $filter_args['meta_query'][] = array(
-                               'relation' => 'and',
+                                'relation' => 'and',
                                 array(
                                     'key'       => '_regular_price',
                                     'value'     => $value,
@@ -1279,7 +1285,7 @@ class Rex_Product_Filter {
 
                         }elseif ($condition == 'less_than_equal') {
                             $filter_args['meta_query'][] = array(
-                               'relation' => 'and',
+                                'relation' => 'and',
                                 array(
                                     'key'       => '_regular_price',
                                     'value'     => $value,
@@ -1293,7 +1299,7 @@ class Rex_Product_Filter {
 
                 //PRODUCT SALE PRICE
                 case 'sale_price':
-                   
+
                     if($then == 'inc') {
                         if ($condition == 'equal_to') {
                             $filter_args['meta_query'][] = array(
@@ -1360,7 +1366,7 @@ class Rex_Product_Filter {
                         if ($condition == 'equal_to') {
                             $filter_args['meta_query'][] = array(
                                 'relation' => 'OR',
-                                
+
                                 array(
                                     'key'       => '_sale_price',
                                     'value'     => $value,
@@ -1401,7 +1407,7 @@ class Rex_Product_Filter {
                             );
                         }elseif ($condition == 'less_than') {
                             $filter_args['meta_query'][] = array(
-                               'relation' => 'and',
+                                'relation' => 'and',
                                 array(
                                     'key'       => '_sale_price',
                                     'value'     => $value,
@@ -1412,7 +1418,7 @@ class Rex_Product_Filter {
                             );
                         }elseif ($condition == 'less_than_equal') {
                             $filter_args['meta_query'][] = array(
-                               'relation' => 'and',
+                                'relation' => 'and',
                                 array(
                                     'key'       => '_sale_price',
                                     'value'     => $value,
@@ -1423,7 +1429,6 @@ class Rex_Product_Filter {
                         }
                     }
                     break;
-
 
                 //PRODUCT WEIGHT
                 case 'weight':
@@ -1569,7 +1574,6 @@ class Rex_Product_Filter {
                     }
                     break;
 
-
                 //PRODUCT WIDTH
                 case 'width':
                     if($then == 'inc') {
@@ -1712,7 +1716,6 @@ class Rex_Product_Filter {
                         }
                     }
                     break;
-
 
                 //PRODUCT HEIGHT
                 case 'height':
@@ -1857,7 +1860,6 @@ class Rex_Product_Filter {
                     }
                     break;
 
-
                 //PRODUCT LENGTH
                 case 'length':
                     if($then == 'inc') {
@@ -2000,7 +2002,6 @@ class Rex_Product_Filter {
                         }
                     }
                     break;
-
 
                 //PRODUCT RATTING TOTAL
                 case 'rating_total':
@@ -2145,8 +2146,6 @@ class Rex_Product_Filter {
                     }
                     break;
 
-
-
                 //PRODUCT RATTING AVERAGE
                 case 'rating_average':
                     if($then == 'inc') {
@@ -2289,7 +2288,6 @@ class Rex_Product_Filter {
                         }
                     }
                     break;
-
 
                 //PRODUCT SALE PRICE DATE FROM
                 case 'sale_price_dates_from':
@@ -2434,7 +2432,6 @@ class Rex_Product_Filter {
                     }
                     break;
 
-
                 //PRODUCT SALE PRICE DATE TO
                 case 'sale_price_dates_to':
                     if($then == 'inc') {
@@ -2578,161 +2575,218 @@ class Rex_Product_Filter {
                     }
                     break;
 
-
                 //PRODUCT CATEGORIES
                 case 'product_cats':
                     if($then == 'inc') {
                         if($condition == 'contain' ) {
-                            $tax_contain_query[] = $value;
-                            $filter_args['tax_query'][] = array(
+                            $inc_tax_contain_query[] = $value;
+                            $cats_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_cat',
                                 'field'          =>  'name',
-                                'terms'          =>   $tax_contain_query,
+                                'terms'          =>   $inc_tax_contain_query,
                                 'operator'       =>   'IN',
-                            );
-                        }elseif ($condition == 'dn_contain') {
-                            $tax_not_contain_query[] = $value;
-                            $filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $tax_not_contain_query,
-                                'operator'       =>   'NOT IN',
-                            );
-                        }elseif ($condition == 'equal_to') {
-                            $tax_equal_query[] = $value;
-                            $filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $tax_equal_query,
-                                'operator'       =>   'IN',
-                            );
-                        }elseif ($condition == 'nequal_to') {
-                            $tax_not_equal_query[] = $value;
-                            $filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $tax_not_equal_query,
-                                'operator'       =>   'NOT IN',
-                            );
+                            );*/
                         }
-                    }elseif ($then == 'exc') {
-                        if($condition == 'contain' ) {
-                            $tax_not_contain_query[] = $value;
-                            $filter_args['tax_query'][] = array(
+                        elseif ($condition == 'dn_contain') {
+                            $inc_tax_not_contain_query[] = $value;
+                            $cats_not_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_cat',
                                 'field'          =>  'name',
-                                'terms'          =>   $tax_not_contain_query,
+                                'terms'          =>   $inc_tax_not_contain_query,
                                 'operator'       =>   'NOT IN',
-                            );
-                        }elseif ($condition == 'dn_contain') {
-                            $tax_contain_query[] = $value;
-                            $filter_args['tax_query'][] = array(
+                            );*/
+                        }
+                        elseif ($condition == 'equal_to') {
+                            $inc_tax_equal_query[] = $value;
+                            $cats_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_cat',
                                 'field'          =>  'name',
-                                'terms'          =>   $tax_contain_query,
+                                'terms'          =>   $inc_tax_equal_query,
                                 'operator'       =>   'IN',
-                            );
-                        }elseif ($condition == 'equal_to') {
-                            $tax_not_equal_query[] = $value;
-                            $filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $tax_not_equal_query,
-                                'operator'       =>   'NOT IN',
-                            );
-                        }elseif ($condition == 'nequal_to') {
-                            $tax_equal_query[] = $value;
-                            $filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_cat',
-                                'field'          =>  'name',
-                                'terms'          =>   $tax_equal_query,
-                                'operator'       =>   'IN',
-                            );
+                            );*/
+                        }
+                        elseif ($condition == 'nequal_to') {
+                            $inc_tax_not_equal_query[] = $value;
+                            $cats_not_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
+                                'taxonomy' => 'product_cat',
+                                'field' => 'name',
+                                'terms' => $inc_tax_not_equal_query,
+                                'operator' => 'NOT IN',
+                            );*/
                         }
                     }
-
-
-
+                    elseif ($then == 'exc') {
+                        if($condition == 'contain' ) {
+                            $exc_tax_not_contain_query[] = $value;
+                            $cats_not_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $exc_tax_not_contain_query,
+                                'operator'       =>   'NOT IN',
+                            );*/
+                        }
+                        elseif ($condition == 'dn_contain') {
+                            $exc_tax_contain_query[] = $value;
+                            $cats_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $exc_tax_contain_query,
+                                'operator'       =>   'IN',
+                            );*/
+                        }
+                        elseif ($condition == 'equal_to') {
+                            $exc_tax_not_equal_query[] = $value;
+                            $cats_not_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $exc_tax_not_equal_query,
+                                'operator'       =>   'NOT IN',
+                            );*/
+                        }
+                        elseif ($condition == 'nequal_to') {
+                            $exc_tax_equal_query[] = $value;
+                            $cats_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_cat',
+                                'field'          =>  'name',
+                                'terms'          =>   $exc_tax_equal_query,
+                                'operator'       =>   'IN',
+                            );*/
+                        }
+                    }
                     break;
-
 
                 //PRODUCT TAGS
                 case 'product_tags':
                     if($then == 'inc') {
                         if($condition == 'contain' ) {
-                            $tag_contain_query[] = $value;
-                            $filter_args['tax_query'][] = array(
+                            $inc_tag_contain_query[] = $value;
+                            $tags_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_tag',
                                 'field'          =>  'name',
-                                'terms'          =>   $tag_contain_query,
+                                'terms'          =>   $inc_tag_contain_query,
                                 'operator'       =>   'IN',
-                            );
-                        }elseif ($condition == 'dn_contain') {
-                            $tag_not_contain_query[] = $value;
-                            $filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $tag_not_contain_query,
-                                'operator'       =>   'NOT IN',
-                            );
-                        }elseif ($condition == 'equal_to') {
-                            $tag_equal_query[] = $value;
-                            $filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $tag_equal_query,
-                                'operator'       =>   'IN',
-                            );
-                        }elseif ($condition == 'nequal_to') {
-                            $tag_not_equal_query[] = $value;
-                            $filter_args['tax_query'][] = array(
-                                'taxonomy'       =>  'product_tag',
-                                'field'          =>  'name',
-                                'terms'          =>   $tag_not_equal_query,
-                                'operator'       =>   'NOT IN',
-                            );
+                            );*/
                         }
-                    }elseif ($then == 'exc') {
+                        elseif ($condition == 'dn_contain') {
+                            $inc_tag_not_contain_query[] = $value;
+                            $tags_not_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $inc_tag_not_contain_query,
+                                'operator'       =>   'NOT IN',
+                            );*/
+                        }
+                        elseif ($condition == 'equal_to') {
+                            $inc_tag_equal_query[] = $value;
+                            $tags_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $inc_tag_equal_query,
+                                'operator'       =>   'IN',
+                            );*/
+                        }
+                        elseif ($condition == 'nequal_to') {
+                            $inc_tag_not_equal_query[] = $value;
+                            $tags_not_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
+                                'taxonomy'       =>  'product_tag',
+                                'field'          =>  'name',
+                                'terms'          =>   $inc_tag_not_equal_query,
+                                'operator'       =>   'NOT IN',
+                            );*/
+                        }
+                    }
+                    elseif ($then == 'exc') {
                         if($condition == 'contain' ) {
-                            $tag_not_contain_query[] = $value;
-                            $filter_args['tax_query'][] = array(
+                            $exc_tag_not_contain_query[] = $value;
+                            $tags_not_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_tag',
                                 'field'          =>  'name',
-                                'terms'          =>   $tag_not_contain_query,
+                                'terms'          =>   $exc_tag_not_contain_query,
                                 'operator'       =>   'NOT IN',
-                            );
-                        }elseif ($condition == 'dn_contain') {
-                            $tag_contain_query[] = $value;
-                            $filter_args['tax_query'][] = array(
+                            );*/
+                        }
+                        elseif ($condition == 'dn_contain') {
+                            $exc_tag_contain_query[] = $value;
+                            $tags_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_tag',
                                 'field'          =>  'name',
-                                'terms'          =>   $tag_contain_query,
+                                'terms'          =>   $exc_tag_contain_query,
                                 'operator'       =>   'IN',
-                            );
-                        }elseif ($condition == 'equal_to') {
-                            $tag_not_equal_query[] = $value;
-                            $filter_args['tax_query'][] = array(
+                            );*/
+                        }
+                        elseif ($condition == 'equal_to') {
+                            $exc_tag_equal_query[] = $value;
+                            $tags_not_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_tag',
                                 'field'          =>  'name',
-                                'terms'          =>   $tag_not_equal_query,
+                                'terms'          =>   $exc_tag_equal_query,
                                 'operator'       =>   'NOT IN',
-                            );
-                        }elseif ($condition == 'nequal_to') {
-                            $tag_equal_query[] = $value;
-                            $filter_args['tax_query'][] = array(
+                            );*/
+                        }
+                        elseif ($condition == 'nequal_to') {
+                            $exc_tag_not_equal_query[] = $value;
+                            $tags_in[] = $value;
+                            /*$filter_args['tax_query'][] = array(
                                 'taxonomy'       =>  'product_tag',
                                 'field'          =>  'name',
-                                'terms'          =>   $tag_equal_query,
+                                'terms'          =>   $exc_tag_not_equal_query,
                                 'operator'       =>   'IN',
-                            );
+                            );*/
                         }
                     }
                     break;
+
                 default:
                     break;
             }
         }
-
+        if ( !empty($cats_in) ) {
+            $filter_args['tax_query'][] = array(
+                'taxonomy'       =>  'product_cat',
+                'field'          =>  'name',
+                'terms'          =>   $cats_in,
+                'operator'       =>   'IN',
+            );
+        }
+        if ( !empty( $cats_not_in ) ) {
+            $filter_args['tax_query'][] = array(
+                'taxonomy'       =>  'product_cat',
+                'field'          =>  'name',
+                'terms'          =>   $cats_not_in,
+                'operator'       =>   'NOT IN',
+            );
+        }
+        if ( !empty( $tags_in ) ) {
+            $filter_args['tax_query'][] = array(
+                'taxonomy'       =>  'product_tag',
+                'field'          =>  'name',
+                'terms'          =>   $tags_in,
+                'operator'       =>   'IN',
+            );
+        }
+        if ( !empty( $tags_not_in ) ) {
+            $filter_args['tax_query'][] = array(
+                'taxonomy'       =>  'product_tag',
+                'field'          =>  'name',
+                'terms'          =>   $tags_not_in,
+                'operator'       =>   'NOT IN',
+            );
+        }
         return array(
             'args' => $filter_args
         );

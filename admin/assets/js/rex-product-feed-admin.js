@@ -61,7 +61,7 @@
         }
         rex_feed_show_review_request( event );
         rex_feed_merchant_list_select2( event );
-        // default_category_mapping( event );
+        default_category_mapping( event );
     } );
 
     /**
@@ -308,8 +308,6 @@
         $( '#rex_feed_product_filters' ).removeClass( 'show-filters' );
     } );
 
-    $( document ).on( 'click', '.rex_cat_map', expand_category_map);
-
     $( document ).on( 'click', 'ul.rex-settings-tabs li', rex_feed_settings_tab);
 
     /**
@@ -387,7 +385,7 @@
 
     $( document ).on( 'change', '#rex-product-allow-private', allow_private );
 
-    // $(document).on( 'change', '.attr-val-dropdown', category_mapping_button_on_change );
+    $(document).on( 'change', '.attr-val-dropdown', category_mapping_button_on_change );
 
     $( document ).on( 'submit', '#rex-google-merchant', save_google_merchant_settings );
 
@@ -531,9 +529,7 @@
 
                     dynamic_pricing( event );
 
-                    // if ( merchant_name === 'google' ){
-                    //     category_mapping_button( event );
-                    // }
+                    category_mapping_button( event );
                 } )
                 .fail( function ( response ) {
                     $( '.rex-loading-spinner' ).css( 'display', 'none' );
@@ -627,12 +623,13 @@
     function dynamic_pricing( event ) {
         var is_premium = rex_wpfm_ajax.is_premium;
 
-        if ( is_premium == 1 ) {
+        if ( is_premium ) {
             var meta_value_selects = $( 'div.meta-dropdown' ).children();
             var rows = meta_value_selects.length - 1;
             for ( var rowId = 0; rowId < rows; rowId++ ) {
                 var selected_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
-
+                var limit_row = $( 'input[name="fc[' + rowId + '][limit]"]' );
+                var meta_row = $( 'select[name="fc[' + rowId + '][meta_key]"]' );
                 var prices = [
                     'price',
                     'current_price',
@@ -646,13 +643,13 @@
                 ];
 
                 if ( $.inArray( selected_val, prices ) !== -1 ) {
-                    $( 'input[name="fc[' + rowId + '][limit]"]' ).attr( 'placeholder', 'Update Price i.e. +25%' );
-                    $( 'input[name="fc[' + rowId + '][limit]"]' ).addClass( 'dynamic-placeholder' );
-                    $( 'select[name="fc[' + rowId + '][meta_key]"]' ).addClass( 'dynamic-placeholder' );
+                    limit_row.attr( 'placeholder', 'Update Price i.e. +25%' );
+                    limit_row.addClass( 'dynamic-placeholder' );
+                    meta_row.addClass( 'dynamic-placeholder' );
                 } else {
-                    $( 'input[name="fc[' + rowId + '][limit]"]' ).removeAttr( 'placeholder' );
-                    $( 'input[name="fc[' + rowId + '][limit]"]' ).removeClass( 'dynamic-placeholder' );
-                    $( 'select[name="fc[' + rowId + '][meta_key]"]' ).removeClass( 'dynamic-placeholder' );
+                    limit_row.removeAttr( 'placeholder' );
+                    limit_row.removeClass( 'dynamic-placeholder' );
+                    meta_row.removeClass( 'dynamic-placeholder' );
                 }
             }
         }
@@ -664,12 +661,12 @@
      * @param event
      */
     function category_mapping_button( event ) {
-        // Google category mapping button
         var rows = $('.attr-dropdown').length - 1;
-        for ( var rowId = 1; rowId <= rows; rowId++ ) {
-            var attr_val = $( 'select[name="fc[' + rowId + '][attr]"]' ).val();
+        for ( var rowId = 0; rowId <= rows; rowId++ ) {
+            var opt_group_label = $( 'select[name="fc[' + rowId + '][meta_key]"] :selected' ).parent().attr('label');
             var meta_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
-            if ( 'google_product_category' === attr_val ) {
+
+            if ( 'Category Map' === opt_group_label ) {
                 var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + meta_val;
                 $('select[name="fc[' + rowId + '][meta_key]"]').parent().append("<p style='font-size: 12px;margin-top: 10px;margin-left: 5px;' class='rex_cat_map' id='rex_cat_map_"+rowId+"' style='font-size: 10px'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
@@ -680,18 +677,21 @@
     function category_mapping_button_on_change() {
         var rowId = $(this).parent().parent().parent().attr('data-row-id');
         var selected_val = $( this ).val();
-        if ( 'wpfm_google_product_category_default' === selected_val ) {
+        var opt_group_label = $("option:selected", this).parent().attr( 'label' );
+
+        if ( 'Category Map' === opt_group_label ) {
             var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + selected_val;
-            $( this ).parent().append("<p id='rex_cat_map_"+rowId+"' style='font-size: 12px;margin-top: 10px;margin-left: 5px;'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+            if ( $( '#rex_cat_map_' + rowId ).length === 0 ) {
+                $( this ).parent().append("<p id='rex_cat_map_"+rowId+"' style='font-size: 12px;margin-top: 10px;margin-left: 5px;'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+            }
+            else {
+                $( '#rex_cat_map_'+rowId ).remove();
+                $( this ).parent().append("<p id='rex_cat_map_"+rowId+"' style='font-size: 12px;margin-top: 10px;margin-left: 5px;'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+            }
         }
         else {
             $( '#rex_cat_map_'+rowId ).remove();
         }
-    }
-
-    function expand_category_map( e ) {
-        var cat_map_val = $( this ).parent().val();
-        console.log( cat_map_val );
     }
 
     /**

@@ -497,7 +497,7 @@ class Rex_Product_Feed_Ajax {
 	    }
         elseif ( in_array( $merchant, $zalando_format ) ) {
 	        if ( $merchant === 'zalando_stock_update' ) {
-		        return array( 'csv_semicolon' );
+		        return array( 'csv' );
             }
 		    return array( 'json', 'csv' );
 	    }
@@ -1279,6 +1279,13 @@ class Rex_Product_Feed_Ajax {
         if ( wp_verify_nonce( $nonce, 'rex-wpfm-ajax' ) ) {
             ob_start();
             ?>
+            <li data-placeholder="How many products do you have in you store?">
+                <label>
+                    <input type="radio" name="selected-reason" value="product-limit">
+                    <div class="wd-de-reason-icon"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" fill="#3B86FF"><path d="M11.5 23l-8.5-4.535v-3.953l5.4 3.122 3.1-3.406v8.772zm1-.001v-8.806l3.162 3.343 5.338-2.958v3.887l-8.5 4.534zm-10.339-10.125l-2.161-1.244 3-3.302-3-2.823 8.718-4.505 3.215 2.385 3.325-2.385 8.742 4.561-2.995 2.771 2.995 3.443-2.242 1.241v-.001l-5.903 3.27-3.348-3.541 7.416-3.962-7.922-4.372-7.923 4.372 7.422 3.937v.024l-3.297 3.622-5.203-3.008-.16-.092-.679-.393v.002z"/></svg></div>
+                    <div class="wd-de-reason-text">Product limit</div>
+                </label>
+            </li>
             <li data-placeholder="Would you like us to assist you?">
                 <label>
                     <input type="radio" name="selected-reason" value="could-not-understand">
@@ -1300,18 +1307,11 @@ class Rex_Product_Feed_Ajax {
                     <div class="wd-de-reason-text">Missing a specific feature</div>
                 </label>
             </li>
-            <li data-placeholder="How many products do you have in you store?">
-                <label>
-                    <input type="radio" name="selected-reason" value="product-limit">
-                    <div class="wd-de-reason-icon"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" fill="#3B86FF"><path d="M11.5 23l-8.5-4.535v-3.953l5.4 3.122 3.1-3.406v8.772zm1-.001v-8.806l3.162 3.343 5.338-2.958v3.887l-8.5 4.534zm-10.339-10.125l-2.161-1.244 3-3.302-3-2.823 8.718-4.505 3.215 2.385 3.325-2.385 8.742 4.561-2.995 2.771 2.995 3.443-2.242 1.241v-.001l-5.903 3.27-3.348-3.541 7.416-3.962-7.922-4.372-7.923 4.372 7.422 3.937v.024l-3.297 3.622-5.203-3.008-.16-.092-.679-.393v.002z"/></svg></div>
-                    <div class="wd-de-reason-text">Product limit</div>
-                </label>
-            </li>
             <li data-placeholder="Could you tell us a bit more?">
                 <label>
-                    <input type="radio" name="selected-reason" value="other">
-                    <div class="wd-de-reason-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="23" viewBox="0 0 24 6"><g fill="none"><g fill="#3B86FF"><path d="M3 0C4.7 0 6 1.3 6 3 6 4.7 4.7 6 3 6 1.3 6 0 4.7 0 3 0 1.3 1.3 0 3 0ZM12 0C13.7 0 15 1.3 15 3 15 4.7 13.7 6 12 6 10.3 6 9 4.7 9 3 9 1.3 10.3 0 12 0ZM21 0C22.7 0 24 1.3 24 3 24 4.7 22.7 6 21 6 19.3 6 18 4.7 18 3 18 1.3 19.3 0 21 0Z"></path></g></g></svg></div>
-                    <div class="wd-de-reason-text">Others</div>
+                    <input type="radio" name="selected-reason" value="bugs">
+                    <div class="wd-de-reason-icon"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20"><g fill="none"><g fill="#3B86FF"><path d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A4.979 4.979 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A4.985 4.985 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623zM4 7v4a4 4 0 0 0 3.5 3.97V7H4zm4.5 0v7.97A4 4 0 0 0 12 11V7H8.5zM12 6a3.989 3.989 0 0 0-1.334-2.982A3.983 3.983 0 0 0 8 2a3.983 3.983 0 0 0-2.667 1.018A3.989 3.989 0 0 0 4 6h8z"/></g></g></svg></div>
+                    <div class="wd-de-reason-text">Bugs</div>
                 </label>
             </li>
             <?php

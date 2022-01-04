@@ -116,6 +116,7 @@ if( !function_exists('wpfm_run_schedule_update') ) {
 					$feed_format             = get_post_meta( $feed_id, 'rex_feed_feed_format', true ) ?
 						get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
 					$aelia_currency          = get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
+					$wmc_currency            = get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
 					$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
 					$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
 
@@ -152,6 +153,7 @@ if( !function_exists('wpfm_run_schedule_update') ) {
 						'exclude_hidden_products' => $exclude_hidden_products,
 						'wpml_language'           => $wpml,
 						'aelia_currency'          => $aelia_currency,
+						'wmc_currency'            => $wmc_currency,
 						'skip_row'                => $skip_row,
 						'feed_separator'          => $feed_separator,
 					);
@@ -279,6 +281,23 @@ if ( ! function_exists( 'wpfm_is_yoast_active' ) ) {
 		return in_array( $yoast, $active_plugings );
 	}
 }
+
+
+if ( ! function_exists( 'wpfm_is_wmc_active' ) ) {
+	/**
+	 * @desc check if WooCommerce Multicurrency plugin is active.
+	 *
+	 * @return bool
+     * @since 7.0.0
+	 */
+	function wpfm_is_wmc_active(){
+		$active_plugings = get_option( 'active_plugins' );
+		$wmc           = 'woocommerce-multi-currency/woocommerce-multi-currency.php';
+
+		return in_array( $wmc, $active_plugings );
+	}
+}
+
 
 if ( ! function_exists( 'wpfm_generate_csv_feed' ) ) {
 	/**

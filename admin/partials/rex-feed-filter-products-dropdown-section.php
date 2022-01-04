@@ -1,9 +1,9 @@
 <div class="rex-content-filter__area">
 	<label for="<?php echo $this->prefix . 'products';?>"><?php _e('Products', 'rex-product-feed')?>
 		<span class="rex_feed-tooltip">
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-question.php';?>
-                    <p><?php _e( 'Filter Products', 'rex-product-feed' );?></p>
-                </span>
+            <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-question.php';?>
+            <p><?php _e( 'Filter Products', 'rex-product-feed' );?></p>
+        </span>
 	</label>
 	<select name="<?php echo $this->prefix . 'products'; ?>" id="<?php echo $this->prefix . 'products'; ?>">
 		<?php

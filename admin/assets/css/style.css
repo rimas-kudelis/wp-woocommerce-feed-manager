@@ -563,6 +563,10 @@ a,
   transition: all 0.3s ease;
 }
 
+.post-type-product-feed #rex-feed-instruction-btn .rex_feed-tooltip p {
+  width: 550px;
+}
+
 .rex_feed-tooltip p:before {
   content: "";
   position: absolute;
@@ -2515,10 +2519,6 @@ a,
   font-size: 18px;
   color: #333;
   padding: 0 0 15px;
-}
-.post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_file_link.postbox .cmb-row {
-  padding: 0;
-  margin: 0;
 }
 .post-type-product-feed #post-body.columns-2 #postbox-container-1 #submitdiv.postbox #major-publishing-actions {
   background-color: #fff;

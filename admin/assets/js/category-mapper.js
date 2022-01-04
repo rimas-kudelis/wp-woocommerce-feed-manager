@@ -220,16 +220,18 @@ jQuery(document).ready(function($){
     }
     $(document).on('click', '.rex-accordion h6 a', category_mapper_accordion);
 
-    // var url = window.location.href;
-    // var cat_map_action_btns = "<button type=\"submit\" class=\"waves-effect waves-light btn-large green\" id=\"update_mapping_cat\"><i class=\"fa fa-pencil-square-o\"></i> "+rex_wpfm_cat_map_translate_strings.update_btn+"</button>";
-    // cat_map_action_btns += "<button type=\"submit\" class=\"waves-effect waves-light btn-large green\" id=\"update_close_mapping_cat\"><i class=\"fa fa-pencil-square-o\"></i> "+rex_wpfm_cat_map_translate_strings.update_and_close_btn+"</button>";
-    // cat_map_action_btns += "<button type=\"submit\" class=\"waves-effect waves-light btn-large red\" id=\"delete_mapping_cat\"><i class=\"fa fa-trash-o\"></i> "+rex_wpfm_cat_map_translate_strings.delete_btn+"</button>";
-    //
-    // if ( url.includes('&wpfm-expand=wpfm_google_product_category_default') ) {
-    //     var cat_update_actions = $( 'form.update_cat_map' ).children( '.cat-map-actions' );
-    //     cat_update_actions.empty();
-    //     cat_update_actions.append( cat_map_action_btns );
-    //
-    //     $( 'a[data-id=wpfm_google_product_category_default]' ).parent().next().slideDown(500);
-    // }
+    var url = window.location.href;
+    var cat_map_action_btns = "<button type=\"submit\" class=\"waves-effect waves-light btn-large green\" id=\"update_mapping_cat\"><i class=\"fa fa-pencil-square-o\"></i> "+rex_wpfm_cat_map_translate_strings.update_btn+"</button>";
+    cat_map_action_btns += "<button type=\"submit\" class=\"waves-effect waves-light btn-large green\" id=\"update_close_mapping_cat\"><i class=\"fa fa-pencil-square-o\"></i> "+rex_wpfm_cat_map_translate_strings.update_and_close_btn+"</button>";
+    cat_map_action_btns += "<button type=\"submit\" class=\"waves-effect waves-light btn-large red\" id=\"delete_mapping_cat\"><i class=\"fa fa-trash-o\"></i> "+rex_wpfm_cat_map_translate_strings.delete_btn+"</button>";
+
+    if ( url.includes('&wpfm-expand') ) {
+        url = new URL(url);
+        var selected_cat = url.searchParams.get( 'wpfm-expand' );
+        var cat_update_actions = $( 'form.update_cat_map' ).children( '.cat-map-actions' );
+        cat_update_actions.empty();
+        cat_update_actions.append( cat_map_action_btns );
+        $( 'a[data-id='+selected_cat+']' ).addClass( 'selected' );
+        $( 'a[data-id='+selected_cat+']' ).parent().next().slideDown(500);
+    }
 }); 

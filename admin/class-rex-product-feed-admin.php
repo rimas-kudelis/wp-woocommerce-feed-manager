@@ -419,7 +419,6 @@ class Rex_Product_Feed_Admin {
                 'to_ping' => $post->to_ping,
                 'menu_order' => $post->menu_order
             );
-
             $cats = get_the_terms($post->ID, 'product_cat');
             $tags = get_the_terms($post->ID, 'product_tag');
 

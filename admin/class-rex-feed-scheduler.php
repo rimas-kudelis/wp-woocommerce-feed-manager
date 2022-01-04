@@ -92,7 +92,6 @@ class Rex_Feed_Scheduler {
 		    );
 //		    $meta_query[ 'relation' ] = 'OR';
 	    }
-
 	    $args = array(
 		    'post_type'      => 'product-feed',
 		    'post_status'    => array( 'publish' ),
@@ -101,9 +100,23 @@ class Rex_Feed_Scheduler {
 		    'meta_query'     => $meta_query,
 	    );
 
-        
+        add_filter( 'posts_where', array( $this, 'wpfm_get_scheduled_where' ), 10, 2 );
         $query = new WP_Query( $args );
         return $query->get_posts();
+    }
+
+
+    /**
+     * Modifies where query to support all languages [All Language]
+     *
+     * @param $where
+     * @param $wp_query
+     * @return array|string|string[]
+     */
+    public function wpfm_get_scheduled_where( $where, $wp_query ) {
+        $search = "( wpml_translations.language_code = 'en' OR 0 )";
+        $replace = "( wpml_translations.language_code = 'en' OR 1 )";
+        return str_replace( $search, $replace, $where );
     }
 
 
@@ -217,6 +230,7 @@ class Rex_Feed_Scheduler {
 		$feed_format             = get_post_meta( $feed_id, 'rex_feed_feed_format', true ) ?
 			get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
 		$aelia_currency          = get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
+		$wmc_currency            = get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
 		$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
 		$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
 
@@ -262,6 +276,7 @@ class Rex_Feed_Scheduler {
 			'analytics'               => $analytics,
 			'analytics_params'        => $analytics_params,
 			'aelia_currency'          => $aelia_currency,
+			'wmc_currency'            => $wmc_currency,
 			'skip_row'                => $skip_row,
 			'feed_separator'          => $feed_separator
 		);
@@ -277,10 +292,10 @@ class Rex_Feed_Scheduler {
      */
     private function configure_merchant_object( $cron = false, $schedule = 'hourly' ) {
 	    $this->feed_ids = $this->get_feeds( $schedule );
+        remove_filter( 'posts_where', array( $this, 'wpfm_get_scheduled_where' ), 10, 2 );
 
 	    if ( $this->feed_ids ) {
 		    foreach ( $this->feed_ids as $key => $feed_id ) {
-
 			    $products_info = Rex_Product_Feed_Ajax::get_product_number( array( 'feed_id' => $feed_id ) );
 			    $per_batch     = $products_info[ 'per_batch' ];
 			    $total_batches = $products_info[ 'total_batch' ];

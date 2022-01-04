@@ -194,7 +194,7 @@ class Rex_Product_Feed_Google_merchant_promotion {
             $file = trailingslashit($path) . "feed-{$this->id}.txt";
             return file_put_contents($file, $this->feed) ? 'true' : 'false';
         }
-        elseif ($format === 'csv' || $format === 'csv_semicolon'){
+        elseif ($format === 'csv'){
             $file = trailingslashit($path) . "feed-{$this->id}.csv";
             if(file_exists($file)){
                 unlink($file);
