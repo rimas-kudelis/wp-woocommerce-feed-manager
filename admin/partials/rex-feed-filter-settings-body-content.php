@@ -14,7 +14,7 @@ $troubleshoot_url = 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-i
     </span>
 </a>
 <div class="rex-feed-cofig-settings">
-    <a id="rex-feed-troubleshoot-btn" class="rex-fill-button" href="' . $troubleshoot_url . '" target="_blank">
+    <a id="rex-feed-troubleshoot-btn" class="rex-fill-button" href="<?php echo $troubleshoot_url;?>" target="_blank">
         <i class="fa fa-exclamation-triangle"></i>
         <?php echo __( 'Troubleshoot', 'rex-product-feed' )?>
     </a>

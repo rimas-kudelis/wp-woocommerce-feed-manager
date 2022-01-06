@@ -322,7 +322,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 	        $this->parent_product          = $config[ 'parent_product' ];
 	        $this->variable_product        = $config[ 'variable_product' ];
 	        $this->append_variation        = $config[ 'append_variations' ];
-	        $this->include_out_of_stock    = $config[ 'include_out_of_stock' ];
+	        $this->include_out_of_stock    = isset($config[ 'include_out_of_stock' ]) && $config[ 'include_out_of_stock' ] === 'yes' ? true : false;
 	        $this->exclude_hidden_products = $config[ 'exclude_hidden_products' ];
 	        $this->feed_separator          = isset( $config[ 'feed_separator' ] ) ? $config[ 'feed_separator' ] : '';
 	        $this->rex_feed_skip_row       = isset( $config[ 'skip_row' ] ) ? $config[ 'skip_row' ] : '';
