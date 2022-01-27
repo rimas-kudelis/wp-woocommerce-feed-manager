@@ -95,58 +95,20 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                 if ($this->variable_product) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
-                    $atts = $this->get_product_data($variable_product, $product_meta_keys);
-                    $atts = $this->process_attributes_for_delivery($atts);
-                    $atts = $this->process_attributes_for_param($atts);
-                    $item = GlamiShopping::createItem();
-                    foreach ($atts as $key => $value) {
-                        if ($key == 'delivery') {
-                            $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
-                        } elseif ($key === 'param') {
-                            $item->$key($key, $value);
-                        } else {
-	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                        if ( $value != '' ) {
-			                        $item->$key($value); // invoke $key as method of $item object.
-		                        }
-	                        }
-	                        else {
-		                        $item->$key($value); // invoke $key as method of $item object.
-	                        }
-                        }
-                    }
+                    $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
-                if ($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter' ) {
                     if ($this->exclude_hidden_products) {
                         $variations = $product->get_visible_children();
                     } else {
                         $variations = $product->get_children();
                     }
-                    if ( $variations && $this->product_scope !='filter' ) {
+                    if ( $variations ) {
                         foreach ($variations as $variation) {
                             if ($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = GlamiShopping::createItem();
                                 $variation_product = wc_get_product($variation);
-                                $atts = $this->get_product_data($variation_product, $product_meta_keys);
-                                $atts = $this->process_attributes_for_delivery($atts);
-                                $atts = $this->process_attributes_for_param($atts);
-                                foreach ($atts as $key => $value) {
-                                    if ($key == 'delivery') {
-                                        $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
-                                    } elseif ($key === 'param') {
-                                        $item->$key($key, $value);
-                                    } else {
-	                                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                                    if ( $value != '' ) {
-			                                    $item->$key($value); // invoke $key as method of $item object.
-		                                    }
-	                                    }
-	                                    else {
-		                                    $item->$key($value); // invoke $key as method of $item object.
-	                                    }
-                                    }
-                                }
+                                $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                             }
                         }
                     }
@@ -155,103 +117,24 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
 
             if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle')) {
                 $simple_products[] = $productId;
-                $atts = $this->get_product_data($product, $product_meta_keys);
-                $atts = $this->process_attributes_for_delivery($atts);
-                $atts = $this->process_attributes_for_param($atts);
-                $item = GlamiShopping::createItem();
-                foreach ($atts as $key => $value) {
-                    if ($key == 'delivery') {
-                        $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
-                    } elseif ($key === 'param') {
-                        $item->$key($key, $value);
-                    } else {
-	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                    if ( $value != '' ) {
-			                    $item->$key($value); // invoke $key as method of $item object.
-		                    }
-	                    }
-	                    else {
-		                    $item->$key($value); // invoke $key as method of $item object.
-	                    }
-                    }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
 
             if ($this->product_scope === 'all' || $this->product_scope == 'product_filter' || $this->product_scope == 'filter') {
                 if ( $product->get_type() === 'variation' ) {
                     $variation_products[] = $productId;
-                    $item = GlamiShopping::createItem();
-                    $atts = $this->get_product_data($product, $product_meta_keys);
-                    $atts = $this->process_attributes_for_delivery($atts);
-                    $atts = $this->process_attributes_for_param($atts);
-                    foreach ($atts as $key => $value) {
-                        if ($key == 'delivery') {
-                            $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
-                        } elseif ($key === 'param') {
-                            $item->$key($key, $value);
-                        }
-                        else {
-	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                        if ( $value != '' ) {
-			                        $item->$key($value); // invoke $key as method of $item object.
-		                        }
-	                        }
-	                        else {
-		                        $item->$key($value); // invoke $key as method of $item object.
-	                        }
-                        }
-                    }
+                    $this->add_to_feed( $product, $product_meta_keys, 'variation' );
                 }
             }
 
             if ($product->is_type('grouped')) {
                 $group_products[] = $productId;
-                $item = GlamiShopping::createItem();
-                $atts = $this->get_product_data($product, $product_meta_keys);
-                $atts = $this->process_attributes_for_delivery($atts);
-                $atts = $this->process_attributes_for_param($atts);
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    if ($key == 'delivery') {
-                        $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
-                    } elseif ($key === 'param') {
-                        $item->$key($key, $value);
-                    } else {
-	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                    if ( $value != '' ) {
-			                    $item->$key($value); // invoke $key as method of $item object.
-		                    }
-	                    }
-	                    else {
-		                    $item->$key($value); // invoke $key as method of $item object.
-	                    }
-                    }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
 
             if( $product->is_type( 'woosb' ) ){
                 $group_products[] = $productId;
-                $item = GlamiShopping::createItem();
-                $atts = $this->get_product_data($product, $product_meta_keys);
-                $atts = $this->process_attributes_for_delivery($atts);
-                $atts = $this->process_attributes_for_param($atts);
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    if ($key == 'delivery') {
-                        $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
-                    } elseif ($key === 'param') {
-                        $item->$key($key, $value);
-                    } else {
-	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                    if ( $value != '' ) {
-			                    $item->$key($value); // invoke $key as method of $item object.
-		                    }
-	                    }
-	                    else {
-		                    $item->$key($value); // invoke $key as method of $item object.
-	                    }
-                    }
-                } 
+                $this->add_to_feed( $product, $product_meta_keys );
             }
         }
 
@@ -267,6 +150,49 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
 	    if ( $this->tbatch === $this->batch ) {
 		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
 	    }
+    }
+
+
+    /**
+     * Adding items to feed
+     *
+     * @param $product
+     * @param $meta_keys
+     * @param string $product_type
+     */
+    private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
+        $attributes = $this->get_product_data( $product, $meta_keys );
+        $attributes = $this->process_attributes_for_delivery($attributes);
+        $attributes = $this->process_attributes_for_param($attributes);
+
+        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+            $item = GlamiShopping::createItem();
+
+            if ( $product_type === 'variation' ) {
+                $check_item_group_id = 0;
+            }
+
+            foreach ($attributes as $key => $value) {
+                if ($key == 'delivery') {
+                    $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
+                } elseif ($key === 'param') {
+                    $item->$key($key, $value);
+                } else {
+                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                        if ( $value != '' ) {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
+                    }
+                    else {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
+            }
+
+            if( $product_type === 'variation' && $check_item_group_id === 0){
+                $item->item_group_id($product->get_parent_id());
+            }
+        }
     }
 
 
@@ -306,10 +232,10 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
 
 
     /**
-     * @param $atts
+     * @param $attributes
      * @return array
      */
-    private function process_attributes_for_delivery($atts)
+    private function process_attributes_for_delivery($attributes)
     {
         $shipping_attr = array('DELIVERY_ID', 'DELIVERY_PRICE', 'DELIVERY_PRICE_COD');
         $default_delivery_atts = array(
@@ -318,48 +244,48 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
             'DELIVERY_PRICE_COD' => ''
         );
 
-        foreach ($atts as $key => $value) {
+        foreach ($attributes as $key => $value) {
             if (in_array($key, $shipping_attr)) {
-                $atts['delivery'][$key] = $value;
-                unset($atts[$key]);
+                $attributes['delivery'][$key] = $value;
+                unset($attributes[$key]);
             }
         }
-        if (array_key_exists('delivery', $atts)) {
-            $atts['delivery'] += $default_delivery_atts;
+        if (array_key_exists('delivery', $attributes)) {
+            $attributes['delivery'] += $default_delivery_atts;
         }
-        return $atts;
+        return $attributes;
     }
 
 
     /**
      * process atts for param attribute
      *
-     * @param $atts
+     * @param $attributes
      * @return mixed
      *
      * @since 6.3.2
      */
-    private function process_attributes_for_param($atts) {
-        foreach ($atts as $key => $value) {
+    private function process_attributes_for_param($attributes) {
+        foreach ($attributes as $key => $value) {
             if(preg_match('/^PARAM/im', $key)) {
                 $param_no = preg_replace('/[^0-9]/', '', $key);
-                $atts['param'][] = array(
+                $attributes['param'][] = array(
                     'key'           => $key,
                     'name'          => $value,
-                    'value'         => isset($atts['VALUE_'.$param_no]) ? $atts['VALUE_'.$param_no] : '',
-                    'percentage'    => isset($atts['PERCENTAGE_'.$param_no]) ? $atts['PERCENTAGE_'.$param_no] : '',
+                    'value'         => isset($attributes['VALUE_'.$param_no]) ? $attributes['VALUE_'.$param_no] : '',
+                    'percentage'    => isset($attributes['PERCENTAGE_'.$param_no]) ? $attributes['PERCENTAGE_'.$param_no] : '',
                 );
             }
         }
-        foreach ($atts as $key => $value) {
+        foreach ($attributes as $key => $value) {
             if(preg_match('/^PARAM/im', $key)) {
                 $param_no = preg_replace('/[^0-9]/', '', $key);
-                unset($atts['VALUE_' . $param_no]);
-                unset($atts['PERCENTAGE_' . $param_no]);
-                unset($atts['PARAM_NAME_' . $param_no]);
+                unset($attributes['VALUE_' . $param_no]);
+                unset($attributes['PERCENTAGE_' . $param_no]);
+                unset($attributes['PARAM_NAME_' . $param_no]);
             }
         }
-        return $atts;
+        return $attributes;
     }
 
 

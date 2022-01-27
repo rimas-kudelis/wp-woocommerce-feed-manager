@@ -99,14 +99,15 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
 
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
-                    }else {
+                    }
+                    else {
                         $variations = $product->get_children();
                     }
 
-                    if( $variations && $this->product_scope !='filter' ) {
+                    if( $variations ) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
                                 $variation_products[] = $variation;
@@ -123,7 +124,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 $this->add_to_feed( $product, $product_meta_keys );
             }
 
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
+            if( $this->product_scope === 'all' || $this->product_scope === 'product_filter' || $this->product_scope === 'filter') {
                 if ( $product->get_type() === 'variation' ) {
                     $variation_products[] = $productId;
                     $this->add_to_feed( $product, $product_meta_keys, 'variation' );
@@ -161,50 +162,53 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
      * @since 7.0.1
      */
     private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
-        $item = GoogleShopping::createItem();
         $attributes = $this->get_product_data( $product, $meta_keys );
         $attributes = $this->process_attributes_for_shipping_tax( $attributes );
-        $shipping_labels = array( 'shipping_1', 'shipping_2', 'shipping_3', 'shipping_4' );
 
-        if ( $product_type === 'variation' ) {
-            $check_item_group_id = 0;
-        }
+        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+            $item = GoogleShopping::createItem();
+            $shipping_labels = array( 'shipping_1', 'shipping_2', 'shipping_3', 'shipping_4' );
 
-        foreach ( $attributes as $key => $value ) {
-            if( in_array( $key, $shipping_labels ) ) {
-                $shipping_country = isset( $value['shipping_country'] ) ? $value['shipping_country'] : '';
-                $shipping_service = isset( $value['shipping_service'] ) ? $value['shipping_service'] : '';
-                $shipping_price = isset( $value['shipping_price'] ) ? $value['shipping_price'] : '';
-                $shipping_region = isset( $value['shipping_region'] ) ? $value['shipping_region'] : '';
-                $key = 'shipping';
-                $item->$key($shipping_country, $shipping_service, $shipping_price, $shipping_region); // invoke $key as method of $item object.
+            if ( $product_type === 'variation' ) {
+                $check_item_group_id = 0;
             }
-            elseif ($key === 'tax') {
-                $tax_country = isset( $value['tax_country'] ) ? $value['tax_country'] : '';
-                $tax_ship = isset( $value['tax_ship'] ) ? $value['tax_ship'] : '';
-                $tax_rate = isset( $value['tax_rate'] ) ? $value['tax_rate'] : '';
-                $tax_region = isset( $value['tax_region'] ) ? $value['tax_region'] : '';
 
-                $item->$key($tax_country, $tax_ship, $tax_rate, $tax_region); // invoke $key as method of $item object.
-            }
-            else {
-                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-                    if ( $value != '' ) {
+            foreach ( $attributes as $key => $value ) {
+                if( in_array( $key, $shipping_labels ) ) {
+                    $shipping_country = isset( $value['shipping_country'] ) ? $value['shipping_country'] : '';
+                    $shipping_service = isset( $value['shipping_service'] ) ? $value['shipping_service'] : '';
+                    $shipping_price = isset( $value['shipping_price'] ) ? $value['shipping_price'] : '';
+                    $shipping_region = isset( $value['shipping_region'] ) ? $value['shipping_region'] : '';
+                    $key = 'shipping';
+                    $item->$key($shipping_country, $shipping_service, $shipping_price, $shipping_region); // invoke $key as method of $item object.
+                }
+                elseif ($key === 'tax') {
+                    $tax_country = isset( $value['tax_country'] ) ? $value['tax_country'] : '';
+                    $tax_ship = isset( $value['tax_ship'] ) ? $value['tax_ship'] : '';
+                    $tax_rate = isset( $value['tax_rate'] ) ? $value['tax_rate'] : '';
+                    $tax_region = isset( $value['tax_region'] ) ? $value['tax_region'] : '';
+
+                    $item->$key($tax_country, $tax_ship, $tax_rate, $tax_region); // invoke $key as method of $item object.
+                }
+                else {
+                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                        if ( $value != '' ) {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
+                    }
+                    else {
                         $item->$key($value); // invoke $key as method of $item object.
                     }
                 }
-                else {
-                    $item->$key($value); // invoke $key as method of $item object.
+
+                if( $product_type === 'variation' && 'item_group_id' == $key ) {
+                    $check_item_group_id = 1;
                 }
             }
 
-            if( $product_type === 'variation' && 'item_group_id' == $key ) {
-                $check_item_group_id = 1;
+            if( $product_type === 'variation' && $check_item_group_id === 0){
+                $item->item_group_id($product->get_parent_id());
             }
-        }
-
-        if( $product_type === 'variation' && $check_item_group_id === 0){
-            $item->item_group_id($product->get_parent_id());
         }
     }
 

@@ -91,4 +91,16 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
         }
         parent::complete();
     }
+
+
+    /**
+     * Overrides save function of parent class.
+     *
+     * @return $this|Rex_Product_Feed_Background_Process
+     */
+    public function save() {
+        parent::save();
+        $this->data = [];
+        return $this;
+    }
 }

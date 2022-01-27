@@ -64,59 +64,69 @@ class Rex_Feed_Scheduler {
 
 
     /**
-     * Get all feeds
+     * Get all scheduled feed ids
      *
-     * @param string $schedule
-     * @return int[]|WP_Post[]
+     * @param $schedule
+     * @return array|false|null
      */
     public function get_feeds( $schedule ) {
 
-	    $meta_query   = array();
-	    if ( $schedule === 'hourly' ) {
-		    $meta_query[] = array(
-			    'key'   => 'rex_feed_schedule',
-			    'value' => 'hourly',
-		    );
-	    }
-	    if ( $schedule === 'daily' ) {
-		    $meta_query[]             = array(
-			    'key'   => 'rex_feed_schedule',
-			    'value' => 'daily',
-		    );
-//		    $meta_query[ 'relation' ] = 'OR';
-	    }
-	    if ( $schedule === 'weekly' ) {
-		    $meta_query[]             = array(
-			    'key'   => 'rex_feed_schedule',
-			    'value' => 'weekly',
-		    );
-//		    $meta_query[ 'relation' ] = 'OR';
-	    }
-	    $args = array(
-		    'post_type'      => 'product-feed',
-		    'post_status'    => array( 'publish' ),
-		    'posts_per_page' => -1,
-		    'fields'         => 'ids',
-		    'meta_query'     => $meta_query,
-	    );
+        $meta_queries   = array();
+        if ( $schedule === 'hourly' ) {
+            $meta_queries[] = array(
+                'key'   => 'rex_feed_schedule',
+                'value' => 'hourly',
+            );
+        }
+        if ( $schedule === 'daily' ) {
+            $meta_queries[]             = array(
+                'key'   => 'rex_feed_schedule',
+                'value' => 'daily',
+            );
+        }
+        if ( $schedule === 'weekly' ) {
+            $meta_queries[]             = array(
+                'key'   => 'rex_feed_schedule',
+                'value' => 'weekly',
+            );
+        }
 
-        add_filter( 'posts_where', array( $this, 'wpfm_get_scheduled_where' ), 10, 2 );
-        $query = new WP_Query( $args );
-        return $query->get_posts();
+        return $this->wpfm_get_scheduled_ids( $meta_queries );
     }
 
 
     /**
-     * Modifies where query to support all languages [All Language]
+     * Gets scheduled feed ids
      *
-     * @param $where
-     * @param $wp_query
-     * @return array|string|string[]
+     * @param $meta_queries
+     * @return array|false|null
      */
-    public function wpfm_get_scheduled_where( $where, $wp_query ) {
-        $search = "( wpml_translations.language_code = 'en' OR 0 )";
-        $replace = "( wpml_translations.language_code = 'en' OR 1 )";
-        return str_replace( $search, $replace, $where );
+    protected function wpfm_get_scheduled_ids( $meta_queries ) {
+        global $wpdb;
+
+        $value = [];
+        foreach ( $meta_queries as $meta_query ) {
+            $value[] = $meta_query[ 'value' ];
+        }
+
+        $value = implode( "', '", $value );
+        $value = "'" . $value . "'";
+
+        $where = "WHERE {$wpdb->prefix}postmeta.meta_key = 'rex_feed_schedule' ";
+        $where .= "AND {$wpdb->prefix}postmeta.meta_value IN ($value) ";
+        $where .= "AND {$wpdb->prefix}posts.post_type = 'product-feed' ";
+        $where .= "AND {$wpdb->prefix}posts.post_status = 'publish' ";
+        $where .= "ORDER BY {$wpdb->prefix}posts.ID DESC";
+
+        $request = "SELECT {$wpdb->prefix}posts.ID ";
+        $request .= "FROM {$wpdb->prefix}posts ";
+        $request .= "LEFT JOIN {$wpdb->prefix}postmeta ";
+        $request .= "ON {$wpdb->prefix}postmeta.post_id = {$wpdb->prefix}posts.ID ";
+
+        $request .= $where;
+
+        $result = $wpdb->get_results( $request, ARRAY_A );
+        return array_column($result, 'ID');
     }
 
 
@@ -231,7 +241,10 @@ class Rex_Feed_Scheduler {
 			get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
 		$aelia_currency          = get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
 		$wmc_currency            = get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
+		$skip_product            = get_post_meta( $feed_id, 'rex_feed_skip_product', true );
+		$skip_product            = $skip_product === 'yes' ? true : false;
 		$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
+        $skip_row                = $skip_row === 'yes' ? true : false;
 		$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
 
 		$terms_array             = array();
@@ -277,6 +290,7 @@ class Rex_Feed_Scheduler {
 			'analytics_params'        => $analytics_params,
 			'aelia_currency'          => $aelia_currency,
 			'wmc_currency'            => $wmc_currency,
+			'skip_product'            => $skip_product,
 			'skip_row'                => $skip_row,
 			'feed_separator'          => $feed_separator
 		);
@@ -292,7 +306,6 @@ class Rex_Feed_Scheduler {
      */
     private function configure_merchant_object( $cron = false, $schedule = 'hourly' ) {
 	    $this->feed_ids = $this->get_feeds( $schedule );
-        remove_filter( 'posts_where', array( $this, 'wpfm_get_scheduled_where' ), 10, 2 );
 
 	    if ( $this->feed_ids ) {
 		    foreach ( $this->feed_ids as $key => $feed_id ) {

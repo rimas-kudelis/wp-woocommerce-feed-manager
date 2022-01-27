@@ -1,6 +1,4 @@
 <?php
-use Symfony\Component\Yaml\Yaml;
-
 /**
  * Abstract Rex Product Feed Generator
  *
@@ -258,7 +256,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * @access   private
      * @var      Rex_Product_Feed_Abstract_Generator $wpml_language
      */
-    protected $wpml_language;
+    public $wpml_language;
     /**
      * enable logging
      *
@@ -270,6 +268,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * @var Rex_Product_Feed_Abstract_Generator $exclude_hidden_products
      */
     protected $exclude_hidden_products;
+    /**
+     *
+     * @var Rex_Product_Feed_Abstract_Generator $rex_feed_skip_product
+     */
+    protected $rex_feed_skip_product;
     /**
      *
      * @var Rex_Product_Feed_Abstract_Generator $rex_feed_skip_row
@@ -325,7 +328,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
 	        $this->include_out_of_stock    = isset($config[ 'include_out_of_stock' ]) && $config[ 'include_out_of_stock' ] === 'yes' ? true : false;
 	        $this->exclude_hidden_products = $config[ 'exclude_hidden_products' ];
 	        $this->feed_separator          = isset( $config[ 'feed_separator' ] ) ? $config[ 'feed_separator' ] : '';
-	        $this->rex_feed_skip_row       = isset( $config[ 'skip_row' ] ) ? $config[ 'skip_row' ] : '';
+	        $this->rex_feed_skip_product   = isset( $config[ 'skip_product' ] ) ? $config[ 'skip_product' ] : false;
+	        $this->rex_feed_skip_row       = isset( $config[ 'skip_row' ] ) ? $config[ 'skip_row' ] : false;
 	        $this->wpml_language           = $config[ 'wpml_language' ];
 	        $this->wcml                    = $config[ 'wcml' ];
 	        $this->wcml_currency           = isset( $config[ 'wcml_currency' ] ) ? $config[ 'wcml_currency' ] : 'USD';;
@@ -449,6 +453,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
         if ( $args[ 'products_scope' ] === 'product_cat' || $args[ 'products_scope' ] === 'product_tag' ) {
             $terms = $args[ 'products_scope' ] === 'product_tag' ? 'tags' : 'cats';
+            $this->products_args[ 'post_type' ] = array( 'product' );
 
             if ( isset( $args[ $terms ] ) && is_array( $args[ $terms ] ) ) {
                 foreach ( $args[ $terms ] as $term ) {
@@ -633,6 +638,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $include_parent           = $feed_rules[ 'rex_feed_parent_product' ];
         $include_variations_name  = $feed_rules[ 'rex_feed_variation_product_name' ];
         $exclude_hidden_products  = $feed_rules[ 'rex_feed_hidden_products' ];
+        $rex_feed_skip_product    = $feed_rules[ 'rex_feed_skip_product' ];
         $rex_feed_skip_row        = $feed_rules[ 'rex_feed_skip_row' ];
         $include_out_of_stock     = $feed_rules[ 'rex_feed_include_out_of_stock' ];
         $this->feed_separator     = isset( $feed_rules[ 'rex_feed_separator' ] ) ? $feed_rules[ 'rex_feed_separator' ] : '';
@@ -694,6 +700,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         else {
             $this->exclude_hidden_products = false;
+        }
+
+        if ( $rex_feed_skip_product == 'yes' ) {
+            $this->rex_feed_skip_product = true;
+        }
+        else {
+            $this->rex_feed_skip_product = false;
         }
 
         if ( $rex_feed_skip_row == 'yes' ) {
@@ -774,7 +787,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             update_post_meta( $this->id, 'rex_feed_separator', $feed_rules[ 'rex_feed_separator' ] );
         }
         if ( isset( $feed_rules[ 'rex_feed_hidden_products' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_skip_row', $feed_rules[ 'rex_feed_skip_row' ] );
+            update_post_meta( $this->id, 'rex_feed_hidden_products', $feed_rules[ 'rex_feed_hidden_products' ] );
         }
         if ( isset( $feed_rules[ 'rex_feed_google_destination' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_google_destination', $feed_rules[ 'rex_feed_google_destination' ] );
@@ -815,6 +828,12 @@ abstract class Rex_Product_Feed_Abstract_Generator
         if ( isset( $feed_rules[ 'rex_feed_product_filter_ids' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_product_filter_ids', $feed_rules[ 'rex_feed_product_filter_ids' ] );
         }
+        if ( isset( $feed_rules[ 'rex_feed_skip_product' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_skip_product', $feed_rules[ 'rex_feed_skip_product' ] );
+        }
+        if ( isset( $feed_rules[ 'rex_feed_skip_row' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_skip_row', $feed_rules[ 'rex_feed_skip_row' ] );
+        }
     }
 
     /**
@@ -822,12 +841,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function setup_products()
     {
-        if ( class_exists( 'SitePress' ) ) {
-            global $sitepress;
-            if ( $this->wpml_language ) {
-                $sitepress->switch_lang( $this->wpml_language );
-            }
-        }
+        wpfm_switch_site_lang( $this->wpml_language );
 
         if ( $this->product_scope === 'filter' ) {
             $filter_args = Rex_Product_Filter::createFilterQueryParams( $this->feed_rules_filter );
@@ -845,7 +859,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
         }
 
-        add_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );
+//        add_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );
+        add_filter( 'posts_where', array( $this, 'wpfm_custom_wpml_where_queries' ), 10, 2 );
         /*if ( $this->variations ) {
             add_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
             add_filter( 'posts_request', array( $this, 'wpfm_get_custom_requests' ) );
@@ -870,7 +885,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->products = $result->get_posts();
         }
 
-        remove_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );
+//        remove_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );
+        remove_filter( 'posts_where', array( $this, 'wpfm_custom_wpml_where_queries' ) );
         /*if( $this->variations ) {
             remove_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
             remove_filter( 'posts_request', array( $this, 'wpfm_get_custom_requests' ) );
@@ -906,6 +922,24 @@ abstract class Rex_Product_Feed_Abstract_Generator
     public function wpfm_set_distinct()
     {
         return 'DISTINCT';
+    }
+
+
+    /**
+     * Customize WPML where clause
+     *
+     * @param $where
+     * @param $query
+     * @return array|mixed|string|string[]
+     */
+    public function wpfm_custom_wpml_where_queries( $where, $query ) {
+        if ( wpfm_is_wpml_active() ) {
+            global $sitepress;
+            $search = "language_code = '".$sitepress->get_default_language()."'";
+            $replace = "language_code = '".$this->wpml_language."'";
+            return str_replace( $search, $replace, $where );
+        }
+        return $where;
     }
 
     /**
@@ -1579,7 +1613,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     $feed = $this->get_items();
 
                     if ( $this->merchant === 'google' && $this->feed_string_footer !== '' ) {
-                        $file_contents = file_get_contents($baseurl . '/rex-feed' . "/feed-{$this->id}." . $format);
+                        $file_contents = file_get_contents($path . "/feed-{$this->id}." . $format);
 
                         if ( !strpos( $file_contents, $this->item_wrapper ) ) {
                             $feed = '';
@@ -1587,6 +1621,19 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     }
 
                     file_put_contents( $file, $feed, FILE_APPEND );
+
+                    if( $this->tbatch === $this->batch ) {
+                        $file_contents = file_get_contents($path . "/feed-{$this->id}." . $format);
+
+                        $temp_feed = new DOMDocument;
+                        $temp_feed->preserveWhiteSpace = false;
+                        $temp_feed->formatOutput = true;
+                        $temp_feed->loadXML( $file_contents );
+                        $file_contents = $temp_feed->saveXML( $temp_feed, LIBXML_NOEMPTYTAG );
+
+                        file_put_contents( $file, $file_contents );
+                    }
+
                     return 'true';
                 }
             }
@@ -1639,6 +1686,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 }
                 else {
                     $feed = $this->feed;
+                    $first_element = strtok($feed, "\n");
+                    $feed = ltrim(str_replace( $first_element, '', $feed ));
+
                     if ( $feed )
                         return file_put_contents( $file, $feed, FILE_APPEND ) ? 'true' : 'false';
                     return 'true';
@@ -1675,7 +1725,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     $feed = $this->get_items();
 
                     if ( $this->merchant === 'google' && $this->feed_string_footer !== '' ) {
-                        $file_contents = file_get_contents($baseurl . '/rex-feed' . "/feed-{$this->id}." . $format);
+                        $file_contents = file_get_contents($path . "/feed-{$this->id}." . $format);
 
                         if ( !strpos( $file_contents, $this->item_wrapper ) ) {
                             $feed = '';

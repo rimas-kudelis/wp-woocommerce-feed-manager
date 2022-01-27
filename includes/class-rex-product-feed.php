@@ -229,6 +229,8 @@ class Rex_Product_Feed {
 
         $this->loader->add_action( 'wp_ajax_nopriv_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
         $this->loader->add_action( 'wp_ajax_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
+
+        $this->loader->add_action( 'after_delete_post', $plugin_admin, 'delete_feed_files', 10, 2 );
     }
 
 

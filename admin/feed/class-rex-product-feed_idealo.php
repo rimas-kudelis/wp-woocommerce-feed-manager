@@ -145,7 +145,7 @@ class Rex_Product_Feed_Idealo extends Rex_Product_Feed_Abstract_Generator {
                 }else {
                     $variations = $product->get_children();
                 }
-                if( $variations && $this->product_scope !='filter' ) {
+                if( $variations ) {
                     foreach ($variations as $variation) {
                         $product = wc_get_product($variation);
 

@@ -404,6 +404,7 @@ class Rex_Product_Feed_Admin {
             } else {
                 $name = $post->post_name . '-' . 'duplicate';
             }
+
             $args = array(
                 'comment_status' => $post->comment_status,
                 'ping_status' => $post->ping_status,
@@ -419,22 +420,28 @@ class Rex_Product_Feed_Admin {
                 'to_ping' => $post->to_ping,
                 'menu_order' => $post->menu_order
             );
-            $cats = get_the_terms($post->ID, 'product_cat');
+
+            $categories = get_the_terms($post->ID, 'product_cat');
             $tags = get_the_terms($post->ID, 'product_tag');
 
 
             $new_post_id = wp_insert_post($args);
-            if ($cats) {
-                foreach ($cats as $cat) {
-                    wp_set_post_terms($new_post_id, $cat->term_id, 'product_cat');
+
+            if ($categories) {
+                foreach( $categories as $cat ) {
+                    $p_cats[] = $cat->slug;
                 }
+                wp_set_object_terms( $new_post_id, $p_cats, 'product_cat' );
             }
             if ($tags) {
-                foreach ($tags as $tag) {
-                    wp_set_post_terms($new_post_id, $tag->name, 'product_tag');
+                foreach( $tags as $tag ) {
+                    $p_tags[] = $tag->slug;
                 }
+                wp_set_object_terms( $new_post_id, $p_tags, 'product_tag' );
             }
+
             $taxonomies = get_object_taxonomies($post->post_type); // returns array of taxonomy names for post type, ex array("category", "post_tag");
+
             foreach ($taxonomies as $taxonomy) {
                 $post_terms = wp_get_object_terms($post_id, $taxonomy, array('fields' => 'slugs'));
                 wp_set_object_terms($new_post_id, $post_terms, $taxonomy, false);
@@ -1238,4 +1245,24 @@ class Rex_Product_Feed_Admin {
 			update_post_meta( $post_id, 'rex_feed_tags', $_POST[ 'rex_feed_tags' ] );
 		}
 	}
+
+
+    /**
+     * Deletes all available feed files after deleting a feed
+     *
+     * @param $post_id
+     * @param $post
+     */
+    public function delete_feed_files( $post_id, $post ) {
+        $path    = wp_upload_dir();
+        $path    = $path[ 'basedir' ] . '/rex-feed';
+        $formats = array( 'xml', 'yml', 'csv', 'tsv', 'txt', 'json' );
+
+        foreach ( $formats as $format ){
+            $file = trailingslashit( $path ) . "feed-{$post_id}.{$format}";
+            if ( file_exists( $file ) ) {
+                unlink( $file );
+            }
+        }
+    }
 }

@@ -8,17 +8,19 @@
  * @subpackage Rex_Product_Feed/admin
  * @author     RexTheme <info@rextheme.com>
  */
+
 use Wdr\App\Controllers\ManageDiscount;
 use Wdr\App\Models\DBTable;
 use Aelia\WC\CurrencySwitcher\WC_Aelia_CurrencySwitcher;
 
-class Rex_Product_Data_Retriever{
+class Rex_Product_Data_Retriever
+{
     /**
      * The ID of this plugin.
      *
      * @since    1.0.0
      * @access   private
-     * @var      string    $plugin_name    The ID of this plugin.
+     * @var      string $plugin_name The ID of this plugin.
      */
     protected $feed_rules;
     /**
@@ -31,7 +33,7 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      * @access   private
-     * @var      string    $plugin_name    The ID of this plugin.
+     * @var      string $plugin_name The ID of this plugin.
      */
     protected $product_meta_keys;
 
@@ -40,7 +42,7 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      * @access   private
-     * @var      string    $data    The current version of this plugin.
+     * @var      string $data The current version of this plugin.
      */
     protected $data;
 
@@ -50,7 +52,7 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      * @access   private
-     * @var      object    $metabox    The current metabox of this plugin.
+     * @var      object $metabox The current metabox of this plugin.
      */
     protected $product;
 
@@ -59,7 +61,7 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      * @access   private
-     * @var      object    $metabox    The current metabox of this plugin.
+     * @var      object $metabox The current metabox of this plugin.
      */
     protected $variant_atts = array( 'color', 'pattern', 'material', 'age_group', 'gender', 'size', 'size_type', 'size_system' );
 
@@ -68,7 +70,7 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      * @access   private
-     * @var      object    $metabox    The current metabox of this plugin.
+     * @var      object $metabox The current metabox of this plugin.
      */
     protected $additional_images = array();
 
@@ -78,7 +80,7 @@ class Rex_Product_Data_Retriever{
      *
      * @since    3.2
      * @access   private
-     * @var      object    $append_variation
+     * @var      object $append_variation
      */
     protected $append_variation;
 
@@ -117,41 +119,41 @@ class Rex_Product_Data_Retriever{
      * @param $product_meta_keys
      * @since 6.1.0
      */
-    public function __construct( WC_Product $product, Rex_Product_Feed_Abstract_Generator $feed, $product_meta_keys ) {
+    public function __construct( WC_Product $product, Rex_Product_Feed_Abstract_Generator $feed, $product_meta_keys )
+    {
 
-        $this->is_logging_enabled   = is_wpfm_logging_enabled();
-        $this->product              = $product;
-        $this->analytics_params     = $feed->analytics_params;
-        $this->feed_rules           = $feed->feed_rules;
-        $this->product_meta_keys    = $product_meta_keys;
-        $this->append_variation     = $feed->append_variation;
-        $this->aelia_currency       = $feed->aelia_currency;
-        $this->wmc_currency         = $feed->wmc_currency;
-        $this->wcml_currency        = $feed->wcml_currency;
-        $this->feed                 = $feed;
-        $this->wcml                 = false;
-        $this->wcml_currency        = '';
+        $this->is_logging_enabled = is_wpfm_logging_enabled();
+        $this->product            = $product;
+        $this->analytics_params   = $feed->analytics_params;
+        $this->feed_rules         = $feed->feed_rules;
+        $this->product_meta_keys  = $product_meta_keys;
+        $this->append_variation   = $feed->append_variation;
+        $this->aelia_currency     = $feed->aelia_currency;
+        $this->wmc_currency       = $feed->wmc_currency;
+        $this->wcml_currency      = $feed->wcml_currency;
+        $this->feed               = $feed;
+        $this->wcml               = false;
+        $this->wcml_currency      = '';
 
         if( wpfm_is_wpml_active() ) {
-            $this->wcml = true;
+            $this->wcml          = true;
             $this->wcml_currency = $this->feed->wcml_currency;
         }
 
         if( $this->is_logging_enabled ) {
             $log = wc_get_logger();
-            $log->info('*************************', array( 'source' => 'WPFM',));
-            $log->info(__( 'Start product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
-            $log->info('Product ID: '.$this->product->get_id(), array('source' => 'WPFM',));
-            $log->info('Product Name: '.$this->product->get_title(), array('source' => 'WPFM',));
+            $log->info( '*************************', array( 'source' => 'WPFM', ) );
+            $log->info( __( 'Start product processing.', 'rex-product-feed' ), array( 'source' => 'WPFM', ) );
+            $log->info( 'Product ID: ' . $this->product->get_id(), array( 'source' => 'WPFM', ) );
+            $log->info( 'Product Name: ' . $this->product->get_title(), array( 'source' => 'WPFM', ) );
         }
 
         $this->set_all_value();
         if( $this->is_logging_enabled ) {
-            $log->info(__( 'End product processing.', 'rex-product-feed' ), array('source' => 'WPFM',));
-            $log->info('*************************', array('source' => 'WPFM',));
+            $log->info( __( 'End product processing.', 'rex-product-feed' ), array( 'source' => 'WPFM', ) );
+            $log->info( '*************************', array( 'source' => 'WPFM', ) );
         }
     }
-
 
 
     /**
@@ -160,28 +162,30 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.2
      */
-    public function set_test_feed_rules() {
+    public function set_test_feed_rules()
+    {
         $this->feed_rules = array();
-        foreach ($this->product_meta_keys as $key_cat => $attrs) {
-            foreach ($attrs as $key => $attr) {
+        foreach( $this->product_meta_keys as $key_cat => $attrs ) {
+            foreach( $attrs as $key => $attr ) {
                 $this->feed_rules[] = array(
-                    'attr'     => $key,
-                    'cust_attr'=> $key,
-                    'type'     => 'meta',
-                    'meta_key' => $key,
-                    'st_value' => '',
-                    'prefix'   => '',
-                    'suffix'   => '',
-                    'escape'   => 'default',
-                    'limit'    => 0,
+                    'attr'      => $key,
+                    'cust_attr' => $key,
+                    'type'      => 'meta',
+                    'meta_key'  => $key,
+                    'st_value'  => '',
+                    'prefix'    => '',
+                    'suffix'    => '',
+                    'escape'    => 'default',
+                    'limit'     => 0,
                 );
             }
         }
     }
 
 
-    public function get_random_key() {
-        return md5(uniqid(rand(), true));
+    public function get_random_key()
+    {
+        return md5( uniqid( rand(), true ) );
     }
 
     /**
@@ -189,36 +193,38 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    public function set_all_value() {
+    public function set_all_value()
+    {
         $this->data = array();
 
-        foreach ( $this->feed_rules as $key => $rule ) {
+        foreach( $this->feed_rules as $key => $rule ) {
 
-            if(array_key_exists('attr', $rule)) {
-                if($rule['attr']) {
-                    if($rule['attr'] === 'attributes') {
-                        $this->data[ $rule['attr']][] = array(
-                            'name' => str_replace( 'bwf_attr_pa_', '', $rule['meta_key']),
+            if( array_key_exists( 'attr', $rule ) ) {
+                if( $rule[ 'attr' ] ) {
+                    if( $rule[ 'attr' ] === 'attributes' ) {
+                        $this->data[ $rule[ 'attr' ] ][] = array(
+                            'name'  => str_replace( 'bwf_attr_pa_', '', $rule[ 'meta_key' ] ),
                             'value' => $this->set_val( $rule )
                         );
-                    }else {
+                    }
+                    else {
                         $google_shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
-                        if ( in_array( $rule[ 'attr' ], $google_shipping_attr ) ) {
-                            $this->data[ $rule['attr'] ][] = $this->set_val( $rule );
+                        if( in_array( $rule[ 'attr' ], $google_shipping_attr ) ) {
+                            $this->data[ $rule[ 'attr' ] ][] = $this->set_val( $rule );
                         }
                         else {
-                            $this->data[ $rule['attr'] ] = $this->set_val( $rule );
+                            $this->data[ $rule[ 'attr' ] ] = $this->set_val( $rule );
                         }
                     }
                 }
             }
-            elseif (array_key_exists('cust_attr', $rule)) {
-                if($rule['cust_attr']) {
-                    $this->data[$rule['cust_attr']] = $this->set_val( $rule );
+            elseif( array_key_exists( 'cust_attr', $rule ) ) {
+                if( $rule[ 'cust_attr' ] ) {
+                    $this->data[ $rule[ 'cust_attr' ] ] = $this->set_val( $rule );
                 }
             }
             else {
-                $this->data[ $rule['attr'] ] = $this->set_val( $rule );
+                $this->data[ $rule[ 'attr' ] ] = $this->set_val( $rule );
             }
         }
     }
@@ -229,76 +235,79 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    public function set_val( $rule ) {
+    public function set_val( $rule )
+    {
         $val = '';
 
-        if ( 'static' === $rule['type'] ) {
-            $val = $rule['st_value'];
+        if( 'static' === $rule[ 'type' ] ) {
+            $val = $rule[ 'st_value' ];
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_primary_attr( $rule['meta_key'] ) ) {
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_primary_attr( $rule[ 'meta_key' ] ) ) {
             $escape = isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '';
-            $val = $this->set_pr_att( $rule['meta_key'] , $escape );
+            $val    = $this->set_pr_att( $rule[ 'meta_key' ], $escape );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_woodmart_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_woodmart_att( $rule['meta_key'] );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_woodmart_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_woodmart_att( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_price_attr( $rule['meta_key'] ) ) {
-            $attr   = isset( $rule[ 'attr' ] ) ? $rule[ 'attr' ] : '';
-            $val = $this->set_price_attr( $rule['meta_key'], $attr );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_price_attr( $rule[ 'meta_key' ] ) ) {
+            $attr = isset( $rule[ 'attr' ] ) ? $rule[ 'attr' ] : '';
+            $val  = $this->set_price_attr( $rule[ 'meta_key' ], $attr );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_yoast_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_yoast_attr( $rule['meta_key'] );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_yoast_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_yoast_attr( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_perfect_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_perfect_attr( $rule['meta_key'] );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_perfect_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_perfect_attr( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_wc_brand_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_wc_brand_attr( $rule['meta_key'] );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_wc_brand_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_wc_brand_attr( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_berocket_brand_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_berocket_brand_attr( $rule['meta_key'] );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_berocket_brand_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_berocket_brand_attr( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_image_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_image_att( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_image_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_image_att( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_product_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_product_att( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_product_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_product_attr( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_product_dynamic_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_product_dynamic_att( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_product_dynamic_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_product_dynamic_attr( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_wpfm_custom_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_wpfm_custom_att( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_wpfm_custom_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_wpfm_custom_att( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_product_custom_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_product_custom_att( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_product_custom_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_product_custom_att( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_product_category_mapper_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_cat_mapper_att( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_product_category_mapper_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_cat_mapper_att( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_glami_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_glami_att( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_glami_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_glami_att( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_dropship_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_dropship_att( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_dropship_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_dropship_att( $rule[ 'meta_key' ] );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_date_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_date_attr( $rule['meta_key']  );
+        elseif( 'meta' === $rule[ 'type' ] && $this->is_date_attr( $rule[ 'meta_key' ] ) ) {
+            $val = $this->set_date_attr( $rule[ 'meta_key' ] );
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_product_custom_tax( $rule['meta_key'] ) ) {
+            $val = $this->set_product_custom_tax( $rule['meta_key']  );
         }
 
         // maybe escape
-        $val = $this->maybe_escape($val, $rule['escape']);
+        $val = $this->maybe_escape( $val, $rule[ 'escape' ] );
 
         // maybe add prefix/suffix
-        $val = $this->maybe_add_prefix_suffix($val, $rule);
+        $val = $this->maybe_add_prefix_suffix( $val, $rule );
 
         // maybe limit
-        $val = $this->maybe_limit($val, $rule['limit']);
+        $val = $this->maybe_limit( $val, $rule[ 'limit' ] );
 
         return $val;
 
     }
-
 
 
     /**
@@ -306,7 +315,8 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    public function get_all_data() {
+    public function get_all_data()
+    {
         return $this->data;
     }
 
@@ -315,10 +325,12 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_woodmart_att($key){
-        $id = substr($key, strpos($key, "_") + 1);
-        if('image_'.$id == $key){
-            return $this->get_woodmart_gallery($id);
+    protected function set_woodmart_att( $key )
+    {
+        $key = str_replace( 'woodmart_', '', $key );
+        $id  = substr( $key, strpos( $key, "_" ) + 1 );
+        if( 'image_' . $id == $key ) {
+            return $this->get_woodmart_gallery( $id );
         }
 
     }
@@ -328,13 +340,14 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_yoast_attr( $key ){
-        switch ( $key ){
+    protected function set_yoast_attr( $key )
+    {
+        switch( $key ) {
             case 'yoast_primary_cat':
                 return $this->get_yoast_primary_cat();
 
             case 'yoast_title':
-                return preg_replace('/\s+/', ' ',$this->get_yoast_seo_title());
+                return preg_replace( '/\s+/', ' ', $this->get_yoast_seo_title() );
 
             case 'yoast_meta_desc':
                 return $this->get_yoast_meta_description();
@@ -343,10 +356,10 @@ class Rex_Product_Data_Retriever{
                 return $this->get_yoast_product_cats_with_seperator();
 
             case 'yoast_primary_cats_pipe':
-                return $this->get_yoast_product_cats_with_seperator('', ' | ', '');
+                return $this->get_yoast_product_cats_with_seperator( '', ' | ', '' );
 
             case 'yoast_primary_cats_comma':
-                return $this->get_yoast_product_cats_with_seperator('', ', ', '');
+                return $this->get_yoast_product_cats_with_seperator( '', ', ', '' );
 
             default:
                 return '';
@@ -360,19 +373,20 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    public function get_woodmart_gallery($id){
+    public function get_woodmart_gallery( $id )
+    {
         $product_id = $this->product->get_id();
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            $parent_id = $this->product->get_parent_id();
-            $all_gallery = get_post_meta($parent_id,'woodmart_variation_gallery_data',true);
-            if(isset($all_gallery[$product_id])){
-                $image_ids = $all_gallery[$product_id];
-                if($image_ids) {
-                    $image_ids = explode(',', $image_ids);
-                    if(isset($image_ids[$id])) {
-                        $image_id = $image_ids[$id];
-                        if($image_id){
-                            return  wp_get_attachment_url($image_id);
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            $parent_id   = $this->product->get_parent_id();
+            $all_gallery = get_post_meta( $parent_id, 'woodmart_variation_gallery_data', true );
+            if( isset( $all_gallery[ $product_id ] ) ) {
+                $image_ids = $all_gallery[ $product_id ];
+                if( $image_ids ) {
+                    $image_ids = explode( ',', $image_ids );
+                    if( isset( $image_ids[ $id ] ) ) {
+                        $image_id = $image_ids[ $id ];
+                        if( $image_id ) {
+                            return wp_get_attachment_url( $image_id );
                         }
                     }
                 }
@@ -384,15 +398,17 @@ class Rex_Product_Data_Retriever{
     /**
      * Set Perfect woocommerce brand attribute
      */
-    protected function set_perfect_attr( $key ) {
-        $brands = wp_get_object_terms($this->product->get_id(), 'pwb-brand');
-        $brnd = '';
-        $i = 0;
-        foreach($brands as $brand){
-            if($i == 0){
+    protected function set_perfect_attr( $key )
+    {
+        $brands = wp_get_object_terms( $this->product->get_id(), 'pwb-brand' );
+        $brnd   = '';
+        $i      = 0;
+        foreach( $brands as $brand ) {
+            if( $i == 0 ) {
                 $brnd .= $brand->name;
-            }else{
-                $brnd .= ', '.$brand->name;
+            }
+            else {
+                $brnd .= ', ' . $brand->name;
             }
             $i++;
         }
@@ -404,26 +420,27 @@ class Rex_Product_Data_Retriever{
      * Set woocommerce brand attribute
      * @param key meta_key
      */
-    protected function set_wc_brand_attr( $key ) {
+    protected function set_wc_brand_attr( $key )
+    {
         $brands = '';
 
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            $brands = wp_get_post_terms( $this->product->get_parent_id(), 'product_brand', array("fields" => "all") );
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            $brands = wp_get_post_terms( $this->product->get_parent_id(), 'product_brand', array( "fields" => "all" ) );
         }
-        else{
-            $brands = wp_get_post_terms( $this->product->get_ID(), 'product_brand', array("fields" => "all") );
+        else {
+            $brands = wp_get_post_terms( $this->product->get_ID(), 'product_brand', array( "fields" => "all" ) );
         }
 
         $brnd = '';
-        if(!empty($brands)){
+        if( !empty( $brands ) ) {
 
             $i = 0;
-            foreach($brands as $brand){
-                if($i == 0){
+            foreach( $brands as $brand ) {
+                if( $i == 0 ) {
                     $brnd .= $brand->name;
                 }
-                else{
-                    $brnd .= ', '.$brand->name;
+                else {
+                    $brnd .= ', ' . $brand->name;
                 }
                 $i++;
             }
@@ -437,24 +454,27 @@ class Rex_Product_Data_Retriever{
      * Set woocommerce brand attribute
      * @param key meta_key
      */
-    protected function set_berocket_brand_attr( $key ) {
+    protected function set_berocket_brand_attr( $key )
+    {
         $brands = '';
 
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            $brands = wp_get_post_terms( $this->product->get_parent_id(), 'berocket_brand', array("fields" => "all") );
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            $brands = wp_get_post_terms( $this->product->get_parent_id(), 'berocket_brand', array( "fields" => "all" ) );
 
-        }else{
-            $brands = wp_get_post_terms( $this->product->get_ID(), 'berocket_brand', array("fields" => "all") );
+        }
+        else {
+            $brands = wp_get_post_terms( $this->product->get_ID(), 'berocket_brand', array( "fields" => "all" ) );
         }
         $brnd = '';
-        if(!empty($brands)){
+        if( !empty( $brands ) ) {
 
             $i = 0;
-            foreach($brands as $brand){
-                if($i == 0){
+            foreach( $brands as $brand ) {
+                if( $i == 0 ) {
                     $brnd .= $brand->name;
-                }else{
-                    $brnd .= ', '.$brand->name;
+                }
+                else {
+                    $brnd .= ', ' . $brand->name;
                 }
                 $i++;
             }
@@ -471,15 +491,16 @@ class Rex_Product_Data_Retriever{
      * @param $price
      * @return float|int
      */
-    protected function get_dynamic_price( $attr, $price ) {
+    protected function get_dynamic_price( $attr, $price )
+    {
         $is_premium = apply_filters( 'wpfm_is_premium', false );
 
-        if ( $is_premium ) {
+        if( $is_premium ) {
             $price     = $price === '' ? 0 : $price;
             $rules     = $this->feed_rules;
             $condition = '';
 
-            foreach ( $rules as $rule ) {
+            foreach( $rules as $rule ) {
                 if( isset( $rule[ 'attr' ] ) ) {
                     $current_attr = $rule[ 'attr' ];
                 }
@@ -487,20 +508,20 @@ class Rex_Product_Data_Retriever{
                     $current_attr = $rule[ 'cust_attr' ];
                 }
 
-                if ( $current_attr === $attr ) {
+                if( $current_attr === $attr ) {
                     $condition = $rule[ 'limit' ];
                     break;
                 }
             }
 
             $expression = $condition;
-            $operators = preg_split('([^\\+\\-*\\/\^])', trim($expression));
-            $operators = array_values( array_filter( $operators ) );
-            $numbers = preg_split('/[^0-9\%]/', trim($expression));
-            $numbers = array_values( array_filter( $numbers ) );
-            $i = 0;
+            $operators  = preg_split( '([^\\+\\-*\\/\^])', trim( $expression ) );
+            $operators  = array_values( array_filter( $operators ) );
+            $numbers    = preg_split( '/[^0-9\%]/', trim( $expression ) );
+            $numbers    = array_values( array_filter( $numbers ) );
+            $i          = 0;
 
-            foreach ( $operators as $operator ) {
+            foreach( $operators as $operator ) {
                 switch( $operator ) {
                     case '+':
                         (float)$price += (float)$this->get_percentage( $numbers[ $i++ ], $price );
@@ -530,8 +551,9 @@ class Rex_Product_Data_Retriever{
      * @param $price
      * @return float|int
      */
-    protected function get_percentage( $number, $price  ) {
-        if( strpos( $number, '%') !== false ) {
+    protected function get_percentage( $number, $price )
+    {
+        if( strpos( $number, '%' ) !== false ) {
             $number = str_replace( '', '%', $number );
             return (float)$price * ( (float)$number / 100 );
         }
@@ -543,32 +565,37 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_pr_att( $key, $rule = 'default' ) {
+    protected function set_pr_att( $key, $rule = 'default' )
+    {
 
-        switch ( $key ) {
+        switch( $key ) {
             case 'id':
-                return $this->product->get_id(); break;
+                return $this->product->get_id();
+                break;
 
             case 'sku':
-                return $this->product->get_sku(); break;
+                return $this->product->get_sku();
+                break;
 
             case 'parent_sku':
                 $pr_id = '';
-                if($this->product->is_type('variation')){
-                    $parent_id = $this->product->get_parent_id();
+                if( $this->product->is_type( 'variation' ) ) {
+                    $parent_id         = $this->product->get_parent_id();
                     $wc_parent_product = wc_get_product( $parent_id );
 
                     $pr_id = $wc_parent_product->get_sku();
 
-                }else{
+                }
+                else {
 
                     $pr_id = $this->product->get_sku();
                 }
-                return $pr_id; break;
+                return $pr_id;
+                break;
 
             case 'title':
-                if ( !$this->append_variation ) {
-                    if ( $this->product->is_type( 'variation' ) ) {
+                if( !$this->append_variation ) {
+                    if( $this->product->is_type( 'variation' ) ) {
                         $title = $this->product->get_title();
                         return $title;
                     }
@@ -577,18 +604,18 @@ class Rex_Product_Data_Retriever{
                     return $title;
                 }
                 else {
-                    if ( $this->is_children() ) {
+                    if( $this->is_children() ) {
                         $_product     = wc_get_product( $this->product );
                         $attr_summary = $_product->get_attribute_summary();
                         $attr_array   = explode( ",", $attr_summary );
 
                         $each_child_attr = [];
-                        foreach ( $attr_array as $ata ) {
+                        foreach( $attr_array as $ata ) {
                             $attr              = strpbrk( $ata, ":" );
                             $each_child_attr[] = $attr;
                         }
                         $each_child_attr_two = [];
-                        foreach ( $each_child_attr as $eca ) {
+                        foreach( $each_child_attr as $eca ) {
                             $each_child_attr_two[] = str_replace( ": ", " ", $eca );
                         }
 
@@ -602,20 +629,21 @@ class Rex_Product_Data_Retriever{
                     }
                 }
             case 'description':
-                if(($this->is_children())):
+                if( ( $this->is_children() ) ):
                     $description = $this->product->get_description();
-                    if(empty($description)) {
+                    if( empty( $description ) ) {
                         $_product = wc_get_product( $this->product->get_parent_id() );
-                        if ( is_object( $_product ) ) {
+                        if( is_object( $_product ) ) {
 
-                            return $this->remove_short_codes($_product->get_description());
+                            return $this->remove_short_codes( $_product->get_description() );
                         }
-                    }else {
-                        return $this->remove_short_codes($description);
+                    }
+                    else {
+                        return $this->remove_short_codes( $description );
                     }
                 else:
                     // $des = preg_replace('/(?:\s\s+|\n|\t)/', ' ',$this->product->get_description());
-                    return $this->remove_short_codes($this->product->get_description());
+                    return $this->remove_short_codes( $this->product->get_description() );
                 endif;
 
                 break;
@@ -624,7 +652,7 @@ class Rex_Product_Data_Retriever{
                 if( $this->is_children() ) {
                     $parent_product = wc_get_product( $this->product->get_parent_id() );
 
-                    if ( is_object( $parent_product ) ) {
+                    if( is_object( $parent_product ) ) {
                         return $this->remove_short_codes( $parent_product->get_description() );
                     }
                 }
@@ -633,95 +661,106 @@ class Rex_Product_Data_Retriever{
                 break;
 
             case 'short_description':
-                if(($this->is_children())):
+                if( ( $this->is_children() ) ):
                     $short_description = $this->product->get_short_description();
-                    if(empty($short_description)) {
+                    if( empty( $short_description ) ) {
                         $_product = wc_get_product( $this->product->get_parent_id() );
-                        if ( is_object( $_product ) ) {
+                        if( is_object( $_product ) ) {
 
-                            return  $this->remove_short_codes($_product->get_short_description());
+                            return $this->remove_short_codes( $_product->get_short_description() );
                         }
-                    }else {
+                    }
+                    else {
 
-                        return $this->remove_short_codes($short_description);
+                        return $this->remove_short_codes( $short_description );
                     }
                 else:
-                    return $this->remove_short_codes($this->product->get_short_description()) ;
+                    return $this->remove_short_codes( $this->product->get_short_description() );
                 endif;
                 break;
 
             case 'product_cats':
-                return $this->get_product_cats(); break;
+
+                return $this->get_product_cats( 'product_cat' );
 
             case 'product_cats_path':
-                return $this->get_product_cats_with_seperator(); break;
+                return $this->get_product_cats_with_seperator( 'product_cat' );
 
             case 'product_cats_path_pipe':
-                return $this->get_product_cats_with_seperator('', ' | ', ''); break;
+                return $this->get_product_cats_with_seperator('product_cat','', ' | ', '');
 
             case 'product_subcategory':
-                return $this->get_product_subcategory(); break;
+                return $this->get_product_subcategory();
+                break;
 
             case 'product_tags':
-                return $this->get_product_tags(); break;
+                return $this->get_product_tags();
+                break;
 
             case 'spartoo_product_cats':
-                return $this->get_spartoo_product_cats(); break;
+                return $this->get_spartoo_product_cats();
+                break;
 
             case 'sooqr_cats':
-                return $this->get_product_cats_for_sooqr(); break;
+                return $this->get_product_cats_for_sooqr();
+                break;
 
             case 'perfect_brand':
-                $brand = get_products_brands($this->product->get_id());
-                return $this->product->get_id(); break;
+                $brand = get_products_brands( $this->product->get_id() );
+                return $this->product->get_id();
+                break;
 
             case 'link':
+                $permalink = $this->product->get_permalink();
+                if ( function_exists( 'wpfm_is_wpml_active' ) && wpfm_is_wpml_active() ) {
+                    $permalink = apply_filters( 'wpml_permalink', $permalink, $this->feed->wpml_language );
+                }
 
-                if($this->analytics_params) {
-                    if ( ! empty( $this->analytics_params['utm_source'] ) &&
-                        ! empty( $this->analytics_params['utm_medium'] ) &&
-                        ! empty( $this->analytics_params['utm_campaign'] )
+                if( $this->analytics_params ) {
+                    if( !empty( $this->analytics_params[ 'utm_source' ] ) &&
+                        !empty( $this->analytics_params[ 'utm_medium' ] ) &&
+                        !empty( $this->analytics_params[ 'utm_campaign' ] )
                     ) {
                         if($rule === 'decode_url') {
-                            return add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink())); break;
+                            return add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink)); break;
                         }
-                        return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($this->product->get_permalink()) )); break;
+                        return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink) )); break;
                     }
                     if($rule === 'decode_url') {
-                        return urldecode($this->product->get_permalink()); break;
+                        return urldecode($permalink); break;
                     }
-                    return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
+                    return $this->safeCharEncodeURL(urldecode($permalink)); break;
                 }
                 if($rule === 'decode_url') {
-                    return urldecode($this->product->get_permalink()); break;
+                    return urldecode($permalink); break;
                 }
 
-                return $this->safeCharEncodeURL(urldecode($this->product->get_permalink())); break;
+                return $this->safeCharEncodeURL(urldecode($permalink)); break;
 
             case 'parent_url':
                 $_pr = $this->product;
-                if ( 'WC_Product_Variation' == get_class($this->product) ) {
-                    $_pr = wc_get_product($this->product->get_parent_id());
+                if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                    $_pr = wc_get_product( $this->product->get_parent_id() );
                 }
-                if($this->analytics_params) {
-                    if ( ! empty( $this->analytics_params['utm_source'] ) &&
-                        ! empty( $this->analytics_params['utm_medium'] ) &&
-                        ! empty( $this->analytics_params['utm_campaign'] )
+                if( $this->analytics_params ) {
+                    if( !empty( $this->analytics_params[ 'utm_source' ] ) &&
+                        !empty( $this->analytics_params[ 'utm_medium' ] ) &&
+                        !empty( $this->analytics_params[ 'utm_campaign' ] )
                     ) {
-                        if($rule === 'decode_url') {
-                            return add_query_arg( array_filter( $this->analytics_params ), urldecode($_pr->get_permalink()));
+                        if( $rule === 'decode_url' ) {
+                            return add_query_arg( array_filter( $this->analytics_params ), urldecode( $_pr->get_permalink() ) );
                         }
-                        return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($_pr->get_permalink()) ));
+                        return $this->safeCharEncodeURL( add_query_arg( array_filter( $this->analytics_params ), urldecode( $_pr->get_permalink() ) ) );
                     }
-                    if($rule === 'decode_url') {
-                        return urldecode($_pr->get_permalink());
+                    if( $rule === 'decode_url' ) {
+                        return urldecode( $_pr->get_permalink() );
                     }
-                    return $this->safeCharEncodeURL(urldecode($_pr->get_permalink()));
+                    return $this->safeCharEncodeURL( urldecode( $_pr->get_permalink() ) );
                 }
-                if($rule === 'decode_url') {
-                    return urldecode($_pr->get_permalink());
+                if( $rule === 'decode_url' ) {
+                    return urldecode( $_pr->get_permalink() );
                 }
-                return $this->safeCharEncodeURL(urldecode($_pr->get_permalink()));
+                return $this->safeCharEncodeURL( urldecode( $_pr->get_permalink() ) );
 
             case 'condition':
                 return $this->get_condition();
@@ -734,14 +773,14 @@ class Rex_Product_Data_Retriever{
 
             case 'availability_zero_three':
                 $if_available = $this->get_availability();
-                if ( 'out_of_stock' == $if_available ) {
+                if( 'out_of_stock' == $if_available ) {
                     return '3';
                 }
                 return '0';
 
             case 'availability_zero_one':
                 $if_available = $this->get_availability();
-                if ( 'out_of_stock' == $if_available ) {
+                if( 'out_of_stock' == $if_available ) {
                     return '0';
                 }
                 return '1';
@@ -759,28 +798,36 @@ class Rex_Product_Data_Retriever{
                 return $this->product->get_stock_quantity();
 
             case 'weight':
-                return $this->product->get_weight(); break;
+                return $this->product->get_weight();
+                break;
 
             case 'width':
-                return $this->product->get_width(); break;
+                return $this->product->get_width();
+                break;
 
             case 'height':
-                return $this->product->get_height(); break;
+                return $this->product->get_height();
+                break;
 
             case 'length':
-                return $this->product->get_length(); break;
+                return $this->product->get_length();
+                break;
 
             case 'shipping_class':
-                return $this->product->get_shipping_class(); break;
+                return $this->product->get_shipping_class();
+                break;
 
             case 'shipping_cost':
-                return $this->get_shipping_cost(); break;
+                return $this->get_shipping_cost();
+                break;
 
             case 'type':
-                return $this->product->get_type(); break;
+                return $this->product->get_type();
+                break;
 
             case 'in_stock':
-                return $this->get_stock(); break;
+                return $this->get_stock();
+                break;
 
             case 'rating_average':
                 return $this->product->get_average_rating();
@@ -789,11 +836,11 @@ class Rex_Product_Data_Retriever{
                 return $this->product->get_rating_count();
 
             case 'identifier_exists':
-                return $this->calculate_identifier_exists($this->data);
+                return $this->calculate_identifier_exists( $this->data );
 
             case 'current_page':
                 $product_id = '';
-                if ( $this->product->is_type('variation') ) {
+                if( $this->product->is_type( 'variation' ) ) {
                     $product_id = $this->product->get_parent_id();
                 }
                 else {
@@ -803,7 +850,7 @@ class Rex_Product_Data_Retriever{
 
             case 'author_name':
                 $author_id = '';
-                if ( $this->product->is_type('variation') ) {
+                if( $this->product->is_type( 'variation' ) ) {
                     $author_id = get_post_field( 'post_author', $this->product->get_parent_id() );
                 }
                 else {
@@ -813,7 +860,7 @@ class Rex_Product_Data_Retriever{
 
             case 'author_url':
                 $author_id = '';
-                if ( $this->product->is_type('variation') ) {
+                if( $this->product->is_type( 'variation' ) ) {
                     $author_id = get_post_field( 'post_author', $this->product->get_parent_id() );
                 }
                 else {
@@ -821,7 +868,9 @@ class Rex_Product_Data_Retriever{
                 }
                 return get_author_posts_url( $author_id );
 
-            default: return ''; break;
+            default:
+                return '';
+                break;
         }
     }
 
@@ -830,20 +879,21 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_price_attr( $key, $attr='' ) {
+    protected function set_price_attr( $key, $attr = '' )
+    {
 
-        switch ( $key ) {
+        switch( $key ) {
             case 'price':
-                if ($this->product->is_type( 'grouped' )) {
-                    if($this->wcml) {
+                if( $this->product->is_type( 'grouped' ) ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price = apply_filters('wcml_raw_price_amount', wc_format_decimal($this->get_grouped_price($this->product, '_regular_price'), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->get_grouped_price( $this->product, '_regular_price' ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
 
-                        if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                            $_price = $_custom_prices['_regular_price'];
+                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_regular_price' ];
                         }
 
                         $_price = $this->get_converted_price( $_price );
@@ -851,98 +901,101 @@ class Rex_Product_Data_Retriever{
                         return $this->get_dynamic_price( $attr, $_price );
                     }
                     else {
-                        $_price = $this->get_dynamic_price( $attr, $this->get_grouped_price($this->product, '_regular_price') );
+                        $_price = $this->get_dynamic_price( $attr, $this->get_grouped_price( $this->product, '_regular_price' ) );
 
                         $_price = $this->get_converted_price( $_price );
 
-                        return wc_format_decimal( $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
-                elseif ($this->product->is_type( 'composite' )) {
-                    $_pr  = new WC_Product_Composite($this->product->get_id());
-                    if($this->wcml) {
+                elseif( $this->product->is_type( 'composite' ) ) {
+                    $_pr = new WC_Product_Composite( $this->product->get_id() );
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
 
-                        if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-                            $_price = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals()), $this->wcml_currency);
+                        if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
                         }
                         else {
-                            $_price = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
                         }
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
 
-                        if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                            $_price = $_custom_prices['_regular_price'];
+                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_regular_price' ];
                         }
 
                         $_price = $this->get_converted_price( $_price );
 
                         return $_price;
-                    }else {
-                        if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
+                    }
+                    else {
+                        if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
                             $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
                             $_price = $this->get_converted_price( $_price );
-                            return wc_format_decimal( $_price, wc_get_price_decimals());
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                         else {
                             $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_regular_price() );
                             $_price = $this->get_converted_price( $_price );
-                            return wc_format_decimal( $_price, wc_get_price_decimals());
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                     }
                 }
-                elseif ($this->product->is_type( 'variable' )) {
+                elseif( $this->product->is_type( 'variable' ) ) {
                     $default_attributes = $this->get_default_attributes( $this->product );
-                    if($default_attributes) {
+                    if( $default_attributes ) {
                         $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
-                        if($variation_id) {
-                            $_variation_product = wc_get_product($variation_id);
-                            if($this->wcml) {
+                        if( $variation_id ) {
+                            $_variation_product = wc_get_product( $variation_id );
+                            if( $this->wcml ) {
                                 global $woocommerce_wpml;
-                                $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_variation_product->get_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
+                                $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_variation_product->get_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
                                 //if WCML price is set manually
                                 $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $variation_id, $this->wcml_currency );
-                                if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                                    $_price = $_custom_prices['_regular_price'];
+                                if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                                    $_price = $_custom_prices[ '_regular_price' ];
                                 }
 
                                 $_price = $this->get_converted_price( $_price );
 
                                 return $this->get_dynamic_price( $attr, $_price );
-                            }else {
+                            }
+                            else {
                                 $_price = $this->get_dynamic_price( $attr, $_variation_product->get_regular_price() );
                                 $_price = $this->get_converted_price( $_price );
-                                return wc_format_decimal(  $_price, wc_get_price_decimals());
+                                return wc_format_decimal( $_price, wc_get_price_decimals() );
                             }
                         }
-                        if($this->wcml) {
+                        if( $this->wcml ) {
                             global $woocommerce_wpml;
-                            $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
                             $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                                $_price = $_custom_prices['_regular_price'];
+                            if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                                $_price = $_custom_prices[ '_regular_price' ];
                             }
 
                             $_price = $this->get_converted_price( $_price );
                             return $this->get_dynamic_price( $attr, $_price );
-                        }else {
+                        }
+                        else {
                             $_price = $this->get_dynamic_price( $attr, $this->product->get_variation_regular_price() );
                             $_price = $this->get_converted_price( $_price );
-                            return wc_format_decimal(  $_price, wc_get_price_decimals());
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                     }
                     else {
-                        if($this->wcml) {
+                        if( $this->wcml ) {
                             global $woocommerce_wpml;
-                            $_price   = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_variation_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
                             //if WCML price is set manually
                             $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                                $_price = $_custom_prices['_regular_price'];
+                            if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                                $_price = $_custom_prices[ '_regular_price' ];
                             }
 
                             $_price = $this->get_converted_price( $_price );
@@ -951,277 +1004,291 @@ class Rex_Product_Data_Retriever{
                         }
                         $_price = $this->get_dynamic_price( $attr, $this->product->get_variation_regular_price() );
                         $_price = $this->get_converted_price( $_price );
-                        return wc_format_decimal(  $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
-                elseif($this->product->is_type('bundle')){
+                elseif( $this->product->is_type( 'bundle' ) ) {
                     $_price = $this->product->get_bundle_price();
                     $_price = $this->get_converted_price( $_price );
                     return $this->get_dynamic_price( $attr, $_price );
                 }
 
 
-                if($this->wcml) {
+                if( $this->wcml ) {
                     global $woocommerce_wpml;
-                    $_price  = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
+                    $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                        $_price = $_custom_prices['_regular_price'];
+                    if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
                     return $this->get_dynamic_price( $attr, $_price );
 
-                }else {
+                }
+                else {
                     $_price = $this->get_dynamic_price( $attr, $this->product->get_regular_price() );
                     $_price = $this->get_converted_price( $_price );
-                    return wc_format_decimal(  $_price, wc_get_price_decimals());
+                    return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
 
             case 'current_price':
-                if (!defined('WAD_INITIALIZED') ) {
-                    if ($this->product->is_type( 'grouped' )) {
-                        if($this->wcml) {
+                if( !defined( 'WAD_INITIALIZED' ) ) {
+                    if( $this->product->is_type( 'grouped' ) ) {
+                        if( $this->wcml ) {
                             global $woocommerce_wpml;
-                            $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal($this->get_grouped_price($this->product, '_price'), wc_get_price_decimals()), $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->get_grouped_price( $this->product, '_price' ), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
                             $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if($_custom_prices['_price'] > 0){
-                                $_price = $_custom_prices['_price'];
+                            if( $_custom_prices[ '_price' ] > 0 ) {
+                                $_price = $_custom_prices[ '_price' ];
                             }
                             $_price = $this->get_converted_price( $_price );
                             return $this->get_dynamic_price( $attr, $_price );
-                        }else {
-                            $_price = $this->get_dynamic_price( $attr, $this->get_grouped_price($this->product, '_price') );
+                        }
+                        else {
+                            $_price = $this->get_dynamic_price( $attr, $this->get_grouped_price( $this->product, '_price' ) );
                             $_price = $this->get_converted_price( $_price );
-                            return wc_format_decimal(  $_price, wc_get_price_decimals());
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                     }
-                    elseif ($this->product->is_type( 'composite' )) {
-                        $_pr  = new WC_Product_Composite($this->product->get_id());
-                        if($this->wcml) {
+                    elseif( $this->product->is_type( 'composite' ) ) {
+                        $_pr = new WC_Product_Composite( $this->product->get_id() );
+                        if( $this->wcml ) {
                             global $woocommerce_wpml;
-                            $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals()), $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
                             $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if($_custom_prices['_price'] > 0){
-                                $_price = $_custom_prices['_price'];
+                            if( $_custom_prices[ '_price' ] > 0 ) {
+                                $_price = $_custom_prices[ '_price' ];
                             }
                             $_price = $this->get_converted_price( $_price );
                             return $this->get_dynamic_price( $attr, $_price );
-                        }else {
+                        }
+                        else {
                             $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
                             $_price = $this->get_converted_price( $_price );
-                            return wc_format_decimal(  $_price, wc_get_price_decimals());
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
-                    }elseif ($this->product->is_type( 'variable' )) {
+                    }
+                    elseif( $this->product->is_type( 'variable' ) ) {
                         $default_attributes = $this->get_default_attributes( $this->product );
-                        if($default_attributes) {
+                        if( $default_attributes ) {
                             $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
-                            if($variation_id) {
-                                $_variation_product = wc_get_product($variation_id);
-                                if($this->wcml) {
+                            if( $variation_id ) {
+                                $_variation_product = wc_get_product( $variation_id );
+                                if( $this->wcml ) {
                                     global $woocommerce_wpml;
-                                    $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_variation_product->get_price(), wc_get_price_decimals()), $this->wcml_currency);
+                                    $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_variation_product->get_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                                     //if WCML price is set manually
                                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $variation_id, $this->wcml_currency );
-                                    if($_custom_prices['_price'] > 0){
-                                        $_price = $_custom_prices['_price'];
+                                    if( $_custom_prices[ '_price' ] > 0 ) {
+                                        $_price = $_custom_prices[ '_price' ];
                                     }
                                     $_price = $this->get_converted_price( $_price );
                                     return $this->get_dynamic_price( $attr, $_price );
-                                }else {
+                                }
+                                else {
                                     $_price = $this->get_dynamic_price( $attr, $_variation_product->get_price() );
                                     $_price = $this->get_converted_price( $_price );
-                                    return wc_format_decimal(  $_price, wc_get_price_decimals());
+                                    return wc_format_decimal( $_price, wc_get_price_decimals() );
                                 }
                             }
                         }
                         else {
-                            if($this->wcml) {
+                            if( $this->wcml ) {
                                 global $woocommerce_wpml;
-                                $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_price(), wc_get_price_decimals()), $this->wcml_currency);
+                                $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                                 //if WCML price is set manually
                                 $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                                if($_custom_prices['_price'] > 0){
-                                    $_price = $_custom_prices['_price'];
+                                if( $_custom_prices[ '_price' ] > 0 ) {
+                                    $_price = $_custom_prices[ '_price' ];
                                 }
                                 $_price = $this->get_converted_price( $_price );
                                 return $this->get_dynamic_price( $attr, $_price );
-                            }else{
+                            }
+                            else {
                                 $_price = $this->get_dynamic_price( $attr, $this->product->get_price() );
                                 $_price = $this->get_converted_price( $_price );
-                                return wc_format_decimal(  $_price, wc_get_price_decimals());
+                                return wc_format_decimal( $_price, wc_get_price_decimals() );
 
                             }
                         }
                     }
-                    if($this->wcml) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $this->product->get_price(), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->product->get_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_price'] > 0){
-                            $_price = $_custom_prices['_price'];
+                        if( $_custom_prices[ '_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $this->get_dynamic_price( $attr, $_price );
-                    }else {
+                    }
+                    else {
                         $_price = $this->get_dynamic_price( $attr, $this->product->get_price() );
                         $_price = $this->get_converted_price( $_price );
-                        return wc_format_decimal(  $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
                 else {
                     global $wad_discounts;
 
-                    $all_discounts = wad_get_active_discounts(true);
-                    foreach ($all_discounts as $discount_type => $discounts) {
-                        $wad_discounts[$discount_type] = array();
-                        foreach ($discounts as $discount_id) {
-                            $wad_discounts[$discount_type][$discount_id] = new WAD_Discount($discount_id);
+                    $all_discounts = wad_get_active_discounts( true );
+                    foreach( $all_discounts as $discount_type => $discounts ) {
+                        $wad_discounts[ $discount_type ] = array();
+                        foreach( $discounts as $discount_id ) {
+                            $wad_discounts[ $discount_type ][ $discount_id ] = new WAD_Discount( $discount_id );
                         }
                     }
-                    if ($this->product->is_type( 'grouped' )) {
-                        $sale_price = number_format( (float) $this->get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
+                    if( $this->product->is_type( 'grouped' ) ) {
+                        $sale_price = number_format( (float)$this->get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
 
                         $sale_price = $this->get_converted_price( $sale_price );
                         return $sale_price;
                     }
-                    elseif ($this->product->is_type( 'composite' )) {
-                        $_pr  = new WC_Product_Composite($this->product->get_id());
+                    elseif( $this->product->is_type( 'composite' ) ) {
+                        $_pr    = new WC_Product_Composite( $this->product->get_id() );
                         $_price = $_pr->get_composite_price();
 
                         $_price = $this->get_converted_price( $_price );
-                        return  wc_format_decimal( $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
-                    elseif ($this->product->is_type( 'variable' )) {
+                    elseif( $this->product->is_type( 'variable' ) ) {
                         $default_attributes = $this->get_default_attributes( $this->product );
-                        if($default_attributes) {
+                        if( $default_attributes ) {
                             $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
-                            if($variation_id) {
-                                $_variation_product = wc_get_product($variation_id);
-                                $sale_price = number_format( (float)$_variation_product->get_price(), 2, '.', '');
+                            if( $variation_id ) {
+                                $_variation_product = wc_get_product( $variation_id );
+                                $sale_price         = number_format( (float)$_variation_product->get_price(), 2, '.', '' );
                             }
                             else {
-                                $sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '');
+                                $sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '' );
                             }
                         }
                         else {
-                            $sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '');
+                            $sale_price = number_format( (float)$this->product->get_variation_price(), 2, '.', '' );
                         }
                     }
                     else
-                        $sale_price = number_format((float)$this->product->get_price(), 2, '.', '');
+                        $sale_price = number_format( (float)$this->product->get_price(), 2, '.', '' );
 
-                    $_pid = wad_get_product_id_to_use($this->product);
-                    $_product = wc_get_product($_pid);
+                    $_pid     = wad_get_product_id_to_use( $this->product );
+                    $_product = wc_get_product( $_pid );
                     if( $_product->is_type( 'variation' ) ) {
                         $_pid = $_product->get_parent_id();
                     }
-                    foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
-                        $o_discount = get_post_meta($discount_id, 'o-discount', true);
-                        $pr_list_id = $o_discount['products-list'];
-                        $product_list = new WAD_Products_List($pr_list_id);
-                        $raw_args = get_post_meta($pr_list_id, "o-list", true);
-                        $args = $product_list->get_args($raw_args);
-                        $args['fields'] = 'ids';
-                        $products = get_posts( $args );
+                    foreach( $wad_discounts[ "product" ] as $discount_id => $discount_obj ) {
+                        $o_discount       = get_post_meta( $discount_id, 'o-discount', true );
+                        $pr_list_id       = $o_discount[ 'products-list' ];
+                        $product_list     = new WAD_Products_List( $pr_list_id );
+                        $raw_args         = get_post_meta( $pr_list_id, "o-list", true );
+                        $args             = $product_list->get_args( $raw_args );
+                        $args[ 'fields' ] = 'ids';
+                        $products         = get_posts( $args );
 
-                        if ($discount_obj->is_applicable($_pid) && in_array($_pid, $products)) {
+                        if( $discount_obj->is_applicable( $_pid ) && in_array( $_pid, $products ) ) {
                             $to_widthdraw = 0;
-                            if (in_array($discount_obj->settings["action"], array("percentage-off-pprice", "percentage-off-osubtotal")))
-                                $to_widthdraw = floatval (floatval($sale_price)) * floatval ($discount_obj->settings["percentage-or-fixed-amount"]) / 100;
+                            if( in_array( $discount_obj->settings[ "action" ], array( "percentage-off-pprice", "percentage-off-osubtotal" ) ) )
+                                $to_widthdraw = floatval( floatval( $sale_price ) ) * floatval( $discount_obj->settings[ "percentage-or-fixed-amount" ] ) / 100;
                             //Fixed discount
-                            else if (in_array($discount_obj->settings["action"], array("fixed-amount-off-pprice", "fixed-amount-off-osubtotal"))) {
-                                $to_widthdraw = $discount_obj->settings["percentage-or-fixed-amount"];
-                            } else if ($discount_obj->settings["action"] == "fixed-pprice")
-                                $to_widthdraw = floatval(floatval($sale_price)) - floatval($discount_obj->settings["percentage-or-fixed-amount"]);
-                            $decimals = wc_get_price_decimals();
-                            $discount = round( $to_widthdraw, $decimals );
-                            $sale_price = floatval($sale_price) - $discount;
-                            if($this->wcml) {
+                            else if( in_array( $discount_obj->settings[ "action" ], array( "fixed-amount-off-pprice", "fixed-amount-off-osubtotal" ) ) ) {
+                                $to_widthdraw = $discount_obj->settings[ "percentage-or-fixed-amount" ];
+                            }
+                            else if( $discount_obj->settings[ "action" ] == "fixed-pprice" )
+                                $to_widthdraw = floatval( floatval( $sale_price ) ) - floatval( $discount_obj->settings[ "percentage-or-fixed-amount" ] );
+                            $decimals   = wc_get_price_decimals();
+                            $discount   = round( $to_widthdraw, $decimals );
+                            $sale_price = floatval( $sale_price ) - $discount;
+                            if( $this->wcml ) {
                                 global $woocommerce_wpml;
-                                $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals()), $this->wcml_currency);
+                                $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
 
                                 //if WCML price is set manually
                                 $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                                if($_custom_prices['_price'] > 0){
-                                    $_price = $_custom_prices['_price'];
+                                if( $_custom_prices[ '_price' ] > 0 ) {
+                                    $_price = $_custom_prices[ '_price' ];
                                 }
                                 $_price = $this->get_converted_price( $_price );
                                 return $this->get_dynamic_price( $attr, $_price );
-                            }else {
+                            }
+                            else {
                                 $_price = $this->get_dynamic_price( $attr, $sale_price );
                                 $_price = $this->get_converted_price( $_price );
-                                return  wc_format_decimal( $_price, wc_get_price_decimals());
+                                return wc_format_decimal( $_price, wc_get_price_decimals() );
                             }
                         }
                     }
-                    if($this->wcml) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_price'] > 0){
-                            $_price = $_custom_prices['_price'];
+                        if( $_custom_prices[ '_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $this->get_dynamic_price( $attr, $_price );
-                    }else {
+                    }
+                    else {
                         $_price = $this->get_dynamic_price( $attr, $sale_price );
                         $_price = $this->get_converted_price( $_price );
-                        return  wc_format_decimal( $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
 
             case 'sale_price':
 
-                if (!defined('WAD_INITIALIZED') ) {
-                    if ($this->product->is_type( 'grouped' )) {
-                        $sale_price = number_format((float)$this->get_grouped_price($this->product, '_sale_price'), 2, '.', '');
+                if( !defined( 'WAD_INITIALIZED' ) ) {
+                    if( $this->product->is_type( 'grouped' ) ) {
+                        $sale_price = number_format( (float)$this->get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
                     }
-                    elseif ($this->product->is_type( 'composite' )) {
-                        $sale_price =  wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
+                    elseif( $this->product->is_type( 'composite' ) ) {
+                        $sale_price = wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals() );
                     }
-                    elseif ($this->product->is_type( 'variable' )) {
+                    elseif( $this->product->is_type( 'variable' ) ) {
                         $default_attributes = $this->get_default_attributes( $this->product );
-                        if($default_attributes) {
+                        if( $default_attributes ) {
                             $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
-                            if($variation_id) {
-                                $_variation_product = wc_get_product($variation_id);
-                                $sale_price = wc_format_decimal( $_variation_product->get_sale_price(), wc_get_price_decimals());
-                            }else {
-                                $sale_price = wc_format_decimal( $this->product->get_variation_sale_price(), wc_get_price_decimals());
+                            if( $variation_id ) {
+                                $_variation_product = wc_get_product( $variation_id );
+                                $sale_price         = wc_format_decimal( $_variation_product->get_sale_price(), wc_get_price_decimals() );
                             }
-                        }else {
-                            $sale_price = wc_format_decimal( $this->product->get_variation_sale_price(), wc_get_price_decimals());
+                            else {
+                                $sale_price = wc_format_decimal( $this->product->get_variation_sale_price(), wc_get_price_decimals() );
+                            }
                         }
-                    }else {
-                        $sale_price = wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals());
+                        else {
+                            $sale_price = wc_format_decimal( $this->product->get_variation_sale_price(), wc_get_price_decimals() );
+                        }
                     }
-                    if($sale_price > 0) {
-                        if($this->wcml) {
+                    else {
+                        $sale_price = wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals() );
+                    }
+                    if( $sale_price > 0 ) {
+                        if( $this->wcml ) {
                             global $woocommerce_wpml;
-                            $_price         = apply_filters('wcml_raw_price_amount', $sale_price, $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', $sale_price, $this->wcml_currency );
 
                             //if WCML price is set manually
                             $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if($_custom_prices['_sale_price'] > 0){
-                                $_price = $_custom_prices['_sale_price'];
+                            if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                                $_price = $_custom_prices[ '_sale_price' ];
                             }
 
                             $_price = $this->get_converted_price( $_price );
 
                             return $this->get_dynamic_price( $attr, $_price );
-                        }else {
+                        }
+                        else {
 
                             $sale_price = $this->get_converted_price( $sale_price );
                             return $this->get_dynamic_price( $attr, $sale_price );
@@ -1232,114 +1299,120 @@ class Rex_Product_Data_Retriever{
                 else {
                     global $wad_discounts;
 
-                    $all_discounts = wad_get_active_discounts(true);
-                    foreach ($all_discounts as $discount_type => $discounts) {
-                        $wad_discounts[$discount_type] = array();
-                        foreach ($discounts as $discount_id) {
-                            $wad_discounts[$discount_type][$discount_id] = new WAD_Discount($discount_id);
+                    $all_discounts = wad_get_active_discounts( true );
+                    foreach( $all_discounts as $discount_type => $discounts ) {
+                        $wad_discounts[ $discount_type ] = array();
+                        foreach( $discounts as $discount_id ) {
+                            $wad_discounts[ $discount_type ][ $discount_id ] = new WAD_Discount( $discount_id );
                         }
                     }
 
-                    if ($this->product->is_type( 'grouped' )) {
-                        $sale_price = number_format((float)$this->get_grouped_price($this->product, '_sale_price'), 2, '.', '');
+                    if( $this->product->is_type( 'grouped' ) ) {
+                        $sale_price = number_format( (float)$this->get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
                     }
-                    elseif ($this->product->is_type( 'variable' )) {
+                    elseif( $this->product->is_type( 'variable' ) ) {
                         $default_attributes = $this->get_default_attributes( $this->product );
-                        if($default_attributes) {
+                        if( $default_attributes ) {
                             $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
-                            if($variation_id) {
-                                $_variation_product = wc_get_product($variation_id);
-                                $sale_price = number_format( (float)$_variation_product->get_sale_price(), 2, '.', '');
-                            }else {
-                                $sale_price = number_format( (float)$this->product->get_variation_sale_price(), 2, '.', '');
+                            if( $variation_id ) {
+                                $_variation_product = wc_get_product( $variation_id );
+                                $sale_price         = number_format( (float)$_variation_product->get_sale_price(), 2, '.', '' );
                             }
-                        }else {
-                            $sale_price = number_format( (float)$this->product->get_variation_sale_price(), 2, '.', '');
+                            else {
+                                $sale_price = number_format( (float)$this->product->get_variation_sale_price(), 2, '.', '' );
+                            }
+                        }
+                        else {
+                            $sale_price = number_format( (float)$this->product->get_variation_sale_price(), 2, '.', '' );
                         }
                     }
-                    elseif ($this->product->is_type( 'composite' )) {
-                        $_pr  = new WC_Product_Composite($this->product->get_id());
-                        if($this->wcml) {
+                    elseif( $this->product->is_type( 'composite' ) ) {
+                        $_pr = new WC_Product_Composite( $this->product->get_id() );
+                        if( $this->wcml ) {
                             global $woocommerce_wpml;
-                            $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals()), $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
                             $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if($_custom_prices['_sale_price'] > 0){
-                                $_price = $_custom_prices['_sale_price'];
+                            if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                                $_price = $_custom_prices[ '_sale_price' ];
                             }
 
                             $_price = $this->get_converted_price( $_price );
                             return $this->get_dynamic_price( $attr, $_price );
-                        }else {
+                        }
+                        else {
                             $_price = $this->get_dynamic_price( $attr, $_pr->get_sale_price() );
                             $_price = $this->get_converted_price( $_price );
-                            return  wc_format_decimal( $_price, wc_get_price_decimals());
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                     }
                     else
-                        $sale_price = number_format((float)$this->product->get_sale_price(), 2, '.', '');
+                        $sale_price = number_format( (float)$this->product->get_sale_price(), 2, '.', '' );
 
 
-                    $_pid = wad_get_product_id_to_use($this->product);
-                    $_product = wc_get_product($_pid);
+                    $_pid     = wad_get_product_id_to_use( $this->product );
+                    $_product = wc_get_product( $_pid );
                     if( $_product->is_type( 'variation' ) ) {
                         $_pid = $_product->get_parent_id();
                     }
-                    foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
-                        $o_discount = get_post_meta($discount_id, 'o-discount', true);
-                        $pr_list_id = $o_discount['products-list'];
-                        $product_list = new WAD_Products_List($pr_list_id);
-                        $raw_args = get_post_meta($pr_list_id, "o-list", true);
-                        $args = $product_list->get_args($raw_args);
-                        $args['fields'] = 'ids';
-                        $products = get_posts( $args );
-                        if ($discount_obj->is_applicable($_pid) && in_array($_pid, $products)) {
+                    foreach( $wad_discounts[ "product" ] as $discount_id => $discount_obj ) {
+                        $o_discount       = get_post_meta( $discount_id, 'o-discount', true );
+                        $pr_list_id       = $o_discount[ 'products-list' ];
+                        $product_list     = new WAD_Products_List( $pr_list_id );
+                        $raw_args         = get_post_meta( $pr_list_id, "o-list", true );
+                        $args             = $product_list->get_args( $raw_args );
+                        $args[ 'fields' ] = 'ids';
+                        $products         = get_posts( $args );
+                        if( $discount_obj->is_applicable( $_pid ) && in_array( $_pid, $products ) ) {
                             $to_widthdraw = 0;
-                            if (in_array($discount_obj->settings["action"], array("percentage-off-pprice", "percentage-off-osubtotal")))
-                                $to_widthdraw = floatval (floatval($sale_price)) * floatval ($discount_obj->settings["percentage-or-fixed-amount"]) / 100;
+                            if( in_array( $discount_obj->settings[ "action" ], array( "percentage-off-pprice", "percentage-off-osubtotal" ) ) )
+                                $to_widthdraw = floatval( floatval( $sale_price ) ) * floatval( $discount_obj->settings[ "percentage-or-fixed-amount" ] ) / 100;
                             //Fixed discount
-                            else if (in_array($discount_obj->settings["action"], array("fixed-amount-off-pprice", "fixed-amount-off-osubtotal"))) {
-                                $to_widthdraw = $discount_obj->settings["percentage-or-fixed-amount"];
-                            } else if ($discount_obj->settings["action"] == "fixed-pprice")
-                                $to_widthdraw = floatval(floatval($sale_price)) - floatval($discount_obj->settings["percentage-or-fixed-amount"]);
-                            $decimals = wc_get_price_decimals();
-                            $discount = round( $to_widthdraw, $decimals );
-                            $sale_price = floatval($sale_price) - $discount;
-                            if($this->wcml) {
+                            else if( in_array( $discount_obj->settings[ "action" ], array( "fixed-amount-off-pprice", "fixed-amount-off-osubtotal" ) ) ) {
+                                $to_widthdraw = $discount_obj->settings[ "percentage-or-fixed-amount" ];
+                            }
+                            else if( $discount_obj->settings[ "action" ] == "fixed-pprice" )
+                                $to_widthdraw = floatval( floatval( $sale_price ) ) - floatval( $discount_obj->settings[ "percentage-or-fixed-amount" ] );
+                            $decimals   = wc_get_price_decimals();
+                            $discount   = round( $to_widthdraw, $decimals );
+                            $sale_price = floatval( $sale_price ) - $discount;
+                            if( $this->wcml ) {
                                 global $woocommerce_wpml;
-                                $_price         = apply_filters('wcml_raw_price_amount',wc_format_decimal( $sale_price, wc_get_price_decimals()), $this->wcml_currency);
+                                $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
 
                                 //if WCML price is set manually
                                 $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                                if($_custom_prices['_sale_price'] > 0){
-                                    $_price = $_custom_prices['_sale_price'];
+                                if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                                    $_price = $_custom_prices[ '_sale_price' ];
                                 }
 
                                 $_price = $this->get_converted_price( $_price );
                                 return $this->get_dynamic_price( $attr, $_price );
-                            }else {
+                            }
+                            else {
                                 $_price = $this->get_dynamic_price( $attr, $sale_price );
                                 $_price = $this->get_converted_price( $_price );
-                                return  wc_format_decimal( $_price, wc_get_price_decimals());
+                                return wc_format_decimal( $_price, wc_get_price_decimals() );
                             }
                         }
                     }
-                    $sale_price = wc_format_decimal( $sale_price, wc_get_price_decimals());
-                    if($sale_price > 0) {
-                        if($this->wcml) {
+                    $sale_price = wc_format_decimal( $sale_price, wc_get_price_decimals() );
+                    if( $sale_price > 0 ) {
+                        if( $this->wcml ) {
                             global $woocommerce_wpml;
-                            $_price         = apply_filters('wcml_raw_price_amount',$sale_price, $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', $sale_price, $this->wcml_currency );
 
                             //if WCML price is set manually
                             $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                            if($_custom_prices['_sale_price'] > 0){
-                                $_price = $_custom_prices['_sale_price'];
+                            if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                                $_price = $_custom_prices[ '_sale_price' ];
                             }
 
                             $_price = $this->get_converted_price( $_price );
                             return $this->get_dynamic_price( $attr, $_price );
-                        }else {
+                        }
+                        else {
 
                             $_price = $this->get_converted_price( $sale_price );
                             return $this->get_dynamic_price( $attr, $sale_price );
@@ -1350,427 +1423,448 @@ class Rex_Product_Data_Retriever{
                 }
 
             case 'price_with_tax':
-                if ($this->product->is_type( 'grouped' )) {
-                    if($this->wcml) {
+                if( $this->product->is_type( 'grouped' ) ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount',wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_regular_price') ) ), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                            $_price = $_custom_prices['_regular_price'];
+                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $this->get_dynamic_price( $attr, $_price );
-                    }else {
-                        $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->get_grouped_price($this->product, '_regular_price') ) ) );
-                        $_price = $this->get_converted_price( $_price );
-                        return $_price ;
                     }
-                }
-                elseif ($this->product->is_type( 'composite' )) {
-                    $_pr  = new WC_Product_Composite($this->product->get_id());
-                    if($this->wcml) {
-                        global $woocommerce_wpml;
-
-                        if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-                            $_price = apply_filters('wcml_raw_price_amount',wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals()), $this->wcml_currency);
-                        }
-                        else {
-                            $_price = apply_filters('wcml_raw_price_amount',wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
-                        }
-
-                        //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                            $_price = $_custom_prices['_regular_price'];
-                        }
-                        $_price = $this->get_converted_price( $_price );
-                        return $this->get_dynamic_price( $attr, $_price );
-                    }else {
-
-                        if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
-                            $_price = $this->get_converted_price( $_price );
-                            return  wc_format_decimal( $_price, wc_get_price_decimals());
-                        }
-                        else {
-                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_regular_price() );
-                            $_price = $this->get_converted_price( $_price );
-                            return  wc_format_decimal( $_price, wc_get_price_decimals());
-                        }
-                    }
-                }
-                if($this->wcml) {
-                    global $woocommerce_wpml;
-                    $_price         = apply_filters('wcml_raw_price_amount',wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals()), $this->wcml_currency);
-
-                    //if WCML price is set manually
-                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                        $_price = $_custom_prices['_regular_price'];
-                    }
-                    $_price = $this->get_converted_price( $_price );
-                    return $this->get_dynamic_price( $attr, $_price );
-                }else {
-                    $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->product->get_regular_price() ) ) );
-                    $_price = $this->get_converted_price( $_price );
-                    return  wc_format_decimal( $_price, wc_get_price_decimals() );
-                }
-
-            case 'current_price_with_tax':
-                if ($this->product->is_type( 'grouped' )) {
-                    if($this->wcml) {
-                        global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_price') ) ), $this->wcml_currency);
-
-                        //if WCML price is set manually
-                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_price'] > 0){
-                            $_price = $_custom_prices['_price'];
-                        }
-                        $_price = $this->get_converted_price( $_price );
-                        return $this->get_dynamic_price( $attr, $_price );
-                    }else {
-                        $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->get_grouped_price($this->product, '_price') ) ) );;
+                    else {
+                        $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->get_grouped_price( $this->product, '_regular_price' ) ) ) );
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
                     }
                 }
-                elseif ($this->product->is_type( 'composite' )) {
-                    $_pr  = new WC_Product_Composite($this->product->get_id());
-                    if($this->wcml) {
+                elseif( $this->product->is_type( 'composite' ) ) {
+                    $_pr = new WC_Product_Composite( $this->product->get_id() );
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals()), $this->wcml_currency);
+
+                        if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
+                        }
+                        else {
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
+                        }
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_price'] > 0){
-                            $_price = $_custom_prices['_price'];
+                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $this->get_dynamic_price( $attr, $_price );
-                    }else {
-                        $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
-                        $_price = $this->get_converted_price( $_price );
-                        return  wc_format_decimal( $_price, wc_get_price_decimals());
+                    }
+                    else {
+
+                        if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
+                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
+                            $_price = $this->get_converted_price( $_price );
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
+                        }
+                        else {
+                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_regular_price() );
+                            $_price = $this->get_converted_price( $_price );
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
+                        }
                     }
                 }
-                if($this->wcml) {
+                if( $this->wcml ) {
                     global $woocommerce_wpml;
-                    $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals()), $this->wcml_currency);
+                    $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if($_custom_prices['_price'] > 0){
-                        $_price = $_custom_prices['_price'];
+                    if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
                     return $this->get_dynamic_price( $attr, $_price );
-                }else {
-                    $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->product->get_price() ) ) );
+                }
+                else {
+                    $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->product->get_regular_price() ) ) );
                     $_price = $this->get_converted_price( $_price );
-                    return wc_format_decimal( $_price, wc_get_price_decimals());
+                    return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
 
-            case 'sale_price_with_tax':
-                if ($this->product->is_type( 'grouped' )) {
-                    if($this->wcml) {
+            case 'current_price_with_tax':
+                if( $this->product->is_type( 'grouped' ) ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_sale_price') ) ), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_sale_price'] > 0){
-                            $_price = $_custom_prices['_sale_price'];
+                        if( $_custom_prices[ '_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_price' ];
+                        }
+                        $_price = $this->get_converted_price( $_price );
+                        return $this->get_dynamic_price( $attr, $_price );
+                    }
+                    else {
+                        $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->get_grouped_price( $this->product, '_price' ) ) ) );;
+                        $_price = $this->get_converted_price( $_price );
+                        return $_price;
+                    }
+                }
+                elseif( $this->product->is_type( 'composite' ) ) {
+                    $_pr = new WC_Product_Composite( $this->product->get_id() );
+                    if( $this->wcml ) {
+                        global $woocommerce_wpml;
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
+
+                        //if WCML price is set manually
+                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
+                        if( $_custom_prices[ '_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_price' ];
+                        }
+                        $_price = $this->get_converted_price( $_price );
+                        return $this->get_dynamic_price( $attr, $_price );
+                    }
+                    else {
+                        $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
+                        $_price = $this->get_converted_price( $_price );
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
+                    }
+                }
+                if( $this->wcml ) {
+                    global $woocommerce_wpml;
+                    $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
+
+                    //if WCML price is set manually
+                    $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
+                    if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_price = $_custom_prices[ '_price' ];
+                    }
+                    $_price = $this->get_converted_price( $_price );
+                    return $this->get_dynamic_price( $attr, $_price );
+                }
+                else {
+                    $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->product->get_price() ) ) );
+                    $_price = $this->get_converted_price( $_price );
+                    return wc_format_decimal( $_price, wc_get_price_decimals() );
+                }
+
+            case 'sale_price_with_tax':
+                if( $this->product->is_type( 'grouped' ) ) {
+                    if( $this->wcml ) {
+                        global $woocommerce_wpml;
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_sale_price' ) ) ), wc_get_price_decimals() ), $this->wcml_currency );
+
+                        //if WCML price is set manually
+                        $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
+                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
                     }
                     else {
-                        $_price = $this->get_grouped_price($this->product, '_sale_price');
+                        $_price = $this->get_grouped_price( $this->product, '_sale_price' );
                         $_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
                     }
                 }
-                elseif ($this->product->is_type( 'composite' )) {
-                    $_pr  = new WC_Product_Composite($this->product->get_id());
-                    if($this->wcml) {
+                elseif( $this->product->is_type( 'composite' ) ) {
+                    $_pr = new WC_Product_Composite( $this->product->get_id() );
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_sale_price'] > 0){
-                            $_price = $_custom_prices['_sale_price'];
+                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
+                    }
+                    else {
                         $_price = $_pr->get_sale_price();
                         $_price = $this->get_converted_price( $_price );
-                        return  wc_format_decimal( $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
                 $sale_price = $this->product->get_sale_price();
-                if($sale_price > 0) {
-                    if($this->wcml) {
+                if( $sale_price > 0 ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_sale_price'] > 0){
-                            $_price = $_custom_prices['_sale_price'];
+                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
+                    }
+                    else {
                         $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) );
                         $_price = $this->get_converted_price( $_price );
-                        return wc_format_decimal( $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
                 return '';
 
             case 'price_excl_tax':
 
-                if ($this->product->is_type( 'grouped' )) {
-                    if($this->wcml) {
+                if( $this->product->is_type( 'grouped' ) ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_regular_price') ) ), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                            $_price = $_custom_prices['_regular_price'];
+                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
-                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_regular_price') ) );
+                    }
+                    else {
+                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_regular_price' ) ) );
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
                     }
                 }
-                elseif ($this->product->is_type( 'composite' )) {
-                    $_pr  = new WC_Product_Composite($this->product->get_id());
-                    if($this->wcml) {
+                elseif( $this->product->is_type( 'composite' ) ) {
+                    $_pr = new WC_Product_Composite( $this->product->get_id() );
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
 
-                        if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-                            $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals()), $this->wcml_currency);
+                        if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
                         }
                         else {
-                            $_price = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals()), $this->wcml_currency);
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_regular_price(), wc_get_price_decimals() ), $this->wcml_currency );
                         }
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
 
-                        if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                            $_price = $_custom_prices['_regular_price'];
+                        if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
-                        if ( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
+                    }
+                    else {
+                        if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
                             $_price = $_pr->get_composite_price();
                             $_price = $this->get_converted_price( $_price );
-                            return  wc_format_decimal( $_price, wc_get_price_decimals());
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                         else {
                             $_price = $_pr->get_composite_regular_price();
                             $_price = $this->get_converted_price( $_price );
-                            return  wc_format_decimal( $_price, wc_get_price_decimals());
+                            return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                     }
                 }
-                if($this->wcml) {
+                if( $this->wcml ) {
                     global $woocommerce_wpml;
-                    $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals()), $this->wcml_currency);
+                    $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                        $_price = $_custom_prices['_regular_price'];
+                    if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
                     return $_price;
-                }else {
+                }
+                else {
                     $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) );
                     $_price = $this->get_converted_price( $_price );
-                    return  wc_format_decimal( $_price, wc_get_price_decimals());
+                    return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
 
             case 'current_price_excl_tax':
-                if ($this->product->is_type( 'grouped' )) {
-                    if($this->wcml) {
+                if( $this->product->is_type( 'grouped' ) ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_price') ) ), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_price'] > 0){
-                            $_price = $_custom_prices['_price'];
+                        if( $_custom_prices[ '_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
-                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_price') ) );
+                    }
+                    else {
+                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_price' ) ) );
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
                     }
                 }
-                elseif ($this->product->is_type( 'composite' )) {
-                    $_pr  = new WC_Product_Composite($this->product->get_id());
-                    if($this->wcml) {
+                elseif( $this->product->is_type( 'composite' ) ) {
+                    $_pr = new WC_Product_Composite( $this->product->get_id() );
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_composite_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_price'] > 0){
-                            $_price = $_custom_prices['_price'];
+                        if( $_custom_prices[ '_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
+                    }
+                    else {
                         $_price = $_pr->get_composite_price();
                         $_price = $this->get_converted_price( $_price );
-                        return  wc_format_decimal( $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
-                if($this->wcml) {
+                if( $this->wcml ) {
                     global $woocommerce_wpml;
-                    $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals()), $this->wcml_currency);
+                    $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if($_custom_prices['_price'] > 0){
-                        $_price = $_custom_prices['_price'];
+                    if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_price = $_custom_prices[ '_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
                     return $_price;
-                }else {
+                }
+                else {
                     $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) );
                     $_price = $this->get_converted_price( $_price );
-                    return wc_format_decimal( $_price, wc_get_price_decimals());
+                    return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
 
             case 'sale_price_excl_tax':
-                if ($this->product->is_type( 'grouped' )) {
-                    if($this->wcml) {
+                if( $this->product->is_type( 'grouped' ) ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_sale_price') ) ), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_sale_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_sale_price'] > 0){
-                            $_price = $_custom_prices['_sale_price'];
+                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
-                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price($this->product, '_sale_price') ) );
+                    }
+                    else {
+                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_sale_price' ) ) );
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
                     }
                 }
-                elseif ($this->product->is_type( 'composite' )) {
-                    $_pr  = new WC_Product_Composite($this->product->get_id());
-                    if($this->wcml) {
+                elseif( $this->product->is_type( 'composite' ) ) {
+                    $_pr = new WC_Product_Composite( $this->product->get_id() );
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $_pr->get_sale_price(), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_sale_price'] > 0){
-                            $_price = $_custom_prices['_sale_price'];
+                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
+                    }
+                    else {
                         $_price = $_pr->get_sale_price();
                         $_price = $this->get_converted_price( $_price );
-                        return  wc_format_decimal( $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
                 $sale_price = $this->product->get_sale_price();
-                if($sale_price > 0) {
-                    if($this->wcml) {
+                if( $sale_price > 0 ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_sale_price'] > 0){
-                            $_price = $_custom_prices['_sale_price'];
+                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
-                    }else {
+                    }
+                    else {
                         $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) );
                         $_price = $this->get_converted_price( $_price );
-                        return wc_format_decimal( $_price, wc_get_price_decimals());
+                        return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
                 return '';
 
             case 'price_db':
-                if($this->wcml) {
+                if( $this->wcml ) {
                     global $woocommerce_wpml;
-                    $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( get_post_meta( $this->product->get_id(), '_regular_price', true), wc_get_price_decimals()), $this->wcml_currency);
+                    $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( get_post_meta( $this->product->get_id(), '_regular_price', true ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if( $_custom_prices && $_custom_prices['_regular_price'] > 0){
-                        $_price = $_custom_prices['_regular_price'];
+                    if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
+                        $_price = $_custom_prices[ '_regular_price' ];
                     }
                     return $_price;
-                }else {
+                }
+                else {
                     $meta_key = '_regular_price';
-                    if ( $this->product->is_type( 'variable' ) || $this->product->is_type( 'grouped' ) ){
+                    if( $this->product->is_type( 'variable' ) || $this->product->is_type( 'grouped' ) ) {
                         $meta_key = '_price';
                     }
-                    return  wc_format_decimal( get_post_meta( $this->product->get_id(), $meta_key, true), wc_get_price_decimals());
+                    return wc_format_decimal( get_post_meta( $this->product->get_id(), $meta_key, true ), wc_get_price_decimals() );
                 }
 
             case 'current_price_db':
-                if($this->wcml) {
+                if( $this->wcml ) {
                     global $woocommerce_wpml;
-                    $_price = apply_filters('wcml_raw_price_amount', wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true), wc_get_price_decimals()), $this->wcml_currency);
+                    $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true ), wc_get_price_decimals() ), $this->wcml_currency );
 
                     //if WCML price is set manually
                     $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                    if($_custom_prices['_price'] > 0){
-                        $_price = $_custom_prices['_price'];
+                    if( $_custom_prices[ '_price' ] > 0 ) {
+                        $_price = $_custom_prices[ '_price' ];
                     }
                     return $_price;
-                }else {
-                    return  wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true), wc_get_price_decimals());
+                }
+                else {
+                    return wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true ), wc_get_price_decimals() );
                 }
 
             case 'sale_price_db':
-                $sale_price = get_post_meta( $this->product->get_id(), '_sale_price', true);
-                if( (int) $sale_price > 0) {
-                    if($this->wcml) {
+                $sale_price = get_post_meta( $this->product->get_id(), '_sale_price', true );
+                if( (int)$sale_price > 0 ) {
+                    if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price         = apply_filters('wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals()), $this->wcml_currency);
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
-                        if($_custom_prices['_sale_price'] > 0){
-                            $_price = $_custom_prices['_sale_price'];
+                        if( $_custom_prices[ '_sale_price' ] > 0 ) {
+                            $_price = $_custom_prices[ '_sale_price' ];
                         }
                         return $_price;
-                    }else {
-                        return wc_format_decimal( $sale_price, wc_get_price_decimals());
+                    }
+                    else {
+                        return wc_format_decimal( $sale_price, wc_get_price_decimals() );
                     }
                 }
                 return '';
 
-            default: return '';
+            default:
+                return '';
         }
     }
 
@@ -1781,27 +1875,28 @@ class Rex_Product_Data_Retriever{
      * @param $price
      * @return mixed|void
      */
-    protected function get_converted_price( $price ) {
-        if ( wpfm_is_aelia_active() ) {
+    protected function get_converted_price( $price )
+    {
+        if( wpfm_is_aelia_active() ) {
             $from_currency = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD';
             $to_currency   = $this->aelia_currency;
 
             try {
                 $price = apply_filters( 'wc_aelia_cs_convert', $price, $from_currency, $to_currency );
             }
-            catch ( Exception $e ) {
+            catch( Exception $e ) {
                 $log = wc_get_logger();
                 $log->warning( $e->getMessage(), array( 'source' => 'wpfm-error' ) );
             }
         }
 
-        if ( wpfm_is_wmc_active() ) {
-            $wmc_settings = class_exists( 'WOOMULTI_CURRENCY_Data' ) ? WOOMULTI_CURRENCY_Data::get_ins() : array();
+        if( wpfm_is_wmc_active() ) {
+            $wmc_settings      = class_exists( 'WOOMULTI_CURRENCY_Data' ) ? WOOMULTI_CURRENCY_Data::get_ins() : array();
             $wmc_currency_list = !empty( $wmc_settings ) ? $wmc_settings->currencies_list : array();
 
-            if ( !empty( $wmc_currency_list ) ) {
-                $to_currency   = $this->wmc_currency;
-                $rate = $wmc_currency_list[ $to_currency ][ 'rate' ];
+            if( !empty( $wmc_currency_list ) ) {
+                $to_currency = $this->wmc_currency;
+                $rate        = $wmc_currency_list[ $to_currency ][ 'rate' ];
 
                 $price = $price * $rate;
             }
@@ -1816,12 +1911,14 @@ class Rex_Product_Data_Retriever{
      *
      * @return array|false
      */
-    protected function get_image_meta(){
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            $_pr = wc_get_product($this->product->get_parent_id());
-            return wp_get_attachment_metadata( $_pr->get_image_id() );
-        }else {
-            return wp_get_attachment_metadata( $this->product->get_image_id() );
+    protected function get_image_meta()
+    {
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            $_pr = wc_get_product( $this->product->get_parent_id() );
+            return $_pr ? wp_get_attachment_metadata( $_pr->get_image_id() ) : array();
+        }
+        else {
+            return $this->product ? wp_get_attachment_metadata( $this->product->get_image_id() ) : array();
         }
     }
 
@@ -1831,15 +1928,19 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_image_att( $key ) {
+    protected function set_image_att( $key )
+    {
 
-        switch ( $key ) {
+        switch( $key ) {
             case 'main_image':
-                if ( 'WC_Product_Variation' == get_class($this->product) ) {
-                    $_pr = wc_get_product($this->product->get_parent_id());
-                    return wp_get_attachment_url(  $_pr->get_image_id() ); break;
-                }else {
-                    return wp_get_attachment_url(  $this->product->get_image_id() ); break;
+                if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                    $_pr = wc_get_product( $this->product->get_parent_id() );
+                    return $_pr ? wp_get_attachment_url( $_pr->get_image_id() ) : '';
+                    break;
+                }
+                else {
+                    return $this->product ? wp_get_attachment_url( $this->product->get_image_id() ) : '';
+                    break;
                 }
                 return '';
 
@@ -1859,38 +1960,47 @@ class Rex_Product_Data_Retriever{
                 return $image_src[ 'sizes' ][ 'woocommerce_thumbnail' ][ 'mime-type' ];
 
             case 'image_size':
-                if ( 'WC_Product_Variation' == get_class($this->product) ) {
-                    $_pr = wc_get_product($this->product->get_parent_id());
-                    $image_size = filesize(get_attached_file(  $_pr->get_image_id() ) );
+                if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                    $_pr        = wc_get_product( $this->product->get_parent_id() );
+                    $image_size = $_pr ? filesize( get_attached_file( $_pr->get_image_id() ) ) : 0;
 
-                }else {
-                    $image_size = filesize(get_attached_file(  $this->product->get_image_id() ) );
+                }
+                else {
+                    $image_size = $this->product ? filesize( get_attached_file( $this->product->get_image_id() ) ) : 0;
                 }
 
                 return $image_size;
 
             case 'keywords':
                 $image_src = $this->get_image_meta();
-                return $image_src[ 'image_meta' ][ 'keywords' ];
+                return isset( $image_src[ 'image_meta' ][ 'keywords' ] ) ? implode( ', ', $image_src[ 'image_meta' ][ 'keywords' ] ) : '';
 
             case 'thumbnail_image':
-                if ( 'WC_Product_Variation' == get_class($this->product) ) {
+                if( 'WC_Product_Variation' == get_class( $this->product ) ) {
                     return get_the_post_thumbnail_url( $this->product->get_parent_id() );
 
-                }else {
-                    return get_the_post_thumbnail_url(  $this->product->get_id() );
+                }
+                else {
+                    return get_the_post_thumbnail_url( $this->product->get_id() );
                 }
 
             case 'featured_image':
-                if( wp_get_attachment_url(  $this->product->get_image_id() ) ){
-                    return wp_get_attachment_url(  $this->product->get_image_id() ); break;
+                if( $this->product && wp_get_attachment_url( $this->product->get_image_id() ) ) {
+                    return wp_get_attachment_url( $this->product->get_image_id() );
+                    break;
                 }
-                return ''; break;
+                return '';
+                break;
+
             case 'all_image':
-                return $this->get_all_image(); break;
+                return $this->get_all_image();
+
             case 'all_image_pipe':
-                return $this->get_all_image('|'); break;
-            default: return $this->get_additional_image( $key ); break;
+                return $this->get_all_image( '|' );
+
+            default:
+                $key = str_replace( 'additional_', '', $key );
+                return $this->get_additional_image( $key );
         }
     }
 
@@ -1901,13 +2011,14 @@ class Rex_Product_Data_Retriever{
      * @param string $sep
      * @return string
      */
-    private function get_all_image( $sep = ',' ) {
+    private function get_all_image( $sep = ',' )
+    {
         $attachment_ids = $this->product->get_gallery_image_ids();
-        $all_images = [];
-        foreach ($attachment_ids as $key => $val){
-            $all_images[] = wp_get_attachment_url($val);
+        $all_images     = [];
+        foreach( $attachment_ids as $key => $val ) {
+            $all_images[] = wp_get_attachment_url( $val );
         }
-        return implode( $sep , $all_images );
+        return implode( $sep, $all_images );
     }
 
 
@@ -1916,10 +2027,7 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_product_att( $key ) {
-        if ( 'WC_Product_Variation' != get_class($this->product) ) {
-            return;
-        }
+    protected function set_product_attr( $key ) {
         $key = str_replace( 'bwf_attr_pa_', '', $key);
         $value = $this->product->get_attribute( $key );
 
@@ -1935,14 +2043,15 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_glami_att( $key ) {
-        if ( 'WC_Product_Variation' != get_class($this->product) ) {
+    protected function set_glami_att( $key )
+    {
+        if( 'WC_Product_Variation' != get_class( $this->product ) ) {
             return;
         }
-        $key = str_replace( 'param_', '', $key);
+        $key   = str_replace( 'param_', '', $key );
         $value = $this->product->get_attribute( $key );
 
-        if ( ! empty( $value ) ) {
+        if( !empty( $value ) ) {
             $value = trim( $value );
         }
         return $value;
@@ -1952,22 +2061,24 @@ class Rex_Product_Data_Retriever{
     /**
      * Set a Dropship attribute.
      */
-    protected function set_dropship_att( $key ) {
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            return get_post_meta($this->product->get_parent_id(), $key, true);
+    protected function set_dropship_att( $key )
+    {
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            return get_post_meta( $this->product->get_parent_id(), $key, true );
         }
-        return get_post_meta($this->product->get_id(), $key, true);
+        return get_post_meta( $this->product->get_id(), $key, true );
     }
 
 
     /**
      * Set a Date attributes.
      */
-    protected function set_date_attr( $key ) {
-        switch ( $key ) {
+    protected function set_date_attr( $key )
+    {
+        switch( $key ) {
             case 'post_publish_date':
                 $product_id = '';
-                if ( $this->product->is_type('variation') ) {
+                if( $this->product->is_type( 'variation' ) ) {
                     $product_id = $this->product->get_parent_id();
                 }
                 else {
@@ -1976,36 +2087,48 @@ class Rex_Product_Data_Retriever{
                 return get_the_date( '', $product_id ) . 'T' . get_the_time( 'g:i:s', $product_id ) . 'Z';
 
             case 'last_updated':
-                if ( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                if( 'WC_Product_Variation' == get_class( $this->product ) ) {
                     $_pr = wc_get_product( $this->product->get_parent_id() );
-                    return $_pr->get_date_modified()->date('Y-m-d') . 'T' . $_pr->get_date_modified()->date('H:i:s') . 'Z';
+                    return $_pr->get_date_modified()->date( 'Y-m-d' ) . 'T' . $_pr->get_date_modified()->date( 'H:i:s' ) . 'Z';
                 }
-                return $this->product->get_date_modified()->date('Y-m-d') . 'T' . $this->product->get_date_modified()->date('H:i:s') . 'Z';
+                return $this->product->get_date_modified()->date( 'Y-m-d' ) . 'T' . $this->product->get_date_modified()->date( 'H:i:s' ) . 'Z';
 
             case 'sale_price_dates_from':
                 $date_starts = $this->product->get_date_on_sale_from();
-                $format = get_option( 'date_format' );
+                $format      = get_option( 'date_format' );
                 return !$date_starts ? $date_starts : date( $format, $date_starts->getTimestamp() );
 
             case 'sale_price_dates_to':
                 $date_ends = $this->product->get_date_on_sale_to();
-                $format = get_option( 'date_format' );
-                return !$date_ends ? $date_ends : date( $format, $date_ends->getTimestamp());
+                $format    = get_option( 'date_format' );
+                return !$date_ends ? $date_ends : date( $format, $date_ends->getTimestamp() );
 
             case 'sale_price_effective_date':
-                $sale_price_dates_to        = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_to', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
-                $sale_price_dates_from      = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_from', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
+                $sale_price_dates_to   = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_to', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
+                $sale_price_dates_from = ( $date = get_post_meta( $this->product->get_id(), '_sale_price_dates_from', true ) ) ? date_i18n( 'Y-m-d', $date ) : '';
 
-                if ( ! empty( $sale_price_dates_to ) && ! empty( $sale_price_dates_from ) ) {
-                    $from   = date( "c", strtotime( $sale_price_dates_from ) );
-                    $to     = date( "c", strtotime( $sale_price_dates_to ) );
+                if( !empty( $sale_price_dates_to ) && !empty( $sale_price_dates_from ) ) {
+                    $from = date( "c", strtotime( $sale_price_dates_from ) );
+                    $to   = date( "c", strtotime( $sale_price_dates_to ) );
 
 
                     return $from . '/' . $to;
-                }else {
+                }
+                else {
                     return '';
                 }
         }
+    }
+
+
+    /**
+     * Set the value for Custom Taxomonies.
+     *
+     * @param $key
+     * @return false|string
+     */
+    protected function set_product_custom_tax( $key ) {
+        return $this->get_product_cats( $key );
     }
 
     /**
@@ -2013,16 +2136,18 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_product_dynamic_att( $key ) {
+    protected function set_product_dynamic_attr( $key ) {
+        if( 'WC_Product_Variable' === get_class($this->product) ) {
+            $attributes = array();
+            $attrs = $this->product->get_variation_attributes();
+            $attrs = isset( $attrs[ $key ] ) ? $attrs[ $key ] : '';
 
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            $attr_name = $this->get_product_dynamic_tags($this->product->get_parent_id(), $key);
-        } else{
-
-            $attr_name = $this->get_product_dynamic_tags($this->product->get_id(), $key);
-        }
-        if($attr_name){
-            return $attr_name;
+            if( $attrs !== '' && !empty( $attrs ) ) {
+                foreach( $attrs as $attr ) {
+                    $attributes[] = ucfirst( $attr );
+                }
+            }
+            return implode( ', ', $attributes );
         }
         return '';
     }
@@ -2032,7 +2157,8 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_wpfm_custom_att( $key ) {
+    protected function set_wpfm_custom_att( $key )
+    {
         $key = str_replace( 'custom_attributes_', '', $key );
         return get_post_meta( $this->product->get_id(), $key, true );
     }
@@ -2042,71 +2168,72 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_product_custom_att( $key ) {
-        $new_key = str_replace('custom_attributes_', '', $key);
+    protected function set_product_custom_att( $key )
+    {
+        $new_key    = str_replace( 'custom_attributes_', '', $key );
         $meta_value = '';
 
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            if($new_key === '_wpfm_product_brand') {
-                $meta_value = get_post_meta($this->product->get_parent_id(), $new_key, true);
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            if( $new_key === '_wpfm_product_brand' ) {
+                $meta_value = get_post_meta( $this->product->get_parent_id(), $new_key, true );
             }
             else {
-                $meta_value = get_post_meta($this->product->get_id(), $new_key, true);
+                $meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
                 // need to check if these attributes value is assigned to the mother product
-                if(!$meta_value) {
-                    $list = $this->get_product_attributes($this->product->get_parent_id());
+                if( !$meta_value ) {
+                    $list = $this->get_product_attributes( $this->product->get_parent_id() );
 
-                    if(array_key_exists($new_key, $list)) {
-                        $meta_value = str_replace('|', ',', $list[$new_key]);
+                    if( array_key_exists( $new_key, $list ) ) {
+                        $meta_value = str_replace( '|', ',', $list[ $new_key ] );
                     }
                     else {
                         $acf_field = get_post_meta( $this->product->get_parent_id(), '_' . $new_key, true );
 
-                        if ( $acf_field !== '' && preg_match( '/field_/', $acf_field ) ) {
-                            $meta_value  = get_post_meta($this->product->get_parent_id(), $new_key, true);
+                        if( $acf_field !== '' && preg_match( '/field_/', $acf_field ) ) {
+                            $meta_value = get_post_meta( $this->product->get_parent_id(), $new_key, true );
                         }
                     }
                 }
             }
         }
-        else{
+        else {
             $meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
 
-            if( 'rank_math_primary_product_cat' === $new_key ){
+            if( 'rank_math_primary_product_cat' === $new_key ) {
                 $meta_value = $meta_value != '' ? get_the_category_by_ID( $meta_value ) : '';
             }
-            if(!$meta_value) {
-                $list = $this->get_product_attributes($this->product->get_id());
+            if( !$meta_value ) {
+                $list = $this->get_product_attributes( $this->product->get_id() );
 
-                if(array_key_exists($new_key, $list)) {
-                    $meta_value = str_replace('|', ',', $list[$new_key]);
+                if( array_key_exists( $new_key, $list ) ) {
+                    $meta_value = str_replace( '|', ',', $list[ $new_key ] );
                 }
             }
         }
 
-        if ( is_plugin_active( 'woo-discount-rules/woo-discount-rules.php' ) ) {
+        if( is_plugin_active( 'woo-discount-rules/woo-discount-rules.php' ) ) {
 
-            if ( $new_key === 'woo_discount_rules_price' ) {
+            if( $new_key === 'woo_discount_rules_price' ) {
                 $this->discount_manage = new ManageDiscount();
                 $price                 = $this->discount_manage->calculateInitialAndDiscountedPrice( $this->product, 1 );
-                $meta_value =  $price[ 'discounted_price' ];
+                $meta_value            = $price[ 'discounted_price' ];
             }
-            elseif ( $new_key === 'woo_discount_rules_expire_date' ) {
+            elseif( $new_key === 'woo_discount_rules_expire_date' ) {
                 $rules = DBTable::getRules();
-                foreach ( $rules as $rule ) {
-                    if ( $rule->discount_type === 'wdr_simple_discount' ) {
-                        $format = "Y-m-d H:i";
-                        $end_date = $rule->date_to;
-                        $end_date = date($format, (int)$end_date);
+                foreach( $rules as $rule ) {
+                    if( $rule->discount_type === 'wdr_simple_discount' ) {
+                        $format     = "Y-m-d H:i";
+                        $end_date   = $rule->date_to;
+                        $end_date   = date( $format, (int)$end_date );
                         $meta_value = $end_date;
                         break;
                     }
                 }
             }
         }
-        if ( is_array( $meta_value ) && !empty( $meta_value ) ) {
-            if ( 'wooco_components' === $new_key ) {
-                foreach ( $meta_value as $meta ) {
+        if( is_array( $meta_value ) && !empty( $meta_value ) ) {
+            if( 'wooco_components' === $new_key ) {
+                foreach( $meta_value as $meta ) {
                     $meta_temp .= implode( ':', $meta );
                     $meta_temp .= '||';
                 }
@@ -2116,7 +2243,7 @@ class Rex_Product_Data_Retriever{
                 $meta_value = implode( ', ', $meta_value );
             }
         }
-        return apply_filters("product_custom_att_value_{$new_key}", $meta_value, $new_key, $this->product);
+        return apply_filters( "product_custom_att_value_{$new_key}", $meta_value, $new_key, $this->product );
 
     }
 
@@ -2126,28 +2253,30 @@ class Rex_Product_Data_Retriever{
      * @param $id
      * @return array
      */
-    protected function get_product_attributes($id) {
+    protected function get_product_attributes( $id )
+    {
 
         global $wpdb;
         $list = [];
-        $sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
+        $sql  = "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
                             INNER JOIN {$wpdb->prefix}posts AS posts
                             ON postmeta.post_id = posts.id
                             WHERE posts.post_type LIKE '%product%'
                             AND postmeta.meta_key = '_product_attributes'
                             AND postmeta.post_id = %d";
-        $data = $wpdb->get_results($wpdb->prepare($sql, $id));
-        if(count($data)) {
-            foreach ($data as $key => $value) {
-                $value_display = str_replace("_", " ",$value->name);
-                if (!preg_match("/_product_attributes/i", $value->name)) {
-                    $list[$value->name] = ucfirst($value_display);
-                }else {
-                    $product_attributes = unserialize($value->value);
-                    if (!empty($product_attributes)) {
-                        foreach ($product_attributes as $k => $arr_value) {
-                            $value_display = str_replace("_", " ", $arr_value['value']);
-                            $list[$k] = ucfirst($value_display);
+        $data = $wpdb->get_results( $wpdb->prepare( $sql, $id ) );
+        if( count( $data ) ) {
+            foreach( $data as $key => $value ) {
+                $value_display = str_replace( "_", " ", $value->name );
+                if( !preg_match( "/_product_attributes/i", $value->name ) ) {
+                    $list[ $value->name ] = ucfirst( $value_display );
+                }
+                else {
+                    $product_attributes = unserialize( $value->value );
+                    if( !empty( $product_attributes ) ) {
+                        foreach( $product_attributes as $k => $arr_value ) {
+                            $value_display = str_replace( "_", " ", $arr_value[ 'value' ] );
+                            $list[ $k ]    = ucfirst( $value_display );
                         }
                     }
                 }
@@ -2157,13 +2286,14 @@ class Rex_Product_Data_Retriever{
     }
 
 
-    public function price_array($price){
-        $del = array('<span class="amount">', '</span>','<del>','<ins>');
-        $price = str_replace($del, '', $price);
-        $price = str_replace('</del>', '|', $price);
-        $price = str_replace('</ins>', '|', $price);
-        $price_arr = explode('|', $price);
-        $price_arr = array_filter($price_arr);
+    public function price_array( $price )
+    {
+        $del       = array( '<span class="amount">', '</span>', '<del>', '<ins>' );
+        $price     = str_replace( $del, '', $price );
+        $price     = str_replace( '</del>', '|', $price );
+        $price     = str_replace( '</ins>', '|', $price );
+        $price_arr = explode( '|', $price );
+        $price_arr = array_filter( $price_arr );
         return $price_arr;
     }
 
@@ -2172,35 +2302,39 @@ class Rex_Product_Data_Retriever{
      *
      * @since    3.0
      */
-    protected function set_cat_mapper_att( $key ) {
+    protected function set_cat_mapper_att( $key )
+    {
 
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
             $cat_lists = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
-        } else{
+        }
+        else {
             $cat_lists = get_the_terms( $this->product->get_id(), 'product_cat' );
         }
-        $wpfm_category_map = get_option('rex-wpfm-category-mapping');
+        $wpfm_category_map = get_option( 'rex-wpfm-category-mapping' );
 
-        if($wpfm_category_map) {
-            $map = $wpfm_category_map[$key];
-            $map_config = $map['map-config'];
+        if( $wpfm_category_map ) {
+            $map        = $wpfm_category_map[ $key ];
+            $map_config = $map[ 'map-config' ];
 
-            if($cat_lists) {
-                foreach ( $cat_lists as $key=>$term ) {
-                    $map_key = array_search($term->term_id, array_column($map_config, 'map-key'));
+            if( $cat_lists ) {
+                foreach( $cat_lists as $key => $term ) {
+                    $map_key = array_search( $term->term_id, array_column( $map_config, 'map-key' ) );
 
                     if( $map_key == 0 || $map_key ) {
-                        $map_array = $map_config[$map_key];
-                        $map_value = $map_array['map-value'];
-                        if(!empty($map_value)){
-                            preg_match("~^(\d+)~", $map_value, $m);
-                            if(count($m) > 1) {
-                                if($m[1]) {
-                                    return utf8_decode(urldecode($m[1]));
-                                } else {
+                        $map_array = $map_config[ $map_key ];
+                        $map_value = $map_array[ 'map-value' ];
+                        if( !empty( $map_value ) ) {
+                            preg_match( "~^(\d+)~", $map_value, $m );
+                            if( count( $m ) > 1 ) {
+                                if( $m[ 1 ] ) {
+                                    return utf8_decode( urldecode( $m[ 1 ] ) );
+                                }
+                                else {
                                     return $map_value;
                                 }
-                            }else {
+                            }
+                            else {
                                 return $map_value;
 
                             }
@@ -2217,24 +2351,27 @@ class Rex_Product_Data_Retriever{
      * Get yoast seo title
      * @return string
      */
-    public function get_yoast_seo_title() {
+    public function get_yoast_seo_title()
+    {
         $title = '';
-        if ($this->product->get_type() == 'variation') {
+        if( $this->product->get_type() == 'variation' ) {
             $product_id = $this->product->get_parent_id();
-        }else {
+        }
+        else {
             $product_id = $this->product->get_id();
         }
-        if ( function_exists( 'wpseo_replace_vars' ) ) {
-            $wpseo_title = get_post_meta($product_id, '_yoast_wpseo_title', true);
-            if($wpseo_title) {
+        if( function_exists( 'wpseo_replace_vars' ) ) {
+            $wpseo_title = get_post_meta( $product_id, '_yoast_wpseo_title', true );
+            if( $wpseo_title ) {
                 $product_title_pattern = $wpseo_title;
-            }else {
-                $wpseo_titles = get_option('wpseo_titles');
-                $product_title_pattern = $wpseo_titles['title-product'];
             }
-            $title = wpseo_replace_vars($product_title_pattern, get_post($product_id));
+            else {
+                $wpseo_titles          = get_option( 'wpseo_titles' );
+                $product_title_pattern = $wpseo_titles[ 'title-product' ];
+            }
+            $title = wpseo_replace_vars( $product_title_pattern, get_post( $product_id ) );
         }
-        if ( ! empty( $title ) ) {
+        if( !empty( $title ) ) {
             return $title;
         }
         else {
@@ -2247,25 +2384,28 @@ class Rex_Product_Data_Retriever{
      * Get yoast meta descriptions
      * @return string
      */
-    public function get_yoast_meta_description() {
+    public function get_yoast_meta_description()
+    {
         $description = '';
-        if ($this->product->get_type() == 'variation') {
+        if( $this->product->get_type() == 'variation' ) {
             $product_id = $this->product->get_parent_id();
-        }else {
+        }
+        else {
             $product_id = $this->product->get_id();
         }
-        if ( function_exists( 'wpseo_replace_vars' ) ) {
-            $wpseo_meta_description = get_post_meta($product_id, '_yoast_wpseo_metadesc', true);
-            if($wpseo_meta_description) {
+        if( function_exists( 'wpseo_replace_vars' ) ) {
+            $wpseo_meta_description = get_post_meta( $product_id, '_yoast_wpseo_metadesc', true );
+            if( $wpseo_meta_description ) {
                 $product_meta_desc_pattern = $wpseo_meta_description;
-            }else {
-                $wpseo_titles = get_option('wpseo_titles');
-                $product_meta_desc_pattern = $wpseo_titles['metadesc-product'];
             }
-            $description = wpseo_replace_vars($product_meta_desc_pattern, get_post($product_id));
+            else {
+                $wpseo_titles              = get_option( 'wpseo_titles' );
+                $product_meta_desc_pattern = $wpseo_titles[ 'metadesc-product' ];
+            }
+            $description = wpseo_replace_vars( $product_meta_desc_pattern, get_post( $product_id ) );
         }
 
-        if ( ! empty( $description ) ) {
+        if( !empty( $description ) ) {
             return $description;
         }
         else {
@@ -2279,15 +2419,16 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function get_additional_image( $key ) {
+    protected function get_additional_image( $key )
+    {
 
-        if ( empty( $this->additional_images ) ) {
+        if( empty( $this->additional_images ) ) {
             $this->set_additional_images();
         }
 
 
-        if ( array_key_exists( $key, $this->additional_images ) ) {
-            return $this->additional_images[$key];
+        if( array_key_exists( $key, $this->additional_images ) ) {
+            return $this->additional_images[ $key ];
         }
 
         return '';
@@ -2302,11 +2443,12 @@ class Rex_Product_Data_Retriever{
      * @param string $after Optional. After list.
      * @return string|false
      */
-    protected function get_product_cats( $before = '', $sep = ', ', $after = '' ) {
+
+    protected function get_product_cats( $taxonomy, $before = '', $sep = ', ', $after = '' ) {
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            return $this->get_the_term_list( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
+            return $this->get_the_term_list( $this->product->get_parent_id(), $taxonomy, $before, $sep, $after );
         }else {
-            return $this->get_the_term_list( $this->product->get_id(), 'product_cat', $before, $sep, $after );
+            return $this->get_the_term_list( $this->product->get_id(), $taxonomy, $before, $sep, $after );
         }
 
     }
@@ -2318,18 +2460,20 @@ class Rex_Product_Data_Retriever{
      * @param string $after
      * @return array
      */
-    protected function get_spartoo_product_cats( $before = '', $sep = ', ', $after = '' ) {
+    protected function get_spartoo_product_cats( $before = '', $sep = ', ', $after = '' )
+    {
         $term_array = array();
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
             $terms = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
-        }else {
+        }
+        else {
             $terms = get_the_terms( $this->product->get_id(), 'product_cat' );
         }
 
         $count = 0;
-        if($terms) $count = count($terms);
-        if($count > 1) {
-            foreach ($terms as $term) {
+        if( $terms ) $count = count( $terms );
+        if( $count > 1 ) {
+            foreach( $terms as $term ) {
                 $term_array[] = $term->name;
             }
         }
@@ -2345,12 +2489,13 @@ class Rex_Product_Data_Retriever{
      * @param string $after Optional. After list.
      * @return string|false
      */
-    protected function get_product_cats_with_seperator( $before = '', $sep = ' > ', $after = '' ) {
+
+    protected function get_product_cats_with_seperator( $taxonomy, $before = '', $sep = ' > ', $after = '' ) {
 
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            return $this->get_the_term_list_with_path( $this->product->get_parent_id(), 'product_cat', $before, $sep, $after );
+            return $this->get_the_term_list_with_path( $this->product->get_parent_id(), $taxonomy, $before, $sep, $after );
         }else {
-            return $this->get_the_term_list_with_path( $this->product->get_id(), 'product_cat', $before, $sep, $after );
+            return $this->get_the_term_list_with_path( $this->product->get_id(), $taxonomy, $before, $sep, $after );
         }
     }
 
@@ -2363,25 +2508,26 @@ class Rex_Product_Data_Retriever{
      * @param string $after Optional. After list.
      * @return string
      */
-    protected function get_yoast_product_cats_with_seperator( $before = '', $sep = ' > ', $after = '' ) {
+    protected function get_yoast_product_cats_with_seperator( $before = '', $sep = ' > ', $after = '' )
+    {
         $pr_id = $this->product->get_id();
-        if($this->product->is_type('variation')) {
+        if( $this->product->is_type( 'variation' ) ) {
             $pr_id = $this->product->get_parent_id();
         }
-        $primary_cat_id=get_post_meta($pr_id,'_yoast_wpseo_primary_product_cat',true);
-        $term_name = [];
-        if($primary_cat_id){
-            $product_cat = get_term($primary_cat_id, 'product_cat');
-            if(isset($product_cat->name)) {
-                $term_name[] = $product_cat->name;
-                $term_name_arr = $this->get_cat_names_array($pr_id, 'product_cat',$primary_cat_id, $term_name);
-                if(is_array($term_name_arr)) {
-                    return implode($sep, $term_name_arr);
+        $primary_cat_id = get_post_meta( $pr_id, '_yoast_wpseo_primary_product_cat', true );
+        $term_name      = [];
+        if( $primary_cat_id ) {
+            $product_cat = get_term( $primary_cat_id, 'product_cat' );
+            if( isset( $product_cat->name ) ) {
+                $term_name[]   = $product_cat->name;
+                $term_name_arr = $this->get_cat_names_array( $pr_id, 'product_cat', $primary_cat_id, $term_name );
+                if( is_array( $term_name_arr ) ) {
+                    return implode( $sep, $term_name_arr );
                 }
-                return $this->get_product_cats('', ' > ', '');
+                return $this->get_product_cats( '', ' > ', '' );
             }
         }
-        return $this->get_product_cats('', ' > ', '');
+        return $this->get_product_cats( '', ' > ', '' );
     }
 
 
@@ -2391,33 +2537,35 @@ class Rex_Product_Data_Retriever{
      * @param string $sep Optional. Separate items using this.
      * @return string|false
      */
-    protected function get_product_subcategory( $sep = ' > ') {
+    protected function get_product_subcategory( $sep = ' > ' )
+    {
         $parent = 0;
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
             $terms = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
-            if ( empty( $terms ) || is_wp_error( $terms ) ){
+            if( empty( $terms ) || is_wp_error( $terms ) ) {
                 return '';
             }
             $term_names = array();
-            foreach($terms as $term) {
-                if($term->parent) {
+            foreach( $terms as $term ) {
+                if( $term->parent ) {
                     $term_names[] = $term->name;
                 }
             }
-            ksort($term_names);
+            ksort( $term_names );
             return '' . join( $sep, $term_names ) . '';
-        }else {
+        }
+        else {
             $terms = get_the_terms( $this->product->get_id(), 'product_cat' );
-            if ( empty( $terms ) || is_wp_error( $terms ) ){
+            if( empty( $terms ) || is_wp_error( $terms ) ) {
                 return '';
             }
             $term_names = array();
-            foreach($terms as $term) {
-                if($term->parent) {
+            foreach( $terms as $term ) {
+                if( $term->parent ) {
                     $term_names[] = $term->name;
                 }
             }
-            ksort($term_names);
+            ksort( $term_names );
             return '' . join( $sep, $term_names ) . '';
         }
 
@@ -2432,11 +2580,13 @@ class Rex_Product_Data_Retriever{
      * @param string $after Optional. After list.
      * @return string|false
      */
-    protected function get_product_tags( $before = '', $sep = ', ', $after = '' ) {
+    protected function get_product_tags( $before = '', $sep = ', ', $after = '' )
+    {
 
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
             return $this->get_the_term_list( $this->product->get_parent_id(), 'product_tag', $before, $sep, $after );
-        }else {
+        }
+        else {
             return $this->get_the_term_list( $this->product->get_id(), 'product_tag', $before, $sep, $after );
         }
     }
@@ -2449,14 +2599,14 @@ class Rex_Product_Data_Retriever{
     public function get_yoast_primary_cat()
     {
         $pr_id = $this->product->get_id();
-        if ( $this->product->is_type( 'variation' ) ) {
+        if( $this->product->is_type( 'variation' ) ) {
             $pr_id = $this->product->get_parent_id();
         }
         $primary_cat_id = get_post_meta( $pr_id, '_yoast_wpseo_primary_product_cat', true );
 
-        if ( $primary_cat_id ) {
+        if( $primary_cat_id ) {
             $product_cat = get_term( $primary_cat_id, 'product_cat' );
-            if ( isset( $product_cat->name ) )
+            if( isset( $product_cat->name ) )
                 return $product_cat->name;
         }
         return $this->get_product_cats();
@@ -2469,31 +2619,34 @@ class Rex_Product_Data_Retriever{
      * @param string $after
      * @return array
      */
-    public function get_product_cats_for_sooqr($before = '', $sep = ' > ', $after = '') {
+    public function get_product_cats_for_sooqr( $before = '', $sep = ' > ', $after = '' )
+    {
         $categories = [];
-        if ( 'WC_Product_Variation' == get_class($this->product) ) {
-            $term_list = wp_get_post_terms($this->product->get_parent_id(), 'product_cat');
-            foreach ($term_list as $term) {
-                if($term->parent) {
-                    $categories['subcategories'][] = $term->name;
-                }else {
-                    $categories['categories'][] = $term->name;
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            $term_list = wp_get_post_terms( $this->product->get_parent_id(), 'product_cat' );
+            foreach( $term_list as $term ) {
+                if( $term->parent ) {
+                    $categories[ 'subcategories' ][] = $term->name;
+                }
+                else {
+                    $categories[ 'categories' ][] = $term->name;
                 }
             }
             return $categories;
-        }else {
-            $term_list = wp_get_post_terms($this->product->get_id(), 'product_cat');
-            foreach ($term_list as $term) {
-                if($term->parent) {
-                    $categories['subcategories'][] = $term->name;
-                }else {
-                    $categories['categories'][] = $term->name;
+        }
+        else {
+            $term_list = wp_get_post_terms( $this->product->get_id(), 'product_cat' );
+            foreach( $term_list as $term ) {
+                if( $term->parent ) {
+                    $categories[ 'subcategories' ][] = $term->name;
+                }
+                else {
+                    $categories[ 'categories' ][] = $term->name;
                 }
             }
             return $categories;
         }
     }
-
 
 
     /**
@@ -2506,8 +2659,9 @@ class Rex_Product_Data_Retriever{
      * @return string|false
      * @return string|false
      */
-    protected function get_product_dynamic_tags( $id, $key, $before = '', $sep = ', ', $after = '' ) {
-        return $this->get_the_term_list($id, $key, $before, $sep, $after );
+    protected function get_product_dynamic_tags( $id, $key, $before = '', $sep = ', ', $after = '' )
+    {
+        return $this->get_the_term_list( $id, $key, $before, $sep, $after );
     }
 
     /**
@@ -2521,27 +2675,29 @@ class Rex_Product_Data_Retriever{
      * @param string $after Optional. After list.
      * @return string|false
      */
-    protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
-        $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'orderby' => 'term_id' ));
+    protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' )
+    {
+        $terms = wp_get_post_terms( $id, $taxonomy, array( 'hide_empty' => false, 'orderby' => 'term_id' ) );
 
-        if ( empty( $terms ) || is_wp_error( $terms ) ){
+        if( empty( $terms ) || is_wp_error( $terms ) ) {
             return '';
         }
-        $output = array();
-        $child_terms = array();
+        $output       = array();
+        $child_terms  = array();
         $parent_terms = array();
 
-        foreach ($terms as $term) {
-            if($term->parent) {
-                $child_terms = $this->get_cat_names_array($id, $taxonomy, $term->parent, $parent_terms);
-            }else {
+        foreach( $terms as $term ) {
+            if( $term->parent ) {
+                $child_terms = $this->get_cat_names_array( $id, $taxonomy, $term->parent, $parent_terms );
+            }
+            else {
                 $parent_terms[] = $term->name;
             }
 
         }
-        $output = array_merge( $parent_terms, $child_terms);
+        $output = array_merge( $parent_terms, $child_terms );
 
-        return implode(', ', $output);
+        return implode( ', ', $output );
     }
 
 
@@ -2555,62 +2711,64 @@ class Rex_Product_Data_Retriever{
      * @return string
      */
     protected function get_the_term_list_with_path( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
+        wpfm_switch_site_lang( $this->feed->wpml_language );
         $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'orderby' => 'term_id' ));
 
-        if ( empty( $terms ) || is_wp_error( $terms ) ){
+        if( empty( $terms ) || is_wp_error( $terms ) ) {
             return '';
         }
 
         $terms_id = array();
-        foreach ($terms as $term) {
+        foreach( $terms as $term ) {
             $terms_id[] = $term->term_id;
         }
 
-        $output   = array();
+        $output = array();
 
-        foreach ($terms as $term) {
-            $term_names = [];
-            $term->name = htmlspecialchars_decode($term->name);
+        foreach( $terms as $term ) {
+            $term_names   = [];
+            $term->name   = htmlspecialchars_decode( $term->name );
             $term_names[] = $term->name;
 
 
-            $term_name_arr = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_names);
+            $term_name_arr = $this->get_cat_names_array( $id, $taxonomy, $term->term_id, $term_names );
 
-            if ( !empty( array_diff( $term_name_arr, $term_names) ) ) {
+            if( !empty( array_diff( $term_name_arr, $term_names ) ) ) {
 
-                foreach ( $term_name_arr as $t_name ) {
-                    $temp = array();
-                    $temp[] = $term->name;
-                    $temp[] = $t_name;
-                    $output[] = implode($sep, $temp);
+                foreach( $term_name_arr as $t_name ) {
+                    $temp     = array();
+                    $temp[]   = $term->name;
+                    $temp[]   = $t_name;
+                    $output[] = implode( $sep, $temp );
                 }
             }
-            else if ( $term->parent == 0 ) {
-                if( is_array($term_name_arr) ) {
-                    $output[] = implode($sep, $term_name_arr);
+            else if( $term->parent == 0 ) {
+                if( is_array( $term_name_arr ) ) {
+                    $output[] = implode( $sep, $term_name_arr );
                 }
             }
-            else if ( !in_array( $term->parent, $terms_id) ) {
-                if( is_array($term_name_arr) ) {
-                    $output[] = implode($sep, $term_name_arr);
+            else if( !in_array( $term->parent, $terms_id ) ) {
+                if( is_array( $term_name_arr ) ) {
+                    $output[] = implode( $sep, $term_name_arr );
                 }
             }
         }
-        return implode(', ', $output);
+        return implode( ', ', $output );
     }
 
     protected function get_cat_names_array($id, $taxonomy, $parent, $term_name_array) {
+        wpfm_switch_site_lang( $this->feed->wpml_language );
         $terms = wp_get_post_terms( $id, $taxonomy , array( 'hide_empty' => false, 'parent' => $parent,'orderby' => 'term_id' ));
 
-        if ( empty( $terms ) || is_wp_error( $terms ) ){
+        if( empty( $terms ) || is_wp_error( $terms ) ) {
             return $term_name_array;
         }
         $term_arr = array();
-        foreach ( $terms as $term ) {
-            $term_name_array = array();
+        foreach( $terms as $term ) {
+            $term_name_array   = array();
             $term_name_array[] = $term->name;
-            $term_name_array = $this->get_cat_names_array($id, $taxonomy, $term->term_id, $term_name_array);
-            $term_arr[] = $term_name_array[0];
+            $term_name_array   = $this->get_cat_names_array( $id, $taxonomy, $term->term_id, $term_name_array );
+            $term_arr[]        = $term_name_array[ 0 ];
         }
         return $term_arr;
     }
@@ -2624,7 +2782,8 @@ class Rex_Product_Data_Retriever{
      * @param string $after
      * @since 5.35
      */
-    protected function get_the_term_list_with_separator( $id, $taxonomy, $before = '', $sep = '', $after = '' ) {
+    protected function get_the_term_list_with_separator( $id, $taxonomy, $before = '', $sep = '', $after = '' )
+    {
 
     }
 
@@ -2635,10 +2794,12 @@ class Rex_Product_Data_Retriever{
      * @param $product
      * @return mixed
      */
-    protected function get_default_attributes($product) {
+    protected function get_default_attributes( $product )
+    {
         if( method_exists( $product, 'get_default_attributes' ) ) {
             return $product->get_default_attributes();
-        } else {
+        }
+        else {
             return $product->get_variation_default_attributes();
         }
     }
@@ -2652,7 +2813,8 @@ class Rex_Product_Data_Retriever{
      * @return int Matching variation ID or 0.
      * @throws Exception
      */
-    protected function find_matching_product_variation( $product, $attributes ) {
+    protected function find_matching_product_variation( $product, $attributes )
+    {
         foreach( $attributes as $key => $value ) {
             if( strpos( $key, 'attribute_' ) === 0 ) {
                 continue;
@@ -2660,10 +2822,11 @@ class Rex_Product_Data_Retriever{
             unset( $attributes[ $key ] );
             $attributes[ sprintf( 'attribute_%s', $key ) ] = $value;
         }
-        if( class_exists('WC_Data_Store') ) {
+        if( class_exists( 'WC_Data_Store' ) ) {
             $data_store = WC_Data_Store::load( 'product' );
             return $data_store->find_matching_product_variation( $product, $attributes );
-        } else {
+        }
+        else {
             return $product->get_matching_variation( $attributes );
         }
     }
@@ -2674,20 +2837,21 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function set_additional_images() {
+    protected function set_additional_images()
+    {
 
         $_product = $this->product;
-        if($this->product->is_type('variation')) {
-            $_product = wc_get_product($this->product->get_parent_id());
+        if( $this->product->is_type( 'variation' ) ) {
+            $_product = wc_get_product( $this->product->get_parent_id() );
         }
 
         $img_ids = $_product->get_gallery_image_ids();
 
         $images = array();
-        if ( ! empty( $img_ids ) ) {
-            foreach ($img_ids as $key => $img_id) {
-                $img_key = 'image_' . ($key+1);
-                $images[$img_key] = wp_get_attachment_url($img_id);
+        if( !empty( $img_ids ) ) {
+            foreach( $img_ids as $key => $img_id ) {
+                $img_key            = 'image_' . ( $key + 1 );
+                $images[ $img_key ] = wp_get_attachment_url( $img_id );
             }
             // set images to the property
             $this->additional_images = $images;
@@ -2700,36 +2864,43 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function is_primary_attr( $key ) {
-        return array_key_exists( $key, $this->product_meta_keys['Primary Attributes'] );
+    protected function is_primary_attr( $key )
+    {
+        return array_key_exists( $key, $this->product_meta_keys[ 'Primary Attributes' ] );
     }
+
     /**
      * Helper to check if a attribute is a Woodmart Attribute.
      *
      */
-    protected function is_woodmart_attr( $key ) {
-        if(isset($this->product_meta_keys['Woodmart Image Gallery'])){
-            return array_key_exists( $key, $this->product_meta_keys['Woodmart Image Gallery'] );
+    protected function is_woodmart_attr( $key )
+    {
+        if( isset( $this->product_meta_keys[ 'Woodmart Image Gallery' ] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys[ 'Woodmart Image Gallery' ] );
         }
         return false;
     }
+
     /**
      * Helper to check if a attribute is a YOAST Attribute.
      *
      */
-    protected function is_yoast_attr( $key ) {
-        if(isset($this->product_meta_keys['YOAST Attributes'])){
-            return array_key_exists( $key, $this->product_meta_keys['YOAST Attributes'] );
+    protected function is_yoast_attr( $key )
+    {
+        if( isset( $this->product_meta_keys[ 'YOAST Attributes' ] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys[ 'YOAST Attributes' ] );
         }
         return false;
     }
+
     /**
      * Helper to check if a attribute is a YOAST Attribute.
      *
      */
-    protected function is_price_attr( $key ) {
-        if(isset($this->product_meta_keys['Price Attributes'])){
-            return array_key_exists( $key, $this->product_meta_keys['Price Attributes'] );
+    protected function is_price_attr( $key )
+    {
+        if( isset( $this->product_meta_keys[ 'Price Attributes' ] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys[ 'Price Attributes' ] );
         }
         return false;
     }
@@ -2738,9 +2909,10 @@ class Rex_Product_Data_Retriever{
      * Helper to check if a attribute is a WooCommerce Attribute.
      *
      */
-    protected function is_wc_brand_attr( $key ) {
-        if(isset($this->product_meta_keys['Woocommerce Brand'])){
-            return array_key_exists( $key, $this->product_meta_keys['Woocommerce Brand'] );
+    protected function is_wc_brand_attr( $key )
+    {
+        if( isset( $this->product_meta_keys[ 'Woocommerce Brand' ] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys[ 'Woocommerce Brand' ] );
         }
         return false;
     }
@@ -2749,9 +2921,10 @@ class Rex_Product_Data_Retriever{
      * Helper to check if a attribute is a Brands for WooCommerce by BeRocket Attribute.
      *
      */
-    protected function is_berocket_brand_attr( $key ) {
-        if(isset($this->product_meta_keys['Brands for WooCommerce'])){
-            return array_key_exists( $key, $this->product_meta_keys['Brands for WooCommerce'] );
+    protected function is_berocket_brand_attr( $key )
+    {
+        if( isset( $this->product_meta_keys[ 'Brands for WooCommerce' ] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys[ 'Brands for WooCommerce' ] );
         }
         return false;
     }
@@ -2760,9 +2933,10 @@ class Rex_Product_Data_Retriever{
      * Helper to check if a attribute is a Perfect Brand Attribute.
      *
      */
-    protected function is_perfect_attr( $key ) {
-        if(isset($this->product_meta_keys['Perfect Brand'])){
-            return array_key_exists( $key, $this->product_meta_keys['Perfect Brand'] );
+    protected function is_perfect_attr( $key )
+    {
+        if( isset( $this->product_meta_keys[ 'Perfect Brand' ] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys[ 'Perfect Brand' ] );
         }
         return false;
     }
@@ -2772,8 +2946,9 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function is_image_attr( $key ) {
-        return array_key_exists( $key, $this->product_meta_keys['Image Attributes'] );
+    protected function is_image_attr( $key )
+    {
+        return array_key_exists( $key, $this->product_meta_keys[ 'Image Attributes' ] );
     }
 
     /**
@@ -2781,32 +2956,36 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function is_product_attr( $key ) {
-        return array_key_exists( $key, $this->product_meta_keys['Product Attributes'] );
+    protected function is_product_attr( $key )
+    {
+        return array_key_exists( $key, $this->product_meta_keys[ 'Product Attributes' ] );
     }
 
     /**
      * Helper to check if a attribute is a Glami Attribute.
      */
-    protected function is_glami_attr( $key ) {
-        return isset( $this->product_meta_keys['Glami Attributes'] )
-            ? array_key_exists( $key, $this->product_meta_keys['Glami Attributes'] ) : false;
+    protected function is_glami_attr( $key )
+    {
+        return isset( $this->product_meta_keys[ 'Glami Attributes' ] )
+            ? array_key_exists( $key, $this->product_meta_keys[ 'Glami Attributes' ] ) : false;
     }
 
     /**
      * Helper to check if a attribute is a Dropship Attribute.
      */
-    protected function is_dropship_attr( $key ) {
-        return isset( $this->product_meta_keys['Dropship by Mantella'] )
-            ? array_key_exists( $key, $this->product_meta_keys['Dropship by Mantella'] ) : false;
+    protected function is_dropship_attr( $key )
+    {
+        return isset( $this->product_meta_keys[ 'Dropship by Mantella' ] )
+            ? array_key_exists( $key, $this->product_meta_keys[ 'Dropship by Mantella' ] ) : false;
     }
 
     /**
      * Helper to check if a attribute is a WPFM Custom Attribute.
      */
-    protected function is_wpfm_custom_attr( $key ) {
-        return isset( $this->product_meta_keys['WPFM Custom Attributes'] )
-            ? array_key_exists( $key, $this->product_meta_keys['WPFM Custom Attributes'] ) : false;
+    protected function is_wpfm_custom_attr( $key )
+    {
+        return isset( $this->product_meta_keys[ 'WPFM Custom Attributes' ] )
+            ? array_key_exists( $key, $this->product_meta_keys[ 'WPFM Custom Attributes' ] ) : false;
     }
 
 
@@ -2815,8 +2994,9 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function is_product_dynamic_attr( $key ) {
-        return array_key_exists( $key, $this->product_meta_keys['Product Variation Attributes'] );
+    protected function is_product_dynamic_attr( $key )
+    {
+        return array_key_exists( $key, $this->product_meta_keys[ 'Product Variation Attributes' ] );
     }
 
 
@@ -2825,8 +3005,9 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function is_product_custom_attr( $key ) {
-        return array_key_exists( $key, $this->product_meta_keys['Product Custom Attributes'] );
+    protected function is_product_custom_attr( $key )
+    {
+        return array_key_exists( $key, $this->product_meta_keys[ 'Product Custom Attributes' ] );
     }
 
     /**
@@ -2834,8 +3015,9 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function is_product_category_mapper_attr( $key ) {
-        return array_key_exists( $key, $this->product_meta_keys['Category Map'] );
+    protected function is_product_category_mapper_attr( $key )
+    {
+        return array_key_exists( $key, $this->product_meta_keys[ 'Category Map' ] );
     }
 
     /**
@@ -2843,8 +3025,21 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function is_date_attr( $key ) {
-        return array_key_exists( $key, $this->product_meta_keys['Date Attributes'] );
+    protected function is_date_attr( $key )
+    {
+        return array_key_exists( $key, $this->product_meta_keys[ 'Date Attributes' ] );
+    }
+
+    /**
+     * Helper to check if a attribute is a Product custom taxonomy
+     * @param $key
+     * @return bool
+     */
+    protected function is_product_custom_tax( $key ) {
+        if( isset( $this->product_meta_keys['Product Custom Taxonomies'] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys['Product Custom Taxonomies'] );
+        }
+        return false;
     }
 
 
@@ -2853,7 +3048,8 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function get_condition( ) {
+    protected function get_condition()
+    {
         return 'New';
     }
 
@@ -2863,8 +3059,9 @@ class Rex_Product_Data_Retriever{
      *
      * @return int
      */
-    protected function get_item_group_id() {
-        if($this->product->is_type('variation')) {
+    protected function get_item_group_id()
+    {
+        if( $this->product->is_type( 'variation' ) ) {
             return $this->product->get_parent_id();
         }
         return '';
@@ -2876,17 +3073,18 @@ class Rex_Product_Data_Retriever{
      *
      * @since    2.0.3
      */
-    public function get_grouped_price($product, $type) {
+    public function get_grouped_price( $product, $type )
+    {
         $groupProductIds = $product->get_children();
-        $price = 99999999;
+        $price           = 99999999;
 
-        if(!empty($groupProductIds)){
-            foreach($groupProductIds as $id){
-                if ( get_post_meta( $id, $type, true ) !== '' ) {
-                    $price = $price > get_post_meta($id, $type, true) ? get_post_meta($id, $type, true) : $price;
+        if( !empty( $groupProductIds ) ) {
+            foreach( $groupProductIds as $id ) {
+                if( get_post_meta( $id, $type, true ) !== '' ) {
+                    $price = $price > get_post_meta( $id, $type, true ) ? get_post_meta( $id, $type, true ) : $price;
                 }
             }
-            if ( $price === 99999999 ) {
+            if( $price === 99999999 ) {
                 $price = '';
             }
         }
@@ -2894,19 +3092,21 @@ class Rex_Product_Data_Retriever{
     }
 
 
-
     /**
      * Helper to get availability of a product
      *
      * @since    1.0.0
      */
-    protected function get_availability( ) {
-        if ($this->product->is_on_backorder()) {
-            return apply_filters('wpfm_product_availability_backorder', 'out_of_stock');
-        } elseif ( $this->product->is_in_stock() == TRUE ) {
-            return apply_filters('wpfm_product_availability', 'in_stock');
-        } else {
-            return apply_filters('wpfm_product_availability', 'out_of_stock');
+    protected function get_availability()
+    {
+        if( $this->product->is_on_backorder() ) {
+            return apply_filters( 'wpfm_product_availability_backorder', 'out_of_stock' );
+        }
+        elseif( $this->product->is_in_stock() == TRUE ) {
+            return apply_filters( 'wpfm_product_availability', 'in_stock' );
+        }
+        else {
+            return apply_filters( 'wpfm_product_availability', 'out_of_stock' );
         }
     }
 
@@ -2915,13 +3115,16 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function get_availability_underscore( ) {
-        if ($this->product->is_on_backorder()) {
-            return apply_filters('wpfm_product_availability_backorder', 'out of stock');
-        } elseif ( $this->product->is_in_stock() == TRUE ) {
-            return apply_filters('wpfm_product_availability', 'in stock');
-        } else {
-            return apply_filters('wpfm_product_availability', 'out of stock');
+    protected function get_availability_underscore()
+    {
+        if( $this->product->is_on_backorder() ) {
+            return apply_filters( 'wpfm_product_availability_backorder', 'out of stock' );
+        }
+        elseif( $this->product->is_in_stock() == TRUE ) {
+            return apply_filters( 'wpfm_product_availability', 'in stock' );
+        }
+        else {
+            return apply_filters( 'wpfm_product_availability', 'out of stock' );
         }
     }
 
@@ -2930,13 +3133,16 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function get_availability_backorder_instock( ) {
-        if ($this->product->is_on_backorder()) {
-            return apply_filters('wpfm_product_availability_backorder', 'in_stock');
-        } elseif ( $this->product->is_in_stock() == TRUE ) {
-            return apply_filters('wpfm_product_availability', 'in_stock');
-        } else {
-            return apply_filters('wpfm_product_availability', 'out_of_stock');
+    protected function get_availability_backorder_instock()
+    {
+        if( $this->product->is_on_backorder() ) {
+            return apply_filters( 'wpfm_product_availability_backorder', 'in_stock' );
+        }
+        elseif( $this->product->is_in_stock() == TRUE ) {
+            return apply_filters( 'wpfm_product_availability', 'in_stock' );
+        }
+        else {
+            return apply_filters( 'wpfm_product_availability', 'out_of_stock' );
         }
     }
 
@@ -2945,13 +3151,16 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function get_availability_backorder( ) {
-        if ($this->product->is_on_backorder()) {
-            return apply_filters('wpfm_product_availability_backorder', 'on_backorder');
-        } elseif ( $this->product->is_in_stock() == TRUE ) {
-            return apply_filters('wpfm_product_availability', 'in_stock');
-        } else {
-            return apply_filters('wpfm_product_availability', 'out_of_stock');
+    protected function get_availability_backorder()
+    {
+        if( $this->product->is_on_backorder() ) {
+            return apply_filters( 'wpfm_product_availability_backorder', 'on_backorder' );
+        }
+        elseif( $this->product->is_in_stock() == TRUE ) {
+            return apply_filters( 'wpfm_product_availability', 'in_stock' );
+        }
+        else {
+            return apply_filters( 'wpfm_product_availability', 'out_of_stock' );
         }
     }
 
@@ -2959,10 +3168,12 @@ class Rex_Product_Data_Retriever{
     /**
      * @return string
      */
-    protected function get_stock( ) {
-        if ( $this->product->is_in_stock() == TRUE ) {
+    protected function get_stock()
+    {
+        if( $this->product->is_in_stock() == TRUE ) {
             return 'Y';
-        } else {
+        }
+        else {
             return 'N';
         }
     }
@@ -2972,15 +3183,16 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function maybe_add_prefix_suffix($val, $rule) {
-        $prefix =  $rule['prefix'];
-        $suffix =  $rule['suffix'];
+    protected function maybe_add_prefix_suffix( $val, $rule )
+    {
+        $prefix = $rule[ 'prefix' ];
+        $suffix = $rule[ 'suffix' ];
 
-        if ( !empty( $prefix ) ) {
+        if( !empty( $prefix ) ) {
             $val = $val ? $prefix . $val : '';
         }
 
-        if ( !empty( $suffix ) ) {
+        if( !empty( $suffix ) ) {
             $val = $val ? $val . $suffix : '';
         }
 
@@ -2992,71 +3204,73 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function maybe_escape($val, $escape) {
-        switch ($escape){
+    protected function maybe_escape( $val, $escape )
+    {
+        switch( $escape ) {
             case 'strip_tags':
-                $val = preg_replace('/(?:<|&lt;).*?(?:>|&gt;)/', '', $val);
-                $striped_string =  strip_tags($val);
+                $val            = preg_replace( '/(?:<|&lt;).*?(?:>|&gt;)/', '', $val );
+                $striped_string = strip_tags( $val );
 
-                if(substr($striped_string, -1) == " "){
-                    return rtrim($striped_string);
+                if( substr( $striped_string, -1 ) == " " ) {
+                    return rtrim( $striped_string );
                 }
                 return $striped_string;
             case 'utf_8_encode':
-                return utf8_encode($val);
+                return utf8_encode( $val );
             case 'htmlentities':
-                return htmlentities($val);
+                return htmlentities( $val );
             case 'integer':
             case 'price':
-                return intval($val);
+                return intval( $val );
             case 'remove_space':
-                return preg_replace('/\s+/', '', $val);;
+                return preg_replace( '/\s+/', '', $val );;
             case 'remove_shortcodes_and_tags':
-                $val = preg_replace('/(?:<|&lt;).*?(?:>|&gt;)/', '', $val);
-                $striped_string =  strip_tags($val);
-                if(substr($striped_string, -1) == " "){
-                    $striped_string = preg_replace('#\[[^\]]+\]#', '',$striped_string);
-                    return rtrim(strip_shortcodes( $striped_string ));
+                $val            = preg_replace( '/(?:<|&lt;).*?(?:>|&gt;)/', '', $val );
+                $striped_string = strip_tags( $val );
+                if( substr( $striped_string, -1 ) == " " ) {
+                    $striped_string = preg_replace( '#\[[^\]]+\]#', '', $striped_string );
+                    return rtrim( strip_shortcodes( $striped_string ) );
                 }
 
-                $striped_string = preg_replace('#\[[^\]]+\]#', '',$striped_string);
+                $striped_string = preg_replace( '#\[[^\]]+\]#', '', $striped_string );
                 return strip_shortcodes( $striped_string );
 
             case 'remove_shortcodes':
-                $val = preg_replace('#\[[^\]]+\]#', '',$val);
+                $val = preg_replace( '#\[[^\]]+\]#', '', $val );
                 return strip_shortcodes( $val );
             case 'remove_special':
-                return filter_var($val, FILTER_SANITIZE_STRING);
+                return filter_var( $val, FILTER_SANITIZE_STRING );
             case 'cdata':
                 return $val ? "CDATA $val " : $val;
                 return $val ? "&#x3C;![CDATA [$val]]&#x3E;" : $val;
             case 'cdata_without_space':
                 return $val ? "CDATA$val" : $val;
             case 'remove_underscore':
-                return str_replace('_', ' ', $val);
+                return str_replace( '_', ' ', $val );
             case 'remove_decimal':
-                if($this->checkIfFloat($val)) {
-                    $val = number_format($val, 2, '.', '');
-                    for ($i=0; $i<2; $i++) {
+                if( $this->checkIfFloat( $val ) ) {
+                    $val = number_format( $val, 2, '.', '' );
+                    for( $i = 0; $i < 2; $i++ ) {
                         $val = $val * 10;
                     }
-                }else {
-                    return intval($val) * 100;
+                }
+                else {
+                    return intval( $val ) * 100;
                 }
                 return $val;
             case 'add_two_decimal':
-                if($this->checkIfFloat($val)) {
-                    $val = round($val, 2);
+                if( $this->checkIfFloat( $val ) ) {
+                    $val = round( $val, 2 );
                 }
                 return $val;
             case 'remove_hyphen':
-                return str_replace('-', '', $val);
+                return str_replace( '-', '', $val );
 
             case 'remove_hyphen_space':
-                return str_replace('-', ' ', $val);
+                return str_replace( '-', ' ', $val );
 
             case 'replace_space_with_hyphen':
-                return str_replace(' ', '-', $val);
+                return str_replace( ' ', '-', $val );
 
             default:
                 return $val;
@@ -3072,8 +3286,9 @@ class Rex_Product_Data_Retriever{
      * @param $num
      * @return bool
      */
-    private function checkIfFloat($num) {
-        return is_float($num) || is_numeric($num) && ((float) $num != (int) $num);
+    private function checkIfFloat( $num )
+    {
+        return is_float( $num ) || is_numeric( $num ) && ( (float)$num != (int)$num );
     }
 
 
@@ -3082,10 +3297,11 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function maybe_limit($val, $limit) {
-        $limit = (int) $limit;
-        if ( $limit > 0) {
-            return substr($val, 0, $limit);
+    protected function maybe_limit( $val, $limit )
+    {
+        $limit = (int)$limit;
+        if( $limit > 0 ) {
+            return substr( $val, 0, $limit );
         }
         return $val;
     }
@@ -3095,19 +3311,20 @@ class Rex_Product_Data_Retriever{
      *
      * @since    1.0.0
      */
-    protected function maybe_set_variation_data() {
+    protected function maybe_set_variation_data()
+    {
 
-        if ( 'WC_Product_Variation' != get_class($this->product) ) {
+        if( 'WC_Product_Variation' != get_class( $this->product ) ) {
             return;
         }
 
         $variant_atts = $this->product->get_variation_attributes();
 
-        foreach ($variant_atts as $key => $value) {
-            $key = str_replace( 'attribute_pa_', '', $key);
+        foreach( $variant_atts as $key => $value ) {
+            $key = str_replace( 'attribute_pa_', '', $key );
 
-            if( in_array($key, $this->variant_atts) ){
-                $this->data[$key] = $value;
+            if( in_array( $key, $this->variant_atts ) ) {
+                $this->data[ $key ] = $value;
             }
         }
 
@@ -3123,12 +3340,13 @@ class Rex_Product_Data_Retriever{
      * @since    2.0.3
      */
 
-    public function remove_short_codes($content) {
-        if(empty($content)){
+    public function remove_short_codes( $content )
+    {
+        if( empty( $content ) ) {
             return "";
         }
-        $content = $this->remove_invalid_xml($content);
-        return strip_shortcodes($content);
+        $content = $this->remove_invalid_xml( $content );
+        return strip_shortcodes( $content );
     }
 
     /**
@@ -3137,28 +3355,27 @@ class Rex_Product_Data_Retriever{
      * @param string $value
      * @return string
      */
-    public function remove_invalid_xml($value) {
+    public function remove_invalid_xml( $value )
+    {
 
-        $ret = "";
+        $ret     = "";
         $current = "";
-        if (empty($value)) {
+        if( empty( $value ) ) {
             return $ret;
         }
 
-        $length = strlen($value);
-        for ($i=0; $i < $length; $i++) {
-            $current = ord($value[$i]);
-            if (($current == 0x9) ||
-                ($current == 0xA) ||
-                ($current == 0xD) ||
-                (($current >= 0x20) && ($current <= 0xD7FF)) ||
-                (($current >= 0xE000) && ($current <= 0xFFFD)) ||
-                (($current >= 0x10000) && ($current <= 0x10FFFF)))
-            {
-                $ret .= chr($current);
+        $length = strlen( $value );
+        for( $i = 0; $i < $length; $i++ ) {
+            $current = ord( $value[ $i ] );
+            if( ( $current == 0x9 ) ||
+                ( $current == 0xA ) ||
+                ( $current == 0xD ) ||
+                ( ( $current >= 0x20 ) && ( $current <= 0xD7FF ) ) ||
+                ( ( $current >= 0xE000 ) && ( $current <= 0xFFFD ) ) ||
+                ( ( $current >= 0x10000 ) && ( $current <= 0x10FFFF ) ) ) {
+                $ret .= chr( $current );
             }
-            else
-            {
+            else {
                 $ret .= " ";
             }
         }
@@ -3174,24 +3391,30 @@ class Rex_Product_Data_Retriever{
      * @since    1.2.5
      */
 
-    public function calculate_identifier_exists ($data) {
+    public function calculate_identifier_exists( $data )
+    {
 
         $identifier_exists = "no";
 
-        if (array_key_exists("brand", $data) AND ($data['brand'] != "")){
-            if ((array_key_exists("gtin", $data)) AND ($data['gtin'] != "")){
+        if( array_key_exists( "brand", $data ) and ( $data[ 'brand' ] != "" ) ) {
+            if( ( array_key_exists( "gtin", $data ) ) and ( $data[ 'gtin' ] != "" ) ) {
                 $identifier_exists = "yes";
-            } elseif ((array_key_exists("mpn", $data)) AND ($data['mpn'] != "")){
+            }
+            elseif( ( array_key_exists( "mpn", $data ) ) and ( $data[ 'mpn' ] != "" ) ) {
                 $identifier_exists = "yes";
-            } else {
+            }
+            else {
                 $identifier_exists = "no";
             }
-        } else {
-            if ((array_key_exists("gtin", $data)) AND ($data['gtin'] != "")){
+        }
+        else {
+            if( ( array_key_exists( "gtin", $data ) ) and ( $data[ 'gtin' ] != "" ) ) {
                 $identifier_exists = "no";
-            } elseif ((array_key_exists("mpn", $data)) AND ($data['mpn'] != "")){
+            }
+            elseif( ( array_key_exists( "mpn", $data ) ) and ( $data[ 'mpn' ] != "" ) ) {
                 $identifier_exists = "no";
-            } else {
+            }
+            else {
                 $identifier_exists = "no";
             }
         }
@@ -3204,7 +3427,8 @@ class Rex_Product_Data_Retriever{
      *
      * @return string
      */
-    public function get_shipping_cost() {
+    public function get_shipping_cost()
+    {
 
         return '';
     }
@@ -3215,65 +3439,65 @@ class Rex_Product_Data_Retriever{
      * @return bool
      * @since    1.0.0
      */
-    protected function is_children(){
-        return $this->product->get_parent_id() ? true: false;
+    protected function is_children()
+    {
+        return $this->product->get_parent_id() ? true : false;
     }
 
-    function __call($name, $arguments)
+    function __call( $name, $arguments )
     {
         // TODO: Implement __call() method.
     }
 
-    public function get_args($raw_args = false) {
-        if(!$raw_args)
-            $raw_args=  $this->args;
+    public function get_args( $raw_args = false )
+    {
+        if( !$raw_args )
+            $raw_args = $this->args;
 
         $args = array(
-            "post_type"=>array("product", "product_variation")
+            "post_type" => array( "product", "product_variation" )
         );
-        if(isset($raw_args["type"])&&$raw_args["type"]=="by-id")
-        {
-            $args['post__in'] = explode(",",$raw_args["ids"]);
+        if( isset( $raw_args[ "type" ] ) && $raw_args[ "type" ] == "by-id" ) {
+            $args[ 'post__in' ] = explode( ",", $raw_args[ "ids" ] );
         }
-        else
-        {
+        else {
             //Tax queries
-            if (isset($raw_args["tax_query"]["queries"])) {
-                $args["tax_query"] = array();
-                $args["tax_query"]["relation"] = $raw_args["tax_query"]["relation"];
-                foreach ($raw_args["tax_query"]["queries"] as $query) {
-                    array_push($args["tax_query"], $query);
+            if( isset( $raw_args[ "tax_query" ][ "queries" ] ) ) {
+                $args[ "tax_query" ]               = array();
+                $args[ "tax_query" ][ "relation" ] = $raw_args[ "tax_query" ][ "relation" ];
+                foreach( $raw_args[ "tax_query" ][ "queries" ] as $query ) {
+                    array_push( $args[ "tax_query" ], $query );
                 }
             }
 
             //Metas
-            if (isset($raw_args["meta_query"]["queries"])) {
-                $args["meta_query"] = array();
-                $args["meta_query"]["relation"] = $raw_args["meta_query"]["relation"];
-                foreach ($raw_args["meta_query"]["queries"] as $query) {
+            if( isset( $raw_args[ "meta_query" ][ "queries" ] ) ) {
+                $args[ "meta_query" ]               = array();
+                $args[ "meta_query" ][ "relation" ] = $raw_args[ "meta_query" ][ "relation" ];
+                foreach( $raw_args[ "meta_query" ][ "queries" ] as $query ) {
                     //Some operators expect an array as value
-                    $array_operators = array('IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN');
-                    if (in_array($query["compare"], $array_operators))
-                        $query["value"] = explode(",", $query["value"]);
-                    array_push($args["meta_query"], $query);
+                    $array_operators = array( 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN' );
+                    if( in_array( $query[ "compare" ], $array_operators ) )
+                        $query[ "value" ] = explode( ",", $query[ "value" ] );
+                    array_push( $args[ "meta_query" ], $query );
                 }
             }
 
             //Other parameters
-            $other_parameters = array("author__in", "post__not_in");
-            foreach ($other_parameters as $parameter) {
-                if (!isset($raw_args[$parameter]))
+            $other_parameters = array( "author__in", "post__not_in" );
+            foreach( $other_parameters as $parameter ) {
+                if( !isset( $raw_args[ $parameter ] ) )
                     continue;
-                if ($parameter == "post__not_in")
-                    $args[$parameter] = explode(",", $raw_args[$parameter]);
-                else if ($parameter == "author__in" && $raw_args[$parameter] == array(""))
+                if( $parameter == "post__not_in" )
+                    $args[ $parameter ] = explode( ",", $raw_args[ $parameter ] );
+                else if( $parameter == "author__in" && $raw_args[ $parameter ] == array( "" ) )
                     continue;
                 else
-                    $args[$parameter] = $raw_args[$parameter];
+                    $args[ $parameter ] = $raw_args[ $parameter ];
             }
         }
 
-        $args["nopaging"]=true;
+        $args[ "nopaging" ] = true;
 
         return $args;
     }
@@ -3282,11 +3506,11 @@ class Rex_Product_Data_Retriever{
      * @param string $string
      * @return string
      */
-    private function safeCharEncodeURL($string)
+    private function safeCharEncodeURL( $string )
     {
         return str_replace(
-            array('%', '[', ']', '{', '}', '|', ' ', '"', '<', '>', '#', '\\', '^', '~', '`'),
-            array('%25', '%5b', '%5d', '%7b', '%7d', '%7c', '%20', '%22', '%3c', '%3e', '%23', '%5c', '%5e', '%7e', '%60'),
-            $string);
+            array( '%', '[', ']', '{', '}', '|', ' ', '"', '<', '>', '#', '\\', '^', '~', '`' ),
+            array( '%25', '%5b', '%5d', '%7b', '%7d', '%7c', '%20', '%22', '%3c', '%3e', '%23', '%5c', '%5e', '%7e', '%60' ),
+            $string );
     }
 }

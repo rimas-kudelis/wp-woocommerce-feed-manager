@@ -257,12 +257,10 @@ if ( ! function_exists( 'wpfm_is_wpml_active' ) ) {
 		$wpml                        = 'woocommerce-multilingual/wpml-woocommerce.php';
 		$sitepress                   = 'sitepress-multilingual-cms/sitepress.php';
 		$wpml_string_translation     = 'wpml-string-translation/plugin.php';
-		$wpml_translation_management = 'wpml-translation-management/plugin.php';
 
 		return in_array( $wpml, $active_plugings )
 		       && in_array( $sitepress, $active_plugings )
-		       && in_array( $wpml_string_translation, $active_plugings )
-		       && in_array( $wpml_translation_management, $active_plugings );
+		       && in_array( $wpml_string_translation, $active_plugings );
 	}
 }
 
@@ -1408,6 +1406,19 @@ if ( ! function_exists( 'wpfm_purge_browser_cache' ) ) {
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
+	}
+}
+
+
+if ( ! function_exists( 'wpfm_switch_site_lang' ) ) {
+	/**
+	 * Switches site language to the given language
+	 */
+	function wpfm_switch_site_lang( $language ){
+        if ( wpfm_is_wpml_active() ) {
+            global $sitepress;
+            $sitepress->switch_lang( $language );
+        }
 	}
 }
 

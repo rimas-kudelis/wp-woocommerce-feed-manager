@@ -110,66 +110,22 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
                 if ($this->variable_product) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
-                    $item = RexShoppingGoogleCustomSearchAds::createItem();
-                    $atts = $this->get_product_data($variable_product, $product_meta_keys);
-                    $atts = $this->process_attributes_for_shipping_tax($atts);
-                    foreach ($atts as $key => $value) {
-                        if ($key == 'shipping') {
-                            $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                        } elseif ($key == 'tax') {
-                            $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                        } else {
-	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                        if ( $value != '' ) {
-			                        $item->$key($value); // invoke $key as method of $item object.
-		                        }
-	                        }
-	                        else {
-		                        $item->$key($value); // invoke $key as method of $item object.
-	                        }
-                        }
-                    }
+                    $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
 
-                if ($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag') {
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter' ) {
                     if ($this->exclude_hidden_products) {
                         $variations = $product->get_visible_children();
                     } else {
                         $variations = $product->get_children();
                     }
 
-                    if ( $variations && $this->product_scope !='filter' ) {
+                    if ( $variations ) {
                         foreach ($variations as $variation) {
                             if ($this->variations) {
                                 $variation_products[] = $variation;
-                                $item = RexShoppingGoogleCustomSearchAds::createItem();
                                 $variation_product = wc_get_product($variation);
-                                $atts = $this->get_product_data($variation_product, $product_meta_keys);
-                                $atts = $this->process_attributes_for_shipping_tax($atts);
-                                $check_item_group_id = 0;
-                                foreach ($atts as $key => $value) {
-                                    if ($key == 'shipping') {
-                                        $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                                    } elseif ($key == 'tax') {
-                                        $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                                    } else {
-	                                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                                    if ( $value != '' ) {
-			                                    $item->$key($value); // invoke $key as method of $item object.
-		                                    }
-	                                    }
-	                                    else {
-		                                    $item->$key($value); // invoke $key as method of $item object.
-	                                    }
-                                    }
-                                    if('item_group_id' == $key){
-                                        $check_item_group_id = 1;
-                                    }
-                                   
-                                }
-                                if($check_item_group_id == 0){
-                                    $item->item_group_id($variation_product->get_parent_id());
-                                }
+                                $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                             }
                         }
                     }
@@ -178,83 +134,19 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
 
             if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle')) {
                 $simple_products[] = $productId;
-                $atts = $this->get_product_data($product, $product_meta_keys);
-
-                $item = RexShoppingGoogleCustomSearchAds::createItem();
-                $atts = $this->process_attributes_for_shipping_tax($atts);
-                foreach ($atts as $key => $value) {
-                    if ($key == 'shipping') {
-                        $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                    } elseif ($key == 'tax') {
-                        $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                    } else {
-	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                    if ( $value != '' ) {
-			                    $item->$key($value); // invoke $key as method of $item object.
-		                    }
-	                    }
-	                    else {
-		                    $item->$key($value); // invoke $key as method of $item object.
-	                    }
-                    }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
 
             if ($this->product_scope === 'all' || $this->product_scope == 'product_filter') {
                 if ( $product->get_type() === 'variation' ) {
                     $variation_products[] = $productId;
-                    $item = RexShoppingGoogleCustomSearchAds::createItem();
-                    $atts = $this->get_product_data($product, $product_meta_keys);
-                    $atts = $this->process_attributes_for_shipping_tax($atts);
-                    $check_item_group_id = 0;
-                    foreach ($atts as $key => $value) {
-                        if ($key == 'shipping') {
-                            $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                        } elseif ($key == 'tax') {
-                            $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                        } else {
-	                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                        if ( $value != '' ) {
-			                        $item->$key($value); // invoke $key as method of $item object.
-		                        }
-	                        }
-	                        else {
-		                        $item->$key($value); // invoke $key as method of $item object.
-	                        }
-                        }
-                        if('item_group_id' == $key){
-                            $check_item_group_id = 1;
-                        }
-                       
-                    }
-                    if($check_item_group_id == 0){
-                        $item->item_group_id($product->get_parent_id());
-                    }
+                    $this->add_to_feed( $product, $product_meta_keys, 'variation' );
                 }
             }
 
             if ($product->is_type('grouped') || $product->is_type( 'woosb' )) {
                 $group_products[] = $productId;
-                $item = RexShoppingGoogleCustomSearchAds::createItem();
-                $atts = $this->get_product_data($product, $product_meta_keys);
-                $atts = $this->process_attributes_for_shipping_tax($atts);
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-                    if ($key == 'shipping') {
-                        $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                    } elseif ($key == 'tax') {
-                        $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                    } else {
-	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                    if ( $value != '' ) {
-			                    $item->$key($value); // invoke $key as method of $item object.
-		                    }
-	                    }
-	                    else {
-		                    $item->$key($value); // invoke $key as method of $item object.
-	                    }
-                    }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
         }
 
@@ -274,10 +166,52 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
 
 
     /**
-     * @param $atts
+     * Adding items to feed
+     *
+     * @param $product
+     * @param $meta_keys
+     * @param string $product_type
+     */
+    private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
+        $attributes = $this->get_product_data( $product, $meta_keys );
+        $attributes = $this->process_attributes_for_shipping_tax($attributes);
+
+        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+            $item = RexShoppingGoogleCustomSearchAds::createItem();
+
+            if ( $product_type === 'variation' ) {
+                $check_item_group_id = 0;
+            }
+
+            foreach ($attributes as $key => $value) {
+                if ($key == 'shipping') {
+                    $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
+                } elseif ($key == 'tax') {
+                    $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
+                } else {
+                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                        if ( $value != '' ) {
+                            $item->$key($value); // invoke $key as method of $item object.
+                        }
+                    }
+                    else {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
+            }
+
+            if( $product_type === 'variation' && $check_item_group_id === 0){
+                $item->item_group_id($product->get_parent_id());
+            }
+        }
+    }
+
+
+    /**
+     * @param $attributes
      * @return array
      */
-    private function process_attributes_for_shipping_tax($atts)
+    private function process_attributes_for_shipping_tax($attributes)
     {
         $shipping_attr = array('shipping_country', 'shipping_region', 'shipping_service', 'shipping_price');
         $default_shipping_values = array(
@@ -295,24 +229,24 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
             'tax_region' => '',
         );
 
-        foreach ($atts as $key => $value) {
+        foreach ($attributes as $key => $value) {
             if (in_array($key, $shipping_attr)) {
-                $atts['shipping'][$key] = $value;
-                unset($atts[$key]);
+                $attributes['shipping'][$key] = $value;
+                unset($attributes[$key]);
             }
 
             if (in_array($key, $tax_attr)) {
-                $atts['tax'][$key] = $value;
-                unset($atts[$key]);
+                $attributes['tax'][$key] = $value;
+                unset($attributes[$key]);
             }
         }
-        if (array_key_exists('shipping', $atts)) {
-            $atts['shipping'] = $default_shipping_values;
+        if (array_key_exists('shipping', $attributes)) {
+            $attributes['shipping'] = $default_shipping_values;
         }
-        if (array_key_exists('tax', $atts)) {
-            $atts['tax'] = $default_tax_values;
+        if (array_key_exists('tax', $attributes)) {
+            $attributes['tax'] = $default_tax_values;
         }
-        return $atts;
+        return $attributes;
     }
 
 

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.8.1
 Requires PHP: 7.0
-Stable tag:  7.0.6
+Stable tag:  7.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,22 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.0.7 (2022-01-27) =
+* Added: How to guide and Troubleshoot section added
+* Added: Skip products with empty values feature added
+* Added: Custom Taxonomy support added
+* Fixed: Additional image conflict with WoodMart Theme issue fixed
+* Fixed: Merchant search bar focus issue fixed
+* Fixed: Custom Filter variations are not added in the feed issue fixed
+* Fixed: Idealo.de merchant template updated
+* Fixed: File URL changed to File Path
+* Fixed: WPML Cron issue fixed
+* Fixed: TSV header repeating issue fixed
+* Fixed: Duplicate feed categories are not checked issue fixed
+* Fixed: Feed file is removed once the feed feed is removed from the trash issue fixed
+* Fixed: Cron issue on attribute skipping with empty values issue fixed
+
 
 = 7.0.6 (2022-01-06) =
 * Fixed: Troubleshoot button wrong URL issue fixed

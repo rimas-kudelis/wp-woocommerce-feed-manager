@@ -397,6 +397,8 @@
 
     $( document ).on( "submit", "#wpfm-transient-settings", save_wpfm_transient );
 
+    $( document ).on( "select2:open", rex_feed_focus_merchant_search_bar );
+
 
     // ==================================================================
 
@@ -1551,5 +1553,9 @@
                 console.log( 'Uh, oh!' );
                 console.log( response.statusText );
             });
+    }
+
+    function rex_feed_focus_merchant_search_bar( e ) {
+        $('input.select2-search__field').get(0).focus();
     }
 })( jQuery );

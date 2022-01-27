@@ -48,6 +48,7 @@ class Rex_Product_Metabox
 		if ( !$is_premium ) {
 			add_action( 'add_meta_boxes', array( $this, 'rex_feed_upgrade_notice_section' ) );
 		}
+        add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_how_to_guide_section' ) );
 	}
 
 
@@ -297,6 +298,22 @@ class Rex_Product_Metabox
 
 
 	/**
+	 * Adding metaboxes for How To Guide Section
+	 */
+	public function rex_feed_feed_how_to_guide_section()
+	{
+        add_meta_box(
+            $this->prefix . 'how_to_guide',
+            'Common Troubleshooting Issue',
+            array( $this, 'rex_feed_generate_how_to_guide_section' ),
+            'product-feed',
+            'side',
+            'core'
+        );
+	}
+
+
+	/**
 	 * Generates the feed file section
 	 */
 	public function rex_feed_generate_feed_file_section()
@@ -304,12 +321,16 @@ class Rex_Product_Metabox
 		$feed_url = get_post_meta( get_the_ID(), $this->prefix . 'xml_file', true );
 		$feed_url = esc_url( $feed_url );
 
-		echo '<h2>'. __( 'Your Feed URL', 'rex-product-feed' ) .'</h2>';
-		echo '<input type="text" name="'.$this->prefix.'xml_file" id="'.$this->prefix.'xml_file" value="'. $feed_url .'" disabled>';
-		echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $feed_url . '">
-              <i class="fa fa-external-link" aria-hidden="true"></i>' . __( 'View Feed', 'rex-product-feed' ) . '</a> ';
-		echo '<a target="_blank" class="btn waves-effect waves-light btn-default" href="' . $feed_url . '" download>
-            <i class="fa fa-download" aria-hidden="true"></i>' . __( 'Download Feed', 'rex-product-feed' ) . '</a>';
+        require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-feed-file-section-content.php';
+	}
+
+
+	/**
+	 * Generates the How To Guide section
+	 */
+	public function rex_feed_generate_how_to_guide_section()
+	{
+        require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-how-to-guide-content.php';
 	}
 
 

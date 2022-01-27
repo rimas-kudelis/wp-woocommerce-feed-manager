@@ -221,11 +221,36 @@
 			</ul>
 		</div>
 
-		<div class="<?php echo $this->prefix . 'skip_row';?>">
-			<label for="<?php echo $this->prefix . 'skip_row';?>"><?php _e('Skip any attribute if the value is empty', 'rex-product-feed')?>
+		<div class="<?php echo $this->prefix . 'skip_product';?>">
+			<label for="<?php echo $this->prefix . 'skip_product';?>"><?php _e('Skip products with empty value', 'rex-product-feed')?>
 				<span class="rex_feed-tooltip">
                     <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
-                    <p><?php _e( 'This option will remove any attributes with empty value (XML feed format only)', 'rex-product-feed' ); ?></p>
+                    <p><?php _e( 'This option will remove products if there is a single attribute with empty value', 'rex-product-feed' ); ?></p>
+                </span>
+			</label>
+			<ul id="<?php echo $this->prefix . 'skip_product';?>">
+				<?php
+				$saved_value = get_post_meta( get_the_ID(), 'rex_feed_skip_product', true );
+				$saved_value = $saved_value !== '' ? $saved_value : 'no';
+				$checked_yes = $saved_value === 'yes' ? ' checked="checked"' : '';
+				$checked_no  = $saved_value === 'no' ? ' checked="checked"' : '';
+				echo '<li>';
+				echo '<input type="radio" name="' . $this->prefix . 'skip_product' . '" value="yes" id="'. $this->prefix . 'skip_product2' .'" ' . $checked_yes .'>';
+				echo '<label for="'. $this->prefix . 'skip_product2' .'">'.__('Yes', 'rex-product-feed').'</label>';
+				echo '</li>';
+				echo '<li>';
+				echo '<input type="radio" name="' . $this->prefix . 'skip_product' . '" value="no" id="'. $this->prefix . 'skip_product1' .'" ' . $checked_no .'>';
+				echo '<label for="'. $this->prefix . 'skip_product1' .'">'.__('No', 'rex-product-feed').'</label>';
+				echo '</li>';
+				?>
+			</ul>
+		</div>
+
+		<div class="<?php echo $this->prefix . 'skip_row';?>">
+			<label for="<?php echo $this->prefix . 'skip_row';?>"><?php _e('Skip attributes with empty value', 'rex-product-feed')?>
+				<span class="rex_feed-tooltip">
+                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
+                    <p><?php _e( 'This option will remove any attribute with empty value (XML feed format only)', 'rex-product-feed' ); ?></p>
                 </span>
 			</label>
 			<ul id="<?php echo $this->prefix . 'skip_row';?>">

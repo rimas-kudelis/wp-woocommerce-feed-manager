@@ -117,7 +117,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                     $variations = $product->get_children();
                 }
                 $atts = array();
-                if( $variations && $this->product_scope !='filter' ) {
+                if( $variations ) {
                     foreach ($variations as $variation) {
                         if($this->variations) {
                             $variation_products[] = $variation;

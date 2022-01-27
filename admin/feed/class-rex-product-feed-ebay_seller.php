@@ -116,16 +116,16 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
      */
     public function ebaySellerInit($config){
         $feed_config = array();
-        
+
         if ( !is_array( $config ) ) {
-	        parse_str( $config, $feed_config );
+            parse_str( $config, $feed_config );
         }
 
-	    $this->ebay_seller_config = array(
-		    'site_id'  => isset( $feed_config[ 'rex_feed_ebay_seller_site_id' ] ) ? (string) $feed_config[ 'rex_feed_ebay_seller_site_id' ] : '',
-		    'country'  => isset( $feed_config[ 'rex_feed_ebay_seller_country' ] ) ? (string) $feed_config[ 'rex_feed_ebay_seller_country' ] : '',
-		    'currency' => isset( $feed_config[ 'rex_feed_ebay_seller_currency' ] ) ? (string) $feed_config[ 'rex_feed_ebay_seller_currency' ] : '',
-	    );
+        $this->ebay_seller_config = array(
+            'site_id'  => isset( $feed_config[ 'rex_feed_ebay_seller_site_id' ] ) ? (string) $feed_config[ 'rex_feed_ebay_seller_site_id' ] : '',
+            'country'  => isset( $feed_config[ 'rex_feed_ebay_seller_country' ] ) ? (string) $feed_config[ 'rex_feed_ebay_seller_country' ] : '',
+            'currency' => isset( $feed_config[ 'rex_feed_ebay_seller_currency' ] ) ? (string) $feed_config[ 'rex_feed_ebay_seller_currency' ] : '',
+        );
     }
 
 
@@ -170,131 +170,117 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-	        if ( !$this->include_out_of_stock ) {
-		        if ( !$product->is_in_stock() ) {
-			        continue;
-		        }
-		        elseif ( $product->is_on_backorder() ) {
-			        continue;
-		        }
-	        }
+            if ( !$this->include_out_of_stock ) {
+                if ( !$product->is_in_stock() ) {
+                    continue;
+                }
+                elseif ( $product->is_on_backorder() ) {
+                    continue;
+                }
+            }
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 $variable_parent[] = $productId;
                 $variable_product = new WC_Product_Variable($productId);
-                $atts = $this->get_product_data( $variable_product, $product_meta_keys );
-                if (preg_match('#(\d+)$#', $this->ebay_cat_id, $matches)) {
-                    $atts = array_slice($atts, 0, 1, true) +
-                        array("Category" => $matches[1]) +
-                        array_slice($atts, 1, count($atts) - 1, true) ;
-                }
-
-                // get the variation attributes of
-                // this product
-                $relationshipDetails = '';
-                $_variation_atts = $variable_product->get_variation_attributes();
-                end($_variation_atts);
-                $_key = key($_variation_atts);
-                foreach( $_variation_atts as $attr_name => $attr ){
-                    $relationshipDetails .= wc_attribute_label( $attr_name ).'='.implode(';', $attr);
-                    if($attr_name !== $_key) $relationshipDetails .= '|';
-                }
-                $atts['Relationship'] = '';
-                $atts['RelationshipDetails'] = $relationshipDetails;
-
-                $item = RexShoppingCustom::createItem();
-                // add all attributes for each product.
-                $variable_common_fields = array(
-                    '*Quantity',
-                    '*StartPrice',
-                    'BuyItNowPrice',
-//                    '*Duration',
-                    '*ConditionID',
-                    'ReturnsAcceptedOption',
-                    'RefundOption',
-                    'ReturnsWithinOption',
-                );
+                $attributes = $this->get_product_data( $variable_product, $product_meta_keys );
                 
-                foreach ($atts as $key => $value) {
-	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                if ( $value != '' ) {
-			                $item->$key( $value ); // invoke $key as method of $item object.
-		                }
-	                }
-	                else {
-		                if(in_array( $key, $variable_common_fields )) {
-			                $item->$key(''); // invoke $key as method of $item object.
-		                }
-		                else {
-			                $item->$key( $value ); // invoke $key as method of $item object.
-		                }
-	                }
+                if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+                    if (preg_match('#(\d+)$#', $this->ebay_cat_id, $matches)) {
+                        $attributes = array_slice($attributes, 0, 1, true) +
+                                      array("Category" => $matches[1]) +
+                                      array_slice($attributes, 1, count($attributes) - 1, true) ;
+                    }
+
+                    // get the variation attributes of
+                    // this product
+                    $relationshipDetails = '';
+                    $_variation_atts = $variable_product->get_variation_attributes();
+                    end($_variation_atts);
+                    $_key = key($_variation_atts);
+                    foreach( $_variation_atts as $attr_name => $attr ){
+                        $relationshipDetails .= wc_attribute_label( $attr_name ).'='.implode(';', $attr);
+                        if($attr_name !== $_key) $relationshipDetails .= '|';
+                    }
+                    $attributes['Relationship'] = '';
+                    $attributes['RelationshipDetails'] = $relationshipDetails;
+
+                    $item = RexShoppingCustom::createItem();
+                    // add all attributes for each product.
+                    $variable_common_fields = array(
+                        '*Quantity',
+                        '*StartPrice',
+                        'BuyItNowPrice',
+                        '*ConditionID',
+                        'ReturnsAcceptedOption',
+                        'RefundOption',
+                        'ReturnsWithinOption',
+                    );
+
+                    foreach ($attributes as $key => $value) {
+                        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                            if ( $value != '' ) {
+                                $item->$key( $value ); // invoke $key as method of $item object.
+                            }
+                        }
+                        else {
+                            if(in_array( $key, $variable_common_fields )) {
+                                $item->$key(''); // invoke $key as method of $item object.
+                            }
+                            else {
+                                $item->$key( $value ); // invoke $key as method of $item object.
+                            }
+                        }
+                    }
                 }
+
 
                 if ( $this->exclude_hidden_products ) {
                     $variations = $product->get_visible_children();
                 }else {
                     $variations = $product->get_children();
                 }
+
                 if($variations) {
                     foreach ($variations as $variation) {
                         if($this->variations) {
                             $variation_products[] = $variation;
-                            $item = RexShoppingCustom::createItem();
                             $variation_product = wc_get_product( $variation );
 
-                            $atts = $this->get_product_data( $variation_product, $product_meta_keys );
-                            // get the variation attributes of
-                            // this product
-                            $vrelationshipDetails = '';
-                            $_variation_atts = $variation_product->get_attributes();
-                            end($_variation_atts);
-                            $_key = key($_variation_atts);
-                            foreach( $_variation_atts as $attr_name => $attr ){
-                                $vrelationshipDetails .= wc_attribute_label( $attr_name ).'='.$attr;
-                                if($attr_name !== $_key) $vrelationshipDetails .= '|';
+                            $attributes = $this->get_product_data( $variation_product, $product_meta_keys );
+
+                            if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+                                // get the variation attributes of
+                                // this product
+                                $vrelationshipDetails = '';
+                                $_variation_atts = $variation_product->get_attributes();
+                                end($_variation_atts);
+                                $_key = key($_variation_atts);
+
+                                $item = RexShoppingCustom::createItem();
+                                foreach( $_variation_atts as $attr_name => $attr ){
+                                    $vrelationshipDetails .= wc_attribute_label( $attr_name ).'='.$attr;
+                                    if($attr_name !== $_key) $vrelationshipDetails .= '|';
+                                }
+
+                                $attributes['Relationship'] = 'Variation';
+                                $attributes['RelationshipDetails'] = $vrelationshipDetails;
+
+                                foreach ($attributes as $key => $value) {
+                                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                                        if ( $value != '' ) {
+                                            $item->$key( $value ); // invoke $key as method of $item object.
+                                        }
+                                    }
+                                    else {
+                                        if(in_array( $key, $variable_common_fields )) {
+                                            $item->$key(''); // invoke $key as method of $item object.
+                                        }
+                                        else {
+                                            $item->$key( $value ); // invoke $key as method of $item object.
+                                        }
+                                    }
+                                }
                             }
-                            $atts['Relationship'] = 'Variation';
-                            $atts['RelationshipDetails'] = $vrelationshipDetails;
-
-
-                            // variation common fields. This fields value will be blank on feed
-                            $variation_common_fields = array(
-                                '*Category',
-                                '*Title',
-                                '*Description',
-                                '*Format',
-                                '*Location',
-                                '*Duration',
-                                'ShippingType',
-                                'ShippingService-1:Option',
-                                'ShippingService-1:Cost',
-                                'ShippingService-1:Priority',
-                                'ShippingService-2:Option',
-                                'ShippingService-2:Cost',
-                                'ShippingService-2:Priority',
-                                'DispatchTimeMax',
-                                'AdditionalDetails',
-                                'ShippingProfileName',
-                                'ReturnProfileName',
-                                'PaymentProfileName',
-                            );
-                            foreach ($atts as $key => $value) {
-	                            if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                            if ( $value != '' ) {
-			                            $item->$key( $value ); // invoke $key as method of $item object.
-		                            }
-	                            }
-	                            else {
-		                            if(in_array( $key, $variable_common_fields )) {
-			                            $item->$key(''); // invoke $key as method of $item object.
-		                            }
-		                            else {
-			                            $item->$key( $value ); // invoke $key as method of $item object.
-		                            }
-	                            }
-                            }
-
                         }
                     }
 
@@ -302,56 +288,12 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
             }
             if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                if (preg_match('#(\d+)$#', $this->ebay_cat_id, $matches)) {
-                    $atts = array_slice($atts, 0, 1, true) +
-                        array("Category" => $matches[1]) +
-                        array_slice($atts, 1, count($atts) - 1, true) ;
-                }
-                $atts['Relationship'] = '';
-                $atts['RelationshipDetails'] = '';
-                $item = RexShoppingCustom::createItem();
-
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                if ( $value != '' ) {
-			                $item->$key( $value ); // invoke $key as method of $item object.
-		                }
-	                }
-	                else {
-		                $item->$key( $value ); // invoke $key as method of $item object.
-	                }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
 
             if( $product->is_type( 'grouped' ) && $this->parent_product ){
                 $group_products[] = $productId;
-                $item = RexShoppingCustom::createItem();
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                if (preg_match('#(\d+)$#', $this->ebay_cat_id, $matches)) {
-                    $atts = array_slice($atts, 0, 1, true) +
-                        array("Category" => $matches[1]) +
-                        array_slice($atts, 1, count($atts) - 1, true) ;
-                }
-                $atts['Relationship'] = '';
-                $atts['RelationshipDetails'] = '';
-                // add all attributes for each product.
-                foreach ($atts as $key => $value) {
-	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                if ( $value != '' ) {
-			                $item->$key( $value ); // invoke $key as method of $item object.
-		                }
-	                }
-	                else {
-		                if(in_array( $key, $variable_common_fields )) {
-			                $item->$key(''); // invoke $key as method of $item object.
-		                }
-		                else {
-			                $item->$key( $value ); // invoke $key as method of $item object.
-		                }
-	                }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
         }
 
@@ -364,9 +306,45 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
         );
 
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
-	    if ( $this->tbatch === $this->batch ) {
-		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
-	    }
+        if ( $this->tbatch === $this->batch ) {
+            update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+        }
+    }
+
+
+    /**
+     * Adding items to feed
+     *
+     * @param $product
+     * @param $meta_keys
+     * @param string $product_type
+     */
+    private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
+        $attributes = $this->get_product_data( $product, $meta_keys );
+
+        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+            $item = RexShoppingCustom::createItem();
+
+            if (preg_match('#(\d+)$#', $this->ebay_cat_id, $matches)) {
+                $attributes = array_slice($attributes, 0, 1, true) +
+                              array("Category" => $matches[1]) +
+                              array_slice($attributes, 1, count($attributes) - 1, true) ;
+            }
+            $attributes['Relationship'] = '';
+            $attributes['RelationshipDetails'] = '';
+
+            // add all attributes for each product.
+            foreach ($attributes as $key => $value) {
+                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                    if ( $value != '' ) {
+                        $item->$key( $value ); // invoke $key as method of $item object.
+                    }
+                }
+                else {
+                    $item->$key( $value ); // invoke $key as method of $item object.
+                }
+            }
+        }
     }
 
 
@@ -412,7 +390,6 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
     }
 
     public function footer_replace() {
-       
-    }
 
+    }
 }
