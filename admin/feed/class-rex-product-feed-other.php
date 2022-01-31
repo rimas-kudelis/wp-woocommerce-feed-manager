@@ -984,7 +984,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
 
-                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter' ) {
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' ) {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
                     }else {

@@ -123,7 +123,7 @@ class Rex_Product_Feed_Ebay_seller_tickets extends Rex_Product_Feed_Abstract_Gen
                     $variable_product = new WC_Product_Variable($productId);
                     $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
-                if($this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->product_scope === 'filter') {
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' ) {
                     $variations = $product->get_visible_children();
                     if($variations) {
                         foreach ($variations as $variation) {
