@@ -400,9 +400,17 @@ class Rex_Product_Data_Retriever
      */
     protected function set_perfect_attr( $key )
     {
-        $brands = wp_get_object_terms( $this->product->get_id(), 'pwb-brand' );
-        $brnd   = '';
-        $i      = 0;
+        $brands = '';
+
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            $brands = wp_get_post_terms( $this->product->get_parent_id(), 'pwb-brand', array( "fields" => "all" ) );
+        }
+        else {
+            $brands = wp_get_post_terms( $this->product->get_id(), 'pwb-brand', array( "fields" => "all" ) );
+        }
+
+        $brnd = '';
+        $i    = 0;
         foreach( $brands as $brand ) {
             if( $i == 0 ) {
                 $brnd .= $brand->name;
@@ -2160,6 +2168,10 @@ class Rex_Product_Data_Retriever
     protected function set_wpfm_custom_att( $key )
     {
         $key = str_replace( 'custom_attributes_', '', $key );
+        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+            $val = get_post_meta( $this->product->get_id(), $key, true );
+            return $val && $val !== '' ? $val : get_post_meta( $this->product->get_parent_id(), $key, true );
+        }
         return get_post_meta( $this->product->get_id(), $key, true );
     }
 
@@ -3241,8 +3253,7 @@ class Rex_Product_Data_Retriever
             case 'remove_special':
                 return filter_var( $val, FILTER_SANITIZE_STRING );
             case 'cdata':
-                return $val ? "CDATA $val " : $val;
-                return $val ? "&#x3C;![CDATA [$val]]&#x3E;" : $val;
+                return $val && $val !== '' ? "<![CDATA[{$val}]]>" : $val;
             case 'cdata_without_space':
                 return $val ? "CDATA$val" : $val;
             case 'remove_underscore':
