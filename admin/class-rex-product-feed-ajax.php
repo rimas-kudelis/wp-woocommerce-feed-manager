@@ -242,6 +242,13 @@ class Rex_Product_Feed_Ajax {
 		                ->with_validation( $validations );
 
 		/**
+		 * Save WPFM Custom meta field values to show in the front view
+		 */
+		wp_ajax_helper()->handle( 'rex-product-save-custom-fields-data' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_product_save_custom_fields_data' ) )
+		                ->with_validation( $validations );
+
+		/**
 		 * New changes message
 		 */
 		wp_ajax_helper()->handle( 'new-changes-message' )
@@ -255,9 +262,7 @@ class Rex_Product_Feed_Ajax {
 		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_load_taxonomies' ) )
 		                ->with_validation( $validations );
 
-	    /**
-	     * Loads taxonomies
-	     */
+
 		wp_ajax_helper()->handle( 'rex-feed-get-appsero-options' )
 		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_get_appsero_options' ) )
 		                ->with_validation( $validations );
@@ -1319,5 +1324,27 @@ class Rex_Product_Feed_Ajax {
             wp_send_json_success( array( 'html' => $html ) );
         }
         wp_send_json_error( array( 'html' => $html ) );
+    }
+
+
+    /**
+     * Save WPFM Custom meta field values to show in the front view
+     * @param $payload
+     */
+    public static function rex_product_save_custom_fields_data( $payload ) {
+        $nonce = isset( $payload[ 'security' ] ) ? $payload[ 'security' ] : '';
+
+        if ( wp_verify_nonce( $nonce, 'rex-wpfm-ajax' ) ) {
+            $fields_value = isset( $payload[ 'fields_value' ] ) ? $payload[ 'fields_value' ] : array();
+
+            if( !empty( $fields_value ) ) {
+                update_option( 'wpfm_product_custom_fields_frontend', $fields_value );
+            }
+            else {
+                delete_option( 'wpfm_product_custom_fields_frontend' );
+            }
+            wp_send_json_success();
+        }
+        wp_send_json_error();
     }
 }

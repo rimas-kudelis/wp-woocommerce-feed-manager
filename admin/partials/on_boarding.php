@@ -12,7 +12,7 @@
  */
 
 $is_premium_activated        = apply_filters( 'wpfm_is_premium', false );
-$custom_field                = get_option( 'rex-wpfm-product-custom-field' );
+$custom_field                = get_option( 'rex-wpfm-product-custom-field', 'no' );
 $pa_field                    = get_option( 'rex-wpfm-product-pa-field' );
 $structured_data             = get_option( 'rex-wpfm-product-structured-data' );
 $exclude_tax                 = get_option( 'rex-wpfm-product-structured-data-exclude-tax' );
@@ -29,8 +29,8 @@ else {
 $wpfm_fb_pixel_enabled = get_option( 'wpfm_fb_pixel_enabled', 'no' );
 $wpfm_fb_pixel_data    = get_option( 'wpfm_fb_pixel_value' );
 $wpfm_enable_log       = get_option( 'wpfm_enable_log' );
-
-$pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
+$custom_fields         = get_option( 'wpfm_product_custom_fields_frontend', array() );
+$pro_url               = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
 ?>
 
 <div class="columns">
@@ -617,6 +617,62 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                 </div>
                             </div>
 
+                            <div class="single-merchant wpfm-custom-field-frontend <?php if( $custom_field === 'no' ) echo 'is-hidden'; ?>">
+                                <span class="title"><?php echo __('Show WPFM Custom fields in Front-end [Single Product Page]', 'rex-product-feed'); ?></span>
+                                <form id="wpfm-frontend-fields" class="wpfm-frontend-fields">
+                                    <div class="wpfm-custom-fields">
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_brand" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="brand" <?php if( in_array( 'brand', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="brand"><?php echo __('Brand', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_gtin" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="gtin" <?php if( in_array( 'gtin', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="gtin"><?php echo __('GTIN', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_mpn" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="mpn" <?php if( in_array( 'mpn', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="mpn"><?php echo __('MPN', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_upc" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="upc" <?php if( in_array( 'upc', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="upc"><?php echo __('UPC', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_ean" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="ean" <?php if( in_array( 'ean', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="ean"><?php echo __('EAN', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_jan" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="jan" <?php if( in_array( 'jan', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="jan"><?php echo __('JAN', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_isbn" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="itf" <?php if( in_array( 'itf', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="isbn"><?php echo __('ISBN', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_itf" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="itf" <?php if( in_array( 'itf', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="itf"><?php echo __('ITF14', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_offer_price" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="offer_price" <?php if( in_array( 'offer_price', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="offer-price"><?php echo __('Offer Price', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_effective_date" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="offer_effective_date" <?php if( in_array( 'offer_effective_date', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="effective-date"><?php echo __('Effective Date', 'rex-product-feed'); ?></span>
+                                        </div>
+                                        <div class="single-meta-field">
+                                            <input id="wpfm_product_additional_info" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="additional_info" <?php if( in_array( 'additional_info', $custom_fields ) ) echo 'checked';?>>
+                                            <span class="additional-info"><?php echo __('Additional Info', 'rex-product-feed'); ?></span>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="save-wpfm-fields-show">
+                                        <span>save</span>
+                                        <i class="fa fa-spinner fa-pulse fa-fw"></i>
+                                    </button>
+                                </form>
+                            </div>
+
                             <div class="single-merchant increase-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
                                 <?php if (!$is_premium_activated) { ?>
                                     <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro"
@@ -688,7 +744,6 @@ $pro_url = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-wooc
                                     </div>
                                 </div>
                             </div>
-
 
                             <div class="single-merchant detailed-product detailed-merchants">
                                 <span class="title"><?php echo __('WPFM cache TTL', 'rex-product-feed'); ?></span>

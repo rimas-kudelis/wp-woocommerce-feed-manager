@@ -3222,11 +3222,7 @@ class Rex_Product_Data_Retriever
             case 'strip_tags':
                 $val            = preg_replace( '/(?:<|&lt;).*?(?:>|&gt;)/', '', $val );
                 $striped_string = strip_tags( $val );
-
-                if( substr( $striped_string, -1 ) == " " ) {
-                    return rtrim( $striped_string );
-                }
-                return $striped_string;
+                return trim( $striped_string );
             case 'utf_8_encode':
                 return utf8_encode( $val );
             case 'htmlentities':

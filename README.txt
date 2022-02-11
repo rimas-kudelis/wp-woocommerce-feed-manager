@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.9
 Requires PHP: 7.0
-Stable tag:  7.0.9
+Stable tag:  7.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,14 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.1.0 (2022-02-11) =
+* Added: WPFM Custom fields on the frontend feature added
+* Fixed: Idealo feed template updated
+* Fixed: Google search feed template updated
+* Fixed: TXT feed space issue updated
+* Fixed: Ceneo feed template updated
+* Fixed: UPI activation issue
 
 = 7.0.9 (2022-02-07) =
 * Fixed: UPI info missing for the product variations issue fix

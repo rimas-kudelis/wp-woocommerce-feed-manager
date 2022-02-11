@@ -237,9 +237,6 @@ class Feed
      */
     private function addItemsToFeed()
     {
-
-        $count =0;
-
         $attrNode = array();
         $childNode = array();
         $imageNode = array();
@@ -305,38 +302,24 @@ class Feed
                         if($count===1){
                             $image = $feedItemNode->addChild('imgs');
                             $main = $image->addChild('main');
-                            
-                            //$main_ad_im = $image->addChild('additional_img');
                         }
                         if($itemNode->get('name') == 'image_link'){
                             $main->addAttribute('url', $itemNode->get('value'));
-                            //$i->addAttribute('url', $itemNode->get('value'));
                         }elseif ( strpos( $itemNode->get('name'), 'additional_image_link_' ) === 0 ){
-                            //$main_ad_im->addAttribute('url', $itemNode->get('value'));
                             $i = $image->addChild('i');
                             $i->addAttribute('url', $itemNode->get('value'));
                         }
-                        //$feedItemNode->addAttribute('stock', $itemNode->get('value'));
 
                     }elseif (in_array($itemNode,$otherAttrNode)){
                         $count2++;
                         if($count2===1){
                             $attr = $feedItemNode->addChild('attrs');
                         }
-
-                        // $a_tag = $attr->addChild('a', '<![CDATA ['.$itemNode->get('value').']]>');
                         $a_tag = $attr->addChild('a');
                         $a_tag->addAttribute('name', $itemNode->get('name'));
                         $node = dom_import_simplexml($a_tag);
                         $no=$node->ownerDocument;
                         $node->appendChild($no->createCDATASection( $itemNode->get('value') ));
-                        
-
-                        // $node->addAttribute('name', $itemNode->get('name'));
-//                        $a_tag->addChild('value','<![CDATA ['.$itemNode->get('value').']]>');
-                        //$a_tag->addChild($itemNode->get('name'), '<![CDATA ['.$itemNode->get('value').']]>');
-//                        $a_tag = $attr->addChild('a', '<![CDATA ['.$itemNode->get('value').']]>');
-//                        $a_tag->addAttribute('name', $itemNode->get('name'));
                     }
                     else {
                      

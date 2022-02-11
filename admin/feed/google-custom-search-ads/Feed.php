@@ -355,7 +355,7 @@ class Feed
         return $str;
     }
 
-    private function addItemsToFeedCSV()
+    /*private function addItemsToFeedCSV()
     {
         if (count($this->items)) {
             $checkcustom=0;
@@ -396,6 +396,40 @@ class Feed
         }
         $this->items_row[0] = $header;
         return $this->items_row;
+    }*/
+    private function addItemsToFeedCSV(){
+        $items_row = array();
+        if(count($this->items)){
+            $items_row[] = array_keys(end($this->items)->nodes());
+            if(!in_array('item_group_id', $items_row[0])) $items_row[0][] = 'item_group_id';
+            $length = count($items_row[0]);
+            foreach ($this->items as $item) {
+                $row = array();
+                foreach ($item->nodes() as $itemNode) {
+                    if (is_array($itemNode)) {
+                        foreach ($itemNode as $node) {
+                            $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $node->get('value'));
+                        }
+                    } else {
+                        $row[] = str_replace(array("\r\n", "\n", "\r"), ' ', $itemNode->get('value'));
+                    }
+                }
+                if((count($row)+1) == $length) {
+                    $row[$length-1] = '';
+                }
+                $items_row[] = $row;
+            }
+
+            $str = '';
+            foreach ($items_row as $fields) {
+                if(!$fields[$length-1]) {
+                    $str .= implode("\t", $fields) . ",\n";
+                }else {
+                    $str .= implode("\t", $fields) . "\n";
+                }
+            }
+        }
+        return $items_row;
     }
 
     /**

@@ -506,7 +506,7 @@ class Rex_Product_Feed_Admin {
      */
     public function load_admin_pages() {
 
-        add_menu_page( __( 'Product Feed', 'rex-product-feed' ), __( 'Product Feed', 'rex-product-feed' ), 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon.png', 20 );
+        add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon.png', 20 );
         add_submenu_page('product-feed', __('Add New Feed', 'rex-product-feed'), __('Add New Feed', 'rex-product-feed'), 'manage_woocommerce', 'post-new.php?post_type=product-feed');
 
         

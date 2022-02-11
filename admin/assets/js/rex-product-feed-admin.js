@@ -391,6 +391,8 @@
 
     $( document ).on( "submit", "#wpfm-per-batch", update_per_batch );
 
+    $( document ).on( "submit", "#wpfm-frontend-fields", save_wpfm_custom_fields_data );
+
     $( document ).on( "submit", "#wpfm-error-log-form", show_wpfm_error_log );
 
     $( document ).on( "submit", "#wpfm-fb-pixel", save_fb_pixel_id );
@@ -1154,6 +1156,43 @@
                 $form.find( "button.save-batch span" ).text( "failed" );
                 setTimeout( function () {
                     $form.find( "button.save-batch span" ).text( "save" );
+                }, 1000 );
+                console.log( 'uh, oh!' );
+                console.log( response.statusText );
+            } );
+    }
+
+
+    /**
+     * Save WPFM custom meta fields to show the values in the front end
+     * @param e
+     */
+    function save_wpfm_custom_fields_data( e ) {
+        e.preventDefault();
+        var $form = $( this );
+        $form.find( "button.save-wpfm-fields-show span" ).text( "" );
+        $form.find( "button.save-wpfm-fields-show i" ).show();
+
+        var fields_value = $.map($('input[name="wpfm_product_custom_fields_frontend[]"]:checked'), function(c){return c.value; });
+        var payload = {
+            security: rex_wpfm_ajax.ajax_nonce,
+            fields_value: fields_value,
+        };
+
+        wpAjaxHelperRequest( 'rex-product-save-custom-fields-data', payload )
+            .success( function ( response ) {
+                $form.find( "button.save-wpfm-fields-show i" ).hide();
+                $form.find( "button.save-wpfm-fields-show span" ).text( "saved" );
+                setTimeout( function () {
+                    $form.find( "button.save-wpfm-fields-show span" ).text( "save" );
+                }, 1000 );
+                console.log( 'woohoo!' );
+            } )
+            .error( function ( response ) {
+                $form.find( "button.save-wpfm-fields-show i" ).hide();
+                $form.find( "button.save-wpfm-fields-show span" ).text( "failed" );
+                setTimeout( function () {
+                    $form.find( "button.save-wpfm-fields-show span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
                 console.log( response.statusText );

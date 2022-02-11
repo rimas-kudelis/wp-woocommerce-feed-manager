@@ -23,16 +23,16 @@ class Rex_Feed_Template_Google_custom_search_ads extends Rex_Feed_Abstract_Templ
     protected function init_atts()
     {
         $this->attributes = array(
-            'Required Information' => array(
-                'Product_URL'       => 'Product URL',
-                'category'          => 'Product Category',
-                'stock'          => 'In Stock',
-                'price'         => 'Price'
+            'Required Information'  => array(
+                'page_url' => 'Page URL [page_url]',
+                'category' => 'Product Category [category]',
+                'stock'    => 'In Stock [stock]',
+                'price'    => 'Price [price]'
             ),
             'Additional Attributes' => array(
-                'id'                       => 'Product Id [id]',
-                'description'              => 'Product Description [description]',
-                'sku'               => 'SKU',
+                'id'          => 'Product Id [id]',
+                'description' => 'Product Description [description]',
+                'sku'         => 'SKU [sku]',
             ),
         );
     }
@@ -41,7 +41,7 @@ class Rex_Feed_Template_Google_custom_search_ads extends Rex_Feed_Abstract_Templ
     {
         $this->template_mappings = array(
             array(
-                'attr'     => 'Product_URL',
+                'attr'     => 'page_url',
                 'type'     => 'meta',
                 'meta_key' => 'link',
                 'st_value' => '',
@@ -77,7 +77,7 @@ class Rex_Feed_Template_Google_custom_search_ads extends Rex_Feed_Abstract_Templ
                 'meta_key' => 'current_price',
                 'st_value' => '',
                 'prefix'   => '',
-                'suffix'   => ' '.get_option('woocommerce_currency'),
+                'suffix'   => ' ' . get_option( 'woocommerce_currency' ),
                 'escape'   => 'default',
                 'limit'    => 0,
             )

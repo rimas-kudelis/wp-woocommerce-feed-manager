@@ -36,14 +36,8 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
 
         $this->generate_product_feed();
 
-        if ($this->feed_format === 'xml') {
-            $this->feed = RexShoppingGoogleCustomSearchAds::asRss();
-        } elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
-            $this->feed = RexShoppingGoogleCustomSearchAds::asTxt();
-        } elseif ($this->feed_format === 'csv') {
-            $this->feed = RexShoppingGoogleCustomSearchAds::asCsv();
-        } else {
-            $this->feed = RexShoppingGoogleCustomSearchAds::asRss();
+        if ($this->feed_format === 'csv') {
+            $this->feed = $this->returnFinalProduct();
         }
 
         if ($this->batch >= $this->tbatch) {
@@ -184,19 +178,13 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
             }
 
             foreach ($attributes as $key => $value) {
-                if ($key == 'shipping') {
-                    $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
-                } elseif ($key == 'tax') {
-                    $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
-                } else {
-                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-                        if ( $value != '' ) {
-                            $item->$key($value); // invoke $key as method of $item object.
-                        }
-                    }
-                    else {
+                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                    if ( $value != '' ) {
                         $item->$key($value); // invoke $key as method of $item object.
                     }
+                }
+                else {
+                    $item->$key($value); // invoke $key as method of $item object.
                 }
             }
 
@@ -257,20 +245,12 @@ class Rex_Product_Feed_Google_custom_search_ads extends Rex_Product_Feed_Abstrac
      */
     public function returnFinalProduct()
     {
-        if ($this->feed_format === 'xml') {
-            return RexShoppingGoogleCustomSearchAds::asRss();
-        } elseif ($this->feed_format === 'text' || $this->feed_format === 'tsv') {
-            return RexShoppingGoogleCustomSearchAds::asTxt();
-        } elseif ($this->feed_format === 'csv') {
-            return RexShoppingGoogleCustomSearchAds::asCsv();
-        }
-        return RexShoppingGoogleCustomSearchAds::asRss();
+        return RexShoppingGoogleCustomSearchAds::asCsv();
     }
 
     public function footer_replace()
     {
         $this->feed = str_replace('</channel></rss>', '', $this->feed);
-
     }
 
 }
