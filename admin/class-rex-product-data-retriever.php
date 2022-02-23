@@ -125,6 +125,7 @@ class Rex_Product_Data_Retriever
         $this->is_logging_enabled = is_wpfm_logging_enabled();
         $this->product            = $product;
         $this->analytics_params   = $feed->analytics_params;
+        $this->feed_config        = $feed->feed_config;
         $this->feed_rules         = $feed->feed_rules;
         $this->product_meta_keys  = $product_meta_keys;
         $this->append_variation   = $feed->append_variation;
@@ -164,10 +165,10 @@ class Rex_Product_Data_Retriever
      */
     public function set_test_feed_rules()
     {
-        $this->feed_rules = array();
+        $this->feed_config = array();
         foreach( $this->product_meta_keys as $key_cat => $attrs ) {
             foreach( $attrs as $key => $attr ) {
-                $this->feed_rules[] = array(
+                $this->feed_config[] = array(
                     'attr'      => $key,
                     'cust_attr' => $key,
                     'type'      => 'meta',
@@ -197,7 +198,7 @@ class Rex_Product_Data_Retriever
     {
         $this->data = array();
 
-        foreach( $this->feed_rules as $key => $rule ) {
+        foreach( $this->feed_config as $key => $rule ) {
 
             if( array_key_exists( 'attr', $rule ) ) {
                 if( $rule[ 'attr' ] ) {
@@ -298,6 +299,9 @@ class Rex_Product_Data_Retriever
 
         // maybe escape
         $val = $this->maybe_escape( $val, $rule[ 'escape' ] );
+
+        // maybe replace
+        $val = $this->maybe_replaced( $rule, $val, $this->feed_rules );
 
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix( $val, $rule );
@@ -505,7 +509,7 @@ class Rex_Product_Data_Retriever
 
         if( $is_premium ) {
             $price     = $price === '' ? 0 : $price;
-            $rules     = $this->feed_rules;
+            $rules     = $this->feed_config;
             $condition = '';
 
             foreach( $rules as $rule ) {
@@ -2536,10 +2540,10 @@ class Rex_Product_Data_Retriever
                 if( is_array( $term_name_arr ) ) {
                     return implode( $sep, $term_name_arr );
                 }
-                return $this->get_product_cats( '', ' > ', '' );
+                return $this->get_product_cats( 'product_cat', '', ' > ', '' );
             }
         }
-        return $this->get_product_cats( '', ' > ', '' );
+        return $this->get_product_cats( 'product_cat', '', ' > ', '' );
     }
 
 
@@ -2621,7 +2625,7 @@ class Rex_Product_Data_Retriever
             if( isset( $product_cat->name ) )
                 return $product_cat->name;
         }
-        return $this->get_product_cats();
+        return $this->get_product_cats( 'product_cat' );
     }
 
 
@@ -3284,6 +3288,138 @@ class Rex_Product_Data_Retriever
                 break;
 
         }
+    }
+
+    /**
+     * Replace a string from an attribute
+     */
+    protected function maybe_replaced( $attr, $value, $feed_rules )
+    {
+        $attr_name = isset( $attr[ 'meta_key' ] ) ? $attr[ 'meta_key' ] : '';
+        $attr_name = $attr_name === '' && isset( $attr[ 'attr' ] ) ? $attr[ 'attr' ] : $attr_name;
+        $attr_name = $attr_name === '' && isset( $attr[ 'cust_attr' ] ) ? $attr[ 'cust_attr' ] : $attr_name;
+        $replace   = array_search( $attr_name, array_column( $feed_rules, 'rules_if' ) );
+        $replace   = $replace === false ? array_search( $attr_name, array_column( $this->feed_rules, 'cust_rules_if' ) ) : $replace;
+
+        if( $replace !== false ) {
+            if( !empty( $feed_rules ) ) {
+                foreach( $feed_rules as $rule ) {
+                    if( ( isset( $rule[ 'rules_if' ] ) && $rule[ 'rules_if' ] === $attr_name )
+                        || ( isset( $rule[ 'cust_rules_if' ] ) && $rule[ 'cust_rules_if' ] === $attr_name ) ) {
+                        $replace = '';
+
+                        if( isset( $rule[ 'rules_replace' ] ) && $rule[ 'rules_replace' ] !== '' ) {
+                            $replace = $rule[ 'rules_replace' ];
+                        }
+                        else {
+                            $then_param = isset( $rule[ 'rules_then' ] ) ? $rule[ 'rules_then' ] : '';
+                            if( $then_param !== '' ) {
+                                $replace = $this->get_rules_new_value( $attr[ 'type' ], $then_param, $value );
+                            }
+                        }
+
+                        switch( $rule[ 'rules_condition' ] ) {
+                            case 'contain':
+                                $value = str_replace( $rule[ 'rules_find' ], $replace, $value );
+                                break;
+                            case 'dn_contain':
+                                $find = $rule[ 'rules_find' ];
+                                $str_contains = preg_match( "/$find\b/", $value);
+                                $value = ! $str_contains ? $replace : $value;
+                                break;
+                            case 'equal_to':
+                                $value = $value == $rule[ 'rules_find' ] ? $replace : $value;
+                                break;
+                            case 'nequal_to':
+                                $value = $value != $rule[ 'rules_find' ] ? $replace : $value;
+                                break;
+                            case 'greater_than':
+                                $value = $value > $rule[ 'rules_find' ] ? $replace : $value;
+                                break;
+                            case 'greater_than_equal':
+                                $value = $value >= $rule[ 'rules_find' ] ? $replace : $value;
+                                break;
+                            case 'less_than':
+                                $value = $value < $rule[ 'rules_find' ] ? $replace : $value;
+                                break;
+                            case 'less_than_equal':
+                                $value = $value <= $rule[ 'rules_find' ] ? $replace : $value;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        return $value;
+    }
+
+
+    /**
+     * Get new attribute value for feed rules
+     *
+     * @param $type
+     * @param $key
+     * @param $value
+     * @return false|int|mixed|string|WC_DateTime|NULL
+     */
+    protected function get_rules_new_value( $type, $key, $value ) {
+        if( 'static' === $type ) {
+            return $value;
+        }
+        elseif( 'meta' === $type && $this->is_primary_attr( $key ) ) {
+            return $this->set_pr_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_woodmart_attr( $key ) ) {
+            return $this->set_woodmart_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_price_attr( $key ) ) {
+            return $this->set_price_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_yoast_attr( $key ) ) {
+            return $this->set_yoast_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_perfect_attr( $key ) ) {
+            return $this->set_perfect_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_wc_brand_attr( $key ) ) {
+            return $this->set_wc_brand_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_berocket_brand_attr( $key ) ) {
+            return $this->set_berocket_brand_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_image_attr( $key ) ) {
+            return $this->set_image_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_product_attr( $key ) ) {
+            return $this->set_product_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_product_dynamic_attr( $key ) ) {
+            return $this->set_product_dynamic_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_wpfm_custom_attr( $key ) ) {
+            return $this->set_wpfm_custom_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_product_custom_attr( $key ) ) {
+            return $this->set_product_custom_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_product_category_mapper_attr( $key ) ) {
+            return $this->set_cat_mapper_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_glami_attr( $key ) ) {
+            return $this->set_glami_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_dropship_attr( $key ) ) {
+            return $this->set_dropship_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_date_attr( $key ) ) {
+            return $this->set_date_attr( $key );
+        }
+        elseif ( 'meta' === $type && $this->is_product_custom_tax( $key ) ) {
+            return $this->set_product_custom_tax( $key  );
+        }
+        return '';
     }
 
 

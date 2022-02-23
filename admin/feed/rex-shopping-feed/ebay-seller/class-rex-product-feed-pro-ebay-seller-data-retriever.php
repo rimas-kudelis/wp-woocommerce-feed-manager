@@ -33,7 +33,7 @@ class Rex_Product_Ebay_Seller_Data_Retriever extends Rex_Product_Ebay_Mip_Data_R
      */
     public function set_all_value() {
         $this->data = array();
-        foreach ($this->feed_rules as $key => $rule) {
+        foreach ($this->feed_config as $key => $rule) {
             if(isset($rule['attr'])) {
                 if($rule['attr'] === '*Action') {
                     if(!array_key_exists('site_id', $this->ebay_seller_config) ) {

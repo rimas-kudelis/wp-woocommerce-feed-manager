@@ -20,10 +20,10 @@ $wpfm_cache_ttl              = get_option( 'wpfm_cache_ttl', 3 * HOUR_IN_SECONDS
 $wpfm_allow_private_products = get_option( 'wpfm_allow_private', 'no' );
 
 if ( $is_premium_activated ) {
-	$per_batch = get_option( 'rex-wpfm-product-per-batch', 50 );
+	$per_batch = get_option( 'rex-wpfm-product-per-batch', WPFM_FREE_MAX_PRODUCT_LIMIT );
 }
 else {
-	$per_batch = get_option( 'rex-wpfm-product-per-batch', 50 ) > 50 ? 50 : get_option( 'rex-wpfm-product-per-batch', 50 );
+	$per_batch = get_option( 'rex-wpfm-product-per-batch', WPFM_FREE_MAX_PRODUCT_LIMIT ) > WPFM_FREE_MAX_PRODUCT_LIMIT ? WPFM_FREE_MAX_PRODUCT_LIMIT : get_option( 'rex-wpfm-product-per-batch', WPFM_FREE_MAX_PRODUCT_LIMIT );
 }
 
 $wpfm_fb_pixel_enabled = get_option( 'wpfm_fb_pixel_enabled', 'no' );
@@ -498,12 +498,12 @@ $pro_url               = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme
                             <h3 class="merchant-title"><?php echo __('Controls', 'rex-product-feed'); ?> </h3>
 
                             <div class="single-merchant product-batch">
-                                <span class="title"><?php echo __('Product(s) per batch (Free users cannot generate more than 50 products. For free users it will run only 1 batch)', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Product(s) per batch (Free users cannot generate more than '.WPFM_FREE_MAX_PRODUCT_LIMIT.' products. For free users it will run only 1 batch)', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <form id="wpfm-per-batch" class="wpfm-per-batch">
                                         <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch"
                                                value="<?php echo $per_batch; ?>"
-                                               min="1" <?php echo !$is_premium_activated ? "max='50'" : '' ?>>
+                                               min="1" <?php echo !$is_premium_activated ? "max='".WPFM_FREE_MAX_PRODUCT_LIMIT."'" : '' ?>>
                                         <button type="submit" class="save-batch"><span>save</span> <i
                                                     class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                     </form>

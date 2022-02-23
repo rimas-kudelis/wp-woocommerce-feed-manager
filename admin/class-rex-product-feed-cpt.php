@@ -91,7 +91,16 @@ class Rex_Product_CPT {
                 echo get_post_meta( $post_id , 'rex_feed_xml_file' , true );
                 break;
             case 'refresh_interval' :
-                echo ucwords( esc_html( get_post_meta( $post_id, 'rex_feed_schedule', true ) ) );
+                $schedule = get_post_meta( $post_id, 'rex_feed_schedule', true );
+                $custom_time = $schedule === 'custom' ? get_post_meta( $post_id, 'rex_feed_custom_time', true ) . ':00' : '';
+                $format      = get_option( 'time_format', 'g:i a' );
+
+                echo ucwords( esc_html( $schedule ) );
+                if( $schedule === 'custom' && $custom_time !== '' ) {
+                    $time = date($format, strtotime($custom_time));
+                    echo "<br>";
+                    echo 'Daily at ' . $time;
+                }
                 break;
             case 'feed_status' :
                 if ( get_post_meta( $post_id, 'rex_feed_status', true ) ) {
@@ -149,7 +158,7 @@ class Rex_Product_CPT {
                 echo '</ul><b>';
                 break;
             case 'scheduled' :
-	            $format         = get_option( 'time_format', 'F j, Y' ) . ', ' . get_option( 'date_format', 'g:i a' );
+	            $format         = get_option( 'time_format', 'g:i a' ) . ', ' . get_option( 'date_format', 'F j, Y' );
 	            $last_updated   = get_post_meta( $post_id, 'updated', true );
 	            $formatted_time = '';
 
@@ -164,7 +173,7 @@ class Rex_Product_CPT {
                 $next_update = '';
                 if($schedule === 'hourly') {
                     $next_update = date($format, strtotime('+1 hours', strtotime($last_updated)));
-                }elseif ($schedule === 'daily') {
+                }elseif ($schedule === 'daily' || $schedule === 'custom') {
                     $next_update = date($format, strtotime('+1 days', strtotime($last_updated)));
                 }elseif ($schedule === 'weekly') {
                     $next_update = date($format, strtotime('+ 7 days', strtotime($last_updated)));

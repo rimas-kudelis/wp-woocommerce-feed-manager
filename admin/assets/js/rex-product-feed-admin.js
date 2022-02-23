@@ -52,6 +52,7 @@
             rex_feed_load_config_table( event );
             rex_feed_show_analytics_params( event );
             rex_feed_view_filter_metaboxes( event );
+            rex_feed_manage_custom_cron_schedule_fields();
         }
         else if ( rex_wpfm_ajax.current_screen === 'add' ) {
             rex_feed_load_config_table( event );
@@ -161,21 +162,21 @@
     } );
 
     /**
-     * add new custom attributes
+     * add new custom filter
      */
     $( document ).on( 'click', '#rex-new-filter', function () {
-        var rowId = $( this ).siblings( '.rex__filter-table' ).children( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
+        var rowId = $( this ).siblings( '#rex-feed-config-filter .rex__filter-table' ).children( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
         rowId = parseInt( rowId ) + 1;
-        var lastrow = $( this ).siblings( '.rex__filter-table' ).children( '#config-table' ).find( 'tbody tr:last' );
+        var lastrow = $( this ).siblings( '#rex-feed-config-filter .rex__filter-table' ).children( '#config-table' ).find( 'tbody tr:last' );
 
-        $( this ).siblings( '.rex__filter-table' ).children( '#config-table' ).find( 'tbody tr:first' )
+        $( this ).siblings( '#rex-feed-config-filter .rex__filter-table' ).children( '#config-table' ).find( 'tbody tr:first' )
             .clone()
             .insertAfter( lastrow )
             .attr( 'data-row-id', rowId )
             .show();
 
-        var $row = $( this ).siblings( '.rex__filter-table' ).children( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
-        $row.find( 'ul.dropdown-content.select-dropdown, .caret, .select-dropdown ' ).remove();
+        var $row = $( this ).siblings( '#rex-feed-config-filter .rex__filter-table' ).children( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
+        $row.find( '#rex-feed-config-filter ul.dropdown-content.select-dropdown, .caret, .select-dropdown ' ).remove();
 
         updateFormNameAtts( $row, rowId, true );
     } );
@@ -302,7 +303,7 @@
         $( '#rex_feed_product_filters' ).addClass( 'show-filters' );
     } );
 
-    $( document ).on( 'click', '.rex-contnet-filter__close-icon', function ( e ) {
+    $( document ).on( 'click', '#rex_feed_filter_modal_close_btn', function ( e ) {
         e.preventDefault();
         $( '.post-type-product-feed #wpcontent #body-overlay' ).remove();
         $( '#rex_feed_product_filters' ).removeClass( 'show-filters' );
@@ -385,6 +386,8 @@
 
     $( document ).on( 'change', '#rex-product-allow-private', allow_private );
 
+    $( document ).on( 'change', 'input[name="rex_feed_schedule"]', rex_feed_manage_custom_cron_schedule_fields );
+
     $(document).on( 'change', '.attr-val-dropdown', category_mapping_button_on_change );
 
     $( document ).on( 'submit', '#rex-google-merchant', save_google_merchant_settings );
@@ -443,6 +446,7 @@
                 // get new name via regex
                 if ( filter ) {
                     name = name.replace( /^ff\[\d+\]/, 'ff[' + rowId + ']' );
+                    name = name.replace( /^fr\[\d+\]/, 'fr[' + rowId + ']' );
                     $( item ).attr( 'name', name );
                 } else {
                     name = name.replace( /^fc\[\d+\]/, 'fc[' + rowId + ']' );
@@ -567,6 +571,7 @@
                         if ( selected === 'all' || selected === 'featured' ) {
                             $( ".rex-feed-product-taxonomies-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
+                            $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             $( '#rex-feed-config-filter' ).hide();
                             $( '.rex-feed-tags-wrapper' ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
@@ -574,11 +579,16 @@
                         else if ( selected === 'filter' ) {
                             $( ".rex-feed-product-taxonomies-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
+                            $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
                             $( '#rex-feed-config-filter' ).show();
+                            $( '#rex-feed-config-rules' ).show();
                         }
                         else if ( selected === 'product_cat' || selected === 'product_tag' ) {
-                            $( '#rex-feed-product-taxonomies' ).append( response.html_content );
+                            var tax_contents = $( '#rex-feed-product-taxonomies-contents' );
+                            if ( tax_contents.length === 0 ) {
+                                $( '#rex-feed-product-taxonomies' ).append( response.html_content );
+                            }
                             $( ".rex-feed-product-taxonomies-spinner" ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
                             $( '#rex-feed-config-filter' ).hide();
@@ -595,6 +605,7 @@
                             $( ".rex-feed-product-taxonomies-spinner" ).hide();
                             $( '#rex-feed-config-filter' ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
+                            $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             $( '.select2-search__field' ).removeAttr('style')
                             $( '.rex-feed-product-filter-ids__area' ).show();
 
@@ -1491,6 +1502,20 @@
                 console.log( 'Uh, oh!' );
                 console.log( response.statusText );
             } );
+    }
+
+    /**
+     * Manage fields for cron custom scheduling
+     */
+    function rex_feed_manage_custom_cron_schedule_fields() {
+        var selected_cron = $('input[name="rex_feed_schedule"]:checked').val();
+
+        if ( selected_cron === 'custom' ) {
+            $( '.rex_feed_custom_time_fields' ).slideDown();
+        }
+        else {
+            $( '.rex_feed_custom_time_fields' ).slideUp();
+        }
     }
 
     function rex_feed_show_review_request( e ) {

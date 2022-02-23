@@ -6,7 +6,9 @@
 		</div>
 	</div>
 
-	<span class="rex-contnet-filter__close-icon">
-		Close
-    </span>
+    <div class="rex-feed-buttons">
+        <?php do_action( 'rex_feed_before_filter_modal_close_button' );?>
+        <span class="rex-contnet-filter__close-icon" id="rex_feed_filter_modal_close_btn">Close</span>
+        <?php do_action( 'rex_feed_after_filter_modal_close_button' );?>
+    </div>
 </div>

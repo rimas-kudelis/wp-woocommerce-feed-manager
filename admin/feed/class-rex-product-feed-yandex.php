@@ -232,10 +232,10 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
             $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
             if($wpml) {
                 $sitepress->switch_lang($wpml);
-                $data = new Rex_Yandex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
+                $data = new Rex_Yandex_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params);
             }
         }else{
-            $data = new Rex_Yandex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params);
+            $data = new Rex_Yandex_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params);
         }
         return $data->get_all_data();
     }

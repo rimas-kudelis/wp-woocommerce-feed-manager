@@ -55,8 +55,8 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
 
         //get feed rules filter if value
         $feed_if_val = '';
-        if( $this->feed_rules_filter ) {
-            foreach ($this->feed_rules_filter as $key => $value) {
+        if( $this->feed_config_filter ) {
+            foreach ($this->feed_config_filter as $key => $value) {
                 foreach ($value as $sub_key => $sub_val) {
                     if($sub_key === 'if')
                     {

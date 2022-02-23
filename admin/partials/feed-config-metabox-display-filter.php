@@ -30,49 +30,48 @@ if ( wpfm_pro_compatibility() ) {
 	do_action( 'wpfm_pro_filter_rules' );
 }
 ?>
-    <div class="rex__filter-table">
+<h2 class="filer-rules-header">Feed Filters</h2>
+<div class="rex__filter-table">
+    <table id="config-table" class="filter-config-table responsive-table">
+        <thead>
+            <tr>
+                <th class="large-col"><?php echo __('If', 'rex-product-feed') ?><span>*</span></th>
+                <th class="large-col"><?php echo __('Condition', 'rex-product-feed') ?><span>*</span></th>
+                <th class="large-col"><?php echo __('Value', 'rex-product-feed') ?></th>
+                <th class="2"><?php echo __('Then', 'rex-product-feed') ?></th>
+                <th class="2"><?php echo __('Action', 'rex-product-feed') ?></th>
+            </tr>
+        </thead>
 
-        <table id="config-table" class="filter-config-table responsive-table">
-            <thead>
-                <tr>
-                    <th class="large-col"><?php echo __('If', 'rex-product-feed') ?><span>*</span></th>
-                    <th class="large-col"><?php echo __('Condition', 'rex-product-feed') ?><span>*</span></th>
-                    <th class="large-col"><?php echo __('Value', 'rex-product-feed') ?></th>
-                    <th class="2"><?php echo __('Then', 'rex-product-feed') ?></th>
-                    <th class="2"><?php echo __('Action', 'rex-product-feed') ?></th>
-                </tr>
-            </thead>
+        <tbody>
 
-            <tbody>
+        <?php
+            $keyt = rand(999, 3000); ?>
+            <tr data-row-id="<?php echo $keyt; ?>" style="display: none;">
+                <td data-title="If : "><?php $feed_filter->printSelectDropdown( $keyt, 'if', 'ff', '' ); ?></td>
+                <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $keyt, 'condition', 'ff', '' ); ?></td>
+                <td data-title="value : " ><?php $feed_filter->printInput( $keyt, 'value', 'ff', '' ); ?></td>
+                <td data-title="then : "><?php $feed_filter->printSelectDropdown( $keyt, 'then', 'ff', '' ); ?></td>
+                <td>
+                    <a class="delete-row" title="Delete">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
 
-            <?php
-                $keyt = rand(999, 3000); ?>
-                <tr data-row-id="<?php echo $keyt; ?>" style="display: none;">
-                    <td data-title="If : "><?php $feed_filter->printSelectDropdown( $keyt, 'if', '' ); ?></td>
-                    <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $keyt, 'condition', '' ); ?></td>
-                    <td data-title="value : " ><?php $feed_filter->printInput( $keyt, 'value', '' ); ?></td>
-                    <td data-title="then : "><?php $feed_filter->printSelectDropdown( $keyt, 'then', '' ); ?></td>
+            <?php foreach ( $feed_filter->getFilterMappings() as $key => $item): ?>
+                <tr data-row-id="<?php echo $key; ?>">
+                    <td data-title="If : "><?php $feed_filter->printSelectDropdown( $key, 'if', 'ff', $item['if'] ); ?></td>
+                    <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $key, 'condition', 'ff', $item['condition'] ); ?></td>
+                    <td data-title="value : "><?php $feed_filter->printInput( $key, 'value', 'ff', $item['value'] ); ?></td>
+                    <td data-title="then : "><?php $feed_filter->printSelectDropdown( $key, 'then', 'ff', $item['then'] ); ?></td>
                     <td>
                         <a class="delete-row" title="Delete">
                             <i class="fa fa-trash"></i>
                         </a>
                     </td>
                 </tr>
-
-                <?php foreach ( $feed_filter->getFilterMappings() as $key => $item): ?>
-                    <tr data-row-id="<?php echo $key; ?>">
-                        <td data-title="If : "><?php $feed_filter->printSelectDropdown( $key, 'if', $item['if'] ); ?></td>
-                        <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $key, 'condition', $item['condition'] ); ?></td>
-                        <td data-title="value : "><?php $feed_filter->printInput( $key, 'value', $item['value'] ); ?></td>
-                        <td data-title="then : "><?php $feed_filter->printSelectDropdown( $key, 'then', $item['then'] ); ?></td>
-                        <td>
-                            <a class="delete-row" title="Delete">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-
-        </table>
-    </div>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

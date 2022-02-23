@@ -19,7 +19,7 @@ class Rex_Product_Marktplaats_Data_Retriever extends Rex_Product_Data_Retriever 
      */
     public function set_all_value() {
         $this->data = array();
-        foreach ($this->feed_rules as $key => $rule) {
+        foreach ($this->feed_config as $key => $rule) {
             if($rule['attr'] === 'media') {
                 $value = $this->set_val( $rule );
                 if($value) {

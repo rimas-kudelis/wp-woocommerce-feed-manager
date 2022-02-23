@@ -38,7 +38,7 @@ class Rex_Feed_Template_Idealo_de extends Rex_Feed_Abstract_Template
                 'paymentCosts_paypal'    => 'Payment Costs [Paypal] [paymentCosts_paypal]',
                 'deliveryCosts_dhl'      => 'Delivery Costs [DHL] [deliveryCosts_dhl]',
                 'size'                   => 'Size [size]',
-                'color'                  => 'Color [color]',
+                'colour'                 => 'Colour [colour]',
                 'basePrice'              => 'Base Price [basePrice]',
                 'voucherCode'            => 'Voucher Code [voucherCode]',
                 'deliveryComment'        => 'Delivery Comment [deliveryComment]',
@@ -286,7 +286,7 @@ class Rex_Feed_Template_Idealo_de extends Rex_Feed_Abstract_Template
                 'limit'    => 0,
             ),
             array(
-                'attr'     => 'color',
+                'attr'     => 'colour',
                 'type'     => 'meta',
                 'meta_key' => 'bwf_attr_pa_color',
                 'st_value' => '',

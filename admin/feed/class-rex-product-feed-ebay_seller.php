@@ -38,7 +38,7 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
         );
 
         if($this->product_scope == 'filter') {
-            foreach ($this->feed_rules_filter as $filter) {
+            foreach ($this->feed_config_filter as $filter) {
                 $if = $filter['if'];
                 if($if == 'product_cats') {
                     unset($post_types[1]);
@@ -372,10 +372,10 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
             $wpml = get_post_meta($this->id, 'rex_feed_wpml_language', true) ? get_post_meta($this->id, 'rex_feed_wpml_language', true)  : $sitepress->get_default_language();
             if($wpml) {
                 $sitepress->switch_lang($wpml);
-                $data = new Rex_Product_Ebay_Seller_Data_Retriever( $product, $this->feed_rules, $product_meta_keys, $this->ebay_seller_config, $analytics_params, $this->append_variation);
+                $data = new Rex_Product_Ebay_Seller_Data_Retriever( $product, $this->feed_config, $product_meta_keys, $this->ebay_seller_config, $analytics_params, $this->append_variation);
             }
         }else{
-            $data = new Rex_Product_Ebay_Seller_Data_Retriever( $product, $this->feed_rules, $product_meta_keys, $analytics_params, $this->ebay_seller_config, $this->append_variation);
+            $data = new Rex_Product_Ebay_Seller_Data_Retriever( $product, $this->feed_config, $product_meta_keys, $analytics_params, $this->ebay_seller_config, $this->append_variation);
         }
         return $data->get_all_data();
     }

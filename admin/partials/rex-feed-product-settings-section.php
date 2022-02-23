@@ -34,6 +34,16 @@
 					echo '<label for="'. $this->prefix . 'schedule' . $index++ . '">'.__($value, 'rex-product-feed').'</label>';
 					echo '</li>';
 				}
+                echo '<li class="'. $this->prefix .  'custom_time_fields">';
+                $selected_hour = get_post_meta( get_the_ID(), 'rex_feed_custom_time', true );
+                echo '<select id="'. $this->prefix . 'custom_time " name="'. $this->prefix . 'custom_time">';
+                for( $i=0; $i<24; $i++ ) {
+                    $selected = (int)$selected_hour === $i ? ' selected' : '';
+                    echo '<option value="'. $i .'" '. $selected .'>'. $i .' h</option>';
+                }
+                echo '</select>';
+                echo '<label for="'. $this->prefix . 'custom_time' . '">'.__('Every Day', 'rex-product-feed').'</label>';
+                echo '</li>';
 				?>
 			</ul>
 		</div>

@@ -34,6 +34,14 @@ class Rex_Product_Filter {
      */
     protected $product_meta_keys;
 
+    /**
+     * The Feed Attributes.
+     *
+     * @access   protected
+     * @var      Rex_Product_Filter    attributes    Feed Attributes.
+     */
+    protected $product_rule_meta_keys;
+
 
     /**
      * The Feed Condition.
@@ -154,6 +162,7 @@ class Rex_Product_Filter {
      */
     protected function init_product_meta_keys(){
         $this->product_meta_keys  = $this->getFilterAttribute();
+        $this->product_rule_meta_keys  = Rex_Feed_Attributes::get_attributes();
     }
 
 
@@ -228,11 +237,13 @@ class Rex_Product_Filter {
      * @param $name
      * @param string $selected
      */
-    public function printSelectDropdown( $key, $name, $selected = '', $class = '' ){
+    public function printSelectDropdown( $key, $name, $name_prefix = 'ff', $selected = '', $class = '' ){
 
         if ( $name === 'if' ) {
             $items = $this->product_meta_keys;
-        }elseif ( $name === 'condition' ) {
+        }elseif ( $name === 'rules_if' || $name === 'rules_then' ) {
+            $items = $this->product_rule_meta_keys;
+        }elseif ( $name === 'condition' || $name === 'rules_condition' ) {
             $items = $this->condition;
         }elseif ( $name === 'then' ) {
             $items = $this->then;
@@ -240,7 +251,7 @@ class Rex_Product_Filter {
             return;
         }
 
-        echo '<select class="' .esc_attr( $class ). '" name="ff['.$key.'][' . esc_attr( $name ) . ']" >';
+        echo '<select class="' .esc_attr( $class ). '" name="'.$name_prefix.'['.$key.'][' . esc_attr( $name ) . ']" >';
         if($name === 'rules')
             echo "<option value='or'>Please Select</option>";
         else
@@ -276,8 +287,8 @@ class Rex_Product_Filter {
      * @param string $name
      * @param string $val
      */
-    public function printInput( $key, $name = '', $val = '', $class = '' ){
-        echo '<input type="text" class="'. esc_attr( $class ) .'" name="ff['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '">';
+    public function printInput( $key, $name, $name_prefix = 'ff', $val = '', $class = '' ){
+        echo '<input type="text" class="'. esc_attr( $class ) .'" name="'.$name_prefix.'['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '">';
     }
 
 

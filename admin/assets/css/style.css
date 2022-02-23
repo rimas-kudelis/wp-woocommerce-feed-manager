@@ -3053,6 +3053,7 @@ a,
   }
 }
 #rex-feed-config-filter .inside,
+#rex-feed-config-rules .inside,
 #rex_feed_product_filters .inside,
 #rex_feed_product_settings .inside {
   margin: 0;
@@ -3215,6 +3216,10 @@ a,
 #rex_feed_product_settings .rex-contnet-setting-content-area ul {
   display: flex;
   align-items: center;
+  flex-flow: row wrap;
+}
+#rex_feed_product_settings .rex-contnet-setting-content-area ul#rex_feed_schedule{
+  display: block;
 }
 #rex_feed_product_settings .rex-contnet-setting-content-area ul li {
   display: flex;
@@ -3222,6 +3227,17 @@ a,
   align-items: center;
   vertical-align: middle;
   padding-right: 20px;
+  padding-bottom: 10px;
+}
+#rex_feed_product_settings .rex-contnet-setting-content-area ul li.rex_feed_custom_time_fields {
+  display: none;
+  padding-bottom: unset;
+}
+#rex_feed_product_settings .rex-contnet-setting-content-area ul li.rex_feed_custom_time_fields select#rex_feed_custom_time\ {
+    max-width: 18%;
+    height: 10px;
+    line-height: 1;
+    border-radius: 6px;
 }
 #rex_feed_product_settings a#rex_pr_settings_save_btn {
   display: block;
@@ -3286,6 +3302,14 @@ a,
   max-width: 250px;
 }
 
+#rex_feed_product_filters .inside  .rex-contnet-filter__header .rex-feed-buttons {
+  display: flex;
+}
+
+#rex_feed_product_filters .inside  .rex-contnet-filter__header .rex-feed-buttons span:nth-child(1) {
+  margin-right: 15px;
+}
+
 .rex__filter-table {
   border: 1px solid #DFDBE7;
   border-radius: 10px;
@@ -3294,16 +3318,31 @@ a,
 
 #rex-feed-config-filter {
   margin: 30px;
+  display: none;
 }
-#rex-feed-config-filter table {
+#rex-feed-config-rules {
+  margin: 30px;
+}
+.filer-rules-header {
+  font-weight: 500 !important;
+  background-color: #f7f7fa;
+  border-radius: 10px;
+  margin-bottom: 5px !important;
+  text-align: center;
+  letter-spacing: 2px;
+}
+#rex-feed-config-filter table,
+#rex-feed-config-rules table{
   border-collapse: collapse;
   width: 100%;
 }
-#rex-feed-config-filter table thead {
+#rex-feed-config-filter table thead,
+#rex-feed-config-rules table thead{
   border-radius: 10px;
   background-color: #F7F7FA;
 }
-#rex-feed-config-filter table thead th {
+#rex-feed-config-filter table thead th,
+#rex-feed-config-rules table thead th{
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -3315,65 +3354,83 @@ a,
   padding: 15px 0 15px 11px;
   border-bottom: 1px solid #dfdbe7;
 }
-#rex-feed-config-filter table thead th:first-of-type {
+#rex-feed-config-filter table thead th:first-of-type,
+#rex-feed-config-rules table thead th:first-of-type{
   border-top-left-radius: 10px;
 }
-#rex-feed-config-filter table thead th:last-of-type {
+#rex-feed-config-filter table thead th:last-of-type,
+#rex-feed-config-rules table thead th:last-of-type{
   border-top-right-radius: 10px;
 }
-#rex-feed-config-filter table thead th span {
+#rex-feed-config-filter table thead th span,
+#rex-feed-config-rules table thead th span {
   color: #FE4E4E;
 }
 #rex-feed-config-filter table thead th #rex_feed_type_head,
-#rex-feed-config-filter table thead th #rex_feed_val_head {
+#rex-feed-config-rules table thead th #rex_feed_val_head,
+#rex-feed-config-rules table thead th #rex_feed_type_head,
+#rex-feed-config-rules table thead th #rex_feed_val_head {
   color: #666666;
 }
-#rex-feed-config-filter table thead th:first-child {
+#rex-feed-config-filter table thead th:first-child,
+#rex-feed-config-rules table thead th:first-child{
   padding-left: 25px;
 }
-#rex-feed-config-filter table thead th:last-child {
+#rex-feed-config-filter table thead th:last-child,
+#rex-feed-config-rules table thead th:last-child{
   padding-right: 25px;
   text-align: right;
 }
-#rex-feed-config-filter table tbody tr td {
+#rex-feed-config-filter table tbody tr td,
+#rex-feed-config-rules table tbody tr td{
   padding: 20px 10px 20px;
   min-height: 38px;
   border-color: #DFDBE7;
   border-radius: 6px;
   background-color: unset;
 }
-#rex-feed-config-filter table tbody tr td select {
+#rex-feed-config-filter table tbody tr td select,
+#rex-feed-config-rules table tbody tr td select{
   background-color: unset;
 }
 #rex-feed-config-filter table tbody tr td input {
   max-width: 87px;
 }
-#rex-feed-config-filter table tbody tr td:nth-child(2) {
+#rex-feed-config-filter table tbody tr td:nth-child(2),
+#rex-feed-config-rules table tbody tr td:nth-child(2){
   max-width: 202px;
   padding-right: 30px;
 }
-#rex-feed-config-filter table tbody tr td:nth-child(3) input {
+#rex-feed-config-filter table tbody tr td:nth-child(3) input,
+#rex-feed-config-rules table tbody tr td:nth-child(3) input,
+#rex-feed-config-rules table tbody tr td:nth-child(5) input,
+#rex-feed-config-rules table tbody tr td:nth-child(1) input {
   background: #F7F7FA;
   width: 100%;
   min-height: 38px;
   border-color: #DFDBE7;
 }
-#rex-feed-config-filter table tbody tr td:first-child {
+#rex-feed-config-filter table tbody tr td:first-child,
+#rex-feed-config-rules table tbody tr td:first-child{
   padding-left: 25px;
   max-width: 202px;
 }
-#rex-feed-config-filter table tbody tr td:last-child {
+#rex-feed-config-filter table tbody tr td:last-child,
+#rex-feed-config-rules table tbody tr td:last-child{
   padding-right: 34px;
   text-align: right;
 }
-#rex-feed-config-filter table tbody tr td a i {
+#rex-feed-config-filter table tbody tr td a i,
+#rex-feed-config-rules table tbody tr td a i{
   font-size: 20px;
   color: #FE4E4E;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-#rex-feed-config-filter a#rex-new-filter {
+#rex-feed-config-filter a#rex-new-filter,
+#rex-feed-config-rules a#rex-new-rules,
+#rex-feed-config-rules a#rex-new-custom-rules {
   font-size: 15px;
   font-weight: 400;
   border-radius: 10px;
@@ -3388,22 +3445,31 @@ a,
   display: inline-block;
   margin-top: 20px;
 }
-#rex-feed-config-filter a#rex-new-filter svg {
+#rex-feed-config-filter a#rex-new-filter svg,
+#rex-feed-config-rules a#rex-new-rules svg,
+#rex-feed-config-rules a#rex-new-custom-rules svg{
   vertical-align: sub;
   transition: all 0.3s ease;
 }
-#rex-feed-config-filter a#rex-new-filter svg path {
+#rex-feed-config-filter a#rex-new-filter svg path,
+#rex-feed-config-rules a#rex-new-rules svg path,
+#rex-feed-config-rules a#rex-new-custom-rules svg path{
   stroke: #fff;
 }
-#rex-feed-config-filter a#rex-new-filter:hover {
+#rex-feed-config-filter a#rex-new-filter:hover,
+#rex-feed-config-rules a#rex-new-rules:hover,
+#rex-feed-config-rules a#rex-new-custom-rules:hover{
   background-color: #ffffff;
   color: #000;
   border: 1px solid #eaeaea;
 }
-#rex-feed-config-filter a#rex-new-filter:hover svg path {
+#rex-feed-config-filter a#rex-new-filter:hover svg path,
+#rex-feed-config-rules a#rex-new-rules:hover svg path,
+#rex-feed-config-rules a#rex-new-custom-rules:hover svg path{
   stroke: #000;
 }
-#rex-feed-config-filter a#rex-new-attr {
+#rex-feed-config-filter a#rex-new-attr,
+#rex-feed-config-rules a#rex-new-attr{
   color: #fff;
   border: none;
   background: #1EB2FB;
@@ -3412,11 +3478,13 @@ a,
   margin: 20px 0 0 auto;
   width: 200px;
 }
-#rex-feed-config-filter a#rex-new-attr svg {
+#rex-feed-config-filter a#rex-new-attr svg,
+#rex-feed-config-rules a#rex-new-attr svg{
   vertical-align: sub;
   transition: all 0.3s ease;
 }
-#rex-feed-config-filter a#rex-new-attr svg path {
+#rex-feed-config-filter a#rex-new-attr svg path,
+#rex-feed-config-rules a#rex-new-attr svg path{
   stroke: #fff;
 }
 
@@ -3544,11 +3612,13 @@ a,
     grid-template-columns: 1fr 1fr;
   }
 
-  #rex-feed-config-filter #config-table tbody tr td:first-child {
+  #rex-feed-config-filter #config-table tbody tr td:first-child,
+  #rex-feed-config-rules #config-table tbody tr td:first-child{
     padding-left: 0;
   }
 
-  #rex-feed-config-filter #config-table tbody tr {
+  #rex-feed-config-filter #config-table tbody tr,
+  #rex-feed-config-rules #config-table tbody tr{
     margin-bottom: 20px;
     border: 1px solid #e8e8e8;
     display: block;
@@ -3557,7 +3627,8 @@ a,
     padding: 10px;
   }
 
-  #rex-feed-config-filter #config-table tbody tr td {
+  #rex-feed-config-filter #config-table tbody tr td,
+  #rex-feed-config-rules #config-table tbody tr td{
     display: block;
     padding: 30px 0 0;
     position: relative;
@@ -3565,24 +3636,30 @@ a,
     margin-bottom: 10px;
     border-bottom: none;
   }
-  #rex-feed-config-filter #config-table tbody tr td:first-child {
+  #rex-feed-config-filter #config-table tbody tr td:first-child,
+  #rex-feed-config-rules #config-table tbody tr td:first-child{
     max-width: none;
   }
-  #rex-feed-config-filter #config-table tbody tr td:nth-child(2) {
+  #rex-feed-config-filter #config-table tbody tr td:nth-child(2),
+  #rex-feed-config-rules #config-table tbody tr td:nth-child(2){
     max-width: none;
   }
 
-  #rex-feed-config-filter #config-table thead tr th {
+  #rex-feed-config-filter #config-table thead tr th,
+  #rex-feed-config-rules #config-table thead tr th{
     display: none;
   }
 
   #rex-feed-config-filter #config-table tbody tr td input,
-#rex-feed-config-filter #config-table tbody tr td select {
+  #rex-feed-config-filter #config-table tbody tr td select,
+  #rex-feed-config-rules #config-table tbody tr td input,
+  #rex-feed-config-rules #config-table tbody tr td select {
     max-width: initial;
     width: 100%;
   }
 
-  #rex-feed-config-filter #config-table tbody tr td:before {
+  #rex-feed-config-filter #config-table tbody tr td:before,
+  #rex-feed-config-rules #config-table tbody tr td:before{
     content: "" attr(data-title) "";
     min-width: 100px;
     text-transform: capitalize;

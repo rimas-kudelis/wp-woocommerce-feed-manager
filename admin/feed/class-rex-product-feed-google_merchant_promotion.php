@@ -110,7 +110,7 @@ class Rex_Product_Feed_Google_merchant_promotion {
 	    $this->link        = esc_url( home_url( '/' ) );
 	    $this->merchant    = $config[ 'merchant' ];
 	    $this->feed_format = $config[ 'feed_format' ];
-        $this->setup_feed_rules($config['feed_config']);
+        $this->setup_feed_configs($config['feed_config']);
 
         GoogleShopping::$container = null;
         GoogleShopping::title($this->title);
@@ -120,7 +120,7 @@ class Rex_Product_Feed_Google_merchant_promotion {
 
 
         $atts = array();
-        foreach ($this->feed_rules as $values) {
+        foreach ($this->feed_config as $values) {
             if(isset($values['attr'])) {
                 $atts[$values['attr']] = $values['st_value'];
             }
@@ -161,12 +161,11 @@ class Rex_Product_Feed_Google_merchant_promotion {
      * Setup the rules
      * @param $info
      */
-    protected function setup_feed_rules( $info ){
-        $feed_rules       = array();
-        parse_str( $info, $feed_rules );
-        $feed_rules       = $feed_rules['fc'];
-        $this->feed_rules = $feed_rules;
-        update_post_meta( $this->id, 'rex_feed_feed_config', $this->feed_rules );
+    protected function setup_feed_configs( $info ){
+        $feed_configs       = array();
+        parse_str( $info, $feed_configs );
+        $this->feed_config = isset( $feed_configs['fc'] ) ? $feed_configs['fc'] : array();
+        update_post_meta( $this->id, 'rex_feed_feed_config', $this->feed_config );
     }
 
 

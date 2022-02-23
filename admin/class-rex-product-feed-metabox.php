@@ -192,6 +192,7 @@ class Rex_Product_Metabox
 			'hourly' => __( 'Hourly', 'rex-product-feed' ),
 			'daily'  => __( 'Daily', 'rex-product-feed' ),
 			'weekly' => __( 'Weekly', 'rex-product-feed' ),
+			'custom' => __( 'Custom', 'rex-product-feed' ),
 		) );
 		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-settings-section.php';
 	}
@@ -221,9 +222,9 @@ class Rex_Product_Metabox
 		$options = array(
 			'all'            => __( 'All Published Products', 'rex-product-feed' ),
 			'featured'       => __( 'All Featured Products', 'rex-product-feed' ),
-			'filter'         => __( 'Custom Filter', 'rex-product-feed' ),
-			'product_cat'    => __( 'Category Filter', 'rex-product-feed' ),
-			'product_tag'    => __( 'Tag Filter', 'rex-product-feed' )
+			'filter'         => __( 'Custom Filters', 'rex-product-feed' ),
+			'product_cat'    => __( 'Category Filters', 'rex-product-feed' ),
+			'product_tag'    => __( 'Tag Filters', 'rex-product-feed' )
 		);
 
 		if ( wpfm_pro_compatibility() ) {
@@ -253,8 +254,7 @@ class Rex_Product_Metabox
 		$feed_filter_rules = get_post_meta( get_the_ID(), $this->prefix . 'feed_config_filter', true );
 		$feed_filter       = new Rex_Product_Filter( $feed_filter_rules );
 		?>
-
-        <div id="rex-feed-config-filter" class="rex-feed-config-filter" style="display: none; ">
+        <div id="rex-feed-config-filter" class="rex-feed-config-filter">
 			<?php require_once plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php'; ?>
 			<?php require_once plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display-filter.php'; ?>
             <a id="rex-new-filter" class="rex-new-custom-btn">

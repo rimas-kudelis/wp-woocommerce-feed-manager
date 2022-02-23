@@ -30,9 +30,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
      *
      * @since    1.0.0
      * @access   protected
-     * @var      Rex_Product_Feed_Abstract_Generator $feed_rules Contains attributes and value mappings for the feed.
+     * @var      Rex_Product_Feed_Abstract_Generator $feed_config Contains attributes and value mappings for the feed.
      */
-    public $feed_rules;
+    public $feed_config;
     /**
      * Append variation
      * product name
@@ -119,9 +119,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
      *
      * @since    1.1.10
      * @access   protected
-     * @var      Rex_Product_Feed_Abstract_Generator $feed_rules_filter Contains condition and value for the feed.
+     * @var      Rex_Product_Feed_Abstract_Generator $feed_filters Contains condition and value for the feed.
      */
-    protected $feed_rules_filter;
+    protected $feed_filters;
     /**
      * The Product Query args to retrieve specific products for making the Feed.
      *
@@ -293,6 +293,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
     protected $item_wrapper = '';
 
+    public $feed_rules;
+
     /**
      * Define the core functionality of the plugin.
      *
@@ -319,8 +321,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
 	        $this->tbatch                  = (int) $config[ 'info' ][ 'total_batch' ];
 	        $this->offset                  = (int) $config[ 'info' ][ 'offset' ];
 	        $this->posts_per_page          = (int) $config[ 'info' ][ 'per_page' ];
-	        $this->feed_rules              = $config[ 'feed_config' ];
-	        $this->feed_rules_filter       = $config[ 'feed_filter' ];
+	        $this->feed_config             = $config[ 'feed_config' ];
+	        $this->feed_filters            = $config[ 'feed_filter' ];
+	        $this->feed_rules              = $config[ 'feed_rules' ];
 	        $this->variations              = $config[ 'include_variations' ];
 	        $this->parent_product          = $config[ 'parent_product' ];
 	        $this->variable_product        = $config[ 'variable_product' ];
@@ -352,7 +355,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         else {
             $this->setup_feed_data( $config[ 'info' ] );
-            $this->setup_feed_rules( $config[ 'feed_config' ] );
+            $this->setup_feed_configs( $config[ 'feed_config' ] );
             $this->setup_feed_filter_rules( $config[ 'feed_config' ] );
             $this->setup_feed_meta( $config[ 'feed_config' ] );
             $this->save_feed_meta( $config[ 'feed_config' ] );
@@ -410,7 +413,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         if ( $this->product_scope == 'filter' ) {
-            foreach ( $this->feed_rules_filter as $filter ) {
+            foreach ( $this->feed_filters as $filter ) {
 
                 $if = $filter[ 'if' ];
 
@@ -540,7 +543,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * Setup the rules
      * @param $info
      */
-    protected function setup_feed_rules( $info )
+    protected function setup_feed_configs( $info )
     {
         $feed_rules = array();
         parse_str( $info, $feed_rules );
@@ -593,11 +596,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
             update_post_meta( $this->id, 'rex_feed_wcml_currency', $wcml_currency );
         }
 
-        $this->feed_rules = isset( $feed_rules[ 'fc' ] ) ? $feed_rules[ 'fc' ] : array();
+        $this->feed_config= isset( $feed_rules[ 'fc' ] ) ? $feed_rules[ 'fc' ] : array();
 
         // save the feed_rules into feed post_meta.
         if ( $this->batch == 1 ) {
-            update_post_meta( $this->id, 'rex_feed_feed_config', $this->feed_rules );
+            update_post_meta( $this->id, 'rex_feed_feed_config', $this->feed_config);
         }
     }
 
@@ -607,19 +610,34 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function setup_feed_filter_rules( $info )
     {
+        $feed_rules_filter = array();
+        parse_str( $info, $feed_rules_filters );
 
         if ( $this->product_scope === 'filter' ) {
-            $feed_rules_filter = array();
-            parse_str( $info, $feed_rules_filter );
-            $feed_rules_filter       = $feed_rules_filter[ 'ff' ];
-            $this->feed_rules_filter = $feed_rules_filter;
+            $this->feed_filters = isset( $feed_rules_filters[ 'ff' ] ) ? $feed_rules_filters[ 'ff' ] : array();
+
             // save the feed_rules_filter into feed post_meta.
-            if ( $this->batch == 1 ) {
-                reset( $this->feed_rules_filter );
-                $key = key( $this->feed_rules_filter );
-                unset( $this->feed_rules_filter[ $key ] );
-                update_post_meta( $this->id, 'rex_feed_feed_config_filter', $this->feed_rules_filter );
+            if ( $this->batch == 1 && !empty( $this->feed_filters ) ) {
+                reset( $this->feed_filters );
+                $key = key( $this->feed_filters );
+                unset( $this->feed_filters[ $key ] );
+                update_post_meta( $this->id, 'rex_feed_feed_config_filter', $this->feed_filters );
             }
+        }
+
+        $this->feed_rules = isset( $feed_rules_filters[ 'fr' ] ) ? $feed_rules_filters[ 'fr' ] : array();
+
+        if ( $this->batch == 1 ) {
+            if( !empty( $this->feed_rules ) ) {
+                reset( $this->feed_rules );
+                $key = key( $this->feed_rules );
+                unset( $this->feed_rules[ $key ] );
+                update_post_meta( $this->id, 'rex_feed_feed_config_rules', $this->feed_rules );
+            }
+            else {
+                delete_post_meta( $this->id, 'rex_feed_feed_config_rules' );
+            }
+
         }
     }
 
@@ -728,6 +746,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
         if ( isset( $feed_rules[ 'rex_feed_schedule' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_schedule', $feed_rules[ 'rex_feed_schedule' ] );
+
+            if ( isset( $feed_rules[ 'rex_feed_custom_time' ] ) && $feed_rules[ 'rex_feed_schedule' ] === 'custom' ) {
+                update_post_meta( $this->id, 'rex_feed_custom_time', $feed_rules[ 'rex_feed_custom_time' ] );
+            }
+            else {
+                delete_post_meta( $this->id, 'rex_feed_custom_time' );
+            }
         }
         if ( isset( $feed_rules[ 'rex_feed_merchant' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_merchant', $feed_rules[ 'rex_feed_merchant' ] );
@@ -844,7 +869,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         wpfm_switch_site_lang( $this->wpml_language );
 
         if ( $this->product_scope === 'filter' ) {
-            $filter_args = Rex_Product_Filter::createFilterQueryParams( $this->feed_rules_filter );
+            $filter_args = Rex_Product_Filter::createFilterQueryParams( $this->feed_filters );
             add_filter( 'posts_where', array( $this, 'wpfm_post_title_filter' ), 10, 2 );
 
             foreach ( $filter_args[ 'args' ] as $key => $value ) {
@@ -1510,11 +1535,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $wpml = get_post_meta( $this->id, 'rex_feed_wpml_language', true ) ? get_post_meta( $this->id, 'rex_feed_wpml_language', true ) : $sitepress->get_default_language();
             if ( $wpml ) {
                 $sitepress->switch_lang( $wpml );
-                $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params );
+                $data = new Rex_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params );
             }
         }
         else {
-            $data = new Rex_Product_Data_Retriever( $product, $this->feed_rules, null, $this->append_variation, $product_meta_keys, $analytics_params );
+            $data = new Rex_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params );
         }
         return $data->get_all_data();*/
     }

@@ -1154,6 +1154,13 @@ class Rex_Product_Feed_Admin {
 		}
 		if ( isset( $_POST[ 'rex_feed_schedule' ] ) ) {
 			update_post_meta( $post_id, 'rex_feed_schedule', $_POST[ 'rex_feed_schedule' ] );
+
+            if ( isset( $_POST[ 'rex_feed_custom_time' ] ) && $_POST[ 'rex_feed_schedule' ] === 'custom' ) {
+                update_post_meta( $post_id, 'rex_feed_custom_time', $_POST[ 'rex_feed_custom_time' ] );
+            }
+            else {
+                delete_post_meta( $post_id, 'rex_feed_custom_time' );
+            }
 		}
 		if ( isset( $_POST[ 'rex_feed_products' ] ) ) {
 			update_post_meta( $post_id, 'rex_feed_products', $_POST[ 'rex_feed_products' ] );
