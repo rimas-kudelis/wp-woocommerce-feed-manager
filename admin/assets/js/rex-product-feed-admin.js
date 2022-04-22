@@ -59,6 +59,7 @@
         }
         else if ( rex_wpfm_ajax.current_screen === 'product-feed_page_wpfm_dashboard' ) {
             rex_feed_settings_tab( event );
+            rex_Feed_process_rollback_button();
         }
         rex_feed_show_review_request( event );
         rex_feed_merchant_list_select2( event );
@@ -111,9 +112,11 @@
                     'sale_price_with_tax',
                     'price_excl_tax',
                     'current_price_excl_tax',
-                    'sale_price_excl_tax'
+                    'sale_price_excl_tax',
+                    'price_db',
+                    'current_price_db',
+                    'sale_price_db'
                 ];
-
 
                 if ( $.inArray( value_selected, prices ) !== -1 ) {
                     $( 'input[name="fc[' + rowId + '][limit]"]' ).attr( 'placeholder', 'Update Price i.e. +25%' );
@@ -311,6 +314,8 @@
 
     $( document ).on( 'click', 'ul.rex-settings-tabs li', rex_feed_settings_tab);
 
+    $( document ).on( 'click', '.rex-feed-rollback-button', rex_feed_rollback_confirmation );
+
     /**
      * Event listener for Analytics Parameter options functionality.
      */
@@ -388,7 +393,9 @@
 
     $( document ).on( 'change', 'input[name="rex_feed_schedule"]', rex_feed_manage_custom_cron_schedule_fields );
 
-    $(document).on( 'change', '.attr-val-dropdown', category_mapping_button_on_change );
+    $( document ).on( 'change', '.attr-val-dropdown', category_mapping_button_on_change );
+
+    $( document ).on( 'change', 'select#wpfm_rollback_options', rex_Feed_process_rollback_button ).trigger('change');
 
     $( document ).on( 'submit', '#rex-google-merchant', save_google_merchant_settings );
 
@@ -641,6 +648,7 @@
         if ( is_premium ) {
             var meta_value_selects = $( 'div.meta-dropdown' ).children();
             var rows = meta_value_selects.length - 1;
+
             for ( var rowId = 0; rowId < rows; rowId++ ) {
                 var selected_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
                 var limit_row = $( 'input[name="fc[' + rowId + '][limit]"]' );
@@ -654,7 +662,10 @@
                     'sale_price_with_tax',
                     'price_excl_tax',
                     'current_price_excl_tax',
-                    'sale_price_excl_tax'
+                    'sale_price_excl_tax',
+                    'price_db',
+                    'current_price_db',
+                    'sale_price_db'
                 ];
 
                 if ( $.inArray( selected_val, prices ) !== -1 ) {
@@ -1621,5 +1632,29 @@
 
     function rex_feed_focus_merchant_search_bar( e ) {
         $('input.select2-search__field').get(0).focus();
+    }
+
+    /**
+     * rollback feature for WPF
+     */
+    function rex_Feed_process_rollback_button() {
+        var $this = $( 'select#wpfm_rollback_options' ),
+            $rollbackButton = $this.next('.rex-feed-rollback-button'),
+            placeholderText = $rollbackButton.data('placeholder-text'),
+            placeholderUrl = $rollbackButton.data('placeholder-url');
+
+        $rollbackButton.html(placeholderText.replace('{VERSION}', $this.val()));
+        $rollbackButton.attr('href', placeholderUrl.replace('VERSION', $this.val()));
+    }
+
+
+    function rex_feed_rollback_confirmation(event) {
+        event.preventDefault();
+        var $this = $(this);
+        if ( confirm("Are you sure?") ) {
+            $this.addClass('show-loader');
+            $this.addClass('loading');
+            location.href = $this.attr('href');
+        }
     }
 })( jQuery );

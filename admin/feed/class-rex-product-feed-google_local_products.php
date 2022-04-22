@@ -96,6 +96,13 @@ class Rex_Product_Feed_Google_local_products extends Rex_Product_Feed_Abstract_G
 		        }
 	        }
 
+            if( !$this->include_zero_priced ) {
+                $product_price = rex_feed_get_product_price($product);
+                if( 0 == $product_price || '' == $product_price ) {
+                    continue;
+                }
+            }
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;

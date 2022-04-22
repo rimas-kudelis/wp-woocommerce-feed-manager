@@ -103,12 +103,13 @@ class Rex_Product_Data_Retriever
      */
     protected $feed;
 
-
     protected $wcml;
 
     protected $wcml_currency;
 
     public $discount_manage;
+
+    protected $feed_format;
 
     /**
      * Initialize the class and set its properties.
@@ -135,6 +136,7 @@ class Rex_Product_Data_Retriever
         $this->feed               = $feed;
         $this->wcml               = false;
         $this->wcml_currency      = '';
+        $this->feed_format        = $feed->get_feed_format();
 
         if( wpfm_is_wpml_active() ) {
             $this->wcml          = true;
@@ -210,7 +212,7 @@ class Rex_Product_Data_Retriever
                     }
                     else {
                         $google_shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
-                        if( in_array( $rule[ 'attr' ], $google_shipping_attr ) ) {
+                        if( in_array( $rule[ 'attr' ], $google_shipping_attr ) && $this->feed->merchant === 'google' ) {
                             $this->data[ $rule[ 'attr' ] ][] = $this->set_val( $rule );
                         }
                         else {
@@ -251,8 +253,7 @@ class Rex_Product_Data_Retriever
             $val = $this->set_woodmart_att( $rule[ 'meta_key' ] );
         }
         elseif( 'meta' === $rule[ 'type' ] && $this->is_price_attr( $rule[ 'meta_key' ] ) ) {
-            $attr = isset( $rule[ 'attr' ] ) ? $rule[ 'attr' ] : '';
-            $val  = $this->set_price_attr( $rule[ 'meta_key' ], $attr );
+            $val  = $this->set_price_attr( $rule[ 'meta_key' ], $rule );
         }
         elseif( 'meta' === $rule[ 'type' ] && $this->is_yoast_attr( $rule[ 'meta_key' ] ) ) {
             $val = $this->set_yoast_attr( $rule[ 'meta_key' ] );
@@ -308,6 +309,8 @@ class Rex_Product_Data_Retriever
 
         // maybe limit
         $val = $this->maybe_limit( $val, $rule[ 'limit' ] );
+
+        $val = $this->tab_replace( $val );
 
         return $val;
 
@@ -496,81 +499,6 @@ class Rex_Product_Data_Retriever
         return $brnd;
     }
 
-    /**
-     * gets conditioned price
-     *
-     * @param $key
-     * @param $price
-     * @return float|int
-     */
-    protected function get_dynamic_price( $attr, $price )
-    {
-        $is_premium = apply_filters( 'wpfm_is_premium', false );
-
-        if( $is_premium ) {
-            $price     = $price === '' ? 0 : $price;
-            $rules     = $this->feed_config;
-            $condition = '';
-
-            foreach( $rules as $rule ) {
-                if( isset( $rule[ 'attr' ] ) ) {
-                    $current_attr = $rule[ 'attr' ];
-                }
-                elseif( isset( $rule[ 'cust_attr' ] ) ) {
-                    $current_attr = $rule[ 'cust_attr' ];
-                }
-
-                if( $current_attr === $attr ) {
-                    $condition = $rule[ 'limit' ];
-                    break;
-                }
-            }
-
-            $expression = $condition;
-            $operators  = preg_split( '([^\\+\\-*\\/\^])', trim( $expression ) );
-            $operators  = array_values( array_filter( $operators ) );
-            $numbers    = preg_split( '/[^0-9\%]/', trim( $expression ) );
-            $numbers    = array_values( array_filter( $numbers ) );
-            $i          = 0;
-
-            foreach( $operators as $operator ) {
-                switch( $operator ) {
-                    case '+':
-                        (float)$price += (float)$this->get_percentage( $numbers[ $i++ ], $price );
-                        break;
-                    case '-':
-                        (float)$price -= (float)$this->get_percentage( $numbers[ $i++ ], $price );
-                        break;
-                    case '*':
-                        (float)$price *= (float)$this->get_percentage( $numbers[ $i++ ], $price );
-                        break;
-                    case '/':
-                        (float)$price /= (float)$this->get_percentage( $numbers[ $i++ ], $price );
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        return $price == 0 ? '' : (float)$price;
-    }
-
-    /**
-     * Gets percentage of total price to calculate dynamic price
-     *
-     * @param $number
-     * @param $price
-     * @return float|int
-     */
-    protected function get_percentage( $number, $price )
-    {
-        if( strpos( $number, '%' ) !== false ) {
-            $number = str_replace( '', '%', $number );
-            return (float)$price * ( (float)$number / 100 );
-        }
-        return (float)$number;
-    }
 
     /**
      * Set a primary attribute.
@@ -891,15 +819,14 @@ class Rex_Product_Data_Retriever
      *
      * @since    1.0.0
      */
-    protected function set_price_attr( $key, $attr = '' )
+    protected function set_price_attr( $key, $rule = array() )
     {
-
         switch( $key ) {
             case 'price':
                 if( $this->product->is_type( 'grouped' ) ) {
                     if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->get_grouped_price( $this->product, '_regular_price' ), wc_get_price_decimals() ), $this->wcml_currency );
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( rex_feed_get_grouped_price( $this->product, '_regular_price' ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -910,13 +837,12 @@ class Rex_Product_Data_Retriever
 
                         $_price = $this->get_converted_price( $_price );
 
-                        return $this->get_dynamic_price( $attr, $_price );
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = $this->get_dynamic_price( $attr, $this->get_grouped_price( $this->product, '_regular_price' ) );
-
+                        $_price = rex_feed_get_grouped_price( $this->product, '_regular_price' );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         $_price = $this->get_converted_price( $_price );
-
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
@@ -945,21 +871,24 @@ class Rex_Product_Data_Retriever
                     }
                     else {
                         if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
+                            $_price = $_pr->get_composite_price();
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             $_price = $this->get_converted_price( $_price );
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                         else {
-                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_regular_price() );
+                            $_price = $_pr->get_composite_regular_price();
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             $_price = $this->get_converted_price( $_price );
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                     }
                 }
                 elseif( $this->product->is_type( 'variable' ) ) {
-                    $default_attributes = $this->get_default_attributes( $this->product );
+                    $default_attributes = rex_feed_get_default_variable_attributes( $this->product );
+
                     if( $default_attributes ) {
-                        $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                        $variation_id = rex_feed_find_matching_product_variation( $this->product, $default_attributes );
                         if( $variation_id ) {
                             $_variation_product = wc_get_product( $variation_id );
                             if( $this->wcml ) {
@@ -973,10 +902,11 @@ class Rex_Product_Data_Retriever
 
                                 $_price = $this->get_converted_price( $_price );
 
-                                return $this->get_dynamic_price( $attr, $_price );
+                                return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             }
                             else {
-                                $_price = $this->get_dynamic_price( $attr, $_variation_product->get_regular_price() );
+                                $_price = $_variation_product->get_regular_price();
+                                $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                                 $_price = $this->get_converted_price( $_price );
                                 return wc_format_decimal( $_price, wc_get_price_decimals() );
                             }
@@ -992,10 +922,11 @@ class Rex_Product_Data_Retriever
                             }
 
                             $_price = $this->get_converted_price( $_price );
-                            return $this->get_dynamic_price( $attr, $_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         }
                         else {
-                            $_price = $this->get_dynamic_price( $attr, $this->product->get_variation_regular_price() );
+                            $_price = $this->product->get_variation_regular_price();
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             $_price = $this->get_converted_price( $_price );
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
@@ -1012,9 +943,10 @@ class Rex_Product_Data_Retriever
 
                             $_price = $this->get_converted_price( $_price );
 
-                            return $this->get_dynamic_price( $attr, $_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         }
-                        $_price = $this->get_dynamic_price( $attr, $this->product->get_variation_regular_price() );
+                        $_price = $this->product->get_variation_regular_price();
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         $_price = $this->get_converted_price( $_price );
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
@@ -1022,9 +954,8 @@ class Rex_Product_Data_Retriever
                 elseif( $this->product->is_type( 'bundle' ) ) {
                     $_price = $this->product->get_bundle_price();
                     $_price = $this->get_converted_price( $_price );
-                    return $this->get_dynamic_price( $attr, $_price );
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
-
 
                 if( $this->wcml ) {
                     global $woocommerce_wpml;
@@ -1036,11 +967,12 @@ class Rex_Product_Data_Retriever
                         $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
-                    return $this->get_dynamic_price( $attr, $_price );
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
 
                 }
                 else {
-                    $_price = $this->get_dynamic_price( $attr, $this->product->get_regular_price() );
+                    $_price = $this->product->get_regular_price();
+                    $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     $_price = $this->get_converted_price( $_price );
                     return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
@@ -1050,7 +982,7 @@ class Rex_Product_Data_Retriever
                     if( $this->product->is_type( 'grouped' ) ) {
                         if( $this->wcml ) {
                             global $woocommerce_wpml;
-                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $this->get_grouped_price( $this->product, '_price' ), wc_get_price_decimals() ), $this->wcml_currency );
+                            $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( rex_feed_get_grouped_price( $this->product, '_price' ), wc_get_price_decimals() ), $this->wcml_currency );
 
                             //if WCML price is set manually
                             $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1058,10 +990,11 @@ class Rex_Product_Data_Retriever
                                 $_price = $_custom_prices[ '_price' ];
                             }
                             $_price = $this->get_converted_price( $_price );
-                            return $this->get_dynamic_price( $attr, $_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         }
                         else {
-                            $_price = $this->get_dynamic_price( $attr, $this->get_grouped_price( $this->product, '_price' ) );
+                            $_price = rex_feed_get_grouped_price( $this->product, '_price' );
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             $_price = $this->get_converted_price( $_price );
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
@@ -1078,18 +1011,19 @@ class Rex_Product_Data_Retriever
                                 $_price = $_custom_prices[ '_price' ];
                             }
                             $_price = $this->get_converted_price( $_price );
-                            return $this->get_dynamic_price( $attr, $_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         }
                         else {
-                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
+                            $_price = $_pr->get_composite_price();
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             $_price = $this->get_converted_price( $_price );
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                     }
                     elseif( $this->product->is_type( 'variable' ) ) {
-                        $default_attributes = $this->get_default_attributes( $this->product );
+                        $default_attributes = rex_feed_get_default_variable_attributes( $this->product );
                         if( $default_attributes ) {
-                            $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                            $variation_id = rex_feed_find_matching_product_variation( $this->product, $default_attributes );
                             if( $variation_id ) {
                                 $_variation_product = wc_get_product( $variation_id );
                                 if( $this->wcml ) {
@@ -1102,10 +1036,11 @@ class Rex_Product_Data_Retriever
                                         $_price = $_custom_prices[ '_price' ];
                                     }
                                     $_price = $this->get_converted_price( $_price );
-                                    return $this->get_dynamic_price( $attr, $_price );
+                                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                                 }
                                 else {
-                                    $_price = $this->get_dynamic_price( $attr, $_variation_product->get_price() );
+                                    $_price = $_variation_product->get_price();
+                                    $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                                     $_price = $this->get_converted_price( $_price );
                                     return wc_format_decimal( $_price, wc_get_price_decimals() );
                                 }
@@ -1122,10 +1057,11 @@ class Rex_Product_Data_Retriever
                                     $_price = $_custom_prices[ '_price' ];
                                 }
                                 $_price = $this->get_converted_price( $_price );
-                                return $this->get_dynamic_price( $attr, $_price );
+                                return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             }
                             else {
-                                $_price = $this->get_dynamic_price( $attr, $this->product->get_price() );
+                                $_price = $this->product->get_price();
+                                $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                                 $_price = $this->get_converted_price( $_price );
                                 return wc_format_decimal( $_price, wc_get_price_decimals() );
 
@@ -1142,10 +1078,11 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $this->get_dynamic_price( $attr, $_price );
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = $this->get_dynamic_price( $attr, $this->product->get_price() );
+                        $_price = $this->product->get_price();
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         $_price = $this->get_converted_price( $_price );
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
@@ -1161,7 +1098,7 @@ class Rex_Product_Data_Retriever
                         }
                     }
                     if( $this->product->is_type( 'grouped' ) ) {
-                        $sale_price = number_format( (float)$this->get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
+                        $sale_price = number_format( (float)rex_feed_get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
 
                         $sale_price = $this->get_converted_price( $sale_price );
                         return $sale_price;
@@ -1174,9 +1111,9 @@ class Rex_Product_Data_Retriever
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                     elseif( $this->product->is_type( 'variable' ) ) {
-                        $default_attributes = $this->get_default_attributes( $this->product );
+                        $default_attributes = rex_feed_get_default_variable_attributes( $this->product );
                         if( $default_attributes ) {
-                            $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                            $variation_id = rex_feed_find_matching_product_variation( $this->product, $default_attributes );
                             if( $variation_id ) {
                                 $_variation_product = wc_get_product( $variation_id );
                                 $sale_price         = number_format( (float)$_variation_product->get_price(), 2, '.', '' );
@@ -1229,10 +1166,10 @@ class Rex_Product_Data_Retriever
                                     $_price = $_custom_prices[ '_price' ];
                                 }
                                 $_price = $this->get_converted_price( $_price );
-                                return $this->get_dynamic_price( $attr, $_price );
+                                return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             }
                             else {
-                                $_price = $this->get_dynamic_price( $attr, $sale_price );
+                                $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
                                 $_price = $this->get_converted_price( $_price );
                                 return wc_format_decimal( $_price, wc_get_price_decimals() );
                             }
@@ -1248,28 +1185,27 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $this->get_dynamic_price( $attr, $_price );
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = $this->get_dynamic_price( $attr, $sale_price );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
                         $_price = $this->get_converted_price( $_price );
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
 
             case 'sale_price':
-
                 if( !defined( 'WAD_INITIALIZED' ) ) {
                     if( $this->product->is_type( 'grouped' ) ) {
-                        $sale_price = number_format( (float)$this->get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
+                        $sale_price = number_format( (float)rex_feed_get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
                     }
                     elseif( $this->product->is_type( 'composite' ) ) {
                         $sale_price = wc_format_decimal( $this->product->get_sale_price(), wc_get_price_decimals() );
                     }
                     elseif( $this->product->is_type( 'variable' ) ) {
-                        $default_attributes = $this->get_default_attributes( $this->product );
+                        $default_attributes = rex_feed_get_default_variable_attributes( $this->product );
                         if( $default_attributes ) {
-                            $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                            $variation_id = rex_feed_find_matching_product_variation( $this->product, $default_attributes );
                             if( $variation_id ) {
                                 $_variation_product = wc_get_product( $variation_id );
                                 $sale_price         = wc_format_decimal( $_variation_product->get_sale_price(), wc_get_price_decimals() );
@@ -1298,15 +1234,14 @@ class Rex_Product_Data_Retriever
 
                             $_price = $this->get_converted_price( $_price );
 
-                            return $this->get_dynamic_price( $attr, $_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         }
                         else {
-
                             $sale_price = $this->get_converted_price( $sale_price );
-                            return $this->get_dynamic_price( $attr, $sale_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
                         }
                     }
-                    return '';
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
                 }
                 else {
                     global $wad_discounts;
@@ -1320,12 +1255,12 @@ class Rex_Product_Data_Retriever
                     }
 
                     if( $this->product->is_type( 'grouped' ) ) {
-                        $sale_price = number_format( (float)$this->get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
+                        $sale_price = number_format( (float)rex_feed_get_grouped_price( $this->product, '_sale_price' ), 2, '.', '' );
                     }
                     elseif( $this->product->is_type( 'variable' ) ) {
-                        $default_attributes = $this->get_default_attributes( $this->product );
+                        $default_attributes = rex_feed_get_default_variable_attributes( $this->product );
                         if( $default_attributes ) {
-                            $variation_id = $this->find_matching_product_variation( $this->product, $default_attributes );
+                            $variation_id = rex_feed_find_matching_product_variation( $this->product, $default_attributes );
                             if( $variation_id ) {
                                 $_variation_product = wc_get_product( $variation_id );
                                 $sale_price         = number_format( (float)$_variation_product->get_sale_price(), 2, '.', '' );
@@ -1351,10 +1286,11 @@ class Rex_Product_Data_Retriever
                             }
 
                             $_price = $this->get_converted_price( $_price );
-                            return $this->get_dynamic_price( $attr, $_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         }
                         else {
-                            $_price = $this->get_dynamic_price( $attr, $_pr->get_sale_price() );
+                            $_price = $_pr->get_sale_price();
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             $_price = $this->get_converted_price( $_price );
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
@@ -1400,10 +1336,10 @@ class Rex_Product_Data_Retriever
                                 }
 
                                 $_price = $this->get_converted_price( $_price );
-                                return $this->get_dynamic_price( $attr, $_price );
+                                return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             }
                             else {
-                                $_price = $this->get_dynamic_price( $attr, $sale_price );
+                                $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
                                 $_price = $this->get_converted_price( $_price );
                                 return wc_format_decimal( $_price, wc_get_price_decimals() );
                             }
@@ -1422,23 +1358,21 @@ class Rex_Product_Data_Retriever
                             }
 
                             $_price = $this->get_converted_price( $_price );
-                            return $this->get_dynamic_price( $attr, $_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         }
                         else {
-
                             $_price = $this->get_converted_price( $sale_price );
-                            return $this->get_dynamic_price( $attr, $sale_price );
+                            return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         }
                     }
-
-                    return '';
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
                 }
 
             case 'price_with_tax':
                 if( $this->product->is_type( 'grouped' ) ) {
                     if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1446,10 +1380,12 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $this->get_dynamic_price( $attr, $_price );
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->get_grouped_price( $this->product, '_regular_price' ) ) ) );
+                        $_price = rex_feed_get_grouped_price( $this->product, '_regular_price' );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
+                        $_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
                     }
@@ -1472,17 +1408,19 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $this->get_dynamic_price( $attr, $_price );
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
 
                         if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
-                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
+                            $_price = $_pr->get_composite_price();
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             $_price = $this->get_converted_price( $_price );
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                         else {
-                            $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_regular_price() );
+                            $_price = $_pr->get_composite_regular_price();
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             $_price = $this->get_converted_price( $_price );
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
@@ -1498,10 +1436,12 @@ class Rex_Product_Data_Retriever
                         $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
-                    return $this->get_dynamic_price( $attr, $_price );
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
                 else {
-                    $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->product->get_regular_price() ) ) );
+                    $_price = $this->product->get_regular_price();
+                    $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
+                    $_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
                     $_price = $this->get_converted_price( $_price );
                     return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
@@ -1510,7 +1450,7 @@ class Rex_Product_Data_Retriever
                 if( $this->product->is_type( 'grouped' ) ) {
                     if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1518,10 +1458,12 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $this->get_dynamic_price( $attr, $_price );
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->get_grouped_price( $this->product, '_price' ) ) ) );;
+                        $_price = rex_feed_get_grouped_price( $this->product, '_price' );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
+                        $_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
                         $_price = $this->get_converted_price( $_price );
                         return $_price;
                     }
@@ -1538,10 +1480,11 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $this->get_dynamic_price( $attr, $_price );
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = $this->get_dynamic_price( $attr, $_pr->get_composite_price() );
+                        $_price = $_pr->get_composite_price();
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         $_price = $this->get_converted_price( $_price );
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
@@ -1556,10 +1499,12 @@ class Rex_Product_Data_Retriever
                         $_price = $_custom_prices[ '_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
-                    return $this->get_dynamic_price( $attr, $_price );
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
                 else {
-                    $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->get_dynamic_price( $attr, $this->product->get_price() ) ) );
+                    $_price = $this->product->get_price();
+                    $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
+                    $_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
                     $_price = $this->get_converted_price( $_price );
                     return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
@@ -1568,7 +1513,7 @@ class Rex_Product_Data_Retriever
                 if( $this->product->is_type( 'grouped' ) ) {
                     if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_sale_price' ) ) ), wc_get_price_decimals() ), $this->wcml_currency );
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( wc_get_price_including_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_sale_price' ) ) ), wc_get_price_decimals() ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1576,13 +1521,13 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = $this->get_grouped_price( $this->product, '_sale_price' );
+                        $_price = rex_feed_get_grouped_price( $this->product, '_sale_price' );
                         $_price = wc_get_price_including_tax( $this->product, array( 'price' => $_price ) );
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                 }
                 elseif( $this->product->is_type( 'composite' ) ) {
@@ -1597,11 +1542,12 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
                         $_price = $_pr->get_sale_price();
                         $_price = $this->get_converted_price( $_price );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
@@ -1617,22 +1563,22 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
                         $_price = wc_get_price_including_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) );
                         $_price = $this->get_converted_price( $_price );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
-                return '';
+                return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
 
             case 'price_excl_tax':
-
                 if( $this->product->is_type( 'grouped' ) ) {
                     if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_regular_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1640,12 +1586,12 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_regular_price' ) ) );
+                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_regular_price' ) ) );
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                 }
                 elseif( $this->product->is_type( 'composite' ) ) {
@@ -1666,17 +1612,19 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_regular_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
                         if( is_plugin_active( 'wpc-composite-products/wpc-composite-products.php' ) ) {
                             $_price = $_pr->get_composite_price();
                             $_price = $this->get_converted_price( $_price );
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                         else {
                             $_price = $_pr->get_composite_regular_price();
                             $_price = $this->get_converted_price( $_price );
+                            $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                             return wc_format_decimal( $_price, wc_get_price_decimals() );
                         }
                     }
@@ -1691,11 +1639,12 @@ class Rex_Product_Data_Retriever
                         $_price = $_custom_prices[ '_regular_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
-                    return $_price;
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
                 else {
                     $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_regular_price() ) );
                     $_price = $this->get_converted_price( $_price );
+                    $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
 
@@ -1703,7 +1652,7 @@ class Rex_Product_Data_Retriever
                 if( $this->product->is_type( 'grouped' ) ) {
                     if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1711,12 +1660,12 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_price' ) ) );
+                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_price' ) ) );
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                 }
                 elseif( $this->product->is_type( 'composite' ) ) {
@@ -1731,11 +1680,12 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
                         $_price = $_pr->get_composite_price();
                         $_price = $this->get_converted_price( $_price );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
@@ -1749,11 +1699,12 @@ class Rex_Product_Data_Retriever
                         $_price = $_custom_prices[ '_price' ];
                     }
                     $_price = $this->get_converted_price( $_price );
-                    return $_price;
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
                 else {
                     $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_price() ) );
                     $_price = $this->get_converted_price( $_price );
+                    $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     return wc_format_decimal( $_price, wc_get_price_decimals() );
                 }
 
@@ -1761,7 +1712,7 @@ class Rex_Product_Data_Retriever
                 if( $this->product->is_type( 'grouped' ) ) {
                     if( $this->wcml ) {
                         global $woocommerce_wpml;
-                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_sale_price' ) ) ), $this->wcml_currency );
+                        $_price = apply_filters( 'wcml_raw_price_amount', wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_sale_price' ) ) ), $this->wcml_currency );
 
                         //if WCML price is set manually
                         $_custom_prices = $woocommerce_wpml->get_multi_currency()->custom_prices->get_product_custom_prices( $this->product->get_id(), $this->wcml_currency );
@@ -1769,12 +1720,12 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->get_grouped_price( $this->product, '_sale_price' ) ) );
+                        $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => rex_feed_get_grouped_price( $this->product, '_sale_price' ) ) );
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                 }
                 elseif( $this->product->is_type( 'composite' ) ) {
@@ -1789,11 +1740,12 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
                         $_price = $_pr->get_sale_price();
                         $_price = $this->get_converted_price( $_price );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
@@ -1809,15 +1761,16 @@ class Rex_Product_Data_Retriever
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
                         $_price = $this->get_converted_price( $_price );
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
                         $_price = wc_get_price_excluding_tax( $this->product, array( 'price' => $this->product->get_sale_price() ) );
                         $_price = $this->get_converted_price( $_price );
+                        $_price = function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                         return wc_format_decimal( $_price, wc_get_price_decimals() );
                     }
                 }
-                return '';
+                return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
 
             case 'price_db':
                 if( $this->wcml ) {
@@ -1829,14 +1782,15 @@ class Rex_Product_Data_Retriever
                     if( $_custom_prices && $_custom_prices[ '_regular_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_regular_price' ];
                     }
-                    return $_price;
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
                 else {
                     $meta_key = '_regular_price';
                     if( $this->product->is_type( 'variable' ) || $this->product->is_type( 'grouped' ) ) {
                         $meta_key = '_price';
                     }
-                    return wc_format_decimal( get_post_meta( $this->product->get_id(), $meta_key, true ), wc_get_price_decimals() );
+                    $_price = wc_format_decimal( get_post_meta( $this->product->get_id(), $meta_key, true ), wc_get_price_decimals() );
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
 
             case 'current_price_db':
@@ -1849,10 +1803,11 @@ class Rex_Product_Data_Retriever
                     if( $_custom_prices[ '_price' ] > 0 ) {
                         $_price = $_custom_prices[ '_price' ];
                     }
-                    return $_price;
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
                 else {
-                    return wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true ), wc_get_price_decimals() );
+                    $_price = wc_format_decimal( get_post_meta( $this->product->get_id(), '_price', true ), wc_get_price_decimals() );
+                    return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                 }
 
             case 'sale_price_db':
@@ -1867,13 +1822,14 @@ class Rex_Product_Data_Retriever
                         if( $_custom_prices[ '_sale_price' ] > 0 ) {
                             $_price = $_custom_prices[ '_sale_price' ];
                         }
-                        return $_price;
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                     else {
-                        return wc_format_decimal( $sale_price, wc_get_price_decimals() );
+                        $_price = wc_format_decimal( $sale_price, wc_get_price_decimals() );
+                        return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $_price ) : $_price;
                     }
                 }
-                return '';
+                return function_exists( 'rex_feed_get_dynamic_price' ) ? rex_feed_get_dynamic_price( $rule, $sale_price ) : $sale_price;
 
             default:
                 return '';
@@ -1952,7 +1908,6 @@ class Rex_Product_Data_Retriever
                 }
                 else {
                     return $this->product ? wp_get_attachment_url( $this->product->get_image_id() ) : '';
-                    break;
                 }
                 return '';
 
@@ -2010,6 +1965,9 @@ class Rex_Product_Data_Retriever
             case 'all_image_pipe':
                 return $this->get_all_image( '|' );
 
+            case 'variation_img':
+                return wp_get_attachment_url( $this->product->get_image_id() );
+
             default:
                 $key = str_replace( 'additional_', '', $key );
                 return $this->get_additional_image( $key );
@@ -2039,11 +1997,20 @@ class Rex_Product_Data_Retriever
      *
      * @since    1.0.0
      */
-    protected function set_product_attr( $key ) {
-        $key = str_replace( 'bwf_attr_pa_', '', $key);
-        $value = $this->product->get_attribute( $key );
+    protected function set_product_attr( $key )
+    {
+        $key = str_replace( 'bwf_attr_pa_', '', $key );
 
-        if ( ! empty( $value ) ) {
+        if( 'WC_Product_Variation' === get_class( $this->product ) ) {
+            $var_id = $this->product->get_parent_id();
+            $var_pr = wc_get_product( $var_id );
+            $value  = $var_pr->get_attribute( $key );
+        }
+        else {
+            $value = $this->product->get_attribute( $key );
+        }
+
+        if( !empty( $value ) ) {
             $value = trim( $value );
         }
         return $value;
@@ -2335,7 +2302,8 @@ class Rex_Product_Data_Retriever
 
             if( $cat_lists ) {
                 foreach( $cat_lists as $key => $term ) {
-                    $map_key = array_search( $term->term_id, array_column( $map_config, 'map-key' ) );
+                    $map_keys = is_array( $map_config ) && !empty( $map_config ) ? array_column( $map_config, 'map-key' ) : [];
+                    $map_key = array_search( $term->term_id, $map_keys );
 
                     if( $map_key == 0 || $map_key ) {
                         $map_array = $map_config[ $map_key ];
@@ -3085,30 +3053,6 @@ class Rex_Product_Data_Retriever
 
 
     /**
-     * Get grouped price
-     *
-     * @since    2.0.3
-     */
-    public function get_grouped_price( $product, $type )
-    {
-        $groupProductIds = $product->get_children();
-        $price           = 99999999;
-
-        if( !empty( $groupProductIds ) ) {
-            foreach( $groupProductIds as $id ) {
-                if( get_post_meta( $id, $type, true ) !== '' ) {
-                    $price = $price > get_post_meta( $id, $type, true ) ? get_post_meta( $id, $type, true ) : $price;
-                }
-            }
-            if( $price === 99999999 ) {
-                $price = '';
-            }
-        }
-        return $price;
-    }
-
-
-    /**
      * Helper to get availability of a product
      *
      * @since    1.0.0
@@ -3291,6 +3235,17 @@ class Rex_Product_Data_Retriever
     }
 
     /**
+     * Replace tab if exists
+     */
+    protected function tab_replace( $val )
+    {
+        if( $this->feed_format === 'text' ) {
+            return preg_replace('/[ ]{2,}|[\t]|[\n]/', ' ', trim($val));
+        }
+        return $val;
+    }
+
+    /**
      * Replace a string from an attribute
      */
     protected function maybe_replaced( $attr, $value, $feed_rules )
@@ -3298,60 +3253,60 @@ class Rex_Product_Data_Retriever
         $attr_name = isset( $attr[ 'meta_key' ] ) ? $attr[ 'meta_key' ] : '';
         $attr_name = $attr_name === '' && isset( $attr[ 'attr' ] ) ? $attr[ 'attr' ] : $attr_name;
         $attr_name = $attr_name === '' && isset( $attr[ 'cust_attr' ] ) ? $attr[ 'cust_attr' ] : $attr_name;
-        $replace   = array_search( $attr_name, array_column( $feed_rules, 'rules_if' ) );
-        $replace   = $replace === false ? array_search( $attr_name, array_column( $this->feed_rules, 'cust_rules_if' ) ) : $replace;
 
-        if( $replace !== false ) {
-            if( !empty( $feed_rules ) ) {
-                foreach( $feed_rules as $rule ) {
-                    if( ( isset( $rule[ 'rules_if' ] ) && $rule[ 'rules_if' ] === $attr_name )
-                        || ( isset( $rule[ 'cust_rules_if' ] ) && $rule[ 'cust_rules_if' ] === $attr_name ) ) {
-                        $replace = '';
+        if( is_array( $feed_rules ) && !empty( $feed_rules ) ) {
+            foreach( $feed_rules as $rule ) {
+                $rule_then = isset( $rule['rules_then'] ) ? $rule['rules_then'] : '';
+                if( $attr_name === $rule_then ) {
+                    $rule_if = '';
+                    $rule_replace = '';
 
-                        if( isset( $rule[ 'rules_replace' ] ) && $rule[ 'rules_replace' ] !== '' ) {
-                            $replace = $rule[ 'rules_replace' ];
-                        }
-                        else {
-                            $then_param = isset( $rule[ 'rules_then' ] ) ? $rule[ 'rules_then' ] : '';
-                            if( $then_param !== '' ) {
-                                $replace = $this->get_rules_new_value( $attr[ 'type' ], $then_param, $value );
-                            }
-                        }
+                    if( isset( $rule['rules_if'] ) && $rule['rules_if'] !== '' ) {
+                        $rule_if = $rule['rules_if'];
+                    }
+                    elseif( isset( $rule['cust_rules_if'] ) && $rule['cust_rules_if'] !== '' ) {
+                        $rule_if = $rule['cust_rules_if'];
+                    }
 
-                        switch( $rule[ 'rules_condition' ] ) {
-                            case 'contain':
-                                $value = str_replace( $rule[ 'rules_find' ], $replace, $value );
-                                break;
-                            case 'dn_contain':
-                                $find = $rule[ 'rules_find' ];
-                                $str_contains = preg_match( "/$find\b/", $value);
-                                $value = ! $str_contains ? $replace : $value;
-                                break;
-                            case 'equal_to':
-                                $value = $value == $rule[ 'rules_find' ] ? $replace : $value;
-                                break;
-                            case 'nequal_to':
-                                $value = $value != $rule[ 'rules_find' ] ? $replace : $value;
-                                break;
-                            case 'greater_than':
-                                $value = $value > $rule[ 'rules_find' ] ? $replace : $value;
-                                break;
-                            case 'greater_than_equal':
-                                $value = $value >= $rule[ 'rules_find' ] ? $replace : $value;
-                                break;
-                            case 'less_than':
-                                $value = $value < $rule[ 'rules_find' ] ? $replace : $value;
-                                break;
-                            case 'less_than_equal':
-                                $value = $value <= $rule[ 'rules_find' ] ? $replace : $value;
-                                break;
-                            default:
-                                break;
-                        }
+                    if( isset( $rule['rules_replace'] ) && !isset( $rule['rules_static'] ) ) {
+                        $rule_replace = $rule['rules_replace'];
+                        $rule_replace = $this->get_rules_new_value( $rule_replace );
+                    }
+                    elseif( isset( $rule['rules_static_replace'] ) && isset( $rule['rules_static'] ) && 'static' === $rule['rules_static'] ) {
+                        $rule_replace = $rule['rules_static_replace'];
+                    }
+
+                    $if_attr_val = $this->get_rules_new_value( $rule_if );
+
+                    $rule_condition = isset( $rule[ 'rules_condition' ] ) ? $rule[ 'rules_condition' ] : '';
+
+                    $rule_find = isset( $rule['rules_find'] ) ? $rule['rules_find'] : '';
+
+                    switch( $rule_condition ) {
+                        case 'contain':
+                            return str_replace( $rule_find, $rule_replace, $if_attr_val );
+                        case 'dn_contain':
+                            $str_contains = preg_match( "/$rule_find\b/", $if_attr_val);
+                            return ! $str_contains ? $rule_replace : $value;
+                        case 'equal_to':
+                            return $if_attr_val == $rule_find ? $rule_replace : $value;
+                        case 'nequal_to':
+                            return $if_attr_val != $rule_find ? $rule_replace : $value;
+                        case 'greater_than':
+                            return $if_attr_val > $rule_find ? $rule_replace : $value;
+                        case 'greater_than_equal':
+                            return $if_attr_val >= $rule_find ? $rule_replace : $value;
+                        case 'less_than':
+                            return $if_attr_val < $rule_find ? $rule_replace : $value;
+                        case 'less_than_equal':
+                            return $if_attr_val <= $rule_find ? $rule_replace : $value;
+                        default:
+                            return $value;
                     }
                 }
             }
         }
+
         return $value;
     }
 
@@ -3364,11 +3319,8 @@ class Rex_Product_Data_Retriever
      * @param $value
      * @return false|int|mixed|string|WC_DateTime|NULL
      */
-    protected function get_rules_new_value( $type, $key, $value ) {
-        if( 'static' === $type ) {
-            return $value;
-        }
-        elseif( 'meta' === $type && $this->is_primary_attr( $key ) ) {
+    protected function get_rules_new_value( $key, $type = 'meta' ) {
+        if( 'meta' === $type && $this->is_primary_attr( $key ) ) {
             return $this->set_pr_att( $key );
         }
         elseif( 'meta' === $type && $this->is_woodmart_attr( $key ) ) {

@@ -93,6 +93,13 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
+            if( !$this->include_zero_priced ) {
+                $product_price = rex_feed_get_product_price($product);
+                if( 0 == $product_price || '' == $product_price ) {
+                    continue;
+                }
+            }
+
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
@@ -157,41 +164,56 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
      * @param $meta_keys
      * @param string $product_type
      */
-    private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
+    private function add_to_feed( $product, $meta_keys, $product_type = '' )
+    {
         $attributes = $this->get_product_data( $product, $meta_keys );
         $attributes = $this->process_attributes_for_shipping_tax( $attributes );
 
-        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+        if( ( $this->rex_feed_skip_product && empty( array_keys( $attributes, '' ) ) ) || !$this->rex_feed_skip_product ) {
             $item = GoogleShopping::createItem();
 
-            if ( $product_type === 'variation' ) {
+            if( $product_type === 'variation' ) {
                 $check_item_group_id = 0;
             }
 
-            foreach ($attributes as $key => $value) {
-                if($key == 'shipping') {
-                    $item->$key($value['shipping_country'], $value['shipping_service'], $value['shipping_price'], $value['shipping_region']); // invoke $key as method of $item object.
+            foreach( $attributes as $key => $value ) {
+                if( $key == 'shipping' ) {
+                    $country = isset( $value[ 'shipping_country' ] ) ? $value[ 'shipping_country' ] : '';
+                    $service = isset( $value[ 'shipping_service' ] ) ? $value[ 'shipping_service' ] : '';
+                    $price   = isset( $value[ 'shipping_price' ] ) ? $value[ 'shipping_price' ] : '';
+                    $region  = isset( $value[ 'shipping_region' ] ) ? $value[ 'shipping_region' ] : '';
+
+                    $item->$key( $country, $service, $price, $region ); // invoke $key as method of $item object.
                 }
-                elseif ($key == 'tax') {
-                    $item->$key($value['tax_country'], $value['tax_ship'], $value['tax_rate'], $value['tax_region']); // invoke $key as method of $item object.
+                elseif( $key == 'tax' ) {
+                    $country = isset( $value[ 'tax_country' ] ) ? $value[ 'tax_country' ] : '';
+                    $service = isset( $value[ 'tax_service' ] ) ? $value[ 'tax_service' ] : '';
+                    $price   = isset( $value[ 'tax_price' ] ) ? $value[ 'tax_price' ] : '';
+                    $region  = isset( $value[ 'tax_region' ] ) ? $value[ 'tax_region' ] : '';
+
+                    $item->$key( $country, $service, $price, $region ); // invoke $key as method of $item object.
                 }
                 else {
-                    if($key == 'custom' || $key == 'Custom'){
-                        $key = $key.' ';
+                    if( $key == 'custom' || $key == 'Custom' ) {
+                        $key = $key . ' ';
                     }
-                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-                        if ( $value != '' ) {
-                            $item->$key($value); // invoke $key as method of $item object.
+                    if( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                        if( $value != '' ) {
+                            $item->$key( $value ); // invoke $key as method of $item object.
                         }
                     }
                     else {
-                        $item->$key($value); // invoke $key as method of $item object.
+                        $item->$key( $value ); // invoke $key as method of $item object.
                     }
+                }
+
+                if( $product_type === 'variation' && 'item_group_id' == $key ) {
+                    $check_item_group_id = 1;
                 }
             }
 
-            if( $product_type === 'variation' && $check_item_group_id === 0){
-                $item->item_group_id($product->get_parent_id());
+            if( $product_type === 'variation' && $check_item_group_id === 0 ) {
+                $item->item_group_id( $product->get_parent_id() );
             }
         }
     }
@@ -201,39 +223,20 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
      * @param $atts
      * @return array
      */
-    private function process_attributes_for_shipping_tax($atts) {
-        $shipping_attr = array('shipping_country', 'shipping_region', 'shipping_service', 'shipping_price');
-        $default_shipping_values = array(
-            'shipping_country' => '',
-            'shipping_service' => '',
-            'shipping_price' => '',
-            'shipping_region' => '',
-        );
+    private function process_attributes_for_shipping_tax( $atts )
+    {
+        $shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
+        $tax_attr      = array( 'tax_country', 'tax_region', 'tax_rate', 'tax_ship' );
 
-        $tax_attr = array('tax_country', 'tax_region', 'tax_rate', 'tax_ship');
-        $default_tax_values = array(
-            'tax_country' => '',
-            'tax_ship' => '',
-            'tax_rate' => '',
-            'tax_region' => '',
-        );
-
-        foreach ($atts as $key => $value) {
-            if(in_array($key, $shipping_attr)) {
-                $atts['shipping'][$key] = $value;
-                unset($atts[$key]);
+        foreach( $atts as $key => $value ) {
+            if( in_array( $key, $shipping_attr ) ) {
+                $atts[ 'shipping' ][ $key ] = is_array( $value ) && isset( $value[ 0 ] ) ? $value[ 0 ] : $value;
+                unset( $atts[ $key ] );
             }
-
-            if(in_array($key, $tax_attr)) {
-                $atts['tax'][$key] = $value;
-                unset($atts[$key]);
+            if( in_array( $key, $tax_attr ) ) {
+                $atts[ 'tax' ][ $key ] = is_array( $value ) &&  isset( $value[ 0 ] ) ? $value[ 0 ] : $value;
+                unset( $atts[ $key ] );
             }
-        }
-        if(array_key_exists('shipping', $atts)) {
-            $atts['shipping'] = $default_shipping_values;
-        }
-        if(array_key_exists('tax', $atts)) {
-            $atts['tax'] = $default_tax_values;
         }
         return $atts;
     }

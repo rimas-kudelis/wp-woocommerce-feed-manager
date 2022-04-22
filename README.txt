@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.9
 Requires PHP: 7.0
-Stable tag:  7.1.1
+Stable tag:  7.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -707,8 +707,26 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.2.0 (2022-04-21) =
+* Added: Rollback option added for the Free version
+* Added: Include variation images in the feed attribute value added
+* Added: Five more Mirakl custom attributes added to the Mirakl merchant template
+* Fixed: Facebook shipping attributes bug fixed
+* Fixed: Bing Text File Delimiter White Space issue fixed
+* Fixed: Product attribute and variation attribute issue fixed
+* Fixed: Parent products are included in the Idealo feed when the option is set as no issue fixed
+* Fixed: Product Filter is not working when the same condition is used twice issue fixed
+* Fixed: Schedule fetch missing ID issue fixed
+* Fixed: Static Shipping price showing empty result in XML, array for CSV issue fixed
+* Fixed: Facebook item_group_id still showing default value when the attribute value is changed issue fixed
+* Fixed: Product Feed Manager parameter issue fixed
+* Fixed: Library function conflict with rankmath, Google placetopay, updraftplus issue fixed
+* Fixed: WooCommerce multicurrency plugin compatibility issue fixed
+
+
 = 7.1.1 (2022-02-23) =
 * Added: Custom feed schedule option to  auto-generate feed
+
 
 = 7.1.0 (2022-02-11) =
 * Added: WPFM Custom fields on the frontend feature added

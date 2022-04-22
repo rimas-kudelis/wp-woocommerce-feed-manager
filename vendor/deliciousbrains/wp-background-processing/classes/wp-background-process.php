@@ -318,7 +318,6 @@ abstract class WP_Background_Process extends WP_Async_Request {
 			} else {
 				$this->delete( $batch->key );
 			}
-
 		} while ( ! $this->time_exceeded() && ! $this->memory_exceeded() && ! $this->is_queue_empty() );
 
 		$this->unlock_process();

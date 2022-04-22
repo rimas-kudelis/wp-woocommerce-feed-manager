@@ -74,6 +74,32 @@
 			</ul>
 		</div>
 
+		<div class="<?php echo $this->prefix . 'include_zero_price_products';?> ">
+			<label for="<?php echo $this->prefix . 'include_zero_price_products';?>">
+				<?php _e('Include Product with No Price', 'rex-product-feed')?>
+				<span class="rex_feed-tooltip">
+                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
+                    <p><?php _e( 'This option will include/exclude products with no regular price set or with regular price zero (0)', 'rex-product-feed' ); ?></p>
+                </span>
+			</label>
+			<ul id="<?php echo $this->prefix . 'include_zero_price_products';?>">
+				<?php
+				$saved_value = get_post_meta( get_the_ID(), 'rex_feed_include_zero_price_products', true );
+				$saved_value = $saved_value !== '' ? $saved_value : 'yes';
+				$checked_yes = $saved_value === 'yes' ? ' checked="checked"' : '';
+				$checked_no  = $saved_value === 'no' ? ' checked="checked"' : '';
+				echo '<li>';
+				echo '<input type="radio" name="' . $this->prefix . 'include_zero_price_products' . '" value="yes" id="'. $this->prefix . 'include_zero_price_products2' .'" ' . $checked_yes .'>';
+				echo '<label for="'. $this->prefix . 'include_zero_price_products2' .'">'.__('Yes', 'rex-product-feed').'</label>';
+				echo '</li>';
+				echo '<li>';
+				echo '<input type="radio" name="' . $this->prefix . 'include_zero_price_products' . '" value="no" id="'. $this->prefix . 'include_zero_price_products1' .'" ' . $checked_no .'>';
+				echo '<label for="'. $this->prefix . 'include_zero_price_products1' .'">'.__('No', 'rex-product-feed').'</label>';
+				echo '</li>';
+				?>
+			</ul>
+		</div>
+
 		<div class="<?php echo $this->prefix . 'variable_product';?> ">
 			<label for="<?php echo $this->prefix . 'variable_product';?>">
 				<?php _e('Include Variable Parent Product (Without Variations)', 'rex-product-feed')?>

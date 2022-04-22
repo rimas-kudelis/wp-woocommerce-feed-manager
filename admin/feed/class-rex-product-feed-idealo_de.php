@@ -88,25 +88,36 @@ class Rex_Product_Feed_Idealo_de extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
+            if( !$this->include_zero_priced ) {
+                $product_price = rex_feed_get_product_price($product);
+                if( 0 == $product_price || '' == $product_price ) {
+                    continue;
+                }
+            }
+
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-                $variable_parent[] = $productId;
-                $variable_product = new WC_Product_Variable($productId);
-                $this->add_to_feed( $variable_product, $product_meta_keys );
-
-                if ( $this->exclude_hidden_products ) {
-                    $variations = $product->get_visible_children();
-                }else {
-                    $variations = $product->get_children();
+                if( $this->variable_product ) {
+                    $variable_parent[] = $productId;
+                    $variable_product = new WC_Product_Variable($productId);
+                    $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
-                if( $variations ) {
-                    foreach ($variations as $variation) {
-                        $product = wc_get_product($variation);
 
-                        if($this->variations) {
-                            $variation_products[] = $variation;
-                            $variation_product = wc_get_product( $variation );
-                            $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' ) {
+                    if ( $this->exclude_hidden_products ) {
+                        $variations = $product->get_visible_children();
+                    }else {
+                        $variations = $product->get_children();
+                    }
+                    if( $variations ) {
+                        foreach ($variations as $variation) {
+                            $product = wc_get_product($variation);
+
+                            if($this->variations) {
+                                $variation_products[] = $variation;
+                                $variation_product = wc_get_product( $variation );
+                                $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
+                            }
                         }
                     }
                 }
@@ -149,7 +160,7 @@ class Rex_Product_Feed_Idealo_de extends Rex_Product_Feed_Abstract_Generator {
     private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
 
-        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+        if( ( $this->rex_feed_skip_product && is_array( $attributes ) && !empty( $attributes ) && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
             $item = Idealo_de::createItem();
 
             foreach ($attributes as $key => $value) {

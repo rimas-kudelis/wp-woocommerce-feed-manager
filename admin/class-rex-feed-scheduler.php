@@ -220,6 +220,7 @@ class Rex_Feed_Scheduler {
 		$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
         $skip_row                = $skip_row === 'yes' ? true : false;
 		$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
+        $include_zero_price_products          = get_post_meta( $feed_id, 'rex_feed_include_zero_price_products', true );
 
         if( apply_filters( 'wpfm_is_premium', false ) ) {
             $feed_rules = get_post_meta( $feed_id, 'rex_feed_feed_config_rules', true );
@@ -240,42 +241,43 @@ class Rex_Feed_Scheduler {
 			}
 		}
 
-		return array(
-			'merchant'                => $merchant,
-			'feed_format'             => $feed_format,
-			'feed_config'             => $feed_config,
-			'append_variations'       => $append_variations,
-			'info'                    => array(
-				'post_id'        => $feed_id,
-				'title'          => get_the_title( $feed_id ),
-				'desc'           => get_the_title( $feed_id ),
-				'total_batch'    => $total_batches,
-				'batch'          => $current_batch,
-				'per_page'       => $per_batch,
-				'offset'         => $offset,
-				'products_scope' => $product_scope,
-				'cats'           => $terms_array,
-				'tags'           => $terms_array,
-			),
-			'feed_filter'             => $feed_filter,
-			'feed_rules'              => $feed_rules,
-			'product_condition'       => $product_condition,
-			'include_variations'      => $include_variations,
-			'include_out_of_stock'    => $include_out_of_stock,
-			'variable_product'        => $variable_product,
-			'parent_product'          => $parent_product,
-			'exclude_hidden_products' => $exclude_hidden_products,
-			'wpml_language'           => $wpml,
-			'wcml_currency'           => $wcml_currency,
-			'wcml'                    => $wcml,
-			'analytics'               => $analytics,
-			'analytics_params'        => $analytics_params,
-			'aelia_currency'          => $aelia_currency,
-			'wmc_currency'            => $wmc_currency,
-			'skip_product'            => $skip_product,
-			'skip_row'                => $skip_row,
-			'feed_separator'          => $feed_separator
-		);
+        return array(
+            'merchant'                    => $merchant,
+            'feed_format'                 => $feed_format,
+            'feed_config'                 => $feed_config,
+            'append_variations'           => $append_variations,
+            'info'                        => array(
+                'post_id'        => $feed_id,
+                'title'          => get_the_title( $feed_id ),
+                'desc'           => get_the_title( $feed_id ),
+                'total_batch'    => $total_batches,
+                'batch'          => $current_batch,
+                'per_page'       => $per_batch,
+                'offset'         => $offset,
+                'products_scope' => $product_scope,
+                'cats'           => $terms_array,
+                'tags'           => $terms_array,
+            ),
+            'feed_filter'                 => $feed_filter,
+            'feed_rules'                  => $feed_rules,
+            'product_condition'           => $product_condition,
+            'include_variations'          => $include_variations,
+            'include_out_of_stock'        => $include_out_of_stock,
+            'include_zero_price_products' => $include_zero_price_products,
+            'variable_product'            => $variable_product,
+            'parent_product'              => $parent_product,
+            'exclude_hidden_products'     => $exclude_hidden_products,
+            'wpml_language'               => $wpml,
+            'wcml_currency'               => $wcml_currency,
+            'wcml'                        => $wcml,
+            'analytics'                   => $analytics,
+            'analytics_params'            => $analytics_params,
+            'aelia_currency'              => $aelia_currency,
+            'wmc_currency'                => $wmc_currency,
+            'skip_product'                => $skip_product,
+            'skip_row'                    => $skip_row,
+            'feed_separator'              => $feed_separator
+        );
 	}
 
 

@@ -1,5 +1,5 @@
 <?php
-
+use RexFeed\Google_Client;
 
 class Rex_Google_Merchant_Settings_Api {
 
@@ -15,6 +15,15 @@ class Rex_Google_Merchant_Settings_Api {
 
     protected static $_instance = null;
 
+    public function __construct(){
+        self::$client_id        = get_option('rex_google_client_id') ? get_option('rex_google_client_id') : '';
+        self::$client_secret    = get_option('rex_google_client_secret') ? get_option('rex_google_client_secret') : '';
+        self::$merchant_id      = get_option('rex_google_merchant_id') ? get_option('rex_google_merchant_id') : '';
+    }
+
+    /**
+     * @return Rex_Google_Merchant_Settings_Api|null
+     */
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
@@ -22,16 +31,12 @@ class Rex_Google_Merchant_Settings_Api {
         return self::$_instance;
     }
 
-    public function __construct(){
-        self::$client_id        = get_option('rex_google_client_id') ? get_option('rex_google_client_id') : '';
-        self::$client_secret    = get_option('rex_google_client_secret') ? get_option('rex_google_client_secret') : '';
-        self::$merchant_id      = get_option('rex_google_merchant_id') ? get_option('rex_google_merchant_id') : '';
-    }
-
-
+    /**
+     * @return Google_Client
+     */
     public function init_client() {
         $redirect_uri = admin_url( 'admin.php?page=merchant_settings' );
-        $this->client = new Google_Client();
+        $this->client = self::get_client();
         $this->client->setClientId(self::$client_id);
         $this->client->setClientSecret(self::$client_secret);
         $this->client->setRedirectUri($redirect_uri);
@@ -39,16 +44,23 @@ class Rex_Google_Merchant_Settings_Api {
         return $this->client;
     }
 
+    /**
+     * @return Google_Client
+     */
     public static function get_client() {
-        $client = new Google_Client();
-        return $client;
+        return new Google_Client();
     }
 
+    /**
+     * @return false|mixed|void
+     */
     public function get_access_token() {
-        $access_token = get_option('rex_google_access_token');
-        return $access_token;
+        return get_option('rex_google_access_token');
     }
 
+    /**
+     * @return bool
+     */
     public function is_authenticate() {
         $access_token = get_option('rex_google_access_token');
 
@@ -80,7 +92,9 @@ class Rex_Google_Merchant_Settings_Api {
         return true;
     }
 
-
+    /**
+     * @return string
+     */
     public function get_access_token_html() {
         $client = self::get_client();
         $redirect_uri = admin_url( 'admin.php?page=merchant_settings' );
@@ -107,6 +121,9 @@ class Rex_Google_Merchant_Settings_Api {
         return $html;
     }
 
+    /**
+     * @return string
+     */
     public function authorization_success_html() {
         return '<div id="card-alert" class="single-merchant-area authorized">
                   <div class="single-merchant-block">
@@ -116,6 +133,10 @@ class Rex_Google_Merchant_Settings_Api {
                 </div>';
     }
 
+    /**
+     * @param $payload
+     * @return string[]
+     */
     public static function save_settings($payload) {
 
         if($payload['merchant_settings']) {
@@ -146,9 +167,12 @@ class Rex_Google_Merchant_Settings_Api {
         );
     }
 
+    /**
+     * @param $code
+     */
     public function save_access_token($code) {
         $redirect_uri = admin_url( 'admin.php?page=merchant_settings' );
-        $client = new Google_Client();
+        $client = self::get_client();
         $client->setClientId(self::$client_id);
         $client->setClientSecret(self::$client_secret);
         $client->setRedirectUri($redirect_uri);
@@ -162,7 +186,10 @@ class Rex_Google_Merchant_Settings_Api {
         }
     }
 
-
+    /**
+     * @param $feed_id
+     * @return bool
+     */
     public function feed_exists($feed_id) {
         $client = $this->init_client();
         $service = new Google_Service_ShoppingContent($client);
@@ -177,6 +204,4 @@ class Rex_Google_Merchant_Settings_Api {
         }
         return false;
     }
-
-
 }

@@ -29,8 +29,8 @@ else {
 $wpfm_fb_pixel_enabled = get_option( 'wpfm_fb_pixel_enabled', 'no' );
 $wpfm_fb_pixel_data    = get_option( 'wpfm_fb_pixel_value' );
 $wpfm_enable_log       = get_option( 'wpfm_enable_log' );
-$custom_fields         = get_option( 'wpfm_product_custom_fields_frontend', array() );
 $pro_url               = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
+$rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
 ?>
 
 <div class="columns">
@@ -617,61 +617,7 @@ $pro_url               = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme
                                 </div>
                             </div>
 
-                            <div class="single-merchant wpfm-custom-field-frontend <?php if( $custom_field === 'no' ) echo 'is-hidden'; ?>">
-                                <span class="title"><?php echo __('Show WPFM Custom fields in Front-end [Single Product Page]', 'rex-product-feed'); ?></span>
-                                <form id="wpfm-frontend-fields" class="wpfm-frontend-fields">
-                                    <div class="wpfm-custom-fields">
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_brand" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="brand" <?php if( in_array( 'brand', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="brand"><?php echo __('Brand', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_gtin" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="gtin" <?php if( in_array( 'gtin', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="gtin"><?php echo __('GTIN', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_mpn" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="mpn" <?php if( in_array( 'mpn', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="mpn"><?php echo __('MPN', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_upc" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="upc" <?php if( in_array( 'upc', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="upc"><?php echo __('UPC', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_ean" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="ean" <?php if( in_array( 'ean', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="ean"><?php echo __('EAN', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_jan" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="jan" <?php if( in_array( 'jan', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="jan"><?php echo __('JAN', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_isbn" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="itf" <?php if( in_array( 'itf', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="isbn"><?php echo __('ISBN', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_itf" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="itf" <?php if( in_array( 'itf', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="itf"><?php echo __('ITF14', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_offer_price" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="offer_price" <?php if( in_array( 'offer_price', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="offer-price"><?php echo __('Offer Price', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_effective_date" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="offer_effective_date" <?php if( in_array( 'offer_effective_date', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="effective-date"><?php echo __('Effective Date', 'rex-product-feed'); ?></span>
-                                        </div>
-                                        <div class="single-meta-field">
-                                            <input id="wpfm_product_additional_info" type="checkbox" name="wpfm_product_custom_fields_frontend[]" value="additional_info" <?php if( in_array( 'additional_info', $custom_fields ) ) echo 'checked';?>>
-                                            <span class="additional-info"><?php echo __('Additional Info', 'rex-product-feed'); ?></span>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="save-wpfm-fields-show">
-                                        <span>save</span>
-                                        <i class="fa fa-spinner fa-pulse fa-fw"></i>
-                                    </button>
-                                </form>
-                            </div>
+                            <?php do_action( 'rex_feed_after_upi_enable_field' );?>
 
                             <div class="single-merchant increase-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
                                 <?php if (!$is_premium_activated) { ?>
@@ -765,6 +711,27 @@ $pro_url               = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme
                                     <button id="wpfm-purge-cache" class="wpfm-purge-cache"><?php echo __('Purge Cache', 'rex-product-feed'); ?>
                                         <i class="fa fa-spinner fa-pulse fa-fw"></i>
                                     </button>
+                                </div>
+                            </div>
+
+                            <div class="single-merchant detailed-product rex-feed-rollback">
+                                <span class="title"><?php echo __('Rollback to Older Version', 'rex-product-feed'); ?></span>
+                                <div class="wpfm-dropdown">
+                                    <select id="wpfm_rollback_options" name="wpfm_rollback_options">
+                                        <?php
+                                        foreach ( $rollback_versions as $version ) {
+                                            echo "<option value='{$version}'>$version</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                    <?php
+                                    echo sprintf(
+                                        '<a data-placeholder-text="' . esc_html__( 'Reinstall', 'rex-product-feed' ) . ' v{VERSION}" href="#" data-placeholder-url="%s" class="rex-feed-button-spinner rex-feed-rollback-button btn-default">%s</a>',
+                                        wp_nonce_url( admin_url( 'admin-post.php?action=rex_feed_rollback&version=VERSION' ), 'rex_feed_rollback' ),
+                                        __( 'Reinstall', 'rex-product-feed' )
+                                    );
+                                    ?>
+                                    <span class="helper-text"><?php _e( '<b>Warning:</b> Please backup your database before making the rollback.', 'rex-product-feed' ); ?></span>
                                 </div>
                             </div>
                         </div>

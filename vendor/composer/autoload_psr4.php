@@ -6,19 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'phpseclib\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
-    'RexGuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
-    'RexGuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
-    'RexGuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
-    'RexGoogle\\Auth\\' => array($vendorDir . '/google/auth/src'),
-    'RexGoogle\\' => array($vendorDir . '/google/apiclient/src'),
-    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
-    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
-    'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
-    'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'PhilipNewcomer\\WP_Ajax_Helper\\' => array($vendorDir . '/philipnewcomer/wp-ajax-helper/src/components'),
-    'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
-    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
     'Appsero\\' => array($vendorDir . '/appsero/client/src'),
 );

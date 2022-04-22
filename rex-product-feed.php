@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Product Feed Manager for WooCommerce helps you to sell more by uploading product feed to Google shopping, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
- * Version:           7.1.1
+ * Version:           7.2.0
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -39,20 +39,47 @@
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
-
-define('WPFM__FILE__', __FILE__ );
-define('WPFM_PLUGIN_BASE', plugin_basename( WPFM__FILE__ ) );
-define("WPFM_PLUGIN_DIR_URL", plugin_dir_url(__FILE__));
-define("WPFM_PLUGIN_DIR_PATH", plugin_dir_path( __FILE__ ));
-define("WPFM_PLUGIN_ASSETS_FOLDER", WPFM_PLUGIN_DIR_URL.'admin/assets/');
-define("WPFM_PLUGIN_ASSETS_FOLDER_PATH", WPFM_PLUGIN_DIR_PATH.'admin/assets/');
-define('WPFM_PRO_REQUIRED_VERSION', '6.0.0' );
-define('WPFM_ETSY_REQUIRED_VERSION', '1.0.1' );
-define('WPFM_PRO', '/best-woocommerce-feed-pro/rex-product-feed-pro.php' );
-define('WPFM_ETSY', '/etsy-integration/etsy-integration.php' );
-
+if( !defined( 'WPFM__FILE__' ) ) {
+    define( 'WPFM__FILE__', __FILE__ );
+}
+if( !defined( 'WPFM_PLUGIN_BASE' ) && defined( 'WPFM__FILE__' ) ) {
+    define( 'WPFM_PLUGIN_BASE', plugin_basename( WPFM__FILE__ ) );
+}
+if( !defined( 'WPFM_PLUGIN_DIR_URL' ) && defined( 'WPFM__FILE__' ) ) {
+    define( "WPFM_PLUGIN_DIR_URL", plugin_dir_url( WPFM__FILE__ ) );
+}
+if( !defined( 'WPFM_PLUGIN_DIR_PATH' ) && defined( 'WPFM__FILE__' ) ) {
+    define( "WPFM_PLUGIN_DIR_PATH", plugin_dir_path( WPFM__FILE__ ) );
+}
+if( !defined( 'WPFM_PLUGIN_ASSETS_FOLDER' ) && defined( 'WPFM_PLUGIN_DIR_URL' ) ) {
+    define( "WPFM_PLUGIN_ASSETS_FOLDER", WPFM_PLUGIN_DIR_URL . 'admin/assets/' );
+}
+if( !defined( 'WPFM_PLUGIN_ASSETS_FOLDER_PATH' ) && defined( 'WPFM_PLUGIN_DIR_PATH' ) ) {
+    define( "WPFM_PLUGIN_ASSETS_FOLDER_PATH", WPFM_PLUGIN_DIR_PATH . 'admin/assets/' );
+}
+if( !defined( 'WPFM_PRO_REQUIRED_VERSION' ) ) {
+    define( 'WPFM_PRO_REQUIRED_VERSION', '6.0.0' );
+}
+if( !defined( 'WPFM_ETSY_REQUIRED_VERSION' ) ) {
+    define( 'WPFM_ETSY_REQUIRED_VERSION', '1.0.1' );
+}
+if( !defined( 'WPFM_PRO' ) ) {
+    define( 'WPFM_PRO', '/best-woocommerce-feed-pro/rex-product-feed-pro.php' );
+}
+if( !defined( 'WPFM_ETSY' ) ) {
+    define( 'WPFM_ETSY', '/etsy-integration/etsy-integration.php' );
+}
 if( !defined( 'WPFM_FREE_MAX_PRODUCT_LIMIT' ) ) {
     define( 'WPFM_FREE_MAX_PRODUCT_LIMIT', 200 );
+}
+if( !defined( 'WPFM_SLUG' ) ) {
+    define( 'WPFM_SLUG', 'best-woocommerce-feed' );
+}
+if( !defined( 'WPFM_VERSION' ) ) {
+    define( 'WPFM_VERSION', '7.1.1' );
+}
+if( !defined( 'WPFM_BASE' ) && defined( 'WPFM__FILE__' ) ) {
+    define( 'WPFM_BASE', plugin_basename( WPFM__FILE__ ) );
 }
 
 

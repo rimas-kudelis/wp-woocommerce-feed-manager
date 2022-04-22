@@ -237,11 +237,11 @@ class Rex_Product_Filter {
      * @param $name
      * @param string $selected
      */
-    public function printSelectDropdown( $key, $name, $name_prefix = 'ff', $selected = '', $class = '' ){
+    public function printSelectDropdown( $key, $name, $name_prefix = 'ff', $selected = '', $class = '', $style = '' ){
 
         if ( $name === 'if' ) {
             $items = $this->product_meta_keys;
-        }elseif ( $name === 'rules_if' || $name === 'rules_then' ) {
+        }elseif ( $name === 'rules_if' || $name === 'rules_then' || $name === 'rules_replace' ) {
             $items = $this->product_rule_meta_keys;
         }elseif ( $name === 'condition' || $name === 'rules_condition' ) {
             $items = $this->condition;
@@ -251,7 +251,7 @@ class Rex_Product_Filter {
             return;
         }
 
-        echo '<select class="' .esc_attr( $class ). '" name="'.$name_prefix.'['.$key.'][' . esc_attr( $name ) . ']" >';
+        echo '<select class="' .esc_attr( $class ). '" name="'.$name_prefix.'['.$key.'][' . esc_attr( $name ) . ']" style="' . esc_attr( $style ) . '">';
         if($name === 'rules')
             echo "<option value='or'>Please Select</option>";
         else
@@ -287,8 +287,8 @@ class Rex_Product_Filter {
      * @param string $name
      * @param string $val
      */
-    public function printInput( $key, $name, $name_prefix = 'ff', $val = '', $class = '' ){
-        echo '<input type="text" class="'. esc_attr( $class ) .'" name="'.$name_prefix.'['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '">';
+    public function printInput( $key, $name, $name_prefix = 'ff', $val = '', $class = '', $style = '' ){
+        echo '<input type="text" class="'. esc_attr( $class ) .'" name="'.$name_prefix.'['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '" style="' . esc_attr( $style ) . '">';
     }
 
 

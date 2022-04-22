@@ -2169,9 +2169,27 @@ a,
 .rex-onboarding .wpfm-dropdown {
   display: flex;
 }
-.rex-onboarding form#wpfm-transient-settings {
+.rex-onboarding form#wpfm-transient-settings,
+.rex-onboarding .rex-feed-rollback .wpfm-dropdown{
   display: flex;
   flex-wrap: wrap;
+}
+.rex-onboarding select#wpfm_cache_ttl,
+.rex-onboarding select#wpfm_rollback_options {
+  order: 1;
+  width: 47%;
+}
+.rex-onboarding .rex-feed-rollback .wpfm-dropdown .rex-feed-rollback-button {
+  order: 2;
+  width: 50%;
+  color: white;
+  margin-left: 10px;
+  border-radius: 4px;
+  text-transform: unset;
+}
+.rex-onboarding .rex-feed-rollback .wpfm-dropdown span.helper-text {
+  order: 3;
+  color: red;
 }
 .rex-onboarding select#wpfm_cache_ttl {
   order: 1;
@@ -2796,7 +2814,7 @@ a,
 #rex_feed_config_heading #config-table tbody tr td select {
   max-width: 190px;
 }
-#rex_feed_config_heading #config-table tbody tr td:nth-child(5) input, #rex_feed_config_heading #config-table tbody tr td:nth-child(4) input {
+#rex_feed_config_heading #config-table tbody tr td:nth-child(6) input, #rex_feed_config_heading #config-table tbody tr td:nth-child(4) input {
   max-width: 71px;
 }
 #rex_feed_config_heading #config-table tbody tr td:nth-child(7) input {
@@ -3388,6 +3406,7 @@ a,
   border-color: #DFDBE7;
   border-radius: 6px;
   background-color: unset;
+  vertical-align: middle;
 }
 #rex-feed-config-filter table tbody tr td select,
 #rex-feed-config-rules table tbody tr td select{
@@ -3403,11 +3422,17 @@ a,
 }
 #rex-feed-config-filter table tbody tr td:nth-child(3) input,
 #rex-feed-config-rules table tbody tr td:nth-child(3) input,
-#rex-feed-config-rules table tbody tr td:nth-child(5) input,
+#rex-feed-config-rules table tbody tr td:nth-child(6) input,
 #rex-feed-config-rules table tbody tr td:nth-child(1) input {
   background: #F7F7FA;
   width: 100%;
   min-height: 38px;
+  border-color: #DFDBE7;
+}
+#rex-feed-config-rules table tbody tr td .rex-feed-rule-static {
+  width: unset;
+  min-height: unset;
+  background: #F7F7FA;
   border-color: #DFDBE7;
 }
 #rex-feed-config-filter table tbody tr td:first-child,

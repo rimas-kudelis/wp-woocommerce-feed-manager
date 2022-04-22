@@ -21,6 +21,8 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
+use WPFunnels\Rollback;
+
 /**
  * Class Rex_Product_Feed_Admin
  */
@@ -1271,5 +1273,34 @@ class Rex_Product_Feed_Admin {
                 unlink( $file );
             }
         }
+    }
+
+    public function post_rex_feed_rollback() {
+        check_admin_referer( 'rex_feed_rollback' );
+
+        $rollback_versions = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
+        if ( empty( $_GET['version'] ) || ! in_array( $_GET['version'], $rollback_versions ) ) {
+            wp_die( esc_html__( 'Error occurred, The version selected is invalid. Try selecting different version.', 'rex-product-feed' ) );
+        }
+
+        $plugin_slug = WPFM_SLUG;
+        $plugin_version = $_GET['version'];
+
+        $rollback = new Rex_Feed_Rollback(
+            [
+                'version' => $plugin_version,
+                'plugin_name' => WPFM_BASE,
+                'plugin_slug' => $plugin_slug,
+                'package_url' => sprintf( 'https://downloads.wordpress.org/plugin/%s.%s.zip', $plugin_slug, $plugin_version ),
+            ]
+        );
+
+        $rollback->run();
+
+        wp_die(
+            '', esc_html__( 'Rollback to Previous Version', 'rex-product-feed' ), [
+                'response' => 200,
+            ]
+        );
     }
 }

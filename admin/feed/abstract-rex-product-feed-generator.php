@@ -289,6 +289,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected $include_out_of_stock;
 
+    protected $include_zero_priced;
+
     protected $feed_string_footer = '';
 
     protected $item_wrapper = '';
@@ -329,6 +331,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 	        $this->variable_product        = $config[ 'variable_product' ];
 	        $this->append_variation        = $config[ 'append_variations' ];
 	        $this->include_out_of_stock    = isset($config[ 'include_out_of_stock' ]) && $config[ 'include_out_of_stock' ] === 'yes' ? true : false;
+	        $this->include_zero_priced     = isset($config[ 'include_zero_price_products' ]) && $config[ 'include_zero_price_products' ] === 'yes' ? true : false;
 	        $this->exclude_hidden_products = $config[ 'exclude_hidden_products' ];
 	        $this->feed_separator          = isset( $config[ 'feed_separator' ] ) ? $config[ 'feed_separator' ] : '';
 	        $this->rex_feed_skip_product   = isset( $config[ 'skip_product' ] ) ? $config[ 'skip_product' ] : false;
@@ -341,8 +344,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
 	        $this->product_condition       = $config[ 'product_condition' ];
 	        $this->aelia_currency          = isset( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : 'USD';
 
-            if( isset( $feed_rules[ 'wmc_currency' ] ) ) {
-                $this->wmc_currency   = $feed_rules[ 'wmc_currency' ];
+            if( isset( $config[ 'wmc_currency' ] ) ) {
+                $this->wmc_currency   = $config[ 'wmc_currency' ];
             }
             elseif( function_exists( 'get_woocommerce_currency' ) ) {
                 $this->wmc_currency   = get_woocommerce_currency();
@@ -659,6 +662,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $rex_feed_skip_product    = $feed_rules[ 'rex_feed_skip_product' ];
         $rex_feed_skip_row        = $feed_rules[ 'rex_feed_skip_row' ];
         $include_out_of_stock     = $feed_rules[ 'rex_feed_include_out_of_stock' ];
+        $include_zero_priced      = $feed_rules[ 'rex_feed_include_zero_price_products' ];
         $this->feed_separator     = isset( $feed_rules[ 'rex_feed_separator' ] ) ? $feed_rules[ 'rex_feed_separator' ] : '';
         $this->aelia_currency     = isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ? $feed_rules[ 'rex_feed_aelia_currency' ] : 'USD';
 
@@ -733,6 +737,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
         else {
             $this->rex_feed_skip_row = false;
         }
+
+        if ( $include_zero_priced == 'yes' ) {
+            $this->include_zero_priced = true;
+        }
+        else {
+            $this->include_zero_priced = false;
+        }
     }
 
     /**
@@ -778,6 +789,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         if ( isset( $feed_rules[ 'rex_feed_hidden_products' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_hidden_products', $feed_rules[ 'rex_feed_hidden_products' ] );
         }
+
         if ( isset( $feed_rules[ 'rex_feed_cats' ] ) ) {
             $cats = array();
             foreach ( $feed_rules[ 'rex_feed_cats' ] as $cat ) {
@@ -858,6 +870,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         if ( isset( $feed_rules[ 'rex_feed_skip_row' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_skip_row', $feed_rules[ 'rex_feed_skip_row' ] );
+        }
+        if ( isset( $feed_rules[ 'rex_feed_include_zero_price_products' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_include_zero_price_products', $feed_rules[ 'rex_feed_include_zero_price_products' ] );
         }
     }
 
@@ -1013,7 +1028,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * @param $wp_query
      * @return string
      */
-    function wpfm_post_title_filter( $where, $wp_query )
+    public function wpfm_post_title_filter( $where, $wp_query )
     {
         global $wpdb;
 
@@ -1035,7 +1050,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where            .= ' AND (';
             foreach ( $title_dn_contain as $title ) {
                 $i     = $i + 1;
-                $op    = ( $i > 1 ) ? 'OR' : '';
+                $op    = ( $i > 1 ) ? 'AND' : '';
                 $where .= ' ' . $op . ' ' . $wpdb->posts . '.post_title NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
             }
             $where .= ' )';
@@ -1059,7 +1074,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where            .= ' AND (';
             foreach ( $title_dn_contain as $title ) {
                 $i     = $i + 1;
-                $op    = ( $i > 1 ) ? 'OR' : '';
+                $op    = ( $i > 1 ) ? 'AND' : '';
                 $where .= ' ' . $op . ' ' . $wpdb->posts . '.post_title <> \'' . $wpdb->esc_like( $title ) . '\'';
             }
             $where .= ' )';
@@ -1137,7 +1152,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value NOT like '%" . $wpdb->esc_like( $title ) . "%'" );
                 foreach ( $post_id as $pi ) {
                     $i     = $i + 1;
-                    $op    = ( $i > 1 ) ? 'OR' : '';
+                    $op    = ( $i > 1 ) ? 'AND' : '';
                     $where .= ' ' . $op . ' ' . $wpdb->posts . '.ID = \'' . $pi->post_id . '\'';
                 }
 
@@ -1153,7 +1168,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $post_id = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wpfm_product_brand' AND meta_value like '%" . $wpdb->esc_like( $title ) . "%'" );
                 foreach ( $post_id as $pi ) {
                     $i     = $i + 1;
-                    $op    = ( $i > 1 ) ? 'OR' : '';
+                    $op    = ( $i > 1 ) ? 'AND' : '';
                     $where .= ' ' . $op . ' ' . $wpdb->posts . '.ID != \'' . $pi->post_id . '\'';
                 }
 
@@ -1167,7 +1182,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where            .= ' AND (';
             foreach ( $title_dn_contain as $title ) {
                 $i     = $i + 1;
-                $op    = ( $i > 1 ) ? 'OR' : '';
+                $op    = ( $i > 1 ) ? 'AND' : '';
                 $where .= ' ' . $op . ' ' . $wpdb->posts . '.post_content NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
             }
             $where .= ' )';
@@ -1191,7 +1206,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where            .= ' AND (';
             foreach ( $title_dn_contain as $title ) {
                 $i     = $i + 1;
-                $op    = ( $i > 1 ) ? 'OR' : '';
+                $op    = ( $i > 1 ) ? 'AND' : '';
                 $where .= ' ' . $op . ' ' . $wpdb->posts . '.post_content <> \'' . $wpdb->esc_like( $title ) . '\'';
             }
             $where .= ' )';
@@ -1216,7 +1231,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where            .= ' AND (';
             foreach ( $title_dn_contain as $title ) {
                 $i     = $i + 1;
-                $op    = ( $i > 1 ) ? 'OR' : '';
+                $op    = ( $i > 1 ) ? 'AND' : '';
                 $where .= ' ' . $op . ' ' . $wpdb->posts . '.post_excerpt NOT LIKE \'%' . $wpdb->esc_like( $title ) . '%\'';
             }
             $where .= ' )';
@@ -1240,7 +1255,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where            .= ' AND (';
             foreach ( $title_dn_contain as $title ) {
                 $i     = $i + 1;
-                $op    = ( $i > 1 ) ? 'OR' : '';
+                $op    = ( $i > 1 ) ? 'AND' : '';
                 $where .= ' ' . $op . ' ' . $wpdb->posts . '.post_excerpt <> \'' . $wpdb->esc_like( $title ) . '\'';
             }
             $where .= ' )';
@@ -2287,6 +2302,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->item_wrapper = '<ad>';
                 $this->feed_string_footer .= '</ads>';
             }
+        }elseif ($this->merchant === 'zap_co_il') {
+            $node = $feed->getElementsByTagName("PRODUCT");
+
+            if($this->batch == $this->tbatch) {
+                $this->item_wrapper = '<PRODUCT>';
+                $this->feed_string_footer .= '</PRODUCTS></STORE>';
+            }
         }
         else {
             $node = $feed->getElementsByTagName( "item" );
@@ -2524,5 +2546,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
             return $orgdoc->saveXML();
         }
         return false;
+    }
+
+    /**
+     * Gets the feed format of current feed.
+     * @return mixed|Rex_Product_Feed_Abstract_Generator
+     */
+    public function get_feed_format() {
+        return $this->feed_format;
     }
 }

@@ -89,6 +89,13 @@ class Rex_Product_Feed_Mirakl extends Rex_Product_Feed_Abstract_Generator
 		        }
 	        }
 
+            if( !$this->include_zero_priced ) {
+                $product_price = rex_feed_get_product_price($product);
+                if( 0 == $product_price || '' == $product_price ) {
+                    continue;
+                }
+            }
+
             if ($product->is_type('variable') && $product->has_child()) {
                 if ($this->variable_product) {
                     $variable_parent[] = $productId;
@@ -109,7 +116,7 @@ class Rex_Product_Feed_Mirakl extends Rex_Product_Feed_Abstract_Generator
                                 $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                             }
                         }
-                        
+
                     }
                 }
             }
@@ -307,6 +314,6 @@ class Rex_Product_Feed_Mirakl extends Rex_Product_Feed_Abstract_Generator
     //replace footer of feed
     public function footer_replace()
     {
-        $this->feed = str_replace('</shop>', '', $this->feed);
+        $this->feed = str_replace('</import>', '', $this->feed);
     }
 }

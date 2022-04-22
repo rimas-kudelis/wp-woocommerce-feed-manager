@@ -172,6 +172,7 @@ class Rex_Feed_Attributes
             'thumbnail_image'     => 'Thumbnail Image',
             'all_image'           => 'All Images (comma separated)',
             'all_image_pipe'      => 'All Images (separated by "|")',
+            'variation_img'       => 'Variation Image',
             'image_height'        => 'Height (main image)',
             'image_width'         => 'Width (main image)',
             'encoding_format'     => 'Encoding Format',

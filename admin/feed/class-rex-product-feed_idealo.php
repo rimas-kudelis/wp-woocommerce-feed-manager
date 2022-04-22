@@ -38,7 +38,6 @@ class Rex_Product_Feed_Idealo extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
@@ -49,6 +48,7 @@ class Rex_Product_Feed_Idealo extends Rex_Product_Feed_Abstract_Generator {
         $all_variation = [];
         $all_variation_distinct= [];
         $name='_name';
+
 
         $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
             'total' => 0,
@@ -79,168 +79,61 @@ class Rex_Product_Feed_Idealo extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-	        if ( !$this->include_out_of_stock ) {
-		        if ( !$product->is_in_stock() ) {
-			        continue;
-		        }
-		        elseif ( $product->is_on_backorder() ) {
-			        continue;
-		        }
-	        }
+            if ( !$this->include_out_of_stock ) {
+                if ( !$product->is_in_stock() ) {
+                    continue;
+                }
+                elseif ( $product->is_on_backorder() ) {
+                    continue;
+                }
+            }
+
+            if( !$this->include_zero_priced ) {
+                $product_price = rex_feed_get_product_price($product);
+                if( 0 == $product_price || '' == $product_price ) {
+                    continue;
+                }
+            }
+
 
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-                //get attribute name of variable product
-                $parent_variation = [];
-                $attr_label_name = [];
-                $attr_val_name = [];
-
-                $attribute = $product->get_variation_attributes();
-                foreach ($attribute as $key=>$val){
-                    $parent_variation[] = $key;
-                    $attr_label_name[] = wc_attribute_label( $key );
-
-                    $attr_vall = $product->get_attribute($key);
-                    $attr_val_name[lcfirst($key)] = wc_attribute_label( $attr_vall );
+                if( $this->variable_product ) {
+                    $variable_parent[] = $productId;
+                    $variable_product = new WC_Product_Variable($productId);
+                    $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
 
-                $string_variation = implode("",  $attr_label_name );
-
-                $variable_parent[] = $productId;
-                $variable_product = new WC_Product_Variable($productId);
-                $atts = $this->get_product_data( $variable_product, $product_meta_keys );
-
-                $atts['parent_child'] = 'Parent';
-                $atts['relationship_type'] = '';
-                $atts['variation_theme'] =$string_variation;
-
-                foreach ($parent_variation as $pv){
-                    $all_variation[] = $pv;
-                }
-                $all_variation_distinct=array_unique($all_variation);
-
-                foreach ($all_variation_distinct as $dv){
-                    $attr_label = wc_attribute_label( $dv );
-                    $label_final= $attr_label.$name;
-                    $atts[lcfirst($label_final)] ='';
-                }
-                $intersect_array = array('product_id','title','category','product_URL','image_URL','brand_name',
-                    'manufacturer', 'feed_product_type', 'variation_theme','parent_child');
-                $item = Idealo::createItem();
-                foreach ($atts as $key => $value) {
-                    if(in_array($key, $intersect_array)) {
-	                    if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                    if ( $value != '' ) {
-			                    $item->$key($value); // invoke $key as method of $item object.
-		                    }
-	                    }
-	                    else {
-		                    $item->$key($value); // invoke $key as method of $item object.
-	                    }
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' ) {
+                    if ( $this->exclude_hidden_products ) {
+                        $variations = $product->get_visible_children();
                     }else {
-                        $item->$key(''); // invoke $key as method of $item object.
+                        $variations = $product->get_children();
                     }
-                }
-                if ( $this->exclude_hidden_products ) {
-                    $variations = $product->get_visible_children();
-                }else {
-                    $variations = $product->get_children();
-                }
-                if( $variations ) {
-                    foreach ($variations as $variation) {
-                        $product = wc_get_product($variation);
+                    if( $variations ) {
+                        foreach ($variations as $variation) {
+                            $product = wc_get_product($variation);
 
-                        if($this->variations) {
-                            $variation_products[] = $variation;
-                            $item = Idealo::createItem();
-                            $variation_product = wc_get_product( $variation );
-                            $atts = $this->get_product_data( $variation_product, $product_meta_keys );
-                            $atts['parent_child'] = 'Enfant';
-                            $atts['relationship_type'] = 'Variation';
-                            $atts['variation_theme'] =$string_variation;
-
-                            foreach ($all_variation_distinct as $dv){
-                                $attr_label = wc_attribute_label( $dv );//new
-                                $label_final= $attr_label.$name;
-                                $atts[lcfirst($label_final)] ='';
-                                $dv= lcfirst($dv);
-                                    $attr_val = $product->get_attribute($dv);
-                                    if(!empty($attr_val)){
-                                        $attr_label = wc_attribute_label( $dv );
-                                        $label_final= $attr_label.$name;
-                                        $atts[lcfirst($label_final)] =$attr_val;
-                                    }else{
-                                        $attr_label = wc_attribute_label( $dv );
-                                        $label_final= $attr_label.$name;
-                                        if(array_key_exists($dv,$attr_val_name)){
-                                            $atts[lcfirst($label_final)] =str_replace('|', ',', $attr_val_name[$dv]);
-                                        }
-                                    }
-                            }
-                            foreach ($atts as $key => $value) {
-	                            if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                            if ( $value != '' ) {
-			                            $item->$key($value); // invoke $key as method of $item object.
-		                            }
-	                            }
-	                            else {
-		                            $item->$key($value); // invoke $key as method of $item object.
-	                            }
+                            if($this->variations) {
+                                $variation_products[] = $variation;
+                                $variation_product = wc_get_product( $variation );
+                                $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                             }
                         }
                     }
                 }
-
             }
 
             if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' ) || $product->is_type( 'woosb' )) {
                 $simple_products[] = $productId;
-                $atts = $this->get_product_data( $product, $product_meta_keys );
-                $atts['parent_child'] = '';
-                $atts['relationship_type'] = '';
-                $atts['variation_theme'] = '';
-                foreach ($all_variation_distinct as $dv){
-                    $attr_label = wc_attribute_label($dv);
-                    $label_final= $attr_label.$name;
-                    $atts[lcfirst($label_final)] ='';
-                }
-                $item = Idealo::createItem();
-                foreach ($atts as $key => $value) {
-	                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-		                if ( $value != '' ) {
-			                $item->$key($value); // invoke $key as method of $item object.
-		                }
-	                }
-	                else {
-		                $item->$key($value); // invoke $key as method of $item object.
-	                }
-                }
+                $this->add_to_feed( $product, $product_meta_keys );
             }
 
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
-		        if ( $product->get_type() === 'variation' ) {
-			        $atts = $this->get_product_data( $product, $product_meta_keys );
-			        $atts['parent_child'] = '';
-			        $atts['relationship_type'] = '';
-			        $atts['variation_theme'] = '';
-			        foreach ($all_variation_distinct as $dv){
-				        $attr_label = wc_attribute_label($dv);
-				        $label_final= $attr_label.$name;
-				        $atts[lcfirst($label_final)] ='';
-			        }
-			        $item = Idealo::createItem();
-			        foreach ($atts as $key => $value) {
-				        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-					        if ( $value != '' ) {
-						        $item->$key($value); // invoke $key as method of $item object.
-					        }
-				        }
-				        else {
-					        $item->$key($value); // invoke $key as method of $item object.
-				        }
-			        }
-		        }
-	        }
-
+                if ( $product->get_type() === 'variation' ) {
+                    $variation_products[] = $productId;
+                    $this->add_to_feed( $product, $product_meta_keys, 'variation' );
+                }
+            }
         }
 
         $total_products = array(
@@ -251,9 +144,36 @@ class Rex_Product_Feed_Idealo extends Rex_Product_Feed_Abstract_Generator {
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
         update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
-	    if ( $this->tbatch === $this->batch ) {
-		    update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
-	    }
+        if ( $this->tbatch === $this->batch ) {
+            update_post_meta( $this->id, 'rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+        }
+    }
+
+
+    /**
+     * Adding items to feed
+     *
+     * @param $product
+     * @param $meta_keys
+     * @param string $product_type
+     */
+    private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
+        $attributes = $this->get_product_data( $product, $meta_keys );
+
+        if( ( $this->rex_feed_skip_product && is_array( $attributes ) && !empty( $attributes ) && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+            $item = Idealo::createItem();
+
+            foreach ($attributes as $key => $value) {
+                if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                    if ( $value != '' ) {
+                        $item->$key($value); // invoke $key as method of $item object.
+                    }
+                }
+                else {
+                    $item->$key($value); // invoke $key as method of $item object.
+                }
+            }
+        }
     }
 
     /**
@@ -261,16 +181,8 @@ class Rex_Product_Feed_Idealo extends Rex_Product_Feed_Abstract_Generator {
      * @return array|bool|string
      */
     public function returnFinalProduct(){
-        if($this->feed_format === 'csv'){
-            return Idealo::asCSVFeeds($this->batch);
-        }elseif ($this->feed_format==='tsv'){
-            return Idealo::asTSVFeeds($this->batch);
-        }elseif ($this->feed_format==='text'){
-            return Idealo::asTextFeeds($this->batch);
-        }
+        return Idealo::asCSVFeeds($this->batch);
     }
 
-    public function footer_replace() {
-
-    }
+    public function footer_replace() {}
 }
