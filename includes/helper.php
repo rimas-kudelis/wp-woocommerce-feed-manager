@@ -27,10 +27,15 @@ if ( ! function_exists( 'wpfm_hierarchical_product_category_tree' ) ) {
                         $map_value = $config[$key]['map-value'];
                     }
                 }
-                echo "<div class='single-category'>";
-                echo "<span class='label'>{$separator}{$cat->name} ({$cat->count})</span>";
-                echo "<div class='input-field'><input class='autocomplete category-suggest' type='text' name='category-{$cat->term_id}' value='{$map_value}' placeholder='Google Merchant Category'></div>";
-                echo "</div>";
+
+
+                ob_start();?>
+                <div class='single-category'>
+                    <span class='label'><?php echo $separator.$cat->name .' ('. $cat->count . ')' ?></span>
+                    <div class='input-field'><input class='autocomplete category-suggest' type='text' name='category-<?php echo $cat->term_id; ?>' value='<?php echo $map_value; ?>' placeholder='Google Merchant Category'/></div>
+                </div>
+                <?php echo ob_get_clean();
+
                 $separator = '';
                 wpfm_hierarchical_product_category_tree( $cat->term_id, $config );
             endforeach;
@@ -1377,16 +1382,22 @@ if ( ! function_exists( 'wpfm_get_merchant_dropdown' ) ) {
 					$groupLabel = 'Others';
 				}
 				$disabled = ( $groupLabel === 'Pro Merchants' && !$is_premium ) ? 'disabled' : '';
-				echo "<optgroup label='$groupLabel' ".$disabled.">";
+                ob_start();?>
+                <optgroup label='<?php echo $groupLabel; ?>' <?php echo $disabled; ?>>
+                <?php echo ob_get_clean();
 			}
 
 			foreach ($group as $key => $item) {
 				$value = $item['name'];
 
 				if ( $selected == $key ) {
-					echo "<option value='$key' selected='selected'>$value</option>";
+                    ob_start();?>
+                        <option value='<?php echo $key; ?>' selected='selected'><?php echo $value; ?></option>
+                    <?php echo ob_get_clean();
 				}else{
-					echo "<option value='$key'>$value</option>";
+				    ob_start();?>
+                        <option value='<?php echo $key; ?>'><?php echo $value; ?></option>
+                    <?php echo ob_get_clean();
 				}
 			}
 

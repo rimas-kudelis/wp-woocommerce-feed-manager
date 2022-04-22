@@ -1248,11 +1248,11 @@ class Rex_Product_Feed_Ajax {
 
         if ( wp_verify_nonce( $nonce, 'rex-wpfm-ajax' ) ) {
             $feed_config = array();
-            $config = isset( $_POST[ 'payload' ][ 'feed_config' ] ) ? $_POST[ 'payload' ][ 'feed_config' ] : '';
+            $config = isset( $_POST[ 'payload' ][ 'feed_config' ] ) ? sanitize_text_field($_POST[ 'payload' ][ 'feed_config' ]) : '';
             parse_str( $config, $feed_config );
             $feed_config = isset( $feed_config[ 'fc' ] ) ? $feed_config[ 'fc' ] : '';
             array_shift( $feed_config );
-            $feed_attr = array_column($feed_config, 'attr');
+            $feed_attr = array_column( $feed_config, 'attr' );
             $required_attr = array('id', 'title', 'description', 'link', 'image_link', 'availability', 'price', 'brand', 'gtin', 'mpn');
             $labels = array
             (

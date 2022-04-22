@@ -28,7 +28,7 @@ class Rex_Product_Metabox
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_filters_section' ) );
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_file_section' ) );
 
-		$post_id   = isset( $_GET[ 'post' ] ) ? $_GET[ 'post' ] : '';
+		$post_id   = isset( $_GET[ 'post' ] ) ? sanitize_text_field($_GET[ 'post' ]) : '';
 		$post_type = $post_id !== '' ? get_post_type( $post_id ) : '';
 
 		if ( $post_type === 'product-feed' ) {
@@ -36,7 +36,7 @@ class Rex_Product_Metabox
         }
 
         if ( $post_type === '' && isset( $_GET[ 'post_type' ] ) ) {
-            $post_type = $_GET[ 'post_type' ];
+            $post_type = sanitize_text_field($_GET[ 'post_type' ]);
         }
         if ( $post_type === 'product-feed' ) {
             $this->rex_feed_new_changes_message();
@@ -57,7 +57,7 @@ class Rex_Product_Metabox
 	 */
 	private function rex_feed_is_google_merchant()
 	{
-		$feed_id = isset( $_GET['post'] ) ? $_GET['post'] : '';
+		$feed_id = isset( $_GET['post'] ) ? sanitize_text_field($_GET['post']) : '';
 		$merchant = get_post_meta( $feed_id, 'rex_feed_merchant', true );
 		return 'google' === $merchant;
 	}

@@ -3,7 +3,7 @@ require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
 
 $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
 
-$page          = isset( $_GET[ 'page' ] ) ? $_GET[ 'page' ] : '';
+$page          = isset( $_GET[ 'page' ] ) ? sanitize_text_field($_GET[ 'page' ]) : '';
 $html          = '';
 $disable       = '';
 $client_id     = $rex_google_merchant::$client_id;
@@ -13,7 +13,7 @@ $redirect_uri  = admin_url( 'admin.php?page=merchant_settings' );
 
 if ( isset( $_GET[ 'code' ] ) && $page === 'merchant_settings' ) {
 	$code = sanitize_text_field( $_GET[ 'code' ] );
-	$rex_google_merchant->save_access_token( $_GET[ 'code' ] );
+	$rex_google_merchant->save_access_token( sanitize_text_field($_GET[ 'code' ]) );
 }
 
 if ( !( $rex_google_merchant->is_authenticate() ) ) {

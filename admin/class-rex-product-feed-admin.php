@@ -384,7 +384,7 @@ class Rex_Product_Feed_Admin {
           wp_die('No post to duplicate has been supplied!');
         }
 
-        if (!isset($_GET['duplicate_nonce']) || !wp_verify_nonce($_GET['duplicate_nonce'], basename(__FILE__)))
+        if (!isset($_GET['duplicate_nonce']) || !wp_verify_nonce(sanitize_text_field($_GET['duplicate_nonce']), basename(__FILE__)))
             return;
 
         $post_id = (isset($_GET['post']) ? absint($_GET['post']) : absint($_POST['post']));
@@ -1304,7 +1304,7 @@ class Rex_Product_Feed_Admin {
         }
 
         $plugin_slug = WPFM_SLUG;
-        $plugin_version = $_GET['version'];
+        $plugin_version = sanitize_text_field($_GET['version']);
 
         $rollback = new Rex_Feed_Rollback(
             [
