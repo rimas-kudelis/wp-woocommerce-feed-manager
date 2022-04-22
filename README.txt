@@ -1,7 +1,7 @@
-=== Product Feed Manager - WooCommerce to Google Shopping, Facebook, Yandex, Etsy & More ===
+=== Product Feed Manager - WooCommerce to Google Shopping, Idealo, Social Catalogs, Vivino & More ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay,facebook ads,facebook feed,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuten,skroutz, skroutz.gr, walmart,google shopping feed, facebook catalog, feed, fruugo, bing image feed, bing shopping, bonanza, bestprice, bestprice.gr, yml, yandex, market, yandex market, yandex turbo, export, yandex feed, csv export, export csv, export xml, ean, gtin, isbn, upc
+Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay MIP,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuten,skroutz, skroutz.gr, walmart,google shopping feed, feed, fruugo, bing image feed, bing shopping, bonanza, bestprice, bestprice.gr, yml, yandex, market, yandex market, yandex turbo, export, yandex feed, csv export, export csv, export xml, ean, gtin, isbn, upc,idealo,idealo.de, idealo feed,facebook ads,facebook feed, facebook catalog, facebook
 Requires at least: 4.7
 Tested up to:  5.9
 Requires PHP: 7.0
@@ -9,14 +9,14 @@ Stable tag:  7.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Generate WooCommerce product feed for Google Shopping, Facebook, Yandex, eBay, Instagram, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
+Generate WooCommerce product feed for Google Shopping, Yandex, Idealo, Social Catalogs, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
 
 == Description ==
 Generating your WooCommerce Product Feed was never this easy!
 
 Any marketplace you want to list your products on, you can generate an accurate product feed with your WooCommerce products in just a few clicks.
 
-Use pre-defined merchant templates to generate flawless feed for over 180+ merchants, including Google Shopping feed, Facebook Catalog feed, Yandex Market (YML), eBay, Instagram, PriceRunner, Rakuten,  Vivino, BestPrice, Skroutz & many more (<a href="https://rextheme.com/best-woocommerce-product-feed" target="_blank">full list</a>).
+Use pre-defined merchant templates to generate flawless feed for over 180+ merchants, including Google Shopping feed, Facebook Catalog feed, Yandex Market (YML), eBay MIP, Instagram, PriceRunner, Rakuten,  Vivino, BestPrice, Skroutz & many more (<a href="https://rextheme.com/best-woocommerce-product-feed" target="_blank">full list</a>).
 
 Create your preferred feed in seconds with 3 simple steps:
 
@@ -707,7 +707,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 7.2.0 (2022-04-21) =
+= 7.2.0 (2022-04-22) =
 * Added: Rollback option added for the Free version
 * Added: Include variation images in the feed attribute value added
 * Added: Five more Mirakl custom attributes added to the Mirakl merchant template
