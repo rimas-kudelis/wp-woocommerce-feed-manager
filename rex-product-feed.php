@@ -238,7 +238,9 @@ require plugin_dir_path( __FILE__ ) . 'includes/helper.php';
 function wpfm_plugin_redirect() {
     if (get_option('rex_wpfm_plugin_do_activation_redirect', false)) {
         delete_option('rex_wpfm_plugin_do_activation_redirect');
-        wp_redirect("admin.php?page=bwfm-dashboard");
+        $url = "admin.php?page=bwfm-dashboard";
+        $url = filter_var( $url, FILTER_SANITIZE_URL );
+        exit( wp_safe_redirect( $url ) );
     }
 }
 
@@ -336,7 +338,9 @@ add_action( 'in_plugin_update_message-best-woocommerce-feed/rex-product-feed.php
 function rex_feed_redirect_after_activation() {
     if ( get_option( 'rex_feed_redirect_after_activation', false ) ) {
         delete_option( 'rex_feed_redirect_after_activation' );
-        exit( wp_redirect( admin_url('edit.php?post_type=product-feed') ) );
+        $url = admin_url('edit.php?post_type=product-feed');
+        $url = filter_var( $url, FILTER_SANITIZE_URL );
+        exit( wp_safe_redirect( $url ) );
     }
 }
 add_action( 'admin_init', 'rex_feed_redirect_after_activation' );

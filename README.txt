@@ -707,7 +707,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 7.2.0 (2022-04-22) =
+= 7.2.0 (2022-04-21) =
 * Added: Rollback option added for the Free version
 * Added: Include variation images in the feed attribute value added
 * Added: Five more Mirakl custom attributes added to the Mirakl merchant template
