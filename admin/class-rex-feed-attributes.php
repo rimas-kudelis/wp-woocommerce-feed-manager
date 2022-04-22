@@ -445,13 +445,13 @@ class Rex_Feed_Attributes
                 INNER JOIN {$wpdb->prefix}posts AS posts
                 ON postmeta.post_id = posts.id
                 WHERE posts.post_type IN( 'product', 'product_variation' )
-                AND posts.post_status = 'publish'
-                AND postmeta.meta_key != '_product_attributess'
-                AND postmeta.meta_key NOT LIKE '_wpfm_%'
-                AND postmeta.meta_key NOT LIKE 'pyre%'
-                AND postmeta.meta_key NOT LIKE 'sbg_%'
+                AND posts.post_status = %s
+                AND postmeta.meta_key != %s
+                AND postmeta.meta_key NOT LIKE %s
+                AND postmeta.meta_key NOT LIKE %s
+                AND postmeta.meta_key NOT LIKE %s
                 group by meta_key
-                ORDER BY postmeta.meta_key" );
+                ORDER BY postmeta.meta_key", 'publish', '_product_attributess', '_wpfm_%', 'pyre%', 'sbg_%' );
 
             $data = $wpdb->get_results( $sql );
 
@@ -466,10 +466,10 @@ class Rex_Feed_Attributes
             $sql = $wpdb->prepare( "SELECT meta_key as name, meta_value as value FROM {$wpdb->prefix}postmeta  as postmeta
                 INNER JOIN {$wpdb->prefix}posts AS posts
                 ON postmeta.post_id = posts.id
-                WHERE posts.post_type = 'product'
-                AND posts.post_status = 'publish'
-                AND postmeta.meta_key = '_product_attributes'
-                ORDER BY postmeta.meta_key" );
+                WHERE posts.post_type = %s
+                AND posts.post_status = %s
+                AND postmeta.meta_key = %s
+                ORDER BY postmeta.meta_key", 'product', 'publish', '_product_attributes' );
 
             $data = $wpdb->get_results( $sql );
 
