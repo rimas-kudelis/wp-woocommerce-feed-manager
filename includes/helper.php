@@ -31,8 +31,8 @@ if ( ! function_exists( 'wpfm_hierarchical_product_category_tree' ) ) {
 
                 ob_start();?>
                 <div class='single-category'>
-                    <span class='label'><?php echo $separator.$cat->name .' ('. $cat->count . ')' ?></span>
-                    <div class='input-field'><input class='autocomplete category-suggest' type='text' name='category-<?php echo $cat->term_id; ?>' value='<?php echo $map_value; ?>' placeholder='Google Merchant Category'/></div>
+                    <span class='label'><?php echo esc_html( $separator.$cat->name ) .' ('. esc_html( $cat->count ) . ')' ?></span>
+                    <div class='input-field'><input class='autocomplete category-suggest' type='text' name='category-<?php echo esc_attr($cat->term_id); ?>' value='<?php echo esc_attr($map_value); ?>' placeholder='Google Merchant Category'/></div>
                 </div>
                 <?php echo ob_get_clean();
 
@@ -1383,7 +1383,7 @@ if ( ! function_exists( 'wpfm_get_merchant_dropdown' ) ) {
 				}
 				$disabled = ( $groupLabel === 'Pro Merchants' && !$is_premium ) ? 'disabled' : '';
                 ob_start();?>
-                <optgroup label='<?php echo $groupLabel; ?>' <?php echo $disabled; ?>>
+                <optgroup label='<?php echo esc_html($groupLabel); ?>' <?php echo esc_html($disabled); ?>>
                 <?php echo ob_get_clean();
 			}
 
@@ -1392,11 +1392,11 @@ if ( ! function_exists( 'wpfm_get_merchant_dropdown' ) ) {
 
 				if ( $selected == $key ) {
                     ob_start();?>
-                        <option value='<?php echo $key; ?>' selected='selected'><?php echo $value; ?></option>
+                        <option value='<?php echo esc_attr($key); ?>' selected='selected'><?php echo esc_html($value); ?></option>
                     <?php echo ob_get_clean();
 				}else{
 				    ob_start();?>
-                        <option value='<?php echo $key; ?>'><?php echo $value; ?></option>
+                        <option value='<?php echo esc_attr($key); ?>'><?php echo esc_html($value); ?></option>
                     <?php echo ob_get_clean();
 				}
 			}

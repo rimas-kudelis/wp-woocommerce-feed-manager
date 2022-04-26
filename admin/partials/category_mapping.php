@@ -25,7 +25,7 @@ $db_version = get_option('rex_wpfm_db_version');
                 <?php foreach ($category_map as $key => $value) {
                     ?>
                     <div class="acordion-item">
-                        <h6><a href="#" class="mapper_name_update" data-id="<?php echo $key; ?>"><?php echo $value['map-name'] ?></a></h6>
+                        <h6><a href="#" class="mapper_name_update" data-id="<?php echo esc_html($key); ?>"><?php echo esc_html($value['map-name']); ?></a></h6>
                         <div class="inner" style="display: none;">
                             <form action="" method="post" class="update_cat_map">
                                 <div class="widefat fixed cat-map highlight" id="cat-map">

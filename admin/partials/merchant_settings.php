@@ -42,15 +42,15 @@ if ( $client_id && $client_secret && $merchant_id ) {
                     <form class="rex-google-merchant" id="rex-google-merchant">
                         <div class="row">
                             <div class="input-field">
-                                <input id="client_id" type="text" name="client_id" class="validate" required value="<?php echo $client_id; ?>">
+                                <input id="client_id" type="text" name="client_id" class="validate" required value="<?php echo esc_html($client_id); ?>">
                                 <label for="client_id"><?php echo __('Client ID#: ', 'rex-product-feed'); ?></label>
                             </div>
                             <div class="input-field">
-                                <input id="client_secret" type="text" name="client_secret" class="validate" required value="<?php echo $client_secret; ?>">
+                                <input id="client_secret" type="text" name="client_secret" class="validate" required value="<?php echo esc_html($client_secret); ?>">
                                 <label for="client_secret"><?php echo __('Client Secret: ', 'rex-product-feed'); ?></label>
                             </div>
                             <div class="input-field">
-                                <input id="merchant_id" type="text" name="merchant_id" class="validate" required value="<?php echo $merchant_id; ?>">
+                                <input id="merchant_id" type="text" name="merchant_id" class="validate" required value="<?php echo esc_html($merchant_id); ?>">
                                 <label for="merchant_id"><?php echo __('Merchant ID# : ', 'rex-product-feed'); ?></label>
                             </div>
 
@@ -64,7 +64,7 @@ if ( $client_id && $client_secret && $merchant_id ) {
 
                                 </button>
 
-                                <button class="btn waves-effect waves-light btn-default" type="submit" name="action" <?php echo $disable; ?>><?php echo __('Submit', 'rex-product-feed'); ?>
+                                <button class="btn waves-effect waves-light btn-default" type="submit" name="action" <?php echo esc_html($disable); ?>><?php echo __('Submit', 'rex-product-feed'); ?>
 
                                 </button>
                             </div>

@@ -687,20 +687,6 @@ class Rex_Product_Feed_Ajax {
     }
 
 
-
-    public static function rex_feed_tags_render_row_cb( $field_args, $field ) {
-        $classes     = $field->row_classes();
-        $id          = $field->args( 'id' );
-        $label       = $field->args( 'name' );
-        $name        = $field->args( '_name' );
-        $value       = $field->escaped_value();
-        $description = $field->args( 'description' );
-        ?>
-        <div class="custom-field-row <?php echo $classes; ?>"></div>
-        <?php
-    }
-
-
     /**
      * Save Category Map
      * @param $payload
@@ -1247,12 +1233,16 @@ class Rex_Product_Feed_Ajax {
         $nonce = isset( $_POST[ 'security' ] ) ? $_POST[ 'security' ] : '';
 
         if ( wp_verify_nonce( $nonce, 'rex-wpfm-ajax' ) ) {
-            $feed_config = array();
-            $config = isset( $_POST[ 'payload' ][ 'feed_config' ] ) ? sanitize_text_field($_POST[ 'payload' ][ 'feed_config' ]) : '';
+            $feed_config = [];
+            $config = isset( $_POST[ 'payload' ][ 'feed_config' ] ) ? $_POST[ 'payload' ][ 'feed_config' ] : '';
             parse_str( $config, $feed_config );
             $feed_config = isset( $feed_config[ 'fc' ] ) ? $feed_config[ 'fc' ] : '';
-            array_shift( $feed_config );
-            $feed_attr = array_column( $feed_config, 'attr' );
+            $feed_config = filter_var_array( $feed_config, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+            $feed_attr = [];
+            if ( is_array( $feed_config ) ) {
+                array_shift( $feed_config );
+                $feed_attr = array_column( $feed_config, 'attr' );
+            }
             $required_attr = array('id', 'title', 'description', 'link', 'image_link', 'availability', 'price', 'brand', 'gtin', 'mpn');
             $labels = array
             (

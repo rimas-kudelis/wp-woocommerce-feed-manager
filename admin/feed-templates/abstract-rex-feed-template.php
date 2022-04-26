@@ -127,10 +127,10 @@ abstract class Rex_Feed_Abstract_Template {
         $i = 1;
         foreach ($items as $groupLabel => $groups) {
             if ( !empty($groupLabel)) {
-                $drop_down .= "<optgroup label='$groupLabel' data-i='$i'>";
+                $drop_down .= "<optgroup label='" .esc_attr( $groupLabel ). "' data-i='".esc_attr($i)."'>";
             }
             foreach ($groups as $k => $it) {
-                $drop_down .= "<option value='$k'>$it</option>";
+                $drop_down .= "<option value='".esc_attr($k)."'>".esc_html($it)."</option>";
             }
 
             if ( !empty($groupLabel)) {
@@ -166,19 +166,19 @@ abstract class Rex_Feed_Abstract_Template {
         }else{
             return;
         }
-        echo '<select class="' .esc_attr( $class ). '" name="fc['.$key.'][' . esc_attr( $name ) . ']" >';
+        echo '<select class="' .esc_attr( $class ). '" name="fc['.esc_attr( $key ).'][' . esc_attr( $name ) . ']" >';
         echo "<option value=''>Please Select</option>";
         $i = 1;
         foreach ($items as $groupLabel => $group) {
             if ( !empty($groupLabel)) {
-                echo "<optgroup label='$groupLabel' data-i='$i'>";
+                echo "<optgroup label='".esc_html( $groupLabel )."' data-i='".esc_attr( $i )."'>";
             }
 
             foreach ($group as $key => $item) {
                 if ( $selected == $key ) {
-                    echo "<option value='$key' selected='selected'>$item</option>";
+                    echo "<option value='".esc_attr($key)."' selected='selected'>".esc_attr($item)."</option>";
                 }else{
-                    echo "<option value='$key'>$item</option>";
+                    echo "<option value='".esc_attr($key)."'>".esc_attr($item)."</option>";
                 }
             }
 
@@ -201,11 +201,11 @@ abstract class Rex_Feed_Abstract_Template {
      */
     public function printAttType( $key, $select = '' ){
         $options = apply_filters('wpfm_pro_feed_attribute_type_render', array( 'meta' => 'Attribute', 'static' => 'Static'));
-        echo "<select class='type-dropdown' name='fc[$key][type]'>";
+        echo "<select class='type-dropdown' name='fc[".esc_attr($key)."][type]'>";
         echo "<option value=''>Please Select</option>";
         foreach ($options as $key => $option) {
             $selected = $select === $key ? "selected='selected'" : "";
-            echo "<option value='$key' $selected>$option</option>";
+            echo "<option value='".esc_attr($key)."' ".esc_html($selected).">".esc_html($option)."</option>";
         }
         echo "</select>";
     }
@@ -219,7 +219,7 @@ abstract class Rex_Feed_Abstract_Template {
      * @param string $val
      */
     public function printInput( $key, $name = '', $val = '', $class = '' ){
-        echo '<input type="text" class="'. esc_attr( $class ) .'" name="fc['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '">';
+        echo '<input type="text" class="'. esc_attr( $class ) .'" name="fc['.esc_attr($key).'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '">';
     }
 
     /**

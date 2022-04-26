@@ -47,7 +47,7 @@ if ( wpfm_pro_compatibility() ) {
 
         <?php
             $keyt = rand(999, 3000); ?>
-            <tr data-row-id="<?php echo $keyt; ?>" style="display: none;">
+            <tr data-row-id="<?php echo esc_html($keyt); ?>" style="display: none;">
                 <td data-title="If : "><?php $feed_filter->printSelectDropdown( $keyt, 'if', 'ff', '' ); ?></td>
                 <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $keyt, 'condition', 'ff', '' ); ?></td>
                 <td data-title="value : " ><?php $feed_filter->printInput( $keyt, 'value', 'ff', '' ); ?></td>
@@ -60,7 +60,7 @@ if ( wpfm_pro_compatibility() ) {
             </tr>
 
             <?php foreach ( $feed_filter->getFilterMappings() as $key => $item): ?>
-                <tr data-row-id="<?php echo $key; ?>">
+                <tr data-row-id="<?php echo esc_html($key); ?>">
                     <td data-title="If : "><?php $feed_filter->printSelectDropdown( $key, 'if', 'ff', $item['if'] ); ?></td>
                     <td data-title="condition : "><?php $feed_filter->printSelectDropdown( $key, 'condition', 'ff', $item['condition'] ); ?></td>
                     <td data-title="value : "><?php $feed_filter->printInput( $key, 'value', 'ff', $item['value'] ); ?></td>

@@ -1655,26 +1655,30 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 }
                 else {
                     $feed = $this->get_items();
-
                     if ( $this->merchant === 'google' && $this->feed_string_footer !== '' ) {
-                        $file_contents = file_get_contents($path . "/feed-{$this->id}." . $format);
+                        $request        = wp_remote_get($baseurl .'/rex-feed'.  "/feed-{$this->id}." . $format, array('sslverify' => FALSE));
+                        if( is_wp_error( $request ) ) {
+                            return 'false';
+                        }
+                        $file_contents  = wp_remote_retrieve_body( $request );
 
                         if ( !strpos( $file_contents, $this->item_wrapper ) ) {
                             $feed = '';
                         }
                     }
-
                     file_put_contents( $file, $feed, FILE_APPEND );
 
                     if( $this->tbatch === $this->batch ) {
-                        $file_contents = file_get_contents($path . "/feed-{$this->id}." . $format);
-
-                        $temp_feed = new DOMDocument;
+                        $request        = wp_remote_get($baseurl .'/rex-feed'.  "/feed-{$this->id}." . $format, array('sslverify' => FALSE));
+                        if( is_wp_error( $request ) ) {
+                            return 'false';
+                        }
+                        $file_contents  = wp_remote_retrieve_body( $request );
+                        $temp_feed      = new DOMDocument;
                         $temp_feed->preserveWhiteSpace = false;
                         $temp_feed->formatOutput = true;
                         $temp_feed->loadXML( $file_contents );
                         $file_contents = $temp_feed->saveXML( $temp_feed, LIBXML_NOEMPTYTAG );
-
                         file_put_contents( $file, $file_contents );
                     }
 
@@ -1769,8 +1773,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     $feed = $this->get_items();
 
                     if ( $this->merchant === 'google' && $this->feed_string_footer !== '' ) {
-                        $file_contents = file_get_contents($path . "/feed-{$this->id}." . $format);
-
+                        $request        = wp_remote_get($baseurl .'/rex-feed'.  "/feed-{$this->id}." . $format, array('sslverify' => FALSE));
+                        if( is_wp_error( $request ) ) {
+                            return 'false';
+                        }
+                        $file_contents  = wp_remote_retrieve_body( $request );
                         if ( !strpos( $file_contents, $this->item_wrapper ) ) {
                             $feed = '';
                         }

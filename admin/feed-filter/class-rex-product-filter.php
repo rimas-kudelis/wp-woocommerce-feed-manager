@@ -251,7 +251,7 @@ class Rex_Product_Filter {
             return;
         }
 
-        echo '<select class="' .esc_attr( $class ). '" name="'.$name_prefix.'['.$key.'][' . esc_attr( $name ) . ']" style="' . esc_attr( $style ) . '">';
+        echo '<select class="' .esc_attr( $class ). '" name="'.esc_attr( $name_prefix ).'['.esc_attr( $key ).'][' . esc_attr( $name ) . ']" style="' . esc_attr( $style ) . '">';
         if($name === 'rules')
             echo "<option value='or'>Please Select</option>";
         else
@@ -259,14 +259,14 @@ class Rex_Product_Filter {
 
         foreach ($items as $groupLabel => $group) {
             if ( !empty($groupLabel)) {
-                echo "<optgroup label='$groupLabel'>";
+                echo "<optgroup label='".esc_html($groupLabel)."'>";
             }
 
             foreach ($group as $key => $item) {
                 if ( $selected == $key ) {
-                    echo "<option value='$key' selected='selected'>$item</option>";
+                    echo "<option value='".esc_attr($key)."' selected='selected'>".esc_html($item)."</option>";
                 }else{
-                    echo "<option value='$key'>$item</option>";
+                    echo "<option value='".esc_attr($key)."'>".esc_html($item)."</option>";
                 }
             }
 
@@ -288,7 +288,7 @@ class Rex_Product_Filter {
      * @param string $val
      */
     public function printInput( $key, $name, $name_prefix = 'ff', $val = '', $class = '', $style = '' ){
-        echo '<input type="text" class="'. esc_attr( $class ) .'" name="'.$name_prefix.'['.$key.'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '" style="' . esc_attr( $style ) . '">';
+        echo '<input type="text" class="'. esc_attr( $class ) .'" name="'.esc_html( $name_prefix ).'['.esc_attr( $key ).'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '" style="' . esc_attr( $style ) . '">';
     }
 
 
