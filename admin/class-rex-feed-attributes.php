@@ -475,7 +475,7 @@ class Rex_Feed_Attributes
 
             if( count( $data ) ) {
                 foreach( $data as $key => $value ) {
-                    $product_attributes = unserialize( $value->value );
+                    $product_attributes = json_decode( $value->value );
                     if( !empty( $product_attributes ) ) {
                         foreach( $product_attributes as $inner_key => $inner_value ) {
                             $value_display                                   = str_replace( "_", " ", $inner_value[ 'name' ] );

@@ -5,10 +5,10 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 
 <div id="rex-feed-product-taxonomies-contents">
 	<div id="rex-feed-product-cats" style="display: none">
-		<label for="<?php echo esc_attr($prefix) . 'cats';?>"><?php _e('Product Categories', 'rex-product-feed')?>
+		<label for="<?php echo esc_attr($prefix) . 'cats';?>"><?php esc_html_e('Product Categories', 'rex-product-feed')?>
 			<span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php _e('Product Categories', 'rex-product-feed')?></p>
+                    <p><?php esc_html_e('Product Categories', 'rex-product-feed')?></p>
                 </span>
 		</label>
 		<ul id="<?php echo esc_attr($prefix) . 'cats';?>">
@@ -30,10 +30,10 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 		</ul>
 	</div>
 	<div id="rex-feed-product-tags" style="display: none">
-		<label for="<?php echo esc_attr($prefix) . 'tags';?>"><?php _e('Product Tags', 'rex-product-feed')?>
+		<label for="<?php echo esc_attr($prefix) . 'tags';?>"><?php esc_html_e('Product Tags', 'rex-product-feed')?>
 			<span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php _e('Product Tags', 'rex-product-feed')?></p>
+                    <p><?php esc_html_e('Product Tags', 'rex-product-feed')?></p>
                 </span>
 		</label>
 		<ul id="<?php echo esc_attr($prefix) . 'tags';?>">
@@ -53,7 +53,7 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 			}
 			if ( empty( $terms ) ) {
 				echo '<li>';
-				echo '<label for="'. esc_attr($prefix) . 'tags' . esc_attr($index++) . '">'.__('No Terms', 'rex-product-feed').'</label>';
+				echo '<label for="'. esc_attr($prefix) . 'tags' . esc_attr($index++) . '">'.esc_html__('No Terms', 'rex-product-feed').'</label>';
 				echo '</li>';
 			}
 			?>

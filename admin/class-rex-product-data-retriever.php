@@ -2255,7 +2255,7 @@ class Rex_Product_Data_Retriever
                     $list[ $value->name ] = ucfirst( $value_display );
                 }
                 else {
-                    $product_attributes = unserialize( $value->value );
+                    $product_attributes = json_decode( $value->value );
                     if( !empty( $product_attributes ) ) {
                         foreach( $product_attributes as $k => $arr_value ) {
                             $value_display = str_replace( "_", " ", $arr_value[ 'value' ] );

@@ -344,7 +344,7 @@ class Rex_Product_Feed_Admin {
             $html .= 'class="wpfm-purge-cache btn_on_feed">Purge Cache';
             $html .= '<i class="fa fa-spinner fa-pulse fa-fw" style="display: none"></i></button>';
             
-            print $html;
+            print esc_html( $html ); // phpcs:ignore
         }
     }
 
@@ -474,9 +474,9 @@ class Rex_Product_Feed_Admin {
             }
             $url = admin_url('post.php?action=edit&post=' . $new_post_id);
             $url = filter_var( $url, FILTER_SANITIZE_URL );
-            exit( wp_safe_redirect( $url ) );
+            exit( esc_url( wp_safe_redirect( $url ) ) );
         } else {
-            wp_die('Post creation failed, could not find original post: ' . $post_id);
+            wp_die('Post creation failed, could not find original post: ' . esc_attr( $post_id ));
         }
     }
 
@@ -579,7 +579,7 @@ class Rex_Product_Feed_Admin {
     public static function wpfm_redirect_to_pro() {
         $url = 'https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro';
         $url = filter_var( $url, FILTER_SANITIZE_URL );
-        exit( wp_safe_redirect( $url ) );
+        exit( esc_url( wp_safe_redirect( $url ) ) );
     }
 
 
@@ -589,7 +589,7 @@ class Rex_Product_Feed_Admin {
     public static function wpfm_support() {
         $support_link = apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0');
         $support_link = filter_var( $support_link, FILTER_SANITIZE_URL );
-        exit( wp_safe_redirect($support_link) );
+        exit( esc_url( wp_safe_redirect( $support_link ) ) );
     }
 
 
@@ -1022,11 +1022,11 @@ class Rex_Product_Feed_Admin {
                     t.src=v;s=b.getElementsByTagName(e)[0];
                     s.parentNode.insertBefore(t,s)}(window, document,'script',
                     'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '<?php print"$wpfm_fb_pixel_data";?>');
+                fbq('init', '<?php print esc_attr("$wpfm_fb_pixel_data");?>');
                 fbq('track', 'PageView');
                 <?php
                 if(strlen($viewContent) > 2){
-                    print"$viewContent";
+                    print esc_attr( "$viewContent" );
                 }
                 ?>
             </script>
@@ -1324,9 +1324,9 @@ class Rex_Product_Feed_Admin {
         $rollback->run();
 
         wp_die(
-            '', esc_html__( 'Rollback to Previous Version', 'rex-product-feed' ), [
+            '', esc_html__( 'Rollback to Previous Version', 'rex-product-feed' ), filter_var( [
                 'response' => 200,
-            ]
+            ] )
         );
     }
 }

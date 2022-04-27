@@ -35,11 +35,11 @@ if ( wpfm_pro_compatibility() ) {
     <table id="config-table" class="filter-config-table responsive-table">
         <thead>
             <tr>
-                <th class="large-col"><?php echo __('If', 'rex-product-feed') ?><span>*</span></th>
-                <th class="large-col"><?php echo __('Condition', 'rex-product-feed') ?><span>*</span></th>
-                <th class="large-col"><?php echo __('Value', 'rex-product-feed') ?></th>
-                <th class="2"><?php echo __('Then', 'rex-product-feed') ?></th>
-                <th class="2"><?php echo __('Action', 'rex-product-feed') ?></th>
+                <th class="large-col"><?php echo esc_html__('If', 'rex-product-feed') ?><span>*</span></th>
+                <th class="large-col"><?php echo esc_html__('Condition', 'rex-product-feed') ?><span>*</span></th>
+                <th class="large-col"><?php echo esc_html__('Value', 'rex-product-feed') ?></th>
+                <th class="2"><?php echo esc_html__('Then', 'rex-product-feed') ?></th>
+                <th class="2"><?php echo esc_html__('Action', 'rex-product-feed') ?></th>
             </tr>
         </thead>
 

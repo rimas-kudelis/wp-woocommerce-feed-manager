@@ -156,11 +156,11 @@ class Rex_Product_Metabox
         <div id="rex-feed-footer-btn" class="rex-feed-footer-btn">
             <a id="rex-new-attr" class="rex-new-custom-btn">
 		        <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-plus.php';?>
-		        <?php echo __( 'Add New Attribute', 'rex-product-feed' ) ?>
+		        <?php echo esc_attr__( 'Add New Attribute', 'rex-product-feed' ) ?>
             </a>
             <a id="rex-new-custom-attr" class="rex-new-custom-btn">
 				<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-plus.php';?>
-				<?php echo __( 'Add New Custom Attribute', 'rex-product-feed' ) ?>
+				<?php echo esc_attr__( 'Add New Custom Attribute', 'rex-product-feed' ) ?>
             </a>
         </div>
 
@@ -263,7 +263,7 @@ class Rex_Product_Metabox
 			<?php require_once plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display-filter.php'; ?>
             <a id="rex-new-filter" class="rex-new-custom-btn">
 				<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-dark-plus.php';?>
-				<?php echo __( 'Add New Filter', 'rex-product-feed' ) ?>
+				<?php echo esc_attr__( 'Add New Filter', 'rex-product-feed' ) ?>
             </a>
         </div>
 		<?php
@@ -419,7 +419,7 @@ class Rex_Product_Metabox
 	 **/
 	public function rex_feed_generate_google_merchant_section()
 	{
-		echo '<h2>' . __( 'Send to Google Merchant', 'rex-product-feed' ) . '</h2>';
+		echo '<h2>' . esc_attr__( 'Send to Google Merchant', 'rex-product-feed' ) . '</h2>';
 		$this->rex_feed_google_merchant_desc();
 		$destinations = array(
 			'Display Ads'      => __( 'Display Ads', 'rex-product-feed' ),
@@ -465,13 +465,13 @@ class Rex_Product_Metabox
 			$message             = __( 'Oops!! Access token has expired 😕 Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed' );
 			if ( !( $rex_google_merchant->is_authenticate() ) ) {
 				echo sprintf(
-					'<p class="google-status">%s <a href="%s">' . __( 'Authenticate', 'rex-product-feed' ) . '</a> </p>',
+					'<p class="google-status">%s <a href="%s">' . esc_attr__( 'Authenticate', 'rex-product-feed' ) . '</a> </p>',
 					esc_html( $message ),
-					admin_url( 'admin.php?page=merchant_settings' ) );
+					esc_url( admin_url( 'admin.php?page=merchant_settings' ) ) );
 			}
 			else {
 				echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
-                        ' . __( 'Send to google merchant', 'rex-product-feed' ) . '
+                        ' . esc_attr__( 'Send to google merchant', 'rex-product-feed' ) . '
                       </a> ';
 			}
 			echo '<div class="rex-google-status"></div>';
@@ -484,7 +484,7 @@ class Rex_Product_Metabox
 	 */
 	public function rex_feed_google_merchant_desc()
 	{
-		echo sprintf( __( '<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed' ) );
+		echo sprintf( esc_attr__( '<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed' ) );
 	}
 
 

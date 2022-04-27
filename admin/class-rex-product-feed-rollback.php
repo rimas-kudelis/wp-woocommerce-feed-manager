@@ -104,7 +104,7 @@ class Rex_Feed_Rollback {
      * @access protected
      */
     protected function upgrade() {
-        require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+        require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
         //$logo_url = WPFNL_URL . 'admin/assets/images/logo-wpfnl.png';
 

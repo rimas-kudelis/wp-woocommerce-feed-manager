@@ -35,8 +35,8 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                             </span>
                             <!-- rex-licenes__icon -->
 
-                            <h4><?php echo __('Stay Updated', 'rex-product-feed-pro'); ?></h4>
-                            <p><?php echo __('Update the plugin right from your WordPress Dashboard.', 'rex-product-feed-pro'); ?></p>
+                            <h4><?php echo esc_html__('Stay Updated', 'rex-product-feed-pro'); ?></h4>
+                            <p><?php echo esc_html__('Update the plugin right from your WordPress Dashboard.', 'rex-product-feed-pro'); ?></p>
                         </div>
                         <!-- rex-licenes__single-block -->
 
@@ -55,8 +55,8 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                 </svg>
                             </span>
                             <!-- rex-licenes__icon -->
-                            <h4><?php echo __('Premium Support', 'rex-product-feed-pro'); ?></h4>
-                            <p><?php echo __('Supported by professional and courteous staff.', 'rex-product-feed-pro'); ?></p>
+                            <h4><?php echo esc_html__('Premium Support', 'rex-product-feed-pro'); ?></h4>
+                            <p><?php echo esc_html__('Supported by professional and courteous staff.', 'rex-product-feed-pro'); ?></p>
                         </div>
                         <!-- rex-licenes__single-block -->
                     </div>
@@ -69,10 +69,10 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                             <?php settings_fields('wpfm_pro_license'); ?>
                             <div class="rex-licenes__input-block-area">
                                 <div class="rex-licenes__input-field">
-                                    <input id="wpfm_pro_license_key" name="wpfm_pro_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" placeholder="<?php _e('Enter your license key', 'rex-product-feed-pro'); ?>" />
+                                    <input id="wpfm_pro_license_key" name="wpfm_pro_license_key" type="text" class="regular-text" value="<?php echo esc_attr( $license ); ?>" placeholder="<?php esc_html_e('Enter your license key', 'rex-product-feed-pro'); ?>" />
                                     <div class="wpfm-pro-license-data" style="margin-top: 5px;">
                                         <?php if(!empty($license_data)) {
-                                            $license_data = unserialize($license_data);
+                                            $license_data = json_decode($license_data);
                                             if(is_array($license_data)) {
                                                 $license = json_decode(json_encode($license_data));
                                                 $message = array();
@@ -83,7 +83,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                                             case 'expired' :
                                                                 $class = 'expired';
                                                                 $messages[] = sprintf(
-                                                                    __( 'Your license key expired on %s. Please <a href="%s" target="_blank">renew your license key</a>.', 'rex-product-feed-pro' ),
+                                                                    esc_html__( 'Your license key expired on %s. Please <a href="%s" target="_blank">renew your license key</a>.', 'rex-product-feed-pro' ),
                                                                     date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
                                                                     'https://rextheme.com/your-account/'
                                                                 );
@@ -92,7 +92,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                                             case 'revoked' :
                                                                 $class = 'error';
                                                                 $messages[] = sprintf(
-                                                                    __( 'Your license key has been disabled. Please <a href="%s" target="_blank">contact support</a> for more information.', 'rex-product-feed-pro' ),
+                                                                    esc_html__( 'Your license key has been disabled. Please <a href="%s" target="_blank">contact support</a> for more information.', 'rex-product-feed-pro' ),
                                                                     'https://rextheme.com/your-account/'
                                                                 );
                                                                 $license_status = 'license-' . $class . '-notice';
@@ -100,7 +100,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                                             case 'missing' :
                                                                 $class = 'error';
                                                                 $messages[] = sprintf(
-                                                                    __( 'Invalid license. Please <a href="%s" target="_blank">visit your account page</a> and verify it.', 'rex-product-feed-pro' ),
+                                                                    esc_html__( 'Invalid license. Please <a href="%s" target="_blank">visit your account page</a> and verify it.', 'rex-product-feed-pro' ),
                                                                     'https://rextheme.com/your-account/'
                                                                 );
                                                                 $license_status = 'license-' . $class . '-notice';
@@ -109,7 +109,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                                             case 'site_inactive' :
                                                                 $class = 'error';
                                                                 $messages[] = sprintf(
-                                                                    __( 'Your %s is not active for this URL. Please <a href="%s" target="_blank">visit your account page</a> to manage your license key URLs.', 'rex-product-feed-pro' ),
+                                                                    esc_html__( 'Your %s is not active for this URL. Please <a href="%s" target="_blank">visit your account page</a> to manage your license key URLs.', 'rex-product-feed-pro' ),
                                                                     $args['name'],
                                                                     'https://rextheme.com/your-account/'
                                                                 );
@@ -117,24 +117,24 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                                                 break;
                                                             case 'item_name_mismatch' :
                                                                 $class = 'error';
-                                                                $messages[] = sprintf( __( 'This appears to be an invalid license key for %s.', 'rex-product-feed-pro' ), $args['name'] );
+                                                                $messages[] = sprintf( esc_html__( 'This appears to be an invalid license key for %s.', 'rex-product-feed-pro' ), $args['name'] );
                                                                 $license_status = 'license-' . $class . '-notice';
                                                                 break;
                                                             case 'no_activations_left':
                                                                 $class = 'error';
-                                                                $messages[] = sprintf( __( 'Your license key has reached its activation limit. <a href="%s">View possible upgrades</a> now.', 'rex-product-feed-pro' ),
+                                                                $messages[] = sprintf( esc_html__( 'Your license key has reached its activation limit. <a href="%s">View possible upgrades</a> now.', 'rex-product-feed-pro' ),
                                                                     'https://rextheme.com/your-account/' );
                                                                 $license_status = 'license-' . $class . '-notice';
                                                                 break;
                                                             case 'license_not_activable':
                                                                 $class = 'error';
-                                                                $messages[] = __( 'The key you entered belongs to a bundle, please use the product specific license key.', 'rex-product-feed-pro' );
+                                                                $messages[] = esc_html__( 'The key you entered belongs to a bundle, please use the product specific license key.', 'rex-product-feed-pro' );
                                                                 $license_status = 'license-' . $class . '-notice';
                                                                 break;
                                                             default :
                                                                 $class = 'error';
-                                                                $error = ! empty(  $license->error ) ?  $license->error : __( 'unknown_error', 'rex-product-feed-pro' );
-                                                                $messages[] = sprintf( __( 'There was an error with this license key: %s. Please <a href="%s">contact our support team</a>.', 'rex-product-feed-pro' ),
+                                                                $error = ! empty(  $license->error ) ?  $license->error : esc_html__( 'unknown_error', 'rex-product-feed-pro' );
+                                                                $messages[] = sprintf( esc_html__( 'There was an error with this license key: %s. Please <a href="%s">contact our support team</a>.', 'rex-product-feed-pro' ),
                                                                     $error,
                                                                     'https://rextheme.com/your-account/'
                                                                 );
@@ -151,18 +151,18 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                                                 $now        = current_time( 'timestamp' );
                                                                 $expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
                                                                 if( 'lifetime' === $license->expires ) {
-                                                                    $messages[] = __( 'License key never expires.', 'rex-product-feed-pro' );
+                                                                    $messages[] = esc_html__( 'License key never expires.', 'rex-product-feed-pro' );
                                                                     $license_status = 'license-lifetime-notice';
                                                                 } elseif( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
                                                                     $messages[] = sprintf(
-                                                                        __( 'Your license key expires soon! It expires on %s. <a href="%s" target="_blank">Renew your license key</a>.', 'rex-product-feed-pro' ),
+                                                                        esc_html__( 'Your license key expires soon! It expires on %s. <a href="%s" target="_blank">Renew your license key</a>.', 'rex-product-feed-pro' ),
                                                                         date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
                                                                         'https://rextheme.com/your-account/'
                                                                     );
                                                                     $license_status = 'license-expires-soon-notice';
                                                                 } else {
                                                                     $messages[] = sprintf(
-                                                                        __( 'Your license key expires on %s.', 'rex-product-feed-pro' ),
+                                                                        esc_html__( 'Your license key expires on %s.', 'rex-product-feed-pro' ),
                                                                         date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) )
                                                                     );
                                                                     $license_status = 'license-expiration-date-notice';
@@ -174,7 +174,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                                 else {
                                                     $class = 'empty';
                                                     $messages[] = sprintf(
-                                                        __( 'To receive updates, please enter your valid %s license key.', 'rex-product-feed-pro' ),
+                                                        esc_html__( 'To receive updates, please enter your valid %s license key.', 'rex-product-feed-pro' ),
                                                         'WPFM PRO'
                                                     );
                                                     $license_status = null;
@@ -186,7 +186,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                                         $html .= '<p><em>' . esc_html($message) . '</em></p>';
                                                         $html .= '</div>';
                                                     }
-                                                    echo $html;
+                                                    echo $html; // phpcs:ignore
                                                 }
                                             }
                                         } ?>
@@ -199,12 +199,12 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                                     <?php if( false !== $license ) { ?>
 
                                         <?php if( $status !== false && $status == 'valid' ) { ?>
-<!--                                            <span style="color:green;">--><?php //_e('active'); ?><!--</span>-->
+<!--                                            <span style="color:green;">--><?php //esc_html_e('active'); ?><!--</span>-->
                                             <?php wp_nonce_field( 'wpfm_pro_nonce', 'wpfm_pro_nonce' ); ?>
-                                            <input type="submit" class="button-secondary" name="wpfm_pro_license_deactivate" value="<?php _e('Deactivate License', 'rex-product-feed-pro'); ?>"/>
+                                            <input type="submit" class="button-secondary" name="wpfm_pro_license_deactivate" value="<?php esc_html_e('Deactivate License', 'rex-product-feed-pro'); ?>"/>
                                         <?php } else {
                                             wp_nonce_field( 'wpfm_pro_nonce', 'wpfm_pro_nonce' ); ?>
-                                            <input type="submit" class="button-secondary" name="wpfm_pro_license_activate" value="<?php _e('Activate License', 'rex-product-feed-pro'); ?>"/>
+                                            <input type="submit" class="button-secondary" name="wpfm_pro_license_activate" value="<?php esc_html_e('Activate License', 'rex-product-feed-pro'); ?>"/>
                                         <?php } ?>
 
                                     <?php } ?>
@@ -228,7 +228,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                     </div>
 
                     <div class="rex-licenes__btn-area">
-                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_license_link', 'https://rextheme.com/your-account/#purchase') ); ?>" target="_blank"><?php echo __('Manage License', 'rex-product-feed-pro')?></a>
+                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_license_link', 'https://rextheme.com/your-account/#purchase') ); ?>" target="_blank"><?php echo esc_html__('Manage License', 'rex-product-feed-pro')?></a>
                     </div>
 
                 </div>
@@ -244,15 +244,15 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
 
                     <div class="header">
                         <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/document.png' )?>" class="title-icon" alt="bwf-documentation">
-                        <h4><?php echo __('Documentations', 'rex-product-feed-pro')?></h4>
+                        <h4><?php echo esc_html__('Documentations', 'rex-product-feed-pro')?></h4>
                     </div>
 
                     <div class="body">
                         <p>
-                            <?php echo __('Get started by spending some time with the documentation and generate flawless product feed for major online marketplaces within minutes.', 'rex-product-feed-pro')?>
+                            <?php echo esc_html__('Get started by spending some time with the documentation and generate flawless product feed for major online marketplaces within minutes.', 'rex-product-feed-pro')?>
                         </p>
 
-                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_document_link', 'https://rextheme.com/docs-category/product-feed-manager/') ); ?>" target="_blank"><?php echo __('Documentation', 'rex-product-feed-pro')?></a>
+                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_document_link', 'https://rextheme.com/docs-category/product-feed-manager/') ); ?>" target="_blank"><?php echo esc_html__('Documentation', 'rex-product-feed-pro')?></a>
                     </div>
                 </div>
                 <!-- single-block one-->
@@ -260,16 +260,16 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                 <div class="single-block">
                     <div class="header">
                         <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/support.png')?>" class="title-icon" alt="bwf-documentation">
-                        <h4><?php echo __('Support', 'rex-product-feed-pro')?></h4>
+                        <h4><?php echo esc_html__('Support', 'rex-product-feed-pro')?></h4>
 
                     </div>
 
                     <div class="body">
                         <p>
-                            <?php echo __('Can’t find solution with our documentation? Just post a ticket. Our professional team is here to solve your problems.', 'rex-product-feed-pro')?>
+                            <?php echo esc_html__('Can’t find solution with our documentation? Just post a ticket. Our professional team is here to solve your problems.', 'rex-product-feed-pro')?>
                         </p>
 
-                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_support_link', 'https://rextheme.com/your-account/?active_tab=support') ); ?>" target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed-pro')?></a>
+                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_support_link', 'https://rextheme.com/your-account/?active_tab=support') ); ?>" target="_blank"><?php echo esc_html__('Post a Ticket', 'rex-product-feed-pro')?></a>
                     </div>
                 </div>
                 <!-- single-block two -->
@@ -277,15 +277,15 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                 <div class="single-block popular">
                     <div class="header">
                         <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/rating.png' )?>" class="title-icon" alt="bwf-documentation">
-                        <h4><?php echo __('Show Your Love', 'rex-product-feed-pro')?></h4>
+                        <h4><?php echo esc_html__('Show Your Love', 'rex-product-feed-pro')?></h4>
                     </div>
 
                     <div class="body">
                         <p>
-                            <?php echo __('We love to have you in Best WooCommerce feed family. Take your 2 minutes to review and speed the love to encourage us to keep it going.', 'rex-product-feed-pro')?>
+                            <?php echo esc_html__('We love to have you in Best WooCommerce feed family. Take your 2 minutes to review and speed the love to encourage us to keep it going.', 'rex-product-feed-pro')?>
                         </p>
 
-                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_review_link', 'https://wordpress.org/plugins/best-woocommerce-feed/#reviews ') ) ?>" target="_blank"><?php echo __('Leave A Review', 'rex-product-feed-pro')?> </a>
+                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_review_link', 'https://wordpress.org/plugins/best-woocommerce-feed/#reviews ') ) ?>" target="_blank"><?php echo esc_html__('Leave A Review', 'rex-product-feed-pro')?> </a>
                     </div>
                 </div>
                 <!-- single-block three -->

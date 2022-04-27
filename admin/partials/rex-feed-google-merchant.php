@@ -1,10 +1,10 @@
 <?php $icon = '../assets/icon/icon-svg/icon-question.php'; ?>
 
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_merchant_sidebar__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_merchant_sidebar__content'; ?>">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_destination';?>"><?php _e('Select Destination', 'rex-product-feed')?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'google_destination';?>"><?php esc_html_e('Select Destination', 'rex-product-feed')?>
 		<span class="rex_feed-tooltip">
             <?php include plugin_dir_path(__FILE__) . $icon;?>
-            <p><?php _e('Select Destination', 'rex-product-feed')?></p>
+            <p><?php esc_html_e('Select Destination', 'rex-product-feed')?></p>
         </span>
 	</label>
 
@@ -27,10 +27,10 @@ $value = $value == '' ? 'US' : $value;
 ?>
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_target_country__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_target_country__content'; ?>">
 
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_country';?>"><?php _e('Target Country', 'rex-product-feed')?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_country';?>"><?php esc_html_e('Target Country', 'rex-product-feed')?>
 		<span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php _e('Target Country', 'rex-product-feed')?></p>
+                    <p><?php esc_html_e('Target Country', 'rex-product-feed')?></p>
                 </span>
 	</label>
 
@@ -42,20 +42,20 @@ $value = get_post_meta( get_the_ID(), 'rex_feed_google_target_language', true );
 $value = $value == '' ? 'en' : $value;
 ?>
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>"><?php _e('Target Language', 'rex-product-feed')?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>"><?php esc_html_e('Target Language', 'rex-product-feed')?>
 		<span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php _e('Target Language', 'rex-product-feed')?></p>
+                    <p><?php esc_html_e('Target Language', 'rex-product-feed')?></p>
                 </span>
 	</label>
 	<input type="text" id="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>" value="<?php echo esc_attr($value)?>" name="<?php echo esc_attr( $this->prefix ) . 'google_target_language'?>" required>
 </div>
 
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule__content'; ?>">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule';?>"><?php _e('Schedule', 'rex-product-feed')?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule';?>"><?php esc_html_e('Schedule', 'rex-product-feed')?>
 		<span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php _e('Schedule', 'rex-product-feed')?></p>
+                    <p><?php esc_html_e('Schedule', 'rex-product-feed')?></p>
                 </span>
 	</label>
 	<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>" id="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>">
@@ -71,10 +71,10 @@ $value = $value == '' ? 'en' : $value;
 </div>
 
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month__content'; ?>" style="display: none">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month';?>"><?php _e('Select Day of Month', 'rex-product-feed')?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month';?>"><?php esc_html_e('Select Day of Month', 'rex-product-feed')?>
 		<span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php _e('Select Day of Month', 'rex-product-feed')?></p>
+                    <p><?php esc_html_e('Select Day of Month', 'rex-product-feed')?></p>
                 </span>
 	</label>
 	<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month'; ?>"
@@ -93,10 +93,10 @@ $value = $value == '' ? 'en' : $value;
 </div>
 
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_week_day__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_week_day__content'; ?>" style="display: none">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month';?>"><?php _e('Select Day of Week', 'rex-product-feed')?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month';?>"><?php esc_html_e('Select Day of Week', 'rex-product-feed')?>
 		<span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php _e('Select Day of Week', 'rex-product-feed')?></p>
+                    <p><?php esc_html_e('Select Day of Week', 'rex-product-feed')?></p>
                 </span>
 	</label>
 	<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule_week_day'; ?>"
@@ -115,10 +115,10 @@ $value = $value == '' ? 'en' : $value;
 </div style="display: none">
 
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time__content'; ?>" style="display: none">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time';?>"><?php _e('Select Hour', 'rex-product-feed')?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time';?>"><?php esc_html_e('Select Hour', 'rex-product-feed')?>
 		<span class="rex_feed-tooltip">
                     <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php _e('Select Hour', 'rex-product-feed')?></p>
+                    <p><?php esc_html_e('Select Hour', 'rex-product-feed')?></p>
                 </span>
 	</label>
 	<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time'; ?>"

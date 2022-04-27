@@ -484,7 +484,7 @@
 				</label>
 
 				<?php
-				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_campaign]' . '" value="' .$utm_campaign. '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_campaign' .'">';
+				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_campaign]' . '" value="' .esc_attr($utm_campaign). '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_campaign' .'">';
 				echo '</li>';
 
 
@@ -511,7 +511,7 @@
 				</label>
 
 				<?php
-				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_content]' . '" value="' .$utm_content. '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_content' .'">';
+				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_content]' . '" value="' .esc_attr($utm_content). '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_content' .'">';
 				echo '</li>';
 				?>
 			</ul>

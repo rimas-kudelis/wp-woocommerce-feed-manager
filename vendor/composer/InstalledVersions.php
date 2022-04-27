@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '55f0103fb67c6c3a800bbd3d3b60badfed67d993',
+    'reference' => 'df9b5312669b625f8efce53a61b57f2e354934d6',
     'name' => 'rextheme/best-woocommerce-feed',
   ),
   'versions' => 
@@ -86,7 +86,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '55f0103fb67c6c3a800bbd3d3b60badfed67d993',
+      'reference' => 'df9b5312669b625f8efce53a61b57f2e354934d6',
     ),
     'roundcube/plugin-installer' => 
     array (

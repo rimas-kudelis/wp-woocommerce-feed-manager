@@ -35,38 +35,38 @@ if ( $client_id && $client_secret && $merchant_id ) {
     <div class="merchant-settings">
         <div class="left-merchant">
             <!-- single-merchant-area .end  -->
-            <?php echo $html; ?>
+            <?php echo $html; // phpcs:ignore ?>
             <div class="single-merchant-area configure">
                 <div class="single-merchant-block">
                     <div class="merchant-authorized-area">
                     </div>
-                    <h2 class="title"><?php echo __('Google Merchant Center Authorization', 'rex-product-feed'); ?></h2>
+                    <h2 class="title"><?php echo esc_html__('Google Merchant Center Authorization', 'rex-product-feed'); ?></h2>
                     <form class="rex-google-merchant" id="rex-google-merchant">
                         <div class="row">
                             <div class="input-field">
                                 <input id="client_id" type="text" name="client_id" class="validate" required value="<?php echo esc_html($client_id); ?>">
-                                <label for="client_id"><?php echo __('Client ID#: ', 'rex-product-feed'); ?></label>
+                                <label for="client_id"><?php echo esc_html__('Client ID#: ', 'rex-product-feed'); ?></label>
                             </div>
                             <div class="input-field">
                                 <input id="client_secret" type="text" name="client_secret" class="validate" required value="<?php echo esc_html($client_secret); ?>">
-                                <label for="client_secret"><?php echo __('Client Secret: ', 'rex-product-feed'); ?></label>
+                                <label for="client_secret"><?php echo esc_html__('Client Secret: ', 'rex-product-feed'); ?></label>
                             </div>
                             <div class="input-field">
                                 <input id="merchant_id" type="text" name="merchant_id" class="validate" required value="<?php echo esc_html($merchant_id); ?>">
-                                <label for="merchant_id"><?php echo __('Merchant ID# : ', 'rex-product-feed'); ?></label>
+                                <label for="merchant_id"><?php echo esc_html__('Merchant ID# : ', 'rex-product-feed'); ?></label>
                             </div>
 
                             <div class="input-field">
                                 <input disabled value="<?php echo esc_url( $redirect_uri ); ?>" id="disabled" type="text" class="validate">
-                                <label for="disabled"><?php echo __('Redirect URL', 'rex-product-feed'); ?></label>
+                                <label for="disabled"><?php echo esc_html__('Redirect URL', 'rex-product-feed'); ?></label>
                             </div>
 
                             <div class="button-area">
-                                <button class="btn waves-effect waves-light btn-default rex-reset-btn" type="button" style="margin-right: 10px;"><?php echo __('Reset', 'rex-product-feed'); ?>
+                                <button class="btn waves-effect waves-light btn-default rex-reset-btn" type="button" style="margin-right: 10px;"><?php echo esc_html__('Reset', 'rex-product-feed'); ?>
 
                                 </button>
 
-                                <button class="btn waves-effect waves-light btn-default" type="submit" name="action" <?php echo esc_html($disable); ?>><?php echo __('Submit', 'rex-product-feed'); ?>
+                                <button class="btn waves-effect waves-light btn-default" type="submit" name="action" <?php echo esc_html($disable); ?>><?php echo esc_html__('Submit', 'rex-product-feed'); ?>
 
                                 </button>
                             </div>

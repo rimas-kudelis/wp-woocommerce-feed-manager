@@ -57,7 +57,7 @@ class Rex_Product_Feed_Database_Update extends WP_Background_Process {
 
         foreach ($all_options as $name => $value) {
             if (stristr($name, 'rex_cat_map_')) {
-                $unserialize = unserialize($value);
+                $unserialize = json_decode($value);
                 $map_name = sanitize_title($unserialize['map-name']);
                 $map_config = $unserialize['map-config'];
                 foreach ($map_config as $key=>$config) {

@@ -85,7 +85,7 @@ class Rex_Product_CPT {
     public function fill_product_feed_columns( $column, $post_id ) {
         switch ( $column ) {
             case 'merchant' :
-                echo ucwords( esc_html( str_replace('_', ' ' , get_post_meta( $post_id, 'rex_feed_merchant', true )) ) );
+                echo esc_html( ucwords( str_replace('_', ' ' , get_post_meta( $post_id, 'rex_feed_merchant', true )) ) );
                 break;
             case 'xml_feed' :
                 echo  esc_url( get_post_meta( $post_id , 'rex_feed_xml_file' , true ) ) ;
@@ -95,7 +95,7 @@ class Rex_Product_CPT {
                 $custom_time = $schedule === 'custom' ? get_post_meta( $post_id, 'rex_feed_custom_time', true ) . ':00' : '';
                 $format      = get_option( 'time_format', 'g:i a' );
 
-                echo ucwords( esc_html( $schedule ) );
+                echo esc_html( ucwords( $schedule ) );
                 if( $schedule === 'custom' && $custom_time !== '' ) {
                     $time = date($format, strtotime($custom_time));
                     echo "<br>";
@@ -118,9 +118,9 @@ class Rex_Product_CPT {
                             })(jQuery);
 	                    </script>
 						<?php
-                        echo '<div class="blink">' . ucwords( esc_html( get_post_meta( $post_id, 'rex_feed_status', true ) ) ) . '<span>.</span><span>.</span><span>.</span></div>';
+                        echo '<div class="blink">' . esc_html( ucwords( get_post_meta( $post_id, 'rex_feed_status', true ) ) ) . '<span>.</span><span>.</span><span>.</span></div>';
                     }else {
-                        echo ucwords( esc_html( get_post_meta( $post_id, 'rex_feed_status', true ) ) );
+                        echo esc_html( ucwords( get_post_meta( $post_id, 'rex_feed_status', true ) ) );
                     }
                 }else {
                     echo 'Completed';
@@ -150,11 +150,11 @@ class Rex_Product_CPT {
                 $product_count = $product_count < $total_products[ 'total' ] ? $total_products[ 'total' ] : $product_count;
 
                 echo '<ul style="margin: 0;">';
-                echo '<li><b>' . __('Total products : ', 'rex-product-feed'). esc_html( $total_products[ 'total' ] ) . '/'. esc_html( $product_count ) .'</b></li>';
-                echo '<li><b>' . __('Simple products : ', 'rex-product-feed'). esc_html( $total_products['simple'] ) . '</b></li>';
-                echo '<li><b>' . __('Variable parent : ', 'rex-product-feed'). esc_html( $total_products['variable_parent'] ) . '</b></li>';
-                echo '<li><b>' . __('Variations : ', 'rex-product-feed'). esc_html( $total_products['variable'] ) . '</b></li>';
-                echo '<li><b>' . __('Group products : ', 'rex-product-feed'). esc_html( $total_products['group'] ) . '</b></li>';
+                echo '<li><b>' . esc_html__('Total products : ', 'rex-product-feed'). esc_html( $total_products[ 'total' ] ) . '/'. esc_html( $product_count ) .'</b></li>';
+                echo '<li><b>' . esc_html__('Simple products : ', 'rex-product-feed'). esc_html( $total_products['simple'] ) . '</b></li>';
+                echo '<li><b>' . esc_html__('Variable parent : ', 'rex-product-feed'). esc_html( $total_products['variable_parent'] ) . '</b></li>';
+                echo '<li><b>' . esc_html__('Variations : ', 'rex-product-feed'). esc_html( $total_products['variable'] ) . '</b></li>';
+                echo '<li><b>' . esc_html__('Group products : ', 'rex-product-feed'). esc_html( $total_products['group'] ) . '</b></li>';
                 echo '</ul><b>';
                 break;
             case 'scheduled' :
@@ -168,7 +168,7 @@ class Rex_Product_CPT {
 
                 $schedule = get_post_meta( $post_id, 'rex_feed_schedule', true );
               
-                echo '<div><strong>'.__('Last Updated: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.esc_attr( $formatted_time ).'">'.esc_html($formatted_time).'</span></div></br>';
+                echo '<div><strong>'.esc_html__('Last Updated: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.esc_attr( $formatted_time ).'">'.esc_html($formatted_time).'</span></div></br>';
 
                 $next_update = '';
                 if($schedule === 'hourly') {
@@ -179,7 +179,7 @@ class Rex_Product_CPT {
                     $next_update = date($format, strtotime('+ 7 days', strtotime($last_updated)));
                 }
                 if($schedule !== 'no') {
-                    echo '<div><strong>'.__('Next Schedule: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.esc_attr($next_update).'">'.esc_html($next_update).'</span></div>';
+                    echo '<div><strong>'.esc_html__('Next Schedule: ', 'rex-product-feed').'</strong><span style="text-decoration: dotted underline;" title="'.esc_attr($next_update).'">'.esc_html($next_update).'</span></div>';
                 }
                 break;
         }
