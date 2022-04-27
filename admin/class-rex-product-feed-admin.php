@@ -344,7 +344,7 @@ class Rex_Product_Feed_Admin {
             $html .= 'class="wpfm-purge-cache btn_on_feed">Purge Cache';
             $html .= '<i class="fa fa-spinner fa-pulse fa-fw" style="display: none"></i></button>';
             
-            print esc_html( $html ); // phpcs:ignore
+            print $html; // phpcs:ignore
         }
     }
 
