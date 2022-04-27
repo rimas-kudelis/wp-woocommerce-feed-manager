@@ -216,6 +216,10 @@ class Rex_Product_Feed_Admin {
          */
 
         $db_version = get_option('rex_wpfm_db_version');
+        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+        $get_data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
+        $post_data = isset( $data[ 'post' ] ) ? $data[ 'post' ] : [];
+        $request_data = isset( $data[ 'request' ] ) ? $data[ 'request' ] : [];
 	    if ( $db_version < 3 ) {
             $current_screen = get_current_screen();
 
@@ -224,7 +228,7 @@ class Rex_Product_Feed_Admin {
                     if ( $current_screen->action === 'add' ) {
 	                    $current_screen = 'add';
                     }
-                    elseif ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'edit' ) {
+                    elseif ( isset( $get_data[ 'action' ] ) && $get_data[ 'action' ] === 'edit' ) {
 	                    $current_screen = 'rex_feed_edit';
                     }
                     else {
@@ -378,16 +382,21 @@ class Rex_Product_Feed_Admin {
      * Duplicate posts as draft
      *
      */
-	function wpfm_duplicate_post_as_draft(){
+    public function wpfm_duplicate_post_as_draft(){
         global $wpdb;
-        if (! ( isset( $_GET['post']) || isset( $_POST['post'])  || ( isset($_REQUEST['action']) && 'wpfm_duplicate_post_as_draft' == $_REQUEST['action'] ) ) ) {
-          wp_die('No post to duplicate has been supplied!');
+        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+        $get_data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
+        $post_data = isset( $data[ 'post' ] ) ? $data[ 'post' ] : [];
+        $request_data = isset( $data[ 'request' ] ) ? $data[ 'request' ] : [];
+
+        if (! ( isset( $get_data['post']) || isset( $post_data['post'])  || ( isset($request_data['action']) && 'wpfm_duplicate_post_as_draft' == $request_data['action'] ) ) ) {
+            wp_die('No post to duplicate has been supplied!');
         }
 
-        if (!isset($_GET['duplicate_nonce']) || !wp_verify_nonce(sanitize_text_field($_GET['duplicate_nonce']), basename(__FILE__)))
+        if (!isset($get_data['duplicate_nonce']) || !wp_verify_nonce(sanitize_text_field($get_data['duplicate_nonce']), basename(__FILE__)))
             return;
 
-        $post_id = (isset($_GET['post']) ? absint($_GET['post']) : absint($_POST['post']));
+        $post_id = (isset($get_data['post']) ? absint($get_data['post']) : absint($post_data['post']));
         $post = get_post($post_id);
         $current_user = wp_get_current_user();
         $new_post_author = $current_user->ID;
@@ -856,8 +865,10 @@ class Rex_Product_Feed_Admin {
                     }
 
                     if($product->is_type('variable')) {
-                        $variation_id = $this->wpfm_find_matching_product_variation( $product, $_GET );
-                        $total_get = count($_GET);
+                        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+                        $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
+                        $variation_id = $this->wpfm_find_matching_product_variation( $product, $data );
+                        $total_get = count($data);
                         if($total_get>0 && $variation_id > 0) {
                             $product_id = $variation_id;
                             $variable_product = wc_get_product($variation_id);
@@ -924,7 +935,9 @@ class Rex_Product_Feed_Admin {
                 }
                 elseif (is_search()) {
                     $term = get_queried_object();
-                    $search_term = sanitize_text_field($_GET['s']);
+                    $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+                    $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
+                    $search_term = sanitize_text_field($data['s']);
                     global $wp_query;
                     $product_ids = wp_list_pluck( $wp_query->posts, "ID" );
 
@@ -954,7 +967,9 @@ class Rex_Product_Feed_Admin {
                 }
                 elseif (is_cart() || is_checkout()) {
                     if ( is_checkout() && !empty( is_wc_endpoint_url('order-received') ) ) {
-                        $order_key = sanitize_text_field($_GET['key']);
+                        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+                        $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
+                        $order_key = sanitize_text_field($data['key']);
                         if(!empty($order_key)) {
                             $order_id = wc_get_order_id_by_order_key($order_key);
                             $order = wc_get_order($order_id);
@@ -1016,7 +1031,7 @@ class Rex_Product_Feed_Admin {
                 ?>
             </script>
             <noscript>
-                <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=<?php echo  "$wpfm_fb_pixel_data";?>&ev=PageView&noscript=1"/>
+                <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=<?php echo  esc_attr( "$wpfm_fb_pixel_data" );?>&ev=PageView&noscript=1"/>
             </noscript>
             <!-- End Facebook Pixel Code -->
         <?php }
@@ -1090,7 +1105,7 @@ class Rex_Product_Feed_Admin {
                 <div class="rextheme-black-friday-offer notice notice-warning is-dismissible">
                     <a href="https://rextheme.com/black-friday/?wpfm=1" target="_blank">
                         <div class="bf-banner-container">
-                            <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/black-friday.png'?>" style="max-width: 100%;" alt="black-friday-offer">
+                            <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/black-friday.png' )?>" style="max-width: 100%;" alt="black-friday-offer">
                         </div>
                     </a>
                 </div>
@@ -1108,7 +1123,9 @@ class Rex_Product_Feed_Admin {
     public function is_wpfm_page() {
         global $pagenow;
         global $typenow;
-        $page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : '';
+        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+        $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
+        $page = isset($data['page']) ? sanitize_text_field($data['page']) : '';
         if($typenow == 'product-feed' &&  $pagenow === 'edit.php') {
             return true;
         }
@@ -1158,7 +1175,7 @@ class Rex_Product_Feed_Admin {
 			return $post_id;
 		}
 
-        $data = self::get_sanitized_get_post();
+        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
         $data = isset( $data[ 'post' ] ) ? $data[ 'post' ] : '';
 
         if ( isset( $data[ 'rex_feed_schedule' ] ) ) {
@@ -1264,19 +1281,6 @@ class Rex_Product_Feed_Admin {
 
 
     /**
-     * Gets sanitized $_GET and $_POST data
-     * @return array
-     */
-    public static function get_sanitized_get_post()
-    {
-        return array(
-            'get' => filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'post' => filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS)
-        );
-    }
-
-
-    /**
      * Deletes all available feed files after deleting a feed
      *
      * @param $post_id
@@ -1297,14 +1301,16 @@ class Rex_Product_Feed_Admin {
 
     public function post_rex_feed_rollback() {
         check_admin_referer( 'rex_feed_rollback' );
+        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+        $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
 
         $rollback_versions = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
-        if ( empty( $_GET['version'] ) || ! in_array( $_GET['version'], $rollback_versions ) ) {
+        if ( empty( $data['version'] ) || ! in_array( $data['version'], $rollback_versions ) ) {
             wp_die( esc_html__( 'Error occurred, The version selected is invalid. Try selecting different version.', 'rex-product-feed' ) );
         }
 
         $plugin_slug = WPFM_SLUG;
-        $plugin_version = sanitize_text_field($_GET['version']);
+        $plugin_version = sanitize_text_field($data['version']);
 
         $rollback = new Rex_Feed_Rollback(
             [

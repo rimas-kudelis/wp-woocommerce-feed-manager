@@ -458,7 +458,7 @@
 				</label>
 
 				<?php
-				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_source]' . '" value="' .$utm_source. '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_source' .'">';
+				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_source]' . '" value="' .esc_attr($utm_source). '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_source' .'">';
 				echo '</li>';
 
 				echo '<li>';
@@ -471,7 +471,7 @@
 				</label>
 
 				<?php
-				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_medium]' . '" value="' .$utm_medium. '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_medium' .'">';
+				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_medium]' . '" value="' .esc_attr($utm_medium). '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_medium' .'">';
 				echo '</li>';
 
 				echo '<li>';
@@ -498,7 +498,7 @@
 				</label>
 
 				<?php
-				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_term]' . '" value="' .$utm_term. '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_term' .'">';
+				echo '<input type="text" name="' . esc_html( $this->prefix ) . 'analytics_params[utm_term]' . '" value="' .esc_attr($utm_term). '" id="'. esc_attr( $this->prefix ) . 'analytics_params_utm_term' .'">';
 				echo '</li>';
 
 				echo '<li>';

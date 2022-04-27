@@ -17,6 +17,6 @@
             <?php esc_html_e( 'Update WPFM Database', 'rex-product-feed' ); ?>
         </a>
 
-        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER. 'icon/loader.gif'?>" class="wpfm-db-update-loader">
+        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER. 'icon/loader.gif' )?>" class="wpfm-db-update-loader">
     </p>
 </div>

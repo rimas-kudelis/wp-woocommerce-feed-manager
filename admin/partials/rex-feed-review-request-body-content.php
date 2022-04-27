@@ -3,7 +3,7 @@
 		<div class="request_rating_heading">
 			<h2><?php _e( 'Awesome, you\'ve generated the feed successfully!', 'rex-product-feed' ); ?></h2>
 			<a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank">
-				<img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/star-rating.png'?>"  alt="star-rating">
+				<img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/star-rating.png' )?>"  alt="star-rating">
 			</a>
 		</div>
 		

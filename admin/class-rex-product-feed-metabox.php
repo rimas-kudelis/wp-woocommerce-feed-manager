@@ -27,16 +27,18 @@ class Rex_Product_Metabox
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_settings_section' ) );
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_filters_section' ) );
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_file_section' ) );
+        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+        $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
 
-		$post_id   = isset( $_GET[ 'post' ] ) ? sanitize_text_field($_GET[ 'post' ]) : '';
+		$post_id   = isset( $data[ 'post' ] ) ? sanitize_text_field($data[ 'post' ]) : '';
 		$post_type = $post_id !== '' ? get_post_type( $post_id ) : '';
 
 		if ( $post_type === 'product-feed' ) {
 			$this->rex_feed_trigger_based_review_helper();
         }
 
-        if ( $post_type === '' && isset( $_GET[ 'post_type' ] ) ) {
-            $post_type = sanitize_text_field($_GET[ 'post_type' ]);
+        if ( $post_type === '' && isset( $data[ 'post_type' ] ) ) {
+            $post_type = sanitize_text_field($data[ 'post_type' ]);
         }
         if ( $post_type === 'product-feed' ) {
             $this->rex_feed_new_changes_message();
@@ -57,7 +59,9 @@ class Rex_Product_Metabox
 	 */
 	private function rex_feed_is_google_merchant()
 	{
-		$feed_id = isset( $_GET['post'] ) ? sanitize_text_field($_GET['post']) : '';
+        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+        $data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
+		$feed_id = isset( $data['post'] ) ? sanitize_text_field($data['post']) : '';
 		$merchant = get_post_meta( $feed_id, 'rex_feed_merchant', true );
 		return 'google' === $merchant;
 	}
@@ -271,7 +275,7 @@ class Rex_Product_Metabox
 	 **/
 	public function rex_feed_product_taxonomies()
 	{
-		echo '<div class="rex-feed-product-taxonomies-spinner" style="display: none; "><img src="' . WPFM_PLUGIN_ASSETS_FOLDER . 'icon/loader.gif" alt="spinner" /></div>';
+		echo '<div class="rex-feed-product-taxonomies-spinner" style="display: none; "><img src="' . esc_url( WPFM_PLUGIN_ASSETS_FOLDER ) . 'icon/loader.gif" alt="spinner" /></div>';
 		echo '<div id="rex-feed-product-taxonomies" class="rex-feed-product-taxonomies">';
 		echo '</div>';
 	}
@@ -462,7 +466,7 @@ class Rex_Product_Metabox
 			if ( !( $rex_google_merchant->is_authenticate() ) ) {
 				echo sprintf(
 					'<p class="google-status">%s <a href="%s">' . __( 'Authenticate', 'rex-product-feed' ) . '</a> </p>',
-					$message,
+					esc_html( $message ),
 					admin_url( 'admin.php?page=merchant_settings' ) );
 			}
 			else {

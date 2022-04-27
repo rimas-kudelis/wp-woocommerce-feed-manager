@@ -2,8 +2,10 @@
 require plugin_dir_path( __FILE__ ) . 'loading-spinner.php';
 
 $rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
+$data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+$data = isset( $data[ 'get' ] ) ? $data[ 'get' ] : [];
 
-$page          = isset( $_GET[ 'page' ] ) ? sanitize_text_field($_GET[ 'page' ]) : '';
+$page          = isset( $data[ 'page' ] ) ? sanitize_text_field($data[ 'page' ]) : '';
 $html          = '';
 $disable       = '';
 $client_id     = $rex_google_merchant::$client_id;
@@ -11,9 +13,9 @@ $client_secret = $rex_google_merchant::$client_secret;
 $merchant_id   = $rex_google_merchant::$merchant_id;
 $redirect_uri  = admin_url( 'admin.php?page=merchant_settings' );
 
-if ( isset( $_GET[ 'code' ] ) && $page === 'merchant_settings' ) {
-	$code = sanitize_text_field( $_GET[ 'code' ] );
-	$rex_google_merchant->save_access_token( sanitize_text_field($_GET[ 'code' ]) );
+if ( isset( $data[ 'code' ] ) && $page === 'merchant_settings' ) {
+	$code = sanitize_text_field( $data[ 'code' ] );
+	$rex_google_merchant->save_access_token( sanitize_text_field($data[ 'code' ]) );
 }
 
 if ( !( $rex_google_merchant->is_authenticate() ) ) {
@@ -55,7 +57,7 @@ if ( $client_id && $client_secret && $merchant_id ) {
                             </div>
 
                             <div class="input-field">
-                                <input disabled value="<?php echo $redirect_uri; ?>" id="disabled" type="text" class="validate">
+                                <input disabled value="<?php echo esc_url( $redirect_uri ); ?>" id="disabled" type="text" class="validate">
                                 <label for="disabled"><?php echo __('Redirect URL', 'rex-product-feed'); ?></label>
                             </div>
 

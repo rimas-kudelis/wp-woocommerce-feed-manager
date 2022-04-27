@@ -106,8 +106,8 @@ abstract class Rex_Feed_Abstract_Template {
      */
     private function get_feed_cached_dropdown( $key, $selected = '' ) {
         $product_attribute_dropdown = wpfm_get_cached_data( $key );
-        if ( $selected && strpos( $product_attribute_dropdown, "value='" . $selected . "'" ) !== false ) {
-            $product_attribute_dropdown = str_replace( "value='" . $selected . "'", 'value="' . $selected . '"' . ' selected', $product_attribute_dropdown );
+        if ( $selected && strpos( $product_attribute_dropdown, "value='" . esc_attr($selected) . "'" ) !== false ) {
+            $product_attribute_dropdown = str_replace( "value='" . esc_attr($selected) . "'", 'value="' . esc_attr($selected) . '"' . ' selected', $product_attribute_dropdown );
         }
         return empty( $product_attribute_dropdown ) ? false : $product_attribute_dropdown;
     }
@@ -139,8 +139,8 @@ abstract class Rex_Feed_Abstract_Template {
             $i = $i + 1;
         }
         wpfm_set_cached_data( $key, $drop_down );
-        if ( $selected && strpos( $drop_down, "value='" . $selected . "'" ) !== false ) {
-            $drop_down = str_replace( "value='" . $selected . "'", 'value="' . $selected . '"' . ' selected', $drop_down );
+        if ( $selected && strpos( $drop_down, "value='" . esc_attr($selected) . "'" ) !== false ) {
+            $drop_down = str_replace( "value='" . esc_attr($selected) . "'", 'value="' . esc_attr($selected) . '"' . ' selected', $drop_down );
         }
         return $drop_down;
     }

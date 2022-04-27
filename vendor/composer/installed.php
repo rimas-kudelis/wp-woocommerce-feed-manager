@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '9581f1fa1383af106d53968fbe172907785933f5',
+    'reference' => '55f0103fb67c6c3a800bbd3d3b60badfed67d993',
     'name' => 'rextheme/best-woocommerce-feed',
   ),
   'versions' => 
@@ -63,7 +63,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '9581f1fa1383af106d53968fbe172907785933f5',
+      'reference' => '55f0103fb67c6c3a800bbd3d3b60badfed67d993',
     ),
     'roundcube/plugin-installer' => 
     array (

@@ -6,11 +6,11 @@
 <div
         id="wpfm-black-friday-notice"
         class="wpfm-black-friday-notice notice notice-success is-dismissible"
-        style="background-image: url(<?php echo WPFM_PLUGIN_DIR_URL .'admin/icon/bf_bg.png'?>); padding: 10px 0; background-repeat: no-repeat; background-size: cover;"
+        style="background-image: url(<?php echo esc_url( WPFM_PLUGIN_DIR_URL .'admin/icon/bf_bg.png' )?>); padding: 10px 0; background-repeat: no-repeat; background-size: cover;"
 >
     <div class="wpfm-bf-wrapper">
         <div class="wpfm-logo">
-            <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER .'icon/wpfm_logo.png'?>" alt="wpfm-black-friday">
+            <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER .'icon/wpfm_logo.png') ?>" alt="wpfm-black-friday">
         </div>
         <div class="wpfm-bf-text">
             <p><?php echo __('Upgrade to pro with a', 'rex-product-feed') ?></p>

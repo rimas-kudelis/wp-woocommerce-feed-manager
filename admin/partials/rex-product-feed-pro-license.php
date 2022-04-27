@@ -182,8 +182,8 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
 
                                                 if ( ! empty( $messages ) ) {
                                                     foreach( $messages as $message ) {
-                                                        $html .= '<div class="wpfm-license-data wpfm-license-' . $class . ' ' . $license_status . '">';
-                                                        $html .= '<p><em>' . $message . '</em></p>';
+                                                        $html .= '<div class="wpfm-license-data wpfm-license-' . esc_attr($class) . ' ' . esc_attr($license_status) . '">';
+                                                        $html .= '<p><em>' . esc_html($message) . '</em></p>';
                                                         $html .= '</div>';
                                                     }
                                                     echo $html;
@@ -224,11 +224,11 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
 
                 <div class="rex-licenes__logo-area">
                     <div class="rex-licenes__logo">
-                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm_logo.png'?>" class="title-icon" alt="wpfm-logo">
+                        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm_logo.png' )?>" class="title-icon" alt="wpfm-logo">
                     </div>
 
                     <div class="rex-licenes__btn-area">
-                        <a class="btn-default" href="<?php echo apply_filters('wpfm_license_link', 'https://rextheme.com/your-account/#purchase'); ?>" target="_blank"><?php echo __('Manage License', 'rex-product-feed-pro')?></a>
+                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_license_link', 'https://rextheme.com/your-account/#purchase') ); ?>" target="_blank"><?php echo __('Manage License', 'rex-product-feed-pro')?></a>
                     </div>
 
                 </div>
@@ -243,7 +243,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                 <div class="single-block">
 
                     <div class="header">
-                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/document.png'?>" class="title-icon" alt="bwf-documentation">
+                        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/document.png' )?>" class="title-icon" alt="bwf-documentation">
                         <h4><?php echo __('Documentations', 'rex-product-feed-pro')?></h4>
                     </div>
 
@@ -252,14 +252,14 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                             <?php echo __('Get started by spending some time with the documentation and generate flawless product feed for major online marketplaces within minutes.', 'rex-product-feed-pro')?>
                         </p>
 
-                        <a class="btn-default" href="<?php echo apply_filters('wpfm_document_link', 'https://rextheme.com/docs-category/product-feed-manager/'); ?>" target="_blank"><?php echo __('Documentation', 'rex-product-feed-pro')?></a>
+                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_document_link', 'https://rextheme.com/docs-category/product-feed-manager/') ); ?>" target="_blank"><?php echo __('Documentation', 'rex-product-feed-pro')?></a>
                     </div>
                 </div>
                 <!-- single-block one-->
 
                 <div class="single-block">
                     <div class="header">
-                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/support.png'?>" class="title-icon" alt="bwf-documentation">
+                        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/support.png')?>" class="title-icon" alt="bwf-documentation">
                         <h4><?php echo __('Support', 'rex-product-feed-pro')?></h4>
 
                     </div>
@@ -269,14 +269,14 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                             <?php echo __('Can’t find solution with our documentation? Just post a ticket. Our professional team is here to solve your problems.', 'rex-product-feed-pro')?>
                         </p>
 
-                        <a class="btn-default" href="<?php echo apply_filters('wpfm_support_link', 'https://rextheme.com/your-account/?active_tab=support'); ?>" target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed-pro')?></a>
+                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_support_link', 'https://rextheme.com/your-account/?active_tab=support') ); ?>" target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed-pro')?></a>
                     </div>
                 </div>
                 <!-- single-block two -->
 
                 <div class="single-block popular">
                     <div class="header">
-                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/rating.png'?>" class="title-icon" alt="bwf-documentation">
+                        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/rating.png' )?>" class="title-icon" alt="bwf-documentation">
                         <h4><?php echo __('Show Your Love', 'rex-product-feed-pro')?></h4>
                     </div>
 
@@ -285,7 +285,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                             <?php echo __('We love to have you in Best WooCommerce feed family. Take your 2 minutes to review and speed the love to encourage us to keep it going.', 'rex-product-feed-pro')?>
                         </p>
 
-                        <a class="btn-default" href="<?php echo apply_filters('wpfm_review_link', 'https://wordpress.org/plugins/best-woocommerce-feed/#reviews ') ?>" target="_blank"><?php echo __('Leave A Review', 'rex-product-feed-pro')?> </a>
+                        <a class="btn-default" href="<?php echo esc_url( apply_filters('wpfm_review_link', 'https://wordpress.org/plugins/best-woocommerce-feed/#reviews ') ) ?>" target="_blank"><?php echo __('Leave A Review', 'rex-product-feed-pro')?> </a>
                     </div>
                 </div>
                 <!-- single-block three -->

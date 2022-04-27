@@ -1,5 +1,5 @@
 <?php
-echo '<div id="'.$this->prefix.'features_text">';
+echo '<div id="'.esc_attr($this->prefix).'features_text">';
 echo '<h2>'. __( 'Why upgrade to Premium Version?', 'rex-product-feed' ) .'</h2>';
 echo '<ol class="parent">';
 echo '<li class="item">' . __( 'Supports more than 50 products.', 'rex-product-feed' ) . '</li>';

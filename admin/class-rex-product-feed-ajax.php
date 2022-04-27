@@ -1230,16 +1230,18 @@ class Rex_Product_Feed_Ajax {
 	 * @return bool[]
 	 */
     public static function rex_feed_check_for_missing_attributes() {
-        $nonce = isset( $_POST[ 'security' ] ) ? $_POST[ 'security' ] : '';
+        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+        $data = isset( $data[ 'post' ] ) ? $data[ 'post' ] : [];
+        $nonce = isset( $data[ 'security' ] ) ? $data[ 'security' ] : '';
 
         if ( wp_verify_nonce( $nonce, 'rex-wpfm-ajax' ) ) {
             $feed_config = [];
-            $config = isset( $_POST[ 'payload' ][ 'feed_config' ] ) ? $_POST[ 'payload' ][ 'feed_config' ] : '';
+            $config = isset( $data[ 'payload' ][ 'feed_config' ] ) ? $data[ 'payload' ][ 'feed_config' ] : '';
             parse_str( $config, $feed_config );
             $feed_config = isset( $feed_config[ 'fc' ] ) ? $feed_config[ 'fc' ] : '';
-            $feed_config = filter_var_array( $feed_config, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             $feed_attr = [];
             if ( is_array( $feed_config ) ) {
+                $feed_config = filter_var_array( $feed_config, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                 array_shift( $feed_config );
                 $feed_attr = array_column( $feed_config, 'attr' );
             }

@@ -43,7 +43,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                     <h2><?php echo __('Go Premium', 'rex-product-feed') ?></h2>
                     <p>
                         <?php
-                        echo sprintf(__('Purchase our <a href="%s" target="_blank" title="Click to Upgrade Pro">premium version</a> to unlock these pro components!', 'rex-product-feed'), $pro_url);
+                        echo sprintf(__('Purchase our <a href="%s" target="_blank" title="Click to Upgrade Pro">premium version</a> to unlock these pro components!', 'rex-product-feed'), esc_url( $pro_url ));
 
                         ?>
                     </p>
@@ -249,14 +249,14 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <div class="rex-general__single-block-area">
                                         <div class="rex-general__single-block banner-block">
                                             <div class="onboarding-block">
-                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm-banner.png' ?>"
+                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm-banner.png' ) ?>"
                                                      alt="rex-banner">
                                             </div>
                                         </div>
 
                                         <div class="rex-general__logo-block">
                                             <div class="upgrade-pro">
-                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm_logo.png' ?>" alt="wpfm-logo" class="img-fluid">
+                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm_logo.png' ) ?>" alt="wpfm-logo" class="img-fluid">
 
                                                 <?php if (!$is_premium_activated) { ?>
                                                     <a class="btn-default"
@@ -290,7 +290,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <div class="rex-general__single-block-category">
                                         <div class="rex-general__single-block">
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/document.png' ?>"
+                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/document.png' ) ?>"
                                                      class="title-icon" alt="documentation">
                                                 <h4><?php echo __('Documentation', 'rex-product-feed') ?></h4>
                                             </div>
@@ -301,7 +301,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                                 </p>
 
                                                 <a class="btn-default"
-                                                   href="<?php echo apply_filters('wpfm_document_link', 'https://rextheme.com/docs-category/product-feed-manager/'); ?>"
+                                                   href="<?php echo esc_url( apply_filters('wpfm_document_link', 'https://rextheme.com/docs-category/product-feed-manager/') ); ?>"
                                                    target="_blank"><?php echo __('Documentation', 'rex-product-feed') ?></a>
                                             </div>
                                         </div>
@@ -310,7 +310,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         <div class="rex-general__single-block popular">
 
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/support.png' ?>"
+                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/support.png' ) ?>"
                                                      class="title-icon" alt="support">
                                                 <h4><?php echo __('Support', 'rex-product-feed') ?></h4>
                                             </div>
@@ -321,7 +321,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                                 </p>
 
                                                 <a class="btn-default"
-                                                   href="<?php echo apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0') ?>"
+                                                   href="<?php echo esc_url( apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0') ) ?>"
                                                    target="_blank"><?php echo __('Post a Ticket', 'rex-product-feed') ?> </a>
                                             </div>
 
@@ -331,7 +331,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         <div class="rex-general__single-block">
 
                                             <div class="header">
-                                                <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/rating.png' ?>"
+                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/rating.png' ) ?>"
                                                      class="title-icon" alt="rating">
                                                 <h4><?php echo __('Show Your Love', 'rex-product-feed') ?></h4>
                                             </div>
@@ -342,7 +342,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                                 </p>
 
                                                 <a class="btn-default"
-                                                   href="<?php echo apply_filters('wpfm_review_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post') ?>"
+                                                   href="<?php echo esc_url( apply_filters('wpfm_review_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post') ) ?>"
                                                    target="_blank"><?php echo __('Leave A Review ', 'rex-product-feed') ?> </a>
 
                                             </div>
@@ -364,7 +364,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
 
                                 <div class="rex-general__single-block cart">
                                     <div class="header">
-                                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/Cart-Lift.png' ?>"
+                                        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/Cart-Lift.png' ) ?>"
                                              class="title-icon" alt="cart-lift">
                                         <h4><?php echo __('Cart Lift', 'rex-product-feed') ?></h4>
                                     </div>
@@ -373,7 +373,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         <p><?php _e('Recover your abandoned cart customers with automated e-mail drip campaigns. Enjoy immediate increase in your sales..', 'rex-product-feed'); ?></p>
 
                                         <a class="btn-default"
-                                           href="<?php echo apply_filters('wpfm_cart_link', 'https://wordpress.org/plugins/cart-lift/'); ?>"
+                                           href="<?php echo esc_url( apply_filters('wpfm_cart_link', 'https://wordpress.org/plugins/cart-lift/') ); ?>"
                                            target="_blank"><?php echo __('Get It Now', 'rex-product-feed') ?></a>
                                     </div>
                                 </div>
@@ -381,7 +381,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
 
                                 <div class="rex-general__single-block vas">
                                     <div class="header">
-                                        <img src="<?php echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfunnels-logo.png' ?>"
+                                        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfunnels-logo.png' ) ?>"
                                              class="title-icon" alt="variation-swatch">
                                         <h4><?php echo __('WPFunnels', 'rex-product-feed') ?></h4>
                                     </div>
@@ -389,7 +389,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <div class="body">
                                         <p><?php _e('Create highly converting Sales Funnels within WordPress using a visual drag and drop funnel builder and increase your online sales revenue easily.', 'rex-product-feed'); ?></p>
                                         <a class="btn-default"
-                                           href="<?php echo apply_filters('wpfm_wpfunnels_link', 'https://wordpress.org/plugins/wpfunnels/'); ?>"
+                                           href="<?php echo esc_url( apply_filters('wpfm_wpfunnels_link', 'https://wordpress.org/plugins/wpfunnels/') ); ?>"
                                            target="_blank"><?php echo __('Get It Now', 'rex-product-feed') ?></a>
                                     </div>
                                 </div>
@@ -451,25 +451,25 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         }
                                     }
                                     ?>
-                                    <div class="single-merchant <?php echo $pro_cls; ?>">
+                                    <div class="single-merchant <?php echo esc_attr( $pro_cls ); ?>">
                                         <?php if ($show_pro) { ?>
-                                            <a href="<?php echo $pro_url; ?>" target="_blank"
+                                            <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank"
                                                title="Click to Upgrade Pro" class="wpfm-pro-cta">
                                                 <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
                                             </a>
                                         <?php } ?>
 
-                                        <span class="title"><?php echo $merchant['name']; ?></span>
+                                        <span class="title"><?php echo esc_html( $merchant['name'] ); ?></span>
 <!--                                        --><?php
 //                                        $checked = $merchant['status'] ? 'checked' : '';
 //                                        $is_free = $merchant['free'] ? true : false;
 //                                        $name = $merchant['name'];
 //
 //                                        ?>
-<!--                                        <div class="switch --><?php //echo $disabled; ?><!--">-->
+<!--                                        <div class="switch --><?php //esc_attr( $disabled ); ?><!--">-->
 <!--                                            <div class="wpfm-switcher">-->
 <!--                                                <input class="switch-input merchant-change"-->
-<!--                                                       type="checkbox" --><?php //echo $checked; ?><!-- --><?php //echo $disabled; ?>
+<!--                                                       type="checkbox" --><?php //esc_attr( $checked ); ?><!-- --><?php //esc_attr( $disabled ); ?>
 <!--                                                       id="switcher---><?php //echo strtolower($key); ?><!--"-->
 <!--                                                       data-value="--><?php //echo $key; ?><!--"-->
 <!--                                                       data-is-free="--><?php //echo $is_free; ?><!--"-->
@@ -498,12 +498,12 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                             <h3 class="merchant-title"><?php echo __('Controls', 'rex-product-feed'); ?> </h3>
 
                             <div class="single-merchant product-batch">
-                                <span class="title"><?php echo __('Product(s) per batch (Free users cannot generate more than '.WPFM_FREE_MAX_PRODUCT_LIMIT.' products. For free users it will run only 1 batch)', 'rex-product-feed'); ?></span>
+                                <span class="title"><?php echo __('Product(s) per batch (Free users cannot generate more than '.esc_attr( WPFM_FREE_MAX_PRODUCT_LIMIT ).' products. For free users it will run only 1 batch)', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <form id="wpfm-per-batch" class="wpfm-per-batch">
                                         <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch"
-                                               value="<?php echo $per_batch; ?>"
-                                               min="1" <?php echo !$is_premium_activated ? "max='".WPFM_FREE_MAX_PRODUCT_LIMIT."'" : '' ?>>
+                                               value="<?php echo esc_attr( $per_batch ); ?>"
+                                               min="1" <?php echo !$is_premium_activated ? "max='".esc_attr( WPFM_FREE_MAX_PRODUCT_LIMIT )."'" : '' ?>>
                                         <button type="submit" class="save-batch"><span>save</span> <i
                                                     class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                     </form>
@@ -527,7 +527,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     ?>
                                     <div class="wpfm-switcher">
                                         <input class="switch-input" type="checkbox"
-                                               id="wpfm_fb_pixel" <?php echo $checked; ?>>
+                                               id="wpfm_fb_pixel" <?php echo esc_attr( $checked ); ?>>
                                         <label class="lever" for="wpfm_fb_pixel"></label>
                                     </div>
                                 </div>
@@ -543,18 +543,18 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     ?>
                                     <div class="wpfm-switcher">
                                         <input class="switch-input" type="checkbox"
-                                               id="wpfm_enable_log" <?php echo $checked; ?>>
+                                               id="wpfm_enable_log" <?php echo esc_attr( $checked ); ?>>
                                         <label class="lever" for="wpfm_enable_log"></label>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="single-merchant wpfm-fb-pixel-field <?php echo $hidden_class; ?>">
+                            <div class="single-merchant wpfm-fb-pixel-field <?php echo esc_attr( $hidden_class ); ?>">
                                 <span class="title"><?php echo __('Facebook Pixel id', 'rex-product-feed'); ?></span>
                                 <div class="switch">
                                     <form id="wpfm-fb-pixel" class="wpfm-fb-pixel" style="width: 300px;">
                                         <input id="wpfm_fb_pixel" type="text" name="wpfm_fb_pixel"
-                                               value="<?php echo $wpfm_fb_pixel_data; ?>" style="width: 200px;">
+                                               value="<?php echo esc_attr( $wpfm_fb_pixel_data ); ?>" style="width: 200px;">
                                         <button type="submit" class="save-fb-pixel"><span>save</span> <i
                                                     class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                     </form>
@@ -563,7 +563,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
 
                             <div class="single-merchant exclude-tax <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
                                 <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro"
+                                    <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
                                        class="wpfm-pro-cta">
                                         <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
                                     </a>
@@ -582,9 +582,9 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         $checked = $exclude_tax === 'yes' ? 'checked' : '';
                                     }
                                     ?>
-                                    <div class="wpfm-switcher <?php echo $disabled; ?>">
+                                    <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-exclude-tax" <?php echo $checked; ?> <?php echo $disabled; ?>>
+                                               id="rex-product-exclude-tax" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-exclude-tax"></label>
                                     </div>
                                 </div>
@@ -592,7 +592,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
 
                             <div class="single-merchant unique-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
                                 <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro"
+                                    <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
                                        class="wpfm-pro-cta">
                                         <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
                                     </a>
@@ -609,9 +609,9 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         $checked = $custom_field === 'yes' ? 'checked' : '';
                                     }
                                     ?>
-                                    <div class="wpfm-switcher <?php echo $disabled; ?>">
+                                    <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-custom-field" <?php echo $checked; ?> <?php echo $disabled; ?>>
+                                               id="rex-product-custom-field" <?php esc_attr( $checked ); ?> <?php esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-custom-field"></label>
                                     </div>
                                 </div>
@@ -621,7 +621,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
 
                             <div class="single-merchant increase-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
                                 <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro"
+                                    <a href="<?php esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
                                        class="wpfm-pro-cta">
                                         <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
                                     </a>
@@ -641,9 +641,9 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         $checked = $structured_data === 'yes' ? 'checked' : '';
                                     }
                                     ?>
-                                    <div class="wpfm-switcher <?php echo $disabled; ?>">
+                                    <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-structured-data" <?php echo $checked; ?> <?php echo $disabled; ?>>
+                                               id="rex-product-structured-data" <?php esc_attr( $checked ); ?> <?php esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-structured-data"></label>
                                     </div>
                                 </div>
@@ -651,7 +651,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
 
                             <div class="single-merchant detailed-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
                                 <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php echo $pro_url; ?>" target="_blank" title="Click to Upgrade Pro"
+                                    <a href="<?php esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
                                        class="wpfm-pro-cta">
                                         <span class="wpfm-pro-tag"><?php echo __('pro', 'rex-product-feed'); ?></span>
                                     </a>
@@ -668,9 +668,9 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         $checked = $pa_field === 'yes' ? 'checked' : '';
                                     }
                                     ?>
-                                    <div class="wpfm-switcher <?php echo $disabled; ?>">
+                                    <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-pa-field" <?php echo $checked; ?> <?php echo $disabled; ?>>
+                                               id="rex-product-pa-field" <?php esc_attr( $checked ); ?> <?php esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-pa-field"></label>
                                     </div>
                                 </div>
@@ -683,9 +683,9 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     $disabled = '';
                                     $checked = $wpfm_allow_private_products === 'yes' ? 'checked' : '';
                                     ?>
-                                    <div class="wpfm-switcher <?php echo $disabled; ?>">
+                                    <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-allow-private" <?php echo $checked; ?> <?php echo $disabled; ?>>
+                                               id="rex-product-allow-private" <?php esc_attr( $checked ); ?> <?php esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-allow-private"></label>
                                     </div>
                                 </div>
@@ -720,7 +720,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <select id="wpfm_rollback_options" name="wpfm_rollback_options">
                                         <?php
                                         foreach ( $rollback_versions as $version ) {
-                                            echo "<option value='{$version}'>$version</option>";
+                                            echo "<option value='".esc_attr( $version )."'>".esc_html($version)."</option>";
                                         }
                                         ?>
                                     </select>
@@ -774,7 +774,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <td>
                                         <?php
                                         if ($status['php_version_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . $status['php_version'] . '</mark> ';
+                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['php_version'] ) . '</mark> ';
                                         } else {
                                             echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - We recommend using PHP version 7.2 or above for greater performance and security.', 'rex-product-feed'), esc_html($status['php_version'])) . '</mark>';
                                         }
@@ -786,7 +786,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <td>
                                         <?php
                                         if ($status['wp_version_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . $status['wp_version'] . '</mark> ';
+                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['wp_version'] ) . '</mark> ';
                                         } else {
                                             echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - WP version above 4 is required. ', 'rex-product-feed'), esc_html($status['wp_version'])) . '</mark>';
                                         }
@@ -798,7 +798,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <td>
                                         <?php
                                         if ($status['wc_version_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . $status['wc_version'] . '</mark> ';
+                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['wp_version'] ) . '</mark> ';
                                         } else {
                                             echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - WC version above 4 is required. ', 'rex-product-feed'), esc_html($status['wc_version'])) . '</mark>';
                                         }
@@ -810,7 +810,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <td>
                                         <?php
                                         if ($status['memory_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . $status['memory'] . '</mark> ';
+                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['memory'] ) . '</mark> ';
                                         } else {
                                             echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - We recommend setting memory to at least 64MB. See: %2$s', 'rex-product-feed'), esc_html($status['memory']), '<a href="https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP" target="_blank">' . esc_html__('Increasing memory allocated to PHP', 'rex-product-feed') . '</a>') . '</mark>';
                                         }
@@ -822,7 +822,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <td>
                                         <?php
                                         if ($status['upload_limit_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . $status['upload_limit'] . '</mark> ';
+                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['upload_limit'] ) . '</mark> ';
                                         } else {
                                             echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - We recommend upload limit to at least 64MB.', 'rex-product-feed'), esc_html($status['upload_limit']) . '</a>') . '</mark>';
                                         }
@@ -898,7 +898,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                         echo '<select id="wpfm-error-log" name="wpfm-error-log">';
                         echo '<option value="">Please Select</option>';
                         foreach ($wpfm_logs as $key => $value) {
-                            echo '<option value="' . $value . '">' . $value . '</option>';
+                            echo '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
                         }
                         echo '<select>';
                         echo '<button type="submit" class="btn-default">' . __('View log', 'rex-product-feed') . '</button>';
