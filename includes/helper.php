@@ -1620,15 +1620,18 @@ if ( ! function_exists( 'rex_feed_get_grouped_price' ) ) {
 
 if ( !function_exists( 'rex_feed_get_sanitized_get_post' ) ) {
     /**
-     * Gets sanitized $_GET and $_POST data
+     * Gets sanitized $_GET and $_POST data or given data
      * @return array
      */
-    function rex_feed_get_sanitized_get_post()
+    function rex_feed_get_sanitized_get_post( $data = [] )
     {
+        if ( is_array( $data ) && !empty( $data ) ) {
+            return filter_var_array( $data, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        }
         return array(
             'get' => filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'post' => filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'request' => filter_var( $_REQUEST, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'request' => filter_var_array( $_REQUEST, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
         );
     }
 }

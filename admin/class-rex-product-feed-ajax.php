@@ -1223,28 +1223,28 @@ class Rex_Product_Feed_Ajax {
     }
 
 
-	/**
+    /**
      * Checks if there's any required attribute missing in Google Shopping Feed
-     *
-	 * @param $payload
-	 * @return bool[]
-	 */
+     * @return void
+     */
     public static function rex_feed_check_for_missing_attributes() {
-        $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
-        $data = isset( $data[ 'post' ] ) ? $data[ 'post' ] : [];
-        $nonce = isset( $data[ 'security' ] ) ? $data[ 'security' ] : '';
+        $nonce = isset( $_POST[ 'security' ] ) ? htmlspecialchars( trim( $_POST[ 'security' ] ) ) : ''; // phpcs:ignore
 
         if ( wp_verify_nonce( $nonce, 'rex-wpfm-ajax' ) ) {
             $feed_config = [];
-            $config = isset( $data[ 'payload' ][ 'feed_config' ] ) ? $data[ 'payload' ][ 'feed_config' ] : '';
+            $config = isset( $_POST[ 'payload' ][ 'feed_config' ] ) ? $_POST[ 'payload' ][ 'feed_config' ] : ''; // phpcs:ignore
             parse_str( $config, $feed_config );
+
+            $feed_config = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post( $feed_config ) : [];
             $feed_config = isset( $feed_config[ 'fc' ] ) ? $feed_config[ 'fc' ] : '';
             $feed_attr = [];
+
             if ( is_array( $feed_config ) ) {
                 $feed_config = filter_var_array( $feed_config, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                 array_shift( $feed_config );
                 $feed_attr = array_column( $feed_config, 'attr' );
             }
+
             $required_attr = array('id', 'title', 'description', 'link', 'image_link', 'availability', 'price', 'brand', 'gtin', 'mpn');
             $labels = array
             (

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.9
 Requires PHP: 7.0
-Stable tag:  7.2.0
+Stable tag:  7.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -708,6 +708,10 @@ WP Dashboard > Product Feed > Upgrade.
 == Changelog ==
 
 = 7.2.0 (2022-04-21) =
+* Fixed: HTML markup fixed
+* Fixed: Google Shopping required attributes wrong warning issue fixed
+
+= 7.2.0 (2022-04-21) =
 * Added: Rollback option added for the Free version
 * Added: Include variation images in the feed attribute value added
 * Added: Five more Mirakl custom attributes added to the Mirakl merchant template
@@ -736,11 +740,14 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Ceneo feed template updated
 * Fixed: UPI activation issue
 
+
 = 7.0.9 (2022-02-07) =
 * Fixed: UPI info missing for the product variations issue fix
 
+
 = 7.0.8 (2022-01-31) =
 * Fixed: Multiple variations included with custom filter issue fixed
+
 
 = 7.0.7 (2022-01-27) =
 * Added: How to guide and Troubleshoot section added

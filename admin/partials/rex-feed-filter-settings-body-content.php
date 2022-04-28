@@ -7,8 +7,10 @@ $troubleshoot_url = 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-i
     <span class="rex_feed-tooltip">
         <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-question.php';?>
         <p>
-            <?php esc_html_e( '1) Select your preferred merchant from the feed merchant dropdown list<br>', 'rex-product-feed' )?>
-            <?php esc_html_e( '2) Configure the feed attributes<br>', 'rex-product-feed' )?>
+            <?php esc_html_e( '1) Select your preferred merchant from the feed merchant dropdown list', 'rex-product-feed' )?>
+            <br>
+            <?php esc_html_e( '2) Configure the feed attributes', 'rex-product-feed' )?>
+            <br>
             <?php esc_html_e( '3) Click on Publish/Update button to start generating the feed', 'rex-product-feed' )?>
         </p>
     </span>

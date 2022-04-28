@@ -484,7 +484,7 @@ class Rex_Product_Metabox
 	 */
 	public function rex_feed_google_merchant_desc()
 	{
-		echo sprintf( esc_attr__( '<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed' ) );
+		echo sprintf( __( '<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed' ) ); // phpcs:ignore
 	}
 
 

@@ -731,7 +731,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                         esc_html__( 'Reinstall', 'rex-product-feed' )
                                     );
                                     ?>
-                                    <span class="helper-text"><?php esc_html_e( 'Warning: Please backup your database before making the rollback.', 'rex-product-feed' ); ?></span>
+                                    <span class="helper-text"><?php _e( '<b>Warning:</b> Please backup your database before making the rollback.', 'rex-product-feed' ); // phpcs:ignore ?></span>
                                 </div>
                             </div>
                         </div>
