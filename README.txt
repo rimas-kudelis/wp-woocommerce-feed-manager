@@ -707,7 +707,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 7.2.0 (2022-04-21) =
+= 7.2.1 (2022-04-28) =
 * Fixed: HTML markup fixed
 * Fixed: Google Shopping required attributes wrong warning issue fixed
 
