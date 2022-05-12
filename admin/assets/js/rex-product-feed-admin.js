@@ -387,6 +387,8 @@
 
     $( document ).on( 'change', '#wpfm_fb_pixel', enable_fb_pixel );
 
+    $( document ).on( 'change', '#remove_plugin_data', remove_plugin_data );
+
     $( document ).on( 'change', '#wpfm_enable_log', wpfm_enable_log );
 
     $( document ).on( 'change', '#rex-product-allow-private', allow_private );
@@ -1007,7 +1009,7 @@
 
         $( '.progressbar-bar' ).animate( {
             width: Math.ceil( width ) + '%'
-        }, 1000 );
+        }, 500 );
         $( '.progressbar-bar-percent' ).html( Math.ceil( width ) + '%' );
         return deferred.promise();
     }
@@ -1332,6 +1334,33 @@
                 } else {
                     $( '.wpfm-fb-pixel-field' ).addClass( 'is-hidden' );
                 }
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh!' );
+                console.log( response.statusText );
+            } );
+    }
+
+    /**
+     * Update option for plugin data removal
+     * @param event
+     */
+    function remove_plugin_data( event ) {
+        event.preventDefault();
+        var payload = {};
+        if ( $( this ).is( ":checked" ) ) {
+            payload = {
+                wpfm_remove_plugin_data: 'yes',
+            };
+        } else {
+            payload = {
+                wpfm_remove_plugin_data: 'no',
+            };
+        }
+        wpAjaxHelperRequest( 'wpfm-remove-plugin-data', payload )
+            .success( function ( response ) {
+                console.log( 'Saved' );
+                console.log( response.statusText );
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );

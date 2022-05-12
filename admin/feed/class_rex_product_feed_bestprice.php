@@ -123,7 +123,7 @@ class Rex_Product_Feed_Bestprice extends Rex_Product_Feed_Abstract_Generator
 
             if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle')) {
                 $simple_products[] = $productId;
-                $this->add_to_feed( $variation_products, $product_meta_keys );
+                $this->add_to_feed( $product, $product_meta_keys );
             }
 
             if ($this->product_scope === 'all' || $this->product_scope == 'product_filter' || $this->product_scope == 'filter') {

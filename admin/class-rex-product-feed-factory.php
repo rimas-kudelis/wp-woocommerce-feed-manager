@@ -12,11 +12,8 @@
 class Rex_Product_Feed_Factory {
 
     private static $other_merchants;
-
     private static $google_format;
-
     private static $facebook_format;
-
     private static $ibud_format;
     private static $mirakl_format;
     private static $bestprice_format;
@@ -183,7 +180,7 @@ class Rex_Product_Feed_Factory {
                 'bol',
                 'leguide',
                 'connexity',
-                'drm'
+                'drm',
             )
         );
         self::$google_format = array(

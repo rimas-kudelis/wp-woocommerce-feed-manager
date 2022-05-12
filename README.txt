@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.9
 Requires PHP: 7.0
-Stable tag:  7.2.1
+Stable tag:  7.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,17 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.2.2 (2022-05-12) =
+* Added: Rollback option not working issue fixed
+* Added: Remove all PFM plugin data option added
+* Added: Hotline merchant template added
+* Added: Rozetka merchant template added
+* Fixed: Remove jQuery Cookie CDN issue fixed
+* Fixed: Bing Text File Delimiter White Space issue fixed
+* Fixed: Product attribute and variation attribute issue fixed
+* Fixed: Google Reviews wrong timestamp format issue fixed
+* Fixed: Old feed settings overlay issue fixed
 
 = 7.2.1 (2022-04-28) =
 * Fixed: HTML markup fixed

@@ -900,7 +900,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
 //        add_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );
-        add_filter( 'posts_where', array( $this, 'wpfm_custom_wpml_where_queries' ), 10, 2 );
+        add_filter( 'posts_where', array( $this, 'wpfm_custom_language_where_queries' ), 10, 2 );
+        add_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
         /*if ( $this->variations ) {
             add_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
             add_filter( 'posts_request', array( $this, 'wpfm_get_custom_requests' ) );
@@ -926,7 +927,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
 //        remove_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );
-        remove_filter( 'posts_where', array( $this, 'wpfm_custom_wpml_where_queries' ) );
+        remove_filter( 'posts_where', array( $this, 'wpfm_custom_language_where_queries' ) );
+        remove_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
         /*if( $this->variations ) {
             remove_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
             remove_filter( 'posts_request', array( $this, 'wpfm_get_custom_requests' ) );
@@ -972,12 +974,19 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * @param $query
      * @return array|mixed|string|string[]
      */
-    public function wpfm_custom_wpml_where_queries( $where, $query ) {
+    public function wpfm_custom_language_where_queries( $where, $query ) {
         if ( wpfm_is_wpml_active() ) {
             global $sitepress;
             $search = "language_code = '".$sitepress->get_default_language()."'";
             $replace = "language_code = '".$this->wpml_language."'";
             return str_replace( $search, $replace, $where );
+        }
+        if ( wpfm_is_polylang_active() && $this->bypass ) {
+            global $wpdb;
+            $polylang = get_the_terms( $this->id, 'language' );
+            $polylang = array_column($polylang, 'term_id');
+            $polylang = implode( ', ', $polylang );
+            $where .= " AND {$wpdb->prefix}term_relationships.term_taxonomy_id IN({$polylang}) ";
         }
         return $where;
     }
@@ -1008,16 +1017,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     public function wpfm_get_custom_join_query( $join )
     {
-        global $wpdb;
-        $join .= "INNER JOIN {$wpdb->posts} AS p2 ON (({$wpdb->posts}.post_parent = p2.ID ";
-        $join .= "AND {$wpdb->posts}.post_type = 'product_variation' ";
-        $join .= "AND {$wpdb->posts}.post_parent != 0 ";
-        $join .= "AND p2.post_status = 'publish' ";
-        $join .= $this->private_product ? "OR p2.post_status = 'private' " : '';
-        $join .= "AND p2.post_status = 'publish' ";
-        $join .= "AND {$wpdb->posts}.post_status = 'publish'";
-        $join .= $this->private_product ? "OR {$wpdb->posts}.post_status = 'private') " : ') ';
-        $join .= "OR ({$wpdb->posts}.post_type = 'product' AND {$wpdb->posts}.post_status = 'publish'))";
+        if ( wpfm_is_polylang_active() && $this->bypass ) {
+            global $wpdb;
+            $join .= "LEFT JOIN wp_term_relationships ";
+            $join .= "ON ({$wpdb->prefix}posts.ID = {$wpdb->prefix}term_relationships.object_id)";
+        }
         return $join;
     }
 
@@ -2319,6 +2323,20 @@ abstract class Rex_Product_Feed_Abstract_Generator
             if($this->batch == $this->tbatch) {
                 $this->item_wrapper = '<PRODUCT>';
                 $this->feed_string_footer .= '</PRODUCTS></STORE>';
+            }
+        }elseif ($this->merchant === 'hotline') {
+            $node = $feed->getElementsByTagName("item");
+
+            if($this->batch == $this->tbatch) {
+                $this->item_wrapper = '<item>';
+                $this->feed_string_footer .= '</items></price>';
+            }
+        }elseif ($this->merchant === 'rozetka') {
+            $node = $feed->getElementsByTagName("offer");
+
+            if($this->batch == $this->tbatch) {
+                $this->item_wrapper = '<offer>';
+                $this->feed_string_footer .= '</offers></shop></yml_catalog>';
             }
         }
         else {

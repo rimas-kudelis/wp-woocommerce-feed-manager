@@ -310,13 +310,15 @@ class Rex_Feed_Attributes
 
     /**
      * Gets Woo Discount Rules attributes
-     * @return string[]
+     * @return string[][]
      */
     public static function get_woo_discount_rules_attributes()
     {
         $attributes = array(
-            'woo_discount_rules_price'       => 'Woo Discount Rules - Price',
-            'woo_discount_rules_expire_date' => 'Woo Discount Rules - Expire Date',
+            'Woo Discount Rules' => array(
+                'woo_discount_rules_price'       => 'Woo Discount Rules - Price',
+                'woo_discount_rules_expire_date' => 'Woo Discount Rules - Expire Date',
+            )
         );
         asort( $attributes );
         return $attributes;
@@ -475,7 +477,8 @@ class Rex_Feed_Attributes
 
             if( count( $data ) ) {
                 foreach( $data as $key => $value ) {
-                    $product_attributes = json_decode( $value->value );
+                    $product_attributes = unserialize( $value->value ); // phpcs:ignore
+
                     if( !empty( $product_attributes ) ) {
                         foreach( $product_attributes as $inner_key => $inner_value ) {
                             $value_display                                   = str_replace( "_", " ", $inner_value[ 'name' ] );

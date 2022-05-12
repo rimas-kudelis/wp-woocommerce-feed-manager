@@ -297,6 +297,9 @@ class Rex_Product_Data_Retriever
         elseif ( 'meta' === $rule['type'] && $this->is_product_custom_tax( $rule['meta_key'] ) ) {
             $val = $this->set_product_custom_tax( $rule['meta_key']  );
         }
+        elseif ( 'meta' === $rule['type'] && $this->is_woo_discount_rules( $rule['meta_key'] ) ) {
+            $val = $this->set_woo_discount_rules( $rule['meta_key']  );
+        }
 
         // maybe escape
         $val = $this->maybe_escape( $val, $rule[ 'escape' ] );
@@ -2110,25 +2113,43 @@ class Rex_Product_Data_Retriever
         return $this->get_product_cats( $key );
     }
 
+
+    /**
+     * Set the value for WooDiscount Rules attributes
+     * @param $key
+     * @return mixed|string|void
+     */
+    protected function set_woo_discount_rules( $key ) {
+        $this->discount_manage = new ManageDiscount();
+        if( $key === 'woo_discount_rules_price' ) {
+            $discounted_price = $this->discount_manage->calculateInitialAndDiscountedPrice( $this->product, 1 );
+            $discounted_price = isset( $discounted_price[ 'discounted_price' ] ) ? $discounted_price[ 'discounted_price' ] : '';
+
+            if ( $discounted_price && $discounted_price !== '' ) {
+                return $discounted_price;
+            }
+            return $this->product->get_regular_price();
+        }
+        elseif( $key === 'woo_discount_rules_expire_date' ) {
+            $rules = DBTable::getRules();
+            foreach( $rules as $rule ) {
+                if( $rule->discount_type === 'wdr_simple_discount' ) {
+                    $format     = "Y-m-d H:i";
+                    $end_date   = $rule->date_to;
+                    return $end_date && $end_date !== '' ? date( $format, (int)$end_date ) : $end_date;
+                }
+            }
+        }
+        return '';
+    }
+
     /**
      * Set a Product Dynamic attribute.
      *
      * @since    1.0.0
      */
     protected function set_product_dynamic_attr( $key ) {
-        if( 'WC_Product_Variable' === get_class($this->product) ) {
-            $attributes = array();
-            $attrs = $this->product->get_variation_attributes();
-            $attrs = isset( $attrs[ $key ] ) ? $attrs[ $key ] : '';
-
-            if( $attrs !== '' && !empty( $attrs ) ) {
-                foreach( $attrs as $attr ) {
-                    $attributes[] = ucfirst( $attr );
-                }
-            }
-            return implode( ', ', $attributes );
-        }
-        return '';
+        return $this->product->get_attribute( $key );
     }
 
     /**
@@ -2154,33 +2175,29 @@ class Rex_Product_Data_Retriever
     protected function set_product_custom_att( $key )
     {
         $new_key    = str_replace( 'custom_attributes_', '', $key );
-        $meta_value = '';
 
         if( 'WC_Product_Variation' == get_class( $this->product ) ) {
-            if( $new_key === '_wpfm_product_brand' ) {
-                $meta_value = get_post_meta( $this->product->get_parent_id(), $new_key, true );
-            }
-            else {
-                $meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
-                // need to check if these attributes value is assigned to the mother product
-                if( !$meta_value ) {
-                    $list = $this->get_product_attributes( $this->product->get_parent_id() );
+            $pr_id = $this->product->get_parent_id();
+            $meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
+            // need to check if these attributes value is assigned to the mother product
+            if( !$meta_value ) {
+                $list = $this->product->get_attributes();
 
-                    if( array_key_exists( $new_key, $list ) ) {
-                        $meta_value = str_replace( '|', ',', $list[ $new_key ] );
-                    }
-                    else {
-                        $acf_field = get_post_meta( $this->product->get_parent_id(), '_' . $new_key, true );
+                if( array_key_exists( $new_key, $list ) ) {
+                    $meta_value = $list[ $new_key ];
+                }
+                else {
+                    $acf_field = get_post_meta( $this->product->get_parent_id(), '_' . $new_key, true );
 
-                        if( $acf_field !== '' && preg_match( '/field_/', $acf_field ) ) {
-                            $meta_value = get_post_meta( $this->product->get_parent_id(), $new_key, true );
-                        }
+                    if( $acf_field !== '' && preg_match( '/field_/', $acf_field ) ) {
+                        $meta_value = get_post_meta( $this->product->get_parent_id(), $new_key, true );
                     }
                 }
             }
         }
         else {
-            $meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
+            $pr_id = $this->product->get_id();
+            $meta_value = get_post_meta( $pr_id, $new_key, true );
 
             if( 'rank_math_primary_product_cat' === $new_key ) {
                 $meta_value = $meta_value != '' ? get_the_category_by_ID( $meta_value ) : '';
@@ -2194,26 +2211,14 @@ class Rex_Product_Data_Retriever
             }
         }
 
-        if( is_plugin_active( 'woo-discount-rules/woo-discount-rules.php' ) ) {
-
-            if( $new_key === 'woo_discount_rules_price' ) {
-                $this->discount_manage = new ManageDiscount();
-                $price                 = $this->discount_manage->calculateInitialAndDiscountedPrice( $this->product, 1 );
-                $meta_value            = $price[ 'discounted_price' ];
-            }
-            elseif( $new_key === 'woo_discount_rules_expire_date' ) {
-                $rules = DBTable::getRules();
-                foreach( $rules as $rule ) {
-                    if( $rule->discount_type === 'wdr_simple_discount' ) {
-                        $format     = "Y-m-d H:i";
-                        $end_date   = $rule->date_to;
-                        $end_date   = date( $format, (int)$end_date );
-                        $meta_value = $end_date;
-                        break;
-                    }
-                }
+        if ( $meta_value === '' ) {
+            $pr_attr = get_post_meta( $pr_id, '_product_attributes', true );
+            if ( isset( $pr_attr[ $new_key ][ 'value' ] ) ) {
+                $meta_value = $pr_attr[ $new_key ][ 'value' ];
+                $meta_value = explode( '|', $meta_value );
             }
         }
+
         if( is_array( $meta_value ) && !empty( $meta_value ) ) {
             if( 'wooco_components' === $new_key ) {
                 foreach( $meta_value as $meta ) {
@@ -2942,7 +2947,7 @@ class Rex_Product_Data_Retriever
      */
     protected function is_product_attr( $key )
     {
-        return array_key_exists( $key, $this->product_meta_keys[ 'Product Attributes' ] );
+        return array_key_exists( $key, $this->product_meta_keys[ 'Product Attributes' ] ) || array_key_exists( $key, $this->product_meta_keys[ 'Product Attributes' ] );
     }
 
     /**
@@ -3022,6 +3027,18 @@ class Rex_Product_Data_Retriever
     protected function is_product_custom_tax( $key ) {
         if( isset( $this->product_meta_keys['Product Custom Taxonomies'] ) ) {
             return array_key_exists( $key, $this->product_meta_keys['Product Custom Taxonomies'] );
+        }
+        return false;
+    }
+
+    /**
+     * Helper to check if a attribute is a WooDiscount Rules Attribute
+     * @param $key
+     * @return bool
+     */
+    protected function is_woo_discount_rules( $key ) {
+        if( isset( $this->product_meta_keys['Woo Discount Rules'] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys['Woo Discount Rules'] );
         }
         return false;
     }
@@ -3179,7 +3196,7 @@ class Rex_Product_Data_Retriever
             case 'price':
                 return intval( $val );
             case 'remove_space':
-                return preg_replace( '/\s+/', '', $val );;
+                return preg_replace( '/\s+/', '', $val );
             case 'remove_shortcodes_and_tags':
                 $val            = preg_replace( '/(?:<|&lt;).*?(?:>|&gt;)/', '', $val );
                 $striped_string = strip_tags( $val );
@@ -3229,7 +3246,6 @@ class Rex_Product_Data_Retriever
 
             default:
                 return $val;
-                break;
 
         }
     }
@@ -3370,6 +3386,9 @@ class Rex_Product_Data_Retriever
         }
         elseif ( 'meta' === $type && $this->is_product_custom_tax( $key ) ) {
             return $this->set_product_custom_tax( $key  );
+        }
+        elseif ( 'meta' === $type && $this->is_woo_discount_rules( $key ) ) {
+            return $this->set_woo_discount_rules( $key  );
         }
         return '';
     }

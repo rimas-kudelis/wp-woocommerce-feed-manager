@@ -822,6 +822,30 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'          => true,
             'datetime'         => false,
         ),
+        "hotline"             => array(
+            'container'        => true,
+            'item_wrapper'     => 'item',
+            'items_wrapper'    => 'price',
+            'namespace'        => null,
+            'namespace_prefix' => '',
+            'stand_alone'      => false,
+            'version'          => '',
+            'wrapper_el'       => '',
+            'wrapper'          => true,
+            'datetime'         => true,
+        ),
+        "rozetka"             => array(
+            'container'        => false,
+            'item_wrapper'     => 'offer',
+            'items_wrapper'    => 'yml_catalog',
+            'namespace'        => null,
+            'namespace_prefix' => '',
+            'stand_alone'      => false,
+            'version'          => '',
+            'wrapper_el'       => '',
+            'wrapper'          => true,
+            'datetime'         => false,
+        ),
     );
 
 

@@ -269,6 +269,20 @@ if ( ! function_exists( 'wpfm_is_wpml_active' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wpfm_is_polylang_active' ) ) {
+	/**
+	 * @desc check if Polylang is active.
+	 *
+	 * @return bool
+     * @since 7.0.1
+	 */
+	function wpfm_is_polylang_active(){
+		$active_plugings             = get_option( 'active_plugins' );
+		$polylang                    = 'polylang/polylang.php';
+		return in_array( $polylang, $active_plugings );
+	}
+}
+
 
 if ( ! function_exists( 'wpfm_is_yoast_active' ) ) {
 	/**
@@ -1337,6 +1351,16 @@ if ( ! function_exists( 'wpfm_get_merchant_lits' ) ) {
                 'free'   => true,
                 'status' => 1,
                 'name'   => 'Zap.co.il'
+            ),
+            'hotline'                         => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'Hotline'
+            ),
+            'rozetka'                         => array(
+                'free'   => true,
+                'status' => 1,
+                'name'   => 'Rozetka'
             ),
         );
 

@@ -299,7 +299,7 @@ class Rex_Product_Feed_Admin {
             );
             wp_enqueue_script(
                 'jquery-cookie',
-                'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/latest/js.cookie.min.js',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/js.cookie.min.js',
                 array( 'jquery' ),
                 $this->version,
                 true

@@ -266,6 +266,11 @@ class Rex_Product_Feed_Ajax {
 		wp_ajax_helper()->handle( 'rex-feed-get-appsero-options' )
 		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_get_appsero_options' ) )
 		                ->with_validation( $validations );
+
+
+		wp_ajax_helper()->handle( 'wpfm-remove-plugin-data' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_remove_plugin_data' ) )
+		                ->with_validation( $validations );
     }
 
 
@@ -539,7 +544,7 @@ class Rex_Product_Feed_Ajax {
         elseif ( in_array( $merchant, $DealsForU ) ) {
 		    return array( 'xml' );
 	    }
-        elseif ( in_array( $merchant, $Bestprice ) || $merchant === 'gulog_gratis' ) {
+        elseif ( in_array( $merchant, $Bestprice ) || $merchant === 'gulog_gratis' || $merchant === 'hotline' ) {
 		    return array( 'xml' );
 	    }
         elseif ( in_array( $merchant, $spartooFr ) ) {
@@ -559,6 +564,9 @@ class Rex_Product_Feed_Ajax {
 	    }
         elseif ( 'yandex' === $merchant ) {
 		    return array( 'xml', 'yml' );
+	    }
+        elseif ( 'rozetka' === $merchant ) {
+		    return array( 'xml' );
 	    }
 	    return array( 'xml', 'yml', 'csv', 'text', 'tsv', 'json' );
     }
@@ -1335,6 +1343,19 @@ class Rex_Product_Feed_Ajax {
             else {
                 delete_option( 'wpfm_product_custom_fields_frontend' );
             }
+            wp_send_json_success();
+        }
+        wp_send_json_error();
+    }
+
+    /**
+     * @desc Update plugin removal option data
+     * @param $payload
+     * @return void
+     */
+    public static function rex_feed_remove_plugin_data( $payload ) {
+        if ( isset( $payload[ 'wpfm_remove_plugin_data' ] ) ) {
+            update_option('wpfm_remove_plugin_data', $payload['wpfm_remove_plugin_data']);
             wp_send_json_success();
         }
         wp_send_json_error();

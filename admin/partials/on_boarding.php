@@ -31,6 +31,7 @@ $wpfm_fb_pixel_data    = get_option( 'wpfm_fb_pixel_value' );
 $wpfm_enable_log       = get_option( 'wpfm_enable_log' );
 $pro_url               = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
 $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
+$wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
 ?>
 
 <div class="columns">
@@ -533,6 +534,22 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                 </div>
                             </div>
 
+                            <div class="single-merchant remove-plugin-data">
+                                <span class="title">
+                                    <?php echo esc_html__('Remove All Plugin Data on Plugin Uninstallation', 'rex-product-feed'); ?>
+                                </span>
+                                <div class="switch">
+                                    <?php
+                                    $checked = $wpfm_remove_plugin_data === 'yes' ? 'checked' : '';
+                                    ?>
+                                    <div class="wpfm-switcher">
+                                        <input class="switch-input" type="checkbox"
+                                               id="remove_plugin_data" <?php echo esc_attr( $checked ); ?>>
+                                        <label class="lever" for="remove_plugin_data"></label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="single-merchant enable-log">
                                 <span class="title">
                                     <?php echo esc_html__('Enable log', 'rex-product-feed'); ?>
@@ -611,7 +628,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     ?>
                                     <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-custom-field" <?php esc_attr( $checked ); ?> <?php esc_attr( $disabled ); ?>>
+                                               id="rex-product-custom-field" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-custom-field"></label>
                                     </div>
                                 </div>
@@ -643,7 +660,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     ?>
                                     <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-structured-data" <?php esc_attr( $checked ); ?> <?php esc_attr( $disabled ); ?>>
+                                               id="rex-product-structured-data" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-structured-data"></label>
                                     </div>
                                 </div>
@@ -670,7 +687,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     ?>
                                     <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-pa-field" <?php esc_attr( $checked ); ?> <?php esc_attr( $disabled ); ?>>
+                                               id="rex-product-pa-field" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-pa-field"></label>
                                     </div>
                                 </div>
@@ -685,7 +702,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     ?>
                                     <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
                                         <input class="switch-input" type="checkbox"
-                                               id="rex-product-allow-private" <?php esc_attr( $checked ); ?> <?php esc_attr( $disabled ); ?>>
+                                               id="rex-product-allow-private" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
                                         <label class="lever" for="rex-product-allow-private"></label>
                                     </div>
                                 </div>
@@ -727,7 +744,7 @@ $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? 
                                     <?php
                                     echo sprintf(
                                         '<a data-placeholder-text="' . esc_html__( 'Reinstall', 'rex-product-feed' ) . ' v{VERSION}" href="#" data-placeholder-url="%s" class="rex-feed-button-spinner rex-feed-rollback-button btn-default">%s</a>',
-                                        esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rex_feed_rollback&version=VERSION' ) ), 'rex_feed_rollback' ),
+                                        esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rex_feed_rollback&version=VERSION' ), 'rex_feed_rollback' ) ),
                                         esc_html__( 'Reinstall', 'rex-product-feed' )
                                     );
                                     ?>
