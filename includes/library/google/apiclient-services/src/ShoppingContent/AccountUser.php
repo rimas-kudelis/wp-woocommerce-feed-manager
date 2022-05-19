@@ -40,10 +40,6 @@ class AccountUser extends \RexFeed\Google\Model
      */
     public $paymentsManager;
     /**
-     * @var bool
-     */
-    public $reportingManager;
-    /**
      * @param bool
      */
     public function setAdmin($admin)
@@ -112,20 +108,6 @@ class AccountUser extends \RexFeed\Google\Model
     public function getPaymentsManager()
     {
         return $this->paymentsManager;
-    }
-    /**
-     * @param bool
-     */
-    public function setReportingManager($reportingManager)
-    {
-        $this->reportingManager = $reportingManager;
-    }
-    /**
-     * @return bool
-     */
-    public function getReportingManager()
-    {
-        return $this->reportingManager;
     }
 }
 // Adding a class alias for backwards compatibility with the previous class name.

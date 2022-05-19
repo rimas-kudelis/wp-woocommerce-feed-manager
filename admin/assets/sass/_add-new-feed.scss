@@ -1,548 +1,516 @@
 // Table of Content
 //-----------------------
 //01.wpfm dashborad
-//02.Add New Feed
-//03.Feed Configuration
+//02.Add New Feed 
+//03.Feed Configuration 
 //04.Feed Configuration table
 //---------------------------------------------
 
 /*----01.wpfm dashborad style --------*/
 
+
 .post-type-product-feed {
-  .notice,
-  div.error,
-  div.updated {
-    background: #fff;
-    border: none;
-    border-left-width: 4px;
-    box-shadow: none;
-    margin: 5px 0px 2px;
-    padding: 1px 12px;
-    border-left: 4px solid;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
-  .notice-success,
-  div.updated {
-    border-left-color: #00a32a;
-  }
-  .notice-success,
-  div.error {
-    border-left-color: #d63638;
-  }
-  .notice-success,
-  div.notice-error {
-    border-left-color: #d63638;
-  }
 
-  .wrap .add-new-h2,
-  .wrap .add-new-h2:active,
-  .wrap .page-title-action,
-  .wrap .page-title-action:active {
-    border: 1px solid #56b2fb;
-    border-radius: 5px;
-    color: #fff;
-    background: #56b2fb;
-    cursor: pointer;
-    &:hover {
-      background-color: #fff;
-      border: 1px solid #d2d2d2;
-      color: #3c3c3c;
-      cursor: pointer;
+    .notice,
+      div.updated {
+        background: #fff;
+        border: none;
+        border-left-width: 4px;
+        box-shadow: none;
+        margin: 5px 0px 2px;
+        padding: 1px 12px;
+        border-left: 4px solid;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
     }
-  }
-
-  .wrap .page-title-action:focus {
-    border-color: #56b2fb;
-    box-shadow: 0 0 0 1px #56b2fb;
-    outline: 2px solid transparent;
-  }
-
-  #screen-meta-links .show-settings {
-    margin-bottom: 20px;
-  }
-
-  div#wpcontent {
-    background-color: #f6f5fa;
-  }
-
-  div#rex_feed_new_changes_msg_content,
-  div#rex_feed_review_request_body_content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    width: calc(100% - 20px);
-    background: #ffffff;
-    box-shadow: 0 1px 2px 0 rgba(190, 190, 215, 0.2);
-    border-radius: 10px;
-    padding: 15px 15px 15px 20px;
-    margin: 0 0 auto;
-    border-left: 4px solid #00b4ff;
-
-    .new_changes_msg_contnent,
-    .request_rating_contnent {
-      position: relative;
-
-      h2 {
-        font-weight: 700;
-        font-size: 18px;
-        color: #333;
-      }
-      p {
-        font-size: 14px;
-        color: #333333;
-        letter-spacing: 0;
-        line-height: 20px;
-      }
-      .request_rating_heading {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      a:focus {
-        color: #043959;
-        box-shadow: 0 0 0 1px transparent, 0 0 2px 1px rgb(79 148 212 / 0%);
-        outline: 1px solid transparent;
-      }
+    .notice-success, div.updated {
+        border-left-color: #00a32a;
+    }
+    .notice-success, div.error {
+        border-left-color: #d63638;
+    }
+    .notice-success, div.notice-error {
+        border-left-color: #d63638;
     }
 
-    .new_changes_msg_contnent h2 {
-      padding-left: 10px;
-    }
-  }
-
-  div#rex_feed_new_changes_msg_content {
-    padding: 10px 15px 10px 20px;
-    margin-top: 20px;
-  }
-
-  div#rex_feed_new_changes_msg_btn,
-  div#rex_feed_review_request_btn {
-    display: flex;
-    align-items: center;
-
-    a {
-      margin-right: 10px;
-    }
-  }
-
-  a#view_changes_btn,
-  a#rex_rate_now {
-    background-color: #56b2fb;
-    border: 1px solid #56b2fb;
-    padding: 10px;
-    font-size: 10pt;
-    color: #fff;
-    border-radius: 5px;
-    display: inline-block;
-  }
-
-  a#view_changes_btn {
-    font-size: 16px;
-    text-align: center;
-    width: 130px;
-  }
-
-  a#view_changes_btn:hover,
-  a#rex_rate_now:hover {
-    background-color: #fff;
-    border: 1px solid #d2d2d2;
-    color: #3c3c3c;
-  }
-
-  a#rex_rate_not_now {
-    background-color: #fff;
-    border: 1px solid #d2d2d2;
-    padding: 10px;
-    font-size: 10pt;
-    color: #3c3c3c;
-    border-radius: 5px;
-  }
-
-  a#rex_rate_not_now:hover {
-    background-color: #56b2fb;
-    border: 1px solid #56b2fb;
-    color: #fff;
-  }
-
-  a#rex_rated_already {
-    display: block;
-    color: #333333;
-    font-size: 14px;
-  }
-
-  a#rex_rated_already:hover {
-    color: #56b2fb;
-  }
-
-  #titlewrap input {
-    border: unset;
-    border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0px 1px 2px rgb(190 190 215 / 20%);
-  }
-
-  #titlediv #title-prompt-text {
-    position: absolute;
-    font-size: 14px;
-    font-family: "Roboto", sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    padding: 15px 8px 10px;
-    line-height: 16px;
-    text-align: center;
-    letter-spacing: 0.2px;
-    color: #666666;
-  }
-
-  #poststuff #post-body.columns-2 {
-    margin-right: 370px;
-  }
-
-  #post-body.columns-2 #postbox-container-1 {
-    float: right;
-    margin-right: -370px;
-    width: 370px;
-
-    /*Trigger based review request*/
-
-    div#rex_feed_trigger_based_review_request {
-      border: unset;
-      border-radius: 10px;
-    }
-
-    #rex_feed_how_to_guide .postbox-header,
-    #rex_feed_upgrade_notice .postbox-header,
-    #rex_feed_google_merchant .postbox-header,
-    #rex_feed_file_link .postbox-header,
-    #submitdiv .postbox-header,
-    #rex_feed_trigger_based_review_request .postbox-header {
-      display: none;
-    }
-
-    #rex_feed_how_to_guide.postbox,
-    #rex_feed_upgrade_notice.postbox,
-    #rex_feed_google_merchant.postbox,
-    #rex_feed_file_link.postbox,
-    #submitdiv.postbox {
-      padding: 25px 27px;
-      position: relative;
-      min-width: auto;
-      border: none;
-      box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
-      background: #fff;
-      border-radius: 10px;
-      .inside {
-        padding: 0;
-        margin: 0;
-      }
-    }
-
-    #rex_feed_how_to_guide.postbox .inside h2 {
-      font-weight: 700;
-      font-size: 18px;
-      color: #333;
-      padding: 0;
-    }
-
-    #rex_feed_upgrade_notice.postbox {
-      #rex_feed_features_text {
-        h2 {
-          font-weight: 700;
-          font-size: 18px;
-          color: #333;
-          padding: 0;
-        }
-
-        ol.parent {
-          padding: 10px 0px 0 20px;
-
-          li {
-            font-family: "Roboto", sans-serif;
-            font-style: normal;
-            font-weight: 400;
-            font-size: 15px;
-            color: #666666;
-          }
-        }
-
-        a {
-          font-size: 13px;
-          line-height: 1.5;
-          color: #fff;
-          border-radius: 5px;
-          display: inline-block;
-          margin-top: 10px;
-          background-color: #56b2fb;
-          border: 1px solid #56b2fb;
-          padding: 10px;
-          &:hover {
-            background-color: #fff;
-            border: 1px solid #d2d2d2;
-            color: #3c3c3c;
-          }
-        }
-      }
-    }
-
-    #rex_feed_google_merchant.postbox {
-      .inside {
-        .rex_feed_google_merchant_sidebar__content {
-          display: none;
-        }
-
-        div {
-          margin: 5px 0;
-        }
-
-        label {
-          font-family: "Roboto", sans-serif;
-          font-style: normal;
-          font-weight: bold;
-          font-size: 14px;
-          line-height: 1.6;
-          color: #333333;
-          margin: 8px 0;
-          display: inline-block;
-          p {
-            color: #fff;
-          }
-        }
-        input[type="text"] {
-          width: 100%;
-          border-bottom: 1px solid #dfdbe7;
-          min-height: 38px;
-          border-color: #dfdbe7;
-          border-radius: 6px;
-          background-color: #f6f5fa;
-        }
-        p {
-          font-family: "Roboto", sans-serif;
-          font-style: normal;
-          font-weight: 400;
-          font-size: 15px;
-          color: #666666;
-          padding-top: 10px;
-        }
-
-        h2 {
-          font-weight: 700;
-          font-size: 18px;
-          color: #333;
-          padding: 0;
-        }
-
-        .google-status {
-          a {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #fff;
-            border-radius: 5px;
-            margin: 5px 0;
-            display: block;
-            background-color: #56b2fb;
-            border: 1px solid #56b2fb;
-            padding: 10px;
-            text-align: center;
-
-            &:hover {
-              background-color: #fff;
-              border: 1px solid #d2d2d2;
-              color: #3c3c3c;
-            }
-          }
-        }
-      }
-    }
-
-    #rex_feed_file_link.postbox {
-      a {
-        background-color: #56b2fb;
+    .wrap .add-new-h2,
+     .wrap .add-new-h2:active, 
+     .wrap .page-title-action,
+      .wrap .page-title-action:active {
         border: 1px solid #56b2fb;
-        padding: 10px;
-        font-size: 16px;
-        line-height: 1.5;
-        color: #fff;
         border-radius: 5px;
-        margin: 8px 0;
-        transition: all 0.3s ease;
-        i {
-          margin-right: 10px;
-        }
-        &:hover {
-          background-color: #fff;
-          border: 1px solid #d2d2d2;
-          color: #3c3c3c;
-        }
-      }
-
-      .inside {
-        padding: 0;
-        h2 {
-          font-weight: 700;
-          font-size: 18px;
-          color: #333;
-          padding: 0 0 15px;
-        }
-      }
-
-      .cmb-row {
-        padding: 0;
-        margin: 0;
-      }
-    }
-
-    #submitdiv.postbox {
-      #major-publishing-actions {
-        background-color: #fff;
-        display: flex;
-        flex-flow: wrap;
-        padding: 10px 0;
-        justify-content: space-between;
-
-        #publishing-action {
-          .button-primary {
-            background-color: #56b2fb;
-            border: 1px solid #56b2fb;
-            padding: 10px;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #fff;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            &:hover {
-              background-color: #fff;
-              border: 1px solid #d2d2d2;
-              color: #3c3c3c;
-            }
-          }
-          order: 4;
-        }
-
-        #delete-action {
-          width: 100%;
-          display: flex;
-          order: 3;
-        }
-
-        button#btn_on_feed {
-          background-color: #56b2fb;
-          border: 1px solid #56b2fb;
-          padding: 10px;
-          font-size: 12px;
-          line-height: 1.5;
-          color: #fff;
-          border-radius: 5px;
-          margin: 0;
-          transition: all 0.3s ease;
-          order: 4;
-          &:hover {
+        color: #fff;
+        background: #56b2fb;
+        cursor: pointer;
+        &:hover { 
             background-color: #fff;
             border: 1px solid #d2d2d2;
             color: #3c3c3c;
             cursor: pointer;
-          }
         }
-      }
     }
 
-    #rex_feed_trigger_based_review_request .inside {
-      padding: 70px 30px 40px 30px;
-      background-repeat: no-repeat;
-      background-size: auto;
-      background-position: right bottom;
-      object-fit: cover;
+    .wrap .page-title-action:focus {
+        border-color: #56b2fb;
+        box-shadow: 0 0 0 1px #56b2fb;
+        outline: 2px solid transparent;
     }
 
-    /*Trigger based review request ENDS*/
-  }
+    #screen-meta-links .show-settings {
+        margin-bottom: 20px;
+    }
 
-  #poststuff #post-body.columns-2 #side-sortables {
-    width: 370px;
-  }
+    div#wpcontent {
+        background-color: #F6F5FA;
+    }
 
-  #poststuff .postbox-container,
-  #post-body-content {
-    padding-right: 30px;
-  }
+    div#rex_feed_review_request_body_content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1704px;
+        width: calc(100% - 20px);
+        background: #FFFFFF;
+        box-shadow: 0 1px 2px 0 rgba(190,190,215,0.20);
+        border-radius: 10px;
+        padding: 22px 25px;
+        margin: 0 0 auto;
 
-  #rex_feed_config_heading #config-table {
-    display: none;
-  }
+        .request_rating_contnent { 
+            position: relative;
 
-  h5#rex-feed-config-heading {
-    display: none;
-  }
-}
+            h2 {
+                font-weight: 700;
+                font-size: 18px;
+                color: #333;
+                padding-left: unset;
+                // &:after{
+                //     content: url(../icon/star-rating.png);
+                //     position: relative;
+                //     z-index: 0;
+                //     left: 8px;
+                //     top: 7px;
+                // }
 
-.post-type-product-feed #rex_feed_how_to_guide .inside {
-  padding: unset;
-  margin: unset !important;
-}
+            }
+            p {
+                font-size: 14px;
+                color: #333333;
+                letter-spacing: 0;
+                line-height: 20px;
+            }
+            .request_rating_heading {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+            a:focus {
+                color: #043959;
+                box-shadow: 0 0 0 1px transparent, 0 0 2px 1px rgb(79 148 212 / 0%);
+                outline: 1px solid transparent;
+            }
+        }
+    }
 
-.post-type-product-feed ol.rex-feed-how-to-guide-lists {
-  margin: 10px 0 0 10px;
-}
+    div#rex_feed_review_request_btn {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
 
-.post-type-product-feed ol.rex-feed-how-to-guide-lists li {
-  font-family: "Roboto", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  color: #666666;
-  counter-increment: my-awesome-counter;
-  display: flex;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
+        a {
+            margin-right: 10px;
+        }
+    }
 
-.post-type-product-feed ol.rex-feed-how-to-guide-lists li::before {
-  content: "0" counter(my-awesome-counter);
-  font-weight: bold;
-  font-size: 1rem;
-  margin-right: 0.5rem;
-  font-family: "Abril Fatface", serif;
-  line-height: 1;
+
+    a#rex_rate_now {
+        background-color: #56b2fb;
+        border: 1px solid #56b2fb;
+        padding: 10px;
+        font-size: 10pt;
+        color: #fff;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    a#rex_rate_now:hover {
+        background-color: #fff;
+        border: 1px solid #d2d2d2;
+        color: #3c3c3c
+    }
+
+    a#rex_rate_not_now {
+        background-color: #fff;
+        border: 1px solid #d2d2d2;
+        padding: 10px;
+        font-size: 10pt;
+        color: #3c3c3c;
+        border-radius: 5px;
+    }
+    
+    a#rex_rate_not_now:hover {
+        background-color: #56b2fb;
+        border: 1px solid #56b2fb;
+        color: #fff
+    }
+
+    a#rex_rated_already {
+        display: block;
+        color: #333333;
+        font-size: 14px;
+    }
+
+    a#rex_rated_already:hover {
+        color: #56b2fb
+    }
+
+    #titlewrap input {
+        border: unset;
+        border-radius: 10px;
+        background: #FFFFFF;
+        box-shadow: 0px 1px 2px rgb(190 190 215 / 20%);
+    }
+
+    #titlediv #title-prompt-text {
+        position: absolute;
+        font-size: 14px;
+        font-family: "Roboto", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        padding: 15px 8px 10px;
+        line-height: 16px;
+        text-align: center;
+        letter-spacing: 0.2px;
+        color: #666666;
+    }
+
+    #poststuff #post-body.columns-2 {
+        margin-right: 370px;
+    }
+
+    #post-body.columns-2 #postbox-container-1 {
+        float: right;
+        margin-right: -370px;
+        width: 370px;
+
+        /*Trigger based review request*/
+
+        div#rex_feed_trigger_based_review_request {
+            border: unset;
+            border-radius: 10px;
+        }
+
+        #rex_feed_upgrade_notice .postbox-header,
+        #rex_feed_google_merchant .postbox-header,
+        #rex_feed_file_link  .postbox-header,
+        #submitdiv .postbox-header,
+        #rex_feed_trigger_based_review_request .postbox-header {
+            display: none
+        }
+       
+        #rex_feed_upgrade_notice.postbox, 
+        #rex_feed_google_merchant.postbox, 
+        #rex_feed_file_link.postbox ,
+        #submitdiv.postbox {
+            padding: 25px 27px;
+            position: relative;
+            min-width:auto;
+            border: none ;
+            box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+            background: #fff;
+            border-radius: 10px;
+            .inside  {
+                padding: 0;
+                margin:0;
+            }
+        }
+
+        #rex_feed_upgrade_notice.postbox { 
+
+            #rex_feed_features_text { 
+                h2 { 
+                    font-weight: 700;
+                    font-size: 18px;
+                    color: #333;
+                    padding:0;
+                }
+
+                ol.parent {
+                    padding: 10px 0px 0 20px;
+
+                    li {
+                        font-family: "Roboto", sans-serif;
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 15px;
+                        color: #666666;
+                   }
+                }
+
+                a { 
+                    font-size: 13px;
+                    line-height: 1.5;
+                    color: #fff;
+                    border-radius: 5px;
+                    display: inline-block;
+                    margin-top: 10px;
+                    background-color: #56b2fb;
+                    border: 1px solid #56b2fb;
+                    padding: 10px;
+                    &:hover {
+                        background-color: #fff;
+                        border: 1px solid #d2d2d2;
+                        color: #3c3c3c;
+                    }
+                }
+            }
+        }
+
+        #rex_feed_google_merchant.postbox { 
+
+            .inside { 
+
+                .rex_feed_google_merchant_sidebar__content { 
+                    display: none;
+    
+                }
+
+                div  { 
+                    margin: 5px 0;
+                }
+
+                label {
+
+                    font-family: "Roboto", sans-serif;
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #333333;
+                    margin: 8px 0; 
+                    display: inline-block;
+                    p {
+                        color: #fff;
+                    }
+                }
+                input[type=text] { 
+                    width: 100%;
+                    border-bottom: 1px solid #dfdbe7;
+                    min-height: 38px;
+                    border-color: #DFDBE7;
+                    border-radius: 6px;
+                    background-color: #f6f5fa;
+                }
+                p { 
+                    font-family: "Roboto", sans-serif;
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 15px;
+                    color: #666666;
+                    padding-top:10px;
+                }
+
+                h2 { 
+                    font-weight: 700;
+                    font-size: 18px;
+                    color: #333;
+                    padding:0;
+                }
+                
+    
+                .google-status { 
+                    a {
+                        font-size: 16px;
+                        line-height: 1.5;
+                        color: #fff;
+                        border-radius: 5px;
+                        margin: 5px 0;
+                        display: block;
+                        background-color: #56b2fb;
+                        border: 1px solid #56b2fb;
+                        padding: 10px;
+                        text-align: center;
+    
+                        &:hover {
+                            background-color: #fff;
+                            border: 1px solid #d2d2d2;
+                            color: #3c3c3c;
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+        #rex_feed_file_link.postbox {
+            a {
+                background-color: #56b2fb;
+                border: 1px solid #56b2fb;
+                padding: 10px;
+                font-size: 16px;
+                line-height: 1.5;
+                color: #fff;
+                border-radius: 5px;
+                margin: 8px 0;
+                transition: all 0.3s ease;
+                i {
+                    margin-right: 10px;
+                }
+                &:hover {
+                    background-color: #fff;
+                    border: 1px solid #d2d2d2;
+                    color: #3c3c3c;
+                }
+            }
+
+            .inside  {
+                padding: 0;
+                h2 {
+                    font-weight: 700;
+                    font-size: 18px;
+                    color: #333;
+                    padding: 0 0 15px;
+                }
+            }
+
+            .cmb-row { 
+                padding: 0;
+                margin: 0;
+            }
+        }
+
+        #submitdiv.postbox { 
+
+            #major-publishing-actions  {  
+                background-color:#fff;
+                display: flex;
+                flex-flow: wrap;
+                padding: 10px 0;
+                justify-content: space-between;
+
+                #publishing-action {
+                    .button-primary {
+                        background-color: #56b2fb;
+                        border: 1px solid #56b2fb;
+                        padding: 10px;
+                        font-size: 12px;
+                        line-height: 1.5;
+                        color: #fff;
+                        border-radius: 5px;
+                        transition: all 0.3s ease;
+                        &:hover {
+                            background-color: #fff;
+                            border: 1px solid #d2d2d2;
+                            color: #3c3c3c;
+                            
+                        }
+                    }
+                    order: 4;
+                } 
+
+                #delete-action {
+                    width: 100%;
+                    display: flex;
+                    order: 3;
+                }
+
+                button#btn_on_feed {
+                    background-color: #56b2fb;
+                    border: 1px solid #56b2fb;
+                    padding: 10px;
+                    font-size: 12px;
+                    line-height: 1.5;
+                    color: #fff;
+                    border-radius: 5px;
+                    margin: 0;
+                    transition: all 0.3s ease;
+                    order: 4;
+                    &:hover {
+                        background-color: #fff;
+                        border: 1px solid #d2d2d2;
+                        color: #3c3c3c;
+                        cursor: pointer;
+                    }
+                }
+
+            }
+        }
+
+
+        #rex_feed_trigger_based_review_request .inside {
+            padding: 70px 30px 40px 30px;
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: right bottom;
+            object-fit: cover;
+        }
+
+         
+       
+
+        /*Trigger based review request ENDS*/
+    }
+
+    #poststuff #post-body.columns-2 #side-sortables {
+        width: 370px;
+    }
+
+    #poststuff .postbox-container,
+    #post-body-content {
+        padding-right: 30px;
+    }   
+
+    #rex_feed_config_heading #config-table {
+        display: none;
+    }
+
+    h5#rex-feed-config-heading {
+        display: none;
+    }
 }
 
 /*----02.Add New Feed style --------*/
 #rex_feed_head_btn {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-  .inside {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 8px 0px 27px 0px;
-    padding: 0;
-    h2 {
-      font-size: 18px;
-      font-family: "Roboto", sans-serif;
-      text-transform: capitalize;
-      font-weight: bold;
-      padding: 0;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    .inside {
+        display:flex;
+        justify-content:space-between;
+        align-items: center;
+        margin: 8px 0px 27px 0px;
+        padding: 0;
+        h2 {
+            font-size: 18px;
+            font-family: "Roboto", sans-serif;
+            text-transform: capitalize;
+            font-weight: bold;
+            padding: 0;
+        }
     }
-  }
-  .rex-fill-button {
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    color: #333333;
-    font-weight: 500;
-    background-color: white;
-    border-radius: 10px;
-    padding: 10px 22px;
-  }
-  #rex-pr-filter-btn {
-    margin-right: 20px;
-  }
-  #rex-feed-troubleshoot-btn {
-    margin-right: 20px;
-  }
-  .rex-feed-cofig-settings i {
-    margin-right: 10px;
-    color: #a7a7a7;
-  }
+    .rex-fill-button {
+        font-family: "Roboto", sans-serif;
+        font-size: 14px;
+        color: #333333;
+        font-weight: 500;
+        background-color: white;
+        border-radius: 10px;
+        padding: 10px 22px;
+    }
+    #rex-pr-filter-btn {
+        margin-right: 20px;
+    }
+    #rex-feed-troubleshoot-btn {
+        margin-right: 20px;
+    }
+    .rex-feed-cofig-settings i {
+        margin-right: 10px;
+        color: #a7a7a7;
+    }
+
+
 }
 
 /*----03.Feed Configuration style --------*/
@@ -552,495 +520,526 @@
 #rex_feed_head_btn .postbox-header,
 #rex_feed_products_div .postbox-header,
 #rex_feed_config_headings {
-  display: none;
+    display: none;
 }
 
 #rex_feed_conf {
-  border: 0;
-  background: #ffffff;
-  box-shadow: 0px 15px 20px rgb(202 202 224 / 25%);
-  border-radius: 10px;
-  margin-bottom: 30px;
-
-  .inside {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    align-content: center;
-    padding: 22px 25px;
-    grid-gap: 40px;
-  }
-  .rex_feed_config_div {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 1fr 2fr;
-  }
-  label {
-    font-family: "Roboto", sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 1.6;
-    color: #333333;
-  }
-
-  .rex_feed_config_div i {
-    cursor: pointer;
-    position: relative;
-    top: 2px;
-    padding: 0 10px;
-    color: #1eb2fb;
-  }
-
-  select {
+    border: 0;
+    background: #FFFFFF;
+    box-shadow: 0px 15px 20px rgb(202 202 224 / 25%);
     border-radius: 10px;
-    height: 50px;
-  }
+    margin-bottom: 30px;
+
+    .inside {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        align-content: center;
+        padding: 22px 25px;
+        grid-gap: 40px;
+    }
+    .rex_feed_config_div {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr 2fr;
+    }
+    label {
+        font-family: "Roboto", sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #333333;
+    }
+    
+    .rex_feed_config_div i {
+        cursor: pointer;
+        position: relative;
+        top: 2px;
+        padding: 0 10px;
+        color:#1EB2FB;
+    }
+
+    select {
+        border-radius: 10px;
+        height: 50px;
+    }
+
 }
 
 /*----04.Feed Configuration table style --------*/
-#rex_feed_config_heading {
-  .inside {
-    margin: 0;
-    padding: 0;
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  background-color: transparent;
-  border-radius: 10px;
-  border: 1px solid #dfdbe7;
-  box-sizing: border-box;
-
-  #config-table {
-    thead {
-      tr th {
-        font-family: "Roboto", sans-serif;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 12px;
-        line-height: 14px;
-        letter-spacing: 0.857143px;
-        text-transform: uppercase;
-        color: #333333;
-        padding: 15px 10px 15px 10px;
-        border-bottom: 1px solid #dfdbe7;
-
-        span {
-          color: #fe4e4e;
-        }
-
-        #rex_feed_type_head,
-        #rex_feed_val_head {
-          color: #666666;
-        }
-
-        &:first-child {
-          padding-left: 25px;
-        }
-
-        &:last-child {
-          padding-right: 25px;
-          text-align: right;
-        }
-      }
+#rex_feed_config_heading { 
+    .inside {
+        margin: 0;
+        padding: 0;
     }
 
-    tbody {
-      tr td {
-        border-bottom: 1px solid #dfdbe7;
-        padding: 30px 10px 30px;
-        min-height: 38px;
-        border-color: #dfdbe7;
-        border-radius: 6px;
-        background-color: unset;
-
-        &:first-child {
-          padding-left: 25px;
-        }
-
-        &:last-child {
-          padding-right: 50px;
-          text-align: center;
-          vertical-align: middle;
-        }
-
-        a i {
-          font-size: 20px;
-          color: #fe4e4e;
-        }
-
-        input {
-          width: 100%;
-          border-bottom: 1px solid #dfdbe7;
-          min-height: 38px;
-          border-color: #dfdbe7;
-          border-radius: 6px;
-          background-color: unset;
-          max-width: 190px;
-        }
-
-        select {
-          max-width: 190px;
-        }
-
-        &:nth-child(5) input,
-        &:nth-child(4) input {
-          max-width: 71px;
-        }
-        &:nth-child(7) input {
-          max-width: 87px;
-        }
-      }
+    table {
+        border-collapse: collapse;
+        width: 100%;
     }
-  }
 
-  #rex-feed-footer-btn {
-    background-color: white;
-    padding: 20px 25px;
+    background-color: transparent;
     border-radius: 10px;
+    border: 1px solid #DFDBE7;
+    box-sizing: border-box;
 
-    .rex-new-custom-btn {
-      font-size: 15px;
-      font-weight: 400;
-      border-radius: 10px;
+    #config-table { 
+        thead { 
+            tr th {
+                font-family: "Roboto", sans-serif;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 14px;
+                letter-spacing: 0.857143px;
+                text-transform: uppercase;
+                color: #333333;
+                padding: 15px 10px 15px 10px;
+                border-bottom: 1px solid #dfdbe7;
 
-      svg {
-        vertical-align: sub;
-        transition: all 0.3s ease;
-      }
-      &:hover svg path {
-        stroke: black;
-      }
+                span {
+                    color: #FE4E4E;
+                }
+
+                #rex_feed_type_head,
+                #rex_feed_val_head {
+                    color: #666666;
+                }
+
+                &:first-child {
+                    padding-left: 25px;
+                }
+
+                &:last-child {
+                    padding-right: 25px;
+                    text-align: right;
+                }
+            }
+        }
+
+        tbody { 
+            tr td {
+                border-bottom: 1px solid #dfdbe7;
+                padding: 30px 10px 30px;
+                min-height: 38px;
+                border-color: #DFDBE7;
+                border-radius: 6px;
+                background-color: unset;
+
+                &:first-child {
+                    padding-left: 25px;
+                }
+
+                &:last-child {
+                    padding-right: 50px;
+                    text-align: center;
+                    vertical-align: middle;
+                }
+
+                a i {
+                    font-size:20px;
+                    color: #FE4E4E;
+                }
+
+                input {
+                    width: 100%;
+                    border-bottom: 1px solid #dfdbe7;
+                    min-height: 38px;
+                    border-color: #DFDBE7;
+                    border-radius: 6px;
+                    background-color: unset;
+                    max-width: 190px;
+                }
+
+                select {
+                    max-width: 190px;
+                }
+
+                &:nth-child(5) input,
+                &:nth-child(4) input {
+                    max-width: 71px;
+                }
+                &:nth-child(7) input {
+                    max-width: 87px;
+                }
+
+            }
+        }
+
     }
 
-    .rex-new-custom-btn {
-      background-color: #3fb3fb;
-      border: 1px solid #3fb3fb;
-      margin-right: 15px;
+    #rex-feed-footer-btn {
+        background-color: white;
+        padding: 20px 25px;
+        border-radius: 10px;
 
-      &:hover {
-        background-color: #ffffff;
-        color: black;
-        border: 1px solid #eaeaea;
-      }
+        .rex-new-custom-btn {
+            font-size: 15px;
+            font-weight: 400;
+            border-radius: 10px;
+
+            svg {
+                vertical-align: sub;
+                transition: all 0.3s ease;
+            }
+            &:hover svg path {
+
+                stroke: black;
+            
+            }
+        }
+
+        .rex-new-custom-btn {
+            background-color: #3fb3fb;
+            border: 1px solid #3fb3fb;
+            margin-right: 15px;
+            
+            &:hover {
+                background-color: #ffffff;
+                color: black;
+                border: 1px solid #eaeaea;
+            }
+        }
+
+        display: flex;
+    
     }
-
-    display: flex;
-  }
 }
 
 #rex_feed_progress_bar.postbox {
-  position: relative;
-  min-width: 255px;
-  border: 0;
-  background: #ffffff;
-  box-shadow: 0px 15px 20px rgb(202 202 224 / 25%);
-  border-radius: 10px;
-  display: none;
+    position: relative;
+    min-width: 255px;
+    border: 0;
+    background: #FFFFFF;
+    box-shadow: 0px 15px 20px rgb(202 202 224 / 25%);
+    border-radius: 10px;
+    display: none;
 }
 
 /*----05.Progress bar style --------*/
 #rex_feed_progress_bar.postbox .inside {
-  padding: 10px;
-  line-height: 1.4;
-  font-size: 14px;
+    padding: 10px;
+    line-height: 1.4;
+    font-size: 14px;
 
-  .rex-feed-progressbar {
-    position: relative;
+    .rex-feed-progressbar {
+        position: relative;
 
-    .progressbar-bar-percent {
-      position: absolute;
-      z-index: 11;
-      right: 10px;
-      top: 5px;
+        .progressbar-bar-percent {
+            position: absolute;
+            z-index: 11;
+            right: 10px;
+            top: 5px;
+        }
     }
-  }
 
-  .progress-msg {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 0;
+    .progress-msg {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0;
 
-    .feed-msg {
-      color: #1fb3fa;
-      font-size: 16px;
-      font-weight: 600;
-      display: flex;
-      i {
-        margin-right: 10px;
-      }
+        .feed-msg {
+            color: #1fb3fa;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            i { 
+                margin-right: 10px;
+            }
+        }
     }
-  }
 }
 
+
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> ccea81735c5c1bb17c15fd28e8caed924bd540ac
 /* Responsive code All product feeds  */
 
 @media (max-width: 1599px) {
-  #rex_feed_conf .inside {
-    grid-template-columns: 1fr 1fr 1fr;
-    padding: 20px;
-    grid-gap: 20px;
-  }
 
-  #rex_feed_conf .rex_feed_config_div {
-    grid-template-columns: auto;
-    grid-gap: 10px;
-  }
-
-  /* dash border  layout style */
-  .post-type-product-feed {
-    #poststuff #post-body.columns-2 {
-      margin-right: 270px;
+    #rex_feed_conf .inside {
+        grid-template-columns: 1fr 1fr 1fr;
+        padding: 20px;
+        grid-gap: 20px;
     }
 
-    #post-body.columns-2 #postbox-container-1 {
-      float: right;
-      margin-right: -270px;
-      width: 270px;
-
-      #rex_feed_trigger_based_review_request .inside {
-        padding: 35px 30px 40px 30px;
-        box-shadow: 0px 1px 2px rgb(190 190 215 / 20%);
-        background-image: none;
-      }
-      div#rex_feed_review_request_body_content {
-        flex-direction: column;
-      }
+    #rex_feed_conf .rex_feed_config_div {
+        grid-template-columns: auto;
+        grid-gap: 10px;
     }
 
-    #poststuff #post-body.columns-2 #side-sortables {
-      width: 270px;
-    }
-
-    #poststuff .postbox-container,
-    #post-body-content {
-      padding-right: 20px;
-    }
-
-    #submitdiv.postbox {
-      #major-publishing-actions {
-        display: flex;
-        flex-flow: row wrap;
-        align-items: center;
-        justify-content: space-between;
-        background: white;
-
-        #delete-action {
-          float: none;
-          order: 1;
-          width: 100%;
+    /* dash border  layout style */
+    .post-type-product-feed {
+        #poststuff #post-body.columns-2 {
+            margin-right: 270px;
         }
-      }
-    }
-  }
 
-  #rex_feed_config_heading {
-    #config-table {
-      thead {
-        tr {
-          th {
-            &:first-child {
-              padding-left: 20px;
-            }
+        #post-body.columns-2 #postbox-container-1 {
+            float: right;
+            margin-right: -270px;
+            width: 270px;
 
-            &:last-child {
-              padding-right: 20px;
+            #rex_feed_trigger_based_review_request .inside {
+                padding: 35px 30px 40px 30px;
+                box-shadow: 0px 1px 2px rgb(190 190 215 / 20%);
+                background-image: none;
             }
-          }
+            div#rex_feed_review_request_body_content {
+                
+                flex-direction: column;
+            }
         }
-      }
 
-      tbody {
-        tr {
-          td {
-            &:first-child {
-              padding-left: 20px;
-            }
-
-            &:last-child {
-              padding-right: 20px;
-            }
-            a {
-              i {
-                justify-content: center;
-              }
-            }
-          }
+        #poststuff #post-body.columns-2 #side-sortables {
+            width: 270px;
         }
-      }
+
+        #poststuff .postbox-container,
+        #post-body-content {
+            padding-right: 20px;
+        }
+
+        #submitdiv.postbox { 
+
+            #major-publishing-actions  {  
+                display: flex;
+                flex-flow: row wrap;
+                align-items: center;
+                justify-content: space-between;
+                background: white;
+
+                #delete-action {
+                    float: none;
+                    order: 1;
+                    width: 100%;
+                  }
+            }
+        }
+
     }
-  }
+
+    #rex_feed_config_heading {
+
+        #config-table { 
+            thead { 
+                tr { 
+                    th { 
+                        &:first-child { 
+                            padding-left: 20px;
+                        }
+
+                        &:last-child { 
+                            padding-right: 20px;
+                        }
+                    }
+                }
+            }
+
+            tbody { 
+                tr { 
+                    td {
+                        &:first-child { 
+                            padding-left: 20px;
+                        }
+
+                        &:last-child { 
+                            padding-right: 20px;
+                        } 
+                        a { 
+                            i {
+                                justify-content: center;
+                             }
+                        }
+                    }
+                }
+            }
+        }
+    } 
+ 
+
 }
 
 @media (max-width: 1399px) {
-  #rex_feed_config_heading {
-    #config-table {
-      thead {
-        tr {
-          th {
-            &:first-child {
-              padding-left: 10px;
+
+    #rex_feed_config_heading {
+
+        #config-table { 
+            thead { 
+                tr { 
+                    th { 
+                        &:first-child { 
+                            padding-left: 10px;
+                        }
+
+                        &:last-child { 
+                            padding-right: 10px;
+                        }
+                    }
+                }
             }
 
-            &:last-child {
-              padding-right: 10px;
+            tbody { 
+                tr { 
+                    td {
+                        &:first-child { 
+                            padding-left: 10px;
+                        }
+
+                        &:last-child { 
+                            padding-right: 10px;
+                        } 
+                        a { 
+                            i {
+                                justify-content: center;
+                             }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
+    } 
 
-      tbody {
-        tr {
-          td {
-            &:first-child {
-              padding-left: 10px;
-            }
+    .wp-core-ui #rex_feed_config_heading  select {
+        font-size: 12px;
+    }
 
-            &:last-child {
-              padding-right: 10px;
-            }
-            a {
-              i {
-                justify-content: center;
-              }
-            }
-          }
+    #rex_feed_product_filters,
+    #rex_feed_product_settings {
+        max-width: 850px;
+    }
+
+    #rex_feed_conf {
+        .inside {
+            grid-template-columns: 1fr 1fr 1fr;
         }
-      }
     }
-  }
 
-  .wp-core-ui #rex_feed_config_heading select {
-    font-size: 12px;
-  }
+    // dash board side bar
+    .post-type-product-feed {
 
-  #rex_feed_product_filters,
-  #rex_feed_product_settings {
-    max-width: 850px;
-  }
+        #submitdiv.postbox { 
 
-  #rex_feed_conf {
-    .inside {
-      grid-template-columns: 1fr 1fr 1fr;
+            #major-publishing-actions  {  
+                display: grid;
+            }
+        }
     }
-  }
-
-  // dash board side bar
-  .post-type-product-feed {
-    #submitdiv.postbox {
-      #major-publishing-actions {
-        display: grid;
-      }
-    }
-  }
 }
 
 @media (max-width: 1199px) {
-  #rex_feed_conf .inside {
-    grid-template-columns: 1fr;
-  }
 
-  #rex_feed_config_heading {
-    #config-table {
-      thead {
-        tr {
-          th {
-            display: none;
-          }
-        }
-      }
-
-      tbody {
-        tr {
-          td {
-            &:first-child {
-              padding-left: 0px;
-            }
-            a {
-              i {
-                justify-content: center;
-              }
-            }
-
-            display: block;
-            padding: 30px 0 0;
-            position: relative;
-            width: 100%;
-            margin-bottom: 10px;
-            border-bottom: none;
-
-            input,
-            select {
-              max-width: initial;
-              width: 100%;
-            }
-
-            &:before {
-              content: "" attr(data-title) "";
-              min-width: 100px;
-              text-transform: capitalize;
-              font-weight: 500;
-              color: #222;
-              position: absolute;
-              top: 0px;
-              left: 0;
-            }
-          }
-
-          margin-bottom: 20px;
-          border: 1px solid #e8e8e8;
-          display: block;
-          width: 100%;
-          border-radius: 3px;
-          padding: 10px;
-        }
-      }
+    #rex_feed_conf .inside {
+        grid-template-columns: 1fr;
     }
-    border: none;
-  }
+
+    #rex_feed_config_heading {
+
+        #config-table { 
+            thead { 
+                tr { 
+                    th { 
+                        display: none;
+                    }
+                }
+            }
+
+            tbody { 
+                tr { 
+                    td {
+                        &:first-child { 
+                            padding-left: 0px;
+                        } 
+                        a { 
+                            i {
+                                justify-content: center;
+                             }
+                        }
+
+                        display: block;
+                        padding: 30px 0 0;
+                        position: relative;
+                        width: 100%;
+                        margin-bottom: 10px;
+                        border-bottom: none;
+
+                        input,
+                        select { 
+                            max-width: initial;
+                            width: 100%;
+                        }
+
+                        &:before { 
+                            content: "" attr(data-title) "";
+                            min-width: 100px;
+                            text-transform: capitalize;
+                            font-weight: 500;
+                            color: #222;
+                            position: absolute;
+                            top: 0px;
+                            left: 0;
+                        }
+                    }
+                    
+                    margin-bottom: 20px;
+                    border: 1px solid #e8e8e8;
+                    display: block;
+                    width: 100%;
+                    border-radius: 3px;
+                    padding: 10px;
+                }
+            }
+        }
+        border: none;
+    } 
+
 }
 
+
 @media (max-width: 991px) {
-  .post-type-product-feed {
-    #poststuff #post-body.columns-2 #side-sortables {
-      width: 100%;
-    }
-  }
+    .post-type-product-feed {
+        #poststuff #post-body.columns-2 #side-sortables {
+            width: 100%;
+        }  
+   }
 }
 
 @media (max-width: 480px) {
-  /* Add New Feed Section */
 
-  #rex_feed_head_btn {
-    .inside h2 {
-      font-size: 14px;
+    /* Add New Feed Section */
+
+    #rex_feed_head_btn {
+        .inside h2 {
+            font-size: 14px;
+        }
+
+        #rex-pr-filter-btn {
+            display: block;
+            margin: 10px 0 10px;
+        }
+
+        #rex-feed-settings-btn {
+            display: block;
+            margin: 10px 0;
+        }
+
     }
 
-    #rex-pr-filter-btn {
-      display: block;
-      margin: 10px 0 10px;
+    #rex_feed_config_heading { 
+        #rex-feed-footer-btn {  
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            grid-gap: 10px;
+            align-items: center;  
+            #rex-new-custom-attr {
+                margin-right: 0px;
+            }
+        }
     }
-
-    #rex-feed-settings-btn {
-      display: block;
-      margin: 10px 0;
-    }
-  }
-
-  #rex_feed_config_heading {
-    #rex-feed-footer-btn {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      grid-gap: 10px;
-      align-items: center;
-      #rex-new-custom-attr {
-        margin-right: 0px;
-      }
-    }
-  }
 }
+
+

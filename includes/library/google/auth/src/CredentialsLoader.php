@@ -20,6 +20,7 @@ namespace RexFeed\Google\Auth;
 use RexFeed\Google\Auth\Credentials\InsecureCredentials;
 use RexFeed\Google\Auth\Credentials\ServiceAccountCredentials;
 use RexFeed\Google\Auth\Credentials\UserRefreshCredentials;
+use RexFeed\GuzzleHttp\ClientInterface;
 use RuntimeException;
 use UnexpectedValueException;
 /**
@@ -53,26 +54,41 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface, UpdateMetad
         return \strtoupper(\substr(\PHP_OS, 0, 3)) === 'WIN';
     }
     /**
+     * Returns the currently available major Guzzle version.
+     *
+     * @return int
+     */
+    private static function getGuzzleMajorVersion()
+    {
+        if (\defined('GuzzleHttp\\ClientInterface::MAJOR_VERSION')) {
+            return ClientInterface::MAJOR_VERSION;
+        }
+        if (\defined('GuzzleHttp\\ClientInterface::VERSION')) {
+            return (int) \substr(ClientInterface::VERSION, 0, 1);
+        }
+        throw new \Exception('Version not supported');
+    }
+    /**
      * Load a JSON key from the path specified in the environment.
      *
      * Load a JSON key from the path specified in the environment
      * variable GOOGLE_APPLICATION_CREDENTIALS. Return null if
      * GOOGLE_APPLICATION_CREDENTIALS is not specified.
      *
-     * @return array<mixed>|null JSON key | null
+     * @return array|null JSON key | null
      */
     public static function fromEnv()
     {
         $path = \getenv(self::ENV_VAR);
         if (empty($path)) {
-            return null;
+            return;
         }
         if (!\file_exists($path)) {
             $cause = 'file ' . $path . ' does not exist';
             throw new \DomainException(self::unableToReadEnv($cause));
         }
         $jsonKey = \file_get_contents($path);
-        return \json_decode((string) $jsonKey, \true);
+        return \json_decode($jsonKey, \true);
     }
     /**
      * Load a JSON key from a well known path.
@@ -84,7 +100,7 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface, UpdateMetad
      *
      * If the file does not exist, this returns null.
      *
-     * @return array<mixed>|null JSON key | null
+     * @return array|null JSON key | null
      */
     public static function fromWellKnownFile()
     {
@@ -96,18 +112,18 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface, UpdateMetad
         $path[] = self::WELL_KNOWN_PATH;
         $path = \implode(\DIRECTORY_SEPARATOR, $path);
         if (!\file_exists($path)) {
-            return null;
+            return;
         }
         $jsonKey = \file_get_contents($path);
-        return \json_decode((string) $jsonKey, \true);
+        return \json_decode($jsonKey, \true);
     }
     /**
      * Create a new Credentials instance.
      *
-     * @param string|string[] $scope the scope of the access request, expressed
+     * @param string|array $scope the scope of the access request, expressed
      *        either as an Array or as a space-delimited String.
-     * @param array<mixed> $jsonKey the JSON credentials.
-     * @param string|string[] $defaultScope The default scope to use if no
+     * @param array $jsonKey the JSON credentials.
+     * @param string|array $defaultScope The default scope to use if no
      *   user-defined scopes exist, expressed either as an Array or as a
      *   space-delimited string.
      *
@@ -132,13 +148,20 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface, UpdateMetad
      * Create an authorized HTTP Client from an instance of FetchAuthTokenInterface.
      *
      * @param FetchAuthTokenInterface $fetcher is used to fetch the auth token
-     * @param array<mixed> $httpClientOptions (optional) Array of request options to apply.
+     * @param array $httpClientOptions (optional) Array of request options to apply.
      * @param callable $httpHandler (optional) http client to fetch the token.
      * @param callable $tokenCallback (optional) function to be called when a new token is fetched.
      * @return \GuzzleHttp\Client
      */
     public static function makeHttpClient(FetchAuthTokenInterface $fetcher, array $httpClientOptions = [], callable $httpHandler = null, callable $tokenCallback = null)
     {
+        if (self::getGuzzleMajorVersion() === 5) {
+            $client = new \RexFeed\GuzzleHttp\Client($httpClientOptions);
+            $client->setDefaultOption('auth', 'google_auth');
+            $subscriber = new Subscriber\AuthTokenSubscriber($fetcher, $httpHandler, $tokenCallback);
+            $client->getEmitter()->attach($subscriber);
+            return $client;
+        }
         $middleware = new Middleware\AuthTokenMiddleware($fetcher, $httpHandler, $tokenCallback);
         $stack = \RexFeed\GuzzleHttp\HandlerStack::create();
         $stack->push($middleware);
@@ -156,7 +179,7 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface, UpdateMetad
     /**
      * export a callback function which updates runtime metadata.
      *
-     * @return callable updateMetadata function
+     * @return array updateMetadata function
      * @deprecated
      */
     public function getUpdateMetadataFunc()
@@ -166,10 +189,10 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface, UpdateMetad
     /**
      * Updates metadata with the authorization token.
      *
-     * @param array<mixed> $metadata metadata hashmap
+     * @param array $metadata metadata hashmap
      * @param string $authUri optional auth uri
      * @param callable $httpHandler callback which delivers psr7 request
-     * @return array<mixed> updated metadata hashmap
+     * @return array updated metadata hashmap
      */
     public function updateMetadata($metadata, $authUri = null, callable $httpHandler = null)
     {
@@ -215,9 +238,6 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface, UpdateMetad
     {
         return \filter_var(\getenv(self::MTLS_CERT_ENV_VAR), \FILTER_VALIDATE_BOOLEAN);
     }
-    /**
-     * @return array{cert_provider_command:string[]}|null
-     */
     private static function loadDefaultClientCertSourceFile()
     {
         $rootEnv = self::isOnWindows() ? 'APPDATA' : 'HOME';
@@ -226,7 +246,7 @@ abstract class CredentialsLoader implements FetchAuthTokenInterface, UpdateMetad
             return null;
         }
         $jsonKey = \file_get_contents($path);
-        $clientCertSourceJson = \json_decode((string) $jsonKey, \true);
+        $clientCertSourceJson = \json_decode($jsonKey, \true);
         if (!$clientCertSourceJson) {
             throw new UnexpectedValueException('Invalid client cert source JSON');
         }

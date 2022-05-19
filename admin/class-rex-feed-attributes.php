@@ -1,12 +1,13 @@
 <?php
 
 /**
- * Helper Class to retrieve Feed Attributes
+ * Helper Class to retrive Feed Attributes
  *
  * @link       https://rextheme.com
  * @since      1.0.0
  *
  * @package    Rex_Product_Feed
+ * @subpackage Rex_Product_Feed/admin/feed-templates/
  */
 
 /**
@@ -488,13 +489,7 @@ class Rex_Feed_Attributes
             }
             wpfm_set_cached_data( 'product_custom_attributes', $attributes );
         }
-
-        if( is_array( $attributes ) ) {
-            asort( $attributes );
-        }
-        else {
-            $attributes = [];
-        }
+        asort( $attributes );
         return $attributes;
     }
 }

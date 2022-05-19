@@ -414,7 +414,7 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                             <h3 class="merchant-title"><?php echo esc_html__('Available Merchants', 'rex-product-feed') ?></h3>
                             <?php
                             // free vs pro merchants
-                            $all_merchants  = Rex_Feed_Merchants::get_merchants();
+                            $all_merchants  = wpfm_get_merchant_lits();
                             $_merchants     = $all_merchants[ 'popular' ];
 
                             if (!$is_premium_activated) {

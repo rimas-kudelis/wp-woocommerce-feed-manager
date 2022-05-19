@@ -1243,7 +1243,6 @@
 
     //----------setting tab-------
     function rex_feed_settings_tab( event ) {
-        var url = window.location.href;
         if ( $( this ).length > 0 ) {
             var tab_id = $( this ).attr( 'data-tab' );
             $( 'ul.rex-settings-tabs li' ).removeClass( 'active' );
@@ -1251,13 +1250,6 @@
 
             $( this ).addClass( 'active' );
             $( "#" + tab_id ).addClass( 'active' );
-        }
-        if ( $( this ).length === 0 && url.includes( 'page=wpfm_dashboard&tab=merchants' ) ) {
-            $( 'ul.rex-settings-tabs li[data-tab=tab1]' ).removeClass( 'active' );
-            $( '.rex-settings-tab-content #tab1' ).removeClass( 'active' );
-
-            $( 'ul.rex-settings-tabs li[data-tab=tab2]' ).addClass( 'active' );
-            $( '#tab2' ).addClass( 'active' );
         }
     }
 
@@ -1574,20 +1566,9 @@
     }
 
     function rex_feed_merchant_list_select2( e ) {
-        var url = window.location.href;
-
-        if ( url.includes('&rex_feed_merchant=') ) {
-            url = new URL( url );
-            var feed_merchant = url.searchParams.get( 'rex_feed_merchant' );
-            $('.rex-merchant-list-select2').val( feed_merchant ).trigger( 'change' ).select2({
-                placeholder: "Please Select your merchant",
-            });
-        }
-        else {
-            $( '.rex-merchant-list-select2, .rex-setup-wizard-merchant-select2' ).select2({
-                placeholder: "Please Select your merchant",
-            });
-        }
+        $('.rex-merchant-list-select2').select2({
+            placeholder: "Select your merchant",
+        });
     }
 
     function rex_feed_is_req_attr_missing() {
@@ -1705,9 +1686,4 @@
             location.href = $this.attr('href');
         }
     }
-    //   video setup wizard__video
-    $(".box-video").click(function(){
-        $('iframe',this)[0].src += "&amp;autoplay=1";
-        $(this).addClass('open');
-      });
 })( jQuery );

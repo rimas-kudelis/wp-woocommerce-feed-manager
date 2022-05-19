@@ -149,6 +149,7 @@
                 if (response.success) {
                     $( 'ul.wd-de-reasons' ).empty();
                     $( 'ul.wd-de-reasons' ).append( response.data.html );
+                    $( 'button.wd-dr-submit-modal' ).attr( 'disabled', 'disabled' );
                 }
             })
             .error( function( response ) {
@@ -158,6 +159,10 @@
             $( '.wd-dr-modal-body' ).append( '<p id="appsero_new_assistance">Need Support/Assistance? <a href="https://rextheme.com/support/" target="_blank">Click Here!</a></p>' );
             $( '.wd-dr-modal-body' ).append( '<p id="appsero_required"><span style="color: red">*</span>Please, select one reason and submit.</p>' );
         }
+    });
+
+    $(document).on('click', 'input[name=selected-reason]', function ( e ) {
+        $( 'button.wd-dr-submit-modal' ).removeAttr( 'disabled' );
     });
 
     $( document ).ready( function ( e ) {

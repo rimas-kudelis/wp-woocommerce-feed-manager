@@ -1544,12 +1544,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys )
     {
-        $retriever_class = 'Rex_Product_Data_Retriever';
-        if ( class_exists( 'Rex_Product_Data_Retriever_Pro' ) ) {
-            $retriever_class = 'Rex_Product_Data_Retriever_Pro';
-        }
-
-        $data     = new $retriever_class( $product, $this, $product_meta_keys );
+        $data     = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
         $all_data = $data->get_all_data();
 
         if ( $this->merchant === 'pinterest' && ( $this->feed_format === 'csv' ) ) {

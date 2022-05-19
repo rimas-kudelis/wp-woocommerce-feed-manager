@@ -25,9 +25,6 @@ use RexFeed\GuzzleHttp\Promise\RejectedPromise;
 use RexFeed\GuzzleHttp\Psr7\Response;
 use RexFeed\Psr\Http\Message\RequestInterface;
 use RexFeed\Psr\Http\Message\ResponseInterface;
-/**
- * @deprecated
- */
 class Guzzle5HttpHandler
 {
     /**

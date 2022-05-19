@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Product Feed Manager for WooCommerce helps you to sell more by uploading product feed to Google shopping, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
- * Version:           7.2.3
+ * Version:           7.2.2
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -38,9 +38,6 @@
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
     die;
-}
-if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.2.3' );
 }
 if( !defined( 'WPFM__FILE__' ) ) {
     define( 'WPFM__FILE__', __FILE__ );
@@ -78,7 +75,9 @@ if( !defined( 'WPFM_FREE_MAX_PRODUCT_LIMIT' ) ) {
 if( !defined( 'WPFM_SLUG' ) ) {
     define( 'WPFM_SLUG', 'best-woocommerce-feed' );
 }
-
+if( !defined( 'WPFM_VERSION' ) ) {
+    define( 'WPFM_VERSION', '7.2.2' );
+}
 if( !defined( 'WPFM_BASE' ) && defined( 'WPFM__FILE__' ) ) {
     define( 'WPFM_BASE', plugin_basename( WPFM__FILE__ ) );
 }
@@ -209,8 +208,7 @@ function activate_rex_product_feed() {
     if ( !rex_is_woocommerce_active() ) {
         // Stop activation redirect and show error
         wp_die('Sorry, but this plugin requires the WooCommerce Plugin to be installed and active. <br><a href="' . admin_url( 'plugins.php' ) . '">&laquo; Return to Plugins</a>');
-    }
-    else{
+    }else{
         Rex_Product_Feed_Activator::activate();
         update_option( 'rex_feed_redirect_after_activation', true );
     }
@@ -316,9 +314,12 @@ function is_edit_page($new_edit = null){
  */
 function wpfm_top_pages_modify($pages) {
     global $typenow;
-    if ( ( is_edit_page('edit') && "product-feed" === $typenow ) || ( is_edit_page('new') && "product-feed" === $typenow ) ){
-        unset( $pages[0] );
-        unset( $pages[1] );
+    if (is_edit_page('edit') && "product-feed" == $typenow){
+        unset($pages[0]);
+        unset($pages[1]);
+    }elseif (is_edit_page('new') && "product-feed" == $typenow) {
+        unset($pages[0]);
+        unset($pages[1]);
     }
     return $pages;
 }
@@ -337,8 +338,8 @@ add_action( 'in_plugin_update_message-best-woocommerce-feed/rex-product-feed.php
 function rex_feed_redirect_after_activation() {
     if ( get_option( 'rex_feed_redirect_after_activation', false ) ) {
         delete_option( 'rex_feed_redirect_after_activation' );
-        $url = admin_url( 'admin.php?page=setup-wizard' );
-        $url = esc_url( $url, FILTER_SANITIZE_URL );
+        $url = admin_url('edit.php?post_type=product-feed');
+        $url = filter_var( $url, FILTER_SANITIZE_URL );
         exit( wp_safe_redirect( $url ) );
     }
 }

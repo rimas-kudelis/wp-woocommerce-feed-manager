@@ -321,9 +321,9 @@ class Rex_Product_Feed_Ajax {
 
 
     /**
-     * @desc Show feed template
+     * Show feed template
      * @param $merchant
-     * @return array
+     * @return false|string
      * @throws Exception
      */
     public static function show_feed_template( $merchant )
@@ -337,8 +337,8 @@ class Rex_Product_Feed_Ajax {
         }
 
         $feed_template = Rex_Feed_Template_Factory::build( $merchant_name, $feed_rules );
-        $feed_format = Rex_Feed_Merchants::get_feed_formats( $merchant_name );
-        $feed_separator = Rex_Feed_Merchants::get_csv_feed_separators( $merchant_name );
+        $feed_format = self::get_merchant_feed_format($merchant_name);
+        $feed_separator = self::get_feed_separator($merchant_name);
 
         ob_start();
         if( in_array($merchant_name, apply_filters('wpfm_has_custom_feed_config', array()))) {
@@ -364,6 +364,334 @@ class Rex_Product_Feed_Ajax {
 		    'feed_separator' => $feed_separator,
 		    'select'         => $selected_format
 	    );
+    }
+
+    /**
+     * return feed format based on
+     * merchant type
+     *
+     * @param $merchant
+     * @return array
+     * @since 5.42
+     */
+    public static function get_merchant_feed_format($merchant) {
+        $google_format = array(
+            'google',
+            'ciao',
+            'liveintent',
+            'google_shopping_actions',
+            'google_express',
+            'criteo',
+            'compartner',
+            'doofinder',
+            'emarts',
+            'epoq',
+            'google_review'
+        );
+        $facebook_format = array(
+            'facebook',
+            'ebay_mip',
+            'leguide',
+        );
+        $amazon_format = array(
+            'amazon_it_collane',
+            'amazon_seller_bed_amp',
+            'amazon_seller',
+            'amazon',
+        );
+        $snapchat_format = array(
+            'snapchat',
+            'google_custom_search_ads',
+
+        );
+        $printerst_format = array(
+            'pinterest',
+            'rakuten',
+        );
+        $Ebay_format = array(
+            'amazon_accessories_and_scarf',
+            'ebay_seller',
+            'lazada',
+            'bol',
+            'fruugo',
+            'idealo_de',
+            'idealo',
+
+        );
+        $instagram_format = array(
+            'instagram',
+
+        );
+        $trovaprezzi_format = array(
+            'trovaprezzi',
+        );
+        $zalando_format = array(
+            'zalando',
+            'zalando_stock_update'
+        );
+        $wish_format = array(
+            'wish',
+        );
+        $connexity_format = array(
+            'connexity',
+        );
+        $google_local_product_inventory = array(
+            'google_local_products_inventory',
+        );
+        $google_local_product = array(
+            'google_local_products',
+        );
+        $shopzilla = array(
+            'shopzilla',
+        );
+        $bing = array(
+            'bing',
+        );
+        $cercavino = array(
+            'cercavino',
+        );
+        $trovino = array(
+            'trovino',
+        );
+        $bing_json_feed = array(
+            'bing_image',
+        );
+        $ibud = array(
+            'ibud',
+        );
+        $mirakl = array(
+            'mirakl',
+        );
+        $google_local_inventory_ads = array(
+            'google_local_inventory_ads',
+        );
+        $DealsForU = array(
+            'DealsForU',
+        );
+        $Bestprice = array(
+            'Bestprice',
+        );
+        $spartooFr = array(
+            'spartooFr',
+        );
+        $lesitedumif = array(
+            'lesitedumif',
+        );
+        $shopee = array(
+            'shopee',
+        );
+
+	    if ( in_array( $merchant, $google_format ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $facebook_format ) ) {
+		    return array( 'xml', 'csv' );
+	    }
+        elseif ( in_array( $merchant, $amazon_format ) ) {
+		    return array( 'csv', 'tsv', 'text' );
+	    }
+        elseif ( in_array( $merchant, $snapchat_format ) ) {
+		    return array( 'csv' );
+	    }
+        elseif ( in_array( $merchant, $printerst_format ) ) {
+		    return array( 'csv', 'tsv', 'xml' );
+	    }
+        elseif ( in_array( $merchant, $Ebay_format ) ) {
+		    return array( 'csv' );
+	    }
+        elseif ( in_array( $merchant, $instagram_format ) ) {
+		    return array( 'xml', 'csv', 'tsv' );
+	    }
+        elseif ( in_array( $merchant, $trovaprezzi_format ) ) {
+		    return array( 'xml', 'csv' );
+	    }
+        elseif ( in_array( $merchant, $zalando_format ) ) {
+	        if ( $merchant === 'zalando_stock_update' ) {
+		        return array( 'csv' );
+            }
+		    return array( 'json', 'csv' );
+	    }
+        elseif ( in_array( $merchant, $wish_format ) ) {
+		    return array( 'csv', 'text' );
+	    }
+        elseif ( in_array( $merchant, $connexity_format ) ) {
+		    return array( 'csv', 'text' );
+	    }
+        elseif ( in_array( $merchant, $google_local_product_inventory ) ) {
+		    return array( 'xml', 'text' );
+	    }
+        elseif ( in_array( $merchant, $google_local_product ) ) {
+		    return array( 'xml', 'text', 'csv' );
+	    }
+        elseif ( in_array( $merchant, $shopzilla ) ) {
+		    return array( 'text' );
+	    }
+        elseif ( in_array( $merchant, $bing ) ) {
+		    return array( 'text' );
+	    }
+	    elseif ( in_array( $merchant, $cercavino ) ) {
+		    return array( 'text' );
+	    }
+	    elseif ( in_array( $merchant, $trovino ) ) {
+		    return array( 'text' );
+	    }
+        elseif ( in_array( $merchant, $ibud ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $mirakl ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $DealsForU ) ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $Bestprice ) || $merchant === 'gulog_gratis' || $merchant === 'hotline' ) {
+		    return array( 'xml' );
+	    }
+        elseif ( in_array( $merchant, $spartooFr ) ) {
+		    return array( 'xml', 'csv' );
+	    }
+        elseif ( in_array( $merchant, $google_local_inventory_ads ) ) {
+		    return array( 'xml', 'text' );
+	    }
+        elseif ( in_array( $merchant, $lesitedumif ) ) {
+		    return array( 'csv' );
+	    }
+        elseif ( in_array( $merchant, $bing_json_feed ) ) {
+		    return array( 'json' );
+	    }
+        elseif ( in_array( $merchant, $shopee ) ) {
+		    return array( 'csv' );
+	    }
+        elseif ( 'yandex' === $merchant ) {
+		    return array( 'xml', 'yml' );
+	    }
+        elseif ( 'rozetka' === $merchant ) {
+		    return array( 'xml' );
+	    }
+	    return array( 'xml', 'yml', 'csv', 'text', 'tsv', 'json' );
+    }
+
+    /**
+     * return feed separator based on
+     * merchant type
+     *
+     * @param $merchant
+     * @return array
+     */
+    public static function get_feed_separator($merchant) {
+        $google_format = array(
+            'google',
+            'ciao',
+            'liveintent',
+            'google_shopping_actions',
+            'google_express',
+            'criteo',
+            'compartner',
+            'doofinder',
+            'emarts',
+            'epoq',
+            'google_review'
+        );
+        $facebook_format = array(
+            'facebook',
+            'ebay_mip',
+            'leguide',
+        );
+        $amazon_format = array(
+            'amazon_it_collane',
+            'amazon_seller_bed_amp',
+            'amazon_seller',
+            'amazon',
+        );
+        $snapchat_format = array(
+            'snapchat',
+            'google_custom_search_ads',
+
+        );
+        $printerst_format = array(
+            'pinterest',
+            'rakuten',
+        );
+        $Ebay_format = array(
+            'amazon_accessories_and_scarf',
+            'ebay_seller',
+            'lazada',
+            'bol',
+            'fruugo',
+            'idealo_de',
+            'idealo',
+
+        );
+        $instagram_format = array(
+            'instagram',
+
+        );
+        $trovaprezzi_format = array(
+            'trovaprezzi',
+        );
+        $zalando_format = array(
+            'zalando',
+            'zalando_stock_update'
+        );
+        $wish_format = array(
+            'wish',
+        );
+        $connexity_format = array(
+            'connexity',
+        );
+        $google_local_product_inventory = array(
+            'google_local_products_inventory',
+        );
+        $google_local_product = array(
+            'google_local_products',
+        );
+        $shopzilla = array(
+            'shopzilla',
+        );
+        $bing = array(
+            'bing',
+        );
+        $cercavino = array(
+            'cercavino',
+        );
+        $trovino = array(
+            'trovino',
+        );
+        $bing_json_feed = array(
+            'bing_image',
+        );
+        $ibud = array(
+            'ibud',
+        );
+        $mirakl = array(
+            'mirakl',
+        );
+        $google_local_inventory_ads = array(
+            'google_local_inventory_ads',
+        );
+        $DealsForU = array(
+            'DealsForU',
+        );
+        $Bestprice = array(
+            'Bestprice',
+        );
+        $spartooFr = array(
+            'spartooFr',
+        );
+        $lesitedumif = array(
+            'lesitedumif',
+        );
+        $shopee = array(
+            'shopee',
+        );
+
+	    if ( in_array( $merchant, $facebook_format ) ) {
+		    return array( 'comma', 'semi_colon' );
+	    }
+	    elseif ( in_array( $merchant, $trovino ) || in_array( $merchant, $cercavino ) ) {
+		    return array( 'pipe' );
+	    }
+	    return array( 'comma', 'semi_colon', 'pipe' );
     }
 
 
@@ -515,9 +843,9 @@ class Rex_Product_Feed_Ajax {
 		    /*
 			 * Initialize service and datafeed
 			 */
-		    $service  = new RexFeed\Google\Service\ShoppingContent( $client );
-		    $datafeed = new RexFeed\Google\Service\ShoppingContent\Datafeed();
-		    $target   = new RexFeed\Google\Service\ShoppingContent\DatafeedTarget();
+		    $service  = new Google_Service_ShoppingContent( $client );
+		    $datafeed = new Google_Service_ShoppingContent_Datafeed();
+		    $target   = new Google_Service_ShoppingContent_DatafeedTarget();
 
 		    $name     = $feed_title;
 		    $filename = $name . uniqid();
@@ -543,9 +871,9 @@ class Rex_Product_Feed_Ajax {
 		    /*
 			 * Initialize Schedule
 			 */
-		    $fetch_schedule = new RexFeed\Google\Service\ShoppingContent\DatafeedFetchSchedule();
+		    $fetch_schedule = new Google_Service_ShoppingContent_DatafeedFetchSchedule();
 		    if ( $payload[ 'schedule' ] === 'monthly' ) {
-			    $fetch_schedule->setDayOfMonth( $payload[ 'month' ] );
+			    $fetch_schedule->setDayOfMonth( $payload[ '' ] );
 		    }
 		    if ( $payload[ 'schedule' ] === 'weekly' ) {
 			    $fetch_schedule->setWeekday( $payload[ 'day' ] );
@@ -556,7 +884,7 @@ class Rex_Product_Feed_Ajax {
 		    /*
 			 * initialize feed format
 			 */
-		    $format = new RexFeed\Google\Service\ShoppingContent\DatafeedFormat();
+		    $format = new Google_Service_ShoppingContent_DatafeedFormat();
 		    $format->setFileEncoding( 'utf-8' );
 		    $datafeed->setFormat( $format );
 		    $datafeed->setFetchSchedule( $fetch_schedule );
@@ -573,6 +901,7 @@ class Rex_Product_Feed_Ajax {
 				    $datafeedFileName = $datafeed->getFileName();
 				    update_post_meta( $feed_id, 'rex_feed_google_data_feed_id', $datafeedID );
 				    update_post_meta( $feed_id, 'rex_feed_google_data_feed_file_name', $datafeedFileName );
+
 			    }
 			    $service->datafeeds->fetchnow( $merchant_id, $datafeedID );
 		    }
@@ -582,18 +911,12 @@ class Rex_Product_Feed_Ajax {
 				    $log->info( $e->getMessage(), array( 'source' => 'WPFM-google' ) );
 			    }
 
-                if ( !is_string( $e->getMessage() ) && is_object( $e->getMessage() ) ) {
-                    $error = json_decode( $e->getMessage() );
-                    $reason = isset($error->error->errors) ? $error->error->errors : '';
-                }
-                else {
-                    $error = $e->getMessage();
-                }
-
+			    $error  = json_decode( $e->getMessage() );
+			    $reason = $error->error->errors;
 			    return array(
 				    'success' => false,
-				    'message' => isset( $error->error->message ) ? $error->error->message : $error,
-				    'reason'  => isset( $reason[ 0 ]->reason ) ? $reason[ 0 ]->reason : $error
+				    'message' => $error->error->message,
+				    'reason'  => $reason[ 0 ]->reason
 			    );
 		    }
 	    }

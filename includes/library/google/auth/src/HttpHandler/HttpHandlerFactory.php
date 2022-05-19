@@ -32,10 +32,9 @@ class HttpHandlerFactory
     {
         $client = $client ?: new Client();
         $version = null;
-        if (\defined('\\RexFeed\\GuzzleHttp\\ClientInterface::MAJOR_VERSION')) {
+        if (\defined('GuzzleHttp\\ClientInterface::MAJOR_VERSION')) {
             $version = ClientInterface::MAJOR_VERSION;
-        } elseif (\defined('\\RexFeed\\GuzzleHttp\\ClientInterface::VERSION')) {
-            /** @phpstan-ignore-next-line */
+        } elseif (\defined('GuzzleHttp\\ClientInterface::VERSION')) {
             $version = (int) \substr(ClientInterface::VERSION, 0, 1);
         }
         switch ($version) {

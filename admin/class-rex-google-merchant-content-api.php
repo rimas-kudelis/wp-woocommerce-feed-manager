@@ -45,10 +45,10 @@ class Rex_Google_Merchant_Settings_Api {
     }
 
     /**
-     * @return \RexFeed\Google\Client
+     * @return Google_Client
      */
     public static function get_client() {
-        return new RexFeed\Google\Client();
+        return new Google_Client();
     }
 
     /**
@@ -192,7 +192,7 @@ class Rex_Google_Merchant_Settings_Api {
      */
     public function feed_exists($feed_id) {
         $client = $this->init_client();
-        $service = new RexFeed\Google\Service\ShoppingContent( $client );
+        $service = new Google_Service_ShoppingContent($client);
         if(get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true)) {
             try {
                 $feed = $service->datafeeds->get(self::$merchant_id, get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true));

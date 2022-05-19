@@ -234,6 +234,4 @@ jQuery(document).ready(function($){
         $( 'a[data-id='+selected_cat+']' ).addClass( 'selected' );
         $( 'a[data-id='+selected_cat+']' ).parent().next().slideDown(500);
     }
-
-
 }); 

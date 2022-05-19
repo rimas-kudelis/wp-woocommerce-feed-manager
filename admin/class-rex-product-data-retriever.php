@@ -304,6 +304,9 @@ class Rex_Product_Data_Retriever
         // maybe escape
         $val = $this->maybe_escape( $val, $rule[ 'escape' ] );
 
+        // maybe replace
+        $val = $this->maybe_replaced( $rule, $val, $this->feed_rules );
+
         // maybe add prefix/suffix
         $val = $this->maybe_add_prefix_suffix( $val, $rule );
 
@@ -631,19 +634,24 @@ class Rex_Product_Data_Retriever
 
             case 'product_subcategory':
                 return $this->get_product_subcategory();
+                break;
 
             case 'product_tags':
                 return $this->get_product_tags();
+                break;
 
             case 'spartoo_product_cats':
                 return $this->get_spartoo_product_cats();
+                break;
 
             case 'sooqr_cats':
                 return $this->get_product_cats_for_sooqr();
+                break;
 
             case 'perfect_brand':
                 $brand = get_products_brands( $this->product->get_id() );
                 return $this->product->get_id();
+                break;
 
             case 'link':
                 $permalink = $this->product->get_permalink();
@@ -657,20 +665,20 @@ class Rex_Product_Data_Retriever
                         !empty( $this->analytics_params[ 'utm_campaign' ] )
                     ) {
                         if($rule === 'decode_url') {
-                            return esc_url( add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink)) );
+                            return add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink)); break;
                         }
-                        return esc_url( $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink) )) );
+                        return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink) )); break;
                     }
                     if($rule === 'decode_url') {
-                        return esc_url( urldecode($permalink) );
+                        return urldecode($permalink); break;
                     }
-                    return esc_url( $this->safeCharEncodeURL(urldecode($permalink)) );
+                    return $this->safeCharEncodeURL(urldecode($permalink)); break;
                 }
                 if($rule === 'decode_url') {
-                    return esc_url( urldecode($permalink) );
+                    return urldecode($permalink); break;
                 }
 
-                return esc_url( $this->safeCharEncodeURL(urldecode($permalink)) );
+                return $this->safeCharEncodeURL(urldecode($permalink)); break;
 
             case 'parent_url':
                 $_pr = $this->product;
@@ -3251,6 +3259,138 @@ class Rex_Product_Data_Retriever
             return preg_replace('/[ ]{2,}|[\t]|[\n]/', ' ', trim($val));
         }
         return $val;
+    }
+
+    /**
+     * Replace a string from an attribute
+     */
+    protected function maybe_replaced( $attr, $value, $feed_rules )
+    {
+        $attr_name = isset( $attr[ 'meta_key' ] ) ? $attr[ 'meta_key' ] : '';
+        $attr_name = $attr_name === '' && isset( $attr[ 'attr' ] ) ? $attr[ 'attr' ] : $attr_name;
+        $attr_name = $attr_name === '' && isset( $attr[ 'cust_attr' ] ) ? $attr[ 'cust_attr' ] : $attr_name;
+
+        if( is_array( $feed_rules ) && !empty( $feed_rules ) ) {
+            foreach( $feed_rules as $rule ) {
+                $rule_then = isset( $rule['rules_then'] ) ? $rule['rules_then'] : '';
+                if( $attr_name === $rule_then ) {
+                    $rule_if = '';
+                    $rule_replace = '';
+
+                    if( isset( $rule['rules_if'] ) && $rule['rules_if'] !== '' ) {
+                        $rule_if = $rule['rules_if'];
+                    }
+                    elseif( isset( $rule['cust_rules_if'] ) && $rule['cust_rules_if'] !== '' ) {
+                        $rule_if = $rule['cust_rules_if'];
+                    }
+
+                    if( isset( $rule['rules_replace'] ) && !isset( $rule['rules_static'] ) ) {
+                        $rule_replace = $rule['rules_replace'];
+                        $rule_replace = $this->get_rules_new_value( $rule_replace );
+                    }
+                    elseif( isset( $rule['rules_static_replace'] ) && isset( $rule['rules_static'] ) && 'static' === $rule['rules_static'] ) {
+                        $rule_replace = $rule['rules_static_replace'];
+                    }
+
+                    $if_attr_val = $this->get_rules_new_value( $rule_if );
+
+                    $rule_condition = isset( $rule[ 'rules_condition' ] ) ? $rule[ 'rules_condition' ] : '';
+
+                    $rule_find = isset( $rule['rules_find'] ) ? $rule['rules_find'] : '';
+
+                    switch( $rule_condition ) {
+                        case 'contain':
+                            return str_replace( $rule_find, $rule_replace, $if_attr_val );
+                        case 'dn_contain':
+                            $str_contains = preg_match( "/$rule_find\b/", $if_attr_val);
+                            return ! $str_contains ? $rule_replace : $value;
+                        case 'equal_to':
+                            return $if_attr_val == $rule_find ? $rule_replace : $value;
+                        case 'nequal_to':
+                            return $if_attr_val != $rule_find ? $rule_replace : $value;
+                        case 'greater_than':
+                            return $if_attr_val > $rule_find ? $rule_replace : $value;
+                        case 'greater_than_equal':
+                            return $if_attr_val >= $rule_find ? $rule_replace : $value;
+                        case 'less_than':
+                            return $if_attr_val < $rule_find ? $rule_replace : $value;
+                        case 'less_than_equal':
+                            return $if_attr_val <= $rule_find ? $rule_replace : $value;
+                        default:
+                            return $value;
+                    }
+                }
+            }
+        }
+
+        return $value;
+    }
+
+
+    /**
+     * Get new attribute value for feed rules
+     *
+     * @param $type
+     * @param $key
+     * @param $value
+     * @return false|int|mixed|string|WC_DateTime|NULL
+     */
+    protected function get_rules_new_value( $key, $type = 'meta' ) {
+        if( 'meta' === $type && $this->is_primary_attr( $key ) ) {
+            return $this->set_pr_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_woodmart_attr( $key ) ) {
+            return $this->set_woodmart_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_price_attr( $key ) ) {
+            return $this->set_price_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_yoast_attr( $key ) ) {
+            return $this->set_yoast_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_perfect_attr( $key ) ) {
+            return $this->set_perfect_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_wc_brand_attr( $key ) ) {
+            return $this->set_wc_brand_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_berocket_brand_attr( $key ) ) {
+            return $this->set_berocket_brand_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_image_attr( $key ) ) {
+            return $this->set_image_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_product_attr( $key ) ) {
+            return $this->set_product_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_product_dynamic_attr( $key ) ) {
+            return $this->set_product_dynamic_attr( $key );
+        }
+        elseif( 'meta' === $type && $this->is_wpfm_custom_attr( $key ) ) {
+            return $this->set_wpfm_custom_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_product_custom_attr( $key ) ) {
+            return $this->set_product_custom_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_product_category_mapper_attr( $key ) ) {
+            return $this->set_cat_mapper_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_glami_attr( $key ) ) {
+            return $this->set_glami_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_dropship_attr( $key ) ) {
+            return $this->set_dropship_att( $key );
+        }
+        elseif( 'meta' === $type && $this->is_date_attr( $key ) ) {
+            return $this->set_date_attr( $key );
+        }
+        elseif ( 'meta' === $type && $this->is_product_custom_tax( $key ) ) {
+            return $this->set_product_custom_tax( $key  );
+        }
+        elseif ( 'meta' === $type && $this->is_woo_discount_rules( $key ) ) {
+            return $this->set_woo_discount_rules( $key  );
+        }
+        return '';
     }
 
 
