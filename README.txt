@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  5.9
 Requires PHP: 7.0
-Stable tag:  7.2.2
+Stable tag:  7.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -421,7 +421,6 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 - WooCommerce to [Lyst](https://www.lyst.com/)
 - WooCommerce to [Listupp](http://listupp.it/)
 - WooCommerce to [Hertie](https://www.hertie.de/)
-- WooCommerce to [Etsy](https://www.etsy.com/)
 - WooCommerce to [Webgains](https://www.webgains.com/public/en/)
 - WooCommerce to [MyDeal](https://www.mydeal.com.au/)
 - WooCommerce to [Deals4U.gr](https://deals4u.gr/)
@@ -429,6 +428,12 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 - WooCommerce to [BestPrice.gr](https://www.bestprice.gr/)
 - WooCommerce to [Spartoo.fr](https://www.spartoo.com/)
 - WooCommerce to [Mirakl](https://www.mirakl.com/)
+- WooCommerce to [ebay Seller Center](https://pages.ebay.com/seller-center/index.html)
+- WooCommerce to [ebay Seller Center Tickets](https://pages.ebay.com/seller-center/index.html)
+- WooCommerce to [Bol.Com](https://www.bol.com/nl/)
+- WooCommerce to [Wish.Com](https://www.wish.com/)
+- WooCommerce to [Fruugo](https://www.fruugo.com/)
+- WooCommerce to [Connexity](https://connexity.com/)
 
 
 == Pro Features: ==
@@ -444,16 +449,11 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 
 **Supported Merchants In Pro Version**
 - All merchants feed templates in free version
-- WooCommerce to [eBay MIP](https://developer.ebay.com/products/mip)
-- WooCommerce to [ebay Seller Center](https://pages.ebay.com/seller-center/index.html)
-- WooCommerce to [ebay Seller Center Tickets](https://pages.ebay.com/seller-center/index.html)
-- WooCommerce to [Bol.Com](https://www.bol.com/nl/)
-- WooCommerce to [Wish.Com](https://www.wish.com/)
-- WooCommerce to [Fruugo](https://www.fruugo.com/)
-- WooCommerce to [LeGuide.com](https://www.leguide.com/information/fr/process)
-- WooCommerce to [Connexity](https://connexity.com/)
-- WooCommerce to [Google Remarketing (DRM)](https://onlinesales.ai/blog/dynamic-remarketing-must-e-commerce/)
 - WooCommerce to [Google Product Review](https://developers.google.com/product-review-feeds)
+- WooCommerce to [Google Remarketing (DRM)](https://onlinesales.ai/blog/dynamic-remarketing-must-e-commerce/)
+- WooCommerce to [Etsy](https://www.etsy.com/)
+- WooCommerce to [eBay MIP](https://developer.ebay.com/products/mip)
+- WooCommerce to [LeGuide.com](https://www.leguide.com/information/fr/process)
 
 >  If you want to know more about the [Pro version then click here!](https://rextheme.com/best-WooCommerce-product-feed/)
 
@@ -707,6 +707,13 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.2.3 (2022-05-19) =
+* Added: Setup Wizard
+* Fixed: Google and Guzzle Library Issue
+* Fixed: PHP Warning (asort php function)
+* Fixed: Appsero options mandatory to optional
+* Removed: New UI Message
+
 = 7.2.2 (2022-05-12) =
 * Added: Rollback option not working issue fixed
 * Added: Remove all PFM plugin data option added
@@ -718,7 +725,7 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Google Reviews wrong timestamp format issue fixed
 * Fixed: Old feed settings overlay issue fixed
 
-= 7.2.1 (2022-04-28) =
+= 7.2.1 (2022-04-21) =
 * Fixed: HTML markup fixed
 * Fixed: Google Shopping required attributes wrong warning issue fixed
 

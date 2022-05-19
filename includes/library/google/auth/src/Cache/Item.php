@@ -17,7 +17,11 @@
  */
 namespace RexFeed\Google\Auth\Cache;
 
+use DateTime;
+use DateTimeInterface;
+use DateTimeZone;
 use RexFeed\Psr\Cache\CacheItemInterface;
+use TypeError;
 /**
  * A cache item.
  */
@@ -32,7 +36,7 @@ final class Item implements CacheItemInterface
      */
     private $value;
     /**
-     * @var \DateTime|null
+     * @var DateTimeInterface|null
      */
     private $expiration;
     /**
@@ -91,9 +95,8 @@ final class Item implements CacheItemInterface
             $this->expiration = $expiration;
             return $this;
         }
-        $implementationMessage = \interface_exists('DateTimeInterface') ? 'implement interface DateTimeInterface' : 'be an instance of DateTime';
-        $error = \sprintf('Argument 1 passed to %s::expiresAt() must %s, %s given', \get_class($this), $implementationMessage, \gettype($expiration));
-        $this->handleError($error);
+        $error = \sprintf('Argument 1 passed to %s::expiresAt() must implement interface DateTimeInterface, %s given', \get_class($this), \gettype($expiration));
+        throw new TypeError($error);
     }
     /**
      * {@inheritdoc}
@@ -109,22 +112,9 @@ final class Item implements CacheItemInterface
         } else {
             $message = 'Argument 1 passed to %s::expiresAfter() must be an ' . 'instance of DateInterval or of the type integer, %s given';
             $error = \sprintf($message, \get_class($this), \gettype($time));
-            $this->handleError($error);
+            throw new TypeError($error);
         }
         return $this;
-    }
-    /**
-     * Handles an error.
-     *
-     * @param string $error
-     * @throws \TypeError
-     */
-    private function handleError($error)
-    {
-        if (\class_exists('TypeError')) {
-            throw new \TypeError($error);
-        }
-        \trigger_error($error, \E_USER_ERROR);
     }
     /**
      * Determines if an expiration is valid based on the rules defined by PSR6.
@@ -137,13 +127,16 @@ final class Item implements CacheItemInterface
         if ($expiration === null) {
             return \true;
         }
-        if ($expiration instanceof \DateTimeInterface) {
+        if ($expiration instanceof DateTimeInterface) {
             return \true;
         }
         return \false;
     }
+    /**
+     * @return DateTime
+     */
     protected function currentTime()
     {
-        return new \DateTime('now', new \DateTimeZone('UTC'));
+        return new DateTime('now', new DateTimeZone('UTC'));
     }
 }

@@ -40,9 +40,9 @@ class Rex_Product_Metabox
         if ( $post_type === '' && isset( $data[ 'post_type' ] ) ) {
             $post_type = sanitize_text_field($data[ 'post_type' ]);
         }
-        if ( $post_type === 'product-feed' ) {
+        /*if ( $post_type === 'product-feed' ) {
             $this->rex_feed_new_changes_message();
-        }
+        }*/
 
 		if ( $this->rex_feed_is_google_merchant() ) {
 			add_action( 'add_meta_boxes', array( $this, 'rex_feed_google_merchant_section' ) );
