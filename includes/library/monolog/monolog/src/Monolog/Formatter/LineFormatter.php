@@ -31,6 +31,8 @@ class LineFormatter extends NormalizerFormatter
     protected $ignoreEmptyContextAndExtra;
     /** @var bool */
     protected $includeStacktraces;
+    /** @var ?callable */
+    protected $stacktracesParser;
     /**
      * @param string|null $format                     The format of the message
      * @param string|null $dateFormat                 The format of the timestamp: one supported by DateTime::format
@@ -45,11 +47,12 @@ class LineFormatter extends NormalizerFormatter
         $this->includeStacktraces($includeStacktraces);
         parent::__construct($dateFormat);
     }
-    public function includeStacktraces(bool $include = \true) : self
+    public function includeStacktraces(bool $include = \true, ?callable $parser = null) : self
     {
         $this->includeStacktraces = $include;
         if ($this->includeStacktraces) {
             $this->allowInlineLineBreaks = \true;
+            $this->stacktracesParser = $parser;
         }
         return $this;
     }
@@ -175,8 +178,20 @@ class LineFormatter extends NormalizerFormatter
         }
         $str .= '): ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine() . ')';
         if ($this->includeStacktraces) {
-            $str .= "\n[stacktrace]\n" . $e->getTraceAsString() . "\n";
+            $str .= $this->stacktracesParser($e);
         }
         return $str;
+    }
+    private function stacktracesParser(\Throwable $e) : string
+    {
+        $trace = $e->getTraceAsString();
+        if ($this->stacktracesParser) {
+            $trace = $this->stacktracesParserCustom($trace);
+        }
+        return "\n[stacktrace]\n" . $trace . "\n";
+    }
+    private function stacktracesParserCustom(string $trace) : string
+    {
+        return \implode("\n", \array_filter(\array_map($this->stacktracesParser, \explode("\n", $trace))));
     }
 }

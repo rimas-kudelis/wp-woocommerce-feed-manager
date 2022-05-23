@@ -11,7 +11,7 @@
     $class = 'rex-merchant-list-select2';
     $id = $name = $this->prefix . 'merchant';
     $selected = $saved_merchant !== '' ? $saved_merchant : '-1';
-    wpfm_print_merchant_dropdown( $class, $id, $name, $selected );
+    Rex_Feed_Merchants::render_merchant_dropdown( $class, $id, $name, $selected );
     ?>
 </div>
 

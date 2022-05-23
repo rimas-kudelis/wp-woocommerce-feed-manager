@@ -147,6 +147,16 @@ class Rex_Product_Feed_Admin {
 
 
     /**
+     * Setup Wizard menu
+     *
+     * @since    7.3.0
+     * @access   private
+     * @var      string
+     */
+    private $setup_wizard_hook_suffix = null;
+
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since    1.0.0
@@ -187,7 +197,7 @@ class Rex_Product_Feed_Admin {
         if( ($hook === 'edit.php' ) ){
             return;
         }
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->wpfm_pro_submenu)))) {
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->setup_wizard_hook_suffix , $this->wpfm_pro_submenu)))) {
             wp_enqueue_style( 'font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( 'wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version, 'all' );
             wp_enqueue_style($this->plugin_name.'-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version, 'all');
@@ -262,7 +272,7 @@ class Rex_Product_Feed_Admin {
             return;
         }
 
-        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->wpfm_pro_submenu)))) {
+        if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->wpfm_pro_submenu, $this->setup_wizard_hook_suffix)))) {
             wp_enqueue_script( 'jquery-ui-autocomplete' );
             wp_enqueue_script(
                 'jquery-stop-watch',
@@ -525,6 +535,7 @@ class Rex_Product_Feed_Admin {
         $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping');
         $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings');
         $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
+        $this->setup_wizard_hook_suffix = add_submenu_page('product-feed', __('Setup Wizard', 'rex-product-feed'), __('Setup Wizard', 'rex-product-feed'), 'manage_woocommerce', 'setup-wizard',  __CLASS__ .'::setup_wizard');
         $this->wpfm_support_menu = add_submenu_page('product-feed', '', __('Support', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_support',  __CLASS__ .'::wpfm_support');
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
 
@@ -569,10 +580,18 @@ class Rex_Product_Feed_Admin {
 
 
     /**
-     *
+     * @desc Renders Google Merchant Settings page
      */
     public static function merchant_settings(){
         require plugin_dir_path(__FILE__) . '/partials/merchant_settings.php';
+    }
+
+
+    /**
+     * @desc Renders Setup Wizard page
+     */
+    public static function setup_wizard(){
+        require plugin_dir_path(__FILE__) . '/partials/setup-wizard.php';
     }
 
 
@@ -1299,6 +1318,10 @@ class Rex_Product_Feed_Admin {
         }
     }
 
+
+    /**
+     * @return void
+     */
     public function post_rex_feed_rollback() {
         check_admin_referer( 'rex_feed_rollback' );
         $data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];

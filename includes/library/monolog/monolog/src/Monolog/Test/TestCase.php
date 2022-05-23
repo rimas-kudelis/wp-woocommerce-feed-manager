@@ -24,6 +24,13 @@ use RexFeed\Monolog\Formatter\FormatterInterface;
  */
 class TestCase extends \RexFeed\PHPUnit\Framework\TestCase
 {
+    public function tearDown() : void
+    {
+        parent::tearDown();
+        if (isset($this->handler)) {
+            unset($this->handler);
+        }
+    }
     /**
      * @param mixed[] $context
      *

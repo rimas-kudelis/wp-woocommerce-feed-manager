@@ -19,13 +19,20 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 			$post_terms = is_array( $post_terms ) ? $post_terms : array();
 			$index      = 1;
 
-			foreach( $terms as $term ) {
-				$checked = in_array( $term->slug, $post_terms) ? ' checked' : '';
-				echo '<li>';
-				echo '<input type="checkbox" id="'. esc_attr($prefix) . 'cats' . esc_attr($index) . '" name="'. esc_attr($prefix) . 'cats[]' . '" value="'. esc_attr($term->slug) .'" ' .esc_attr($checked). '>';
-				echo '<label for="'. esc_attr($prefix) . 'cats' . esc_attr($index++) . '">'.esc_html__($term->name, 'rex-product-feed').'</label>';
-				echo '</li>';
-			}
+            if ( empty( $terms ) ) {
+                echo '<li>';
+                echo '<label for="'. esc_attr($prefix) . 'tags' . esc_attr($index++) . '">'.esc_html__('No Categories', 'rex-product-feed').'</label>';
+                echo '</li>';
+            }
+            else {
+                foreach( $terms as $term ) {
+                    $checked = in_array( $term->slug, $post_terms) ? ' checked' : '';
+                    echo '<li>';
+                    echo '<input type="checkbox" id="'. esc_attr($prefix) . 'cats' . esc_attr($index) . '" name="'. esc_attr($prefix) . 'cats[]' . '" value="'. esc_attr($term->slug) .'" ' .esc_attr($checked). '>';
+                    echo '<label for="'. esc_attr($prefix) . 'cats' . esc_attr($index++) . '">'.esc_html__($term->name, 'rex-product-feed').'</label>';
+                    echo '</li>';
+                }
+            }
 			?>
 		</ul>
 	</div>
@@ -44,18 +51,20 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
 			$post_terms = is_array( $post_terms ) ? $post_terms : array();
 			$index      = 1;
 
-			foreach( $terms as $term ) {
-				$checked = in_array( $term->slug, $post_terms) ? ' checked' : '';
-				echo '<li>';
-				echo '<input type="checkbox" id="'. esc_attr($prefix) . 'tags' . esc_attr($index) . '" name="'. esc_attr($prefix) . 'tags[]' . '" value="'. esc_attr($term->slug) .'" ' .esc_attr($checked). '>';
-				echo '<label for="'. esc_attr($prefix) . 'tags' . esc_attr($index++) . '">'.esc_html__($term->name, 'rex-product-feed').'</label>';
-				echo '</li>';
-			}
-			if ( empty( $terms ) ) {
-				echo '<li>';
-				echo '<label for="'. esc_attr($prefix) . 'tags' . esc_attr($index++) . '">'.esc_html__('No Terms', 'rex-product-feed').'</label>';
-				echo '</li>';
-			}
+            if ( empty( $terms ) ) {
+                echo '<li>';
+                echo '<label for="'. esc_attr($prefix) . 'tags' . esc_attr($index++) . '">'.esc_html__('No Terms', 'rex-product-feed').'</label>';
+                echo '</li>';
+            }
+            else {
+                foreach( $terms as $term ) {
+                    $checked = in_array( $term->slug, $post_terms) ? ' checked' : '';
+                    echo '<li>';
+                    echo '<input type="checkbox" id="'. esc_attr($prefix) . 'tags' . esc_attr($index) . '" name="'. esc_attr($prefix) . 'tags[]' . '" value="'. esc_attr($term->slug) .'" ' .esc_attr($checked). '>';
+                    echo '<label for="'. esc_attr($prefix) . 'tags' . esc_attr($index++) . '">'.esc_html__($term->name, 'rex-product-feed').'</label>';
+                    echo '</li>';
+                }
+            }
 			?>
 		</ul>
 	</div>
