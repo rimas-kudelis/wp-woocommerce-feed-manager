@@ -53,9 +53,11 @@
             rex_feed_show_analytics_params( event );
             rex_feed_view_filter_metaboxes( event );
             rex_feed_manage_custom_cron_schedule_fields();
+            rex_feed_custom_filter( event );
         }
         else if ( rex_wpfm_ajax.current_screen === 'add' ) {
             rex_feed_load_config_table( event );
+            rex_feed_custom_filter( event );
         }
         else if ( rex_wpfm_ajax.current_screen === 'product-feed_page_wpfm_dashboard' ) {
             rex_feed_settings_tab( event );
@@ -316,6 +318,14 @@
 
     $( document ).on( 'click', '.rex-feed-rollback-button', rex_feed_rollback_confirmation );
 
+    //   video setup wizard__video
+    $( document ).on( 'click', '.box-video', function() {
+        $('iframe',this)[0].src += "&amp;autoplay=1";
+        $(this).addClass('open');
+    });
+
+    $( document ).on( 'click', '#rex_feed_custom_filter_button', rex_feed_custom_filter );
+
     /**
      * Event listener for Analytics Parameter options functionality.
      */
@@ -566,7 +576,7 @@
         }
 
         $( '#rex-feed-product-taxonomies' ).hide();
-        $( '#rex-feed-config-filter' ).hide();
+        // $( '#rex-feed-config-filter' ).hide();
         $( '.rex-feed-tags-wrapper' ).hide();
         $( '.rex-feed-product-filter-ids__area' ).hide();
         $( ".rex-feed-product-taxonomies-spinner" ).fadeIn();
@@ -581,7 +591,7 @@
                             $( ".rex-feed-product-taxonomies-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
-                            $( '#rex-feed-config-filter' ).hide();
+                            // $( '#rex-feed-config-filter' ).hide();
                             $( '.rex-feed-tags-wrapper' ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
                         }
@@ -590,7 +600,7 @@
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
-                            $( '#rex-feed-config-filter' ).show();
+                            // $( '#rex-feed-config-filter' ).show();
                             $( '#rex-feed-config-rules' ).show();
                         }
                         else if ( selected === 'product_cat' || selected === 'product_tag' ) {
@@ -600,7 +610,7 @@
                             }
                             $( ".rex-feed-product-taxonomies-spinner" ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
-                            $( '#rex-feed-config-filter' ).hide();
+                            // $( '#rex-feed-config-filter' ).hide();
                             $( '#rex-feed-product-taxonomies' ).show();
                             if ( selected === 'product_cat' ) {
                                 $( '#rex-feed-product-tags' ).hide();
@@ -612,7 +622,7 @@
                         }
                         else if ( selected === 'product_filter' ) {
                             $( ".rex-feed-product-taxonomies-spinner" ).hide();
-                            $( '#rex-feed-config-filter' ).hide();
+                            // $( '#rex-feed-config-filter' ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             $( '.select2-search__field' ).removeAttr('style')
@@ -631,7 +641,7 @@
 
                 $( ".rex-feed-product-taxonomies-spinner" ).hide();
                 $( '#rex-feed-product-taxonomies' ).hide();
-                $( '#rex-feed-config-filter' ).hide();
+                // $( '#rex-feed-config-filter' ).hide();
                 $( '.rex-feed-tags-wrapper' ).hide();
                 $( '.rex-feed-product-filter-ids__area' ).hide();
 
@@ -1695,19 +1705,78 @@
         $rollbackButton.attr('href', placeholderUrl.replace('VERSION', $this.val()));
     }
 
-
     function rex_feed_rollback_confirmation(event) {
         event.preventDefault();
         var $this = $(this);
-        if ( confirm("Are you sure?") ) {
+        if ( confirm("You might loose your previous data. Are you really sure that you want to rollback to previous version?") ) {
             $this.addClass('show-loader');
             $this.addClass('loading');
             location.href = $this.attr('href');
         }
     }
-    //   video setup wizard__video
-    $(".box-video").click(function(){
-        $('iframe',this)[0].src += "&amp;autoplay=1";
-        $(this).addClass('open');
-      });
+
+    function rex_feed_custom_filter( event ) {
+        var feed_id = rex_feed_get_feed_id();
+        var button_text = $( '#rex_feed_custom_filter_button' ).text();
+        var payload = {};
+        var button_event = 'on_load';
+
+        if ( 'click' === event.type ) {
+            button_event = 'click';
+            if ( 'Add Custom Filter' === button_text ) {
+                button_text = 'added';
+            }
+            else {
+                button_text = 'removed';
+            }
+        }
+
+        payload = {
+            feed_id: feed_id,
+            button_text: button_text,
+            button_event: button_event
+        }
+
+        wpAjaxHelperRequest( 'rex-feed-custom-filters', payload )
+            .success( function ( response ) {
+                if ( 'added' === response.data.button_text ) {
+                    $( '#rex_feed_custom_filter_button' ).text( 'Remove Custom Filter' );
+                    $( '#rex-feed-config-filter' ).show();
+                }
+                else {
+                    $( '#rex_feed_custom_filter_button' ).text( 'Add Custom Filter' );
+                    $( '#rex-feed-config-filter' ).hide();
+                }
+                $( 'input[name=rex_feed_custom_filter_option_btn]' ).val( response.data.button_text )
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+                console.log( 'response.statusText' );
+            } );
+    }
+
+
+    /**
+     * Gets feed id from URL parameter
+     * @returns {number|*}
+     */
+    function rex_feed_get_feed_id() {
+        var feed_id = 0;
+        var url = window.location.href;
+
+        if ( url.includes( 'post-new.php?post_type=product-feed' ) ) {
+            return feed_id;
+        }
+
+        url = url.split( '?' );
+        url = url[1].split( '&' );
+
+        for (const key in url) {
+            if( url[key].search( 'post' ) > -1 ) {
+                feed_id = url[key].split( '=' );
+                return feed_id[1];
+            }
+        }
+        return feed_id;
+    }
 })( jQuery );

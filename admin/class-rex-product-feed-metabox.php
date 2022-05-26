@@ -226,7 +226,7 @@ class Rex_Product_Metabox
 		$options = array(
 			'all'            => __( 'All Published Products', 'rex-product-feed' ),
 			'featured'       => __( 'All Featured Products', 'rex-product-feed' ),
-			'filter'         => __( 'Custom Filters', 'rex-product-feed' ),
+			//'filter'         => __( 'Custom Filters', 'rex-product-feed' ),
 			'product_cat'    => __( 'Category Filters', 'rex-product-feed' ),
 			'product_tag'    => __( 'Tag Filters', 'rex-product-feed' )
 		);
@@ -239,9 +239,10 @@ class Rex_Product_Metabox
         // rex-contnet-filter__header end
 
 		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-products-dropdown-section.php';
-        // rex-content-filter__area end
 
-		$this->rex_feed_custom_filter_section();
+        $this->rex_feed_custom_filter_section();
+
+        // rex-content-filter__area end
 		$this->rex_feed_product_taxonomies();
 
         if ( wpfm_pro_compatibility() ) {

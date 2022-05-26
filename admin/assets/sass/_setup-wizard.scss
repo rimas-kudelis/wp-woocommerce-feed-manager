@@ -1,6 +1,6 @@
 .rex-setup-wizard-area {
   h1 {
-    font-size: calc(35px + (56 - 35) * ((100vw - 320px) / (1920 - 320)));
+    font-size: calc(35px + (52 - 35) * ((100vw - 320px) / (1920 - 320)));
     line-height: 1.2;
   }
   h2 {
@@ -162,7 +162,7 @@
     border-radius: 10px;
     font-size: 14px;
     border: none;
-    padding: 5px 15px;
+    padding: 11px 15px;
 
     a {
       display: flex;
@@ -186,19 +186,18 @@
       font-family: "Outfit", sans-serif;
       font-style: normal;
       font-weight: 500;
-      font-size: 20px;
-      line-height: 34px;
+      font-size: 18px;
+      line-height: 32px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: rgba(6, 36, 88, 0.6);
     }
-
     h6 {
       font-weight: 500;
-      font-size: 28px;
-      line-height: 34px;
+      font-size: 30px;
+      line-height: 1.13;
       color: #216df0;
-      margin: 10px 0;
+      margin: 30px 0;
     }
 
     p {
@@ -213,15 +212,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #edf4ff;
-      border: 2px solid #accbff;
-      box-shadow: -4px 10px 90px rgb(0 0 0 / 15%);
-      border-radius: 10px;
-      padding: 8px 9px 8px 20px;
+
+      .rex-setup-wizard__search-from__input {
+        border-radius: 10px;
+        background: #ffffff;
+        border: 1.5px solid #216df0;
+        box-shadow: 0px 10px 60px rgba(16, 36, 71, 0.1);
+        padding: 8px 9px 8px 20px;
+      }
       button {
         background: #216df0;
         box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.08);
         border-radius: 6px;
+        font-family: "Outfit", sans-serif;
         font-weight: 500;
         font-size: 18px;
         line-height: 30px;
@@ -229,9 +232,13 @@
         letter-spacing: 0.1em;
         text-transform: uppercase;
         border: none;
-        padding: 14px 30px;
+        padding: 17px 18px;
         color: #ffffff;
         cursor: pointer;
+      }
+      span.select2-container {
+        width: calc(100% - 20px) !important;
+        max-width: 330px;
       }
     }
   }
@@ -250,26 +257,53 @@
 }
 
 .product-feed_page_setup-wizard {
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-family: "Outfit", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 2.2;
+    color: #002b74;
+    padding: 0;
+    text-transform: initial;
+    letter-spacing: 0;
+  }
+
   .select2-container--default .select2-selection--single {
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1.5px solid #216df0;
+    box-shadow: 0px 10px 60px rgba(16, 36, 71, 0.1);
+    padding: 8px 9px 8px 20px;
+    min-height: 64px;
   }
 
   .select2-container--default
     .select2-selection--single
-    .select2-selection__rendered {
-    color: #6c798f;
-    line-height: 1.6;
-    font-size: 18px;
-    text-transform: capitalize;
-    letter-spacing: normal;
+    .select2-selection__arrow
+    b {
+    border-color: #002b74 transparent transparent transparent;
+    border-style: solid;
+    border-width: 8px 6px 0 6px;
+    height: 0;
+    left: 50%;
+    margin-left: -4px;
+    margin-top: -2px;
+    position: absolute;
+    top: 50%;
+    width: 0;
   }
 
   .select2-container--default
     .select2-selection--single
     .select2-selection__arrow {
-    display: none;
+    height: 26px;
+    position: absolute;
+    top: 28%;
+    right: 4%;
+    width: 20px;
   }
   .select2-dropdown {
     background-color: #fff;
@@ -300,7 +334,8 @@
   cursor: pointer;
   overflow: hidden;
   box-shadow: 0px 20px 120px rgb(3 2 53 / 30%);
-  backdrop-filter: blur(200px);
+  border-radius: 14px;
+  left: 105px;
 }
 
 /* Set Cover aka Background-Image */
@@ -315,21 +350,14 @@
   background-position: center;
   background-size: cover;
   z-index: 2;
+  background-color: #fff;
 }
 
 /* The Play-Button using CSS-Only */
 .box-video .bt-play {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -30px 0 0 -30px;
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.5);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 50%;
-  text-indent: -999em;
+  top: 45%;
+  left: 45%;
   cursor: pointer;
   z-index: 2;
   -webkit-transition: all 0.3s ease-out;
@@ -338,16 +366,15 @@
 
 /* The Play-Triangle */
 .box-video .bt-play:after {
-  content: "";
+  content: "\f16a";
   position: absolute;
   left: 50%;
   top: 50%;
-  height: 0;
-  width: 0;
-  margin: -12px 0 0 -6px;
-  border: solid transparent;
-  border-left-color: #000;
-  border-width: 12px 20px;
+  font-family: FontAwesome;
+  font-size: 50px;
+  color: #fff;
+  font-style: normal;
+  font-weight: normal;
   -webkit-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
 }
@@ -379,7 +406,7 @@
   height: 0;
   margin: 0;
   z-index: 1;
-  padding-bottom: 70.27198%;
+  padding-bottom: 74.27198%;
 }
 
 .video-container iframe {
@@ -395,7 +422,7 @@
   padding: 100px 0;
   .rex-setup-wizard-feed__header {
     max-width: 900px;
-    margin: 0 auto;
+    margin: 0 auto 65px;
     text-align: center;
     h3 {
       font-weight: 600;
@@ -404,16 +431,19 @@
       color: #216df0;
     }
   }
+
   .rex-setup-wizard-feed {
-    &__content-area {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 30px;
-      margin-top: 65px;
-    }
+    // &__content-area {
+    //   display: grid;
+    //   grid-template-columns: repeat(3, 1fr);
+    //   grid-gap: 30px;
+    //   margin-top: 65px;
+    //   grid-template-rows: masonry;
+    // }
+
     &__content {
       background: #ffffff;
-      box-shadow: 0px 10px 50px rgba(3, 2, 53, 0.08);
+      box-shadow: 0px 1px 2px rgba(3, 2, 53, 0.1);
       border-radius: 10px;
       padding: 28px 29px 31px 24px;
       svg {
@@ -422,11 +452,18 @@
       h6 {
         font-weight: 500;
         color: rgba(6, 36, 88, 0.9);
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
     }
     &__list-area {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
+      li {
+        display: flex;
+        i {
+          font-size: 18px;
+          margin: 7px 10px 0 0;
+        }
+      }
     }
     &__list-link {
       font-size: 14px;
@@ -439,11 +476,18 @@
       border: none;
       background: rgba(33, 109, 240, 0.1);
       border-radius: 10px;
-      padding: 10px 15px;
+      padding: 10px 15px 11px;
+      transition: all 0.5s;
 
       a {
         color: #062458;
         font-weight: 500;
+      }
+      &:hover {
+        background-color: #216df0;
+        a {
+          color: #fff;
+        }
       }
     }
   }
@@ -477,7 +521,7 @@
     object-fit: cover;
     border-radius: 20px;
     box-shadow: 0px 20px 120px rgba(8, 35, 81, 0.3);
-    margin-bottom: -120px;
+    margin-bottom: -245px;
   }
   .rex-setup-wizard-price {
     &__header {
@@ -536,8 +580,6 @@
   background-size: cover;
   -o-object-fit: cover;
   object-fit: cover;
-  padding: 185px 10px 50px;
-
   .rex-setup-wizard__content {
     display: flex;
     flex-flow: column;
@@ -546,7 +588,7 @@
     text-align: center;
     h2 {
       position: relative;
-      font-weight: 600;
+      font-weight: 700;
       background: linear-gradient(
         -130.36deg,
         #216df0 6.14%,
@@ -575,6 +617,31 @@
   }
 }
 
+.rex-setup-wizard-feed__grid {
+  --gap: 30px;
+  --columns: 3;
+  columns: var(--columns);
+  gap: var(--gap);
+}
+
+//-----------5.rex-setup-wizard-grid markup section------------
+.rex-setup-wizard-feed-area {
+  .rex-setup-wizard-feed__grid > * {
+    break-inside: avoid;
+    margin-bottom: var(--gap);
+  }
+
+  @supports (grid-template-rows: masonry) {
+    .rex-setup-wizard-feed__grid {
+      display: grid;
+      grid-template-columns: repeat(var(--columns), 1fr);
+      grid-gap: var(--gap);
+      grid-template-rows: masonry;
+      grid-auto-flow: dense;
+    }
+  }
+}
+
 //-----------Media query style ------------
 @media (max-width: 1399px) {
   //-----------.wizard-btn global------------
@@ -586,10 +653,12 @@
   .rex-setup-wizard__video-area {
     margin-right: 0px;
   }
+  .box-video {
+    left: 0;
+  }
 
   .rex-setup-wizard__content-area form button {
     font-size: 16px;
-    padding: 9px 20px;
   }
 
   //-----------2.rex-setup-wizard-feed-area section------------
@@ -601,6 +670,10 @@
   }
 
   //-----------3.rex-setup-wizard-price-area section------------
+  .rex-setup-wizard-price-area .rex-setup-wizard__contents-area {
+    margin-bottom: -110px;
+  }
+
   .rex-setup-wizard-price-area .rex-setup-wizard__contents-area {
     padding: 40px 50px;
   }
@@ -619,6 +692,12 @@
     display: block;
     margin: 0 0 35px auto;
   }
+  .rex-setup-wizard__content-area form {
+    justify-content: flex-start;
+  }
+  .rex-setup-wizard__content-area form span.select2-container {
+    margin-right: 20px;
+  }
   .rex-setup-wizard__button {
     margin: 0 0 35px auto;
   }
@@ -631,12 +710,24 @@
     padding: 15px 0 70px;
   }
 
+  .box-video {
+    border-radius: 21px;
+  }
+
   //-----------2.rex-setup-wizard-feed-area section------------
   .rex-setup-wizard-feed-area {
     padding: 70px 0;
   }
+  .rex-setup-wizard-feed__grid {
+    --gap: 20px;
+  }
+  .rex-setup-wizard-feed-area .rex-setup-wizard-feed__grid > * {
+    margin-bottom: var(--gap);
+  }
   .rex-setup-wizard-feed-area .rex-setup-wizard-feed__content-area {
     grid-gap: 20px;
+  }
+  .rex-setup-wizard-feed-area .rex-setup-wizard-feed__header {
     margin-top: 40px;
   }
   .rex-setup-wizard-feed-area .rex-setup-wizard-feed__content {
@@ -644,6 +735,9 @@
   }
 
   //-----------3.rex-setup-wizard-price-area section------------
+  .rex-setup-wizard-price-area .rex-setup-wizard__contents-area {
+    margin-bottom: -80px;
+  }
   .rex-setup-wizard-price-area .rex-setup-wizard__contents-area {
     padding: 35px 30px;
   }
@@ -680,6 +774,8 @@
   }
   .rex-setup-wizard-feed-area .rex-setup-wizard-feed__content-area {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .rex-setup-wizard-feed-area .rex-setup-wizard-feed__header {
     margin-top: 30px;
   }
   //-----------3.rex-setup-wizard-price-area section------------

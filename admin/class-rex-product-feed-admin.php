@@ -1345,11 +1345,93 @@ class Rex_Product_Feed_Admin {
         );
 
         $rollback->run();
+        self::update_feed_scope_data();
 
         wp_die(
             '', esc_html__( 'Rollback to Previous Version', 'rex-product-feed' ), filter_var( [
                 'response' => 200,
             ] )
         );
+    }
+
+
+    /**
+     * @desc Loads custom styles for setup wizard
+     * @since 7.2.5
+     * @return void
+     */
+    public function load_custom_styles() {
+        if ( !is_plugin_active( 'best-woocommerce-feed-pro/rex-product-feed-pro.php' ) ) {
+        ?>
+        <style>
+            
+            .rex-setup-wizard-cta-area {
+                padding: 370px 10px 125px;
+            }
+            @media (max-width: 1399px) {
+                .rex-setup-wizard-cta-area {
+                    padding: 200px 10px 100px;
+                }
+            }
+            @media (max-width: 1199px) {
+                .rex-setup-wizard-cta-area {
+                    padding: 150px 10px 100px;
+                }
+            }
+            @media (max-width: 991px) {
+                .rex-setup-wizard-cta-area {
+                    padding: 120px 10px 80px;
+                }
+            }
+        </style>
+        <?php
+        }
+        else {
+            ?>
+            <style>
+                .rex-setup-wizard-cta-area {
+                    padding: 125px 10px 125px;
+                }
+                @media (max-width: 1399px) {
+                    .rex-setup-wizard-cta-area {
+                        padding: 100px 10px 100px;
+                    }
+                }
+                @media (max-width: 991px) {
+                    .rex-setup-wizard-cta-area {
+                        padding: 80px 10px 80px;
+                    }
+                }
+            </style>
+            <?php
+        }
+    }
+
+
+    /**
+     * @desc Updates feed product scoping option
+     * before rolling back to previous plugin version.
+     * @since 7.2.5
+     *
+     * @return void
+     */
+    private static function update_feed_scope_data() {
+        $args = array(
+            'fields' => 'ids',
+            'post_type' => 'product-feed',
+            'post_status' => 'publish'
+        );
+        $feed_ids = get_posts( $args );
+
+        foreach ( $feed_ids as $id ) {
+            $product_scope = get_post_meta( $id, 'rex_feed_products', true );
+
+            if ( $product_scope === 'all' ) {
+                $custom_filter_option = get_post_meta($id, 'rex_feed_custom_filter_option', true);
+                if ( $custom_filter_option === 'added' ) {
+                    update_post_meta( $id, 'rex_feed_products', 'filter' );
+                }
+            }
+        }
     }
 }

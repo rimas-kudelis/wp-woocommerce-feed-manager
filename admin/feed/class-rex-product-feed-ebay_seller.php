@@ -37,7 +37,7 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
             'product'
         );
 
-        if($this->product_scope == 'filter') {
+        if($this->custom_filter_option) {
             foreach ($this->feed_config_filter as $filter) {
                 $if = $filter['if'];
                 if($if == 'product_cats') {

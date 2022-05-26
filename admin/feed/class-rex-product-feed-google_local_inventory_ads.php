@@ -112,7 +112,7 @@ class Rex_Product_Feed_Google_local_inventory_ads extends Rex_Product_Feed_Abstr
                     $variable_product = new WC_Product_Variable($productId);
                     $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
-                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' ) {
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->custom_filter_var_exclude ) {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
                     }else {
@@ -135,7 +135,7 @@ class Rex_Product_Feed_Google_local_inventory_ads extends Rex_Product_Feed_Abstr
                 $this->add_to_feed( $product, $product_meta_keys );
             }
 
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->custom_filter_option) {
                 if ( $product->get_type() === 'variation' ) {
                     $variable_products[] = $productId;
                     $this->add_to_feed( $product, $product_meta_keys, 'variation' );

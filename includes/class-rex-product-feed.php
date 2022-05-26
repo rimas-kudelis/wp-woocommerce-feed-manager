@@ -232,6 +232,8 @@ class Rex_Product_Feed {
 
         $this->loader->add_action( 'after_delete_post', $plugin_admin, 'delete_feed_files', 10, 2 );
         $this->loader->add_action( 'admin_post_rex_feed_rollback', $plugin_admin, 'post_rex_feed_rollback' );
+
+        $this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
     }
 
 

@@ -2,6 +2,106 @@
 $post_new_feed_url = 'post-new.php?post_type=product-feed&rex_feed_merchant=';
 $generate_feed = 'Generate Feed';
 $arrow_icon = 'icon/icon-svg/new-arrow.php';
+
+$merchants = array(
+    'google' => array(
+        'name' => 'Google',
+        'urls' => array(
+            array(
+                'text' => 'A Complete Guide To Google Shopping',
+                'url' => 'https://rextheme.com/guide-to-woocommerce-product-feed/'
+            ),
+            array(
+                'text' => 'How to generate WooCommerce product feed for Google',
+                'url' => 'https://rextheme.com/docs/how-to-generate-woocommerce-product-feed-for-google/'
+            ),
+            array(
+                'text' => 'How to Auto-sync product feed to Google Merchant shop',
+                'url' => 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/'
+            ),
+        ),
+    ),
+    'vivino' => array(
+        'name' => 'Vivino',
+        'urls' => array(
+            array(
+                'text' => 'How to generate WooCommerce product feed for Vivino',
+                'url' => 'https://rextheme.com/guide-to-vivino-product-feed-woocommerce/'
+            ),
+        ),
+    ),
+    'glami' => array(
+        'name' => 'Glami',
+        'urls' => array(
+            array(
+                'text' => 'How to generate WooCommerce product feed for Glami',
+                'url' => 'https://rextheme.com/glami-xml-feed-to-sell-fashion-products-woocommerce/'
+            ),
+        ),
+    ),
+    'facebook' => array(
+        'name' => 'Facebook',
+        'urls' => array(
+            array(
+                'text' => 'A Complete Guide To Facebook',
+                'url' => 'https://rextheme.com/guide-to-woocommerce-product-feed/'
+            ),
+            array(
+                'text' => 'How to generate WooCommerce product feed for Facebook',
+                'url' => 'https://rextheme.com/docs/how-to-generate-woocommerce-product-feed-for-facebook/'
+            ),
+            array(
+                'text' => 'How to upload your WooCommerce products on the Facebook store',
+                'url' => 'https://rextheme.com/docs/how-to-upload-your-woocommerce-products-on-the-facebook-store/'
+            ),
+        ),
+    ),
+    'fruugo' => array(
+        'name' => 'Fruugo',
+        'urls' => array(
+            array(
+                'text' => 'How to generate WooCommerce product feed for Fruugo',
+                'url' => 'https://rextheme.com/start-selling-on-fruugo-product-feed-for-woocommerce/'
+            )
+        ),
+    ),
+    'favi' => array(
+        'name' => 'Favi',
+        'urls' => array(
+            array(
+                'text' => 'How to generate WooCommerce product feed for Favi',
+                'url' => 'https://rextheme.com/cz-generate-product-feed-for-favi-woocommerce/'
+            ),
+        ),
+    ),
+    'idealo' => array(
+        'name' => 'Idealo',
+        'urls' => array(
+            array(
+                'text' => 'How to List WooCommerce Store Products On Idealo',
+                'url' => 'https://rextheme.com/list-woocommerce-store-products-on-idealo/'
+            ),
+        ),
+    ),
+    'ceneo' => array(
+        'name' => 'Ceneo',
+        'urls' => array(
+            array(
+                'text' => 'How to generate WooCommerce product feed for Ceneo',
+                'url' => 'https://rextheme.com/sell-on-ceneo-pl-using-ceneo-xml-feed-woocommerce/'
+            )
+        ),
+    ),
+    'heureka' => array(
+        'name' => 'Heureka',
+        'urls' => array(
+            array(
+                'text' => 'How to generate WooCommerce product feed for Heureka',
+                'url' => 'https://rextheme.com/generate-heureka-xml-feed-with-woocommerce-products/'
+            ),
+        ),
+    ),
+);
 ?>
 <main class="rex-setup-wizard-area">
     <section class="rex-setup-wizard-hero-area">
@@ -17,11 +117,10 @@ $arrow_icon = 'icon/icon-svg/new-arrow.php';
                 <div class="rex-setup-wizard__content-area">
                     <span><?php esc_html_e('Welcome to', 'rex-product-feed')?></span>
                     <h1><?php esc_html_e('Product Feed Manager for WooCommerce', 'rex-product-feed')?></h1>
-                    <h6><?php esc_html_e("It's faster and better", "rex-product-feed")?></h6>
-                    <p><?php esc_html_e("Use pre-defined merchant templates to generate flawless feed for over 170+ merchants!", "rex-product-feed")?></p>
+                    <h6><?php esc_html_e("Select merchant and create feed", "rex-product-feed")?></h6>
 
                     <form class="rex-setup-wizard__search-from" role="search" method="GET" action="<?php echo esc_url( admin_url( 'post-new.php' ) ); ?>">
-                        <input class="rex-setup-wizard__search-from__input" type="hidden" name="post_type" value="product-feed" placeholder="Search your merchant" aria-label="Search through site content">
+                        <input class="rex-setup-wizard__search-from__input" type="hidden" name="post_type" value="product-feed" placeholder="Select your merchant" aria-label="Search through site content">
                         <?php
                         $class = 'rex-setup-wizard-merchant-select2';
                         $id = 'rex_setup_wizard_merchant_select2';
@@ -61,257 +160,34 @@ $arrow_icon = 'icon/icon-svg/new-arrow.php';
                 <h3 class="header__text"><?php esc_html_e("WooCommerce Product Feed Manager", "rex-product-feed")?></h3>
             </div>
 
-            <div class="rex-setup-wizard-feed__content-area">
+            <div class="rex-setup-wizard-feed__content-area rex-setup-wizard-feed__grid">
 
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_google">
+                <?php foreach ( $merchants as $key => $merchant ) { ?>
+                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_<?php echo $key;?>">
 
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/google.php';?>
-                    <h6><?php esc_html_e("Google", "rex-product-feed")?></h6>
+                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/'.$key.'.php';?>
+                    <h6><?php esc_html_e( $merchant[ 'name' ], "rex-product-feed" )?></h6>
 
                     <ul class="rex-setup-wizard-feed__list-area">
-                    
+                        <?php foreach ( $merchant[ 'urls' ] as $url ) { ?>
                         <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/guide-to-woocommerce-product-feed/' ); ?>" target="_blank">
-                                <?php echo esc_html__('A Complete Guide To Google Shopping', 'rex-product-feed') ?>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( $url[ 'url' ] ); ?>" target="_blank">
+                                <?php echo esc_html__( $url[ 'text' ], 'rex-product-feed') ?>
                             </a>
                         </li>
-                        
-                        <li> 
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-generate-woocommerce-product-feed-for-google/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to generate WooCommerce product feed for Google', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-
-                        <li> 
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to Auto-sync product feed to Google Merchant shop', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-
+                        <?php } ?>
                     </ul>
                     <!-- .rex-setup-wizard-feed__list-area end -->
-
+                    <?php $merchant_name = 'idealo' === $key ? 'idealo_de' : $key; ?>
                     <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'google' ) ); ?>" target="_self">
+                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . $merchant_name ) ); ?>" target="_self">
                             <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
                         </a>
                     </button>
-                    
+
                 </div>
-                <!-- .rex-setup-wizard-feed__content end -->
-
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_facebook">
-
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/facebook.php';?>
-                    <h6><?php esc_html_e("Facebook", "rex-product-feed")?></h6>
-
-                    <ul class="rex-setup-wizard-feed__list-area">
-                    
-                        <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/guide-to-woocommerce-product-feed/' ); ?>" target="_blank">
-                                <?php echo esc_html__('A Complete Guide To Facebook', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-                        
-                        <li> 
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-generate-woocommerce-product-feed-for-facebook/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to generate WooCommerce product feed for Facebook', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-
-                        <li> 
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-upload-your-woocommerce-products-on-the-facebook-store/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to upload your WooCommerce products on the Facebook store', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-
-                    </ul>
-                    <!-- .rex-setup-wizard-feed__list-area end -->
-                    
-                    <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'facebook' ) ); ?>" target="_self">
-                            <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
-                        </a>
-                    </button>
-                    
-                </div>
-                <!-- .rex-setup-wizard-feed__content end -->
-
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_idealo">
-
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/idealo.php';?>
-                    <h6><?php esc_html_e("Idealo", "rex-product-feed")?></h6>
-
-                    <ul class="rex-setup-wizard-feed__list-area">
-                    
-                        <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/list-woocommerce-store-products-on-idealo/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to List WooCommerce Store Products On Idealo', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-        
-                    </ul>
-                    <!-- .rex-setup-wizard-feed__list-area end -->
-                    
-                    <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'idealo_de' ) ); ?>" target="_self">
-                            <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
-                        </a>
-                    </button>
-                    
-                </div>
-                <!-- .rex-setup-wizard-feed__content end -->
-
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_vivino">
-
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/vivino.php';?>
-                    <h6><?php esc_html_e("Vivino", "rex-product-feed")?></h6>
-
-                    <ul class="rex-setup-wizard-feed__list-area">
-                    
-                        <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/guide-to-vivino-product-feed-woocommerce/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to generate WooCommerce product feed for Vivino', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-
-                    </ul>
-                    <!-- .rex-setup-wizard-feed__list-area end -->
-                    
-                    <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'vivino' ) ); ?>" target="_self">
-                            <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
-                        </a>
-                    </button>
-                    
-                </div>
-                <!-- .rex-setup-wizard-feed__content end -->
-
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_fruugo">
-
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/fruugo.php';?>
-                    <h6><?php esc_html_e("Fruugo", "rex-product-feed")?></h6>
-
-                    <ul class="rex-setup-wizard-feed__list-area">
-                    
-                        <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/start-selling-on-fruugo-product-feed-for-woocommerce/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to generate WooCommerce product feed for Fruugo', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-
-                    </ul>
-                    <!-- .rex-setup-wizard-feed__list-area end -->
-                    
-                    <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'fruugo' ) ); ?>" target="_self">
-                            <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
-                        </a>
-                    </button>
-                    
-                </div>
-                <!-- .rex-setup-wizard-feed__content end -->
-
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_ceneo">
-
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/ceneo.php';?>
-                    <h6><?php esc_html_e("Ceneo", "rex-product-feed")?></h6>
-
-                    <ul class="rex-setup-wizard-feed__list-area">
-                    
-                        <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/sell-on-ceneo-pl-using-ceneo-xml-feed-woocommerce/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to generate WooCommerce product feed for Ceneo', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-                        
-
-                    </ul>
-                    <!-- .rex-setup-wizard-feed__list-area end -->
-                    
-                    <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'ceneo' ) ); ?>" target="_self">
-                            <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
-                        </a>
-                    </button>
-                    
-                </div>
-                <!-- .rex-setup-wizard-feed__content end -->
-
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_glami">
-
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/glami.php';?>
-                    <h6><?php esc_html_e("Glami", "rex-product-feed")?></h6>
-
-                    <ul class="rex-setup-wizard-feed__list-area">
-                    
-                        <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/glami-xml-feed-to-sell-fashion-products-woocommerce/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to generate WooCommerce product feed for Glami', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-                        
-
-                    </ul>
-                    <!-- .rex-setup-wizard-feed__list-area end -->
-                    
-                    <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'glami' ) ); ?>" target="_self">
-                            <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
-                        </a>
-                    </button>
-                    
-                </div>
-                <!-- .rex-setup-wizard-feed__content end -->
-
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_favi">
-
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/favi.php';?>
-                    <h6><?php esc_html_e("Favi", "rex-product-feed")?></h6>
-
-                    <ul class="rex-setup-wizard-feed__list-area">
-                    
-                        <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/cz-generate-product-feed-for-favi-woocommerce/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to generate WooCommerce product feed for Favi', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-
-                    </ul>
-                    <!-- .rex-setup-wizard-feed__list-area end -->
-                    
-                    <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'favi' ) ); ?>" target="_self">
-                            <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
-                        </a>
-                    </button>
-                    
-                </div>
-                <!-- .rex-setup-wizard-feed__content end -->
-
-                <div class="rex-setup-wizard-feed__content rex-setup-wizard-feed__content_heureka">
-                    <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/hureka.php';?>
-                    <h6><?php esc_html_e("Heureka", "rex-product-feed")?></h6>
-
-                    <ul class="rex-setup-wizard-feed__list-area">
-                    
-                        <li>
-                            <a class="rex-setup-wizard-feed__list-link" href="<?php echo esc_url( 'https://rextheme.com/generate-heureka-xml-feed-with-woocommerce-products/' ); ?>" target="_blank">
-                                <?php echo esc_html__('How to generate WooCommerce product feed for Heureka', 'rex-product-feed') ?>
-                            </a>
-                        </li>
-                        
-
-                    </ul>
-                    <!-- .rex-setup-wizard-feed__list-area end -->
-                    
-                    <button class="rex-setup-wizard-feed__button" type="button">
-                        <a  href="<?php echo esc_url( admin_url( $post_new_feed_url . 'heureka' ) ); ?>" target="_self">
-                            <?php esc_html_e( $generate_feed,'rex-product-feed') ?>
-                        </a>
-                    </button>
-                    
-                </div>
+                <?php } ?>
                 <!-- .rex-setup-wizard-feed__content end -->
 
             </div>
@@ -405,5 +281,6 @@ $arrow_icon = 'icon/icon-svg/new-arrow.php';
 
     </section>
     <!-- .rex-setup-wizard-cta-area end -->
+
 </main>
 <!-- rex-setup-wizard-area -->

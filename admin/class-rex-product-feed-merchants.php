@@ -1080,7 +1080,7 @@ class Rex_Feed_Merchants {
 			'-1'    => array(
 				'free'   => true,
 				'status' => 1,
-				'name'   => 'Please select a merchant'
+				'name'   => 'Select your merchant'
 			),
 		);
 		$all_merchants = array_merge( $all_merchants, self::get_merchants() );

@@ -220,7 +220,8 @@ class Rex_Feed_Scheduler {
 		$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
         $skip_row                = $skip_row === 'yes' ? true : false;
 		$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
-        $include_zero_price_products          = get_post_meta( $feed_id, 'rex_feed_include_zero_price_products', true );
+        $include_zero_price_products  = get_post_meta( $feed_id, 'rex_feed_include_zero_price_products', true );
+        $custom_filter_option    = get_post_meta( $feed_id, 'rex_feed_custom_filter_option', true );
 
         if( apply_filters( 'wpfm_is_premium', false ) ) {
             $feed_rules = get_post_meta( $feed_id, 'rex_feed_feed_config_rules', true );
@@ -276,7 +277,8 @@ class Rex_Feed_Scheduler {
             'wmc_currency'                => $wmc_currency,
             'skip_product'                => $skip_product,
             'skip_row'                    => $skip_row,
-            'feed_separator'              => $feed_separator
+            'feed_separator'              => $feed_separator,
+            'custom_filter_option'        => $custom_filter_option
         );
 	}
 

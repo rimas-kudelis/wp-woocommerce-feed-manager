@@ -2,7 +2,7 @@
 /**
  * Abstract Rex Product Feed Generator
  *
- * A abstract class definition that includes functions used for generating xml feed.
+ * An abstract class definition that includes functions used for generating xml feed.
  *
  * @link       https://rextheme.com
  * @since      1.0.0
@@ -297,6 +297,10 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
     public $feed_rules;
 
+    protected $custom_filter_option;
+
+    protected $custom_filter_var_exclude = false;
+
     /**
      * Define the core functionality of the plugin.
      *
@@ -344,6 +348,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
 	        $this->product_condition       = $config[ 'product_condition' ];
 	        $this->aelia_currency          = isset( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : 'USD';
 
+            if ( isset( $config[ 'custom_filter_option' ] ) && 'added' === $config[ 'custom_filter_option' ] ) {
+                $this->custom_filter_option = true;
+            }
+            else {
+                $this->custom_filter_option = false;
+            }
+
             if( isset( $config[ 'wmc_currency' ] ) ) {
                 $this->wmc_currency   = $config[ 'wmc_currency' ];
             }
@@ -359,8 +370,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
         else {
             $this->setup_feed_data( $config[ 'info' ] );
             $this->setup_feed_configs( $config[ 'feed_config' ] );
-            $this->setup_feed_filter_rules( $config[ 'feed_config' ] );
             $this->setup_feed_meta( $config[ 'feed_config' ] );
+            $this->setup_feed_filter_rules( $config[ 'feed_config' ] );
             $this->save_feed_meta( $config[ 'feed_config' ] );
             $this->prepare_products_args( $config[ 'products' ] );
         }
@@ -415,16 +426,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $post_types[] = 'product_variation';
         }
 
-        if ( $this->product_scope == 'filter' ) {
+        if ( $this->custom_filter_option ) {
             foreach ( $this->feed_filters as $filter ) {
 
                 $if = $filter[ 'if' ];
 
-                if ( $if == 'product_cats' ) {
+                if ( $if === 'product_cats' || $if === 'product_tags' ) {
                     unset( $post_types[ 1 ] );
-                }
-                if ( $if == 'product_tags' ) {
-                    unset( $post_types[ 1 ] );
+                    $this->custom_filter_var_exclude = true;
                 }
             }
         }
@@ -462,13 +471,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->products_args[ 'post_type' ] = array( 'product' );
 
             if ( isset( $args[ $terms ] ) && is_array( $args[ $terms ] ) ) {
-                foreach ( $args[ $terms ] as $term ) {
-                    $this->products_args[ 'tax_query' ][] = array(
-                        'taxonomy' => $args[ 'products_scope' ],
-                        'field'    => 'slug',
-                        'terms'    => $term,
-                    );
-                }
+                $this->products_args[ 'tax_query' ][] = array(
+                    'taxonomy' => $args[ 'products_scope' ],
+                    'field'    => 'slug',
+                    'terms'    => $args[ $terms ],
+                );
                 $this->products_args[ 'tax_query' ][ 'relation' ] = 'OR';
 
                 if ( $this->batch == 1 ) {
@@ -521,7 +528,12 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         if ( $args[ 'products_scope' ] === 'featured' ) {
-            $this->products_args[ 'post__in' ] = wc_get_featured_product_ids();
+            $this->products_args[ 'tax_query' ][] = array(
+                'taxonomy' => 'product_visibility',
+                'field'    => 'name',
+                'terms'    => 'featured',
+                'operator' => 'IN',
+            );
         }
     }
 
@@ -613,10 +625,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function setup_feed_filter_rules( $info )
     {
-        $feed_rules_filter = array();
         parse_str( $info, $feed_rules_filters );
 
-        if ( $this->product_scope === 'filter' ) {
+        if ( $this->custom_filter_option ) {
             $this->feed_filters = isset( $feed_rules_filters[ 'ff' ] ) ? $feed_rules_filters[ 'ff' ] : array();
 
             // save the feed_rules_filter into feed post_meta.
@@ -640,7 +651,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             else {
                 delete_post_meta( $this->id, 'rex_feed_feed_config_rules' );
             }
-
         }
     }
 
@@ -665,6 +675,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $include_zero_priced      = $feed_rules[ 'rex_feed_include_zero_price_products' ];
         $this->feed_separator     = isset( $feed_rules[ 'rex_feed_separator' ] ) ? $feed_rules[ 'rex_feed_separator' ] : '';
         $this->aelia_currency     = isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ? $feed_rules[ 'rex_feed_aelia_currency' ] : 'USD';
+        $custom_filter_option     = isset( $feed_rules[ 'rex_feed_custom_filter_option_btn' ] ) ? $feed_rules[ 'rex_feed_custom_filter_option_btn' ] : 'removed';
 
         if( isset( $feed_rules[ 'rex_feed_wmc_currency' ] ) ) {
             $this->wmc_currency   = $feed_rules[ 'rex_feed_wmc_currency' ];
@@ -743,6 +754,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         else {
             $this->include_zero_priced = false;
+        }
+
+        if ( 'added' === $custom_filter_option ) {
+            $this->custom_filter_option = true;
+        }
+        else {
+            $this->custom_filter_option = false;
         }
     }
 
@@ -874,6 +892,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         if ( isset( $feed_rules[ 'rex_feed_include_zero_price_products' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_include_zero_price_products', $feed_rules[ 'rex_feed_include_zero_price_products' ] );
         }
+        if ( isset( $feed_rules[ 'rex_feed_custom_filter_option_btn' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_custom_filter_option', $feed_rules[ 'rex_feed_custom_filter_option_btn' ] );
+        }
     }
 
     /**
@@ -883,11 +904,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
     {
         wpfm_switch_site_lang( $this->wpml_language );
 
-        if ( $this->product_scope === 'filter' ) {
+        if ( $this->custom_filter_option ) {
             $filter_args = Rex_Product_Filter::createFilterQueryParams( $this->feed_filters );
             add_filter( 'posts_where', array( $this, 'wpfm_post_title_filter' ), 10, 2 );
 
             foreach ( $filter_args[ 'args' ] as $key => $value ) {
+                if ( isset( $this->products_args[ $key ] ) ) {
+                    $value = array_merge( $this->products_args[ $key ], $value );
+                }
                 $this->products_args[ $key ] = $value;
             }
 
@@ -908,7 +932,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }*/
 
         $result         = new WP_Query( $this->products_args );
-        $this->products = $result->get_posts();
+        $this->products = $result->posts;
         $condition      = $this->product_filter_condition;
 
         if ( isset( $this->products_args[ 'post__in' ] ) && $this->products_args[ 'post__in' ] ) {
@@ -916,14 +940,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 update_post_meta( $this->id, 'rex_feed_product_condition', $condition );
             }
             $result         = new WP_Query( $this->products_args );
-            $this->products = $result->get_posts();
+            $this->products = $result->posts;
         }
         else {
             if ( $condition ) {
                 update_post_meta( $this->id, 'rex_feed_product_condition', $condition );
             }
             $result         = new WP_Query( $this->products_args );
-            $this->products = $result->get_posts();
+            $this->products = $result->posts;
         }
 
 //        remove_filter( 'posts_distinct_request', array( $this, 'wpfm_set_distinct' ) );

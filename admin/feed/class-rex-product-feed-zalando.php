@@ -170,7 +170,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 $this->feed[] = $json_array;
             }
 
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->product_scope =='filter') {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->custom_filter_option) {
 		        if ( $product->get_type() === 'variation' ) {
 			        $variation_products[] = $productId;
 			        $item = RexShopping::createItem();

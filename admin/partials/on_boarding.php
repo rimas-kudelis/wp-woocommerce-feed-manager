@@ -748,7 +748,7 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                                         esc_html__( 'Reinstall', 'rex-product-feed' )
                                     );
                                     ?>
-                                    <span class="helper-text"><?php _e( '<b>Warning:</b> Please backup your database before making the rollback.', 'rex-product-feed' ); // phpcs:ignore ?></span>
+                                    <span class="helper-text"><?php _e( '<b>Warning:</b> Please backup your database before making the rollback as you might loose you previous data.', 'rex-product-feed' ); // phpcs:ignore ?></span>
                                 </div>
                             </div>
                         </div>

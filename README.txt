@@ -3,9 +3,9 @@ Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager,eBay MIP,google feed,data Feed,xml product feed,google adwords,kelkoo,marktplaats,rakuten,skroutz, skroutz.gr, walmart,google shopping feed, feed, fruugo, bing image feed, bing shopping, bonanza, bestprice, bestprice.gr, yml, yandex, market, yandex market, yandex turbo, export, yandex feed, csv export, export csv, export xml, ean, gtin, isbn, upc,idealo,idealo.de, idealo feed,facebook ads,facebook feed, facebook catalog, facebook
 Requires at least: 4.7
-Tested up to:  5.9
+Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.4
+Stable tag:  7.2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -421,7 +421,6 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 - WooCommerce to [Lyst](https://www.lyst.com/)
 - WooCommerce to [Listupp](http://listupp.it/)
 - WooCommerce to [Hertie](https://www.hertie.de/)
-- WooCommerce to [Etsy](https://www.etsy.com/)
 - WooCommerce to [Webgains](https://www.webgains.com/public/en/)
 - WooCommerce to [MyDeal](https://www.mydeal.com.au/)
 - WooCommerce to [Deals4U.gr](https://deals4u.gr/)
@@ -434,7 +433,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 == Pro Features: ==
 
 * All Free features
-* Unlimited Product Feed Generated (Free version limited to 50 products)
+* Unlimited Product Feed Generated (Free version limited to 200 products)
 * Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date)
 * Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender, Color)
 * Ability To Exclude Tax From Structured Data Prices
@@ -454,6 +453,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 - WooCommerce to [Connexity](https://connexity.com/)
 - WooCommerce to [Google Remarketing (DRM)](https://onlinesales.ai/blog/dynamic-remarketing-must-e-commerce/)
 - WooCommerce to [Google Product Review](https://developers.google.com/product-review-feeds)
+- WooCommerce to [Etsy](https://www.etsy.com/)
 
 >  If you want to know more about the [Pro version then click here!](https://rextheme.com/best-WooCommerce-product-feed/)
 
@@ -706,6 +706,11 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.2.5 (2022-05-26) =
+* Improved: Custom Filter Restructured
+* Improved: Setup Wizard Front-End
+
 
 = 7.2.4 (2022-05-23) =
 * Added: Setup Wizard

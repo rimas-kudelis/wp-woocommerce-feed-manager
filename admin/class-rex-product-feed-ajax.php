@@ -271,6 +271,11 @@ class Rex_Product_Feed_Ajax {
 		wp_ajax_helper()->handle( 'wpfm-remove-plugin-data' )
 		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_remove_plugin_data' ) )
 		                ->with_validation( $validations );
+
+
+		wp_ajax_helper()->handle( 'rex-feed-custom-filters' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_custom_filter_option' ) )
+		                ->with_validation( $validations );
     }
 
 
@@ -1036,5 +1041,44 @@ class Rex_Product_Feed_Ajax {
             wp_send_json_success();
         }
         wp_send_json_error();
+    }
+
+    /**
+     * @desc Save custom filter option
+     * @since 7.2.5
+     * @param $payload
+     * @return void
+     */
+    public static function rex_feed_custom_filter_option( $payload ) {
+        $feed_id = isset( $payload[ 'feed_id' ] ) ? $payload[ 'feed_id' ] : '';
+        $filter_option = isset( $payload[ 'button_text' ] ) ? $payload[ 'button_text' ] : 'removed';
+        $event = isset( $payload[ 'button_event' ] ) ? $payload[ 'button_event' ] : 'on_load';
+
+        if ( '' !== $feed_id ) {
+            $prev_product_filter_option = get_post_meta( $feed_id, 'rex_feed_products', true );
+            if ( 'filter' === $prev_product_filter_option ) {
+                update_post_meta( $feed_id, 'rex_feed_custom_filter_option', 'added' );
+                update_post_meta( $feed_id, 'rex_feed_products', 'all' );
+                wp_send_json_success(
+                        array(
+                                'button_text' => 'added'
+                        )
+                );
+                wp_die();
+            }
+            elseif( 'on_load' === $event ) {
+                $option = get_post_meta( $feed_id, 'rex_feed_custom_filter_option', true );
+                $option = '' !== $option ? $option : 'removed';
+            }
+            else {
+                $option = $filter_option;
+            }
+            wp_send_json_success(
+                array(
+                    'button_text' => $option
+                )
+            );
+            wp_die();
+        }
     }
 }
