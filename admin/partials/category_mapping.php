@@ -17,47 +17,6 @@ $db_version = get_option('rex_wpfm_db_version');
 
 ?>
 
-
-<div class="row">
-    <div class="col s12 m12">
-        <div class="rex-accordion">
-            <?php if ($category_map) {  ?>
-                <?php foreach ($category_map as $key => $value) {
-                    ?>
-                    <div class="acordion-item">
-                        <h6><a href="#" class="mapper_name_update" data-id="<?php echo esc_html($key); ?>"><?php echo esc_html($value['map-name']); ?></a></h6>
-                        <div class="inner" style="display: none;">
-                            <form action="" method="post" class="update_cat_map">
-                                <div class="widefat fixed cat-map highlight" id="cat-map">
-                                    <div class="categories">
-                                        <?php
-                                            $separator = '';
-                                            $sub_cat = [];
-                                            wpfm_hierarchical_product_category_tree(0, $value['map-config']);
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="cat-map-actions">
-                                    <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat"><i class="fa fa-pencil-square-o"></i> <?php echo esc_html__('Update', 'rex-product-feed')?></button>
-                                    <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat"><i class="fa fa-trash-o"></i> <?php echo esc_html__('Delete', 'rex-product-feed')?></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                <?php } ?>
-            <?php }
-            else { if($db_version >= 3) {?>
-                    <div class="info-msg">
-                        <i class="fa fa-info-circle"></i>
-                        <?php echo esc_html__('Please update WPFM database', 'rex-product-feed'); ?>
-                    </div>
-                <?php } }?>
-        </div>
-    </div>
-</div>
-
-
-
 <div class="row">
     <div class="col s12 m12">
         <div class="category-mapper-wrapper card ">
@@ -86,5 +45,40 @@ $db_version = get_option('rex_wpfm_db_version');
     </div>
 </div>
 
-
-
+<div class="row">
+    <div class="col s12 m12">
+        <div class="rex-accordion existing-category-maps">
+            <?php if ($category_map) { ?>
+                <?php foreach ( array_reverse( $category_map ) as $key => $value) {
+                    ?>
+                    <div class="acordion-item">
+                        <h6><a href="#" class="mapper_name_update" data-id="<?php echo esc_html($key); ?>"><?php echo esc_html($value['map-name']); ?></a></h6>
+                        <div class="inner" style="display: none;">
+                            <form action="" method="post" class="update_cat_map">
+                                <div class="widefat fixed cat-map highlight" id="cat-map">
+                                    <div class="categories">
+                                        <?php
+                                        $separator = '';
+                                        $sub_cat = [];
+                                        wpfm_hierarchical_product_category_tree(0, $value['map-config']);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="cat-map-actions">
+                                    <button type="submit" class="waves-effect waves-light btn-large green" id="update_mapping_cat"><i class="fa fa-pencil-square-o"></i> <?php echo esc_html__('Update', 'rex-product-feed')?></button>
+                                    <button type="submit" class="waves-effect waves-light btn-large red" id="delete_mapping_cat"><i class="fa fa-trash-o"></i> <?php echo esc_html__('Delete', 'rex-product-feed')?></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php }
+            else { if($db_version >= 3) {?>
+                <div class="info-msg">
+                    <i class="fa fa-info-circle"></i>
+                    <?php echo esc_html__('Please update WPFM database', 'rex-product-feed'); ?>
+                </div>
+            <?php } }?>
+        </div>
+    </div>
+</div>

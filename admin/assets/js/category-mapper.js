@@ -64,7 +64,9 @@ jQuery(document).ready(function($){
                 .success( function( response ) {
                     $('.rex-loading-spinner').css('display', 'none');
                     setTimeout(function(){// wait for 5 secs(2)
-                        location.reload(); // then reload the page.(3)
+                        if ( response.success ) {
+                            location.replace( response.data.location + '&new-added=1' );
+                        }
                     }, 1000);
                     console.log( 'Woohoo!' );
                 })
@@ -233,7 +235,17 @@ jQuery(document).ready(function($){
         cat_update_actions.append( cat_map_action_btns );
         $( 'a[data-id='+selected_cat+']' ).addClass( 'selected' );
         $( 'a[data-id='+selected_cat+']' ).parent().next().slideDown(500);
+
+        $( 'a[data-id='+selected_cat+']' ).parent().parent()[0].scrollIntoView({
+            behavior: "smooth", // or "auto" or "instant"
+            block: "start" // or "end"
+        });
     }
 
-
+    if ( url.includes('new-added=1') ) {
+        $( '.existing-category-maps :first-child :first-child :first-child' ).addClass( 'selected' );
+        $( '.existing-category-maps :first-child div.inner' ).slideDown(500);
+        window.scroll(0, $( '.existing-category-maps' ).position().top );
+        window.history.pushState({}, '', url.replace( '&new-added=1', '' ));
+    }
 }); 

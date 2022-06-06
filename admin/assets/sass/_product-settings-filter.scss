@@ -474,7 +474,7 @@
     #rex-feed-product-tags,
     #rex-feed-product-cats {
       display: grid;
-      grid-template-columns: 1.7fr 6fr;
+      grid-template-columns: 1fr;
       grid-gap: 20px;
       background-color: #f7f7fa;
       padding: 20px 15px;
@@ -507,14 +507,10 @@
       }
 
       ul {
-        display: block;
+        display: grid;
         align-items: center;
-
-        li {
-          display: inline-block;
-          vertical-align: middle;
-          padding-right: 10px;
-        }
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
       }
     }
   }

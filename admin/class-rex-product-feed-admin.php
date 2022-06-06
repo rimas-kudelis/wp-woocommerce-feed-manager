@@ -180,6 +180,10 @@ class Rex_Product_Feed_Admin {
      */
     public function enqueue_styles($hook) {
 
+        /**
+         * @desc Global CSS file
+         */
+        wp_enqueue_style($this->plugin_name . '-global', WPFM_PLUGIN_ASSETS_FOLDER . 'css/global.css', array(), $this->version );
 
         /**
          * This function is provided for demonstration purposes only.
@@ -198,11 +202,11 @@ class Rex_Product_Feed_Admin {
             return;
         }
         if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->setup_wizard_hook_suffix , $this->wpfm_pro_submenu)))) {
-            wp_enqueue_style( 'font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version, 'all' );
-            wp_enqueue_style( 'wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version, 'all' );
-            wp_enqueue_style($this->plugin_name.'-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version, 'all');
-            wp_enqueue_style( 'style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version, 'all' );
-            wp_style_add_data( 'style-css', 'rtl', 'replace' );
+            wp_enqueue_style( 'font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version );
+            wp_enqueue_style( 'wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version );
+            wp_enqueue_style($this->plugin_name . '-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version );
+            wp_enqueue_style( $this->plugin_name . '-style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version, 'all' );
+            wp_style_add_data( $this->plugin_name . '-style-css', 'rtl', 'replace' );
         }
     }
 
@@ -484,7 +488,7 @@ class Rex_Product_Feed_Admin {
             }
             $url = admin_url('post.php?action=edit&post=' . $new_post_id);
             $url = filter_var( $url, FILTER_SANITIZE_URL );
-            exit( esc_url( wp_safe_redirect( $url ) ) );
+            exit( esc_url( wp_redirect( $url ) ) );
         } else {
             wp_die('Post creation failed, could not find original post: ' . esc_attr( $post_id ));
         }
@@ -528,7 +532,7 @@ class Rex_Product_Feed_Admin {
      */
     public function load_admin_pages() {
 
-        add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon.png', 20 );
+        add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon-svg/dashboard-icon.svg', 20 );
         add_submenu_page('product-feed', __('Add New Feed', 'rex-product-feed'), __('Add New Feed', 'rex-product-feed'), 'manage_woocommerce', 'post-new.php?post_type=product-feed');
 
         
@@ -598,7 +602,7 @@ class Rex_Product_Feed_Admin {
     public static function wpfm_redirect_to_pro() {
         $url = 'https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro';
         $url = filter_var( $url, FILTER_SANITIZE_URL );
-        exit( esc_url( wp_safe_redirect( $url ) ) );
+        exit( esc_url( wp_redirect( $url ) ) );
     }
 
 
@@ -608,7 +612,7 @@ class Rex_Product_Feed_Admin {
     public static function wpfm_support() {
         $support_link = apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0');
         $support_link = filter_var( $support_link, FILTER_SANITIZE_URL );
-        exit( esc_url( wp_safe_redirect( $support_link ) ) );
+        exit( esc_url( wp_redirect( $support_link ) ) );
     }
 
 

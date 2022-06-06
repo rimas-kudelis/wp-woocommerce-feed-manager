@@ -54,78 +54,7 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
 
             <div class="rex-settings-tab-wrapper">
                 <ul class="rex-settings-tabs">
-                    <li class="tab-link general active" data-tab="tab1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 21" width="20" height="21">
-                            <defs>
-                                <clipPath clipPathUnits="userSpaceOnUse" id="cp1">
-                                    <path d="M-29 -37L1291 -37L1291 556L-29 556Z"/>
-                                </clipPath>
-                            </defs>
-                            <style>
-                                .general-icon {
-                                    fill: none;
-                                    stroke: #a8a7be;
-                                    stroke-linecap: round;
-                                    stroke-linejoin: round;
-                                    stroke-width: 1.5
-                                }
-                            </style>
-                            <g id="Control" clip-path="url(#cp1)">
-                                <g id="Group 6">
-                                    <g id="1 copy 6">
-                                        <g id="Group 21">
-                                            <path id="Stroke 1" class="general-icon"
-                                                  d="M4.34 11C4.34 14.12 6.88 16.66 10 16.66C13.12 16.66 15.66 14.12 15.66 11C15.66 7.88 13.12 5.34 10 5.34C6.88 5.34 4.34 7.88 4.34 11Z"/>
-                                            <path id="Stroke 3" class="general-icon"
-                                                  d="M8.3 11C8.3 11.94 9.06 12.7 10 12.7C10.94 12.7 11.7 11.94 11.7 11C11.7 10.06 10.94 9.3 10 9.3C9.06 9.3 8.3 10.06 8.3 11Z"/>
-                                            <path id="Stroke 5" class="general-icon" d="M10 3L10 4.79"/>
-                                            <path id="Stroke 7" class="general-icon" d="M10 17.21L10 19"/>
-                                            <path id="Stroke 9" class="general-icon" d="M2 11L3.79 11"/>
-                                            <path id="Stroke 11" class="general-icon" d="M16.21 11L18 11"/>
-                                            <path id="Stroke 13" class="general-icon" d="M15.66 5.34L14.39 6.61"/>
-                                            <path id="Stroke 15" class="general-icon" d="M5.61 15.39L4.34 16.66"/>
-                                            <path id="Stroke 17" class="general-icon" d="M4.34 5.34L5.61 6.61"/>
-                                            <path id="Stroke 19" class="general-icon" d="M14.39 15.39L15.66 16.66"/>
-                                        </g>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                        <?php echo esc_html__('General', 'rex-product-feed') ?>
-                    </li>
-                    <li class="tab-link" data-tab="tab2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 22" width="20" height="22">
-                            <defs>
-                                <clipPath clipPathUnits="userSpaceOnUse" id="cp1">
-                                    <path d="M-207 -37L1113 -37L1113 556L-207 556Z"/>
-                                </clipPath>
-                            </defs>
-                            <style>
-                                .marchants {
-                                    fill: none;
-                                    stroke: #a8a7be;
-                                    stroke-linecap: round;
-                                    stroke-linejoin: round;
-                                    stroke-width: 1.5
-                                }
-                            </style>
-                            <g id="Control" clip-path="url(#cp1)">
-                                <g id="Group 6">
-                                    <g id="1 copy 4">
-                                        <g id="Group 7">
-                                            <path id="Stroke 1" class="marchants"
-                                                  d="M6.08 6.82C6.08 4.71 7.8 3 9.91 3C12.02 3 13.73 4.71 13.73 6.82L13.73 7.64"/>
-                                            <path id="Stroke 3" class="marchants"
-                                                  d="M13.73 7.64L16.35 7.64C17.2 7.64 17.83 8.43 17.65 9.26L15.8 17.8C15.65 18.5 15.03 19 14.31 19L5.38 19C4.66 19 4.04 18.5 3.89 17.8L2.03 9.26C1.85 8.43 2.48 7.64 3.33 7.64L10.93 7.64"/>
-                                            <path id="Stroke 5" class="marchants" d="M5.71 14.26L16.53 14.26"/>
-                                        </g>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                        <?php echo esc_html__('Merchants', 'rex-product-feed') ?>
-                    </li>
-                    <li class="tab-link" data-tab="tab4">
+                    <li class="tab-link active" data-tab="tab4">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 23" width="31" height="23">
                             <defs>
                                 <clipPath clipPathUnits="userSpaceOnUse" id="cp1">
@@ -178,32 +107,37 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                         </svg>
                         <?php echo esc_html__('Controls', 'rex-product-feed') ?>
                     </li>
-                    <li class="tab-link video" data-tab="tab3">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 15" width="23" height="15">
+                    <li class="tab-link" data-tab="tab2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 22" width="20" height="22">
                             <defs>
                                 <clipPath clipPathUnits="userSpaceOnUse" id="cp1">
-                                    <path d="M-610 -42L710 -42L710 551L-610 551Z"/>
+                                    <path d="M-207 -37L1113 -37L1113 556L-207 556Z"/>
                                 </clipPath>
                             </defs>
                             <style>
-                                .video-icon {
-                                    fill: #a8a7be;
+                                .marchants {
+                                    fill: none;
                                     stroke: #a8a7be;
-                                    stroke-width: 0.5
+                                    stroke-linecap: round;
+                                    stroke-linejoin: round;
+                                    stroke-width: 1.5
                                 }
                             </style>
                             <g id="Control" clip-path="url(#cp1)">
                                 <g id="Group 6">
-                                    <g id="1">
-                                        <g id="electronics">
-                                            <path id="Shape" fill-rule="evenodd" class="video-icon"
-                                                  d="M21 2.42L21 11.61C21 11.75 20.92 11.88 20.79 11.96C20.66 12.03 20.5 12.03 20.37 11.96L15.78 9.58L15.78 10.98C15.78 12.1 14.84 13 13.67 13L3.12 13C1.95 13 1 12.1 1 10.98L1 3.02C1 1.9 1.95 1 3.12 1L13.67 1C14.84 1 15.78 1.9 15.78 3.02L15.78 4.45L20.37 2.06C20.5 1.99 20.66 2 20.79 2.07C20.92 2.14 21 2.27 21 2.42ZM14.94 3.02C14.94 2.35 14.37 1.81 13.67 1.81L3.12 1.81C2.42 1.81 1.85 2.35 1.85 3.02L1.85 10.98C1.85 11.65 2.42 12.19 3.12 12.19L13.67 12.19C14.37 12.19 14.94 11.65 14.94 10.98L14.94 3.02ZM20.15 3.1L15.78 5.37L15.78 8.66L20.15 10.93L20.15 3.1Z"/>
+                                    <g id="1 copy 4">
+                                        <g id="Group 7">
+                                            <path id="Stroke 1" class="marchants"
+                                                  d="M6.08 6.82C6.08 4.71 7.8 3 9.91 3C12.02 3 13.73 4.71 13.73 6.82L13.73 7.64"/>
+                                            <path id="Stroke 3" class="marchants"
+                                                  d="M13.73 7.64L16.35 7.64C17.2 7.64 17.83 8.43 17.65 9.26L15.8 17.8C15.65 18.5 15.03 19 14.31 19L5.38 19C4.66 19 4.04 18.5 3.89 17.8L2.03 9.26C1.85 8.43 2.48 7.64 3.33 7.64L10.93 7.64"/>
+                                            <path id="Stroke 5" class="marchants" d="M5.71 14.26L16.53 14.26"/>
                                         </g>
                                     </g>
                                 </g>
                             </g>
                         </svg>
-                        <?php echo esc_html__('Video Tutorials', 'rex-product-feed') ?>
+                        <?php echo esc_html__('Merchants', 'rex-product-feed') ?>
                     </li>
                     <li class="tab-link status" data-tab="tab5">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 18" width="16" height="18">
@@ -228,273 +162,13 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                         </svg>
                         <?php echo esc_html__('System Status', 'rex-product-feed') ?>
                     </li>
-                    <?php
-                    if (!$is_premium_activated) { ?>
-                        <li class="tab-link" data-tab="tab6"><i
-                                    class="fa fa-gift"></i><?php echo esc_html__('Go Premium', 'rex-product-feed') ?></li>
-                    <?php }
-                    ?>
                     <li class="tab-link" data-tab="tab7"><i
                                 class="fa fa-question-circle"></i><?php echo esc_html__('Logs', 'rex-product-feed') ?></li>
                 </ul>
 
                 <div class="rex-settings-tab-content">
 
-                    <div id="tab1" class="tab-content active block-wrapper">
-                        <div class="rex-general__content-area">
-
-                            <div class="rex-general__left-info-wrapper">
-
-                                <div class="rex-general__single-block-wrapper">
-
-                                    <div class="rex-general__single-block-area">
-                                        <div class="rex-general__single-block banner-block">
-                                            <div class="onboarding-block">
-                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm-banner.png' ) ?>"
-                                                     alt="rex-banner">
-                                            </div>
-                                        </div>
-
-                                        <div class="rex-general__logo-block">
-                                            <div class="upgrade-pro">
-                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfm_logo.png' ) ?>" alt="wpfm-logo" class="img-fluid">
-
-                                                <?php if (!$is_premium_activated) { ?>
-                                                    <a class="btn-default"
-                                                       href="https://rextheme.com/best-woocommerce-product-feed/"
-                                                       target="_blank"><?php esc_html_e('Upgrade to Pro ', 'rex-product-feed'); ?></a>
-                                                <?php } ?>
-                                            </div>
-
-                                            <div class="rex-general__single-blocks social-share">
-                                                <h4><?php esc_html_e('Share On', 'rex-product-feed'); ?></h4>
-                                                <ul class="social">
-                                                    <li>
-                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//wordpress.org/plugins/best-woocommerce-feed/"
-                                                           target="_blank"><i class="fa fa-facebook-official"
-                                                                              aria-hidden="true"></i></a></li>
-                                                    <li>
-                                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//wordpress.org/plugins/best-woocommerce-feed/&title=Best%20WooCommerce%20Product%20Feed%20Manager&summary=&source="
-                                                           target="_blank"><i class="fa fa-linkedin-square"
-                                                                              aria-hidden="true"></i></a></li>
-                                                    <li>
-                                                        <a href="https://twitter.com/home?status=https%3A//wordpress.org/plugins/best-woocommerce-feed/"
-                                                           target="_blank"><i class="fa fa-twitter-square"
-                                                                              aria-hidden="true"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- rex-general__single-block-area -->
-
-
-                                    <div class="rex-general__single-block-category">
-                                        <div class="rex-general__single-block">
-                                            <div class="header">
-                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/document.png' ) ?>"
-                                                     class="title-icon" alt="documentation">
-                                                <h4><?php echo esc_html__('Documentation', 'rex-product-feed') ?></h4>
-                                            </div>
-
-                                            <div class="body">
-                                                <p>
-                                                    <?php echo esc_html__('Get started by spending some time with the documentation and generate flawless product feed for major online marketplaces within minutes.', 'rex-product-feed') ?>
-                                                </p>
-
-                                                <a class="btn-default"
-                                                   href="<?php echo esc_url( apply_filters('wpfm_document_link', 'https://rextheme.com/docs-category/product-feed-manager/') ); ?>"
-                                                   target="_blank"><?php echo esc_html__('Documentation', 'rex-product-feed') ?></a>
-                                            </div>
-                                        </div>
-                                        <!-- rex-general__single-block one -->
-
-                                        <div class="rex-general__single-block popular">
-
-                                            <div class="header">
-                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/support.png' ) ?>"
-                                                     class="title-icon" alt="support">
-                                                <h4><?php echo esc_html__('Support', 'rex-product-feed') ?></h4>
-                                            </div>
-
-                                            <div class="body">
-                                                <p>
-                                                    <?php echo esc_html__('Can’t find solution with our documentation? Just post a ticket. Our professional team is here to solve your problems.', 'rex-product-feed') ?>
-                                                </p>
-
-                                                <a class="btn-default"
-                                                   href="<?php echo esc_url( apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0') ) ?>"
-                                                   target="_blank"><?php echo esc_html__('Post a Ticket', 'rex-product-feed') ?> </a>
-                                            </div>
-
-                                        </div>
-                                        <!-- rex-general__single-block two -->
-
-                                        <div class="rex-general__single-block">
-
-                                            <div class="header">
-                                                <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/rating.png' ) ?>"
-                                                     class="title-icon" alt="rating">
-                                                <h4><?php echo esc_html__('Show Your Love', 'rex-product-feed') ?></h4>
-                                            </div>
-
-                                            <div class="body">
-                                                <p>
-                                                    <?php echo esc_html__('We love to have you in Product Feed Manager for WooCommerce family. Take your 2 minutes to review and speed the love to encourage us to keep it going.', 'rex-product-feed') ?>
-                                                </p>
-
-                                                <a class="btn-default"
-                                                   href="<?php echo esc_url( apply_filters('wpfm_review_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post') ) ?>"
-                                                   target="_blank"><?php echo esc_html__('Leave A Review ', 'rex-product-feed') ?> </a>
-
-                                            </div>
-
-                                        </div>
-                                        <!-- rex-general__single-block.three -->
-
-                                    </div>
-                                    <!-- rex-general__single-block-category.end -->
-
-                                </div>
-                                <!-- rex-general__single-block-wrapper -->
-                            </div>
-                            <!-- rex-general__left-info-wrapper -->
-
-                            <div class="rex-general__right-info-wrapper">
-
-                                <h4 class="title"><?php esc_html_e("Here is an offer you can't miss!", 'rex-product-feed'); ?></h4>
-
-                                <div class="rex-general__single-block cart">
-                                    <div class="header">
-                                        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/Cart-Lift.png' ) ?>"
-                                             class="title-icon" alt="cart-lift">
-                                        <h4><?php echo esc_html__('Cart Lift', 'rex-product-feed') ?></h4>
-                                    </div>
-
-                                    <div class="body">
-                                        <p><?php esc_html_e('Recover your abandoned cart customers with automated e-mail drip campaigns. Enjoy immediate increase in your sales..', 'rex-product-feed'); ?></p>
-
-                                        <a class="btn-default"
-                                           href="<?php echo esc_url( apply_filters('wpfm_cart_link', 'https://wordpress.org/plugins/cart-lift/') ); ?>"
-                                           target="_blank"><?php echo esc_html__('Get It Now', 'rex-product-feed') ?></a>
-                                    </div>
-                                </div>
-                                <!--rex-general__single-block-->
-
-                                <div class="rex-general__single-block vas">
-                                    <div class="header">
-                                        <img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/wpfunnels-logo.png' ) ?>"
-                                             class="title-icon" alt="variation-swatch">
-                                        <h4><?php echo esc_html__('WPFunnels', 'rex-product-feed') ?></h4>
-                                    </div>
-
-                                    <div class="body">
-                                        <p><?php esc_html_e('Create highly converting Sales Funnels within WordPress using a visual drag and drop funnel builder and increase your online sales revenue easily.', 'rex-product-feed'); ?></p>
-                                        <a class="btn-default"
-                                           href="<?php echo esc_url( apply_filters('wpfm_wpfunnels_link', 'https://wordpress.org/plugins/wpfunnels/') ); ?>"
-                                           target="_blank"><?php echo esc_html__('Get It Now', 'rex-product-feed') ?></a>
-                                    </div>
-                                </div>
-                                <!-- rex-general__single-block -->
-                                <!--                                <a href="https://rextheme.com/black-friday/?wpfm=1" target="_blank">-->
-                                <!--                                    <div class="bf-banner-container">-->
-                                <!--                                        <img src="-->
-                                <?php //echo WPFM_PLUGIN_ASSETS_FOLDER . 'icon/black-friday-2.png'?><!--" style="max-width: 100%;" alt="black-friday-offer">-->
-                                <!--                                    </div>-->
-                                <!--                                </a>-->
-                            </div>
-                            <!-- rex-general__right-info-wrapper.end -->
-
-                        </div>
-                        <!-- rex-general__content-area.end -->
-                    </div>
-                    <!-- rex-general__block-wrapper.end -->
-
-                    <div id="tab2" class="tab-content block-wrapper">
-                        <div class="rex-merchant">
-                            <h3 class="merchant-title"><?php echo esc_html__('Available Merchants', 'rex-product-feed') ?></h3>
-                            <?php
-                            // free vs pro merchants
-                            $all_merchants  = Rex_Feed_Merchants::get_merchants();
-                            $_merchants     = $all_merchants[ 'popular' ];
-
-                            if (!$is_premium_activated) {
-	                            $_merchants = array_merge($_merchants, $all_merchants[ 'pro_merchants' ]);
-                            }
-
-                            $_merchants = array_merge($_merchants, $all_merchants[ 'free_merchants' ]);
-
-
-                            /**
-                             * result of bad planning
-                             */
-                            $_merchants['google']['name'] = 'Google Shopping';
-                            $_merchants['google_Ad']['name'] = 'Google AdWords';
-                            $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
-                            
-                            ?>
-                            <?php foreach ($_merchants as $key => $merchant):?>
-
-                                <?php if ($key && $key != 'undefined'):
-                                    $show_pro = false;
-                                    if ($is_premium_activated) {
-                                        $pro_cls = '';
-                                        $disabled = '';
-                                        $show_pro = false;
-                                    } else {
-                                        if ($merchant['free']) {
-                                            $pro_cls = '';
-                                            $disabled = '';
-                                            $show_pro = false;
-                                        } else {
-                                            $pro_cls = 'wpfm-pro';
-                                            $disabled = 'disabled';
-                                            $show_pro = true;
-                                        }
-                                    }
-                                    ?>
-                                    <div class="single-merchant <?php echo esc_attr( $pro_cls ); ?>">
-                                        <?php if ($show_pro) { ?>
-                                            <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank"
-                                               title="Click to Upgrade Pro" class="wpfm-pro-cta">
-                                                <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
-                                            </a>
-                                        <?php } ?>
-
-                                        <span class="title"><?php echo esc_html( $merchant['name'] ); ?></span>
-<!--                                        --><?php
-//                                        $checked = $merchant['status'] ? 'checked' : '';
-//                                        $is_free = $merchant['free'] ? true : false;
-//                                        $name = $merchant['name'];
-//
-//                                        ?>
-<!--                                        <div class="switch --><?php //esc_attr( $disabled ); ?><!--">-->
-<!--                                            <div class="wpfm-switcher">-->
-<!--                                                <input class="switch-input merchant-change"-->
-<!--                                                       type="checkbox" --><?php //esc_attr( $checked ); ?><!-- --><?php //esc_attr( $disabled ); ?>
-<!--                                                       id="switcher---><?php //echo strtolower($key); ?><!--"-->
-<!--                                                       data-value="--><?php //echo $key; ?><!--"-->
-<!--                                                       data-is-free="--><?php //echo $is_free; ?><!--"-->
-<!--                                                       data-name="--><?php //echo ucfirst($name); ?><!--">-->
-<!--                                                <label class="lever"-->
-<!--                                                       for="switcher---><?php //echo strtolower($key); ?><!--"></label>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-                                    </div>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                    <!--/merchant tab-->
-
-                    <div id="tab3" class="tab-content block-wrapper">
-                        <div class="video-container">
-                            <iframe width="560" height="315"
-                                    src="https://www.youtube.com/embed/videoseries?list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq"
-                                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                        </div>
-                    </div>
-
-                    <div id="tab4" class="tab-content block-wrapper">
+                    <div id="tab4" class="tab-content active block-wrapper">
                         <div class="rex-merchant feed-settings">
                             <h3 class="merchant-title"><?php echo esc_html__('Controls', 'rex-product-feed'); ?> </h3>
 
@@ -755,6 +429,70 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                     </div>
                     <!--/settings tab-->
 
+                    <div id="tab2" class="tab-content block-wrapper">
+                        <div class="rex-merchant">
+                            <h3 class="merchant-title"><?php echo esc_html__('Available Merchants', 'rex-product-feed') ?></h3>
+                            <?php
+                            // free vs pro merchants
+                            $all_merchants  = Rex_Feed_Merchants::get_merchants();
+                            $_merchants     = $all_merchants[ 'popular' ];
+
+                            if (!$is_premium_activated) {
+	                            $_merchants = array_merge($_merchants, $all_merchants[ 'pro_merchants' ]);
+                            }
+
+                            $_merchants = array_merge($_merchants, $all_merchants[ 'free_merchants' ]);
+
+
+                            /**
+                             * result of bad planning
+                             */
+                            $_merchants['google']['name'] = 'Google Shopping';
+                            $_merchants['google_Ad']['name'] = 'Google AdWords';
+                            $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
+                            
+                            ?>
+                            <?php foreach ($_merchants as $key => $merchant):?>
+
+                                <?php if ($key && $key != 'undefined'):
+                                    $show_pro = false;
+                                    if ($is_premium_activated) {
+                                        $pro_cls = '';
+                                        $disabled = '';
+                                        $show_pro = false;
+                                    } else {
+                                        if ( isset( $merchant['free'] ) && $merchant['free'] ) {
+                                            $pro_cls = '';
+                                            $disabled = '';
+                                            $show_pro = false;
+                                        } else {
+                                            $pro_cls = 'wpfm-pro';
+                                            $disabled = 'disabled';
+                                            $show_pro = true;
+                                        }
+                                    }
+                                    ?>
+                                    <div class="single-merchant <?php echo esc_attr( $pro_cls ); ?>">
+                                        <?php if ($show_pro) { ?>
+                                            <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank"
+                                               title="Click to Upgrade Pro" class="wpfm-pro-cta">
+                                                <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
+                                            </a>
+                                        <?php } ?>
+
+                                        <span class="title">
+                                            <?php
+                                            $merchant_name = isset( $merchant['name'] ) ? esc_html( $merchant['name'] ) : '';
+                                            echo $merchant_name;
+                                            ?>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <!--/merchant tab-->
+
                     <div id="tab5" class="tab-content block-wrapper">
                         <div class="system-status">
                             <h3 class="title"><?php echo esc_html__('System Status', 'rex-product-feed'); ?></h3>
@@ -877,29 +615,6 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                         </div>
                     </div>
 
-                    <?php
-                    if (!$is_premium_activated) { ?>
-                        <div id="tab6" class="tab-content block-wrapper">
-                            <div class="upgrade">
-                                <div class="rex-upgrade wpfm-pro-features">
-                                    <h4 class="title"><?php echo esc_html__('Why upgrade to Pro?', 'rex-product-feed'); ?></h4>
-                                    <ul>
-                                        <li class="item"><?php echo esc_html__('Generate feed for unlimited products', 'rex-product-feed'); ?></li>
-                                        <li class="item"><?php echo esc_html__('Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date)', 'rex-product-feed'); ?></li>
-                                        <li class="item"><?php echo esc_html__('Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender, Color)', 'rex-product-feed'); ?></li>
-                                        <li class="item"><?php echo esc_html__('Ability To Exclude Tax From Structured Data Prices', 'rex-product-feed'); ?></li>
-                                        <li class="item"><?php echo esc_html__('Option To Fix WooCommerce’s (Json-Ld) Structured Data Bug', 'rex-product-feed'); ?></li>
-                                        <li class="item"><?php echo esc_html__('Custom Batch configuration', 'rex-product-feed'); ?></li>
-                                        <li class="item"><?php echo esc_html__('6 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)', 'rex-product-feed'); ?></li>
-                                    </ul>
-                                    <a href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro"
-                                       target="_blank"
-                                       class="btn-default"><?php echo esc_html__('Get Premium Version', 'rex-product-feed') ?></a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php }
-                    ?>
                     <div id="tab7" class="tab-content block-wrapper wpfm-log">
                         <?php
                         $logs = WC_Admin_Status::scan_log_files();

@@ -385,7 +385,7 @@ class Rex_Product_Feed_Ajax {
 
         if ( $wpfm_hash !== '' && array_key_exists( $wpfm_hash, $category_map ) ) {
             wpfm_purge_cached_data();
-            return $status;
+            wp_send_json_success( [ 'status' => $status, 'location' => esc_url( admin_url( 'admin.php?page=category_mapping' ) ) ] );
         }
         if ( $wpfm_hash !== '' ) {
             wpfm_purge_cached_data();
@@ -414,7 +414,7 @@ class Rex_Product_Feed_Ajax {
 
         $category_map[$map_name_hash] = $map_array;
         update_option('rex-wpfm-category-mapping', $category_map);
-        return $status;
+        wp_send_json_success( [ 'status' => $status, 'location' => esc_url( admin_url( 'admin.php?page=category_mapping' ) ) ] );
     }
 
 

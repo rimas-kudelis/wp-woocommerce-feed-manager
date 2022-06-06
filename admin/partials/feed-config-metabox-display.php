@@ -104,9 +104,7 @@ $keyy = rand(999, 3000); ?>
             <a class="delete-row d" title="Delete">
                 <i class="fa fa-trash"></i>
             </a>
-
         </td>
     </tr>
 <?php endforeach ?>
-
 </tbody>

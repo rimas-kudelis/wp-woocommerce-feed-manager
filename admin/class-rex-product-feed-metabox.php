@@ -148,24 +148,7 @@ class Rex_Product_Metabox
 	 */
 	public function rex_feed_generate_config_table()
 	{
-		?>
-        <table id="config-table" class="responsive-table wpfm-field-mappings">
-			<?php require_once plugin_dir_path( __FILE__ ) . 'partials/loading-spinner.php';?>
-        </table>
-
-        <div id="rex-feed-footer-btn" class="rex-feed-footer-btn">
-            <a id="rex-new-attr" class="rex-new-custom-btn">
-		        <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-plus.php';?>
-		        <?php echo esc_attr__( 'Add New Attribute', 'rex-product-feed' ) ?>
-            </a>
-            <a id="rex-new-custom-attr" class="rex-new-custom-btn">
-				<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/icon-plus.php';?>
-				<?php echo esc_attr__( 'Add New Custom Attribute', 'rex-product-feed' ) ?>
-            </a>
-        </div>
-
-		
-		<?php
+        require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-config-table.php';
 	}
 
 
@@ -335,7 +318,7 @@ class Rex_Product_Metabox
 	 */
 	public function rex_feed_generate_how_to_guide_section()
 	{
-        require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-how-to-guide-content.php';
+        //require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-how-to-guide-content.php';
 	}
 
 

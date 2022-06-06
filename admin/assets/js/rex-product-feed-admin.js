@@ -66,29 +66,34 @@
         rex_feed_show_review_request( event );
         rex_feed_merchant_list_select2( event );
         default_category_mapping( event );
+
+        var publish_btn_txt = $( '#publish' ).val();
+        console.log('publish_btn_txt');
+        console.log(publish_btn_txt);
+        $( '.bottom-publish-btn' ).text( publish_btn_txt );
     } );
 
     /**
      * Add a new table-row and update it's
      */
     $( document ).on( 'click', '#rex-new-attr', function () {
-        var rowId = $( this ).parent().siblings( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
+        var rowId = $( this ).parent().parent().siblings( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
         rowId = parseInt( rowId ) + 1;
-        var lastrow = $( this ).parent().siblings( '#config-table' ).find( 'tbody tr:last' );
-        var parent = $( this ).parent().siblings( '#config-table' ).parent();
+        var lastrow = $( this ).parent().parent().siblings( '#config-table' ).find( 'tbody tr:last' );
+        var parent = $( this ).parent().parent().siblings( '#config-table' ).parent();
 
         if ( parent.hasClass( 'rex-feed-config-filter' ) ) {
             var filter = true;
         } else {
             filter = false;
         }
-        $( this ).parent().siblings( '#config-table' ).find( 'tbody tr:first' )
+        $( this ).parent().parent().siblings( '#config-table' ).find( 'tbody tr:first' )
             .clone()
             .insertAfter( lastrow )
             .attr( 'data-row-id', rowId )
             .show();
 
-        var $row = $( this ).parent().siblings( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
+        var $row = $( this ).parent().parent().siblings( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
         $row.find( 'ul.dropdown-content.select-dropdown, .caret, .select-dropdown ' ).remove();
 
         updateFormNameAtts( $row, rowId, filter );
@@ -137,11 +142,11 @@
      * add new custom attributes
      */
     $( document ).on( 'click', '#rex-new-custom-attr', function () {
-        var rowId = $( this ).parent().siblings( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
+        var rowId = $( this ).parent().parent().siblings( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
         console.log( rowId );
         rowId = parseInt( rowId ) + 1;
-        var lastrow = $( this ).parent().siblings( '#config-table' ).find( 'tbody tr:last' );
-        var parent = $( this ).parent().siblings( '#config-table' ).parent();
+        var lastrow = $( this ).parent().parent().siblings( '#config-table' ).find( 'tbody tr:last' );
+        var parent = $( this ).parent().parent().siblings( '#config-table' ).parent();
 
         if ( parent.hasClass( 'rex-feed-config-filter' ) ) {
             var filter = true;
@@ -149,14 +154,14 @@
             filter = false;
         }
 
-        $( this ).parent().siblings( '#config-table' ).find( 'tbody tr:first' )
+        $( this ).parent().parent().siblings( '#config-table' ).find( 'tbody tr:first' )
             .clone()
             .insertAfter( lastrow )
             .attr( 'data-row-id', rowId )
             .show();
 
 
-        var $row = $( this ).parent().siblings( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
+        var $row = $( this ).parent().parent().siblings( '#config-table' ).find( "[data-row-id='" + rowId + "']" );
         $row.find( 'ul.dropdown-content.select-dropdown, .caret, .select-dropdown ' ).remove();
 
         $row.find( 'td:eq(0)' ).empty();
@@ -325,6 +330,14 @@
     });
 
     $( document ).on( 'click', '#rex_feed_custom_filter_button', rex_feed_custom_filter );
+
+    $( document ).on( 'click', '.bottom-publish-btn', function () {
+        $( this ).css( 'color', '#a7aaad' );
+        $( this ).css( 'background-color', '#f6f7f7' );
+        $( this ).css( 'border-color', '#dcdcde' );
+        $( this ).css( 'cursor', 'progress' );
+        $( '#publish' ).trigger( 'click' );
+    });
 
     /**
      * Event listener for Analytics Parameter options functionality.
@@ -719,12 +732,13 @@
 
         if ( 'Category Map' === opt_group_label ) {
             var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + selected_val;
+
             if ( $( '#rex_cat_map_' + rowId ).length === 0 ) {
-                $( this ).parent().append("<p id='rex_cat_map_"+rowId+"' style='font-size: 12px;margin-top: 10px;margin-left: 5px;'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+                $( this ).parent().append("<p style='font-size: 12px;margin-top: 10px;margin-left: 5px;' id='rex_cat_map_"+rowId+"'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
             else {
                 $( '#rex_cat_map_'+rowId ).remove();
-                $( this ).parent().append("<p id='rex_cat_map_"+rowId+"' style='font-size: 12px;margin-top: 10px;margin-left: 5px;'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+                $( this ).parent().append("<p style='font-size: 12px;margin-top: 10px;margin-left: 5px;' id='rex_cat_map_"+rowId+"'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
         }
         else {

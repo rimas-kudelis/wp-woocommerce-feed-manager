@@ -211,7 +211,7 @@ $merchants = array(
                 </div>
 
                 <div class="rex-setup-wizard-price__button-area">
-                    <span><?php esc_html_e('Prices start at $59.99 ', 'rex-product-feed')?></span>
+                    <span><?php esc_html_e('Prices start at $79.99 ', 'rex-product-feed')?></span>
                     <button class="rex-setup-wizard-price__button wizard-btn" type="button">
                         <a  href="<?php echo esc_url( 'https://rextheme.com/best-woocommerce-product-feed/#pricing' ); ?>" target="_blank">
                             <?php esc_html_e('Get Pro Now','rex-product-feed') ?>
@@ -262,7 +262,7 @@ $merchants = array(
 
             <div class="rex-setup-wizard-cta__button-area">
                 <button class="rex-setup-wizard-cta__button wizard-btn rex-setup-wizard-cta__button--light-blue" type="button">
-                    <a  href="<?php echo esc_url( 'https://rextheme.com/best-woocommerce-product-feed/' ); ?>" target="_blank">
+                    <a  href="<?php echo esc_url( 'https://rextheme.com/best-woocommerce-product-feed/?setup-wizard-support=1' ); ?>" target="_blank">
                         <?php esc_html_e('Our Support','rex-product-feed') ?>
                     </a>
                 </button>

@@ -261,7 +261,6 @@ class Rex_Product_Feed {
 
     }
 
-
     /**
      * The name of the plugin used to uniquely identify it within the context of
      * WordPress and to define internationalization functionality.

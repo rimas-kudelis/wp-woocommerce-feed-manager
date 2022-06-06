@@ -200,6 +200,11 @@
     margin-right: 370px;
   }
 
+  div#rex_feed_how_to_guide.postbox {
+    border: none;
+    margin-bottom: 0;
+  }
+
   #post-body.columns-2 #postbox-container-1 {
     float: right;
     margin-right: -370px;
@@ -221,7 +226,6 @@
       display: none;
     }
 
-    #rex_feed_how_to_guide.postbox,
     #rex_feed_upgrade_notice.postbox,
     #rex_feed_google_merchant.postbox,
     #rex_feed_file_link.postbox,
@@ -256,7 +260,7 @@
         }
 
         ol.parent {
-          padding: 10px 0px 0 20px;
+          padding: 10px 0px 5px 20px;
 
           li {
             font-family: "Roboto", sans-serif;
@@ -264,6 +268,7 @@
             font-weight: 400;
             font-size: 15px;
             color: #666666;
+            padding: 5px 0px;
           }
         }
 
@@ -481,38 +486,15 @@
   margin: unset !important;
 }
 
-.post-type-product-feed ol.rex-feed-how-to-guide-lists {
-  margin: 10px 0 0 10px;
-}
-
-.post-type-product-feed ol.rex-feed-how-to-guide-lists li {
-  font-family: "Roboto", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  color: #666666;
-  counter-increment: my-awesome-counter;
-  display: flex;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.post-type-product-feed ol.rex-feed-how-to-guide-lists li::before {
-  content: "0" counter(my-awesome-counter);
-  font-weight: bold;
-  font-size: 1rem;
-  margin-right: 0.5rem;
-  font-family: "Abril Fatface", serif;
-  line-height: 1;
-}
-
 /*----02.Add New Feed style --------*/
 #rex_feed_head_btn {
   background-color: transparent;
   border: none;
   box-shadow: none;
+
   .inside {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
     margin: 8px 0px 27px 0px;
     padding: 0;
@@ -523,25 +505,66 @@
       font-weight: bold;
       padding: 0;
     }
+
+    .rex-feed-cofig-settings {
+      display: flex;
+      flex-flow: wrap;
+    }
   }
+
   .rex-fill-button {
+    display: flex;
+    align-items: center;
     font-family: "Roboto", sans-serif;
     font-size: 14px;
-    color: #333333;
     font-weight: 500;
-    background-color: white;
+    font-style: normal;
+    color: #333333;
+    line-height: 1.14;
+    background: #ffffff;
+    box-shadow: 0px 1px 2px rgb(190 190 215 / 20%);
     border-radius: 10px;
-    padding: 10px 22px;
+    padding: 10px 20px;
+    transition: all 0.5s;
+
+    svg {
+      margin-right: 9px;
+      transition: all 0.5s;
+    }
+    &:hover {
+      color: #fff;
+      background: #1eb2fb;
+      box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
+      transition: all 0.5s;
+    }
   }
-  #rex-pr-filter-btn {
-    margin-right: 20px;
-  }
+
+  #rex-feed-documentation-btn,
   #rex-feed-troubleshoot-btn {
-    margin-right: 20px;
+    &:hover {
+      svg path {
+        fill: #fff;
+      }
+    }
   }
-  .rex-feed-cofig-settings i {
-    margin-right: 10px;
-    color: #a7a7a7;
+
+  #rex-pr-filter-btn {
+    &:hover {
+      svg path {
+        stroke: #fff;
+      }
+    }
+  }
+
+  #rex-feed-settings-btn {
+    &:hover {
+      svg path {
+        stroke: #fff;
+      }
+      svg circle {
+        stroke: #fff;
+      }
+    }
   }
 }
 
@@ -564,23 +587,36 @@
 
   .inside {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-columns: 1.3fr 1fr 1fr;
     align-content: center;
     padding: 22px 25px;
-    grid-gap: 40px;
+    grid-gap: 50px;
   }
+
   .rex_feed_config_div {
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 2fr;
+    grid-gap: 17px;
   }
+
+  .rex-feed-feed-separator {
+    grid-template-columns: 0.95fr 2fr;
+  }
+
   label {
+    display: flex;
+    justify-content: flex-start;
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
     line-height: 1.6;
     color: #333333;
+    .rex_feed-tooltip svg {
+      top: 5px;
+      left: 10px;
+    }
   }
 
   .rex_feed_config_div i {
@@ -719,7 +755,6 @@
     .rex-new-custom-btn {
       background-color: #3fb3fb;
       border: 1px solid #3fb3fb;
-      margin-right: 15px;
 
       &:hover {
         background-color: #ffffff;
@@ -727,9 +762,35 @@
         border: 1px solid #eaeaea;
       }
     }
-
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .rex-feed-publish-btn {
+      .rex-new-custom-btn {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-right: 0;
+        padding: 0 40px;
+      }
+    }
   }
+  .rex_cat_map {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 15px;
+    text-decoration-line: underline;
+    color: #216df0;
+    outline: 0;
+  }
+}
+.rex-feed-attr-btn-area {
+  display: flex;
+  align-items: center;
+  flex-flow: wrap row;
+  gap: 15px;
 }
 
 #rex_feed_progress_bar.postbox {
@@ -1002,6 +1063,13 @@
     }
     border: none;
   }
+
+  #rex_feed_head_btn .rex-fill-button {
+    margin-bottom: 10px;
+  }
+  .rex-fill-button.mr-5 {
+    margin-right: 0.8rem;
+  }
 }
 
 @media (max-width: 991px) {
@@ -1009,6 +1077,13 @@
     #poststuff #post-body.columns-2 #side-sortables {
       width: 100%;
     }
+  }
+
+  #rex_feed_head_btn .rex-fill-button {
+    margin-bottom: 0px;
+  }
+  .rex-fill-button.mr-5 {
+    margin-right: 0.8rem;
   }
 }
 
