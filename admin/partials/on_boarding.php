@@ -167,264 +167,288 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                 </ul>
 
                 <div class="rex-settings-tab-content">
-
                     <div id="tab4" class="tab-content active block-wrapper">
-                        <div class="rex-merchant feed-settings">
-                            <h3 class="merchant-title"><?php echo esc_html__('Controls', 'rex-product-feed'); ?> </h3>
+                        <h3 class="merchant-title"><?php echo esc_html__('Controls', 'rex-product-feed'); ?> </h3>
+                        <div class="feed-settings">
 
-                            <div class="single-merchant product-batch">
-                                <span class="title"><?php echo esc_html__('Product(s) per batch (Free users cannot generate more than '.esc_attr( WPFM_FREE_MAX_PRODUCT_LIMIT ).' products. For free users it will run only 1 batch)', 'rex-product-feed'); ?></span>
-                                <div class="switch">
-                                    <form id="wpfm-per-batch" class="wpfm-per-batch">
-                                        <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch"
-                                               value="<?php echo esc_attr( $per_batch ); ?>"
-                                               min="1" <?php echo !$is_premium_activated ? "max='".esc_attr( WPFM_FREE_MAX_PRODUCT_LIMIT )."'" : '' ?>>
-                                        <button type="submit" class="save-batch"><span>save</span> <i
-                                                    class="fa fa-spinner fa-pulse fa-fw"></i></button>
-                                    </form>
-                                </div>
-                            </div>
+                            <div class="feed-left">
 
-                            <div class="single-merchant wpfm-clear-btn">
-                                <span class="title"><?php echo esc_html__('Clear batch', 'rex-product-feed'); ?></span>
-                                <button class="wpfm-clear-batch" id="wpfm-clear-batch"><span>Clear</span> <i
-                                            class="fa fa-spinner fa-pulse fa-fw"></i></button>
-                            </div>
-
-                            <div class="single-merchant fb-pixel">
-                                <span class="title">
-                                    <?php echo esc_html__('Enable Facebook Pixel', 'rex-product-feed'); ?>
-                                </span>
-                                <div class="switch">
-                                    <?php
-                                    $checked = $wpfm_fb_pixel_enabled === 'yes' ? 'checked' : '';
-                                    $hidden_class = $wpfm_fb_pixel_enabled === 'yes' ? '' : 'is-hidden';
-                                    ?>
-                                    <div class="wpfm-switcher">
-                                        <input class="switch-input" type="checkbox"
-                                               id="wpfm_fb_pixel" <?php echo esc_attr( $checked ); ?>>
-                                        <label class="lever" for="wpfm_fb_pixel"></label>
+                                <div class="single-merchant product-batch">
+                                    <span class="title"><?php echo esc_html__('Product(s) per batch (Free users cannot generate more than '.esc_attr( WPFM_FREE_MAX_PRODUCT_LIMIT ).' products. For free users it will run only 1 batch)', 'rex-product-feed'); ?></span>
+                                    <div class="switch">
+                                        <form id="wpfm-per-batch" class="wpfm-per-batch">
+                                            <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch"
+                                                value="<?php echo esc_attr( $per_batch ); ?>"
+                                                min="1" <?php echo !$is_premium_activated ? "max='".esc_attr( WPFM_FREE_MAX_PRODUCT_LIMIT )."'" : '' ?>>
+                                            <button type="submit" class="save-batch"><span>save</span> <i
+                                                        class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                        </form>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="single-merchant remove-plugin-data">
-                                <span class="title">
-                                    <?php echo esc_html__('Remove All Plugin Data on Plugin Uninstallation', 'rex-product-feed'); ?>
-                                </span>
-                                <div class="switch">
-                                    <?php
-                                    $checked = $wpfm_remove_plugin_data === 'yes' ? 'checked' : '';
-                                    ?>
-                                    <div class="wpfm-switcher">
-                                        <input class="switch-input" type="checkbox"
-                                               id="remove_plugin_data" <?php echo esc_attr( $checked ); ?>>
-                                        <label class="lever" for="remove_plugin_data"></label>
-                                    </div>
+                                <div class="single-merchant wpfm-clear-btn">
+                                    <span class="title"><?php echo esc_html__('Clear Batch (Remove all )', 'rex-product-feed'); ?></span>
+                                    <button class="wpfm-clear-batch" id="wpfm-clear-batch"><span>
+                                        <?php echo esc_html__('Clear Batch', 'rex-product-feed'); ?></span>
+                                         <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                 </div>
-                            </div>
 
-                            <div class="single-merchant enable-log">
-                                <span class="title">
-                                    <?php echo esc_html__('Enable log', 'rex-product-feed'); ?>
-                                </span>
-                                <div class="switch">
-                                    <?php
-                                    $checked = $wpfm_enable_log === 'yes' ? 'checked' : '';
-                                    ?>
-                                    <div class="wpfm-switcher">
-                                        <input class="switch-input" type="checkbox"
-                                               id="wpfm_enable_log" <?php echo esc_attr( $checked ); ?>>
-                                        <label class="lever" for="wpfm_enable_log"></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="single-merchant wpfm-fb-pixel-field <?php echo esc_attr( $hidden_class ); ?>">
-                                <span class="title"><?php echo esc_html__('Facebook Pixel id', 'rex-product-feed'); ?></span>
-                                <div class="switch">
-                                    <form id="wpfm-fb-pixel" class="wpfm-fb-pixel" style="width: 300px;">
-                                        <input id="wpfm_fb_pixel" type="text" name="wpfm_fb_pixel"
-                                               value="<?php echo esc_attr( $wpfm_fb_pixel_data ); ?>" style="width: 200px;">
-                                        <button type="submit" class="save-fb-pixel"><span>save</span> <i
-                                                    class="fa fa-spinner fa-pulse fa-fw"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="single-merchant exclude-tax <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
-                                <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
-                                       class="wpfm-pro-cta">
-                                        <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
-                                    </a>
-                                <?php } ?>
-
-                                <span class="title">
-                                    <?php echo esc_html__('Exclude TAX from structured data prices', 'rex-product-feed'); ?>
-                                </span>
-                                <div class="switch">
-                                    <?php
-                                    if (!$is_premium_activated) {
-                                        $disabled = 'disabled';
-                                        $checked = '';
-                                    } else {
-                                        $disabled = '';
-                                        $checked = $exclude_tax === 'yes' ? 'checked' : '';
-                                    }
-                                    ?>
-                                    <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
-                                        <input class="switch-input" type="checkbox"
-                                               id="rex-product-exclude-tax" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
-                                        <label class="lever" for="rex-product-exclude-tax"></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="single-merchant unique-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
-                                <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
-                                       class="wpfm-pro-cta">
-                                        <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
-                                    </a>
-                                <?php } ?>
-
-                                <span class="title"><?php echo esc_html__('Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date, Additional info ) to product', 'rex-product-feed'); ?></span>
-                                <div class="switch">
-                                    <?php
-                                    if (!$is_premium_activated) {
-                                        $disabled = 'disabled';
-                                        $checked = '';
-                                    } else {
-                                        $disabled = '';
-                                        $checked = $custom_field === 'yes' ? 'checked' : '';
-                                    }
-                                    ?>
-                                    <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
-                                        <input class="switch-input" type="checkbox"
-                                               id="rex-product-custom-field" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
-                                        <label class="lever" for="rex-product-custom-field"></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <?php do_action( 'rex_feed_after_upi_enable_field' );?>
-
-                            <div class="single-merchant increase-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
-                                <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
-                                       class="wpfm-pro-cta">
-                                        <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
-                                    </a>
-                                <?php } ?>
-
-                                <span class="title">
-                                    <?php echo esc_html__('Increase the number of products that will be approved in Google\'s Merchant Center:
-                                           This option will fix WooCommerce\'s (JSON-LD) structured data bug and add extra structured data elements to your pages', 'rex-product-feed'); ?>
-                                </span>
-                                <div class="switch">
-                                    <?php
-                                    if (!$is_premium_activated) {
-                                        $disabled = 'disabled';
-                                        $checked = '';
-                                    } else {
-                                        $disabled = '';
-                                        $checked = $structured_data === 'yes' ? 'checked' : '';
-                                    }
-                                    ?>
-                                    <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
-                                        <input class="switch-input" type="checkbox"
-                                               id="rex-product-structured-data" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
-                                        <label class="lever" for="rex-product-structured-data"></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="single-merchant detailed-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
-                                <?php if (!$is_premium_activated) { ?>
-                                    <a href="<?php esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
-                                       class="wpfm-pro-cta">
-                                        <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
-                                    </a>
-                                <?php } ?>
-
-                                <span class="title"><?php echo esc_html__('Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed'); ?></span>
-                                <div class="switch">
-                                    <?php
-                                    if (!$is_premium_activated) {
-                                        $disabled = 'disabled';
-                                        $checked = '';
-                                    } else {
-                                        $disabled = '';
-                                        $checked = $pa_field === 'yes' ? 'checked' : '';
-                                    }
-                                    ?>
-                                    <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
-                                        <input class="switch-input" type="checkbox"
-                                               id="rex-product-pa-field" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
-                                        <label class="lever" for="rex-product-pa-field"></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="single-merchant detailed-product">
-                                <span class="title"><?php echo esc_html__('Allow private products', 'rex-product-feed'); ?></span>
-                                <div class="switch">
-                                    <?php
-                                    $disabled = '';
-                                    $checked = $wpfm_allow_private_products === 'yes' ? 'checked' : '';
-                                    ?>
-                                    <div class="wpfm-switcher <?php esc_attr( $disabled ); ?>">
-                                        <input class="switch-input" type="checkbox"
-                                               id="rex-product-allow-private" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
-                                        <label class="lever" for="rex-product-allow-private"></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="single-merchant detailed-product detailed-merchants">
-                                <span class="title"><?php echo esc_html__('WPFM cache TTL', 'rex-product-feed'); ?></span>
-                                <div class="wpfm-dropdown">
-                                    <form id="wpfm-transient-settings" class="wpfm-transient-settings">
-                                        <select id="wpfm_cache_ttl" name="wpfm_cache_ttl">
-                                            <option value="0" <?php selected($wpfm_cache_ttl, 0); ?>><?php echo esc_html__('No Expiration', 'rex-product-feed'); ?></option>
-                                            <option value="3600" <?php selected($wpfm_cache_ttl, 3600); ?>>1 hour</option>
-                                            <option value="10800" <?php selected($wpfm_cache_ttl, 10800); ?>>3 hours</option>
-                                            <option value="21600" <?php selected($wpfm_cache_ttl, 21600); ?>>6 hours</option>
-                                            <option value="43200" <?php selected($wpfm_cache_ttl, 43200); ?>>12 hours</option>
-                                            <option value="86400" <?php selected($wpfm_cache_ttl, 86400); ?>>24 hours</option>
-                                            <option value="604800" <?php selected($wpfm_cache_ttl, 604800); ?>>1 week</option>
-                                        </select>
-                                        <span class="helper-text"><?php echo esc_html__('When the cache will be expired.', 'rex-product-feed'); ?></span>
-                                        <button type="submit" class="save-transient-button"><span>save</span> <i
-                                                    class="fa fa-spinner fa-pulse fa-fw"></i></button>
-                                    </form>
+                                <div class="single-merchant detailed-product  purge-cache">
+                                    <span class="title"><?php echo esc_html__('Purge Cache', 'rex-product-feed'); ?></span>
                                     <button id="wpfm-purge-cache" class="wpfm-purge-cache"><?php echo esc_html__('Purge Cache', 'rex-product-feed'); ?>
-                                        <i class="fa fa-spinner fa-pulse fa-fw"></i>
+                                            <i class="fa fa-spinner fa-pulse fa-fw"></i>
                                     </button>
                                 </div>
+
+                                <div class="single-merchant detailed-product detailed-merchants">
+                                    <span class="title"><?php echo esc_html__('WPFM cache TTL', 'rex-product-feed'); ?></span>
+                                    <div class="wpfm-dropdown">
+                                        <form id="wpfm-transient-settings" class="wpfm-transient-settings">
+                                            <div class="wpfm-cache-ttl-area">
+                                                <select id="wpfm_cache_ttl" name="wpfm_cache_ttl">
+                                                    <option value="0" <?php selected($wpfm_cache_ttl, 0); ?>><?php echo esc_html__('No Expiration', 'rex-product-feed'); ?></option>
+                                                    <option value="3600" <?php selected($wpfm_cache_ttl, 3600); ?>>1 hour</option>
+                                                    <option value="10800" <?php selected($wpfm_cache_ttl, 10800); ?>>3 hours</option>
+                                                    <option value="21600" <?php selected($wpfm_cache_ttl, 21600); ?>>6 hours</option>
+                                                    <option value="43200" <?php selected($wpfm_cache_ttl, 43200); ?>>12 hours</option>
+                                                    <option value="86400" <?php selected($wpfm_cache_ttl, 86400); ?>>24 hours</option>
+                                                    <option value="604800" <?php selected($wpfm_cache_ttl, 604800); ?>>1 week</option>
+                                                </select>
+                                            
+                                                <button type="submit" class="save-transient-button">
+                                                    <span><?php echo esc_html__('save', 'rex-product-feed'); ?></span> 
+                                                    <i class="fa fa-spinner fa-pulse fa-fw"></i>
+                                                </button>
+                                            </div>
+                                            <span class="helper-text"><?php echo esc_html__('When the cache will be expired.', 'rex-product-feed'); ?></span>
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                                <div class="single-merchant remove-plugin-data">
+                                    <span class="title">
+                                        <?php echo esc_html__('Remove All Plugin Data on Plugin Uninstallation', 'rex-product-feed'); ?>
+                                    </span>
+                                    <div class="switch">
+                                        <?php
+                                        $checked = $wpfm_remove_plugin_data === 'yes' ? 'checked' : '';
+                                        ?>
+                                        <div class="wpfm-switcher">
+                                            <input class="switch-input" type="checkbox"
+                                                id="remove_plugin_data" <?php echo esc_attr( $checked ); ?>>
+                                            <label class="lever" for="remove_plugin_data"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="single-merchant enable-log">
+                                    <span class="title">
+                                        <?php echo esc_html__('Enable log', 'rex-product-feed'); ?>
+                                    </span>
+                                    <div class="switch">
+                                        <?php
+                                        $checked = $wpfm_enable_log === 'yes' ? 'checked' : '';
+                                        ?>
+                                        <div class="wpfm-switcher">
+                                            <input class="switch-input" type="checkbox"
+                                                id="wpfm_enable_log" <?php echo esc_attr( $checked ); ?>>
+                                            <label class="lever" for="wpfm_enable_log"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="single-merchant detailed-product rex-feed-rollback">
+                                    <span class="title"><?php echo esc_html__('Rollback to Older Version', 'rex-product-feed'); ?></span>
+                                    <div class="wpfm-dropdown">
+                                        <div class="wpfm-rollback-option-area">
+                                            <select id="wpfm_rollback_options" name="wpfm_rollback_options">
+                                                <?php
+                                                foreach ( $rollback_versions as $version ) {
+                                                    echo "<option value='".esc_attr( $version )."'>".esc_html($version)."</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                            <?php
+                                            echo sprintf(
+                                                '<a data-placeholder-text="' . esc_html__( 'Reinstall', 'rex-product-feed' ) . ' v{VERSION}" href="#" data-placeholder-url="%s" class="rex-feed-button-spinner rex-feed-rollback-button btn-default">%s</a>',
+                                                esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rex_feed_rollback&version=VERSION' ), 'rex_feed_rollback' ) ),
+                                                esc_html__( 'Reinstall', 'rex-product-feed' )
+                                            );
+                                            ?>
+                                        </div>
+                                        
+                                        <span class="helper-text"><?php _e( '<b>Warning:</b> Please backup your database before making the rollback as you might loose you previous data.', 'rex-product-feed' ); // phpcs:ignore ?></span>
+                                    </div>
+                                </div>
+
+
                             </div>
 
-                            <div class="single-merchant detailed-product rex-feed-rollback">
-                                <span class="title"><?php echo esc_html__('Rollback to Older Version', 'rex-product-feed'); ?></span>
-                                <div class="wpfm-dropdown">
-                                    <select id="wpfm_rollback_options" name="wpfm_rollback_options">
+                            <div class="feed-right">
+
+                                <div class="single-merchant unique-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                    <?php if (!$is_premium_activated) { ?>
+                                        <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
+                                        class="wpfm-pro-cta">
+                                            <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
+                                        </a>
+                                    <?php } ?>
+
+                                    <span class="title"><?php echo esc_html__('Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date, Additional info ) to product', 'rex-product-feed'); ?></span>
+                                    <div class="switch">
                                         <?php
-                                        foreach ( $rollback_versions as $version ) {
-                                            echo "<option value='".esc_attr( $version )."'>".esc_html($version)."</option>";
+                                        if (!$is_premium_activated) {
+                                            $disabled = 'disabled';
+                                            $checked = '';
+                                        } else {
+                                            $disabled = '';
+                                            $checked = $custom_field === 'yes' ? 'checked' : '';
                                         }
                                         ?>
-                                    </select>
-                                    <?php
-                                    echo sprintf(
-                                        '<a data-placeholder-text="' . esc_html__( 'Reinstall', 'rex-product-feed' ) . ' v{VERSION}" href="#" data-placeholder-url="%s" class="rex-feed-button-spinner rex-feed-rollback-button btn-default">%s</a>',
-                                        esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rex_feed_rollback&version=VERSION' ), 'rex_feed_rollback' ) ),
-                                        esc_html__( 'Reinstall', 'rex-product-feed' )
-                                    );
-                                    ?>
-                                    <span class="helper-text"><?php _e( '<b>Warning:</b> Please backup your database before making the rollback as you might loose you previous data.', 'rex-product-feed' ); // phpcs:ignore ?></span>
+                                        <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
+                                            <input class="switch-input" type="checkbox"
+                                                id="rex-product-custom-field" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
+                                            <label class="lever" for="rex-product-custom-field"></label>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <?php do_action( 'rex_feed_after_upi_enable_field' );?>
+
+                                <div class="single-merchant detailed-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                    <?php if (!$is_premium_activated) { ?>
+                                        <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
+                                        class="wpfm-pro-cta">
+                                            <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
+                                        </a>
+                                    <?php } ?>
+
+                                    <span class="title"><?php echo esc_html__('Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed'); ?></span>
+                                    <div class="switch">
+                                        <?php
+                                        if (!$is_premium_activated) {
+                                            $disabled = 'disabled';
+                                            $checked = '';
+                                        } else {
+                                            $disabled = '';
+                                            $checked = $pa_field === 'yes' ? 'checked' : '';
+                                        }
+                                        ?>
+                                        <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
+                                            <input class="switch-input" type="checkbox"
+                                                id="rex-product-pa-field" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
+                                            <label class="lever" for="rex-product-pa-field"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="single-merchant exclude-tax <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                    <?php if (!$is_premium_activated) { ?>
+                                        <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
+                                        class="wpfm-pro-cta">
+                                            <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
+                                        </a>
+                                    <?php } ?>
+
+                                    <span class="title">
+                                        <?php echo esc_html__('Exclude TAX from structured data prices', 'rex-product-feed'); ?>
+                                    </span>
+                                    <div class="switch">
+                                        <?php
+                                        if (!$is_premium_activated) {
+                                            $disabled = 'disabled';
+                                            $checked = '';
+                                        } else {
+                                            $disabled = '';
+                                            $checked = $exclude_tax === 'yes' ? 'checked' : '';
+                                        }
+                                        ?>
+                                        <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
+                                            <input class="switch-input" type="checkbox"
+                                                id="rex-product-exclude-tax" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
+                                            <label class="lever" for="rex-product-exclude-tax"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="single-merchant detailed-product">
+                                    <span class="title"><?php echo esc_html__('Allow private products', 'rex-product-feed'); ?></span>
+                                    <div class="switch">
+                                        <?php
+                                        $disabled = '';
+                                        $checked = $wpfm_allow_private_products === 'yes' ? 'checked' : '';
+                                        ?>
+                                        <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
+                                            <input class="switch-input" type="checkbox"
+                                                id="rex-product-allow-private" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
+                                            <label class="lever" for="rex-product-allow-private"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="single-merchant increase-product <?php echo !$is_premium_activated ? 'wpfm-pro' : '' ?>">
+                                    <?php if (!$is_premium_activated) { ?>
+                                        <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
+                                        class="wpfm-pro-cta">
+                                            <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
+                                        </a>
+                                    <?php } ?>
+
+                                    <span class="title">
+                                        <?php echo esc_html__('Increase the number of products that will be approved in Google\'s Merchant Center:
+                                            This option will fix WooCommerce\'s (JSON-LD) structured data bug and add extra structured data elements to your pages', 'rex-product-feed'); ?>
+                                    </span>
+                                    <div class="switch">
+                                        <?php
+                                        if (!$is_premium_activated) {
+                                            $disabled = 'disabled';
+                                            $checked = '';
+                                        } else {
+                                            $disabled = '';
+                                            $checked = $structured_data === 'yes' ? 'checked' : '';
+                                        }
+                                        ?>
+                                        <div class="wpfm-switcher <?php echo esc_attr( $disabled ); ?>">
+                                            <input class="switch-input" type="checkbox"
+                                                id="rex-product-structured-data" <?php echo esc_attr( $checked ); ?> <?php echo esc_attr( $disabled ); ?>>
+                                            <label class="lever" for="rex-product-structured-data"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="single-merchant fb-pixel">
+                                    <span class="title">
+                                        <?php echo esc_html__('Enable Facebook Pixel', 'rex-product-feed'); ?>
+                                    </span>
+                                    <div class="switch">
+                                        <?php
+                                        $checked = $wpfm_fb_pixel_enabled === 'yes' ? 'checked' : '';
+                                        $hidden_class = $wpfm_fb_pixel_enabled === 'yes' ? '' : 'is-hidden';
+                                        ?>
+                                        <div class="wpfm-switcher">
+                                            <input class="switch-input" type="checkbox"
+                                                id="wpfm_fb_pixel" <?php echo esc_attr( $checked ); ?>>
+                                            <label class="lever" for="wpfm_fb_pixel"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="single-merchant wpfm-fb-pixel-field <?php echo esc_attr( $hidden_class ); ?>">
+                                    <span class="title"><?php echo esc_html__('Facebook Pixel id', 'rex-product-feed'); ?></span>
+                                    <div class="switch">
+                                        <form id="wpfm-fb-pixel" class="wpfm-fb-pixel" style="width: 300px;">
+                                            <input id="wpfm_fb_pixel" type="text" name="wpfm_fb_pixel"
+                                                value="<?php echo esc_attr( $wpfm_fb_pixel_data ); ?>" style="width: 200px;">
+                                            <button type="submit" class="save-fb-pixel"><span><?php echo esc_html__('save', 'rex-product-feed'); ?></span> <i
+                                                        class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+
                             </div>
+
                         </div>
                     </div>
                     <!--/settings tab-->
@@ -450,12 +474,11 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                             $_merchants['google']['name'] = 'Google Shopping';
                             $_merchants['google_Ad']['name'] = 'Google AdWords';
                             $_merchants['drm']['name'] = 'Google Remarketing (DRM)';
-                            
-                            ?>
-                            <?php foreach ($_merchants as $key => $merchant):?>
 
-                                <?php if ($key && $key != 'undefined'):
+                            foreach ($_merchants as $key => $merchant) {
+                                if ($key && $key != 'undefined') {
                                     $show_pro = false;
+                                    $style = '';
                                     if ($is_premium_activated) {
                                         $pro_cls = '';
                                         $disabled = '';
@@ -469,6 +492,7 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                                             $pro_cls = 'wpfm-pro';
                                             $disabled = 'disabled';
                                             $show_pro = true;
+                                            $style = 'style="pointer-events: none"';
                                         }
                                     }
                                     ?>
@@ -486,134 +510,20 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                                             echo $merchant_name;
                                             ?>
                                         </span>
+
+                                        <button class="single-merchant__button" type="button">
+                                            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=product-feed&rex_feed_merchant=' . $key ) )?>" target="_self" <?php echo $style?>><?php echo esc_html__('Generate', 'rex-product-feed'); ?></a>
+                                        </button>
                                     </div>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
+                                    <?php
+                                }
+                            } ?>
                         </div>
                     </div>
                     <!--/merchant tab-->
 
-                    <div id="tab5" class="tab-content block-wrapper">
-                        <div class="system-status">
-                            <h3 class="title"><?php echo esc_html__('System Status', 'rex-product-feed'); ?></h3>
-                            <?php
-
-                            $path = wp_upload_dir();
-                            $path = $path['basedir'] . '/rex-feed';
-                            if (is_writable($path)) {
-                                $isWritable = "True";
-                            } else {
-                                $isWritable = "False";
-                            }
-
-                            $status = array(
-                                'php_version' => phpversion(),
-                                'php_version_status' => version_compare(phpversion(), "5.6", ">="),
-                                'wp_version' => get_bloginfo('version'),
-                                'wp_version_status' => get_bloginfo('version') >= 4,
-                                'wc_version' => WC()->version,
-                                'wc_version_status' => WC()->version >= 3.4,
-                                'memory' => ini_get('memory_limit'),
-                                'memory_status' => preg_replace('/[^0-9]/', '', ini_get('memory_limit')) >= 64, // 64M
-                                'upload_limit' => ini_get('upload_max_filesize'),
-                                'upload_limit_status' => preg_replace('/[^0-9]/', '', ini_get('upload_max_filesize')) >= 64, // 64M,
-                                'wp_cron' => !(defined('DISABLE_WP_CRON') && DISABLE_WP_CRON),
-                                'feed_directory' => $path,
-                                'is_writable' => $isWritable,
-                            );
-                            ?>
-                            <table class="wpfm_status_table widefat" id="status" cellspacing="0">
-                                <tbody>
-                                <tr>
-                                    <td><?php echo esc_html__('PHP version:', 'rex-product-feed'); ?></td>
-                                    <td>
-                                        <?php
-                                        if ($status['php_version_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['php_version'] ) . '</mark> ';
-                                        } else {
-                                            echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - We recommend using PHP version 7.2 or above for greater performance and security.', 'rex-product-feed'), esc_html($status['php_version'])) . '</mark>';
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><?php echo esc_html__('WordPress version:', 'rex-product-feed'); ?></td>
-                                    <td>
-                                        <?php
-                                        if ($status['wp_version_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['wp_version'] ) . '</mark> ';
-                                        } else {
-                                            echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - WP version above 4 is required. ', 'rex-product-feed'), esc_html($status['wp_version'])) . '</mark>';
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><?php echo esc_html__('WooCommerce Version:', 'rex-product-feed'); ?></td>
-                                    <td>
-                                        <?php
-                                        if ($status['wc_version_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['wp_version'] ) . '</mark> ';
-                                        } else {
-                                            echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - WC version above 4 is required. ', 'rex-product-feed'), esc_html($status['wc_version'])) . '</mark>';
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><?php echo esc_html__('Memory:', 'rex-product-feed'); ?></td>
-                                    <td>
-                                        <?php
-                                        if ($status['memory_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['memory'] ) . '</mark> ';
-                                        } else {
-                                            echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - We recommend setting memory to at least 64MB. See: %2$s', 'rex-product-feed'), esc_html($status['memory']), '<a href="https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP" target="_blank">' . esc_html__('Increasing memory allocated to PHP', 'rex-product-feed') . '</a>') . '</mark>';
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><?php echo esc_html__('Upload Limit:', 'rex-product-feed'); ?></td>
-                                    <td>
-                                        <?php
-                                        if ($status['upload_limit_status']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>' . esc_html( $status['upload_limit'] ) . '</mark> ';
-                                        } else {
-                                            echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf(esc_html__('%1$s - We recommend upload limit to at least 64MB.', 'rex-product-feed'), esc_html($status['upload_limit']) . '</a>') . '</mark>';
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><?php echo esc_html__('WP Cron', 'rex-product-feed'); ?></td>
-                                    <td>
-                                        <?php
-                                        if ($status['wp_cron']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span>Enable</mark> ';
-                                        } else {
-                                            echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf('Disable - Cron should be enabled') . '</a>' . '</mark>';
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><?php echo esc_html__('Product Feed Directory Writable', 'rex-product-feed'); ?></td>
-                                    <td>
-                                        <?php
-                                        if ($status['is_writable']) {
-                                            echo '<mark class="yes"><span class="dashicons dashicons-yes"></span> <code class="private">' . esc_html($status['feed_directory']) . '</code></mark> ';
-                                        } else {
-                                            echo '<mark class="error"><span class="dashicons dashicons-warning"></span>  ' . sprintf(esc_html__('It is required to make feed directory writable. %1$s', 'rex-product-feed'), '<code>' . esc_html($status['feed_directory']) . '</code>', '<code>Feed Directory</code>') . '</mark>';
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-
-                        </div>
-                    </div>
+                    <!--System Status-->
+                    <?php require_once plugin_dir_path( __FILE__ ) . 'rex-feed-system-status-markups.php'?>
 
                     <div id="tab7" class="tab-content block-wrapper wpfm-log">
                         <?php

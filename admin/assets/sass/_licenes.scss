@@ -1,306 +1,304 @@
-
 // Rex-licenes-wrap-area
 .rex-licenes {
-    background:#ededf3;
-    padding: 55px;
-    border-radius: 12px;
+  background: #ededf3;
+  padding: 55px;
+  border-radius: 12px;
 
-    @media #{$device_992_1199} {
-        display: flex;
-        padding: 30px;
+  @media #{$device_992_1199} {
+    display: flex;
+    padding: 30px;
+  }
+
+  @media #{$device_768_991} {
+    padding: 20px;
+    display: block;
+  }
+
+  .rex-licenes__general-area {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    margin: 0 -15px;
+
+    @media #{$device_1400_1599} {
+      display: block;
     }
 
-    @media #{$device_768_991} {
-        padding: 20px;
-        display: block;
-    }
+    .rex-licenes__general-wrap-area {
+      width: 100%;
+      padding: 0 15px;
 
-    .rex-licenes__general-area {
+      @media #{$device_1400_1599} {
+        width: 100%;
+      }
+
+      .rex-licenes__top-area {
         display: flex;
-        flex-flow: row wrap;
+        flex-flow: row;
+        align-items: flex-start;
+        margin: 0 -15px;
+        background: rgb(255, 255, 255);
+        padding: 70px 70px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        @media #{$device_1400_1599} {
+          padding: 50px;
+        }
+
+        @media #{$device_1200_1399} {
+          padding: 30px;
+        }
+
+        .rex-licenes__licensekey-area {
+          max-width: 930px;
+          width: 100%;
+          border-right: 1px solid rgb(238, 238, 238);
+
+          @media #{$device_1400_1599} {
+            max-width: 930px;
+          }
+
+          @media #{$device_1200_1399} {
+            max-width: 640px;
+            border-right: none;
+          }
+
+          @media #{$device_992_1199} {
+            max-width: 510px;
+          }
+
+          @media #{$device_768_991} {
+            width: 100%;
+          }
+          .rex-licenes__text-area {
+            display: flex;
+            margin-left: -50px;
+
+            .rex-licenes__single-block {
+              position: relative;
+              max-width: 350px;
+              padding-left: 60px;
+              margin-left: 50px;
+              .rex-licenes__icon {
+                background-color: rgb(240, 241, 243);
+                width: 40px;
+                height: 40px;
+                display: flex;
+                flex-flow: column;
+                align-items: center;
+                justify-content: center;
+                border-radius: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+              }
+
+              h4 {
+                font-size: 20px;
+                margin-bottom: 12px;
+              }
+              p {
+                font-size: 16px;
+                color: rgb(168, 167, 190);
+              }
+            }
+          }
+          .rex-licenes__input-wrap-area {
+            .button {
+              display: inline-block;
+              font-size: 15px;
+              font-weight: 400;
+              line-height: 47px;
+              text-align: center;
+              height: 50px;
+              padding: 0px 20px;
+              border-radius: 5px;
+              border: none;
+              text-transform: capitalize;
+              background-color: $primary-color;
+              color: #fff;
+              transition: all 0.3s ease;
+              &:hover {
+                background-color: rgb(31, 179, 251);
+              }
+            }
+
+            .rex-licenes__input-block-area {
+              display: flex;
+              flex-flow: row;
+              align-items: flex-start;
+              margin-top: 70px;
+              max-width: 735px;
+              width: 100%;
+
+              .rex-licenes__input-field {
+                padding-right: 10px;
+                width: calc(100% - 162px);
+                input[type="password"],
+                input[type="text"] {
+                  display: block;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: rgb(54, 59, 78);
+                  padding: 10px 15px;
+                  width: 100%;
+                  border-radius: 5px;
+                  background-color: rgb(255, 255, 255);
+                  border: 1px solid rgb(229, 232, 243);
+                  height: 46px;
+                  transition: all 0.3s ease;
+                  &:focus {
+                    box-shadow: none;
+                    outline: none;
+                    border-color: $primary-color;
+                  }
+                }
+              }
+
+              .rex-licenes__btn-field {
+                .button-secondary {
+                  display: inline-block;
+                  border: 1px solid $primary-color;
+                  height: 50px;
+                  line-height: 47px;
+                  padding: 0px 20px;
+                  font-size: 15px;
+                  font-weight: 500;
+                  color: #787890;
+                  text-align: center;
+                  border-radius: 5px;
+                  text-transform: capitalize;
+                  background-color: transparent;
+                  transition: all 0.3s ease;
+                  &:hover {
+                    background-color: #216df0;
+                    color: #fff;
+                  }
+                }
+              }
+            }
+          }
+          p.submit {
+            margin-top: 12px;
+          }
+        }
+        .rex-licenes__logo-area {
+          width: calc(100% - 930px);
+
+          @media #{$device_1400_1599} {
+            width: calc(100% - 800px);
+          }
+
+          @media #{$device_1200_1399} {
+            width: calc(100% - 640px);
+          }
+
+          @media #{$device_992_1199} {
+            width: calc(100% - 510px);
+            padding-top: 39px;
+          }
+
+          text-align: center;
+          .rex-licenes__logo {
+            width: 120px;
+            margin: 0 auto 23px;
+            @media #{$device_1200_1399} {
+              margin: 13px auto 23px;
+            }
+
+            @media #{$device_992_1199} {
+              margin: 0 auto 23px;
+            }
+          }
+          .rex-licenes__btn-area {
+            .btn-default {
+              display: inline-block;
+              font-size: 15px;
+              border-radius: 5px;
+              &:hover {
+                background-color: #216df0;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+
+      .rex-licenes__single-category {
+        display: flex;
+        flex-flow: row;
         align-items: flex-start;
         margin: 0 -15px;
 
-        @media #{$device_1400_1599} {
-            display: block;
+        .single-block {
+          width: calc(100% / 3);
+          margin-right: 30px;
+          align-self: stretch;
+          border-radius: 10px;
+          background-color: #fff;
+          box-shadow: 0px 6px 60px 0px rgba(2, 0, 105, 0.08);
+          padding: 25px 33px 33px;
+          @media #{$device_1200_1399} {
+            padding: 25px;
+          }
+          @media #{$device_768_991} {
+            width: 100%;
+          }
+
+          .header {
+            display: flex;
+            background-color: #fff;
+            flex-flow: column;
+            align-items: flex-start;
+
+            h4 {
+              font-size: 16px;
+              font-weight: 500;
+              line-height: 24px;
+              padding: 15px 0;
+            }
+          }
+          .body {
+            .btn-default {
+              color: #fff;
+              display: inline-block;
+              font-size: 15px;
+              text-transform: capitalize;
+              height: 40px;
+              line-height: 40px;
+              margin-top: 30px;
+              border-radius: 5px;
+
+              &:hover {
+                background-color: #216df0;
+              }
+            }
+
+            p {
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 1.5;
+              color: #787890;
+            }
+          }
+
+          &.popular {
+            margin-bottom: 0;
+            @media #{$device_768_991} {
+              margin-bottom: 0px;
+            }
+          }
+          &:last-child {
+            margin-right: 0;
+          }
         }
-
-        .rex-licenes__general-wrap-area {
-            width:100%;
-            padding: 0 15px;
-
-            @media #{$device_1400_1599} {
-                width: 100%;
-            }
-
-            .rex-licenes__top-area {
-                display: flex;
-                flex-flow: row;
-                align-items: flex-start;
-                margin: 0 -15px;
-                background: rgb(255, 255, 255);
-                padding: 70px 70px;
-                border-radius: 8px;
-                margin-bottom: 30px;
-                @media #{$device_1400_1599} {
-                    padding: 50px;
-                }
-
-                @media #{$device_1200_1399} {
-                    padding: 30px;
-                }
-
-                .rex-licenes__licensekey-area {
-                    max-width: 930px;
-                    width: 100%;
-                    border-right: 1px solid rgb(238, 238, 238);
-
-                    @media #{$device_1400_1599} {
-                        max-width: 930px;
-                    }
-
-                    @media #{$device_1200_1399} {
-                        max-width: 640px;
-                        border-right: none;
-                    }
-
-
-                    @media #{$device_992_1199} {
-                        max-width: 510px;
-                    }
-
-                    @media #{$device_768_991} {
-                        width: 100%;
-                    }
-                    .rex-licenes__text-area {
-                        display: flex;
-                        margin-left: -50px;
-
-                        .rex-licenes__single-block {
-                            position: relative;
-                            max-width: 350px;
-                            padding-left: 60px;
-                            margin-left: 50px;
-                            .rex-licenes__icon {
-                                background-color: rgb(240, 241, 243);
-                                width: 40px;
-                                height: 40px;
-                                display: flex;
-                                flex-flow: column;
-                                align-items: center;
-                                justify-content: center;
-                                border-radius: 100%;
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                            }
-
-                            h4 {
-                                font-size: 20px;
-                                margin-bottom: 12px;
-                            }
-                            p {
-                                font-size: 16px;
-                                color: rgb(168, 167, 190);
-                            }
-                        }
-                    }
-                    .rex-licenes__input-wrap-area {
-                        .button {
-                                display: inline-block;
-                                font-size: 15px;
-                                font-weight: 400;
-                                line-height: 47px;
-                                text-align: center;
-                                height: 50px;
-                                padding: 0px 20px;
-                                border-radius: 5px;
-                                border: none;
-                                text-transform: capitalize;
-                                background-color:rgb(31, 179, 251);
-                                color:#fff;
-                                transition: all 0.3s ease;
-                                &:hover {
-                                    background-color: #216df0;
-                                }
-                            }
-
-                        .rex-licenes__input-block-area {
-                            display: flex;
-                            flex-flow: row;
-                            align-items: flex-start;
-                            margin-top: 70px;
-                            max-width: 735px;
-                            width: 100%;
-
-                            .rex-licenes__input-field {
-                                padding-right: 10px;
-                                width: calc(100% - 162px);
-                                input[type="text"] {
-                                    display: block;
-                                    font-size: 14px;
-                                    font-weight: 400;
-                                    color: rgb(54, 59, 78);
-                                    padding: 10px 15px;
-                                    width: 100%;
-                                    border-radius: 5px;
-                                    background-color: rgb(255, 255, 255);
-                                    border: 1px solid rgb(229, 232, 243);
-                                    height: 46px;
-                                    transition: all 0.3s ease;
-                                    &:focus {
-                                        box-shadow: none;
-                                        outline: none;
-                                        border-color: rgb(31, 179, 251);
-                                    }
-                                }
-
-                            }
-
-                            .rex-licenes__btn-field {
-
-                                .button-secondary  {
-                                    display: inline-block;
-                                    border: 1px solid rgb(31, 179, 251);
-                                    height: 50px;
-                                    line-height: 47px;
-                                    padding: 0px 20px;
-                                    font-size: 15px;
-                                    font-weight: 500;
-                                    color:#787890;
-                                    text-align: center;
-                                    border-radius: 5px;
-                                    text-transform: capitalize;
-                                    background-color: transparent;
-                                    transition: all 0.3s ease;
-                                    &:hover {
-                                        background-color: #216df0;
-                                        color:#fff;
-
-                                    }
-                                   
-                                }
-                            }
-                        }
-                    }
-                    p.submit {
-                        margin-top: 12px;
-                    }
-                }
-                .rex-licenes__logo-area {
-                    width: calc(100% - 930px);
-
-                    @media #{$device_1400_1599} {
-                        width: calc(100% - 800px);
-                    }
-
-                    @media #{$device_1200_1399} {
-                        width: calc(100% - 640px);
-                    }
-
-                    @media #{$device_992_1199} {
-                        width: calc(100% - 510px);
-                        padding-top: 39px;
-                    }
-
-                    text-align: center;
-                    .rex-licenes__logo {
-                        width: 120px;
-                        margin: 0 auto 23px;
-                        @media #{$device_1200_1399} {
-                            margin: 13px auto 23px;
-                        }
-
-                        @media #{$device_992_1199} {
-                            margin: 0 auto 23px;
-                        }
-                    }
-                    .rex-licenes__btn-area {
-                        .btn-default {
-                            display: inline-block;
-                            font-size: 15px;
-                            border-radius: 5px;
-                            &:hover {
-                                background-color: #216df0;
-                                color:#fff;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .rex-licenes__single-category {
-                display: flex;
-                flex-flow: row;
-                align-items: flex-start;
-                margin: 0 -15px;
-
-                .single-block {
-                    width: calc(100% / 3);
-                    margin-right: 30px;
-                    align-self: stretch;
-                    border-radius: 10px;
-                    background-color: #fff;
-                    box-shadow: 0px 6px 60px 0px rgba(2, 0, 105, 0.08);
-                    padding: 25px 33px 33px;
-                    @media #{$device_1200_1399} {
-                        padding: 25px;
-                    }
-                    @media #{$device_768_991} {
-                        width: 100%;
-                    }
-
-                    .header {
-                        display: flex;
-                        background-color: #fff;
-                        flex-flow: column;
-                        align-items: flex-start;
-
-                        h4 {
-                            font-size: 16px;
-                            font-weight: 500;
-                            line-height: 24px;
-                            padding: 15px 0;
-                        }
-                    }
-                    .body {
-
-                        .btn-default {
-                            color: #fff;
-                            display: inline-block;
-                            font-size: 15px;
-                            text-transform: capitalize;
-                            height: 40px;
-                            line-height: 40px;
-                            margin-top: 30px;
-                            border-radius: 5px;
-
-                            &:hover {
-                                background-color: #216df0;
-                            }
-                        }
-                        
-
-                        p {
-                            font-weight: 400;
-                            font-size: 14px;
-                            line-height: 1.5;
-                            color: #787890;
-                        }
-                    }
-
-                    &.popular {
-                        margin-bottom: 0;
-                        @media #{$device_768_991} {
-                            margin-bottom: 0px;
-                        }
-                    }
-                    &:last-child {
-                        margin-right: 0;
-                    }
-                }
-            }
-        }
-
+      }
     }
+  }
+}
+
+// system status page
+
+.wpfm_status_table {
+  margin-top: 10px;
 }

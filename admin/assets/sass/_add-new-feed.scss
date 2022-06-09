@@ -226,7 +226,6 @@
       display: none;
     }
 
-    #rex_feed_upgrade_notice.postbox,
     #rex_feed_google_merchant.postbox,
     #rex_feed_file_link.postbox,
     #submitdiv.postbox {
@@ -250,44 +249,78 @@
       padding: 0;
     }
 
+    /* sidebar right premium version free style */
+
     #rex_feed_upgrade_notice.postbox {
+      background-color: #ffffff;
+      box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
+      border-radius: 10px;
+      padding: 24px 26px;
+      border: none;
+
       #rex_feed_features_text {
         h2 {
-          font-weight: 700;
-          font-size: 18px;
-          color: #333;
-          padding: 0;
+          font: {
+            family: "Roboto", sans-serif;
+            style: normal;
+            weight: 700;
+            size: 18px;
+          }
+
+          line-height: 1.16;
+          color: #216df0;
+          padding: 10px 20px;
+          border-radius: 5px;
+          background-color: #eef4ff;
+          text-transform: capitalize;
         }
 
-        ol.parent {
-          padding: 10px 0px 5px 20px;
-
+        .parent {
           li {
-            font-family: "Roboto", sans-serif;
-            font-style: normal;
-            font-weight: 400;
-            font-size: 15px;
-            color: #666666;
-            padding: 5px 0px;
+            display: grid;
+            gap: 13px;
+            grid-template-columns: 1fr 13fr;
+            align-items: start;
+            font: {
+              family: "Roboto", sans-serif;
+              style: normal;
+              weight: 500;
+              size: 15px;
+            }
+            color: #697385;
+            line-height: 1.2;
+            padding-top: 19px;
           }
         }
 
         a {
-          font-size: 13px;
+          font: {
+            family: "Roboto", sans-serif;
+            style: normal;
+            weight: 700;
+            size: 15px;
+          }
+
+          display: inline-block;
           line-height: 1.5;
           color: #fff;
-          border-radius: 5px;
-          display: inline-block;
-          margin-top: 10px;
-          background-color: #56b2fb;
-          border: 1px solid #56b2fb;
-          padding: 10px;
+          border-radius: 6px;
+          margin-top: 30px;
+          background-color: #216df0;
+          border: 1px solid #216df0;
+          padding: 10px 50px;
+
           &:hover {
             background-color: #fff;
             border: 1px solid #d2d2d2;
-            color: #3c3c3c;
+            color: #333333;
           }
         }
+      }
+
+      .inside {
+        padding: 0;
+        margin: 0;
       }
     }
 
@@ -346,8 +379,8 @@
             border-radius: 5px;
             margin: 5px 0;
             display: block;
-            background-color: #56b2fb;
-            border: 1px solid #56b2fb;
+            background-color: $primary-color;
+            border: 1px solid $primary-color;
             padding: 10px;
             text-align: center;
 
@@ -363,8 +396,8 @@
 
     #rex_feed_file_link.postbox {
       a {
-        background-color: #56b2fb;
-        border: 1px solid #56b2fb;
+        background-color: $primary-color;
+        border: 1px solid $primary-color;
         padding: 10px;
         font-size: 16px;
         line-height: 1.5;
@@ -408,8 +441,8 @@
 
         #publishing-action {
           .button-primary {
-            background-color: #56b2fb;
-            border: 1px solid #56b2fb;
+            background-color: #3fb3fb;
+            border: 1px solid #3fb3fb;
             padding: 10px;
             font-size: 12px;
             line-height: 1.5;
@@ -432,8 +465,8 @@
         }
 
         button#btn_on_feed {
-          background-color: #56b2fb;
-          border: 1px solid #56b2fb;
+          background-color: #3fb3fb;
+          border: 1px solid #3fb3fb;
           padding: 10px;
           font-size: 12px;
           line-height: 1.5;
@@ -529,11 +562,10 @@
 
     svg {
       margin-right: 9px;
-      transition: all 0.5s;
     }
     &:hover {
       color: #fff;
-      background: #1eb2fb;
+      background: $primary-color;
       box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
       transition: all 0.5s;
     }
@@ -544,6 +576,7 @@
     &:hover {
       svg path {
         fill: #fff;
+        transition: all 0.5s;
       }
     }
   }
@@ -552,6 +585,7 @@
     &:hover {
       svg path {
         stroke: #fff;
+        transition: all 0.5s;
       }
     }
   }
@@ -560,9 +594,11 @@
     &:hover {
       svg path {
         stroke: #fff;
+        transition: all 0.5s;
       }
       svg circle {
         stroke: #fff;
+        transition: all 0.5s;
       }
     }
   }
@@ -748,20 +784,22 @@
         transition: all 0.3s ease;
       }
       &:hover svg path {
-        stroke: black;
+        stroke: #333333;
       }
     }
 
     .rex-new-custom-btn {
-      background-color: #3fb3fb;
-      border: 1px solid #3fb3fb;
+      background-color: $primary-color;
+      border: 1px solid $primary-color;
+      border-radius: 10px;
 
       &:hover {
-        background-color: #ffffff;
-        color: black;
-        border: 1px solid #eaeaea;
+        background-color: #eef4ff;
+        border: 1px solid #b0cdff;
+        color: #333333;
       }
     }
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -779,13 +817,15 @@
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 15px;
     text-decoration-line: underline;
     color: #216df0;
     outline: 0;
   }
 }
+
+.rex-feed-publish-btn,
 .rex-feed-attr-btn-area {
   display: flex;
   align-items: center;

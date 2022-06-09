@@ -1438,4 +1438,43 @@ class Rex_Product_Feed_Admin {
             }
         }
     }
+
+
+    /**
+     * @desc Removes plugin log files from upload/wc-logs folder
+     * older than 30 days
+     *
+     * @return void
+     */
+    public function remove_wpfm_logs() {
+        $today = date( 'Y-m-d' );
+        $today = ( int ) str_replace( '-', '', $today );
+        $path  = wp_upload_dir();
+        $path  = $path[ 'basedir' ] . '/wc-logs';
+
+        $files = array(
+            'WPFM-*.log',
+            'wpfm-*.log',
+            'WPFM.*.log'
+        );
+
+        foreach ( $files as $file ) {
+            $logs = glob( trailingslashit( $path ) . $file );
+
+            if ( !empty( $logs ) ) {
+                foreach ( $logs as $log ) {
+                    $split_path = str_split( $log, strlen( trailingslashit( $path ) ) );
+                    $split_name = str_split( $split_path[ 1 ], 15 );
+                    $split_date = str_split( $split_name[ 0 ], 5 );
+                    $log_date   = ( int ) str_replace( '-', '', $split_date[ 1 ] . $split_date[ 2 ] );
+
+                    $diff = $today - $log_date;
+
+                    if ( $diff >= 30 ) {
+                        unlink( $log );
+                    }
+                }
+            }
+        }
+    }
 }

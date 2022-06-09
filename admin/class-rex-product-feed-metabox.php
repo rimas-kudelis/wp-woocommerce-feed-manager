@@ -47,9 +47,10 @@ class Rex_Product_Metabox
 		if ( $this->rex_feed_is_google_merchant() ) {
 			add_action( 'add_meta_boxes', array( $this, 'rex_feed_google_merchant_section' ) );
 		}
-		if ( !$is_premium ) {
-			add_action( 'add_meta_boxes', array( $this, 'rex_feed_upgrade_notice_section' ) );
-		}
+        $active_plugins = get_option( 'active_plugins' );
+        if ( is_array( $active_plugins ) && !in_array('best-woocommerce-feed-pro/rex-product-feed-pro.php', $active_plugins ) ) {
+            add_action('add_meta_boxes', array($this, 'rex_feed_upgrade_notice_section'));
+        }
         add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_how_to_guide_section' ) );
 	}
 
@@ -259,8 +260,9 @@ class Rex_Product_Metabox
 	 **/
 	public function rex_feed_product_taxonomies()
 	{
-		echo '<div class="rex-feed-product-taxonomies-spinner" style="display: none; "><img src="' . esc_url( WPFM_PLUGIN_ASSETS_FOLDER ) . 'icon/loader.gif" alt="spinner" /></div>';
-		echo '<div id="rex-feed-product-taxonomies" class="rex-feed-product-taxonomies">';
+//		echo '<div class="rex-feed-product-taxonomies-spinner" style="display: none; "><img src="' . esc_url( WPFM_PLUGIN_ASSETS_FOLDER ) . 'icon/loader.gif" alt="spinner" /></div>';
+        require plugin_dir_path(__FILE__) . 'partials/loading-spinner.php';
+        echo '<div id="rex-feed-product-taxonomies" class="rex-feed-product-taxonomies">';
 		echo '</div>';
 	}
 

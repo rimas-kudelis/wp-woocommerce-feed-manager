@@ -141,10 +141,10 @@
         right: 0;
       }
       &.active:not(.status) svg path {
-        stroke: #1fb3fb;
+        stroke: $primary-color;
       }
       &.active.status svg path {
-        fill: #1fb3fb;
+        fill: $primary-color;
       }
 
       i {
@@ -170,7 +170,7 @@
 
     .block-wrapper {
       background-color: #ededf3;
-      padding: 55px;
+      padding: 40px;
       border-radius: 12px;
 
       @media #{$device_992_1199} {
@@ -532,7 +532,7 @@
     .rex-merchant {
       display: flex;
       flex-flow: row wrap;
-      margin-left: -20px;
+      margin-left: -25px;
 
       .merchant-title {
         font-size: 20px;
@@ -544,14 +544,16 @@
         margin-bottom: 20px;
         margin-left: 20px;
       }
+
       .single-merchant {
         position: relative;
         display: flex;
         flex-flow: row;
         align-items: center;
-        padding: 16px 20px;
+        padding: 10px 20px;
         border-radius: 5px;
-        background: #fff;
+        background-color: #fff;
+        box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
         margin-bottom: 20px;
         width: calc(100% / 4 - 20px);
         margin-left: 20px;
@@ -559,32 +561,70 @@
         @media #{$device_1200_1399} {
           width: calc(100% / 3 - 20px);
         }
+
         @media #{$device_992_1199} {
           width: calc(100% / 2 - 20px);
         }
 
+        @media #{$device_576_767} {
+          width: calc(100% / 1 - 20px);
+        }
+
         .wpfm-pro-tag {
-          top: calc(50% - 1px);
-          right: 20px;
+          top: calc(6% - 1px);
+          left: 20px;
           transform: translateY(-50%);
         }
 
         .title {
-          min-height: 21px;
           display: block;
+          width: calc(100% - 60px);
+          min-height: 21px;
           padding-right: 10px;
           margin-bottom: 0;
-          width: calc(100% - 60px);
-          font-size: 14px;
-          color: #363b4e;
-          font-weight: 400;
-          font-family: "Roboto", sans-serif;
+          font: {
+            family: "Roboto", sans-serif;
+            weight: 500;
+            size: 14px;
+            style: normal;
+          }
+          color: #697385;
         }
 
         &.wpfm-pro {
           .switch {
             opacity: 0;
             visibility: hidden;
+          }
+        }
+
+        &__button {
+          border: none;
+          outline: 0;
+          box-shadow: none;
+          padding: 0;
+          border-radius: 5px;
+          background: rgba(33, 109, 240, 0.1);
+          transition: all 0.5s;
+          a {
+            display: block;
+            font: {
+              size: 14px;
+              family: "Roboto", sans-serif;
+              style: normal;
+              weight: 400;
+            }
+            line-height: 1;
+            color: #697385;
+            padding: 9px 14px;
+
+            &:hover {
+              color: #fff;
+            }
+          }
+
+          &:hover {
+            background-color: #216df0;
           }
         }
       }
@@ -601,21 +641,74 @@
       }
     }
 
-    .feed-settings {
+    #tab4 {
       .merchant-title {
-        margin-bottom: 0;
+        font-size: 20px;
+        line-height: normal;
+        color: #363b4e;
+        font-weight: 500;
+        width: 100%;
+        text-transform: capitalize;
+        margin-bottom: 20px;
       }
+    }
+
+    .feed-settings {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+
+      @media #{$device_992_1199} {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .feed-right,
+      .feed-left {
+        display: flex;
+        flex-flow: wrap row;
+        gap: 25px;
+
+        @media #{$device_992_1199} {
+          gap: 20px;
+        }
+      }
+
       .single-merchant {
-        width: calc(100% / 2 - 20px);
-        margin-bottom: 0;
-        margin-top: 20px;
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        padding: 16px 20px;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0px 1px 2px rgba(190, 190, 215, 0.2);
 
         @media #{$device_992_1199} {
           width: 100%;
         }
 
+        .wpfm-pro-tag {
+          top: calc(6% - 1px);
+          left: 20px;
+          transform: translateY(-50%);
+        }
+
         .title {
+          display: block;
+          width: calc(100% - 30px);
+          font: {
+            family: "Roboto", sans-serif;
+            weight: 400;
+            size: 14px;
+            style: normal;
+          }
+          color: #697385;
           line-height: 1.4;
+          min-height: 21px;
+          padding-right: 10px;
+          margin-bottom: 0;
         }
 
         .wpfm-fb-pixel,
@@ -660,22 +753,21 @@
         }
 
         button {
+          width: 120px;
+          display: flex;
+          flex-flow: row;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
           border: none;
           background: $primary-color;
           color: #fff;
-          height: 36px;
-          line-height: 36px;
+          height: 40px;
+          line-height: 40px;
           padding: 0 10px;
           border-radius: 4px;
           text-transform: capitalize;
           font-size: 15px;
-          display: flex;
-          flex-flow: row;
-          align-items: center;
-          width: 90px;
-          justify-content: center;
-          text-align: center;
-
           i {
             margin-left: 4px;
             display: none;
@@ -683,65 +775,22 @@
         }
         button.save-transient-button {
           order: 2;
-          margin: 0 10px;
           height: 46px;
         }
 
-        &.product-batch {
-          order: 1;
+        &.wpfm-custom-field-frontend {
+          display: block;
+          margin-left: 40px;
         }
-        &.wpfm-clear-btn {
-          order: 2;
-        }
-        &.fb-pixel {
-          order: 3;
-        }
-        &.enable-log {
-          order: 4;
 
-          @media #{$device_992_1199} {
-            order: 5;
-          }
-        }
         &.wpfm-fb-pixel-field {
-          order: 5;
-
-          @media #{$device_992_1199} {
-            order: 4;
-          }
+          margin-left: 40px;
         }
-        &.exclude-tax {
-          order: 6;
+        .wpfm-rollback-option-area,
+        .wpfm-cache-ttl-area {
+          display: flex;
+          gap: 15px;
         }
-        &.unique-product {
-          order: 7;
-        }
-        &.increase-product {
-          order: 8;
-        }
-        &.detailed-product {
-          order: 9;
-        }
-
-        &.detailed-merchants {
-          .title {
-            width: calc(100% - 350px);
-          }
-        }
-      }
-
-      .single-merchant.wpfm-custom-field-frontend {
-        display: block;
-      }
-
-      .single-merchant.remove-plugin-data {
-        order: 6;
-      }
-      .single-merchant.wpfm-custom-field-frontend {
-        order: 10;
-      }
-      .single-merchant.detailed-product {
-        order: 11;
       }
     }
 
@@ -827,15 +876,6 @@
     }
   }
 
-  .wpfm-dropdown {
-    display: flex;
-  }
-  form#wpfm-transient-settings,
-  .rex-feed-rollback .wpfm-dropdown {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
   span.helper-text {
     width: 100%;
     order: 3;
@@ -852,14 +892,13 @@
   }
   select#wpfm_cache_ttl {
     order: 1;
-    width: 162px;
+    width: 170px;
   }
 
   .rex-feed-rollback .wpfm-dropdown .rex-feed-rollback-button {
     order: 2;
     width: 50%;
     color: white;
-    margin-left: 10px;
     border-radius: 4px;
     text-transform: unset;
   }
@@ -869,22 +908,22 @@
     color: red;
   }
 
-  button#wpfm-purge-cache {
-    width: 59%;
-    height: 46px;
-    @media #{$device_1400_1599} {
-      width: 52%;
-    }
-    @media #{$device_1200_1399} {
-      width: 47%;
-    }
-    @media #{$device_992_1199} {
-      width: 62%;
-    }
-    @media #{$device_768_991} {
-      width: 60%;
-    }
-  }
+  // button#wpfm-purge-cache {
+  //   // width: 59%;
+  //   // height: 46px;
+  //   @media #{$device_1400_1599} {
+  //     width: 52%;
+  //   }
+  //   @media #{$device_1200_1399} {
+  //     width: 47%;
+  //   }
+  //   @media #{$device_992_1199} {
+  //     width: 62%;
+  //   }
+  //   @media #{$device_768_991} {
+  //     width: 60%;
+  //   }
+  // }
 }
 
 .rex-onboarding
@@ -892,7 +931,7 @@
   .feed-settings
   .single-merchant
   input:not([type="checkbox"]) {
-  height: 36px;
+  height: 40px;
   border: 1px solid #eee;
   background: #f6f6f8;
   box-shadow: none;
@@ -911,6 +950,7 @@
   display: flex;
   flex-flow: row wrap;
 }
+
 .rex-onboarding
   .rex-settings-tab-content
   .feed-settings

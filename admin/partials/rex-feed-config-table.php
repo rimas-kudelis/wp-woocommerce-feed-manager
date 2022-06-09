@@ -15,7 +15,10 @@
     </div>
 
     <div class="rex-feed-publish-btn">
-        <a id="rex-new-custom-attr" class="rex-new-custom-btn bottom-publish-btn">
+        <a id="rex-bottom-preview-btn" class="rex-new-custom-btn bottom-preview-btn">
+            <?php echo esc_attr__( 'Preview Feed', 'rex-product-feed' ) ?>
+        </a>
+        <a id="rex-bottom-publish-btn" class="rex-new-custom-btn bottom-publish-btn">
             <?php echo esc_attr__( 'Publish', 'rex-product-feed' ) ?>
         </a>
     </div>

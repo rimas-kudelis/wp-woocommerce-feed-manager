@@ -66,7 +66,7 @@
 
           .btn-default {
             display: inline-block;
-            border: 1px solid rgb(31, 179, 251);
+            border: 1px solid $primary-color;
             height: 50px;
             line-height: 47px;
             padding: 0px 20px;
@@ -78,7 +78,7 @@
             text-transform: capitalize;
             background-color: transparent;
             &:hover {
-              background-color: #1fb3fb;
+              background-color: $primary-color;
               color: #fff;
             }
           }

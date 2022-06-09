@@ -27,14 +27,14 @@
     position: relative;
     cursor: pointer;
     outline: none;
-    border-radius: 80px;
     height: 25px;
     width: 50px;
-    background-color: #f7f7fa;
-    border: 1px solid #e6e6ec;
+    background-color: #f2f2f9;
+    border: 1px solid #dadaef;
+    border-radius: 13px;
   }
   .switch-input:checked + label {
-    background: $primary-color;
+    background: #3fb3fb;
   }
   .switch-input + label:before,
   .switch-input + label:after {
@@ -61,9 +61,10 @@
     left: 4px;
     filter: drop-shadow(0px 2px 1px rgba(193, 193, 218, 0.45));
     background-color: #ffffff;
+    box-shadow: 0px 1px 3px rgba(5, 52, 72, 0.1);
   }
   .switch-input:checked + label {
-    border-color: $primary-color;
+    border-color: #3fb3fb;
   }
   .switch-input:checked + label:after {
     margin-left: 23px;
@@ -372,17 +373,17 @@
   left: 40px;
   transform: translateY(-50%);
   font-size: 15px;
-  line-height: 24px;
-  color: #fff;
+  color: #666666;
   font-weight: 400;
-  background: #1eb2fb;
-  padding: 10px 15px;
-  border-radius: 5px;
+  background-color: #ffff;
+  padding: 24px 22px;
+  border-radius: 10px;
   width: 170px;
   margin: 0;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
+  filter: drop-shadow(0px 10px 40px rgba(9, 32, 72, 0.2));
 }
 
 .rex_feed-tooltip p:before {
@@ -392,7 +393,7 @@
   top: 50%;
   width: 10px;
   height: 10px;
-  background: #1eb2fb;
+  background-color: #fff;
   transform: translateY(-50%) rotate(45deg);
   transform-origin: center;
 }

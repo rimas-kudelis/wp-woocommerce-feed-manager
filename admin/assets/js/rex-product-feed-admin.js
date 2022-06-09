@@ -68,8 +68,6 @@
         default_category_mapping( event );
 
         var publish_btn_txt = $( '#publish' ).val();
-        console.log('publish_btn_txt');
-        console.log(publish_btn_txt);
         $( '.bottom-publish-btn' ).text( publish_btn_txt );
     } );
 
@@ -233,7 +231,7 @@
 
     $( document ).on( "click", "#wpfm-log-copy", wpfm_copy_log );
 
-    $( document ).on( 'click', '#publish', get_product_number );
+    $( document ).on( 'click', '#publish, .bottom-publish-btn, .bottom-preview-btn', get_product_number );
 
     $( document ).on( 'click', '#send-to-google', send_to_google );
 
@@ -331,13 +329,18 @@
 
     $( document ).on( 'click', '#rex_feed_custom_filter_button', rex_feed_custom_filter );
 
-    $( document ).on( 'click', '.bottom-publish-btn', function () {
+    /*$( document ).on( 'click', '.bottom-publish-btn, .bottom-preview-btn', function () {
         $( this ).css( 'color', '#a7aaad' );
         $( this ).css( 'background-color', '#f6f7f7' );
         $( this ).css( 'border-color', '#dcdcde' );
         $( this ).css( 'cursor', 'progress' );
+        if ( $( this ).hasClass( 'bottom-preview-btn' ) ) {
+            $( '#publish' ).addClass( 'rex-feed-preview' );
+        }
         $( '#publish' ).trigger( 'click' );
-    });
+    });*/
+
+    $( document ).on( 'click', '#rex-feed-system-status-copy-btn', rex_feed_copy_system_status );
 
     /**
      * Event listener for Analytics Parameter options functionality.
@@ -561,7 +564,7 @@
                     $confBox.fadeIn();
                     $( '#rex_feed_config_heading .inside #config-table' ).fadeIn();
 
-                    $( '.rex-loading-spinner' ).css( 'display', 'none' );
+                    $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
                     $( '#rex_feed_config_heading #rex-feed-footer-btn' ).css( 'border-radius', '0 0 10px 10px' );
 
                     $( '#rex_feed_conf .rex-feed-config-heading' ).css( 'display', 'block' );
@@ -572,7 +575,7 @@
                     category_mapping_button( event );
                 } )
                 .fail( function ( response ) {
-                    $( '.rex-loading-spinner' ).css( 'display', 'none' );
+                    $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
                     console.log( 'Uh, oh! Merchant change returned error!' );
                     console.log( response.statusText );
                 } );
@@ -592,7 +595,7 @@
         // $( '#rex-feed-config-filter' ).hide();
         $( '.rex-feed-tags-wrapper' ).hide();
         $( '.rex-feed-product-filter-ids__area' ).hide();
-        $( ".rex-feed-product-taxonomies-spinner" ).fadeIn();
+        $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).fadeIn();
 
         wpAjaxHelperRequest( 'rex-feed-load-taxonomies', $payload )
             .done( function ( response ) {
@@ -601,7 +604,7 @@
                         var selected = $( '#rex_feed_products' ).find( ':selected' ).val();
 
                         if ( selected === 'all' || selected === 'featured' ) {
-                            $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                            $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             // $( '#rex-feed-config-filter' ).hide();
@@ -609,7 +612,7 @@
                             $( '.rex-feed-product-filter-ids__area' ).hide();
                         }
                         else if ( selected === 'filter' ) {
-                            $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                            $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
@@ -621,7 +624,7 @@
                             if ( tax_contents.length === 0 ) {
                                 $( '#rex-feed-product-taxonomies' ).append( response.html_content );
                             }
-                            $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                            $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
                             // $( '#rex-feed-config-filter' ).hide();
                             $( '#rex-feed-product-taxonomies' ).show();
@@ -634,7 +637,7 @@
                             }
                         }
                         else if ( selected === 'product_filter' ) {
-                            $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                            $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             // $( '#rex-feed-config-filter' ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
@@ -645,14 +648,14 @@
                             console.log(excluede_variable);*/
                         }
 
-                        $( ".rex-feed-product-taxonomies-spinner" ).fadeOut();
+                        $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).fadeOut();
                     }
                 }
             } )
             .fail( function ( response ) {
-                $( ".rex-feed-product-taxonomies-spinner" ).fadeOut();
+                $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).fadeOut();
 
-                $( ".rex-feed-product-taxonomies-spinner" ).hide();
+                $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                 $( '#rex-feed-product-taxonomies' ).hide();
                 // $( '#rex-feed-config-filter' ).hide();
                 $( '.rex-feed-tags-wrapper' ).hide();
@@ -719,7 +722,7 @@
 
             if ( 'Category Map' === opt_group_label ) {
                 var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + meta_val;
-                $('select[name="fc[' + rowId + '][meta_key]"]').parent().append("<p style='font-size: 12px;margin-top: 10px;margin-left: 5px;' class='rex_cat_map' id='rex_cat_map_"+rowId+"' style='font-size: 10px'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+                $('select[name="fc[' + rowId + '][meta_key]"]').parent().append("<p style='font-size: 12px;margin-top: 10px;' class='rex_cat_map' id='rex_cat_map_"+rowId+"' style='font-size: 10px'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
         }
         // Google category mapping button ENDS
@@ -734,11 +737,11 @@
             var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + selected_val;
 
             if ( $( '#rex_cat_map_' + rowId ).length === 0 ) {
-                $( this ).parent().append("<p style='font-size: 12px;margin-top: 10px;margin-left: 5px;' id='rex_cat_map_"+rowId+"'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+                $( this ).parent().append(" id='rex_cat_map_"+rowId+"'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
             else {
                 $( '#rex_cat_map_'+rowId ).remove();
-                $( this ).parent().append("<p style='font-size: 12px;margin-top: 10px;margin-left: 5px;' id='rex_cat_map_"+rowId+"'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+                $( this ).parent().append(" id='rex_cat_map_"+rowId+"'><a class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
         }
         else {
@@ -778,6 +781,8 @@
      */
     function get_product_number( event ) {
         event.preventDefault();
+        let is_preview = $( this ).hasClass( 'bottom-preview-btn' );
+
         if ( rex_feed_is_req_attr_missing() ) {
             var merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
 
@@ -805,8 +810,15 @@
 
             wpAjaxHelperRequest( 'my-handle', $payload )
                 .done( function ( response ) {
-                    var per_batch = response.per_batch ? parseInt( response.per_batch ) : 50;
-                    generate_feed( response.products, 0, 1, per_batch, response.total_batch );
+                    var per_batch = 0;
+                    if ( is_preview ) {
+                        per_batch = 10;
+                        generate_feed( response.products, 0, 1, per_batch, 1 );
+                    }
+                    else {
+                        per_batch = response.per_batch ? parseInt( response.per_batch ) : 200;
+                        generate_feed( response.products, 0, 1, per_batch, response.total_batch );
+                    }
                 } )
                 .fail( function ( response ) {
                     $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
@@ -885,8 +897,8 @@
                 else if ( response.msg == 'finish' ) {
                     rex_feed_feed_progressBar( progressWidth );
                     $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
-                    $( '#publish' ).removeClass( 'disabled' );
-                    $( document ).off( 'click', '#publish', get_product_number );
+                    $( '#publish, .bottom-publish-btn, .bottom-preview-btn' ).removeClass( 'disabled' );
+                    $( document ).off( 'click', '#publish, .bottom-publish-btn, .bottom-preview-btn', get_product_number );
                     $( '#publish' ).trigger( 'click' );
                 }
                 else if ( response.msg == 'failForInvalidEntry' ) {
@@ -936,91 +948,6 @@
             } );
     }
 
-    /**
-     * generate promotion feed
-     */
-    function generate_promotion_feed( product, offset, batch, per_batch, total_batch ) {
-        per_batch = typeof per_batch !== 'undefined' ? per_batch : 50;
-
-        var $payload = {
-            merchant: $( '#rex_feed_merchant' ).find( ':selected' ).val(),
-            feed_format: $( '#rex_feed_feed_format' ).find( ':selected' ).val(),
-            localization: $( '#rex_feed_ebay_mip_localization' ).find( ':selected' ).val(),
-            ebay_cat_id: $( '#rex_feed_ebay_seller_category' ).val(),
-
-            info: {
-                post_id: $( '#post_ID' ).val(),
-                title: $( '#title' ).val(),
-                desc: $( '#title' ).val(),
-                offset: offset,
-                batch: batch,
-                total_batch: total_batch,
-                per_batch: per_batch,
-            },
-
-            products: {
-                products_scope: $( '#rex_feed_products' ).find( ':selected' ).val(),
-                tags: get_checkbox_val( 'tags' ),
-                cats: get_checkbox_val( 'cats' ),
-                data: $( '#rex_feed_product_filter_ids' ).val(),
-            },
-
-            feed_config: $( 'form' ).serialize(),
-        };
-        var batches = total_batch;
-        console.log( 'Total Batch: ' + batches );
-        console.log( 'Total Product(s): ' + product );
-        console.log( 'Processing Batch Number: ' + batch );
-        console.log( 'Offset Number: ' + offset );
-
-        var progressbar = 100 / batches;
-        progressWidth = progressWidth + progressbar;
-        if ( progressWidth > 100 ) {
-            progressWidth = 100;
-        }
-
-        if ( progressWidth >= 100 ) {
-            $( '.progress-msg span' ).html( 'Generating feed. Please wait.....' );
-        } else {
-            $( '.progress-msg span' ).html( 'Processing feed.....' );
-        }
-        wpAjaxHelperRequest( 'generate-promotion-feed', $payload )
-            .success( function ( response ) {
-                console.log( 'Woohoo!' );
-                var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>You feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-                if ( response == 'false' || response == '' ) {
-                    generate_promotion_feed( product, offset, batch, per_batch, total_batch );
-                } else if ( response.msg == 'finish' ) {
-                    rex_feed_feed_progressBar( progressWidth );
-                    $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
-                    $( '#publish' ).removeClass( 'disabled' );
-                    $( document ).off( 'click', '#publish', get_product_number );
-                    $( '#publish' ).trigger( 'click' );
-
-                } else {
-                    if ( batch < batches ) {
-                        offset = offset + per_batch;
-                        batch++;
-                        rex_feed_feed_progressBar( progressWidth );
-                        generate_promotion_feed( product, offset, batch, per_batch, total_batch );
-                    }
-
-                }
-            } )
-            .error( function ( response ) {
-                $( ".progressbar-bar" ).css( 'background', '#ff0000' );
-                $( ".progressbar-bar" ).css( 'border-color', '#ff0000' );
-                $( ".progress-msg span" ).css( 'color', '#ff0000' );
-                $( ".progress-msg i" ).css( 'color', '#ff0000' );
-                $( ".progress-msg span" ).html( response.statusText );
-                $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
-                $( '#publish' ).removeClass( 'disabled' );
-                $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
-                console.log( 'Uh, oh!' );
-                console.log( response.statusText );
-            } );
-    }
-
     function rex_feed_feed_generation_error_helper() {
         $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
         $( '#publish' ).removeClass( 'disabled' );
@@ -1043,7 +970,7 @@
      */
     function save_google_merchant_settings( event ) {
         event.preventDefault();
-        $( '.rex-loading-spinner' ).css( 'display', 'flex' );
+        $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'flex' );
         var payload = {
             client_id: $( this ).find( '#client_id' ).val(),
             client_secret: $( this ).find( '#client_secret' ).val(),
@@ -1054,11 +981,11 @@
             .success( function ( response ) {
                 console.log( 'Woohoo!' );
                 $( '.merchant-action' ).html( response.html );
-                $( '.rex-loading-spinner' ).css( 'display', 'none' );
+                $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                $( '.rex-loading-spinner' ).css( 'display', 'none' );
+                $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
                 console.log( response.statusText );
             } );
 
@@ -1071,7 +998,7 @@
      */
     function send_to_google( event ) {
         event.preventDefault();
-        $( '.rex-loading-spinner' ).css( 'display', 'flex' );
+        $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'flex' );
         // var selected = [];
         /*$('.rex-feed-google-destination input:checked').each(function() {
             selected.push($(this).val());
@@ -1277,8 +1204,8 @@
             $( "#" + tab_id ).addClass( 'active' );
         }
         if ( $( this ).length === 0 && url.includes( 'page=wpfm_dashboard&tab=merchants' ) ) {
-            $( 'ul.rex-settings-tabs li[data-tab=tab1]' ).removeClass( 'active' );
-            $( '.rex-settings-tab-content #tab1' ).removeClass( 'active' );
+            $( 'ul.rex-settings-tabs li[data-tab=tab4]' ).removeClass( 'active' );
+            $( '.rex-settings-tab-content #tab4' ).removeClass( 'active' );
 
             $( 'ul.rex-settings-tabs li[data-tab=tab2]' ).addClass( 'active' );
             $( '#tab2' ).addClass( 'active' );
@@ -1792,5 +1719,22 @@
             }
         }
         return feed_id;
+    }
+
+    function rex_feed_copy_system_status( event ) {
+        event.preventDefault();
+
+        let button = $('#rex-feed-system-status-copy-btn');
+        let status_area = $( '#rex-feed-system-status-area' );
+
+        button.text('Copied!');
+        status_area.css('visibility','visible');
+        status_area.select();
+        document.execCommand('copy');
+
+        setTimeout( function () {
+            button.text('Copy Status');
+            status_area.css('visibility','hidden');
+        }, 2000 );
     }
 })( jQuery );

@@ -30,7 +30,7 @@ if ( wpfm_pro_compatibility() ) {
 	do_action( 'wpfm_pro_filter_rules' );
 }
 ?>
-<h2 class="filer-rules-header">Feed Filters</h2>
+<h2 class="filer-rules-header"><?php echo esc_html__('Custom Filter', 'rex-product-feed') ?></h2>
 <div class="rex__filter-table">
     <table id="config-table" class="filter-config-table responsive-table">
         <thead>
