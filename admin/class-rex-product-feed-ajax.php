@@ -384,11 +384,9 @@ class Rex_Product_Feed_Ajax {
         $wpfm_hash = isset( $payload[ 'hash' ] ) ? $payload[ 'hash' ] : '';
 
         if ( $wpfm_hash !== '' && array_key_exists( $wpfm_hash, $category_map ) ) {
-            wpfm_purge_cached_data();
             wp_send_json_success( [ 'status' => $status, 'location' => esc_url( admin_url( 'admin.php?page=category_mapping' ) ) ] );
         }
         if ( $wpfm_hash !== '' ) {
-            wpfm_purge_cached_data();
             $status = 'reload';
         }
 

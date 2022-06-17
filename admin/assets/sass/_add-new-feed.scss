@@ -6,9 +6,76 @@
 //04.Feed Configuration table
 //---------------------------------------------
 
+/*----Shepherd style --------*/
+body.post-type-product-feed.shepherd-active {
+  &::after {
+    content: "";
+    display: block;
+    background-color: #000;
+    opacity: 0.4;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+  .shepherd-element.shepherd-open,
+  .shepherd-target.shepherd-enabled {
+    z-index: 100;
+    position: relative;
+  }
+
+  .shepherd-has-title .shepherd-content .shepherd-header {
+    background-color: $primary-color;
+    padding: 0.6em;
+  }
+
+  .shepherd-button {
+    background-color: $primary-color;
+    border: 1px solid $primary-color;
+    border-radius: 10px;
+    color: hsla(0, 0%, 100%, 0.75);
+    margin-right: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.5s ease;
+    &:hover {
+      background-color: #eef4ff;
+      border: 1px solid #b0cdff;
+      color: #333333;
+    }
+  }
+
+  .shepherd-element.shepherd-theme-arrows-plain-buttons.shepherd-element-attached-top.shepherd-element-attached-center
+    .shepherd-content {
+    margin-top: 20px;
+  }
+
+  .shepherd-element.shepherd-has-title[data-popper-placement^="bottom"]
+    > .shepherd-arrow:before {
+    background-color: $primary-color;
+  }
+
+  .shepherd-title {
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .shepherd-has-title .shepherd-content .shepherd-cancel-icon {
+    color: #fff;
+  }
+}
+
 /*----01.wpfm dashborad style --------*/
 
 .post-type-product-feed {
+  .combined-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   .notice,
   div.error,
   div.updated {
@@ -185,6 +252,7 @@
 
   #titlediv #title-prompt-text {
     position: absolute;
+    z-index: 1000;
     font-size: 14px;
     font-family: "Roboto", sans-serif;
     font-style: normal;
@@ -605,6 +673,7 @@
 }
 
 /*----03.Feed Configuration style --------*/
+#rex_feed_google_merchant .postbox-header,
 #rex_feed_progress_bar .postbox-header,
 #rex_feed_conf .postbox-header,
 #rex_feed_config_heading .postbox-header,
@@ -878,6 +947,125 @@
   }
 }
 
+/*----06.google merchant style --------*/
+
+#rex_feed_google_merchant {
+  &.postbox {
+    border: 0;
+    background: #ffffff;
+    box-shadow: 0px 15px 20px rgba(202, 202, 224, 0.247296);
+    border-radius: 10px;
+  }
+  .inside {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0px 15px 20px rgba(202, 202, 224, 0.247296);
+    border-radius: 10px;
+
+    h2 {
+      font-family: "Roboto", sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.16;
+      color: #216df0;
+      background-color: #f7faff;
+      border-bottom: 1px solid #e0ebff;
+      border-radius: 10px 10px 0px 0px;
+      padding: 13px 25px;
+    }
+
+    .rex_feed_google_merchant_content__area {
+      display: grid;
+      grid-template-columns: 1fr 1.7fr;
+      gap: 60px;
+      padding: 27px 25px;
+
+      .rex_feed_google_target__content {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 15px;
+
+        label {
+          font-family: "Roboto", sans-serif;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 16px;
+          color: #333333;
+          margin-bottom: 7px;
+          text-transform: capitalize;
+          display: block;
+        }
+
+        select,
+        input {
+          background-color: #ffffff;
+          border: 1px solid #dfe8f5;
+          border-radius: 6px;
+          padding: 10px 12px;
+        }
+      }
+
+      .google-status-area {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        align-items: center;
+        margin-top: 20px;
+
+        p.google-status {
+          background: #fffcef;
+          border: 1px solid #ffefb6;
+          border-radius: 7px;
+          font-family: "Roboto", sans-serif;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 21px;
+          color: #697385;
+          padding: 5px 20px;
+        }
+        a {
+          font-family: "Roboto", sans-serif;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 15px;
+          color: #ffffff;
+          background: $primary-color;
+          border: 1px solid $primary-color;
+          border-radius: 6px;
+          transition: all 0.3s ease;
+
+          &:hover {
+            background-color: #eef4ff;
+            border: 1px solid #b0cdff;
+            color: #333333;
+          }
+        }
+      }
+
+      p.google-desc {
+        font-family: "Roboto", sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 24px;
+        color: #697385;
+        a {
+          font-family: "Roboto", sans-serif;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 15px;
+          line-height: 24px;
+          display: inline-block;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
 /* Responsive code All product feeds  */
 
 @media (max-width: 1599px) {
@@ -1038,6 +1226,10 @@
       }
     }
   }
+
+  #rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area {
+    gap: 20px;
+  }
 }
 
 @media (max-width: 1199px) {
@@ -1109,6 +1301,23 @@
   }
   .rex-fill-button.mr-5 {
     margin-right: 0.8rem;
+  }
+
+  #rex_feed_google_merchant
+    .inside
+    .rex_feed_google_merchant_content__area
+    .rex_feed_google_target__content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  #rex_feed_google_merchant
+    .inside
+    .rex_feed_google_merchant_content__area
+    .google-status-area {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-top: 15px;
   }
 }
 

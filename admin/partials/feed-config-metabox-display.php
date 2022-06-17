@@ -45,7 +45,7 @@ $keyy = rand(999, 3000); ?>
         <div class="meta-dropdown">
 			<?php
 			echo '<select class="attr-val-dropdown" name="fc['.esc_attr($keyy).'][meta_key]" >';
-			echo "<option value=''>".esc_html_e('Please Select', 'rex-product-feed')."</option>";
+			echo "<option value=''>".esc_html__('Please Select', 'rex-product-feed')."</option>";
 			echo $feed_template->printProductAttributes(); // phpcs:ignore
 			echo "</select>";
 			?>
@@ -67,34 +67,41 @@ $keyy = rand(999, 3000); ?>
 
 <?php foreach ( $feed_template->getTemplateMappings() as $key => $item): ?>
 	<?php
-	$hideStaticInput = $item['type'] != 'static' ? 'style="display: none;"' : '';
-	$hideMetaInput   = $item['type'] == 'static' ? 'style="display: none;"' : '';
+    $display_none = 'style="display: none"';
+    $hide_meta = $display_none;
+    $hide_static = $display_none;
 
+    if ( $item[ 'type' ] === 'meta' ) {
+        $hide_meta = '';
+    }
+    elseif ( $item[ 'type' ] === 'static' ) {
+        $hide_static = '';
+    }
 	?>
     <tr data-row-id="<?php echo esc_html($key); ?>">
         <td data-title="Attributes : ">
 			<?php
 			if(array_key_exists('attr', $item)) {
 				$feed_template->printSelectDropdown( $key, 'attr', $item['attr'], 'attr-dropdown' );
-			}else {
+			} else {
 				$feed_template->printInput( $key, 'cust_attr', $item['cust_attr'] );
 			}
-
 			?>
         </td>
         <td data-title="Type : "><?php $feed_template->printAttType( $key, $item['type'] ); ?></td>
         <td data-title="Value : ">
-            <div class="meta-dropdown" <?php echo filter_var( $hideMetaInput ); ?>>
+            <div class="meta-dropdown" <?php echo filter_var( $hide_meta ); ?>>
 				<?php
 				echo '<select class="attr-val-dropdown" name="fc['.esc_attr($key).'][' . esc_attr( 'meta_key' ) . ']" >';
-				echo "<option value=''>".esc_html_e('Please Select', 'rex-product-feed')."</option>";
-				echo $feed_template->printProductAttributes($item['meta_key']); // phpcs:ignore
+				echo "<option value=''>".esc_html__('Please Select', 'rex-product-feed')."</option>";
+				echo $feed_template->printProductAttributes( $item['meta_key'] ); // phpcs:ignore
 				echo "</select>";
 				?>
             </div>
-            <div class="static-input" <?php echo filter_var( $hideStaticInput ); ?>>
+            <div class="static-input" <?php echo filter_var( $hide_static ); ?>>
 				<?php $feed_template->printInput( $key, 'st_value', $item['st_value'] ); ?>
             </div>
+            <?php do_action( 'rex_feed_after_static_input', $feed_template, $key, $item );?>
         </td>
         <td data-title="Prefix : "><?php $feed_template->printInput( $key, 'prefix', $item['prefix'] ); ?></td>
         <td data-title="Suffix : "><?php $feed_template->printInput( $key, 'suffix', $item['suffix'] ); ?></td>

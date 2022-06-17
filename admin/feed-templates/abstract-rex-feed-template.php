@@ -88,7 +88,14 @@ abstract class Rex_Feed_Abstract_Template {
     }
 
 
-    public function printProductAttributes($selected = '') {
+    /**
+     * @desc Retrieve markups for product dropdown
+     *
+     * @since 1.0.0
+     * @param $selected
+     * @return bool|string|string[]
+     */
+    public function printProductAttributes( $selected = '' ) {
         $product_attribute_dropdown = $this->get_feed_cached_dropdown( 'product_attributes_dropdown', $selected );
         if ( false === $product_attribute_dropdown ) {
             $product_attributes = Rex_Feed_Attributes::get_attributes();
@@ -125,6 +132,7 @@ abstract class Rex_Feed_Abstract_Template {
     private function make_cache_dropdown( $key, $items, $selected = '' ) {
         $drop_down = '';
         $i = 1;
+
         foreach ($items as $groupLabel => $groups) {
             if ( !empty($groupLabel)) {
                 $drop_down .= "<optgroup label='" .esc_attr( $groupLabel ). "' data-i='".esc_attr($i)."'>";

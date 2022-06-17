@@ -3,7 +3,9 @@ $license = get_option( 'wpfm_pro_license_key' );
 $status  = get_option( 'wpfm_pro_license_status' );
 $license_data  = get_option( 'wpfm_pro_license_data', '');
 
-
+if ( class_exists( 'Rex_Product_Feed_Pro_License_Security' ) ) {
+    $license = (new Rex_Product_Feed_Pro_License_Security())->encrypt( $license );
+}
 ?>
 
 <div class="rex-licenes">
@@ -69,7 +71,7 @@ $license_data  = get_option( 'wpfm_pro_license_data', '');
                             <?php settings_fields('wpfm_pro_license'); ?>
                             <div class="rex-licenes__input-block-area">
                                 <div class="rex-licenes__input-field">
-                                    <input id="wpfm_pro_license_key" name="wpfm_pro_license_key" type="text" class="regular-text" value="<?php echo esc_attr( $license ); ?>" placeholder="<?php esc_html_e('Enter your license key', 'rex-product-feed-pro'); ?>" />
+                                    <input id="wpfm_pro_license_key" name="wpfm_pro_license_key" type="password" class="regular-text" value="<?php echo esc_attr( $license ); ?>" placeholder="<?php esc_html_e('Enter your license key', 'rex-product-feed-pro'); ?>" />
                                     <div class="wpfm-pro-license-data" style="margin-top: 5px;">
                                         <?php if(!empty($license_data)) {
                                             $license_data = json_decode($license_data);

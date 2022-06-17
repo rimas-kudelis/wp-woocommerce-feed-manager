@@ -131,7 +131,7 @@ $merchants = array(
                     </form>
                 </div>
                 <!-- rex-setup-wizard__content-area end -->
-
+            <div class="box-video-area">
                 <div class="box-video">
                     <div class="bg-video">
                         <div class="bt-play"></div>
@@ -140,11 +140,14 @@ $merchants = array(
                         <iframe width="560" height="315"src="<?php echo esc_url( 'https://www.youtube.com/embed/videoseries?list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq' ); ?>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                         </iframe>
                     </div>
-                 </div>
+                </div>
 
-               
+                <div class="box-video__button">
+                    <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=product-feed&tour_guide=1' ) );?>" id="rex-feed-tour-start-btn" target="_self" role="button">
+                    <?php esc_html_e('Take Tour','rex-product-feed') ?>                   
+                    </a>
+                </div>
                 <!-- rex-setup-wizard__video-area end -->
-
             </div>
 
         </div>

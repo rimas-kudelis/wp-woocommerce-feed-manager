@@ -20,9 +20,12 @@ class Rex_Product_Metabox
 	 */
 	public function register()
 	{
-		$is_premium = apply_filters( 'wpfm_is_premium_activate', false );
-
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_filter_settings_section' ) );
+
+        if ( $this->rex_feed_is_google_merchant() ) {
+            add_action( 'add_meta_boxes', array( $this, 'rex_feed_google_merchant_section' ) );
+        }
+
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_config_section' ) );
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_settings_section' ) );
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_product_filters_section' ) );
@@ -37,20 +40,17 @@ class Rex_Product_Metabox
 			$this->rex_feed_trigger_based_review_helper();
         }
 
-        if ( $post_type === '' && isset( $data[ 'post_type' ] ) ) {
+        /*if ( $post_type === '' && isset( $data[ 'post_type' ] ) ) {
             $post_type = sanitize_text_field($data[ 'post_type' ]);
         }
-        /*if ( $post_type === 'product-feed' ) {
+        if ( $post_type === 'product-feed' ) {
             $this->rex_feed_new_changes_message();
         }*/
 
 		if ( $this->rex_feed_is_google_merchant() ) {
 			add_action( 'add_meta_boxes', array( $this, 'rex_feed_google_merchant_section' ) );
 		}
-        $active_plugins = get_option( 'active_plugins' );
-        if ( is_array( $active_plugins ) && !in_array('best-woocommerce-feed-pro/rex-product-feed-pro.php', $active_plugins ) ) {
-            add_action('add_meta_boxes', array($this, 'rex_feed_upgrade_notice_section'));
-        }
+        add_action('add_meta_boxes', array($this, 'rex_feed_upgrade_notice_section'));
         add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_how_to_guide_section' ) );
 	}
 
@@ -394,7 +394,7 @@ class Rex_Product_Metabox
 			esc_html__( 'Send to Google Merchant', 'rex-product-feed' ),
 			array( $this, 'rex_feed_generate_google_merchant_section' ),
 			'product-feed',
-			'side',
+			'normal',
 			'core'
 		);
 	}
@@ -406,12 +406,6 @@ class Rex_Product_Metabox
 	public function rex_feed_generate_google_merchant_section()
 	{
 		echo '<h2>' . esc_attr__( 'Send to Google Merchant', 'rex-product-feed' ) . '</h2>';
-		$this->rex_feed_google_merchant_desc();
-		$destinations = array(
-			'Display Ads'      => __( 'Display Ads', 'rex-product-feed' ),
-			'Shopping Ads'     => __( 'Shopping Ads', 'rex-product-feed' ),
-			'Shopping Actions' => __( 'Shopping Actions', 'rex-product-feed' ),
-		);
 
 		$schedules = array(
 			'monthly' => __( 'Monthly', 'rex-product-feed' ),
@@ -435,43 +429,11 @@ class Rex_Product_Metabox
 
 		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-google-merchant.php';
 
-		$this->rex_feed_after_field_google_merchant();
 	}
 
 
-	/**
-	 * Output a message if the feed merchant is google
-	 */
-	public function rex_feed_after_field_google_merchant()
-	{
-		$feed_merchant = get_post_meta( get_the_ID(), 'rex_feed_merchant', true );
 
-		if ( $feed_merchant === 'google' ) {
-			$rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
-			$message             = __( 'Oops!! Access token has expired 😕 Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed' );
-			if ( !( $rex_google_merchant->is_authenticate() ) ) {
-				echo sprintf(
-					'<p class="google-status">%s <a href="%s">' . esc_attr__( 'Authenticate', 'rex-product-feed' ) . '</a> </p>',
-					esc_html( $message ),
-					esc_url( admin_url( 'admin.php?page=merchant_settings' ) ) );
-			}
-			else {
-				echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
-                        ' . esc_attr__( 'Send to google merchant', 'rex-product-feed' ) . '
-                      </a> ';
-			}
-			echo '<div class="rex-google-status"></div>';
-		}
-	}
-
-
-	/**
-	 * Output a message if the current page has the id of "2" (the about page)
-	 */
-	public function rex_feed_google_merchant_desc()
-	{
-		echo sprintf( __( '<p class="google-desc">Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Click here</a> to see the list of all abbreviations set by Google.</p>', 'rex-product-feed' ) ); // phpcs:ignore
-	}
+	
 
 
 	/**

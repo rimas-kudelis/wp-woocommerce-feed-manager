@@ -88,7 +88,7 @@
                 },
                 "plugin-modifies-install-path": true
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Composer\\Installers\\": "src/Composer/Installers"

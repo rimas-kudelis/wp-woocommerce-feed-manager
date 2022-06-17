@@ -9,7 +9,7 @@
 				<?php echo '<h2>' . esc_html__( 'Settings', 'rex-product-feed' ) . '</h2>';?>
 			</div>
 		</div>
-		<span class="rex-contnet-setting__close-icon close-btn">
+		<span class="rex-contnet-setting__close-icon close-btn" id="rex-contnet-setting__close-icon">
 			<?php echo esc_html__( 'Close', 'rex-product-feed' );?>
         </span>
 	</div>

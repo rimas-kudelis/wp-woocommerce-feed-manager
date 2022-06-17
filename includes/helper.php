@@ -310,8 +310,8 @@ if ( ! function_exists( 'wpfm_is_wmc_active' ) ) {
 	function wpfm_is_wmc_active(){
 		$active_plugings = get_option( 'active_plugins' );
 		$wmc           = 'woocommerce-multi-currency/woocommerce-multi-currency.php';
-
-		return in_array( $wmc, $active_plugings );
+        $wmc_params    = get_option( 'woo_multi_currency_params', [] );
+		return in_array( $wmc, $active_plugings ) && !empty( $wmc_params ) && isset( $wmc_params[ 'enable' ] ) && $wmc_params[ 'enable' ];
 	}
 }
 
@@ -588,14 +588,4 @@ if ( !function_exists( 'rex_feed_get_sanitized_get_post' ) ) {
             'request' => filter_var_array( $_REQUEST, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
         );
     }
-}
-
-
-/**
- * Clears cache after updating plugin to a newer version.
- */
-if ( get_option( 'wpfm_major_update' ) !== wpfm_get_plugin_version( '/best-woocommerce-feed/rex-product-feed.php' ) ) {
-	add_action( 'plugin_loaded', 'wpfm_purge_cached_data' );
-	add_action( 'plugin_loaded', 'wpfm_purge_browser_cache' );
-    update_option( 'wpfm_major_update', wpfm_get_plugin_version( '/best-woocommerce-feed/rex-product-feed.php' ) );
 }

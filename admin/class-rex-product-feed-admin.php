@@ -202,10 +202,18 @@ class Rex_Product_Feed_Admin {
             return;
         }
         if ( $screen->post_type === 'product-feed' || in_array($screen->id, apply_filters('wpfm_page_hooks', array($this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->setup_wizard_hook_suffix , $this->wpfm_pro_submenu)))) {
-            wp_enqueue_style( 'font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version );
-            wp_enqueue_style( 'wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version );
-            wp_enqueue_style($this->plugin_name . '-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version );
-            wp_enqueue_style( $this->plugin_name . '-style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version, 'all' );
+            wp_enqueue_style( $this->plugin_name . '-font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version );
+            wp_enqueue_style( $this->plugin_name . '-wpfm-vendor', WPFM_PLUGIN_ASSETS_FOLDER . 'css/vendor.min.css', array(), $this->version );
+            wp_enqueue_style( $this->plugin_name . '-select2', WPFM_PLUGIN_ASSETS_FOLDER . 'css/select2.min.css', array(), $this->version );
+
+            $_get = rex_feed_get_sanitized_get_post();
+            $_get = isset( $_get[ 'get' ] ) ? $_get[ 'get' ] : [];
+
+            if ( !empty( $_get ) && isset( $_get[ 'tour_guide' ] ) && (int)$_get[ 'tour_guide' ] === 1 ) {
+                wp_enqueue_style( $this->plugin_name . '-shepherd', WPFM_PLUGIN_ASSETS_FOLDER . 'css/shepherd.css', array(), $this->version );
+            }
+
+            wp_enqueue_style( $this->plugin_name . '-style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version );
             wp_style_add_data( $this->plugin_name . '-style-css', 'rtl', 'replace' );
         }
     }
@@ -318,6 +326,26 @@ class Rex_Product_Feed_Admin {
                 $this->version,
                 true
             );
+
+            $_get = rex_feed_get_sanitized_get_post();
+            $_get = isset( $_get[ 'get' ] ) ? $_get[ 'get' ] : [];
+
+            if ( !empty( $_get ) && isset( $_get[ 'tour_guide' ] ) && (int)$_get[ 'tour_guide' ] === 1 ) {
+                wp_enqueue_script(
+                    $this->plugin_name.'-shepherd',
+                    WPFM_PLUGIN_ASSETS_FOLDER . 'js/shepherd.min.js',
+                    array( 'jquery' ),
+                    $this->version,
+                    true
+                );
+                wp_enqueue_script(
+                    $this->plugin_name.'-on-boarding',
+                    WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-on-boarding.js',
+                    array( 'jquery', $this->plugin_name.'-shepherd' ),
+                    $this->version,
+                    true
+                );
+            }
         }
 
         if ($screen->id == $this->category_mapping_screen_hook_suffix) {
@@ -533,23 +561,21 @@ class Rex_Product_Feed_Admin {
     public function load_admin_pages() {
 
         add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon-svg/dashboard-icon.svg', 20 );
+        $this->setup_wizard_hook_suffix = add_submenu_page('product-feed', __('Get Started', 'rex-product-feed'), __('Get Started', 'rex-product-feed'), 'manage_woocommerce', 'setup-wizard',  __CLASS__ .'::setup_wizard');
         add_submenu_page('product-feed', __('Add New Feed', 'rex-product-feed'), __('Add New Feed', 'rex-product-feed'), 'manage_woocommerce', 'post-new.php?post_type=product-feed');
-
-        
         $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping');
         $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings');
         $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
-        $this->setup_wizard_hook_suffix = add_submenu_page('product-feed', __('Setup Wizard', 'rex-product-feed'), __('Setup Wizard', 'rex-product-feed'), 'manage_woocommerce', 'setup-wizard',  __CLASS__ .'::setup_wizard');
         $this->wpfm_support_menu = add_submenu_page('product-feed', '', __('Support', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_support',  __CLASS__ .'::wpfm_support');
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
 
         
         
         if(!$is_premium) {
-            $this->wpfm_pro_submenu = add_submenu_page('product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
+            $this->wpfm_pro_submenu = add_submenu_page( 'product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
         } else {
             $this->wpfm_pro_submenu = add_submenu_page(
-                'product-feed',
+                 'product-feed',
                 __('License', 'rex-product-feed'),
                 __('License', 'rex-product-feed'),
                 'manage_options',

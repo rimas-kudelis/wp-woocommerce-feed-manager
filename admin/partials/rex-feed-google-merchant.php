@@ -1,74 +1,101 @@
 <?php $icon = '../assets/icon/icon-svg/icon-question.php'; ?>
 
-<div id="<?php echo esc_attr( $this->prefix ) . 'google_merchant_sidebar__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_merchant_sidebar__content'; ?>">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_destination';?>"><?php esc_html_e('Select Destination', 'rex-product-feed')?>
-		<span class="rex_feed-tooltip">
-            <?php include plugin_dir_path(__FILE__) . $icon;?>
-            <p><?php esc_html_e('Select Destination', 'rex-product-feed')?></p>
-        </span>
-	</label>
-
-	<?php
-	$index = 1;
-	$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_destination', true );
-
-	foreach( $destinations as $key => $value ) {
-		$checked = is_array( $prev_value ) && in_array( $key, $prev_value )  ? ' checked="checked"' : '';
-		echo '<li>';
-		echo '<input type="checkbox" id="'. esc_attr($this->prefix) . 'google_destination' . esc_attr($index) . '" value="'. esc_attr($value) .'" name="' .esc_attr($this->prefix). 'google_destination[]" ' .esc_attr($checked). '>';
-		echo '<label for="'. esc_attr($this->prefix) . 'google_destination' . esc_attr($index++) . '">'.esc_html__($key, 'rex-product-feed').'</label>';
-		echo '</li>';
-	}
-	?>
-</div>
 <?php
 $value = get_post_meta( get_the_ID(), 'rex_feed_google_target_country', true );
 $value = $value == '' ? 'US' : $value;
 ?>
-<div id="<?php echo esc_attr( $this->prefix ) . 'google_target_country__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_target_country__content'; ?>">
 
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_country';?>"><?php esc_html_e('Target Country', 'rex-product-feed')?>
-		<span class="rex_feed-tooltip">
-                    <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php esc_html_e('Target Country', 'rex-product-feed')?></p>
-                </span>
-	</label>
 
-	<input type="text" id="<?php echo esc_attr( $this->prefix ) . 'google_target_country';?>" value="<?php echo esc_attr($value)?>" name="<?php echo esc_attr( $this->prefix ) . 'google_target_country'?>" required>
-</div>
+<div class="<?php echo esc_attr( $this->prefix ) . 'google_merchant_content__area'; ?>">
 
-<?php
-$value = get_post_meta( get_the_ID(), 'rex_feed_google_target_language', true );
-$value = $value == '' ? 'en' : $value;
-?>
-<div id="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>"><?php esc_html_e('Target Language', 'rex-product-feed')?>
-		<span class="rex_feed-tooltip">
-                    <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php esc_html_e('Target Language', 'rex-product-feed')?></p>
-                </span>
-	</label>
-	<input type="text" id="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>" value="<?php echo esc_attr($value)?>" name="<?php echo esc_attr( $this->prefix ) . 'google_target_language'?>" required>
-</div>
+	<div>
+		<p class="google-desc">
+			Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Check abbreviation lists</a> 
+		</p>
+	</div>
 
-<div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule__content'; ?>">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule';?>"><?php esc_html_e('Schedule', 'rex-product-feed')?>
-		<span class="rex_feed-tooltip">
-                    <?php include plugin_dir_path(__FILE__) . $icon;?>
-                    <p><?php esc_html_e('Schedule', 'rex-product-feed')?></p>
-                </span>
-	</label>
-	<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>" id="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>">
-		<?php
-		$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule', true );
-		$prev_value = $prev_value !== '' ? $prev_value : 'monthly';
-		foreach ( $schedules as $key => $value ) {
-			$selected = $key == $prev_value ? ' selected' : '';
-			echo '<option value="'.esc_attr($key).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';
-		}
+	<div class="<?php echo esc_attr( $this->prefix ) . 'google_target__area'; ?>">
+		<div class="<?php echo esc_attr( $this->prefix ) . 'google_target__content'; ?>">
+			<div id="<?php echo esc_attr( $this->prefix ) . 'google_target_country__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_target_country__content'; ?>">
+
+				<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_country';?>"><?php esc_html_e('Target Country', 'rex-product-feed')?>
+					<span class="rex_feed-tooltip">
+								<?php include plugin_dir_path(__FILE__) . $icon;?>
+								<p><?php esc_html_e('Target Country', 'rex-product-feed')?></p>
+							</span>
+				</label>
+
+				<input type="text" id="<?php echo esc_attr( $this->prefix ) . 'google_target_country';?>" value="<?php echo esc_attr($value)?>" name="<?php echo esc_attr( $this->prefix ) . 'google_target_country'?>" required>
+			</div>
+
+			<?php
+			$value = get_post_meta( get_the_ID(), 'rex_feed_google_target_language', true );
+			$value = $value == '' ? 'en' : $value;
+			
+			?>
+			<div id="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>"><?php esc_html_e('Target Language', 'rex-product-feed')?>
+					<span class="rex_feed-tooltip">
+								<?php include plugin_dir_path(__FILE__) . $icon;?>
+								<p><?php esc_html_e('Target Language', 'rex-product-feed')?></p>
+							</span>
+				</label>
+				<input type="text" id="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>" value="<?php echo esc_attr($value)?>" name="<?php echo esc_attr( $this->prefix ) . 'google_target_language'?>" required>
+			</div>
+
+			<div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule__content'; ?>">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule';?>"><?php esc_html_e('Schedule', 'rex-product-feed')?>
+					<span class="rex_feed-tooltip">
+								<?php include plugin_dir_path(__FILE__) . $icon;?>
+								<p><?php esc_html_e('Schedule', 'rex-product-feed')?></p>
+							</span>
+				</label>
+				<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>" id="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>">
+					<?php
+					$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule', true );
+					$prev_value = $prev_value !== '' ? $prev_value : 'monthly';
+					foreach ( $schedules as $key => $value ) {
+						$selected = $key == $prev_value ? ' selected' : '';
+						echo '<option value="'.esc_attr($key).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';
+					}
+					?>
+				</select>
+			</div>
+		</div>
+		
+		<?php 
+			$feed_merchant = get_post_meta( get_the_ID(), 'rex_feed_merchant', true );
+			
+			if ( $feed_merchant === 'google' ) {
+				$rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
+				$message             = __( 'Oops!! Access token has expired 😕 Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed' );
+				
+				if ( !( $rex_google_merchant->is_authenticate() ) ) {
+					echo '<div class="google-status-area">';
+					echo sprintf(
+						'<p class="google-status">%s</p>',
+						esc_html( $message ) );
+
+					echo sprintf(
+						'<a href="%s" class="btn-default">' . esc_attr__( 'Authenticate', 'rex-product-feed' ) . '</a>',
+						esc_url( admin_url( 'admin.php?page=merchant_settings' ) ) );
+
+						echo '</div>';
+				}
+				else {
+					echo '<a class="btn waves-effect waves-light" id="send-to-google" href="#">
+							' . esc_attr__( 'Send to google merchant', 'rex-product-feed' ) . '
+						</a> ';
+				}
+				echo '<div class="rex-google-status"></div>';
+			}
 		?>
-	</select>
+
+	</div>
+
 </div>
+
+
 
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month__content'; ?>" style="display: none">
 	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month';?>"><?php esc_html_e('Select Day of Month', 'rex-product-feed')?>
