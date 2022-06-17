@@ -428,6 +428,12 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 - WooCommerce to [BestPrice.gr](https://www.bestprice.gr/)
 - WooCommerce to [Spartoo.fr](https://www.spartoo.com/)
 - WooCommerce to [Mirakl](https://www.mirakl.com/)
+- WooCommerce to [Rozetka](https://rozetka.com.ua/)
+- WooCommerce to [Idealo.de](https://www.idealo.de/)
+- WooCommerce to [Guloggratis.dk](https://www.guloggratis.dk/)
+- WooCommerce to [Trovino](https://www.trovino.it/)
+- WooCommerce to [Cercavino](https://cercavino.com/)
+- WooCommerce to [Shopee](https://shopee.com/)
 
 
 == Pro Features: ==
@@ -436,6 +442,9 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 * Unlimited Product Feed Generated (Free version limited to 200 products)
 * Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date)
 * Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender, Color)
+* Access to Product Rule feature
+* Access to Combined Attributes feature
+* Access to Dynamic Pricing feature
 * Ability To Exclude Tax From Structured Data Prices
 * Option To Fix WooCommerce's (Json-Ld) Structured Data Bug
 * 6 more pre-built templates (including eBay MIP, eBay Seller Center, Google Product Review, Google Re-marketing (DRM) and others)
@@ -657,6 +666,12 @@ Currently, we support 168 major merchant shops:
 - Mirakl
 - BestPrice.gr
 - Bing Image Feed
+- Rozetka
+- idealo.de
+- Guloggratis.dk
+- Trovino.it 
+- Cercavino
+- Shopee
 
 
 = Is there a product limit? =
