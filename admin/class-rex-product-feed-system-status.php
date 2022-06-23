@@ -259,18 +259,18 @@ class Rex_Feed_System_Status {
      * @return string
      */
     private static function get_formated_bytes( $bytes, $precision = 2 ) {
-    $units = array( 'B', 'KB', 'MB', 'GB', 'TB' );
+        $units = array( 'B', 'KB', 'MB', 'GB', 'TB' );
 
-    $bytes = max($bytes, 0);
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-    $pow = min($pow, count($units) - 1);
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
 
-    // Uncomment one of the following alternatives
-    $bytes /= pow(1024, $pow);
-    // $bytes /= (1 << (10 * $pow));
+        // Uncomment one of the following alternatives
+        $bytes /= pow(1024, $pow);
+        // $bytes /= (1 << (10 * $pow));
 
-    return round($bytes, $precision) . ' ' . $units[ $pow ];
-}
+        return round($bytes, $precision) . ' ' . $units[ $pow ];
+    }
 
     private static function get_feed_file_directory() {
         $path = wp_upload_dir();

@@ -25,6 +25,7 @@ class Rex_Feed_Attributes
 
         $attributes = array(
             'Primary Attributes'           => self::get_primary_attributes(),
+            'Shipping & Tax Attributes'    => self::get_shipping_tax_attributes(),
             'Price Attributes'             => self::get_price_attributes(),
             'Image Attributes'             => self::get_image_attributes(),
             'Product Attributes'           => self::get_product_attributes(),
@@ -123,8 +124,6 @@ class Rex_Feed_Attributes
             'width'                          => 'Width',
             'height'                         => 'Height',
             'length'                         => 'Length',
-            "shipping_class"                 => "Shipping Class",
-            "shipping_cost"                  => "Shipping Cost",
             'rating_total'                   => 'Total Rating',
             'rating_average'                 => 'Average Rating',
             'product_tags'                   => 'Tags',
@@ -251,7 +250,6 @@ class Rex_Feed_Attributes
         return array(
             'Brands for WooCommerce' => array(
                 'woocommerce_brand_berocket' => 'Brands for WooCommerce',
-
             ),
         );
     }
@@ -496,5 +494,22 @@ class Rex_Feed_Attributes
             $attributes = [];
         }
         return $attributes;
+    }
+
+
+    /**
+     * @desc Get Shipping and Tax Attributes
+     * @since 7.2.9
+     * @return string[]
+     */
+    public static function get_shipping_tax_attributes() {
+        return [
+            "shipping_class"                 => "Shipping Class",
+            "shipping_cost"                  => "Shipping Cost (Base)",
+            "shipping_class_cost"            => "Shipping Cost (Class)",
+            "shipping_no_class_cost"         => "Shipping Cost (No Class)",
+            "shipping_cost_base_class"       => "Shipping Cost (Base + Class)",
+            "shipping_cost_base_no_class"    => "Shipping Cost (Base + No Class)",
+        ];
     }
 }

@@ -302,6 +302,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $custom_filter_var_exclude = false;
 
     /**
+     * @desc Variable to store country to retrieve
+     * shipping and tax related values
+     * @since 7.2.9
+     * @var $shipping_tax_country
+     */
+    protected $shipping_tax_country;
+
+    /**
      * Define the core functionality of the plugin.
      *
      * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -347,6 +355,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 	        $this->analytics_params        = $config[ 'analytics_params' ];
 	        $this->product_condition       = $config[ 'product_condition' ];
 	        $this->aelia_currency          = isset( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : 'USD';
+	        $this->shipping_tax_country    = isset( $config[ 'shipping_tax_country' ] ) ? $config[ 'shipping_tax_country' ] : '';
 
             if ( isset( $config[ 'custom_filter_option' ] ) && 'added' === $config[ 'custom_filter_option' ] ) {
                 $this->custom_filter_option = true;
@@ -676,6 +685,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->feed_separator     = isset( $feed_rules[ 'rex_feed_separator' ] ) ? esc_attr( $feed_rules[ 'rex_feed_separator' ] ) : '';
         $this->aelia_currency     = isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ? esc_attr( $feed_rules[ 'rex_feed_aelia_currency' ] ) : 'USD';
         $custom_filter_option     = isset( $feed_rules[ 'rex_feed_custom_filter_option_btn' ] ) ? esc_attr( $feed_rules[ 'rex_feed_custom_filter_option_btn' ] ) : 'removed';
+        $this->shipping_tax_country = isset( $feed_rules[ 'rex_feed_shipping_tax_country' ] ) ? esc_attr( $feed_rules[ 'rex_feed_shipping_tax_country' ] ) : '';
 
         if( isset( $feed_rules[ 'rex_feed_wmc_currency' ] ) ) {
             $this->wmc_currency   = $feed_rules[ 'rex_feed_wmc_currency' ];
@@ -921,6 +931,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         if ( isset( $feed_rules[ 'rex_feed_custom_filter_option_btn' ] ) ) {
             update_post_meta( $this->id, 'rex_feed_custom_filter_option', $feed_rules[ 'rex_feed_custom_filter_option_btn' ] );
+        }
+        if ( isset( $feed_rules[ 'rex_feed_shipping_tax_country' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_shipping_tax_country', $feed_rules[ 'rex_feed_shipping_tax_country' ] );
         }
     }
 
@@ -1694,10 +1707,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         if ( $format === 'xml' || $format === 'yml' ) {
-            $file = trailingslashit( $path ) . "feed-{$this->id}." . $format;
+            $file = trailingslashit( $path ) . "temp-feed-{$this->id}." . $format;
 
-            update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}." . $format);
-            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             $this->feed = wpfm_replace_special_char( $this->feed );
@@ -1711,7 +1722,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     if ( $this->tbatch > 1 ) {
                         $this->footer_replace();
                     }
-                    return file_put_contents( $file, $this->feed ) ? 'true' : 'false';
+                    file_put_contents( $file, $this->feed );
                 }
                 else {
                     $feed = $this->get_items();
@@ -1727,8 +1738,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
                         }
                     }
                     file_put_contents( $file, $feed, FILE_APPEND );
-
-                    return 'true';
                 }
             }
             else {
@@ -1736,15 +1745,28 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     $this->footer_replace();
                 }
 
-                return file_put_contents( $file, $this->feed, FILE_APPEND ) ? 'true' : 'false';
+                file_put_contents( $file, $this->feed, FILE_APPEND );
             }
+
+            if ( $this->batch === $this->tbatch && file_exists( $file ) && function_exists( 'rename' ) ) {
+                if ( function_exists( 'rex_feed_is_valid_xml' ) && rex_feed_is_valid_xml( $file, $this->id ) ) {
+                    rename( $file, trailingslashit( $path ) . "feed-{$this->id}." . $format );
+                    delete_post_meta( $this->id, 'rex_feed_temp_xml_file' );
+                    update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}." . $format );
+                }
+                else {
+                    update_post_meta( $this->id, 'rex_feed_temp_xml_file', $baseurl . '/rex-feed' . "/temp-feed-{$this->id}." . $format );
+                    return 'false';
+                }
+
+            }
+            return 'true';
         }
         elseif ( $format === 'text' ) {
 
             $this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
             $file       = trailingslashit( $path ) . "feed-{$this->id}.txt";
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.txt" );
-            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             if ( $this->batch != 1 ) {
@@ -1771,7 +1793,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
             $file = trailingslashit( $path ) . "feed-{$this->id}.tsv";
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv" );
-            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             if ( file_exists( $file ) ) {
@@ -1796,7 +1817,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
         elseif ( $format === 'csv' ) {
             $file = trailingslashit( $path ) . "feed-{$this->id}.csv";
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.csv" );
-            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
             update_post_meta( $this->id, 'rex_feed_separator', $this->feed_separator );
 
@@ -1805,7 +1825,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
         else {
             $file = trailingslashit( $path ) . "feed-{$this->id}.xml";
             update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml" );
-            // update_post_meta( $this->id, 'rex_feed_merchant', $this->merchant );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             $this->feed = wpfm_replace_special_char( $this->feed );
@@ -2625,5 +2644,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     public function get_feed_format() {
         return $this->feed_format;
+    }
+
+    /**
+     * @desc Gets selected country for the feed.
+     * @since 7.2.9
+     * @return mixed|string
+     */
+    public function get_shipping_tax_zone() {
+        return $this->shipping_tax_country;
     }
 }

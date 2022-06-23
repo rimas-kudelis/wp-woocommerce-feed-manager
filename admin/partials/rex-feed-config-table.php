@@ -15,6 +15,7 @@
     </div>
 
     <div class="rex-feed-publish-btn">
+        <span class="spinner"></span>
         <a id="rex-bottom-preview-btn" class="rex-new-custom-btn bottom-preview-btn">
             <?php echo esc_attr__( 'Preview Feed', 'rex-product-feed' ) ?>
         </a>

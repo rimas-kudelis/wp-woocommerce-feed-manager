@@ -241,6 +241,8 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
 
         $this->loader->add_action( 'admin_init', $plugin_admin, 'remove_wpfm_logs' );
+
+        $this->loader->add_action( 'admin_notices', $plugin_admin, 'render_xml_error_message' );
     }
 
 

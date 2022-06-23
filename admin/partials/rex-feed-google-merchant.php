@@ -8,10 +8,17 @@ $value = $value == '' ? 'US' : $value;
 
 <div class="<?php echo esc_attr( $this->prefix ) . 'google_merchant_content__area'; ?>">
 
-	<div>
-		<p class="google-desc">
-			Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en. <a href="https://rextheme.com/google-country-codes-list/" target="_blank">Check abbreviation lists</a> 
+	<div class="<?php echo esc_attr( $this->prefix ) . 'google_desc__area'; ?>">
+		<p>
+			Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en.  
 		</p>
+
+		<div class="<?php echo esc_attr( $this->prefix ) . 'google_desc__link';?>">
+			<a href="<?php echo esc_url( 'https://rextheme.com/google-country-codes-list/' )?>" target="_blank"><?php esc_html_e('Check Abbreviation Lists','rex-product-feed')?></a>
+			<a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/' )?>" target="_blank"><?php esc_html_e('Auto-sync Product Feed', 'rex-product-feed')?></a>
+			<a href="<?php echo esc_url( 'https://rextheme.com/wp-content/uploads/2020/08/WPFM-New-Feed-Direct-Auto-sync-to-Google.pdf' )?>" target="_blank"><?php esc_html_e('Reverse Method (Direct Upload)', 'rex-product-feed')?></a>
+		</div>
+
 	</div>
 
 	<div class="<?php echo esc_attr( $this->prefix ) . 'google_target__area'; ?>">

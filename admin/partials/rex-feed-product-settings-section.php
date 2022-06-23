@@ -9,12 +9,14 @@
 				<?php echo '<h2>' . esc_html__( 'Settings', 'rex-product-feed' ) . '</h2>';?>
 			</div>
 		</div>
+
 		<span class="rex-contnet-setting__close-icon close-btn" id="rex-contnet-setting__close-icon">
 			<?php echo esc_html__( 'Close', 'rex-product-feed' );?>
         </span>
 	</div>
 
 	<div class="rex-contnet-setting-content-area">
+
 		<div class="<?php echo esc_attr( $this->prefix ) . 'schedule';?>">
 			<label for="<?php echo esc_attr( $this->prefix ) . 'schedule';?>"><?php esc_html_e('Auto-Generate Your Feed', 'rex-product-feed')?>
 				<span class="rex_feed-tooltip">
@@ -48,6 +50,33 @@
 				?>
 			</ul>
 		</div>
+
+        <div class="<?php echo esc_attr( $this->prefix ) . 'country_list_area';?>">
+            <div class="<?php echo esc_attr( $this->prefix ) . 'country_list_content';?>">
+                <label for="<?php echo esc_attr( $this->prefix ) . 'shipping_tax_country';?>"><?php esc_html_e('Select Shipping Zone', 'rex-product-feed')?>
+                    <span class="rex_feed-tooltip">
+						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
+						<p><?php esc_html_e( 'Select country for shipping and tax values', 'rex-product-feed' ); ?></p>
+					</span>
+                </label>
+
+                <select name="<?php echo esc_attr( $this->prefix ) . 'shipping_tax_country';?>" id="<?php echo esc_attr( $this->prefix ) . 'shipping_tax_country';?>" class="">
+                    <option value="-1">Please select a country</option>
+                    <?php
+                    $saved_zone = get_post_meta( get_the_ID(), esc_attr( $this->prefix ) . 'shipping_tax_country', true );
+                    $shipping_zones = WC_Shipping_Zones::get_zones();
+
+                    foreach( $shipping_zones as $key => $value ) {
+                        $zone_id = isset( $value[ 'id' ] ) ? $value[ 'id' ] : '';
+                        $zone_name = isset( $value[ 'zone_name' ] ) ? $value[ 'zone_name' ] : '';
+                        $selected = (int)$saved_zone === (int)$zone_id ? ' selected' : '';
+
+                        echo '<option value="'. esc_attr( $zone_id ) .'" '. esc_html( $selected ) .'>'. esc_attr( $zone_name ) .'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'include_out_of_stock';?> ">
 			<div class="<?php echo esc_attr( $this->prefix ) . 'include_out_of_stock_content';?> pl-10">
@@ -119,42 +148,22 @@
 				</div>
 			</div>
 
-			<div class="<?php echo esc_attr( $this->prefix ) . 'variations';?> pr-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'variations';?>"><?php esc_html_e('Include All Variable Products Variations', 'rex-product-feed')?>
+			<div class="<?php echo esc_attr( $this->prefix ) . 'hidden_products';?> pr-10">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'hidden_products';?>"><?php esc_html_e('Exclude Invisible/Hidden Products', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
-						<p>
-							<?php
-							esc_html_e( 'Include all the Variable Products Variations in your feed (these are only the product variations)', 'rex-product-feed' );
-							echo "<br>";
-							esc_html_e( 'Example:', 'rex-product-feed' );
-							echo "<br>";
-							esc_html_e( '<g:title>', 'rex-product-feed' );
-							echo "<br>";
-							esc_html_e( '<![CDATA[ V-Neck T-Shirt]]>', 'rex-product-feed' );
-							echo "<br>";
-							esc_html_e( '</g:title>', 'rex-product-feed' );
-							echo "<br>";
-							esc_html_e( '<g:link>', 'rex-product-feed' );
-							echo "<br>";
-							esc_html_e( '<![CDATA[ http://URL/]]>', 'rex-product-feed' );
-							echo "<br>";
-							esc_html_e( '</g:link>' , 'rex-product-feed');
-							echo "<br>";
-							?>
-						</p>
+						<p><?php esc_html_e( 'Enable this option to exclude invisible/hidden products from your feed', 'rex-product-feed' ); ?></p>
 					</span>
 				</label>
-
 				<div class="switch">
 					<div class="wpfm-switcher">
                         <?php
-                        $saved_value = get_post_meta(get_the_ID(), 'rex_feed_variations', true);
-                        $saved_value = $saved_value !== '' ? $saved_value : 'yes';
+                        $saved_value = get_post_meta(get_the_ID(), 'rex_feed_hidden_products', true);
+                        $saved_value = $saved_value !== '' ? $saved_value : 'no';
                         $checked = $saved_value === 'yes' ? ' checked' : '';
                         ?>
-                        <input class="switch-input" type="checkbox" name="<?php echo esc_attr( $this->prefix ) . 'variations'?>" value="yes" id="<?php echo esc_attr( $this->prefix ) . 'variations'?>" <?php echo esc_attr( $checked )?>>
-						<label class="lever" for="<?php echo esc_attr( $this->prefix ) . 'variations'?>"></label>
+                        <input class="switch-input" type="checkbox" name="<?php echo esc_attr( $this->prefix ) . 'hidden_products'?>" value="yes" id="<?php echo esc_attr( $this->prefix ) . 'hidden_products'?>" <?php echo esc_attr( $checked )?>>
+						<label class="lever" for="<?php echo esc_attr( $this->prefix ) . 'hidden_products'?>"></label>
 					</div>
 				</div>
 			</div>
@@ -213,25 +222,46 @@
 				</div>
 			</div>
 
-			<div class="<?php echo esc_attr( $this->prefix ) . 'hidden_products';?> pl-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'hidden_products';?>"><?php esc_html_e('Exclude Invisible/Hidden Products', 'rex-product-feed')?>
+			<div class="<?php echo esc_attr( $this->prefix ) . 'variations';?> pl-10">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'variations';?>"><?php esc_html_e('Include All Variable Products Variations', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
-						<p><?php esc_html_e( 'Enable this option to exclude invisible/hidden products from your feed', 'rex-product-feed' ); ?></p>
+						<p>
+							<?php
+							esc_html_e( 'Include all the Variable Products Variations in your feed (these are only the product variations)', 'rex-product-feed' );
+							echo "<br>";
+							esc_html_e( 'Example:', 'rex-product-feed' );
+							echo "<br>";
+							esc_html_e( '<g:title>', 'rex-product-feed' );
+							echo "<br>";
+							esc_html_e( '<![CDATA[ V-Neck T-Shirt]]>', 'rex-product-feed' );
+							echo "<br>";
+							esc_html_e( '</g:title>', 'rex-product-feed' );
+							echo "<br>";
+							esc_html_e( '<g:link>', 'rex-product-feed' );
+							echo "<br>";
+							esc_html_e( '<![CDATA[ http://URL/]]>', 'rex-product-feed' );
+							echo "<br>";
+							esc_html_e( '</g:link>' , 'rex-product-feed');
+							echo "<br>";
+							?>
+						</p>
 					</span>
 				</label>
+
 				<div class="switch">
 					<div class="wpfm-switcher">
                         <?php
-                        $saved_value = get_post_meta(get_the_ID(), 'rex_feed_hidden_products', true);
-                        $saved_value = $saved_value !== '' ? $saved_value : 'no';
+                        $saved_value = get_post_meta(get_the_ID(), 'rex_feed_variations', true);
+                        $saved_value = $saved_value !== '' ? $saved_value : 'yes';
                         $checked = $saved_value === 'yes' ? ' checked' : '';
                         ?>
-                        <input class="switch-input" type="checkbox" name="<?php echo esc_attr( $this->prefix ) . 'hidden_products'?>" value="yes" id="<?php echo esc_attr( $this->prefix ) . 'hidden_products'?>" <?php echo esc_attr( $checked )?>>
-						<label class="lever" for="<?php echo esc_attr( $this->prefix ) . 'hidden_products'?>"></label>
+                        <input class="switch-input" type="checkbox" name="<?php echo esc_attr( $this->prefix ) . 'variations'?>" value="yes" id="<?php echo esc_attr( $this->prefix ) . 'variations'?>" <?php echo esc_attr( $checked )?>>
+						<label class="lever" for="<?php echo esc_attr( $this->prefix ) . 'variations'?>"></label>
 					</div>
 				</div>
 			</div>
+
 		</div>
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'skip_product_area';?> ">

@@ -112,6 +112,13 @@ class Rex_Product_Data_Retriever
     protected $feed_format;
 
     /**
+     * @desc Variable for feed country
+     * @since 7.2.9
+     * @var $shipping_zone
+     */
+    protected $shipping_zone;
+
+    /**
      * Initialize the class and set its properties.
      *
      * Rex_Product_Data_Retriever constructor.
@@ -137,6 +144,7 @@ class Rex_Product_Data_Retriever
         $this->wcml               = false;
         $this->wcml_currency      = '';
         $this->feed_format        = $feed->get_feed_format();
+        $this->shipping_zone       = $feed->get_shipping_tax_zone();
 
         if( wpfm_is_wpml_active() ) {
             $this->wcml          = true;
@@ -301,6 +309,9 @@ class Rex_Product_Data_Retriever
         }
         elseif ( 'meta' === $rule['type'] && $this->is_woo_discount_rules( $rule['meta_key'] ) ) {
             $val = $this->set_woo_discount_rules( $rule['meta_key']  );
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_shipping_tax_class_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_shipping_tax_class_attr( $rule['meta_key']  );
         }
 
         return $val;
@@ -728,31 +739,18 @@ class Rex_Product_Data_Retriever
 
             case 'width':
                 return $this->product->get_width();
-                break;
 
             case 'height':
                 return $this->product->get_height();
-                break;
 
             case 'length':
                 return $this->product->get_length();
-                break;
-
-            case 'shipping_class':
-                return $this->product->get_shipping_class();
-                break;
-
-            case 'shipping_cost':
-                return $this->get_shipping_cost();
-                break;
 
             case 'type':
                 return $this->product->get_type();
-                break;
 
             case 'in_stock':
                 return $this->get_stock();
-                break;
 
             case 'rating_average':
                 return $this->product->get_average_rating();
@@ -796,6 +794,37 @@ class Rex_Product_Data_Retriever
             default:
                 return '';
                 break;
+        }
+    }
+
+
+    /**
+     * @desc Get shipping and tax attributes value
+     * @since 7.2.9
+     * @param $key
+     * @return int|string
+     */
+    protected function set_shipping_tax_class_attr( $key ) {
+        switch ( $key ) {
+            case 'shipping_class':
+                return $this->product->get_shipping_class();
+
+            case 'shipping_cost':
+                return $this->get_shipping_cost();
+
+            case 'shipping_class_cost':
+                return $this->get_shipping_cost('class_cost_' );
+
+            case 'shipping_no_class_cost':
+                return $this->get_shipping_cost( 'no_class_cost' );
+
+            case 'shipping_cost_base_class':
+                return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('class_cost_' );
+
+            case 'shipping_cost_base_no_class':
+                return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('no_class_cost' );
+            default:
+                return '';
         }
     }
 
@@ -3037,6 +3066,20 @@ class Rex_Product_Data_Retriever
 
 
     /**
+     * @desc Helper to check if given attribute is a Shipping & Tax Attributes
+     * @since 7.2.9
+     * @param $key
+     * @return bool
+     */
+    protected function is_shipping_tax_class_attr( $key ) {
+        if( isset( $this->product_meta_keys['Shipping & Tax Attributes'] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys['Shipping & Tax Attributes'] );
+        }
+        return false;
+    }
+
+
+    /**
      * Helper to get condition of a product.
      *
      * @since    1.0.0
@@ -3401,9 +3444,30 @@ class Rex_Product_Data_Retriever
      *
      * @return string
      */
-    public function get_shipping_cost()
+    public function get_shipping_cost( $type = 'cost' )
     {
+        $shipping_zone = new WC_Shipping_Zone( $this->shipping_zone );
+        $shipping_methods = $shipping_zone->get_shipping_methods();
 
+        if ( !empty( $shipping_methods ) ) {
+            foreach ( $shipping_methods as $method ) {
+                if ( 'WC_Shipping_Flat_Rate' === get_class( $method ) ) {
+                    $shipping_rates = isset( $method->instance_settings ) ? $method->instance_settings : [];
+                    if ( 'cost' === $type ) {
+                        return isset( $shipping_rates[ $type ] ) ? $shipping_rates[ $type ] : '';
+                    }
+                    else {
+                        $shipping_id = $this->product->get_shipping_class_id();
+                        if ( $shipping_id ) {
+                            if ( 'class_cost_' === $type ) {
+                                return isset( $shipping_rates[ $type . $shipping_id ] ) ? $shipping_rates[ $type . $shipping_id ] : '';
+                            }
+                            return isset( $shipping_rates[ $type ] ) ? $shipping_rates[ $type ] : '';
+                        }
+                    }
+                }
+            }
+        }
         return '';
     }
 

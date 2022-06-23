@@ -74,6 +74,7 @@
     /**
      * Add a new table-row and update it's
      */
+
     $( document ).on( 'click', '#rex-new-attr', function () {
         var rowId = $( this ).parent().parent().siblings( '#config-table' ).find( 'tbody tr' ).last().attr( 'data-row-id' );
         rowId = parseInt( rowId ) + 1;
@@ -100,6 +101,7 @@
     /**
      * Add placeholder for dynamic pricing
      */
+
     $( document ).on( 'click', '.meta-dropdown', function () {
         var is_premium = rex_wpfm_ajax.is_premium;
 
@@ -796,6 +798,8 @@
             $( '#publishing-action span.spinner' ).addClass( 'is-active' );
             $( this ).addClass( 'disabled' );
 
+            $( '.rex-feed-publish-btn span.spinner' ).addClass( 'is-active' );
+
             $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'cursor', 'not-allowed' );
             $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'background-color', '#f6f7f7' );
             $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'border', '1px solid #e9e9ea' );
@@ -818,8 +822,13 @@
                     }
                 } )
                 .fail( function ( response ) {
+
                     $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
                     $( '#publish' ).removeClass( 'disabled' );
+
+                    $( '.rex-feed-publish-btn span.spinner' ).removeClass( 'is-active' );
+
+                    
                     console.log( 'Uh, oh!' );
                     console.log( response.statusText );
                 } );
@@ -897,6 +906,8 @@
                     $( '#publish, #rex-bottom-publish-btn, #rex-bottom-preview-btn' ).removeClass( 'disabled' );
                     $( document ).off( 'click', '#publish, #rex-bottom-publish-btn, #rex-bottom-preview-btn', get_product_number );
                     $( '#publish' ).trigger( 'click' );
+
+
                 }
                 else if ( response.msg == 'failForInvalidEntry' ) {
                     alert( "Please set proper values for the mandatory field like Shipping Id, Who made, When made, Taxonomy Id." );
@@ -1177,11 +1188,13 @@
      */
     function wpfm_clear_batch( e ) {
         e.preventDefault();
-        var payload = {};
+        let payload = {};
+        $( this ).find( "span" ).hide();
         $( this ).find( "i" ).show();
         wpAjaxHelperRequest( 'rex-product-clear-batch', payload )
             .success( function ( response ) {
                 $( "#wpfm-clear-batch" ).find( "i" ).hide();
+                $( "#wpfm-clear-batch" ).find( "span" ).show();
             } )
             .error( function ( response ) {
                 console.log( 'uh, oh!' );
@@ -1420,11 +1433,13 @@
         e.preventDefault();
         var payload = {};
         var $el = $( this );
+        $el.find( "span" ).hide();
         $el.find( "i" ).show();
 
         wpAjaxHelperRequest( 'purge-wpfm-transient-cache', payload )
             .success( function ( response ) {
                 $el.find( "i" ).hide();
+                $el.find( "span" ).show();
                 console.log( 'woohoo!' );
             } )
             .error( function ( response ) {

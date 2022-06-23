@@ -1615,6 +1615,9 @@ a,
 .rex-onboarding .rex-settings-tabs li i {
   margin-right: 10px;
 }
+.rex-onboarding .rex-settings-tab-content {
+  /* -----------.rex-system-status area------------- */
+}
 .rex-onboarding .rex-settings-tab-content .tab-content {
   display: none;
   background: #f6f6f8;
@@ -2211,57 +2214,90 @@ a,
   display: flex;
   gap: 15px;
 }
-.rex-onboarding .rex-settings-tab-content .system-status .title {
-  width: 100%;
-  font-weight: 700;
+.rex-onboarding .rex-settings-tab-content .rex-system-status__platform {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.rex-onboarding .rex-settings-tab-content .rex-system-status__heading {
+  font-size: 20px;
+  line-height: normal;
+  color: #363b4e;
+  font-weight: 500;
   text-transform: capitalize;
-  margin-bottom: 20px;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table {
-  box-shadow: none;
+.rex-onboarding .rex-settings-tab-content .rex-system-status__button {
+  display: block;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  color: #fff;
+  padding: 9px 14px;
+  margin-left: 15px;
+  border: none;
+  background-color: #216df0;
+  border-radius: 5px;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+.rex-onboarding .rex-settings-tab-content .rex-system-status__content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-radius: 5px;
+  margin-top: 20px;
+  background-color: #ffff;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr:last-child {
+.rex-onboarding .rex-settings-tab-content .rex-system-status__info {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 14px;
+  border-right: 1px solid #e8e8f5;
+  border-bottom: 1px solid #e8e8f5;
+}
+.rex-onboarding .rex-settings-tab-content .rex-system-status__info:last-child {
   border-bottom: none;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr td {
-  color: #555;
-  font-size: 16px;
-  line-height: 1.5;
-  padding: 11px 18px;
+.rex-onboarding .rex-settings-tab-content .rex-system-status__label {
   font-weight: 500;
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+  font-style: normal;
+  color: #697385;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr td:last-child {
-  border-right: none;
+.rex-onboarding .rex-settings-tab-content .rex-system-status__lists {
+  display: flex;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr td mark {
+.rex-onboarding .rex-settings-tab-content .rex-system-status__list {
+  font-size: 14px;
+  font-weight: 500;
+}
+.rex-onboarding .rex-settings-tab-content .rex-system-status mark {
   background: transparent none;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr td mark code {
-  color: #7ad03a;
-  background: transparent;
+.rex-onboarding .rex-settings-tab-content .rex-system-status mark code {
+  color: #216df0;
+  background-color: transparent;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr td mark .dashicons {
-  background: #7ad03a;
+.rex-onboarding .rex-settings-tab-content .rex-system-status mark .dashicons {
+  background-color: #216df0;
   border-radius: 100%;
   color: #fff;
   width: 20px;
   height: 20px;
-  position: relative;
-  top: 3px;
   margin-right: 9px;
   display: inline-block;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr td mark .dashicons.dashicons-warning {
-  background: #ff0000;
+.rex-onboarding .rex-settings-tab-content .rex-system-status mark .dashicons.dashicons-warning {
+  background-color: #ff0000;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr td mark.yes {
-  color: #7ad03a;
+.rex-onboarding .rex-settings-tab-content .rex-system-status mark.yes {
+  display: flex;
+  align-items: center;
+  color: #216df0;
+  word-break: break-all;
 }
-.rex-onboarding .rex-settings-tab-content .system-status table tbody tr td mark.error {
+.rex-onboarding .rex-settings-tab-content .rex-system-status mark.error {
   color: #ff0000;
 }
 .rex-onboarding .wpfm-log form {
@@ -2699,7 +2735,12 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   line-height: 1.2;
   padding-top: 19px;
 }
-.post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_upgrade_notice.postbox #rex_feed_features_text a {
+.post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_upgrade_notice.postbox #rex_feed_features_text .features-btn-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_upgrade_notice.postbox #rex_feed_features_text .features-btn-area a {
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 700;
@@ -2708,12 +2749,13 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   line-height: 1.5;
   color: #fff;
   border-radius: 6px;
-  margin-top: 30px;
+  margin: 30px auto;
+  text-align: center;
   background-color: #216df0;
   border: 1px solid #216df0;
   padding: 10px 50px;
 }
-.post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_upgrade_notice.postbox #rex_feed_features_text a:hover {
+.post-type-product-feed #post-body.columns-2 #postbox-container-1 #rex_feed_upgrade_notice.postbox #rex_feed_features_text .features-btn-area a:hover {
   background-color: #fff;
   border: 1px solid #d2d2d2;
   color: #333333;
@@ -3257,9 +3299,9 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 21px;
+  line-height: 1.5;
   color: #697385;
-  padding: 5px 20px;
+  padding: 4px 20px;
 }
 #rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .google-status-area a {
   font-family: "Roboto", sans-serif;
@@ -3277,21 +3319,26 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   border: 1px solid #b0cdff;
   color: #333333;
 }
-#rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area p.google-desc {
+#rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .rex_feed_google_desc__area p {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 15px;
   line-height: 24px;
   color: #697385;
 }
-#rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area p.google-desc a {
+#rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .rex_feed_google_desc__area a {
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 15px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 1.5;
   display: inline-block;
   text-decoration: underline;
+}
+#rex_feed_google_merchant .inside .rex_feed_google_merchant_content__area .rex_feed_google_desc__area .rex_feed_google_desc__link {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 /* Responsive code All product feeds  */
@@ -3645,6 +3692,7 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   border-radius: 10px;
   margin-bottom: 25px;
 }
+#rex_feed_product_settings .rex-contnet-setting-content-area .rex_feed_country_list_area,
 #rex_feed_product_settings .rex-contnet-setting-content-area .rex_feed_wcml_currency_area {
   background-color: #f7f7fa;
   border-radius: 10px;
@@ -3656,6 +3704,7 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   display: flex;
   flex-flow: row wrap;
 }
+#rex_feed_product_settings .rex-contnet-setting-content-area .rex_feed_country_list_content,
 #rex_feed_product_settings .rex-contnet-setting-content-area .rex_feed_wcml_currency,
 #rex_feed_product_settings .rex-contnet-setting-content-area .rex_feed_aelia_currency,
 #rex_feed_product_settings .rex-contnet-setting-content-area .rex_feed_wmc_currency {
@@ -4702,18 +4751,27 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   margin-top: 15px;
 }
 .box-video__button a {
-  display: block;
-  color: #062458;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  color: #002b74;
+  font-size: 16px;
   font-weight: 500;
-  background: rgba(33, 109, 240, 0.1);
-  border-radius: 10px;
+  line-height: 1.25;
+  background-color: #ffffff;
+  box-shadow: 0px 10px 40px rgba(14, 46, 101, 0.15);
+  border-radius: 8px;
   padding: 10px 20px 11px;
   transition: all 0.5s;
 }
 .box-video__button a:hover {
   color: #fff;
   background-color: #216df0;
+}
+.box-video__button a:hover svg path {
+  stroke: #fff;
+}
+.box-video__button a svg {
+  margin-right: 8px;
 }
 
 .rex-setup-wizard-feed-area {
@@ -5069,9 +5127,3 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 }
 
 /*# sourceMappingURL=style.css.map */
-
-.post-type-product-feed .combined-dropdown {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}

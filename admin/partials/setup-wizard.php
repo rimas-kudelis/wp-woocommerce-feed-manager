@@ -2,6 +2,7 @@
 $post_new_feed_url = 'post-new.php?post_type=product-feed&rex_feed_merchant=';
 $generate_feed = 'Generate Feed';
 $arrow_icon = 'icon/icon-svg/new-arrow.php';
+$take_tour_icon = 'icon/icon-svg/take-tour.php';
 
 $merchants = array(
     'google' => array(
@@ -143,8 +144,10 @@ $merchants = array(
                 </div>
 
                 <div class="box-video__button">
+                    
                     <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=product-feed&tour_guide=1' ) );?>" id="rex-feed-tour-start-btn" target="_self" role="button">
-                    <?php esc_html_e('Take Tour','rex-product-feed') ?>                   
+                        <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $take_tour_icon;?>
+                        <?php esc_html_e('Take Tour','rex-product-feed') ?>                   
                     </a>
                 </div>
                 <!-- rex-setup-wizard__video-area end -->

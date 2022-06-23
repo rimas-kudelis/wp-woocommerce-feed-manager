@@ -361,27 +361,33 @@ body.post-type-product-feed.shepherd-active {
           }
         }
 
-        a {
-          font: {
-            family: "Roboto", sans-serif;
-            style: normal;
-            weight: 700;
-            size: 15px;
-          }
+        .features-btn-area {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          a {
+            font: {
+              family: "Roboto", sans-serif;
+              style: normal;
+              weight: 700;
+              size: 15px;
+            }
 
-          display: inline-block;
-          line-height: 1.5;
-          color: #fff;
-          border-radius: 6px;
-          margin-top: 30px;
-          background-color: #216df0;
-          border: 1px solid #216df0;
-          padding: 10px 50px;
+            display: inline-block;
+            line-height: 1.5;
+            color: #fff;
+            border-radius: 6px;
+            margin: 30px auto;
+            text-align: center;
+            background-color: #216df0;
+            border: 1px solid #216df0;
+            padding: 10px 50px;
 
-          &:hover {
-            background-color: #fff;
-            border: 1px solid #d2d2d2;
-            color: #333333;
+            &:hover {
+              background-color: #fff;
+              border: 1px solid #d2d2d2;
+              color: #333333;
+            }
           }
         }
       }
@@ -1023,9 +1029,9 @@ body.post-type-product-feed.shepherd-active {
           font-style: normal;
           font-weight: 400;
           font-size: 14px;
-          line-height: 21px;
+          line-height: 1.5;
           color: #697385;
-          padding: 5px 20px;
+          padding: 4px 20px;
         }
         a {
           font-family: "Roboto", sans-serif;
@@ -1046,20 +1052,28 @@ body.post-type-product-feed.shepherd-active {
         }
       }
 
-      p.google-desc {
-        font-family: "Roboto", sans-serif;
-        font-weight: 400;
-        font-size: 15px;
-        line-height: 24px;
-        color: #697385;
+      .rex_feed_google_desc__area {
+        p {
+          font-family: "Roboto", sans-serif;
+          font-weight: 400;
+          font-size: 15px;
+          line-height: 24px;
+          color: #697385;
+        }
         a {
           font-family: "Roboto", sans-serif;
           font-style: normal;
           font-weight: 500;
-          font-size: 15px;
-          line-height: 24px;
+          font-size: 14px;
+          line-height: 1.5;
           display: inline-block;
           text-decoration: underline;
+        }
+
+        .rex_feed_google_desc__link {
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: column;
         }
       }
     }

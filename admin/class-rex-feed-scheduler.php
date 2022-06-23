@@ -222,6 +222,7 @@ class Rex_Feed_Scheduler {
 		$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
         $include_zero_price_products  = get_post_meta( $feed_id, 'rex_feed_include_zero_price_products', true );
         $custom_filter_option    = get_post_meta( $feed_id, 'rex_feed_custom_filter_option', true );
+        $shipping_tax_country    = get_post_meta( $feed_id, 'rex_feed_shipping_tax_country', true );
 
         if( apply_filters( 'wpfm_is_premium', false ) ) {
             $feed_rules = get_post_meta( $feed_id, 'rex_feed_feed_config_rules', true );
@@ -278,7 +279,8 @@ class Rex_Feed_Scheduler {
             'skip_product'                => $skip_product,
             'skip_row'                    => $skip_row,
             'feed_separator'              => $feed_separator,
-            'custom_filter_option'        => $custom_filter_option
+            'custom_filter_option'        => $custom_filter_option,
+            'shipping_tax_country'        => $shipping_tax_country,
         );
 	}
 

@@ -561,15 +561,13 @@ class Rex_Product_Feed_Admin {
     public function load_admin_pages() {
 
         add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon-svg/dashboard-icon.svg', 20 );
-        $this->setup_wizard_hook_suffix = add_submenu_page('product-feed', __('Get Started', 'rex-product-feed'), __('Get Started', 'rex-product-feed'), 'manage_woocommerce', 'setup-wizard',  __CLASS__ .'::setup_wizard');
+        
         add_submenu_page('product-feed', __('Add New Feed', 'rex-product-feed'), __('Add New Feed', 'rex-product-feed'), 'manage_woocommerce', 'post-new.php?post_type=product-feed');
         $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping');
         $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings');
         $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
         $this->wpfm_support_menu = add_submenu_page('product-feed', '', __('Support', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_support',  __CLASS__ .'::wpfm_support');
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
-
-        
         
         if(!$is_premium) {
             $this->wpfm_pro_submenu = add_submenu_page( 'product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
@@ -583,6 +581,8 @@ class Rex_Product_Feed_Admin {
                 __CLASS__ . '::wpfm_license_menu_render'
             );
         }
+           
+        $this->setup_wizard_hook_suffix = add_submenu_page('product-feed', __('Get Started', 'rex-product-feed'), __('Get Started', 'rex-product-feed'), 'manage_woocommerce', 'setup-wizard',  __CLASS__ .'::setup_wizard');
 
         /**
          * WPFM action links
@@ -1500,6 +1500,55 @@ class Rex_Product_Feed_Admin {
                         unlink( $log );
                     }
                 }
+            }
+        }
+    }
+
+
+    /**
+     * @desc Renders admin notice if there is an error generating a xml feed
+     * @since 7.2.9
+     * @return void
+     */
+    public function render_xml_error_message() {
+        $feed_id = get_the_ID();
+
+        if ( 'product-feed' === get_post_type( $feed_id ) ) {
+            $temp_xml_url = get_post_meta( $feed_id, 'rex_feed_temp_xml_file', true );
+
+            if ( '' !== $temp_xml_url ) {
+                ?>
+                <script>
+                    (function ( $ ) {
+                        'use strict';
+                        $( document ).on( 'ready', function () {
+                            $( '#message.updated.notice-success' ).remove();
+                        } )
+                    })( jQuery );
+                </script>
+                <div id="message" class="notice notice-error">
+                    <p>
+                        <?php esc_html_e( 'There was an error when generating the feed. Please try the following to troubleshoot the issue.', 'rex-product-feed' );?>
+                    </p>
+                    <ol style="margin-left: 20px; font-size: 13px;">
+                        <li>
+                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpfm_dashboard' ) )?>" target="_blank"><?php esc_html_e( 'Clear Batch', 'rex-product-feed' );?></a> <?php esc_html_e( 'And Regenerate', 'rex-product-feed' );?> - <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/#error-on-top-of-xml-feed' )?>" target="_blank"><?php esc_html_e( 'View Doc', 'rex-product-feed' );?></a>
+                        </li>
+                        <li>
+                            <?php esc_html_e( 'Use Strip Tags For Description', 'rex-product-feed' );?> - <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/#error-on-top-of-xml-feed' )?>" target="_blank"><?php esc_html_e( 'View Doc', 'rex-product-feed' );?></a>
+                        </li>
+                    </ol>
+                    <p>
+                        <?php esc_html_e( 'If these doesn\'t work, please reach out to us at', 'rex-product-feed' );?> <a href="mailto: support@rextheme.com" target="_blank">support@rextheme.com</a> <?php esc_html_e( 'and we will assist you.', 'rex-product-feed' );?>
+                    </p>
+                    <p>
+                        <?php esc_html_e( 'Attach your temporary feed link, and screenshots of your feed attributes, feed settings, and the feed filter section in the email.', 'rex-product-feed' );?>
+                    </p>
+                    <p>
+                        <?php esc_html_e( 'Temporary Feed URL: ', 'rex-product-feed' );?> <a href="<?php echo esc_url( $temp_xml_url );?>" target="_blank"><?php echo esc_url( $temp_xml_url );?></a>
+                    </p>
+                </div>
+                <?php
             }
         }
     }

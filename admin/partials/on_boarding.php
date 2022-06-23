@@ -10,13 +10,13 @@
  * @package    Rex_Product_Feed
  * @subpackage Rex_Product_Feed/admin/partials
  */
-
+$hour_in_seconds = defined( 'HOUR_IN_SECONDS' ) ? HOUR_IN_SECONDS : 3600;
 $is_premium_activated        = apply_filters( 'wpfm_is_premium', false );
 $custom_field                = get_option( 'rex-wpfm-product-custom-field', 'no' );
 $pa_field                    = get_option( 'rex-wpfm-product-pa-field' );
 $structured_data             = get_option( 'rex-wpfm-product-structured-data' );
 $exclude_tax                 = get_option( 'rex-wpfm-product-structured-data-exclude-tax' );
-$wpfm_cache_ttl              = get_option( 'wpfm_cache_ttl', 3 * HOUR_IN_SECONDS );
+$wpfm_cache_ttl              = get_option( 'wpfm_cache_ttl', 3 * $hour_in_seconds );
 $wpfm_allow_private_products = get_option( 'wpfm_allow_private', 'no' );
 
 if ( $is_premium_activated ) {
@@ -29,9 +29,18 @@ else {
 $wpfm_fb_pixel_enabled = get_option( 'wpfm_fb_pixel_enabled', 'no' );
 $wpfm_fb_pixel_data    = get_option( 'wpfm_fb_pixel_value' );
 $wpfm_enable_log       = get_option( 'wpfm_enable_log' );
+$user_email            = get_option( 'wpfm_user_email', '' );
 $pro_url               = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
 $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
 $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
+$schedule_hours = [
+        '1' => '1 Hour',
+        '3' => '3 Hours',
+        '6' => '6 Hours',
+        '12' => '12 Hours',
+        '24' => '24 Hours',
+        '168' => '1 Week',
+];
 ?>
 
 <div class="columns">
@@ -187,16 +196,17 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                                 </div>
 
                                 <div class="single-merchant wpfm-clear-btn">
-                                    <span class="title"><?php echo esc_html__('Clear Batch (Remove all )', 'rex-product-feed'); ?></span>
-                                    <button class="wpfm-clear-batch" id="wpfm-clear-batch"><span>
-                                        <?php echo esc_html__('Clear Batch', 'rex-product-feed'); ?></span>
+                                    <span class="title"><?php echo esc_html__('Clear Batch (Remove all)', 'rex-product-feed'); ?></span>
+                                    <button class="wpfm-clear-batch" id="wpfm-clear-batch">
+                                        <span><?php echo esc_html__('Clear Batch', 'rex-product-feed'); ?></span>
                                          <i class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                 </div>
 
                                 <div class="single-merchant detailed-product  purge-cache">
                                     <span class="title"><?php echo esc_html__('Purge Cache', 'rex-product-feed'); ?></span>
-                                    <button id="wpfm-purge-cache" class="wpfm-purge-cache"><?php echo esc_html__('Purge Cache', 'rex-product-feed'); ?>
-                                            <i class="fa fa-spinner fa-pulse fa-fw"></i>
+                                    <button id="wpfm-purge-cache" class="wpfm-purge-cache">
+                                        <span><?php echo esc_html__('Purge Cache', 'rex-product-feed'); ?></span>
+                                        <i class="fa fa-spinner fa-pulse fa-fw"></i>
                                     </button>
                                 </div>
 
@@ -206,13 +216,9 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                                         <form id="wpfm-transient-settings" class="wpfm-transient-settings">
                                             <div class="wpfm-cache-ttl-area">
                                                 <select id="wpfm_cache_ttl" name="wpfm_cache_ttl">
-                                                    <option value="0" <?php selected($wpfm_cache_ttl, 0); ?>><?php echo esc_html__('No Expiration', 'rex-product-feed'); ?></option>
-                                                    <option value="3600" <?php selected($wpfm_cache_ttl, 3600); ?>>1 hour</option>
-                                                    <option value="10800" <?php selected($wpfm_cache_ttl, 10800); ?>>3 hours</option>
-                                                    <option value="21600" <?php selected($wpfm_cache_ttl, 21600); ?>>6 hours</option>
-                                                    <option value="43200" <?php selected($wpfm_cache_ttl, 43200); ?>>12 hours</option>
-                                                    <option value="86400" <?php selected($wpfm_cache_ttl, 86400); ?>>24 hours</option>
-                                                    <option value="604800" <?php selected($wpfm_cache_ttl, 604800); ?>>1 week</option>
+                                                    <?php foreach ( $schedule_hours as $key => $label ) { ?>
+                                                        <option value="<?php echo esc_attr( (int) $key * $hour_in_seconds )?>" <?php selected( $wpfm_cache_ttl, (int) $key * $hour_in_seconds ); ?>><?php echo esc_attr( $label )?></option>
+                                                    <?php }?>
                                                 </select>
                                             
                                                 <button type="submit" class="save-transient-button">
@@ -443,6 +449,26 @@ $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
                                                 value="<?php echo esc_attr( $wpfm_fb_pixel_data ); ?>" style="width: 200px;">
                                             <button type="submit" class="save-fb-pixel"><span><?php echo esc_html__('save', 'rex-product-feed'); ?></span> <i
                                                         class="fa fa-spinner fa-pulse fa-fw"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="single-merchant">
+                                    <?php if (!$is_premium_activated) { ?>
+                                        <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
+                                           class="wpfm-pro-cta">
+                                            <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
+                                        </a>
+                                    <?php } ?>
+
+                                    <span class="title"><?php echo esc_html__('Email', 'rex-product-feed'); ?></span>
+                                    <div class="switch">
+                                        <form id="wpfm-user-email" class="wpfm-fb-pixel" style="width: 300px;" disabled>
+                                            <input id="wpfm_user_email" type="text" name="wpfm_user_email" value="<?php echo esc_attr( $user_email ); ?>" style="width: 200px;<?php echo !$is_premium_activated ? ' cursor: not-allowed;" disabled' : '"' ?>>
+                                            <button type="submit" class="save-user-email" <?php echo !$is_premium_activated ? ' style="background-color: #f2f2f8; color: #d9d9db; cursor: not-allowed;" disabled' : '' ?>>
+                                                <span><?php echo esc_html__('save', 'rex-product-feed'); ?></span>
+                                                <i class="fa fa-spinner fa-pulse fa-fw"></i>
+                                            </button>
                                         </form>
                                     </div>
                                 </div>

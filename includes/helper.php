@@ -589,3 +589,20 @@ if ( !function_exists( 'rex_feed_get_sanitized_get_post' ) ) {
         );
     }
 }
+
+
+if ( !function_exists( 'rex_feed_is_valid_xml' ) ) {
+    /**
+     * @desc Check if a given xml file is valid.
+     * @since 7.2.9
+     * @param $file_url
+     * @return mixed|void
+     */
+    function rex_feed_is_valid_xml( $file_url, $feed_id )
+    {
+        libxml_use_internal_errors(true );
+        $sxe = simplexml_load_file( $file_url );
+        $xml_errors = libxml_get_errors();
+        return apply_filters( 'rex_feed_is_valid_xml', $sxe && empty( $xml_errors ), $sxe, $xml_errors, $feed_id );
+    }
+}

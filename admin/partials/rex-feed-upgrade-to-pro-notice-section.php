@@ -25,8 +25,14 @@ if ( is_array( $active_plugins ) && !in_array('best-woocommerce-feed-pro/rex-pro
         echo '</li>';
     }
 
-    echo '<a class="btn" target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro">' . esc_html__('Upgrade to Pro', 'rex-product-feed') . '</a>';
+    echo '</ul>';
+
+
+    echo '<div class="features-btn-area">';
+    echo '<a class="btn" target="_blank" href="' . esc_url( 'https://rextheme.com/best-woocommerce-product-feed/#pricing' ) . '">' . esc_html__('Upgrade to Pro', 'rex-product-feed') . '</a>';
     echo '</div>';
+    echo '</div>';
+
 }
 else {
     do_action( 'rex_feed_pro_features_overview' );
