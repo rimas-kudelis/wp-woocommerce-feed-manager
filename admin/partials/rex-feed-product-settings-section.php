@@ -18,7 +18,7 @@
 	<div class="rex-contnet-setting-content-area">
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'schedule';?>">
-			<label for="<?php echo esc_attr( $this->prefix ) . 'schedule';?>"><?php esc_html_e('Auto-Generate Your Feed', 'rex-product-feed')?>
+			<label for="<?php echo esc_attr( $this->prefix ) . 'schedule_label';?>"><?php esc_html_e('Auto-Generate Your Feed', 'rex-product-feed')?>
 				<span class="rex_feed-tooltip">
                     <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
                     <p><?php esc_html_e( 'Set auto-update to keep your feed in sync with WooCommerce', 'rex-product-feed' ); ?></p>
@@ -53,7 +53,7 @@
 
         <div class="<?php echo esc_attr( $this->prefix ) . 'country_list_area';?>">
             <div class="<?php echo esc_attr( $this->prefix ) . 'country_list_content';?>">
-                <label for="<?php echo esc_attr( $this->prefix ) . 'shipping_tax_country';?>"><?php esc_html_e('Select Shipping Zone', 'rex-product-feed')?>
+                <label for="<?php echo esc_attr( $this->prefix ) . 'shipping_tax_country_label';?>"><?php esc_html_e('Select Shipping Zone', 'rex-product-feed')?>
                     <span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
 						<p><?php esc_html_e( 'Select country for shipping and tax values', 'rex-product-feed' ); ?></p>
@@ -80,7 +80,7 @@
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'include_out_of_stock';?> ">
 			<div class="<?php echo esc_attr( $this->prefix ) . 'include_out_of_stock_content';?> pl-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'include_out_of_stock';?>">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'include_out_of_stock_label';?>">
 					<?php esc_html_e('Include Out of Stock Products', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
@@ -102,7 +102,7 @@
 			</div>
 
 			<div class="<?php echo esc_attr( $this->prefix ) . 'include_zero_price_products_content';?> pr-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'include_zero_price_products';?>">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'include_zero_price_products_label';?>">
 					<?php esc_html_e('Include Product with No Price', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
@@ -127,7 +127,7 @@
 		<div class="<?php echo esc_attr( $this->prefix ) . 'variable_product_area';?> ">
 
 			<div class="<?php echo esc_attr( $this->prefix ) . 'variable_product';?> pl-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'variable_product';?>">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'variable_product_label';?>">
 					<?php esc_html_e('Include Variable Parent Product (No Variations)', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
@@ -149,7 +149,7 @@
 			</div>
 
 			<div class="<?php echo esc_attr( $this->prefix ) . 'hidden_products';?> pr-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'hidden_products';?>"><?php esc_html_e('Exclude Invisible/Hidden Products', 'rex-product-feed')?>
+				<label for="<?php echo esc_attr( $this->prefix ) . 'hidden_products_label';?>"><?php esc_html_e('Exclude Invisible/Hidden Products', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
 						<p><?php esc_html_e( 'Enable this option to exclude invisible/hidden products from your feed', 'rex-product-feed' ); ?></p>
@@ -169,7 +169,7 @@
 			</div>
 
 			<div class="<?php echo esc_attr( $this->prefix ) . 'variation_product_name';?> pl-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'variation_product_name';?>"><?php esc_html_e('Include Variation Name In The Product Title', 'rex-product-feed')?>
+				<label for="<?php echo esc_attr( $this->prefix ) . 'variation_product_name_label';?>"><?php esc_html_e('Include Variation Name In The Product Title', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
 						<p>
@@ -202,7 +202,7 @@
 			</div>
 
 			<div class="<?php echo esc_attr( $this->prefix ) . 'parent_product';?> pr-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'parent_product';?>"><?php esc_html_e('Include Grouped Products', 'rex-product-feed')?>
+				<label for="<?php echo esc_attr( $this->prefix ) . 'parent_product_label';?>"><?php esc_html_e('Include Grouped Products', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
 						<p><?php esc_html_e( 'Enable this option to include grouped products in your feed', 'rex-product-feed' ); ?></p>
@@ -223,7 +223,7 @@
 			</div>
 
 			<div class="<?php echo esc_attr( $this->prefix ) . 'variations';?> pl-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'variations';?>"><?php esc_html_e('Include All Variable Products Variations', 'rex-product-feed')?>
+				<label for="<?php echo esc_attr( $this->prefix ) . 'variations_label';?>"><?php esc_html_e('Include All Variable Products Variations', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
 						<p>
@@ -266,7 +266,7 @@
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'skip_product_area';?> ">
 			<div class="<?php echo esc_attr( $this->prefix ) . 'skip_product';?> pl-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'skip_product';?>"><?php esc_html_e('Skip products with empty value', 'rex-product-feed')?>
+				<label for="<?php echo esc_attr( $this->prefix ) . 'skip_product_label';?>"><?php esc_html_e('Skip products with empty value', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
 						<p><?php esc_html_e( 'This option will remove products if there is a single attribute with empty value', 'rex-product-feed' ); ?></p>
@@ -288,7 +288,7 @@
 			</div>
 
 			<div class="<?php echo esc_attr( $this->prefix ) . 'skip_row';?> pr-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'skip_row';?>"><?php esc_html_e('Skip attributes with empty value', 'rex-product-feed')?>
+				<label for="<?php echo esc_attr( $this->prefix ) . 'skip_row_label';?>"><?php esc_html_e('Skip attributes with empty value', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
 						<p><?php esc_html_e( 'This option will remove any attribute with empty value (XML feed format only)', 'rex-product-feed' ); ?></p>

@@ -289,14 +289,14 @@ class Item
      * @param $cost
      * @param null $region
      */
-    public function tax($code, $ship, $rate, $region = null)
+    public function tax( $tax_country = null,$tax_region = null, $tax_postcode = null, $tax_rate = null, $tax_ship = null )
     {
         $node = new Node('tax');
-        $value = "<g:country>{$code}</g:country><g:tax_ship><![CDATA[{$ship}]]></g:tax_ship><g:rate>{$rate}</g:rate>";
-
-        if($region) {
-            $value .= "<g:region>{$region}</g:region>";
-        }
+        $value = "<g:country>{$tax_country}</g:country>";
+        $value .= "<g:region>{$tax_region}</g:region>";
+        $value .= "<g:postal_code>{$tax_postcode}</g:postal_code>";
+        $value .= "<g:rate>{$tax_rate}</g:rate>";
+        $value .= "<g:tax_ship>{$tax_ship}</g:tax_ship>";
 
         if (! isset($this->nodes['tax'])) {
             $this->nodes['tax'] = array();

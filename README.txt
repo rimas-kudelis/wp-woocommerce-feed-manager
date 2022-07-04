@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.9
+Stable tag:  7.2.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,19 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.2.10 (2022-07-04) =
+* Added: Identifier Exists attribute added by default on the new feeds
+* Added: First-word uppercase only output filter option added
+* Added: PFM plugin tour confirmation dialog box added
+* Added: All admin notice is now hidden on the Add New Feed page
+* Added: Filter by Total Sales option added on the Custom Filter section
+* Added: Tax attributes support added
+* Fixed: PFM product settings section label click switcher triggering issue fixed
+* Fixed: Two decimal points issue fixed
+* Fixed: XML warning issue fixed (Google Shopping, Marktplaats, Fruugo)
+* Fixed: Google Merchant authentication error message removed for the new users
+
 
 = 7.2.9 (2022-06-23) =
 * Added: Shipping Attributes Values Support

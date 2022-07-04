@@ -598,10 +598,17 @@ if ( !function_exists( 'rex_feed_is_valid_xml' ) ) {
      * @param $file_url
      * @return mixed|void
      */
-    function rex_feed_is_valid_xml( $file_url, $feed_id )
+    function rex_feed_is_valid_xml( $file_url, $feed_id, $merchant_name )
     {
+        if ( 'marktplaats' === $merchant_name ) {
+            $namespace = 'http://admarkt.marktplaats.nl/schemas/1.0';
+        }
+        else {
+            $namespace = '';
+        }
+
         libxml_use_internal_errors(true );
-        $sxe = simplexml_load_file( $file_url );
+        $sxe = simplexml_load_file( $file_url, 'SimpleXMLElement', 0, $namespace  );
         $xml_errors = libxml_get_errors();
         return apply_filters( 'rex_feed_is_valid_xml', $sxe && empty( $xml_errors ), $sxe, $xml_errors, $feed_id );
     }

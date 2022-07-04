@@ -1515,8 +1515,9 @@ class Rex_Product_Feed_Admin {
 
         if ( 'product-feed' === get_post_type( $feed_id ) ) {
             $temp_xml_url = get_post_meta( $feed_id, 'rex_feed_temp_xml_file', true );
+            $feed_format = get_post_meta( $feed_id, 'rex_feed_feed_format', true );
 
-            if ( '' !== $temp_xml_url ) {
+            if ( '' !== $temp_xml_url && 'xml' === $feed_format ) {
                 ?>
                 <script>
                     (function ( $ ) {
@@ -1526,7 +1527,7 @@ class Rex_Product_Feed_Admin {
                         } )
                     })( jQuery );
                 </script>
-                <div id="message" class="notice notice-error">
+                <div id="message" class="notice notice-error rex-feed-notice">
                     <p>
                         <?php esc_html_e( 'There was an error when generating the feed. Please try the following to troubleshoot the issue.', 'rex-product-feed' );?>
                     </p>

@@ -25,8 +25,9 @@ class Rex_Feed_Attributes
 
         $attributes = array(
             'Primary Attributes'           => self::get_primary_attributes(),
-            'Shipping & Tax Attributes'    => self::get_shipping_tax_attributes(),
             'Price Attributes'             => self::get_price_attributes(),
+            'Shipping Attributes'          => self::get_shipping_attributes(),
+            'Tax Attributes'               => self::get_tax_attributes(),
             'Image Attributes'             => self::get_image_attributes(),
             'Product Attributes'           => self::get_product_attributes(),
             'Product Variation Attributes' => self::get_product_dynamic_attributes(),
@@ -498,11 +499,11 @@ class Rex_Feed_Attributes
 
 
     /**
-     * @desc Get Shipping and Tax Attributes
-     * @since 7.2.9
+     * @desc Get Shipping Attributes
+     * @since 7.2.9s
      * @return string[]
      */
-    public static function get_shipping_tax_attributes() {
+    public static function get_shipping_attributes() {
         return [
             "shipping_class"                 => "Shipping Class",
             "shipping_cost"                  => "Shipping Cost (Base)",
@@ -510,6 +511,19 @@ class Rex_Feed_Attributes
             "shipping_no_class_cost"         => "Shipping Cost (No Class)",
             "shipping_cost_base_class"       => "Shipping Cost (Base + Class)",
             "shipping_cost_base_no_class"    => "Shipping Cost (Base + No Class)",
+        ];
+    }
+
+
+    /**
+     * @desc Get Tax Attributes
+     * @since 7.2.10
+     * @return string[]
+     */
+    public static function get_tax_attributes() {
+        return [
+            "tax"        => "Tax",
+            "tax_class"  => "Tax Class",
         ];
     }
 }

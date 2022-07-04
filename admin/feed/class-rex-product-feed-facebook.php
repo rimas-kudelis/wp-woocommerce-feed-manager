@@ -186,12 +186,19 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
                     $item->$key( $country, $service, $price, $region ); // invoke $key as method of $item object.
                 }
                 elseif( $key == 'tax' ) {
-                    $country = isset( $value[ 'tax_country' ] ) ? $value[ 'tax_country' ] : '';
-                    $service = isset( $value[ 'tax_service' ] ) ? $value[ 'tax_service' ] : '';
-                    $price   = isset( $value[ 'tax_price' ] ) ? $value[ 'tax_price' ] : '';
-                    $region  = isset( $value[ 'tax_region' ] ) ? $value[ 'tax_region' ] : '';
-
-                    $item->$key( $country, $service, $price, $region ); // invoke $key as method of $item object.
+                    if ( is_array( $value ) && !empty( $value ) ) {
+                        foreach ( $value as $tax ) {
+                            $tax_country = isset( $tax->tax_rate_country ) ? $tax->tax_rate_country : '';
+                            $tax_region = isset( $tax->tax_rate_state ) ? $tax->tax_rate_state : '';
+                            $tax_postcode = isset( $tax->postcode ) && !empty( $tax->postcode ) ? implode( ', ', $tax->postcode ) : '';
+                            $tax_rate = isset( $tax->tax_rate ) ? $tax->tax_rate : '';
+                            $tax_ship = isset( $tax->tax_rate_shipping ) && $tax->tax_rate_shipping === '1' ? 'yes' : 'no';
+                            $item->$key( $tax_country,$tax_region, $tax_postcode, $tax_rate, $tax_ship ); // invoke $key as method of $item object.
+                        }
+                    }
+                    else {
+                        $item->$key($value);
+                    }
                 }
                 else {
                     if( $key == 'custom' || $key == 'Custom' ) {

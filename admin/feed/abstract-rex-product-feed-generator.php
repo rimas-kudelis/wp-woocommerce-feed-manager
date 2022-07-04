@@ -1726,17 +1726,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 }
                 else {
                     $feed = $this->get_items();
-                    if ( $this->merchant === 'google' && $this->feed_string_footer !== '' ) {
-                        $request        = wp_remote_get($baseurl .'/rex-feed'.  "/feed-{$this->id}." . $format, array('sslverify' => FALSE));
-                        if( is_wp_error( $request ) ) {
-                            return 'false';
-                        }
-                        $file_contents  = wp_remote_retrieve_body( $request );
-
-                        if ( !strpos( $file_contents, $this->item_wrapper ) ) {
-                            $feed = '';
-                        }
-                    }
                     file_put_contents( $file, $feed, FILE_APPEND );
                 }
             }
@@ -1749,7 +1738,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
 
             if ( $this->batch === $this->tbatch && file_exists( $file ) && function_exists( 'rename' ) ) {
-                if ( function_exists( 'rex_feed_is_valid_xml' ) && rex_feed_is_valid_xml( $file, $this->id ) ) {
+                if ( function_exists( 'rex_feed_is_valid_xml' ) && rex_feed_is_valid_xml( $file, $this->id, $this->merchant ) ) {
                     rename( $file, trailingslashit( $path ) . "feed-{$this->id}." . $format );
                     delete_post_meta( $this->id, 'rex_feed_temp_xml_file' );
                     update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}." . $format );

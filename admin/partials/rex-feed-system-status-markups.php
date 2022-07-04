@@ -13,6 +13,7 @@ $system_status = Rex_Feed_System_Status::get_all_system_status();
                 <?php echo esc_html__('System Status', 'rex-product-feed'); ?>
             </h3>
             <button type="button" class="rex-system-status__button" id="rex-feed-system-status-copy-btn">
+                <i class="fa fa-files-o"></i>
                 <?php esc_html_e( 'Copy Status', 'rex-product-feed' );?>
             </button>
         </div>

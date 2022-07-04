@@ -135,6 +135,7 @@
                 console.log(response.statusText);
             });
     }
+
     $(document).on('click', '.rextheme-black-friday-offer .notice-dismiss', rextheme_bf_notice_dismiss);
 
     $(document).on('click', '.best-woocommerce-feed-deactivate-link', function ( e ) {
@@ -165,6 +166,7 @@
             $( '#rex_feed_new_changes_msg_content' ).hide();
         }
     } );
+
 
 })( jQuery );
 

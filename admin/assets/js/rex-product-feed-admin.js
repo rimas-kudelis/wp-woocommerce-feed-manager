@@ -69,6 +69,8 @@
 
         var publish_btn_txt = $( '#publish' ).val();
         $( '#rex-bottom-publish-btn' ).text( publish_btn_txt );
+
+        rex_feed_hide_all_admin_notices();
     } );
 
     /**
@@ -332,6 +334,8 @@
     $( document ).on( 'click', '#rex_feed_custom_filter_button', rex_feed_custom_filter );
 
     $( document ).on( 'click', '#rex-feed-system-status-copy-btn', rex_feed_copy_system_status );
+
+    $( document ).on( 'click', '#rex-feed-tour-guide-popup-no-thanks-btn, .rex-take-alert__close-btn', rex_feed_disable_tour_guide_popup );
 
     /**
      * Event listener for Analytics Parameter options functionality.
@@ -896,7 +900,7 @@
         wpAjaxHelperRequest( 'generate-feed', $payload )
             .done( function ( response ) {
                 console.log( 'Woohoo!' );
-                var msg = '<div id="message" class="error notice notice-error is-dismissible"><p>Your feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+                var msg = '<div id="message" class="error notice notice-error is-dismissible rex-feed-notice"><p>Your feed exceed the limit.Please <a href="edit.php?post_type=product-feed&page=best-woocommerce-feed-pricing">Upgrade!!!</a> </p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
                 if ( response == 'false' || response == '' ) {
                     generate_feed( product, offset, batch, per_batch, total_batch );
                 }
@@ -1758,5 +1762,36 @@
      */
     function rex_feed_hide_separators_group( event ) {
         $( 'select.attr-val-dropdown' ).find( 'optgroup[label="Attributes Separator"]' ).remove();
+    }
+
+    /**
+     * @desc Disable tour guide popup on on-boarding page
+     * after clicking 'No, Thanks' button or Cross [X] button
+     * @since 7.2.10
+     */
+    function rex_feed_disable_tour_guide_popup() {
+        let url = window.location.href;
+
+        if ( url.includes('plugin_activated') ) {
+            window.history.pushState({}, '', url.replace( '&plugin_activated=1', '' ));
+            location.reload();
+        }
+    }
+
+    /**
+     * @desc Hide all admin notices from WPFM pages [except our own notices]
+     * @since 7.2.10
+     */
+    function rex_feed_hide_all_admin_notices() {
+        $.each( $( '.notice' ), function( index, value ) {
+            if ( false === $(this).hasClass( 'rex-feed-notice' ) && 'Product Feed updated.' !== $(this).find( 'p' ).text() ) {
+                $(this).hide();
+            }
+        });
+        $.each( $( '.updated' ), function( index, value ) {
+            if ( false === $(this).hasClass( 'rex-feed-notice' ) && 'Product Feed updated.' !== $(this).find( 'p' ).text() ) {
+                $(this).hide();
+            }
+        });
     }
 })( jQuery );

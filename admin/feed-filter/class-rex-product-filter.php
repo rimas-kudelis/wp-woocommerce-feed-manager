@@ -131,6 +131,7 @@ class Rex_Product_Filter {
                 'title'                     => 'Product Title',
                 'description'               => 'Product Description',
                 'short_description'         => 'Product Short Description',
+                'total_sales'               => 'Total Sales',
                 'featured_image'            => 'Featured Image',
                 'product_cats'              => 'Product Categories',
                 'sku'                       => 'SKU',
@@ -317,7 +318,7 @@ class Rex_Product_Filter {
         $temp = [];
         foreach ($filter_mappings as $key=>$value) {
             $subject = self::getSubject($value['if'], $product);
-            
+
             switch ($value['condition']){
                 case($value['condition'] = "contain"):
                     $temp[$key]['rules'] = $value['rules'];
@@ -2891,6 +2892,124 @@ class Rex_Product_Filter {
                                 'terms'          =>   $exc_tag_not_equal_query,
                                 'operator'       =>   'IN',
                             );*/
+                        }
+                    }
+                    break;
+
+                case 'total_sales':
+                    if( 'inc' === $then ) {
+                        if ( 'equal_to' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                ),
+                            );
+                        }elseif ( 'nequal_to' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                ),
+                            );
+                        }elseif ( 'greater_than' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+                        }elseif ( 'greater_than_equal' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+                        }elseif ( 'less_than' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+                        }elseif ( 'less_than_equal' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+                        }
+                    }
+
+                    elseif ( 'exc' === $then ) {
+                        if ( 'equal_to' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '!=',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+                        }elseif ( 'nequal_to' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '=',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+                        }elseif ( 'greater_than' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '<',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+
+                        }elseif ( 'greater_than_equal' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '<=',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+                        }elseif ( 'less_than' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '>',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
+
+                        }elseif ( 'less_than_equal' === $condition ) {
+                            $filter_args[ 'meta_query' ][] = array (
+                                array (
+                                    'key'       => $if,
+                                    'value'     => $value,
+                                    'compare'   => '>=',
+                                    'type' => 'NUMERIC',
+                                ),
+                            );
                         }
                     }
                     break;

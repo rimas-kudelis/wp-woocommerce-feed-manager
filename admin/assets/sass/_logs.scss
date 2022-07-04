@@ -5,8 +5,11 @@
     #wpfm-log-copy {
       margin: 10px 0;
     }
-    #wpfm-log-content {
-      padding: 10px;
+    pre {
+      background-color: transparent;
+    }
+    i {
+      margin-right: 10px;
     }
   }
 }

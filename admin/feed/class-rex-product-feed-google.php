@@ -189,13 +189,20 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     $key = 'shipping';
                     $item->$key($shipping_country, $shipping_service, $shipping_price, $shipping_region); // invoke $key as method of $item object.
                 }
-                elseif ($key === 'tax') {
-                    $tax_country = isset( $value['tax_country'] ) ? $value['tax_country'] : '';
-                    $tax_ship = isset( $value['tax_ship'] ) ? $value['tax_ship'] : '';
-                    $tax_rate = isset( $value['tax_rate'] ) ? $value['tax_rate'] : '';
-                    $tax_region = isset( $value['tax_region'] ) ? $value['tax_region'] : '';
-
-                    $item->$key($tax_country, $tax_ship, $tax_rate, $tax_region); // invoke $key as method of $item object.
+                elseif ( $key === 'tax' ) {
+                    if ( is_array( $value ) && !empty( $value ) ) {
+                        foreach ( $value as $tax ) {
+                            $tax_country = isset( $tax->tax_rate_country ) ? $tax->tax_rate_country : '';
+                            $tax_region = isset( $tax->tax_rate_state ) ? $tax->tax_rate_state : '';
+                            $tax_postcode = isset( $tax->postcode ) && !empty( $tax->postcode ) ? implode( ', ', $tax->postcode ) : '';
+                            $tax_rate = isset( $tax->tax_rate ) ? $tax->tax_rate : '';
+                            $tax_ship = isset( $tax->tax_rate_shipping ) && $tax->tax_rate_shipping === '1' ? 'yes' : 'no';
+                            $item->$key( $tax_country,$tax_region, $tax_postcode, $tax_rate, $tax_ship ); // invoke $key as method of $item object.
+                        }
+                    }
+                    else {
+                        $item->$key($value);
+                    }
                 }
                 else {
                     if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
@@ -226,7 +233,6 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
      */
     private function process_attributes_for_shipping_tax( $attributes ) {
         $shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
-        $tax_attr = array( 'tax_country', 'tax_region', 'tax_rate', 'tax_ship' );
         $backup_attr = array();
 
         foreach ( $attributes as $key => $value ) {
@@ -242,11 +248,6 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 }
                 $backup_attr[ $key ] = $value;
                 unset( $attributes[ $key ] );
-            }
-
-            if( in_array( $key, $tax_attr ) ) {
-                $attributes['tax'][$key] = $value;
-                unset($attributes[$key]);
             }
         }
 

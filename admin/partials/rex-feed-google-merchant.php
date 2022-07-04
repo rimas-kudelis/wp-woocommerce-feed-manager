@@ -75,7 +75,15 @@ $value = $value == '' ? 'US' : $value;
 			
 			if ( $feed_merchant === 'google' ) {
 				$rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
-				$message             = __( 'Oops!! Access token has expired 😕 Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed' );
+
+                if ( $rex_google_merchant::$client_id && $rex_google_merchant::$client_secret && $rex_google_merchant::$merchant_id ) {
+                    $message = __('Oops!! Access token has expired 😕 Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed');
+                    $button = __( 'Authenticate', 'rex-product-feed' );
+                }
+                else {
+                    $message = __('Use Google Auto-sync to send data to your Google Merchant Center at fixed intervals. Configure and Authenticate Auto-sync with Google to be able to use this feature.', 'rex-product-feed');
+                    $button = __( 'Configure', 'rex-product-feed' );
+                }
 				
 				if ( !( $rex_google_merchant->is_authenticate() ) ) {
 					echo '<div class="google-status-area">';
@@ -84,7 +92,7 @@ $value = $value == '' ? 'US' : $value;
 						esc_html( $message ) );
 
 					echo sprintf(
-						'<a href="%s" class="btn-default">' . esc_attr__( 'Authenticate', 'rex-product-feed' ) . '</a>',
+						'<a href="%s" class="btn-default">' . esc_html( $button ) . '</a>',
 						esc_url( admin_url( 'admin.php?page=merchant_settings' ) ) );
 
 						echo '</div>';

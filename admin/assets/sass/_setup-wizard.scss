@@ -451,6 +451,7 @@
         stroke: #fff;
       }
     }
+
     svg {
       margin-right: 8px;
     }
@@ -667,6 +668,110 @@
       grid-gap: var(--gap);
       grid-template-rows: masonry;
       grid-auto-flow: dense;
+    }
+  }
+}
+
+//-----------5.rex-setup-wizard-alert markup section------------
+.rex-take-alert {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: calc(100% - 160px);
+  height: 100%;
+  z-index: 999;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background: rgba(51, 51, 51, 0.4);
+
+  &__wrapper {
+    width: 100%;
+    max-width: 450px;
+    background: #ffffff;
+    border-radius: 5px;
+    border-left: 5px solid $primary-color;
+  }
+
+  &__body {
+    position: relative;
+    text-align: center;
+    padding: 40px;
+  }
+
+  &__close-btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    display: block;
+    cursor: pointer;
+  }
+
+  &__message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  &__heading {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  &__description {
+    font-size: 15px;
+    font-weight: 400;
+  }
+
+  &__footer {
+    background: #f6f6f8;
+    border-radius: 0px 0px 5px 5px;
+    border-top: 1px solid #e6e6ef;
+    padding: 14px 14px 15px;
+  }
+
+  &__btn-area {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  &__button {
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 110px;
+    height: 41px;
+    line-height: 40px;
+    padding: 0 20px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+  }
+
+  &__button--cancel {
+    background-color: #eee;
+    color: #333;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #e2e2e2;
+    }
+  }
+
+  &__button--yes {
+    background-color: #004efa;
+    color: #fff;
+
+    &:hover {
+      background-color: #0c4ee0;
+      cursor: pointer;
     }
   }
 }

@@ -497,14 +497,14 @@ class License {
     private function show_license_page_notices() {
             if ( ! empty( $this->error ) ) :
         ?>
-            <div class="notice notice-error is-dismissible appsero-license-section">
+            <div class="notice notice-error is-dismissible appsero-license-section rex-feed-notice">
                 <p><?php echo $this->error; ?></p>
             </div>
         <?php
             endif;
             if ( ! empty( $this->success ) ) :
         ?>
-            <div class="notice notice-success is-dismissible appsero-license-section">
+            <div class="notice notice-success is-dismissible appsero-license-section rex-feed-notice">
                 <p><?php echo $this->success; ?></p>
             </div>
         <?php

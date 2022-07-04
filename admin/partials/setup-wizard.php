@@ -103,7 +103,12 @@ $merchants = array(
         ),
     ),
 );
+$data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : [];
+if ( isset( $data[ 'get' ][ 'plugin_activated' ] ) ) {
+    include_once plugin_dir_path( __FILE__ ) . 'rex-product-feed-confirmation-alert.php';
+}
 ?>
+
 <main class="rex-setup-wizard-area">
     <section class="rex-setup-wizard-hero-area">
         <div class="rex-setup-wizard__content">
@@ -163,7 +168,7 @@ $merchants = array(
         <div class="rex-setup-wizard__content">
             <div class="rex-setup-wizard-feed__header">
                 <h3><?php esc_html_e("The best plugin to generate", "rex-product-feed")?></h3>
-                <h3 class="header__text"><?php esc_html_e("WooCommerce Product Feed Manager", "rex-product-feed")?></h3>
+                <h3 class="header__text"><?php esc_html_e("Product Feed for WooCommerce", "rex-product-feed")?></h3>
             </div>
 
             <div class="rex-setup-wizard-feed__content-area rex-setup-wizard-feed__grid">

@@ -310,8 +310,11 @@ class Rex_Product_Data_Retriever
         elseif ( 'meta' === $rule['type'] && $this->is_woo_discount_rules( $rule['meta_key'] ) ) {
             $val = $this->set_woo_discount_rules( $rule['meta_key']  );
         }
-        elseif ( 'meta' === $rule['type'] && $this->is_shipping_tax_class_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_shipping_tax_class_attr( $rule['meta_key']  );
+        elseif ( 'meta' === $rule['type'] && $this->is_shipping_class_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_shipping_class_attr( $rule['meta_key']  );
+        }
+        elseif ( 'meta' === $rule['type'] && $this->is_tax_attr( $rule['meta_key'] ) ) {
+            $val = $this->set_tax_attr( $rule['meta_key']  );
         }
 
         return $val;
@@ -804,7 +807,7 @@ class Rex_Product_Data_Retriever
      * @param $key
      * @return int|string
      */
-    protected function set_shipping_tax_class_attr( $key ) {
+    protected function set_shipping_class_attr( $key ) {
         switch ( $key ) {
             case 'shipping_class':
                 return $this->product->get_shipping_class();
@@ -823,6 +826,26 @@ class Rex_Product_Data_Retriever
 
             case 'shipping_cost_base_no_class':
                 return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('no_class_cost' );
+            default:
+                return '';
+        }
+    }
+
+
+    /**
+     * @desc Get tax attributes value
+     * @since 7.2.10
+     * @param $key
+     * @return int|string
+     */
+    protected function set_tax_attr( $key ) {
+        switch ( $key ) {
+            case 'tax_class':
+                return $this->product->get_tax_class();
+
+            case 'tax':
+                $tax_class = $this->product->get_tax_class();
+                return WC_Tax::get_rates_for_tax_class( $tax_class );
             default:
                 return '';
         }
@@ -3066,14 +3089,28 @@ class Rex_Product_Data_Retriever
 
 
     /**
-     * @desc Helper to check if given attribute is a Shipping & Tax Attributes
+     * @desc Helper to check if given attribute is a Shipping Attributes
      * @since 7.2.9
      * @param $key
      * @return bool
      */
-    protected function is_shipping_tax_class_attr( $key ) {
-        if( isset( $this->product_meta_keys['Shipping & Tax Attributes'] ) ) {
-            return array_key_exists( $key, $this->product_meta_keys['Shipping & Tax Attributes'] );
+    protected function is_shipping_class_attr( $key ) {
+        if( isset( $this->product_meta_keys['Shipping Attributes'] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys['Shipping Attributes'] );
+        }
+        return false;
+    }
+
+
+    /**
+     * @desc Helper to check if given attribute is a Shipping Attributes
+     * @since 7.2.9
+     * @param $key
+     * @return bool
+     */
+    protected function is_tax_attr( $key ) {
+        if( isset( $this->product_meta_keys['Tax Attributes'] ) ) {
+            return array_key_exists( $key, $this->product_meta_keys['Tax Attributes'] );
         }
         return false;
     }
@@ -3266,10 +3303,7 @@ class Rex_Product_Data_Retriever
                 }
                 return $val;
             case 'add_two_decimal':
-                if( $this->checkIfFloat( $val ) ) {
-                    $val = round( $val, 2 );
-                }
-                return $val;
+                return number_format( (float)$val, 2 );
             case 'remove_hyphen':
                 return str_replace( '-', '', $val );
 
@@ -3278,6 +3312,9 @@ class Rex_Product_Data_Retriever
 
             case 'replace_space_with_hyphen':
                 return str_replace( ' ', '-', $val );
+
+            case 'first_word_uppercase':
+                return ucfirst( strtolower( $val ) );
 
             default:
                 return $val;
