@@ -1168,8 +1168,6 @@ class Rex_Product_Filter {
                 //PRODUCT PRICE
                 case 'price':
                     $regular_price = '_regular_price';
-                    $_price = '_price';
-                    $relation = 'OR';
                     if($then == 'inc') {
                         if ($condition == 'equal_to') {
                             $filter_args['meta_query'][] = array(
@@ -1178,12 +1176,6 @@ class Rex_Product_Filter {
                                     'value'     => $value,
                                     'compare'   => '=',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '=',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'nequal_to') {
                             $filter_args['meta_query'][] = array(
@@ -1192,12 +1184,6 @@ class Rex_Product_Filter {
                                     'value'     => $value,
                                     'compare'   => '!=',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '!=',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'greater_than') {
                             $filter_args['meta_query'][] = array(
@@ -1207,13 +1193,6 @@ class Rex_Product_Filter {
                                     'compare'   => '>',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '>',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'greater_than_equal') {
                             $filter_args['meta_query'][] = array(
@@ -1223,13 +1202,6 @@ class Rex_Product_Filter {
                                     'compare'   => '>=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '>=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'less_than') {
                             $filter_args['meta_query'][] = array(
@@ -1239,13 +1211,6 @@ class Rex_Product_Filter {
                                     'compare'   => '<',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '<',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'less_than_equal') {
                             $filter_args['meta_query'][] = array(
@@ -1255,13 +1220,6 @@ class Rex_Product_Filter {
                                     'compare'   => '<=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '<=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }
                     }
@@ -1275,13 +1233,6 @@ class Rex_Product_Filter {
                                     'compare'   => '!=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '!=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'nequal_to') {
                             $filter_args['meta_query'][] = array(
@@ -1291,13 +1242,6 @@ class Rex_Product_Filter {
                                     'compare'   => '=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'greater_than') {
                             $filter_args['meta_query'][] = array(
@@ -1307,13 +1251,6 @@ class Rex_Product_Filter {
                                     'compare'   => '<',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '<',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
 
                         }elseif ($condition == 'greater_than_equal') {
@@ -1324,13 +1261,6 @@ class Rex_Product_Filter {
                                     'compare'   => '<=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '<=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'less_than') {
                             $filter_args['meta_query'][] = array(
@@ -1340,13 +1270,6 @@ class Rex_Product_Filter {
                                     'compare'   => '>',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '>',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
 
                         }elseif ($condition == 'less_than_equal') {
@@ -1357,13 +1280,6 @@ class Rex_Product_Filter {
                                     'compare'   => '>=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '>=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }
                     }
@@ -1372,8 +1288,6 @@ class Rex_Product_Filter {
                 //PRODUCT SALE PRICE
                 case 'sale_price':
                     $sale_price = '_sale_price';
-                    $_price = '_price';
-                    $relation = 'OR';
                     if($then == 'inc') {
                         if ($condition == 'equal_to') {
                             $filter_args['meta_query'][] = array(
@@ -1383,13 +1297,6 @@ class Rex_Product_Filter {
                                     'compare'   => '=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'nequal_to') {
                             $filter_args['meta_query'][] = array(
@@ -1399,13 +1306,6 @@ class Rex_Product_Filter {
                                     'compare'   => '!=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '!=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'greater_than') {
                             $filter_args['meta_query'][] = array(
@@ -1415,13 +1315,6 @@ class Rex_Product_Filter {
                                     'compare'   => '>',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '>',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'greater_than_equal') {
                             $filter_args['meta_query'][] = array(
@@ -1431,13 +1324,6 @@ class Rex_Product_Filter {
                                     'compare'   => '>=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '>=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'less_than') {
                             $filter_args['meta_query'][] = array(
@@ -1447,13 +1333,6 @@ class Rex_Product_Filter {
                                     'compare'   => '<',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '<',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'less_than_equal') {
                             $filter_args['meta_query'][] = array(
@@ -1463,13 +1342,6 @@ class Rex_Product_Filter {
                                     'compare'   => '<=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '<=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }
                     }
@@ -1483,13 +1355,6 @@ class Rex_Product_Filter {
                                     'compare'   => '!=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '!=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'nequal_to') {
                             $filter_args['meta_query'][] = array(
@@ -1499,13 +1364,6 @@ class Rex_Product_Filter {
                                     'compare'   => '=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'greater_than') {
                             $filter_args['meta_query'][] = array(
@@ -1515,13 +1373,6 @@ class Rex_Product_Filter {
                                     'compare'   => '<',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '<',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'greater_than_equal') {
                             $filter_args['meta_query'][] = array(
@@ -1531,13 +1382,6 @@ class Rex_Product_Filter {
                                     'compare'   => '<=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '<=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'less_than') {
                             $filter_args['meta_query'][] = array(
@@ -1547,13 +1391,6 @@ class Rex_Product_Filter {
                                     'compare'   => '>',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '>',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }elseif ($condition == 'less_than_equal') {
                             $filter_args['meta_query'][] = array(
@@ -1563,13 +1400,6 @@ class Rex_Product_Filter {
                                     'compare'   => '>=',
                                     'type' => 'NUMERIC',
                                 ),
-                                array(
-                                    'key'       => $_price,
-                                    'value'     => $value,
-                                    'compare'   => '>=',
-                                    'type' => 'NUMERIC',
-                                ),
-                                'relation' => $relation,
                             );
                         }
                     }

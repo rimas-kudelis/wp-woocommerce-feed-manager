@@ -77,7 +77,7 @@ $value = $value == '' ? 'US' : $value;
 				$rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
 
                 if ( $rex_google_merchant::$client_id && $rex_google_merchant::$client_secret && $rex_google_merchant::$merchant_id ) {
-                    $message = __('Oops!! Access token has expired 😕 Please authenticate token for Google Merchant Shop to be able to send feed.', 'rex-product-feed');
+                    $message = __('Oops!! Access token has expired. Please, authenticate again if you want to submit a new fresh feed to Google Merchant Center.', 'rex-product-feed');
                     $button = __( 'Authenticate', 'rex-product-feed' );
                 }
                 else {

@@ -21,8 +21,6 @@
  * @author     RexTheme <info@rextheme.com>
  */
 
-use WPFunnels\Rollback;
-
 /**
  * Class Rex_Product_Feed_Admin
  */
@@ -1031,7 +1029,7 @@ class Rex_Product_Feed_Admin {
                                     $prod_quantity = $order_item->get_quantity();
                                     $order_subtotal = $order_item->get_subtotal();
                                     $order_subtotal_tax = $order_item->get_subtotal_tax();
-                                    $order_real += number_format(($order_subtotal + $order_subtotal_tax), 2);
+                                    (int)$order_real += number_format( ( (int)$order_subtotal + (int)$order_subtotal_tax ), 2 );
                                     $contents .= "{'id': '$prod_id', 'quantity': $prod_quantity},";
                                 }
                             }
@@ -1046,8 +1044,8 @@ class Rex_Product_Feed_Admin {
                             if ($cart_item['variation_id'] > 0) {
                                 $product_id = $cart_item['variation_id'];
                             }$contents .= "'" .$product_id. "'" . ',';
-                            $line_total = $cart_item['line_total'];
-                            $line_tax = $cart_item['line_tax'];
+                            $line_total = (int)$cart_item['line_total'];
+                            $line_tax = (int)$cart_item['line_tax'];
                             $cart_real += number_format(($line_total + $line_tax), 2);
                         }
                         $contents = rtrim($contents, ",");

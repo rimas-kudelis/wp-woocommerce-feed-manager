@@ -77,6 +77,7 @@ class Rex_Feed_Template_Google extends Rex_Feed_Abstract_Template {
 
             'Tax & Shipping' => array(
                 'tax'              => 'Tax [tax]',
+                'shipping'         => 'Shipping [shipping]',
                 'shipping_country' => 'Shipping Country',
                 'shipping_region'  => 'Shipping Region',
                 'shipping_service' => 'Shipping Service',

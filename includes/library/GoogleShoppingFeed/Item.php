@@ -263,23 +263,22 @@ class Item
      * @param $cost
      * @param null $region
      */
-    public function shipping($code, $service, $cost, $region = null)
+    public function shipping( $country = null, $service = null, $price = null, $string_val = null )
     {
         $node = new Node('shipping');
-        $value = "<g:country>{$code}</g:country><g:price>{$cost}</g:price>";
+        if ( null === $string_val ) {
+            $value = "<g:country>{$country}</g:country>";
+            $value .= "<g:service>{$service}</g:service>";
+            $value .= "<g:price>{$price}</g:price>";
 
-        if( $service ) {
-            $value .= "<g:service><![CDATA[{$service}]]></g:service>";
+            if ( !isset( $this->nodes[ 'shipping' ] ) ) {
+                $this->nodes['shipping'] = array();
+            }
+            $this->nodes['shipping'][] = $node->value( $value )->_namespace($this->namespace);
         }
-
-        if( $region ) {
-            $value .= "<g:region>{$region}</g:region>";
+        else {
+            $this->nodes['shipping'] = $node->value( $string_val )->_namespace($this->namespace);
         }
-
-        if (! isset($this->nodes['shipping'])) {
-            $this->nodes['shipping'] = array();
-        }
-        $this->nodes['shipping'][] = $node->value($value)->_namespace($this->namespace);
     }
 
 
@@ -289,19 +288,24 @@ class Item
      * @param $cost
      * @param null $region
      */
-    public function tax( $tax_country = null,$tax_region = null, $tax_postcode = null, $tax_rate = null, $tax_ship = null )
+    public function tax( $tax_country = null,$tax_region = null, $tax_postcode = null, $tax_rate = null, $tax_ship = null, $string_val = null )
     {
         $node = new Node('tax');
-        $value = "<g:country>{$tax_country}</g:country>";
-        $value .= "<g:region>{$tax_region}</g:region>";
-        $value .= "<g:postal_code>{$tax_postcode}</g:postal_code>";
-        $value .= "<g:rate>{$tax_rate}</g:rate>";
-        $value .= "<g:tax_ship>{$tax_ship}</g:tax_ship>";
+        if ( null === $string_val ) {
+            $value = "<g:country>{$tax_country}</g:country>";
+            $value .= "<g:region>{$tax_region}</g:region>";
+            $value .= "<g:postal_code>{$tax_postcode}</g:postal_code>";
+            $value .= "<g:rate>{$tax_rate}</g:rate>";
+            $value .= "<g:tax_ship>{$tax_ship}</g:tax_ship>";
 
-        if (! isset($this->nodes['tax'])) {
-            $this->nodes['tax'] = array();
+            if (! isset($this->nodes['tax'])) {
+                $this->nodes['tax'] = array();
+            }
+            $this->nodes['tax'][] = $node->value($value)->_namespace($this->namespace);
         }
-        $this->nodes['tax'][] = $node->value($value)->_namespace($this->namespace);
+        else {
+            $this->nodes['tax'] = $node->value( $string_val )->_namespace($this->namespace);
+        }
     }
 
     /**

@@ -2,13 +2,13 @@
 $features = [
     esc_html__( 'Generate Unlimited Products (Free version is limited to 200 products)', 'rex-product-feed'),
     esc_html__( 'Custom Field Support - Brand, GTIN, MPN, etc.', 'rex-product-feed'),
-    esc_html__( 'Detailed Product Attributes Support  - Size, Gender, Material, etc', 'rex-product-feed'),
-    esc_html__( 'Apply Feed Rules.', 'rex-product-feed'),
-    esc_html__( 'Merge Multiple Attributes Values Together.', 'rex-product-feed'),
-    esc_html__( 'Manipulate Product Pricing.', 'rex-product-feed'),
+    esc_html__( 'Detailed Product Attributes Support  - Size, Gender, Material, etc.', 'rex-product-feed'),
+    esc_html__( 'Apply Feed Rules', 'rex-product-feed'),
+    esc_html__( 'Merge Multiple Attributes Values Together', 'rex-product-feed'),
+    esc_html__( 'Manipulate Product Pricing', 'rex-product-feed'),
     esc_html__( 'Fix WooCommerce\'s (JSON-LD) Structure Data Bug', 'rex-product-feed'),
     esc_html__( 'Exclude Tax From Structured Data Prices', 'rex-product-feed'),
-    esc_html__( 'Access to an Elite Support Team.', 'rex-product-feed'),
+    esc_html__( 'Access to an Elite Support Team', 'rex-product-feed'),
 ];
 $features = apply_filters( 'rex_feed_pro_features_overview', $features );
 

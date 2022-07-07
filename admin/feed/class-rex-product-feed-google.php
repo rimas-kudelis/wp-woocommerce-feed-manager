@@ -181,13 +181,16 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
             }
 
             foreach ( $attributes as $key => $value ) {
-                if( in_array( $key, $shipping_labels ) ) {
-                    $shipping_country = isset( $value['shipping_country'] ) ? $value['shipping_country'] : '';
-                    $shipping_service = isset( $value['shipping_service'] ) ? $value['shipping_service'] : '';
-                    $shipping_price = isset( $value['shipping_price'] ) ? $value['shipping_price'] : '';
-                    $shipping_region = isset( $value['shipping_region'] ) ? $value['shipping_region'] : '';
-                    $key = 'shipping';
-                    $item->$key($shipping_country, $shipping_service, $shipping_price, $shipping_region); // invoke $key as method of $item object.
+                if( 'shipping' === $key ) {
+                    if ( is_array( $value ) && !empty( $value ) ) {
+                        foreach ( $value as $shipping ) {
+                            $shipping_country = isset( $shipping[ 'country' ] ) ? $shipping[ 'country' ] : '';
+                            $shipping_service = isset( $shipping[ 'service' ] ) ? $shipping[ 'service' ] : '';
+                            $shipping_price = isset( $shipping[ 'price' ] ) ? $shipping[ 'price' ] : '';
+
+                            $item->$key( $shipping_country, $shipping_service, $shipping_price ); // invoke $key as method of $item object.
+                        }
+                    }
                 }
                 elseif ( $key === 'tax' ) {
                     if ( is_array( $value ) && !empty( $value ) ) {
@@ -199,9 +202,6 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                             $tax_ship = isset( $tax->tax_rate_shipping ) && $tax->tax_rate_shipping === '1' ? 'yes' : 'no';
                             $item->$key( $tax_country,$tax_region, $tax_postcode, $tax_rate, $tax_ship ); // invoke $key as method of $item object.
                         }
-                    }
-                    else {
-                        $item->$key($value);
                     }
                 }
                 else {

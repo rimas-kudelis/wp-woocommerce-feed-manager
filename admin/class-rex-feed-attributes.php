@@ -500,17 +500,13 @@ class Rex_Feed_Attributes
 
     /**
      * @desc Get Shipping Attributes
-     * @since 7.2.9s
+     * @since 7.2.9
      * @return string[]
      */
     public static function get_shipping_attributes() {
         return [
-            "shipping_class"                 => "Shipping Class",
-            "shipping_cost"                  => "Shipping Cost (Base)",
-            "shipping_class_cost"            => "Shipping Cost (Class)",
-            "shipping_no_class_cost"         => "Shipping Cost (No Class)",
-            "shipping_cost_base_class"       => "Shipping Cost (Base + Class)",
-            "shipping_cost_base_no_class"    => "Shipping Cost (Base + No Class)",
+            "shipping"       => "Shipping",
+            "shipping_class" => "Shipping Class",
         ];
     }
 
@@ -522,8 +518,8 @@ class Rex_Feed_Attributes
      */
     public static function get_tax_attributes() {
         return [
-            "tax"        => "Tax",
-            "tax_class"  => "Tax Class",
+            "tax"       => "Tax",
+            "tax_class" => "Tax Class",
         ];
     }
 }

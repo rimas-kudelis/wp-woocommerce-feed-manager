@@ -76,11 +76,7 @@ class Rex_Feed_Template_Facebook extends Rex_Feed_Abstract_Template {
 
         'Tax & Shipping' => array(
             'tax'              => 'Tax [tax]',
-            "tax_country"      => "Tax Country[tax_country]",
-            "tax_region"       => "Tax Region[tax_region]",
-            "tax_rate"         => "Tax Rate[tax_rate]",
-            "tax_ship"         => "Tax Ship[tax_ship]",
-            "tax_category"     => "Tax[tax_category]",
+            'shipping'         => 'Shipping [shipping]',
             'shipping_country' => 'Shipping Country',
             'shipping_region'  => 'Shipping Region',
             'shipping_service' => 'Shipping Service',

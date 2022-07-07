@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.10
+Stable tag:  7.2.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -707,6 +707,15 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.2.11 (2022-07-07) =
+* Added: Insert a feed name automatically if the feed has no name
+* Added: Export and Import feed feature added
+* Added: Include multiple shipping values option added
+* Fixed: Category mapping scrolling issue fixed
+* Fixed: Regular Price filter doesn't work with the Category/ Tag filter
+* Fixed: Simple attribute values are printing variation values issue fixed
+* FIxed: Google Merchant authentication error message removed for the new users
+
 = 7.2.10 (2022-07-04) =
 * Added: Identifier Exists attribute added by default on the new feeds
 * Added: First-word uppercase only output filter option added
@@ -718,7 +727,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Two decimal points issue fixed
 * Fixed: XML warning issue fixed (Google Shopping, Marktplaats, Fruugo)
 * Fixed: Google Merchant authentication error message removed for the new users
-
 
 = 7.2.9 (2022-06-23) =
 * Added: Shipping Attributes Values Support

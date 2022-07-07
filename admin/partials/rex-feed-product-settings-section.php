@@ -53,25 +53,23 @@
 
         <div class="<?php echo esc_attr( $this->prefix ) . 'country_list_area';?>">
             <div class="<?php echo esc_attr( $this->prefix ) . 'country_list_content';?>">
-                <label for="<?php echo esc_attr( $this->prefix ) . 'shipping_tax_country_label';?>"><?php esc_html_e('Select Shipping Zone', 'rex-product-feed')?>
+                <label for="<?php echo esc_attr( $this->prefix ) . 'feed_country_label';?>"><?php esc_html_e('Select Country', 'rex-product-feed')?>
                     <span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
-						<p><?php esc_html_e( 'Select country for shipping and tax values', 'rex-product-feed' ); ?></p>
+						<p><?php esc_html_e( 'Please Select a Country', 'rex-product-feed' ); ?></p>
 					</span>
                 </label>
 
-                <select name="<?php echo esc_attr( $this->prefix ) . 'shipping_tax_country';?>" id="<?php echo esc_attr( $this->prefix ) . 'shipping_tax_country';?>" class="">
-                    <option value="-1">Please select a country</option>
+                <select name="<?php echo esc_attr( $this->prefix ) . 'feed_country';?>" id="<?php echo esc_attr( $this->prefix ) . 'feed_country';?>" class="">
+                    <option value="all"><?php esc_html_e( 'Please select a country', 'rex-product-feed' ); ?></option>
                     <?php
-                    $saved_zone = get_post_meta( get_the_ID(), esc_attr( $this->prefix ) . 'shipping_tax_country', true );
-                    $shipping_zones = WC_Shipping_Zones::get_zones();
+                    $saved_country = get_post_meta( get_the_ID(), esc_attr( $this->prefix ) . 'feed_country', true );
+                    $shipping_country = WC()->countries->get_shipping_countries();
 
-                    foreach( $shipping_zones as $key => $value ) {
-                        $zone_id = isset( $value[ 'id' ] ) ? $value[ 'id' ] : '';
-                        $zone_name = isset( $value[ 'zone_name' ] ) ? $value[ 'zone_name' ] : '';
-                        $selected = (int)$saved_zone === (int)$zone_id ? ' selected' : '';
+                    foreach( $shipping_country as $code => $country ) {
+                        $selected = $saved_country === $code ? ' selected' : '';
 
-                        echo '<option value="'. esc_attr( $zone_id ) .'" '. esc_html( $selected ) .'>'. esc_attr( $zone_name ) .'</option>';
+                        echo '<option value="'. esc_attr( $code ) .'" '. esc_html( $selected ) .'>'. esc_attr( $country ) .'</option>';
                     }
                     ?>
                 </select>
@@ -315,7 +313,7 @@
 		<div class="<?php echo esc_attr( $this->prefix ) . 'wcml_currency_area';?>">
 
 			<?php
-			if( wpfm_is_wpml_active() ) {
+			if( in_array( 'woocommerce-multilingual/wpml-woocommerce.php', get_option( 'active_plugins', [] ) ) ) {
 				global $sitepress, $woocommerce_wpml;
 				$wcml_settings   = get_option( '_wcml_settings' );
 				$wcml_currencies = isset( $wcml_settings[ 'currency_options' ] ) ? $wcml_settings[ 'currency_options' ] : array();
@@ -332,7 +330,10 @@
 
 			<div class="<?php echo esc_attr( $this->prefix ) . 'wcml_currency';?>">
 				<label for="<?php echo esc_attr( $this->prefix ) . 'wcml_currency';?>"><?php esc_html_e('WCML Currency', 'rex-product-feed')?>
-					<i class="fa fa-question-circle" aria-hidden="true"></i>
+                    <span class="rex_feed-tooltip">
+						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
+						<p><?php esc_html_e( 'This option will convert all your product prices using WooCommerce Multilingual & Multicurrency', 'rex-product-feed' ); ?></p>
+					</span>
 				</label>
 				<select name="<?php echo esc_html( $this->prefix ) . 'wcml_currency';?>" id="<?php echo esc_html( $this->prefix ) . 'wcml_currency';?>" class="">
 					<?php

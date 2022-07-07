@@ -778,12 +778,12 @@
      */
     function get_product_number( event ) {
         event.preventDefault();
-        let is_preview = $( this ).hasClass( 'bottom-preview-btn' );
 
         if ( rex_feed_is_req_attr_missing() ) {
-            var merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
+            let merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
+            let is_preview = $( this ).hasClass( 'bottom-preview-btn' );
 
-            if ( merchant_name == '-1' ) {
+            if ( '-1' === merchant_name ) {
                 alert( 'Please choose a merchant!' );
                 return;
             }

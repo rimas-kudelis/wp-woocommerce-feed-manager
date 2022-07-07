@@ -114,9 +114,9 @@ class Rex_Product_Data_Retriever
     /**
      * @desc Variable for feed country
      * @since 7.2.9
-     * @var $shipping_zone
+     * @var $feed_country
      */
-    protected $shipping_zone;
+    protected $feed_country;
 
     /**
      * Initialize the class and set its properties.
@@ -144,7 +144,7 @@ class Rex_Product_Data_Retriever
         $this->wcml               = false;
         $this->wcml_currency      = '';
         $this->feed_format        = $feed->get_feed_format();
-        $this->shipping_zone       = $feed->get_shipping_tax_zone();
+        $this->feed_country      = $feed->get_shipping();
 
         if( wpfm_is_wpml_active() ) {
             $this->wcml          = true;
@@ -252,71 +252,72 @@ class Rex_Product_Data_Retriever
     {
         $val = '';
 
-        if( 'static' === $rule[ 'type' ] ) {
-            $val = $rule[ 'st_value' ];
+        if ( isset( $rule[ 'meta_key' ] ) && isset( $rule[ 'type' ] ) ) {
+            if( 'static' === $rule[ 'type' ] ) {
+                $val = $rule[ 'st_value' ];
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_primary_attr( $rule[ 'meta_key' ] ) ) {
+                $escape = isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '';
+                $val    = $this->set_pr_att( $rule[ 'meta_key' ], $escape );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_woodmart_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_woodmart_att( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_price_attr( $rule[ 'meta_key' ] ) ) {
+                $val  = $this->set_price_attr( $rule[ 'meta_key' ], $rule );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_yoast_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_yoast_attr( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_perfect_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_perfect_attr( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_wc_brand_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_wc_brand_attr( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_berocket_brand_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_berocket_brand_attr( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_image_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_image_att( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_product_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_product_attr( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_product_dynamic_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_product_dynamic_attr( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_wpfm_custom_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_wpfm_custom_att( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_product_custom_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_product_custom_att( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_product_category_mapper_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_cat_mapper_att( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_glami_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_glami_att( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_dropship_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_dropship_att( $rule[ 'meta_key' ] );
+            }
+            elseif( 'meta' === $rule[ 'type' ] && $this->is_date_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_date_attr( $rule[ 'meta_key' ] );
+            }
+            elseif ( 'meta' === $rule['type'] && $this->is_product_custom_tax( $rule['meta_key'] ) ) {
+                $val = $this->set_product_custom_tax( $rule['meta_key']  );
+            }
+            elseif ( 'meta' === $rule['type'] && $this->is_woo_discount_rules( $rule['meta_key'] ) ) {
+                $val = $this->set_woo_discount_rules( $rule['meta_key']  );
+            }
+            elseif ( 'meta' === $rule['type'] && $this->is_shipping_attr( $rule['meta_key'] ) ) {
+                $val = $this->set_shipping_attr( $rule['meta_key'], $rule  );
+            }
+            elseif ( 'meta' === $rule['type'] && $this->is_tax_attr( $rule['meta_key'] ) ) {
+                $val = $this->set_tax_attr( $rule['meta_key']  );
+            }
         }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_primary_attr( $rule[ 'meta_key' ] ) ) {
-            $escape = isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '';
-            $val    = $this->set_pr_att( $rule[ 'meta_key' ], $escape );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_woodmart_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_woodmart_att( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_price_attr( $rule[ 'meta_key' ] ) ) {
-            $val  = $this->set_price_attr( $rule[ 'meta_key' ], $rule );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_yoast_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_yoast_attr( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_perfect_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_perfect_attr( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_wc_brand_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_wc_brand_attr( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_berocket_brand_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_berocket_brand_attr( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_image_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_image_att( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_product_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_product_attr( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_product_dynamic_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_product_dynamic_attr( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_wpfm_custom_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_wpfm_custom_att( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_product_custom_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_product_custom_att( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_product_category_mapper_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_cat_mapper_att( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_glami_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_glami_att( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_dropship_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_dropship_att( $rule[ 'meta_key' ] );
-        }
-        elseif( 'meta' === $rule[ 'type' ] && $this->is_date_attr( $rule[ 'meta_key' ] ) ) {
-            $val = $this->set_date_attr( $rule[ 'meta_key' ] );
-        }
-        elseif ( 'meta' === $rule['type'] && $this->is_product_custom_tax( $rule['meta_key'] ) ) {
-            $val = $this->set_product_custom_tax( $rule['meta_key']  );
-        }
-        elseif ( 'meta' === $rule['type'] && $this->is_woo_discount_rules( $rule['meta_key'] ) ) {
-            $val = $this->set_woo_discount_rules( $rule['meta_key']  );
-        }
-        elseif ( 'meta' === $rule['type'] && $this->is_shipping_class_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_shipping_class_attr( $rule['meta_key']  );
-        }
-        elseif ( 'meta' === $rule['type'] && $this->is_tax_attr( $rule['meta_key'] ) ) {
-            $val = $this->set_tax_attr( $rule['meta_key']  );
-        }
-
         return $val;
     }
 
@@ -807,25 +808,18 @@ class Rex_Product_Data_Retriever
      * @param $key
      * @return int|string
      */
-    protected function set_shipping_class_attr( $key ) {
+    protected function set_shipping_attr( $key, $rule ) {
         switch ( $key ) {
+            case 'shipping':
+                return $this->get_shipping_methods( $rule );
+
             case 'shipping_class':
-                return $this->product->get_shipping_class();
+                if ( $this->product->get_shipping_class_id() ) {
+                    $shipping_class_term = get_term( (int)$this->product->get_shipping_class_id() );
+                    return isset( $shipping_class_term->slug ) ? $shipping_class_term->slug : '';
+                }
+                return '';
 
-            case 'shipping_cost':
-                return $this->get_shipping_cost();
-
-            case 'shipping_class_cost':
-                return $this->get_shipping_cost('class_cost_' );
-
-            case 'shipping_no_class_cost':
-                return $this->get_shipping_cost( 'no_class_cost' );
-
-            case 'shipping_cost_base_class':
-                return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('class_cost_' );
-
-            case 'shipping_cost_base_no_class':
-                return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('no_class_cost' );
             default:
                 return '';
         }
@@ -2193,7 +2187,10 @@ class Rex_Product_Data_Retriever
      * @since    1.0.0
      */
     protected function set_product_dynamic_attr( $key ) {
-        return $this->product->get_attribute( $key );
+        if( 'WC_Product_Simple' !== get_class( $this->product ) ) {
+            return trim( $this->product->get_attribute( $key ) );
+        }
+        return '';
     }
 
     /**
@@ -3094,7 +3091,7 @@ class Rex_Product_Data_Retriever
      * @param $key
      * @return bool
      */
-    protected function is_shipping_class_attr( $key ) {
+    protected function is_shipping_attr( $key ) {
         if( isset( $this->product_meta_keys['Shipping Attributes'] ) ) {
             return array_key_exists( $key, $this->product_meta_keys['Shipping Attributes'] );
         }
@@ -3476,34 +3473,64 @@ class Rex_Product_Data_Retriever
         return $identifier_exists;
     }
 
-    /**
-     * Returns the product shipping cost.
-     *
-     * @return string
-     */
-    public function get_shipping_cost( $type = 'cost' )
-    {
-        $shipping_zone = new WC_Shipping_Zone( $this->shipping_zone );
-        $shipping_methods = $shipping_zone->get_shipping_methods();
 
-        if ( !empty( $shipping_methods ) ) {
-            foreach ( $shipping_methods as $method ) {
-                if ( 'WC_Shipping_Flat_Rate' === get_class( $method ) ) {
-                    $shipping_rates = isset( $method->instance_settings ) ? $method->instance_settings : [];
-                    if ( 'cost' === $type ) {
-                        return isset( $shipping_rates[ $type ] ) ? $shipping_rates[ $type ] : '';
-                    }
-                    else {
-                        $shipping_id = $this->product->get_shipping_class_id();
-                        if ( $shipping_id ) {
-                            if ( 'class_cost_' === $type ) {
-                                return isset( $shipping_rates[ $type . $shipping_id ] ) ? $shipping_rates[ $type . $shipping_id ] : '';
+    /**
+     * @desc Get shipping method(s)
+     * available for the selected feed country
+     * @since 7.2.11
+     * @param $rule
+     * @return array|string
+     */
+    public function get_shipping_methods( $rule = [] ) {
+        if ( 'all' !== $this->feed_country ) {
+            $wc_shipping_zones = WC_Shipping_Zones::get_zones();
+            $default_shipping_zones = [];
+
+            foreach ( $wc_shipping_zones as $zone ) {
+                if ( isset( $zone[ 'zone_locations' ] ) ) {
+                    foreach ( $zone[ 'zone_locations' ] as $location ) {
+                        if ( isset( $location->code ) && $this->feed_country === $location->code && isset( $zone[ 'shipping_methods' ] ) ) {
+                            foreach ( $zone[ 'shipping_methods' ] as $method ) {
+                                if ( isset( $method->id ) && ( 'flat_rate' === $method->id || 'local_pickup' === $method->id ) ) {
+                                    $service = '';
+                                    $price = 0;
+
+                                    if ( isset( $zone[ 'zone_name' ] ) ) {
+                                        $service .= $zone[ 'zone_name' ];
+                                    }
+                                    if ( isset( $method->instance_settings[ 'title' ] ) ) {
+                                        $service .= ' ' . $method->instance_settings[ 'title' ];
+                                    }
+                                    if ( isset( $method->instance_settings[ 'cost' ] ) ) {
+                                        $price = (int)$method->instance_settings[ 'cost' ];
+                                        $shipping_class_id = $this->product->get_shipping_class_id();
+                                        if ( $shipping_class_id ) {
+                                            $price += isset( $method->instance_settings[ 'class_cost_' . $shipping_class_id ] ) ? (int)$method->instance_settings[ 'class_cost_' . $shipping_class_id ] : 0;
+                                        }
+                                        else {
+                                            $price += isset( $method->instance_settings[ 'no_class_cost' ] ) ? (int)$method->instance_settings[ 'no_class_cost' ] : 0;
+                                        }
+
+                                        if ( isset( $rule[ 'prefix' ] ) ) {
+                                            $price = $rule[ 'prefix' ] . $price;
+                                        }
+                                        if ( isset( $rule[ 'suffix' ] ) ) {
+                                            $price = $price . $rule[ 'suffix' ];
+                                        }
+                                    }
+
+                                    $default_shipping_zones[] = [
+                                        'country' => $this->feed_country,
+                                        'service' => $service . ' ' . $this->feed_country,
+                                        'price'   => $price
+                                    ];
+                                }
                             }
-                            return isset( $shipping_rates[ $type ] ) ? $shipping_rates[ $type ] : '';
                         }
                     }
                 }
             }
+            return !empty( $default_shipping_zones ) ? $default_shipping_zones : '';
         }
         return '';
     }
@@ -3599,15 +3626,17 @@ class Rex_Product_Data_Retriever
      * @return array|mixed|string|string[]|null
      */
     protected function maybe_processing_needed( $value, $rule ) {
-        // maybe escape
-        $value = $this->maybe_escape( $value, $rule[ 'escape' ] );
 
-        // maybe add prefix/suffix
-        $value = $this->maybe_add_prefix_suffix( $value, $rule );
+        if ( !is_array( $value ) ) {
+            // maybe escape
+            $value = $this->maybe_escape( $value, isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '' );
+            // maybe add prefix/suffix
+            $value = $this->maybe_add_prefix_suffix($value, $rule);
+            // maybe limit
+            $value = $this->maybe_limit( $value, isset( $rule[ 'limit' ] ) ? $rule[ 'limit' ] : '' );
 
-        // maybe limit
-        $value = $this->maybe_limit( $value, $rule[ 'limit' ] );
-
-        return $this->tab_replace( $value );
+            $value = $this->tab_replace( $value );
+        }
+        return $value;
     }
 }

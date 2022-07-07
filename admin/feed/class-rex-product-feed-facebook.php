@@ -48,7 +48,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     protected function generate_product_feed(){
 
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
-        
+
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];
@@ -167,7 +167,7 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     private function add_to_feed( $product, $meta_keys, $product_type = '' )
     {
         $attributes = $this->get_product_data( $product, $meta_keys );
-        $attributes = $this->process_attributes_for_shipping_tax( $attributes );
+        //$attributes = $this->process_attributes_for_shipping_tax( $attributes );
 
         if( ( $this->rex_feed_skip_product && empty( array_keys( $attributes, '' ) ) ) || !$this->rex_feed_skip_product ) {
             $item = GoogleShopping::createItem();
@@ -177,27 +177,47 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
             }
 
             foreach( $attributes as $key => $value ) {
-                if( $key == 'shipping' ) {
-                    $country = isset( $value[ 'shipping_country' ] ) ? $value[ 'shipping_country' ] : '';
-                    $service = isset( $value[ 'shipping_service' ] ) ? $value[ 'shipping_service' ] : '';
-                    $price   = isset( $value[ 'shipping_price' ] ) ? $value[ 'shipping_price' ] : '';
-                    $region  = isset( $value[ 'shipping_region' ] ) ? $value[ 'shipping_region' ] : '';
-
-                    $item->$key( $country, $service, $price, $region ); // invoke $key as method of $item object.
-                }
-                elseif( $key == 'tax' ) {
+                if( 'shipping' === $key ) {
                     if ( is_array( $value ) && !empty( $value ) ) {
+                        $shipping_vals = [];
+                        foreach ( $value as $shipping ) {
+                            if ( 'xml' === $this->feed_format ) {
+                                $shipping_country = isset($shipping['country']) ? $shipping['country'] : '';
+                                $shipping_service = isset($shipping['service']) ? $shipping['service'] : '';
+                                $shipping_price = isset($shipping['price']) ? $shipping['price'] : '';
+
+                                $item->$key( $shipping_country, $shipping_service, $shipping_price ); // invoke $key as method of $item object.
+                            }
+                            elseif ( 'csv' === $this->feed_format ) {
+                                $shipping_vals[] = implode( ':', $shipping );
+                            }
+                        }
+                        if ( 'csv' === $this->feed_format ) {
+                            $item->$key( null, null, null, implode( '||', $shipping_vals ) );
+                        }
+                    }
+                }
+                elseif( 'tax' === $key ) {
+                    if ( is_array( $value ) && !empty( $value ) ) {
+                        $tax_vals = [];
                         foreach ( $value as $tax ) {
                             $tax_country = isset( $tax->tax_rate_country ) ? $tax->tax_rate_country : '';
                             $tax_region = isset( $tax->tax_rate_state ) ? $tax->tax_rate_state : '';
                             $tax_postcode = isset( $tax->postcode ) && !empty( $tax->postcode ) ? implode( ', ', $tax->postcode ) : '';
                             $tax_rate = isset( $tax->tax_rate ) ? $tax->tax_rate : '';
                             $tax_ship = isset( $tax->tax_rate_shipping ) && $tax->tax_rate_shipping === '1' ? 'yes' : 'no';
-                            $item->$key( $tax_country,$tax_region, $tax_postcode, $tax_rate, $tax_ship ); // invoke $key as method of $item object.
+
+                            if ( 'xml' === $this->feed_format ) {
+                                $item->$key( $tax_country, $tax_region, $tax_postcode, $tax_rate, $tax_ship ); // invoke $key as method of $item object.
+                            }
+                            elseif ( 'csv' === $this->feed_format ) {
+                                $tax_vals[] = $tax_country . ':' . $tax_region. ':' . $tax_postcode. ':' . $tax_rate. ':' . $tax_ship;
+                            }
                         }
-                    }
-                    else {
-                        $item->$key($value);
+
+                        if ( 'csv' === $this->feed_format ) {
+                            $item->$key( null, null, null, null, null, implode( '||', $tax_vals ) );
+                        }
                     }
                 }
                 else {
@@ -266,9 +286,12 @@ class Rex_Product_Feed_Facebook extends Rex_Product_Feed_Abstract_Generator {
     }
 
 
-    //replace footer of feed
+    /**
+     * @desc XML footer remove by replacing
+     * for multiple batches
+     * @return void
+     */
     public function footer_replace() {
         $this->feed = str_replace('</channel></rss>', '', $this->feed);
     }
-
 }

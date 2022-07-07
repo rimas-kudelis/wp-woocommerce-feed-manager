@@ -236,16 +236,17 @@ jQuery(document).ready(function($){
         $( 'a[data-id='+selected_cat+']' ).addClass( 'selected' );
         $( 'a[data-id='+selected_cat+']' ).parent().next().slideDown(500);
 
-        $( 'a[data-id='+selected_cat+']' ).parent().parent()[0].scrollIntoView({
-            behavior: "smooth", // or "auto" or "instant"
-            block: "start" // or "end"
+        $('html, body').animate({
+            scrollTop: $( 'a[data-id='+selected_cat+']' ).offset().top - 50
         });
     }
 
     if ( url.includes('new-added=1') ) {
         $( '.existing-category-maps :first-child :first-child :first-child' ).addClass( 'selected' );
         $( '.existing-category-maps :first-child div.inner' ).slideDown(500);
-        window.scroll(0, $( '.existing-category-maps' ).position().top );
+        $('html, body').animate({
+            scrollTop: $(".existing-category-maps").offset().top - 50
+        });
         window.history.pushState({}, '', url.replace( '&new-added=1', '' ));
     }
 }); 
