@@ -250,7 +250,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 * Supports "WPC Composite Products for WooCommerce" plugin
 * Supports "Discount Rules For WooCommerce" plugin
 * Supports "Brands for WooCommerce" plugin
-* Supports "Perfect Brands for WooCoomerce" plugin
+* Supports "Perfect Brands for WooCommerce" plugin
 * Supports the official "WooCommerce Brands" plugin
 
 
@@ -708,7 +708,7 @@ WP Dashboard > Product Feed > Upgrade.
 == Changelog ==
 
 = 7.2.12 (2022-07-14) =
-* Add: Woocomerce Brands Pro plugin support added
+* Add: WooCommerce Brands Pro plugin support added
 * Add: Popup added to the feed preview feature 
 * Fix: WooCommerce Multilingual & Multicurrency plugin currency switch issue fixed
 
