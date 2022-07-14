@@ -48,7 +48,7 @@ class Rex_Feed_Attributes
         if( in_array( 'brands-for-woocommerce/woocommerce-brand.php', $plugins ) ) {
             $attributes = array_merge( $attributes, self::get_brands_for_wc_attributes() );
         }
-        if( in_array( 'woocommerce-brands/woocommerce-brands.php', $plugins ) ) {
+        if( in_array( 'woocommerce-brands/woocommerce-brands.php', $plugins ) || in_array( 'woo-brand/main.php', $plugins ) ) {
             $attributes = array_merge( $attributes, self::get_woocommerce_brand_attributes() );
         }
         if( in_array( 'dropship-plugin/mantella.php', $plugins ) ) {

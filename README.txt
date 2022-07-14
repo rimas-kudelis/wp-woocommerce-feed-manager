@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.11
+Stable tag:  7.2.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,11 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.2.12 (2022-07-14) =
+* Add: Woocomerce Brands Pro plugin support added
+* Add: Popup added to the feed preview feature 
+* Fix: WooCommerce Multilingual & Multicurrency plugin currency switch issue fixed
 
 = 7.2.11 (2022-07-07) =
 * Added: Insert a feed name automatically if the feed has no name

@@ -284,12 +284,15 @@ class Rex_Product_Feed_Ajax {
      *
      * @since    2.0.0
      */
-    public static function get_product_number($payload) {
+    public static function get_product_number( $payload ) {
         $feed_id        = isset( $payload[ 'feed_id' ] ) ? $payload[ 'feed_id' ] : '';
+        $btn_id         = isset( $payload[ 'button_id' ] ) ? $payload[ 'button_id' ] : '';
 	    $is_premium     = apply_filters( 'wpfm_is_premium', false );
 	    $products       = apply_filters( 'wpfm_get_total_number_of_products', array( 'products' => WPFM_FREE_MAX_PRODUCT_LIMIT ), $feed_id );
 	    $per_page       = get_option( 'rex-wpfm-product-per-batch', WPFM_FREE_MAX_PRODUCT_LIMIT );
 	    $posts_per_page = $is_premium ? ( int ) $per_page : ( ( int ) $per_page >= WPFM_FREE_MAX_PRODUCT_LIMIT ? WPFM_FREE_MAX_PRODUCT_LIMIT : ( int ) $per_page );
+
+        update_post_meta( $feed_id, 'rex_feed_publish_btn', $btn_id );
 
 	    return array(
 		    'products'    => $products[ 'products' ],

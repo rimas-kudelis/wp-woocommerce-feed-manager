@@ -193,6 +193,8 @@ a,
   transition: all 0.5s ease;
 }
 
+.rex-new-custom-attr,
+.bottom-preview-btn,
 .rex-new-custom-btn,
 .btn-default {
   display: block;
@@ -2677,7 +2679,6 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 }
 .post-type-product-feed #titlediv #title-prompt-text {
   position: absolute;
-  z-index: 1000;
   font-size: 14px;
   font-family: "Roboto", sans-serif;
   font-style: normal;
@@ -3187,6 +3188,38 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 }
 #rex_feed_config_heading #rex-feed-footer-btn .rex-new-custom-btn:hover svg path {
   stroke: #333333;
+}
+#rex_feed_config_heading #rex-feed-footer-btn .bottom-preview-btn,
+#rex_feed_config_heading #rex-feed-footer-btn .rex-new-custom-attr {
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 10px;
+}
+#rex_feed_config_heading #rex-feed-footer-btn .bottom-preview-btn svg,
+#rex_feed_config_heading #rex-feed-footer-btn .rex-new-custom-attr svg {
+  vertical-align: sub;
+  transition: all 0.3s ease;
+}
+#rex_feed_config_heading #rex-feed-footer-btn .bottom-preview-btn svg path,
+#rex_feed_config_heading #rex-feed-footer-btn .rex-new-custom-attr svg path {
+  stroke: #333333;
+}
+#rex_feed_config_heading #rex-feed-footer-btn .bottom-preview-btn:hover svg path,
+#rex_feed_config_heading #rex-feed-footer-btn .rex-new-custom-attr:hover svg path {
+  stroke: #fff;
+}
+#rex_feed_config_heading #rex-feed-footer-btn .rex-new-custom-attr,
+#rex_feed_config_heading #rex-feed-footer-btn .bottom-preview-btn {
+  background-color: #eef4ff;
+  border: 1px solid #b0cdff;
+  color: #333333;
+  border-radius: 10px;
+}
+#rex_feed_config_heading #rex-feed-footer-btn .rex-new-custom-attr:hover,
+#rex_feed_config_heading #rex-feed-footer-btn .bottom-preview-btn:hover {
+  background-color: #216df0;
+  border: 1px solid #216df0;
+  color: #fff;
 }
 #rex_feed_config_heading #rex-feed-footer-btn .rex-new-custom-btn {
   background-color: #216df0;
@@ -5082,6 +5115,50 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 .rex-take-alert__button--yes:hover {
   background-color: #0c4ee0;
   cursor: pointer;
+}
+
+.rex-xml-popup {
+  position: fixed;
+  top: 10px;
+  right: 0;
+  width: calc(100% - 160px);
+  height: 100%;
+  z-index: 999;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background: rgba(51, 51, 51, 0.4);
+  overflow: auto;
+}
+.rex-xml-popup pre {
+  display: flex;
+  width: 100%;
+}
+.rex-xml-popup__wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 5px;
+}
+.rex-xml-popup__body {
+  position: relative;
+  padding: 40px;
+}
+.rex-xml-popup__close-btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  display: block;
+  cursor: pointer;
+}
+.rex-xml-popup__message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 1399px) {

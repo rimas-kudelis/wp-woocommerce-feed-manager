@@ -231,6 +231,10 @@
         } );
     } );
 
+    $( document ).on( "click", ".rex-xml-popup__close-btn", function () {
+        $( 'section.rex-xml-popup' ).hide();
+    } );
+
     $( document ).on( "click", "#wpfm-clear-batch", wpfm_clear_batch );
 
     $( document ).on( "click", "#wpfm-log-copy", wpfm_copy_log );
@@ -793,11 +797,11 @@
             }
 
             $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'start' );
-            var merchant = $( '#rex_feed_merchant' ).find( ':selected' ).val();
 
-            var $payload = {
+            let $payload = {
                 feed_id: rex_wpfm_ajax.feed_id,
-                feed_config: $( 'form' ).serialize()
+                feed_config: $( 'form' ).serialize(),
+                button_id: $( this ).attr( 'id' )
             };
             $( '#publishing-action span.spinner' ).addClass( 'is-active' );
             $( this ).addClass( 'disabled' );
@@ -1361,7 +1365,7 @@
                 console.log( 'woohoo!' );
             } )
             .error( function ( response ) {
-                $form.find( "button.ssave-fb-pixel i" ).hide();
+                $form.find( "button.save-fb-pixel i" ).hide();
                 $form.find( "button.save-fb-pixel span" ).text( "failed" );
                 setTimeout( function () {
                     $form.find( "button.save-fb-pixel span" ).text( "save" );

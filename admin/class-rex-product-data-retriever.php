@@ -141,15 +141,9 @@ class Rex_Product_Data_Retriever
         $this->wmc_currency       = $feed->wmc_currency;
         $this->wcml_currency      = $feed->wcml_currency;
         $this->feed               = $feed;
-        $this->wcml               = false;
-        $this->wcml_currency      = '';
+        $this->wcml               = in_array( 'woocommerce-multilingual/wpml-woocommerce.php', get_option( 'active_plugins', [] ) );
         $this->feed_format        = $feed->get_feed_format();
         $this->feed_country      = $feed->get_shipping();
-
-        if( wpfm_is_wpml_active() ) {
-            $this->wcml          = true;
-            $this->wcml_currency = $this->feed->wcml_currency;
-        }
 
         if( $this->is_logging_enabled ) {
             $log = wc_get_logger();

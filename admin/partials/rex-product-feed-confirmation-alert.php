@@ -1,9 +1,5 @@
 
-<?
-    $take_tour_icon = 'icon/icon-svg/take-tour.php';
-?>
 <!-- `rex-take-alert` block -->
-
 <section class="rex-take-alert">
 
     <div class="rex-take-alert__wrapper">
@@ -47,5 +43,5 @@
     </div>
     
 </section>
-
 <!-- `rex-take-alert` block end -->
+

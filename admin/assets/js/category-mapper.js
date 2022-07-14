@@ -25,7 +25,6 @@ jQuery(document).ready(function($){
             });
     });
 
-
     /**
      * Function for updating select and input box name
      * attribute under a table-row.
