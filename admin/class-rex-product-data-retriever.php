@@ -2181,10 +2181,14 @@ class Rex_Product_Data_Retriever
      * @since    1.0.0
      */
     protected function set_product_dynamic_attr( $key ) {
+        $val = '';
         if( 'WC_Product_Simple' !== get_class( $this->product ) ) {
-            return trim( $this->product->get_attribute( $key ) );
+            $val = trim( $this->product->get_attribute( $key ) );
         }
-        return '';
+        if ( '' === $val ) {
+            $val = $this->get_product_cats( $key );
+        }
+        return $val;
     }
 
     /**
@@ -2717,7 +2721,6 @@ class Rex_Product_Data_Retriever
             else {
                 $parent_terms[] = $term->name;
             }
-
         }
         $output = array_merge( $parent_terms, $child_terms );
 
@@ -2795,20 +2798,6 @@ class Rex_Product_Data_Retriever
             $term_arr[]        = $term_name_array[ 0 ];
         }
         return $term_arr;
-    }
-
-
-    /**
-     * @param $id
-     * @param $taxonomy
-     * @param string $before
-     * @param string $sep
-     * @param string $after
-     * @since 5.35
-     */
-    protected function get_the_term_list_with_separator( $id, $taxonomy, $before = '', $sep = '', $after = '' )
-    {
-
     }
 
 
@@ -3306,6 +3295,11 @@ class Rex_Product_Data_Retriever
 
             case 'first_word_uppercase':
                 return ucfirst( strtolower( $val ) );
+            case 'comma_decimal':
+                if ( is_numeric( $val ) ) {
+                    return number_format( $val, 2, ',', '' );
+                }
+                return $val;
 
             default:
                 return $val;
@@ -3623,7 +3617,15 @@ class Rex_Product_Data_Retriever
 
         if ( !is_array( $value ) ) {
             // maybe escape
-            $value = $this->maybe_escape( $value, isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '' );
+            $escape = isset( $rule[ 'escape' ] ) ? $rule[ 'escape' ] : '';
+            if ( is_array( $escape ) ) {
+                foreach ( $escape as $esc ) {
+                    $value = $this->maybe_escape( $value, $esc );
+                }
+            }
+            else {
+                $value = $this->maybe_escape( $value, $escape );
+            }
             // maybe add prefix/suffix
             $value = $this->maybe_add_prefix_suffix($value, $rule);
             // maybe limit

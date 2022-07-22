@@ -780,89 +780,89 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function save_feed_meta( $config )
     {
-        $feed_rules = array();
-        parse_str( $config, $feed_rules );
+        $feed_configs = array();
+        parse_str( $config, $feed_configs );
 
-        if ( isset( $feed_rules[ 'rex_feed_schedule' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_schedule', $feed_rules[ 'rex_feed_schedule' ] );
+        if ( isset( $feed_configs[ 'rex_feed_schedule' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_schedule', $feed_configs[ 'rex_feed_schedule' ] );
 
-            if ( isset( $feed_rules[ 'rex_feed_custom_time' ] ) && $feed_rules[ 'rex_feed_schedule' ] === 'custom' ) {
-                update_post_meta( $this->id, 'rex_feed_custom_time', $feed_rules[ 'rex_feed_custom_time' ] );
+            if ( isset( $feed_configs[ 'rex_feed_custom_time' ] ) && $feed_configs[ 'rex_feed_schedule' ] === 'custom' ) {
+                update_post_meta( $this->id, 'rex_feed_custom_time', $feed_configs[ 'rex_feed_custom_time' ] );
             }
             else {
                 delete_post_meta( $this->id, 'rex_feed_custom_time' );
             }
         }
-        if ( isset( $feed_rules[ 'rex_feed_merchant' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_merchant', $feed_rules[ 'rex_feed_merchant' ] );
+        if ( isset( $feed_configs[ 'rex_feed_merchant' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_merchant', $feed_configs[ 'rex_feed_merchant' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_include_out_of_stock' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_include_out_of_stock', $feed_rules[ 'rex_feed_include_out_of_stock' ] );
+        if ( isset( $feed_configs[ 'rex_feed_include_out_of_stock' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_include_out_of_stock', $feed_configs[ 'rex_feed_include_out_of_stock' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_include_out_of_stock', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_products' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_products', $feed_rules[ 'rex_feed_products' ] );
+        if ( isset( $feed_configs[ 'rex_feed_products' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_products', $feed_configs[ 'rex_feed_products' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_variable_product' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_variable_product', $feed_rules[ 'rex_feed_variable_product' ] );
+        if ( isset( $feed_configs[ 'rex_feed_variable_product' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_variable_product', $feed_configs[ 'rex_feed_variable_product' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_variable_product', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_variations' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_variations', $feed_rules[ 'rex_feed_variations' ] );
+        if ( isset( $feed_configs[ 'rex_feed_variations' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_variations', $feed_configs[ 'rex_feed_variations' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_variations', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_parent_product' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_parent_product', $feed_rules[ 'rex_feed_parent_product' ] );
+        if ( isset( $feed_configs[ 'rex_feed_parent_product' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_parent_product', $feed_configs[ 'rex_feed_parent_product' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_parent_product', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_variation_product_name' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_variation_product_name', $feed_rules[ 'rex_feed_variation_product_name' ] );
+        if ( isset( $feed_configs[ 'rex_feed_variation_product_name' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_variation_product_name', $feed_configs[ 'rex_feed_variation_product_name' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_variation_product_name', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_hidden_products' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_hidden_products', $feed_rules[ 'rex_feed_hidden_products' ] );
+        if ( isset( $feed_configs[ 'rex_feed_hidden_products' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_hidden_products', $feed_configs[ 'rex_feed_hidden_products' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_hidden_products', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_skip_product' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_skip_product', $feed_rules[ 'rex_feed_skip_product' ] );
+        if ( isset( $feed_configs[ 'rex_feed_skip_product' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_skip_product', $feed_configs[ 'rex_feed_skip_product' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_skip_product', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_skip_row' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_skip_row', $feed_rules[ 'rex_feed_skip_row' ] );
+        if ( isset( $feed_configs[ 'rex_feed_skip_row' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_skip_row', $feed_configs[ 'rex_feed_skip_row' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_skip_row', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_include_zero_price_products' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_include_zero_price_products', $feed_rules[ 'rex_feed_include_zero_price_products' ] );
+        if ( isset( $feed_configs[ 'rex_feed_include_zero_price_products' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_include_zero_price_products', $feed_configs[ 'rex_feed_include_zero_price_products' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_include_zero_price_products', 'no' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_analytics_params_options' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_analytics_params_options', $feed_rules[ 'rex_feed_analytics_params_options' ] );
+        if ( isset( $feed_configs[ 'rex_feed_analytics_params_options' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_analytics_params_options', $feed_configs[ 'rex_feed_analytics_params_options' ] );
         }
         else {
             update_post_meta( $this->id, 'rex_feed_analytics_params_options', 'no' );
         }
 
-        if ( isset( $feed_rules[ 'rex_feed_cats' ] ) ) {
+        if ( isset( $feed_configs[ 'rex_feed_cats' ] ) ) {
             $cats = array();
-            foreach ( $feed_rules[ 'rex_feed_cats' ] as $cat ) {
+            foreach ( $feed_configs[ 'rex_feed_cats' ] as $cat ) {
                 $cats[] = get_term_by('slug', $cat, 'product_cat' )->term_id;
             }
             wp_set_object_terms( $this->id, $cats, 'product_cat' );
@@ -870,9 +870,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         else {
             wp_set_object_terms( $this->id, array(), 'product_cat' );
         }
-        if ( isset( $feed_rules[ 'rex_feed_tags' ] ) ) {
+        if ( isset( $feed_configs[ 'rex_feed_tags' ] ) ) {
             $tags = array();
-            foreach ( $feed_rules[ 'rex_feed_tags' ] as $tag ) {
+            foreach ( $feed_configs[ 'rex_feed_tags' ] as $tag ) {
                 $tags[] = get_term_by('slug', $tag, 'product_tag' )->term_id;
             }
             wp_set_object_terms( $this->id, $tags, 'product_tag' );
@@ -881,60 +881,62 @@ abstract class Rex_Product_Feed_Abstract_Generator
             wp_set_object_terms( $this->id, array(), 'product_tag' );
         }
 
-        if ( isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_aelia_currency', $feed_rules[ 'rex_feed_aelia_currency' ] );
+        if ( isset( $feed_configs[ 'rex_feed_aelia_currency' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_aelia_currency', $feed_configs[ 'rex_feed_aelia_currency' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_wmc_currency' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_wmc_currency', $feed_rules[ 'rex_feed_wmc_currency' ] );
+        if ( isset( $feed_configs[ 'rex_feed_wmc_currency' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_wmc_currency', $feed_configs[ 'rex_feed_wmc_currency' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_wcml_currency' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_wcml_currency', $feed_rules[ 'rex_feed_wcml_currency' ] );
+        if ( isset( $feed_configs[ 'rex_feed_wcml_currency' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_wcml_currency', $feed_configs[ 'rex_feed_wcml_currency' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_separator' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_separator', $feed_rules[ 'rex_feed_separator' ] );
+        if ( isset( $feed_configs[ 'rex_feed_separator' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_separator', $feed_configs[ 'rex_feed_separator' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_google_destination' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_google_destination', $feed_rules[ 'rex_feed_google_destination' ] );
+        if ( isset( $feed_configs[ 'rex_feed_google_destination' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_google_destination', $feed_configs[ 'rex_feed_google_destination' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_google_target_country' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_google_target_country', $feed_rules[ 'rex_feed_google_target_country' ] );
+        if ( isset( $feed_configs[ 'rex_feed_google_target_country' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_google_target_country', $feed_configs[ 'rex_feed_google_target_country' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_google_target_language' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_google_target_language', $feed_rules[ 'rex_feed_google_target_language' ] );
+        if ( isset( $feed_configs[ 'rex_feed_google_target_language' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_google_target_language', $feed_configs[ 'rex_feed_google_target_language' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_google_schedule' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_google_schedule', $feed_rules[ 'rex_feed_google_schedule' ] );
+        if ( isset( $feed_configs[ 'rex_feed_google_schedule' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_google_schedule', $feed_configs[ 'rex_feed_google_schedule' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_google_schedule_month' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_google_schedule_month', $feed_rules[ 'rex_feed_google_schedule_month' ] );
+        if ( isset( $feed_configs[ 'rex_feed_google_schedule_month' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_google_schedule_month', $feed_configs[ 'rex_feed_google_schedule_month' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_google_schedule_week_day' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_google_schedule_week_day', $feed_rules[ 'rex_feed_google_schedule_week_day' ] );
+        if ( isset( $feed_configs[ 'rex_feed_google_schedule_week_day' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_google_schedule_week_day', $feed_configs[ 'rex_feed_google_schedule_week_day' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_google_schedule_time' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_google_schedule_time', $feed_rules[ 'rex_feed_google_schedule_time' ] );
+        if ( isset( $feed_configs[ 'rex_feed_google_schedule_time' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_google_schedule_time', $feed_configs[ 'rex_feed_google_schedule_time' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_ebay_seller_site_id' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_ebay_seller_site_id', $feed_rules[ 'rex_feed_ebay_seller_site_id' ] );
+        if ( isset( $feed_configs[ 'rex_feed_ebay_seller_site_id' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_ebay_seller_site_id', $feed_configs[ 'rex_feed_ebay_seller_site_id' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_ebay_seller_country' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_ebay_seller_country', $feed_rules[ 'rex_feed_ebay_seller_country' ] );
+        if ( isset( $feed_configs[ 'rex_feed_ebay_seller_country' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_ebay_seller_country', $feed_configs[ 'rex_feed_ebay_seller_country' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_ebay_seller_currency' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_ebay_seller_currency', $feed_rules[ 'rex_feed_ebay_seller_currency' ] );
+        if ( isset( $feed_configs[ 'rex_feed_ebay_seller_currency' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_ebay_seller_currency', $feed_configs[ 'rex_feed_ebay_seller_currency' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_analytics_params' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_analytics_params', $feed_rules[ 'rex_feed_analytics_params' ] );
+        if ( isset( $feed_configs[ 'rex_feed_analytics_params' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_analytics_params', $feed_configs[ 'rex_feed_analytics_params' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_product_filter_ids' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_product_filter_ids', $feed_rules[ 'rex_feed_product_filter_ids' ] );
+        if ( isset( $feed_configs[ 'rex_feed_product_filter_ids' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_product_filter_ids', $feed_configs[ 'rex_feed_product_filter_ids' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_custom_filter_option_btn' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_custom_filter_option', $feed_rules[ 'rex_feed_custom_filter_option_btn' ] );
+        if ( isset( $feed_configs[ 'rex_feed_custom_filter_option_btn' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_custom_filter_option', $feed_configs[ 'rex_feed_custom_filter_option_btn' ] );
         }
-        if ( isset( $feed_rules[ 'rex_feed_feed_country' ] ) ) {
-            update_post_meta( $this->id, 'rex_feed_feed_country', $feed_rules[ 'rex_feed_feed_country' ] );
+        if ( isset( $feed_configs[ 'rex_feed_feed_country' ] ) ) {
+            update_post_meta( $this->id, 'rex_feed_feed_country', $feed_configs[ 'rex_feed_feed_country' ] );
         }
+
+        do_action( 'rex_feed_after_feed_config_saved', $this->id, $feed_configs );
     }
 
     /**
@@ -1612,6 +1614,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         if ( class_exists( 'Rex_Product_Data_Retriever_Pro' ) ) {
             $retriever_class = 'Rex_Product_Data_Retriever_Pro';
         }
+        if ( 'etsy' === $this->merchant ) {
+            $retriever_class = 'Etsy_Data_Retriever';
+        }
 
         $data     = new $retriever_class( $product, $this, $product_meta_keys );
         $all_data = $data->get_all_data();
@@ -1689,6 +1694,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function save_feed( $format )
     {
+        $feed_file_name = "feed-{$this->id}";
+        $prev_feed_name = $this->get_prev_feed_file_name();
+
         $path    = wp_upload_dir();
         $baseurl = $path[ 'baseurl' ];
         $path    = $path[ 'basedir' ] . '/rex-feed';
@@ -1707,7 +1715,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         if ( $format === 'xml' || $format === 'yml' ) {
-            $file = trailingslashit( $path ) . "temp-feed-{$this->id}." . $format;
+            $file = trailingslashit( $path ) . "temp-{$feed_file_name}." . $format;
 
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
@@ -1739,23 +1747,23 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
             if ( $this->batch === $this->tbatch && file_exists( $file ) && function_exists( 'rename' ) ) {
                 if ( function_exists( 'rex_feed_is_valid_xml' ) && rex_feed_is_valid_xml( $file, $this->id, $this->merchant ) ) {
-                    rename( $file, trailingslashit( $path ) . "feed-{$this->id}." . $format );
+                    rename( $file, trailingslashit( $path ) . "{$feed_file_name}.xml" );
                     delete_post_meta( $this->id, 'rex_feed_temp_xml_file' );
-                    update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}." . $format );
+                    update_post_meta( $this->id, 'rex_feed_xml_file',  "{$baseurl}/rex-feed/{$feed_file_name}.xml" );
+
+                    $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
                 }
                 else {
-                    update_post_meta( $this->id, 'rex_feed_temp_xml_file', $baseurl . '/rex-feed' . "/temp-feed-{$this->id}." . $format );
+                    update_post_meta( $this->id, 'rex_feed_temp_xml_file', "{$baseurl}/rex-feed/temp-{$feed_file_name}.xml" );
                     return 'false';
                 }
-
             }
             return 'true';
         }
         elseif ( $format === 'text' ) {
 
             $this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
-            $file       = trailingslashit( $path ) . "feed-{$this->id}.txt";
-            update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.txt" );
+            $file       = trailingslashit( $path ) . "{$feed_file_name}.txt";
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             if ( $this->batch != 1 ) {
@@ -1768,20 +1776,27 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 }
                 else {
                     $feed = $this->feed;
-                    if ( $feed )
+                    if( $this->batch === $this->tbatch ) {
+                        $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                        update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.txt" );
+                    }
+                    if ( $feed ) {
                         return file_put_contents( $file, $feed, FILE_APPEND ) ? 'true' : 'false';
+                    }
                     return 'true';
                 }
             }
             else {
+                if( $this->batch === $this->tbatch ) {
+                    $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                }
                 return file_put_contents( $file, $this->feed ) ? 'true' : 'false';
             }
         }
         elseif ( $format === 'tsv' ) {
             $this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
 
-            $file = trailingslashit( $path ) . "feed-{$this->id}.tsv";
-            update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.tsv" );
+            $file = trailingslashit( $path ) . "{$feed_file_name}.tsv";
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             if ( file_exists( $file ) ) {
@@ -1792,28 +1807,40 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     $feed = $this->feed;
                     $first_element = strtok($feed, "\n");
                     $feed = ltrim(str_replace( $first_element, '', $feed ));
+                    if( $this->batch === $this->tbatch ) {
+                        $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                        update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.tsv" );
+                    }
 
-                    if ( $feed )
+                    if ( $feed ) {
                         return file_put_contents( $file, $feed, FILE_APPEND ) ? 'true' : 'false';
+                    }
                     return 'true';
                 }
             }
             else {
+                if( $this->batch === $this->tbatch ) {
+                    $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                }
                 return file_put_contents( $file, $this->feed ) ? 'true' : 'false';
             }
 
         }
         elseif ( $format === 'csv' ) {
-            $file = trailingslashit( $path ) . "feed-{$this->id}.csv";
-            update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.csv" );
+            $file = trailingslashit( $path ) . "{$feed_file_name}.csv";
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
             update_post_meta( $this->id, 'rex_feed_separator', $this->feed_separator );
+
+            if( $this->batch === $this->tbatch ) {
+                $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.csv" );
+            }
 
 	        return wpfm_generate_csv_feed( $this->feed, $file, $this->feed_separator, $this->batch );
         }
         else {
-            $file = trailingslashit( $path ) . "feed-{$this->id}.xml";
-            update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . '/rex-feed' . "/feed-{$this->id}.xml" );
+            $file = trailingslashit( $path ) . "{$feed_file_name}.xml";
+            update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.xml" );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             $this->feed = wpfm_replace_special_char( $this->feed );
@@ -1827,7 +1854,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     $feed = $this->get_items();
 
                     if ( $this->merchant === 'google' && $this->feed_string_footer !== '' ) {
-                        $request        = wp_remote_get($baseurl .'/rex-feed'.  "/feed-{$this->id}." . $format, array('sslverify' => FALSE));
+                        $request        = wp_remote_get($baseurl .'/rex-feed'.  "/{$feed_file_name}." . $format, array('sslverify' => FALSE));
                         if( is_wp_error( $request ) ) {
                             return 'false';
                         }
@@ -2642,5 +2669,31 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     public function get_shipping() {
         return $this->feed_country;
+    }
+
+    /**
+     * @desc get previously save for the current feed
+     * @since 7.2.12
+     * @return string
+     */
+    private function get_prev_feed_file_name() {
+        $prev_feed_url = get_post_meta( $this->id, 'rex_feed_xml_file', true );
+
+        $feed_file_name = explode( '/', $prev_feed_url );
+        return $feed_file_name[ array_key_last( $feed_file_name ) ];
+    }
+
+    /**
+     * @desc Delete previous feed file incase of new feed title/format
+     * @since 7.2.12
+     * @param $new_name
+     * @param $prev_name
+     * @param $path
+     * @return void
+     */
+    private function delete_prev_feed_file( $new_name, $prev_name, $path ) {
+        if( $prev_name !== $new_name ) {
+            unlink( trailingslashit( $path ) . $prev_name );
+        }
     }
 }

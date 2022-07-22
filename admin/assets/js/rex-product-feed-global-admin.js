@@ -165,6 +165,7 @@
         if ( window.location.href.includes('edit.php') ) {
             $( '#rex_feed_new_changes_msg_content' ).hide();
         }
+        $( '#rex-feed-support-submenu, #rex-feed-gopro-submenu' ).parent().attr( 'target', '_blank' );
     } );
 
 

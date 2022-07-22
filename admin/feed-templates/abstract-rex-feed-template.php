@@ -154,7 +154,6 @@ abstract class Rex_Feed_Abstract_Template {
     }
 
 
-
     /**
      * Print attributes as select dropdown.
      *
@@ -163,7 +162,7 @@ abstract class Rex_Feed_Abstract_Template {
      * @param $name
      * @param string $selected
      */
-    public function printSelectDropdown( $key, $name, $selected = '', $class = '' ){
+    public function printSelectDropdown( $key, $name, $selected = '', $class = '', $multiple = '', $array = '' ){
 
         if ( $name === 'attr' ) {
             $items = $this->attributes;
@@ -174,8 +173,9 @@ abstract class Rex_Feed_Abstract_Template {
         }else{
             return;
         }
-        echo '<select class="' .esc_attr( $class ). '" name="fc['.esc_attr( $key ).'][' . esc_attr( $name ) . ']" >';
-        echo "<option value=''>Please Select</option>";
+
+        echo '<select class="' .esc_attr( $class ). '" name="fc['.esc_attr( $key ).'][' . esc_attr( $name ) . ']' .esc_attr( $array ). '" ' . esc_attr( $multiple ) . '>';
+        echo "<option value='-1' disabled>Please Select</option>";
         $i = 1;
         foreach ($items as $groupLabel => $group) {
             if ( !empty($groupLabel)) {
@@ -183,9 +183,10 @@ abstract class Rex_Feed_Abstract_Template {
             }
 
             foreach ($group as $key => $item) {
-                if ( $selected == $key ) {
+                if ( ( is_array( $selected ) && in_array( $key, $selected ) ) || ( $selected === $key ) ) {
                     echo "<option value='".esc_attr($key)."' selected='selected'>".esc_attr($item)."</option>";
-                }else{
+                }
+                else{
                     echo "<option value='".esc_attr($key)."'>".esc_attr($item)."</option>";
                 }
             }
@@ -264,6 +265,7 @@ abstract class Rex_Feed_Abstract_Template {
 			    'decode_url'                 => 'Decode url',
 			    'remove_decimal'             => 'Remove decimal points (Marktplaats only)',
 			    'add_two_decimal'            => 'Two decimal points',
+			    'comma_decimal'              => 'Decimal Separator - Comma (,)',
 			    'remove_hyphen'              => 'Remove hyphen',
 			    'remove_hyphen_space'        => 'Remove hyphen(space)',
 			    'replace_space_with_hyphen'  => 'Replace Space With Hyphen',

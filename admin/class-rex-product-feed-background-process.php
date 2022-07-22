@@ -90,6 +90,8 @@ class Rex_Product_Feed_Background_Process extends WP_Background_Process {
             Rex_Product_Feed_Controller::update_feed_status($feed_id, 'completed');
         }
         parent::complete();
+
+        do_action( 'rex_feed_after_feed_cron_jobs_completed', 'rex_feed_cron_jobs_completed' );
     }
 
 

@@ -5,11 +5,11 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.12
+Stable tag:  7.2.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Generate WooCommerce product feed for Google Shopping, Yandex, Idealo, Social Catalogs, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
+Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
 
 == Description ==
 Generating your WooCommerce Product Feed was never this easy!
@@ -706,6 +706,12 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.2.13 (2022-07-22) =
+* Added: Multiple output filter
+* Added: Replace the decimal point to a comma output filter
+* Fixed: Custom Taxonomy issue fixed
+* Fixed: UPI fields value saving issue when the option is disabled
 
 = 7.2.12 (2022-07-14) =
 * Add: WooCommerce Brands Pro plugin support added

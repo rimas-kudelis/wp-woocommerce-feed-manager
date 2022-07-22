@@ -105,55 +105,6 @@ class Rex_Feed_Scheduler {
 
 
     /**
-     * Get all feeds for scheduler
-     *
-     * @param string $schedule
-     * @return int[]|WP_Post[]
-     */
-    public function get_feeds_for_scheduler( $schedule = 'hourly' ) {
-        
-        $args = array(
-            'post_type'      => 'product-feed',
-            'post_status'    => array('publish'),
-            'posts_per_page' => -1,
-            'fields' => 'ids',
-            'meta_query'     => array(
-                array(
-                    'key'      => 'rex_feed_schedule',
-                    'value'    => $schedule,
-                )
-            ),
-        );
-        $query = new WP_Query( $args );
-        
-        return $query->get_posts();
-    }
-
-    /**
-     * @param $schedule
-     */
-    public function wpfm_hourly_schedule_update_hook($schedule) {
-     
-        $this->feed_ids = $this->get_feeds_for_scheduler($schedule);
-        
-        $this->configure_merchant_object(false, $schedule );
-    }
-
-    public function wpfm_daily_schedule_update_hook($schedule) {
-      
-        $this->feed_ids = $this->get_feeds_for_scheduler($schedule);
-
-        $this->configure_merchant_object(false, $schedule);
-    }
-
-    public function wpfm_weekly_schedule_update_hook($schedule) {
-  
-        $this->feed_ids = $this->get_feeds_for_scheduler($schedule);
-        $this->configure_merchant_object(false, $schedule);
-    }
-
-
-    /**
      * Hourly Cron
      *
      * @since    2.0.0
@@ -297,105 +248,72 @@ class Rex_Feed_Scheduler {
 
 	    if ( $this->feed_ids ) {
 		    foreach ( $this->feed_ids as $key => $feed_id ) {
-                $schedule = get_post_meta( $feed_id, 'rex_feed_schedule', true );
-                $schedule_time = get_post_meta( $feed_id, 'rex_feed_custom_time', true );
-                $timezone = new DateTimeZone( wp_timezone_string() );
-                $now_time = wp_date("H", null, $timezone );
-                $is_custom_executable = $schedule === 'custom' && $schedule_time !== '' && $schedule_time === $now_time;
+                $update_on_product_change = get_post_meta( $feed_id, 'rex_feed_update_on_product_change', true );
+                if ( ( 'yes' === $update_on_product_change && get_option( 'rex_feed_wc_product_updated', false ) ) || ( !$update_on_product_change || 'no' === $update_on_product_change ) ) {
+                    $schedule = get_post_meta( $feed_id, 'rex_feed_schedule', true );
+                    $schedule_time = get_post_meta( $feed_id, 'rex_feed_custom_time', true );
+                    $timezone = new DateTimeZone( wp_timezone_string() );
+                    $now_time = wp_date("H", null, $timezone );
+                    $is_custom_executable = $schedule === 'custom' && $schedule_time !== '' && $schedule_time === $now_time;
 
-                if( $is_custom_executable || in_array( $schedule, array( 'hourly', 'daily', 'weekly' ) ) ) {
-                    $products_info = Rex_Product_Feed_Ajax::get_product_number( array( 'feed_id' => $feed_id ) );
-                    $per_batch     = $products_info[ 'per_batch' ];
-                    $total_batches = $products_info[ 'total_batch' ];
-                    $offset        = 0;
-                    $count         = 0;
-                    $batch_size    = 20;
-                    try {
-                        for ( $i = 1; $i <= $total_batches; $i++ ) {
-                            try {
-                                if ( $cron ) {
-                                    /**
-                                     * if action triggered by WP-CRON
-                                     */
-                                    $payload = $this->get_feed_settings_payload( $feed_id, $i, $total_batches, $per_batch, $offset );
-                                    $merchant = Rex_Product_Feed_Factory::build( $payload, true );
-                                    $this->batch_array[ $feed_id ][] = $merchant;
-                                }
-                                else {
-                                    /**
-                                     * if action triggered by Action Scheduler
-                                     */
-                                    if ( $i == 1 ) {
-                                        update_post_meta( $feed_id, 'rex_feed_status', 'processing' );
-                                        update_post_meta( $feed_id, 'total_batch', $total_batches );
-                                        update_post_meta( $feed_id, 'batch_completed', $i );
-                                        $payload  = $this->get_feed_settings_payload( $feed_id, $i, $total_batches, $per_batch, $offset );
+                    if( $is_custom_executable || in_array( $schedule, array( 'hourly', 'daily', 'weekly' ) ) ) {
+                        $products_info = Rex_Product_Feed_Ajax::get_product_number( array( 'feed_id' => $feed_id ) );
+                        $per_batch     = $products_info[ 'per_batch' ];
+                        $total_batches = $products_info[ 'total_batch' ];
+                        $offset        = 0;
+                        $count         = 0;
+                        $batch_size    = 20;
+                        try {
+                            for ( $i = 1; $i <= $total_batches; $i++ ) {
+                                try {
+                                    if ( $cron ) {
+                                        /**
+                                         * if action triggered by WP-CRON
+                                         */
+                                        $payload = $this->get_feed_settings_payload( $feed_id, $i, $total_batches, $per_batch, $offset );
                                         $merchant = Rex_Product_Feed_Factory::build( $payload, true );
-                                        $merchant->make_feed();
+                                        $this->batch_array[ $feed_id ][] = $merchant;
                                     }
                                     else {
-                                        as_schedule_single_action(
-                                            time(), "wpfm_regenerate_scheduled_feed", array(
-                                            'feed_id'       => $feed_id,
-                                            'current_batch' => $i,
-                                            'total_batches' => $total_batches,
-                                            'per_batch'     => $per_batch,
-                                            'offset'        => $offset,
-                                        ) );
+                                        /**
+                                         * if action triggered by Action Scheduler
+                                         */
+                                        if ( $i == 1 ) {
+                                            update_post_meta( $feed_id, 'rex_feed_status', 'processing' );
+                                            update_post_meta( $feed_id, 'total_batch', $total_batches );
+                                            update_post_meta( $feed_id, 'batch_completed', $i );
+                                            $payload  = $this->get_feed_settings_payload( $feed_id, $i, $total_batches, $per_batch, $offset );
+                                            $merchant = Rex_Product_Feed_Factory::build( $payload, true );
+                                            $merchant->make_feed();
+                                        }
+                                        else {
+                                            as_schedule_single_action(
+                                                time(), "wpfm_regenerate_scheduled_feed", array(
+                                                'feed_id'       => $feed_id,
+                                                'current_batch' => $i,
+                                                'total_batches' => $total_batches,
+                                                'per_batch'     => $per_batch,
+                                                'offset'        => $offset,
+                                            ) );
+                                        }
                                     }
+                                    $offset += (int) $per_batch;
+                                    $count++;
                                 }
-                                $offset += (int) $per_batch;
-                                $count++;
-                            }
-                            catch ( Exception $e ) {
-                                $log = wc_get_logger();
-                                $log->critical( $e->getMessage(), array( 'source' => 'wpfm-error' ) );
+                                catch ( Exception $e ) {
+                                    $log = wc_get_logger();
+                                    $log->critical( $e->getMessage(), array( 'source' => 'wpfm-error' ) );
+                                }
                             }
                         }
-                    }
-                    catch ( Exception $e ) {
-                        $log = wc_get_logger();
-                        $log->critical( $e->getMessage(), array( 'source' => 'wpfm-error' ) );
+                        catch ( Exception $e ) {
+                            $log = wc_get_logger();
+                            $log->critical( $e->getMessage(), array( 'source' => 'wpfm-error' ) );
+                        }
                     }
                 }
 		    }
 	    }
-    }
-
-
-    /**
-     * schedule each batch for processing
-     * as soon as possible
-     *
-     * @param $feed_id
-     * @param $current_batch
-     * @param $total_batches
-     * @param $per_batch
-     * @param $offset
-     */
-    public function wpfm_schedule_feed_processing( $feed_id, $current_batch, $total_batches, $per_batch, $offset ) {
-        try {
-            global $wpdb;
-            $_batch_completed = get_post_meta( $feed_id, 'batch_completed', true);
-            $batch_completed = (int) $_batch_completed + 1;
-            update_post_meta($feed_id, 'batch_completed', $batch_completed);
-            if( $batch_completed >= $total_batches ) {
-                update_post_meta($feed_id, 'rex_feed_status', 'completed');
-                $wpdb->delete(
-                    $wpdb->prefix. 'actionscheduler_actions',
-                    array(
-                        'hook' => 'wpfm_regenerate_scheduled_feed',
-                        'status' => 'completed',
-                    )
-                );
-            }
-            $payload = $this->get_feed_settings_payload($feed_id, $current_batch, $total_batches, $per_batch, $offset);
-            $merchant = Rex_Product_Feed_Factory::build( $payload, true );
-            $merchant->make_feed();
-        } catch (Exception $e) {
-            $log = wc_get_logger();
-            $log->critical( $e->getMessage(), array('source' => 'wpfm-error') );
-        }
     }
 
 

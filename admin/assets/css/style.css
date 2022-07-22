@@ -3132,6 +3132,7 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   text-align: right;
 }
 #rex_feed_config_heading #config-table tbody tr td {
+  position: relative;
   border-bottom: 1px solid #dfdbe7;
   padding: 30px 10px 30px;
   min-height: 38px;
@@ -3163,11 +3164,78 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
 #rex_feed_config_heading #config-table tbody tr td select {
   max-width: 190px;
 }
+#rex_feed_config_heading #config-table tbody tr td .select2-container--default .select2-selection--multiple {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid #dfdbe7;
+  border-radius: 6px;
+  cursor: text;
+  padding-bottom: 0px;
+  padding-right: 5px;
+  height: 40px;
+}
+#rex_feed_config_heading #config-table tbody tr td .select2-container--default .select2-selection--multiple:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  float: right;
+  background: 0 0;
+  border-style: solid;
+  border-color: #7e8993 transparent;
+  border-width: 7px 5px 0 5px;
+  top: 50%;
+  -webkit-transform: translateY(-50%) rotate(0);
+  transform: translateY(-50%) rotate(0);
+  right: 5px;
+  transition: all 350ms linear;
+  cursor: pointer;
+}
+#rex_feed_config_heading #config-table tbody tr td .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  display: block;
+  width: calc(100% - 25px);
+  float: left;
+  font-weight: 500;
+  padding: 1px 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  top: -1px;
+}
+#rex_feed_config_heading #config-table tbody tr td .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+  background-color: #eef4ff;
+  border: 1px solid #b0cdff;
+  margin-top: 0;
+}
+#rex_feed_config_heading #config-table tbody tr td .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove {
+  border-right: 1px solid #b0cdff;
+}
 #rex_feed_config_heading #config-table tbody tr td:nth-child(5) input, #rex_feed_config_heading #config-table tbody tr td:nth-child(4) input {
   max-width: 71px;
 }
 #rex_feed_config_heading #config-table tbody tr td:nth-child(7) input {
   max-width: 87px;
+}
+#rex_feed_config_heading #config-table tbody tr td:nth-child(6) {
+  position: relative;
+}
+#rex_feed_config_heading #config-table tbody tr td:nth-child(6) .rex-product-picker-count {
+  position: absolute;
+  display: none;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: calc(100% - 175px);
+  color: #fff;
+  background: rgba(35, 40, 45, 0.7);
+  z-index: 1;
+  padding: 1px 3px;
+  font-size: 12px;
+  line-height: normal;
+  border-radius: 5px;
 }
 #rex_feed_config_heading #rex-feed-footer-btn {
   background-color: white;
@@ -3580,6 +3648,13 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
     grid-template-columns: 1fr;
     gap: 15px;
     margin-top: 15px;
+  }
+
+  #rex_feed_config_heading #config-table tbody tr td:nth-child(6) .rex-product-picker-count {
+    top: 80%;
+    -webkit-transform: translateY(-80%);
+    transform: translateY(-80%);
+    right: calc(100% - 166px);
   }
 }
 @media (max-width: 991px) {

@@ -559,17 +559,18 @@ class Rex_Product_Feed_Admin {
     public function load_admin_pages() {
 
         add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon-svg/dashboard-icon.svg', 20 );
-        
-        add_submenu_page('product-feed', __('Add New Feed', 'rex-product-feed'), __('Add New Feed', 'rex-product-feed'), 'manage_woocommerce', 'post-new.php?post_type=product-feed');
-        $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping');
-        $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings');
+
+        add_submenu_page('product-feed', __('Add New Feed', 'rex-product-feed'), __('Add New Feed', 'rex-product-feed'), 'manage_woocommerce', esc_url( admin_url( 'post-new.php?post_type=product-feed' ) ) );
+        $this->category_mapping_screen_hook_suffix = add_submenu_page('product-feed', __('Category Mapping', 'rex-product-feed'), __('Category Mapping', 'rex-product-feed'), 'manage_woocommerce', 'category_mapping',  __CLASS__ .'::category_mapping' );
+        $this->google_screen_hook_suffix =  add_submenu_page('product-feed', __('Google Merchant Settings', 'rex-product-feed'), __('Google Merchant Settings', 'rex-product-feed'), 'manage_woocommerce', 'merchant_settings',  __CLASS__ .'::merchant_settings' );
         $this->dashboard_screen_hook_suffix = add_submenu_page('product-feed', __('Settings', 'rex-product-feed'), __('Settings', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_dashboard',  __CLASS__ .'::user_dashboard');
-        $this->wpfm_support_menu = add_submenu_page('product-feed', '', __('Support', 'rex-product-feed'), 'manage_woocommerce', 'wpfm_support',  __CLASS__ .'::wpfm_support');
+        $this->wpfm_support_menu = add_submenu_page('product-feed', __('Support', 'rex-product-feed'), '<span id="rex-feed-support-submenu">'. __('Support', 'rex-product-feed').'</span>', 'manage_woocommerce', esc_url( 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0' ) );
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
         
         if(!$is_premium) {
-            $this->wpfm_pro_submenu = add_submenu_page( 'product-feed', '', '<span class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', 'go_wpfm_pro', __CLASS__ .'::wpfm_redirect_to_pro');
-        } else {
+            $this->wpfm_pro_submenu = add_submenu_page( 'product-feed', '', '<span id="rex-feed-gopro-submenu" class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', esc_url( 'https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro' ) );
+        }
+        else {
             $this->wpfm_pro_submenu = add_submenu_page(
                  'product-feed',
                 __('License', 'rex-product-feed'),
@@ -580,7 +581,7 @@ class Rex_Product_Feed_Admin {
             );
         }
            
-        $this->setup_wizard_hook_suffix = add_submenu_page('product-feed', __('Get Started', 'rex-product-feed'), __('Get Started', 'rex-product-feed'), 'manage_woocommerce', 'setup-wizard',  __CLASS__ .'::setup_wizard');
+        $this->setup_wizard_hook_suffix = add_submenu_page('product-feed', __('Get Started', 'rex-product-feed'), __('Get Started', 'rex-product-feed'), 'manage_woocommerce', 'setup-wizard',  __CLASS__ .'::setup_wizard', 10 );
 
         /**
          * WPFM action links
@@ -620,23 +621,6 @@ class Rex_Product_Feed_Admin {
      */
     public static function setup_wizard(){
         require plugin_dir_path(__FILE__) . '/partials/setup-wizard.php';
-    }
-
-
-    public static function wpfm_redirect_to_pro() {
-        $url = 'https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro';
-        $url = filter_var( $url, FILTER_SANITIZE_URL );
-        exit( esc_url( wp_redirect( $url ) ) );
-    }
-
-
-    /**
-     * WPFM redirect to support link
-     */
-    public static function wpfm_support() {
-        $support_link = apply_filters('wpfm_support_link', 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0');
-        $support_link = filter_var( $support_link, FILTER_SANITIZE_URL );
-        exit( esc_url( wp_redirect( $support_link ) ) );
     }
 
 

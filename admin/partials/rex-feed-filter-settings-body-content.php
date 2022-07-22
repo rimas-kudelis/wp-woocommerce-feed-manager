@@ -1,6 +1,6 @@
 <?php
 $troubleshoot_url = 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/';
-$documentation_url = 'https://rextheme.com/docs-category/product-feed-manager/';
+$documentation_url = 'https://rextheme.com/docs/product-feed-manager-documentation/';
 ?>
 
 <div class="rex-feed-cofig-settings">

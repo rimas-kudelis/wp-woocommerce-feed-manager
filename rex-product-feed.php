@@ -14,8 +14,8 @@
  * @wordpress-plugin
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
- * Description:       Product Feed Manager for WooCommerce helps you to sell more by uploading product feed to Google shopping, Walmart, eBay, Nextag, Pricegrabber and acquiring real buyer.
- * Version:           7.2.12
+ * Description:       Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
+ * Version:           7.2.13
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -40,7 +40,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.2.12' );
+    define( 'WPFM_VERSION', '7.2.13' );
 }
 if( !defined( 'WPFM__FILE__' ) ) {
     define( 'WPFM__FILE__', __FILE__ );
@@ -260,17 +260,6 @@ function run_rex_product_feed() {
     $plugin->run();
 
 	rex_check_dependency();
-    /**
-     * Notices
-     */
-//    $notices         = array(
-//        'database_update'           => 'rex_wpfm_db_update_notice',
-//        'database_update_running'   => 'rex_wpfm_db_update_running_notice',
-//    );
-//
-//    foreach ( $notices as $notice => $callback ) {
-//        add_action( 'admin_notices', array('Rex_Product_Feed_Notices', $callback) );
-//    }
 }
 run_rex_product_feed();
 

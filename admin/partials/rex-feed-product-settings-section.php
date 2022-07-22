@@ -49,6 +49,8 @@
                 echo '</li>';
 				?>
 			</ul>
+
+            <?php do_action( 'rex_feed_after_autogenerate_options_field' );?>
 		</div>
 
         <div class="<?php echo esc_attr( $this->prefix ) . 'country_list_area';?>">
