@@ -123,15 +123,7 @@ class Item
      */
     public function sale_price($salePrice)
     {
-        /** @var $salePrice - Added hack in for when the variants are being created it passes over the new ISO currency code which breaks number_format */
-//        $salePrice = (float) preg_replace( "/^([0-9]+\.?[0-9]*)(\s[A-Z]{3})$/", "$1", $salePrice );
-//        $node = new Node('sale_price');
-//        $salePrice = number_format($salePrice, 2, '.', '');
-//        $code = $this->googleShoppingFeed->getIso4217CountryCode();
-//        $this->nodes['sale_price'] = $node->value( $salePrice . " {$code}" )->_namespace($this->namespace);
-
         $node = new Node('sale_price');
-//        if($salePrice) $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
         $this->nodes['sale_price'] = $node->value($salePrice)->_namespace($this->namespace);
     }
 

@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.13
+Stable tag:  7.2.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,9 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.2.14 (2022-07-22) =
+* Fixed: sale_price attribute is including 0.00 if the Sale Price is empty issue fixed
 
 = 7.2.13 (2022-07-22) =
 * Added: Multiple output filter
