@@ -1761,7 +1761,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             return 'true';
         }
         elseif ( $format === 'text' ) {
-
             $this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
             $file       = trailingslashit( $path ) . "{$feed_file_name}.txt";
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
@@ -1772,26 +1771,23 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
             if ( file_exists( $file ) ) {
                 if ( $this->batch == 1 ) {
-                    return file_put_contents( $file, $this->feed ) ? 'true' : 'false';
+                    file_put_contents( $file, $this->feed );
                 }
                 else {
                     $feed = $this->feed;
-                    if( $this->batch === $this->tbatch ) {
-                        $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
-                        update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.txt" );
-                    }
                     if ( $feed ) {
-                        return file_put_contents( $file, $feed, FILE_APPEND ) ? 'true' : 'false';
+                        file_put_contents( $file, $feed, FILE_APPEND );
                     }
-                    return 'true';
                 }
             }
             else {
-                if( $this->batch === $this->tbatch ) {
-                    $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
-                }
-                return file_put_contents( $file, $this->feed ) ? 'true' : 'false';
+                file_put_contents( $file, $this->feed );
             }
+            if( $this->batch === $this->tbatch ) {
+                $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
+                update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.txt" );
+            }
+            return 'true';
         }
         elseif ( $format === 'tsv' ) {
             $this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
@@ -1801,30 +1797,29 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
             if ( file_exists( $file ) ) {
                 if ( $this->batch == 1 ) {
-                    return file_put_contents( $file, $this->feed ) ? 'true' : 'false';
+                    file_put_contents( $file, $this->feed ) ? 'true' : 'false';
                 }
                 else {
                     $feed = $this->feed;
                     $first_element = strtok($feed, "\n");
                     $feed = ltrim(str_replace( $first_element, '', $feed ));
-                    if( $this->batch === $this->tbatch ) {
-                        $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
-                        update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.tsv" );
-                    }
 
                     if ( $feed ) {
-                        return file_put_contents( $file, $feed, FILE_APPEND ) ? 'true' : 'false';
+                        file_put_contents( $file, $feed, FILE_APPEND ) ? 'true' : 'false';
                     }
-                    return 'true';
                 }
             }
             else {
                 if( $this->batch === $this->tbatch ) {
                     $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
                 }
-                return file_put_contents( $file, $this->feed ) ? 'true' : 'false';
+                file_put_contents( $file, $this->feed ) ? 'true' : 'false';
             }
-
+            if( $this->batch === $this->tbatch ) {
+                $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.tsv" );
+            }
+            return 'true';
         }
         elseif ( $format === 'csv' ) {
             $file = trailingslashit( $path ) . "{$feed_file_name}.csv";
@@ -1836,7 +1831,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.csv" );
             }
 
-	        return wpfm_generate_csv_feed( $this->feed, $file, $this->feed_separator, $this->batch );
+            return wpfm_generate_csv_feed( $this->feed, $file, $this->feed_separator, $this->batch );
         }
         else {
             $file = trailingslashit( $path ) . "{$feed_file_name}.xml";
