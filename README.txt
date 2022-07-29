@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.14
+Stable tag:  7.2.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,12 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.2.15 (2022-07-29) =
+* Fixed: Google Merchant Center section content updated
+* Fixed: Improved user experience
+* Fixed: Product Feed Manager Pricing page URL replaced with new URL
+* Fixed: Added step number to the plugin tour steps
 
 = 7.2.14 (2022-07-22) =
 * Fixed: sale_price attribute is including 0.00 if the Sale Price is empty issue fixed

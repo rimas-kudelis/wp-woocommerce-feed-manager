@@ -568,7 +568,7 @@ class Rex_Product_Feed_Admin {
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
         
         if(!$is_premium) {
-            $this->wpfm_pro_submenu = add_submenu_page( 'product-feed', '', '<span id="rex-feed-gopro-submenu" class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', esc_url( 'https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro' ) );
+            $this->wpfm_pro_submenu = add_submenu_page( 'product-feed', '', '<span id="rex-feed-gopro-submenu" class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ), 'manage_woocommerce', esc_url( 'https://rextheme.com/best-woocommerce-product-feed/pricing/' ) );
         }
         else {
             $this->wpfm_pro_submenu = add_submenu_page(
@@ -633,7 +633,7 @@ class Rex_Product_Feed_Admin {
         $is_premium = apply_filters('wpfm_is_premium_activate', false);
         $dashboard_link = sprintf( '<a href="%1$s">%2$s</a>', admin_url('admin.php?page=wpfm_dashboard' ), __( 'Dashboard', 'rex-product-feed' ) );
         array_unshift( $links, $dashboard_link );
-        if(!$is_premium) $links['wpfm_go_pro'] = sprintf( '<a href="%1$s" target="_blank" class="wpfm-plugins-gopro" style="color: #2BBBAC; font-weight: bold; ">%2$s</a>', 'https://rextheme.com/best-woocommerce-product-feed/#upgrade-pro' , __( 'Go Pro', 'rex-product-feed' ) );
+        if(!$is_premium) $links['wpfm_go_pro'] = sprintf( '<a href="%1$s" target="_blank" class="wpfm-plugins-gopro" style="color: #2BBBAC; font-weight: bold; ">%2$s</a>', 'https://rextheme.com/best-woocommerce-product-feed/pricing/' , __( 'Go Pro', 'rex-product-feed' ) );
         return $links;
     }
 
@@ -1534,5 +1534,33 @@ class Rex_Product_Feed_Admin {
                 <?php
             }
         }
+    }
+
+
+    /**
+     * @desc Update appsero tracking data and
+     * send feed merchant list.
+     * @since 7.2.15
+     * @param $tracking_data
+     * @return array
+     */
+    public function send_merchant_info( $tracking_data ) {
+        $merchants = [];
+        $args      = [
+            'post_type'        => 'product-feed',
+            'post_status'      => 'publish',
+            'suppress_filters' => true,
+            'posts_per_page'   => -1,
+            'fields'           => 'ids'
+        ];
+        $feed_ids  = get_posts( $args );
+
+        if( !empty( $feed_ids ) ) {
+            foreach( $feed_ids as $id ) {
+                $merchants[] = get_post_meta( $id, 'rex_feed_merchant', true );
+            }
+        }
+        $tracking_data[ 'extra' ][ 'rex_feed_merchant' ] = implode( ', ', array_unique( $merchants ) );
+        return $tracking_data;
     }
 }

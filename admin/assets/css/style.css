@@ -1272,6 +1272,20 @@ a,
   box-shadow: 0px 6px 60px 0px rgba(2, 0, 105, 0.08);
   padding: 25px 33px 33px;
 }
+.merchant-settings .single-merchant-area .single-merchant-block .single-merchant_pdf__link {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+.merchant-settings .single-merchant-area .single-merchant-block .single-merchant_pdf__link a {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  display: inline-block;
+  text-decoration: underline;
+}
 .merchant-settings .single-merchant-area .single-merchant-block .btn-default {
   display: inline-block;
   border: 1px solid #1fb3fb;
@@ -1337,6 +1351,7 @@ a,
 .merchant-settings .authorized .body .single-merchant-bold {
   font-weight: 600;
   padding: 15px 0 10px;
+  color: #cf0504;
 }
 .merchant-settings .title {
   color: #3c3e4a;

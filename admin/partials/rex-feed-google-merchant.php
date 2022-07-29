@@ -10,13 +10,15 @@ $value = $value == '' ? 'US' : $value;
 
 	<div class="<?php echo esc_attr( $this->prefix ) . 'google_desc__area'; ?>">
 		<p>
-			Please note that Google has fixed abbreviations for Location and Language. For example, the abbreviation for target location, United States is US and the abbreviation for language, English is en.  
-		</p>
-
+            <?php
+            esc_html_e( 'You can send the feed to Google Merchant Center through direct upload method or by using the Content API.', 'rex-product-feed' );
+            ?>
+        </p>
+        <br>
 		<div class="<?php echo esc_attr( $this->prefix ) . 'google_desc__link';?>">
-			<a href="<?php echo esc_url( 'https://rextheme.com/google-country-codes-list/' )?>" target="_blank"><?php esc_html_e('Check Abbreviation Lists','rex-product-feed')?></a>
-			<a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/' )?>" target="_blank"><?php esc_html_e('Auto-sync Product Feed', 'rex-product-feed')?></a>
-			<a href="<?php echo esc_url( 'https://rextheme.com/wp-content/uploads/2020/08/WPFM-New-Feed-Direct-Auto-sync-to-Google.pdf' )?>" target="_blank"><?php esc_html_e('Reverse Method (Direct Upload)', 'rex-product-feed')?></a>
+            <a href="<?php echo esc_url( 'https://rextheme.com/wp-content/uploads/2020/08/WPFM-New-Feed-Direct-Auto-sync-to-Google.pdf' )?>" target="_blank"><?php esc_html_e('Direct Upload Method (No need for authorization)', 'rex-product-feed')?></a>
+			<a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/' )?>" target="_blank"><?php esc_html_e('API Method (Require authorization)', 'rex-product-feed')?></a>
+            <a href="<?php echo esc_url( 'https://rextheme.com/google-country-codes-list/' )?>" target="_blank"><?php esc_html_e('Check Abbreviation Lists','rex-product-feed')?></a>
 		</div>
 
 	</div>
@@ -27,9 +29,9 @@ $value = $value == '' ? 'US' : $value;
 
 				<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_country';?>"><?php esc_html_e('Target Country', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
-								<?php include plugin_dir_path(__FILE__) . $icon;?>
-								<p><?php esc_html_e('Target Country', 'rex-product-feed')?></p>
-							</span>
+                        <?php include plugin_dir_path(__FILE__) . $icon;?>
+                        <p><?php esc_html_e('Please note that Google has fixed abbreviations for Location. For example, the abbreviation for target location, United States is US.', 'rex-product-feed')?></p>
+                    </span>
 				</label>
 
 				<input type="text" id="<?php echo esc_attr( $this->prefix ) . 'google_target_country';?>" value="<?php echo esc_attr($value)?>" name="<?php echo esc_attr( $this->prefix ) . 'google_target_country'?>" required>
@@ -43,9 +45,9 @@ $value = $value == '' ? 'US' : $value;
 			<div id="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>">
 				<label for="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>"><?php esc_html_e('Target Language', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
-								<?php include plugin_dir_path(__FILE__) . $icon;?>
-								<p><?php esc_html_e('Target Language', 'rex-product-feed')?></p>
-							</span>
+                        <?php include plugin_dir_path(__FILE__) . $icon;?>
+                        <p><?php esc_html_e('Please note that Google has fixed abbreviations for Language. For example, the abbreviation for language, English is en.', 'rex-product-feed')?></p>
+                    </span>
 				</label>
 				<input type="text" id="<?php echo esc_attr( $this->prefix ) . 'google_target_language';?>" value="<?php echo esc_attr($value)?>" name="<?php echo esc_attr( $this->prefix ) . 'google_target_language'?>" required>
 			</div>
@@ -77,7 +79,7 @@ $value = $value == '' ? 'US' : $value;
 				$rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
 
                 if ( $rex_google_merchant::$client_id && $rex_google_merchant::$client_secret && $rex_google_merchant::$merchant_id ) {
-                    $message = __('Oops!! Access token has expired. Please, authenticate again if you want to submit a new fresh feed to Google Merchant Center.', 'rex-product-feed');
+                    $message = __('Access token has expired. Please, authenticate again if you want to submit a completely new feed to Google Merchant Center.', 'rex-product-feed');
                     $button = __( 'Authenticate', 'rex-product-feed' );
                 }
                 else {

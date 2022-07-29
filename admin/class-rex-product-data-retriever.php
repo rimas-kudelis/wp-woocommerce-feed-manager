@@ -2185,9 +2185,9 @@ class Rex_Product_Data_Retriever
         $val = '';
         if( 'WC_Product_Simple' !== get_class( $this->product ) ) {
             $val = trim( $this->product->get_attribute( $key ) );
-        }
-        if ( '' === $val ) {
-            $val = $this->get_product_cats( $key );
+            if ( '' === $val ) {
+                $val = $this->get_product_cats( $key );
+            }
         }
         return $val;
     }

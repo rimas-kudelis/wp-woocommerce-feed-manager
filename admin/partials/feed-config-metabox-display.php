@@ -53,6 +53,7 @@ $keyy = rand(999, 3000); ?>
         <div class="static-input">
 			<?php $feed_template->printInput( $keyy, 'st_value', '' ); ?>
         </div>
+        <?php do_action( 'rex_feed_after_static_input', $feed_template, $keyy, '' );?>
     </td>
     <td data-title="Prefix : "><?php $feed_template->printInput( $keyy, 'prefix', '' ); ?></td>
     <td data-title="Suffix : "><?php $feed_template->printInput( $keyy, 'suffix', '' ); ?></td>

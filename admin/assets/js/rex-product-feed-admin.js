@@ -1020,6 +1020,7 @@
                 console.log( 'Woohoo!' );
                 $( '.merchant-action' ).html( response.html );
                 $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
+                location.reload();
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );

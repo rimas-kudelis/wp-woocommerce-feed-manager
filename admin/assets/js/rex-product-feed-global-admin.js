@@ -161,6 +161,16 @@
         }
     });
 
+
+    $( document ).on( 'click', '.best-woocommerce-feed-insights-data-we-collect', function () {
+        let desc = $( this ).parents( '.updated' ).find( 'p.description' ).html();
+        desc = desc.split( '. ' );
+        if ( -1 === desc[ 0 ].indexOf( ', Feed merchant lists' ) ) {
+            desc[0] = desc[0] + ', Feed merchant lists';
+            $(this).parents('.updated').find('p.description').html(desc.join('. '));
+        }
+    } );
+
     $( document ).ready( function ( e ) {
         if ( window.location.href.includes('edit.php') ) {
             $( '#rex_feed_new_changes_msg_content' ).hide();

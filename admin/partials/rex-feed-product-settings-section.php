@@ -40,9 +40,22 @@
                 echo '<li class="'. esc_attr( $this->prefix ) .  'custom_time_fields">';
                 $selected_hour = get_post_meta( get_the_ID(), 'rex_feed_custom_time', true );
                 echo '<select id="'. esc_attr( $this->prefix ) . 'custom_time " name="'. esc_attr( $this->prefix ) . 'custom_time">';
-                for( $i=0; $i<24; $i++ ) {
+                for( $i=1; $i<=24; $i++ ) {
+                    if( 12 == $i ) {
+                        $twelve_hr_format = '12 PM';
+                    }
+                    elseif( 24 == $i ) {
+                        $twelve_hr_format = '12 AM';
+                    }
+                    elseif( $i > 12 ) {
+                        $hr = (int)$i - 12;
+                        $twelve_hr_format = $hr . ' PM';
+                    }
+                    else {
+                        $twelve_hr_format = $i . ' AM';
+                    }
                     $selected = (int)$selected_hour === $i ? ' selected' : '';
-                    echo '<option value="'. esc_attr( $i ) .'" '. esc_html( $selected ) .'>'. esc_attr( $i ) .' h</option>';
+                    echo '<option value="'. esc_attr( $i ) .'" '. esc_html( $selected ) .'>' . esc_attr( $twelve_hr_format ) . '</option>';
                 }
                 echo '</select>';
                 echo '<label for="'. esc_attr( $this->prefix ) . 'custom_time' . '">'.esc_html__('Every Day', 'rex-product-feed').'</label>';
@@ -63,9 +76,9 @@
                 </label>
 
                 <select name="<?php echo esc_attr( $this->prefix ) . 'feed_country';?>" id="<?php echo esc_attr( $this->prefix ) . 'feed_country';?>" class="">
-                    <option value="all"><?php esc_html_e( 'Please select a country', 'rex-product-feed' ); ?></option>
                     <?php
                     $saved_country = get_post_meta( get_the_ID(), esc_attr( $this->prefix ) . 'feed_country', true );
+                    $saved_country = '' === $saved_country ? (new WC_Countries())->get_base_country() : $saved_country;
                     $shipping_country = WC()->countries->get_shipping_countries();
 
                     foreach( $shipping_country as $code => $country ) {

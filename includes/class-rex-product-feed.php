@@ -222,6 +222,8 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_init', $plugin_admin, 'remove_wpfm_logs' );
 
         $this->loader->add_action( 'admin_notices', $plugin_admin, 'render_xml_error_message' );
+
+        $this->loader->add_filter( 'best-woocommerce-feed_tracker_data', $plugin_admin, 'send_merchant_info' );
     }
 
 

@@ -30,7 +30,7 @@ $wpfm_fb_pixel_enabled = get_option( 'wpfm_fb_pixel_enabled', 'no' );
 $wpfm_fb_pixel_data    = get_option( 'wpfm_fb_pixel_value' );
 $wpfm_enable_log       = get_option( 'wpfm_enable_log' );
 $user_email            = get_option( 'wpfm_user_email', '' );
-$pro_url               = add_query_arg( 'wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/' );
+$pro_url               = add_query_arg( 'pfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/pricing/' );
 $rollback_versions     = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
 $wpfm_remove_plugin_data = get_option( 'wpfm_remove_plugin_data' );
 $schedule_hours = [
@@ -470,10 +470,10 @@ $schedule_hours = [
                                         </a>
                                     <?php } ?>
 
-                                    <span class="title"><?php echo esc_html__('Email', 'rex-product-feed'); ?></span>
+                                    <span class="title"><?php echo esc_html__('Get email notification if your feed is not generated properly', 'rex-product-feed'); ?></span>
                                     <div class="switch">
                                         <form id="wpfm-user-email" class="wpfm-fb-pixel" style="width: 300px;" disabled>
-                                            <input id="wpfm_user_email" type="text" name="wpfm_user_email" value="<?php echo esc_attr( $user_email ); ?>" style="width: 200px;<?php echo !$is_premium_activated ? ' cursor: not-allowed;" disabled' : '"' ?>>
+                                            <input placeholder="user@email.com" id="wpfm_user_email" type="text" name="wpfm_user_email" value="<?php echo esc_attr( $user_email ); ?>" style="width: 200px;<?php echo !$is_premium_activated ? ' cursor: not-allowed;" disabled' : '"' ?>>
                                             <button type="submit" class="save-user-email" <?php echo !$is_premium_activated ? ' style="background-color: #f2f2f8; color: #d9d9db; cursor: not-allowed;" disabled' : '' ?>>
                                                 <span><?php echo esc_html__('save', 'rex-product-feed'); ?></span>
                                                 <i class="fa fa-spinner fa-pulse fa-fw"></i>
