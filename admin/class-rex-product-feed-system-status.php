@@ -221,8 +221,8 @@ class Rex_Feed_System_Status {
 
         if ( ! empty($theme) ) {
             $new_version = "";
-            if ( version_compare($theme['version'],$theme['version_latest']) ) {
-                $new_version = ' (Latest:'.$theme['version_latest'].')';
+            if ( version_compare( $theme[ 'version' ], $theme[ 'version_latest' ], '<' ) ) {
+                $new_version = ' (Latest: '.$theme['version_latest'].')';
             }
 
             $info[] = [
@@ -248,8 +248,8 @@ class Rex_Feed_System_Status {
                 $new_version = '';
                 $status = 'success';
 
-                if ( is_object( $version_latest ) && isset( $version_latest->version ) && version_compare( $plugin[ 'version' ], $version_latest->version ) ) {
-                    $new_version = ' (Latest:'.$version_latest->version.')';
+                if ( is_object( $version_latest ) && isset( $version_latest->version ) && version_compare( $plugin[ 'version' ], $version_latest->version, '<' ) ) {
+                    $new_version = ' (Latest: '.$version_latest->version.')';
                     $status = 'error';
                 }
 

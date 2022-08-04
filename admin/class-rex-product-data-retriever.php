@@ -814,9 +814,75 @@ class Rex_Product_Data_Retriever
                 }
                 return '';
 
+            case 'shipping_cost':
+                return $this->get_shipping_cost();
+
+            case 'shipping_class_cost':
+                return $this->get_shipping_cost('class_cost_' );
+
+            case 'shipping_no_class_cost':
+                return $this->get_shipping_cost( 'no_class_cost' );
+
+            case 'shipping_cost_base_class':
+                return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('class_cost_' );
+
+            case 'shipping_cost_base_no_class':
+                return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('no_class_cost' );
+
+            case 'local_pickup_cost':
+                return $this->get_shipping_cost( 'local_pickup_cost' );
+
             default:
                 return '';
         }
+    }
+
+
+    /**
+     * @desc getting individual shipping cost value
+     * @since 7.2.17
+     * @param $type
+     * @return int|mixed|string
+     */
+    private function get_shipping_cost( $type = 'cost' ) {
+        $shipping_cost = '';
+        if( function_exists( 'wc_get_shipping_zone' ) ) {
+            $shipping_zone = wc_get_shipping_zone( [
+                'destination' => [
+                    'country' => $this->feed_country
+                ]
+            ] );
+            $shipping_methods = $shipping_zone ? $shipping_zone->get_shipping_methods( true ) : [];
+
+            if ( !empty( $shipping_methods ) ) {
+                foreach ( $shipping_methods as $method ) {
+                    if( 'local_pickup_cost' !== $type ) {
+                        if ( 'WC_Shipping_Flat_Rate' === get_class( $method ) ) {
+                            $shipping_rates = isset( $method->instance_settings ) ? $method->instance_settings : [];
+                            if ( isset( $shipping_rates[ $type ] ) ) {
+                                $shipping_cost = $shipping_rates[ $type ];
+                            }
+                            else {
+                                $shipping_id = $this->product->get_shipping_class_id();
+                                if ( $shipping_id && isset( $shipping_rates[ $type . $shipping_id ] ) ) {
+                                    $shipping_cost = $shipping_rates[ $type . $shipping_id ];
+                                }
+                            }
+                        }
+                        elseif( 'WC_Shipping_Free_Shipping' === get_class( $method ) && isset( $method->min_amount ) && $this->product->get_price() >= $method->min_amount && ( 'min_amount' === $method->requires || 'either' === $method->requires ) ) {
+                            $shipping_cost = 0;
+                        }
+                    }
+                    elseif( 'WC_Shipping_Local_Pickup' === get_class( $method ) ) {
+                        $shipping_rates = isset( $method->instance_settings ) ? $method->instance_settings : [];
+                        if ( isset( $shipping_rates[ 'cost' ] ) ) {
+                            $shipping_cost = $shipping_rates[ 'cost' ];
+                        }
+                    }
+                }
+            }
+        }
+        return $shipping_cost;
     }
 
 

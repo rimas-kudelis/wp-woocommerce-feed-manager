@@ -1694,7 +1694,16 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function save_feed( $format )
     {
-        $feed_file_name = "feed-{$this->id}";
+        $publish_btn = get_post_meta( $this->id, 'rex_feed_publish_btn', true );
+
+        if( 'rex-bottom-preview-btn' === $publish_btn ) {
+            $feed_file_name = "preview-feed-{$this->id}";
+            $feed_file_meta_key = 'rex_feed_preview_file';
+        }
+        else {
+            $feed_file_name = "feed-{$this->id}";
+            $feed_file_meta_key = 'rex_feed_xml_file';
+        }
         $prev_feed_name = $this->get_prev_feed_file_name();
 
         $path    = wp_upload_dir();
@@ -1749,9 +1758,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 if ( function_exists( 'rex_feed_is_valid_xml' ) && rex_feed_is_valid_xml( $file, $this->id, $this->merchant ) ) {
                     rename( $file, trailingslashit( $path ) . "{$feed_file_name}.xml" );
                     delete_post_meta( $this->id, 'rex_feed_temp_xml_file' );
-                    update_post_meta( $this->id, 'rex_feed_xml_file',  "{$baseurl}/rex-feed/{$feed_file_name}.xml" );
+                    update_post_meta( $this->id, $feed_file_meta_key,  "{$baseurl}/rex-feed/{$feed_file_name}.xml" );
 
-                    $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                    if( 'publish' === $publish_btn ) {
+                        $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                    }
                 }
                 else {
                     update_post_meta( $this->id, 'rex_feed_temp_xml_file', "{$baseurl}/rex-feed/temp-{$feed_file_name}.xml" );
@@ -1784,8 +1795,10 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 file_put_contents( $file, $this->feed );
             }
             if( $this->batch === $this->tbatch ) {
-                $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
-                update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.txt" );
+                if( 'publish' === $publish_btn ) {
+                    $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
+                }
+                update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.txt" );
             }
             return 'true';
         }
@@ -1810,14 +1823,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 }
             }
             else {
-                if( $this->batch === $this->tbatch ) {
-                    $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
-                }
                 file_put_contents( $file, $this->feed ) ? 'true' : 'false';
             }
             if( $this->batch === $this->tbatch ) {
-                $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
-                update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.tsv" );
+                if( 'publish' === $publish_btn ) {
+                    $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                }
+                update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.tsv" );
             }
             return 'true';
         }
@@ -1827,15 +1839,17 @@ abstract class Rex_Product_Feed_Abstract_Generator
             update_post_meta( $this->id, 'rex_feed_separator', $this->feed_separator );
 
             if( $this->batch === $this->tbatch ) {
-                $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
-                update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.csv" );
+                if( 'publish' === $publish_btn ) {
+                    $this->delete_prev_feed_file( "{$feed_file_name}.{$format}", $prev_feed_name, $path );
+                }
+                update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.csv" );
             }
 
             return wpfm_generate_csv_feed( $this->feed, $file, $this->feed_separator, $this->batch );
         }
         else {
             $file = trailingslashit( $path ) . "{$feed_file_name}.xml";
-            update_post_meta( $this->id, 'rex_feed_xml_file', $baseurl . "/rex-feed/{$feed_file_name}.xml" );
+            update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.xml" );
             update_post_meta( $this->id, 'rex_feed_feed_format', $this->feed_format );
 
             $this->feed = wpfm_replace_special_char( $this->feed );
@@ -2410,6 +2424,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->item_wrapper = '<offer>';
                 $this->feed_string_footer .= '</offers></shop></yml_catalog>';
             }
+        }elseif ($this->merchant === 'heureka_availability') {
+            $node = $feed->getElementsByTagName("item");
+
+            if($this->batch == $this->tbatch) {
+                $this->item_wrapper = '<item>';
+                $this->feed_string_footer .= '</item_list>';
+            }
         }
         else {
             $node = $feed->getElementsByTagName( "item" );
@@ -2520,6 +2541,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $parent = $orgdoc->getElementsByTagName('shop')->item(0);
             }elseif ($this->merchant === 'gulog_gratis') {
                 $parent = $orgdoc->getElementsByTagName('ad')->item(0);
+            }elseif ($this->merchant === 'heureka_availability') {
+                $parent = $orgdoc->getElementsByTagName('item')->item(0);
             }
             else {
                 $parent = $orgdoc->getElementsByTagName( 'products' )->item( 0 );

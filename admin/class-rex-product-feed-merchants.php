@@ -994,6 +994,11 @@ class Rex_Feed_Merchants {
                 'name'   => 'Heureka',
                 'formats' => []
             ),
+            'heureka_availability'            => array(
+                'free'   => true,
+                'name'   => 'Heureka (Availability)',
+                'formats' => [ 'xml' ]
+            ),
             'wish'                            => array(
                 'free'   => true,
                 'name'   => 'Wish.com',

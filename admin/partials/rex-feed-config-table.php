@@ -9,10 +9,12 @@ if ( isset( $get[ 'get' ][ 'post' ] ) ) {
     $publish_btn_id = get_post_meta( $feed_id, 'rex_feed_publish_btn', true );
     delete_post_meta( $feed_id, 'rex_feed_publish_btn' );
     if ( 'rex-bottom-preview-btn' === $publish_btn_id ) {
+        $path    = wp_upload_dir();
+        $path    = $path[ 'basedir' ] . '/rex-feed';
         $format = get_post_meta( $feed_id, 'rex_feed_feed_format', true );
-        $feed_url = get_post_meta( $feed_id, 'rex_feed_xml_file', true );
+        $feed_url = get_post_meta( $feed_id, 'rex_feed_preview_file', true );
 
-        $request  = wp_remote_get( $feed_url, array( 'sslverify' => FALSE ) );
+        $request  = wp_remote_get( esc_url( $feed_url ), array( 'sslverify' => FALSE ) );
         if( is_wp_error( $request ) ) {
             return 'false';
         }
@@ -24,6 +26,8 @@ if ( isset( $get[ 'get' ][ 'post' ] ) ) {
             $feed->formatOutput = TRUE;
             $feed_string = $feed->saveXML();
         }
+        $format = 'text' === $format ? 'txt' : $format;
+        unlink( trailingslashit( $path ) . "preview-feed-{$feed_id}.{$format}" );
         include_once plugin_dir_path(__FILE__) . 'rex-product-feed-xml-preview-popup.php';
     }
 }

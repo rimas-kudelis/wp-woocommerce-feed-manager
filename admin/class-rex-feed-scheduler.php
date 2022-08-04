@@ -167,13 +167,13 @@ class Rex_Feed_Scheduler {
 		$aelia_currency          = get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
 		$wmc_currency            = get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
 		$skip_product            = get_post_meta( $feed_id, 'rex_feed_skip_product', true );
-		$skip_product            = $skip_product === 'yes' ? true : false;
+		$skip_product            = $skip_product === 'yes';
 		$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
-        $skip_row                = $skip_row === 'yes' ? true : false;
+        $skip_row                = $skip_row === 'yes';
 		$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
         $include_zero_price_products  = get_post_meta( $feed_id, 'rex_feed_include_zero_price_products', true );
         $custom_filter_option    = get_post_meta( $feed_id, 'rex_feed_custom_filter_option', true );
-        $shipping_tax_country    = get_post_meta( $feed_id, 'rex_feed_shipping_tax_country', true );
+        $feed_country            = get_post_meta( $feed_id, 'rex_feed_feed_country', true );
 
         if( apply_filters( 'wpfm_is_premium', false ) ) {
             $feed_rules = get_post_meta( $feed_id, 'rex_feed_feed_config_rules', true );
@@ -231,7 +231,7 @@ class Rex_Feed_Scheduler {
             'skip_row'                    => $skip_row,
             'feed_separator'              => $feed_separator,
             'custom_filter_option'        => $custom_filter_option,
-            'shipping_tax_country'        => $shipping_tax_country,
+            'feed_country'                => $feed_country,
         );
 	}
 
