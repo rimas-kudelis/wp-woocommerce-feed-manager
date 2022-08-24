@@ -849,7 +849,9 @@ class Rex_Product_Data_Retriever
         if( function_exists( 'wc_get_shipping_zone' ) ) {
             $shipping_zone = wc_get_shipping_zone( [
                 'destination' => [
-                    'country' => $this->feed_country
+                    'country'  => $this->feed_country,
+                    'state'    => '',
+                    'postcode' => '',
                 ]
             ] );
             $shipping_methods = $shipping_zone ? $shipping_zone->get_shipping_methods( true ) : [];
@@ -2000,80 +2002,82 @@ class Rex_Product_Data_Retriever
      */
     protected function set_image_att( $key )
     {
+        if( $this->product && !is_wp_error( $this->product ) ) {
+            switch( $key ) {
+                case 'main_image':
+                    if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                        $_pr = wc_get_product( $this->product->get_parent_id() );
+                        return $_pr ? wp_get_attachment_url( $_pr->get_image_id() ) : '';
+                        break;
+                    }
+                    else {
+                        return $this->product ? wp_get_attachment_url( $this->product->get_image_id() ) : '';
+                    }
+                    return '';
 
-        switch( $key ) {
-            case 'main_image':
-                if( 'WC_Product_Variation' == get_class( $this->product ) ) {
-                    $_pr = wc_get_product( $this->product->get_parent_id() );
-                    return $_pr ? wp_get_attachment_url( $_pr->get_image_id() ) : '';
+                case 'image_height':
+                    $image_src = $this->get_image_meta();
+
+                    return $image_src[ 'height' ];
+
+                case 'image_width':
+                    $image_src = $this->get_image_meta();
+
+                    return $image_src[ 'width' ];
+
+                case 'encoding_format':
+                    $image_src = $this->get_image_meta();
+
+                    return $image_src[ 'sizes' ][ 'woocommerce_thumbnail' ][ 'mime-type' ];
+
+                case 'image_size':
+                    if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                        $_pr        = wc_get_product( $this->product->get_parent_id() );
+                        $image_size = $_pr ? filesize( get_attached_file( $_pr->get_image_id() ) ) : 0;
+
+                    }
+                    else {
+                        $image_size = $this->product ? filesize( get_attached_file( $this->product->get_image_id() ) ) : 0;
+                    }
+
+                    return $image_size;
+
+                case 'keywords':
+                    $image_src = $this->get_image_meta();
+                    return isset( $image_src[ 'image_meta' ][ 'keywords' ] ) ? implode( ', ', $image_src[ 'image_meta' ][ 'keywords' ] ) : '';
+
+                case 'thumbnail_image':
+                    if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                        return get_the_post_thumbnail_url( $this->product->get_parent_id() );
+
+                    }
+                    else {
+                        return get_the_post_thumbnail_url( $this->product->get_id() );
+                    }
+
+                case 'featured_image':
+                    if( $this->product && wp_get_attachment_url( $this->product->get_image_id() ) ) {
+                        return wp_get_attachment_url( $this->product->get_image_id() );
+                        break;
+                    }
+                    return '';
                     break;
-                }
-                else {
-                    return $this->product ? wp_get_attachment_url( $this->product->get_image_id() ) : '';
-                }
-                return '';
 
-            case 'image_height':
-                $image_src = $this->get_image_meta();
+                case 'all_image':
+                    return $this->get_all_image();
 
-                return $image_src[ 'height' ];
+                case 'all_image_pipe':
+                    return $this->get_all_image( '|' );
 
-            case 'image_width':
-                $image_src = $this->get_image_meta();
-
-                return $image_src[ 'width' ];
-
-            case 'encoding_format':
-                $image_src = $this->get_image_meta();
-
-                return $image_src[ 'sizes' ][ 'woocommerce_thumbnail' ][ 'mime-type' ];
-
-            case 'image_size':
-                if( 'WC_Product_Variation' == get_class( $this->product ) ) {
-                    $_pr        = wc_get_product( $this->product->get_parent_id() );
-                    $image_size = $_pr ? filesize( get_attached_file( $_pr->get_image_id() ) ) : 0;
-
-                }
-                else {
-                    $image_size = $this->product ? filesize( get_attached_file( $this->product->get_image_id() ) ) : 0;
-                }
-
-                return $image_size;
-
-            case 'keywords':
-                $image_src = $this->get_image_meta();
-                return isset( $image_src[ 'image_meta' ][ 'keywords' ] ) ? implode( ', ', $image_src[ 'image_meta' ][ 'keywords' ] ) : '';
-
-            case 'thumbnail_image':
-                if( 'WC_Product_Variation' == get_class( $this->product ) ) {
-                    return get_the_post_thumbnail_url( $this->product->get_parent_id() );
-
-                }
-                else {
-                    return get_the_post_thumbnail_url( $this->product->get_id() );
-                }
-
-            case 'featured_image':
-                if( $this->product && wp_get_attachment_url( $this->product->get_image_id() ) ) {
+                case 'variation_img':
                     return wp_get_attachment_url( $this->product->get_image_id() );
-                    break;
-                }
-                return '';
-                break;
 
-            case 'all_image':
-                return $this->get_all_image();
-
-            case 'all_image_pipe':
-                return $this->get_all_image( '|' );
-
-            case 'variation_img':
-                return wp_get_attachment_url( $this->product->get_image_id() );
-
-            default:
-                $key = str_replace( 'additional_', '', $key );
-                return $this->get_additional_image( $key );
+                default:
+                    $key = str_replace( 'additional_', '', $key );
+                    return $this->get_additional_image( $key );
+            }
         }
+        return '';
     }
 
 
@@ -2101,21 +2105,24 @@ class Rex_Product_Data_Retriever
      */
     protected function set_product_attr( $key )
     {
-        $key = str_replace( 'bwf_attr_pa_', '', $key );
+        if( $this->product && !is_wp_error( $this->product ) ) {
+            $key = str_replace( 'bwf_attr_pa_', '', $key );
 
-        if( 'WC_Product_Variation' === get_class( $this->product ) ) {
-            $var_id = $this->product->get_parent_id();
-            $var_pr = wc_get_product( $var_id );
-            $value  = $var_pr->get_attribute( $key );
-        }
-        else {
-            $value = $this->product->get_attribute( $key );
-        }
+            if( 'WC_Product_Variation' === get_class( $this->product ) ) {
+                $var_id = $this->product->get_parent_id();
+                $var_pr = wc_get_product( $var_id );
+                $value  = $var_pr ? $var_pr->get_attribute( $key ) : '';
+            }
+            else {
+                $value = $this->product->get_attribute( $key );
+            }
 
-        if( !empty( $value ) ) {
-            $value = trim( $value );
+            if( !empty( $value ) ) {
+                $value = trim( $value );
+            }
+            return $value;
         }
-        return $value;
+        return '';
     }
 
 
@@ -2130,7 +2137,7 @@ class Rex_Product_Data_Retriever
             return;
         }
         $key   = str_replace( 'param_', '', $key );
-        $value = $this->product->get_attribute( $key );
+        $value = $this->product ? $this->product->get_attribute( $key ) : '';
 
         if( !empty( $value ) ) {
             $value = trim( $value );
@@ -2250,7 +2257,7 @@ class Rex_Product_Data_Retriever
     protected function set_product_dynamic_attr( $key ) {
         $val = '';
         if( 'WC_Product_Simple' !== get_class( $this->product ) ) {
-            $val = trim( $this->product->get_attribute( $key ) );
+            $val = $this->product ? trim( $this->product->get_attribute( $key ) ) : '';
             if ( '' === $val ) {
                 $val = $this->get_product_cats( $key );
             }
@@ -3367,6 +3374,8 @@ class Rex_Product_Data_Retriever
                     return number_format( $val, 2, ',', '' );
                 }
                 return $val;
+            case 'replace_comma_with_backslash':
+                return str_replace( ',', '/', str_replace( ', ', '/', $val ) );
 
             default:
                 return $val;

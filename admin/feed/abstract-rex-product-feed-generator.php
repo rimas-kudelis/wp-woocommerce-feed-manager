@@ -670,25 +670,25 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function setup_feed_meta( $config )
     {
-        $feed_rules = array();
-        parse_str( $config, $feed_rules );
+        $feed_configs = array();
+        parse_str( $config, $feed_configs );
 
-        $include_variable_product = isset( $feed_rules[ 'rex_feed_variable_product' ] ) ? esc_attr( $feed_rules[ 'rex_feed_variable_product' ] ) : '';
-        $include_variations       = isset( $feed_rules[ 'rex_feed_variations' ] ) ? esc_attr( $feed_rules[ 'rex_feed_variations' ] ) : '';
-        $include_parent           = isset( $feed_rules[ 'rex_feed_parent_product' ] ) ? esc_attr( $feed_rules[ 'rex_feed_parent_product' ] ) : '';
-        $include_variations_name  = isset( $feed_rules[ 'rex_feed_variation_product_name' ] ) ? esc_attr( $feed_rules[ 'rex_feed_variation_product_name' ] ) : '';
-        $exclude_hidden_products  = isset( $feed_rules[ 'rex_feed_hidden_products' ] ) ? esc_attr( $feed_rules[ 'rex_feed_hidden_products' ] ) : '';
-        $rex_feed_skip_product    = isset( $feed_rules[ 'rex_feed_skip_product' ] ) ? esc_attr( $feed_rules[ 'rex_feed_skip_product' ] ) : '';
-        $rex_feed_skip_row        = isset( $feed_rules[ 'rex_feed_skip_row' ] ) ? esc_attr( $feed_rules[ 'rex_feed_skip_row' ] ) : '';
-        $include_out_of_stock     = isset( $feed_rules[ 'rex_feed_include_out_of_stock' ] ) ? esc_attr( $feed_rules[ 'rex_feed_include_out_of_stock' ] ) : '';
-        $include_zero_priced      = isset( $feed_rules[ 'rex_feed_include_zero_price_products' ] ) ? esc_attr( $feed_rules[ 'rex_feed_include_zero_price_products' ] ) : '';
-        $this->feed_separator     = isset( $feed_rules[ 'rex_feed_separator' ] ) ? esc_attr( $feed_rules[ 'rex_feed_separator' ] ) : '';
-        $this->aelia_currency     = isset( $feed_rules[ 'rex_feed_aelia_currency' ] ) ? esc_attr( $feed_rules[ 'rex_feed_aelia_currency' ] ) : 'USD';
-        $custom_filter_option     = isset( $feed_rules[ 'rex_feed_custom_filter_option_btn' ] ) ? esc_attr( $feed_rules[ 'rex_feed_custom_filter_option_btn' ] ) : 'removed';
-        $this->feed_country       = isset( $feed_rules[ 'rex_feed_feed_country' ] ) ? esc_attr( $feed_rules[ 'rex_feed_feed_country' ] ) : '';
+        $include_variable_product = isset( $feed_configs[ 'rex_feed_variable_product' ] ) ? esc_attr( $feed_configs[ 'rex_feed_variable_product' ] ) : '';
+        $include_variations       = isset( $feed_configs[ 'rex_feed_variations' ] ) ? esc_attr( $feed_configs[ 'rex_feed_variations' ] ) : '';
+        $include_parent           = isset( $feed_configs[ 'rex_feed_parent_product' ] ) ? esc_attr( $feed_configs[ 'rex_feed_parent_product' ] ) : '';
+        $include_variations_name  = isset( $feed_configs[ 'rex_feed_variation_product_name' ] ) ? esc_attr( $feed_configs[ 'rex_feed_variation_product_name' ] ) : '';
+        $exclude_hidden_products  = isset( $feed_configs[ 'rex_feed_hidden_products' ] ) ? esc_attr( $feed_configs[ 'rex_feed_hidden_products' ] ) : '';
+        $rex_feed_skip_product    = isset( $feed_configs[ 'rex_feed_skip_product' ] ) ? esc_attr( $feed_configs[ 'rex_feed_skip_product' ] ) : '';
+        $rex_feed_skip_row        = isset( $feed_configs[ 'rex_feed_skip_row' ] ) ? esc_attr( $feed_configs[ 'rex_feed_skip_row' ] ) : '';
+        $include_out_of_stock     = isset( $feed_configs[ 'rex_feed_include_out_of_stock' ] ) ? esc_attr( $feed_configs[ 'rex_feed_include_out_of_stock' ] ) : '';
+        $include_zero_priced      = isset( $feed_configs[ 'rex_feed_include_zero_price_products' ] ) ? esc_attr( $feed_configs[ 'rex_feed_include_zero_price_products' ] ) : '';
+        $this->feed_separator     = isset( $feed_configs[ 'rex_feed_separator' ] ) ? esc_attr( $feed_configs[ 'rex_feed_separator' ] ) : '';
+        $this->aelia_currency     = isset( $feed_configs[ 'rex_feed_aelia_currency' ] ) ? esc_attr( $feed_configs[ 'rex_feed_aelia_currency' ] ) : 'USD';
+        $custom_filter_option     = isset( $feed_configs[ 'rex_feed_custom_filter_option_btn' ] ) ? esc_attr( $feed_configs[ 'rex_feed_custom_filter_option_btn' ] ) : 'removed';
+        $this->feed_country       = isset( $feed_configs[ 'rex_feed_feed_country' ] ) ? esc_attr( $feed_configs[ 'rex_feed_feed_country' ] ) : '';
 
-        if( isset( $feed_rules[ 'rex_feed_wmc_currency' ] ) ) {
-            $this->wmc_currency   = $feed_rules[ 'rex_feed_wmc_currency' ];
+        if( isset( $feed_configs[ 'rex_feed_wmc_currency' ] ) ) {
+            $this->wmc_currency   = $feed_configs[ 'rex_feed_wmc_currency' ];
         }
         elseif( function_exists( 'get_woocommerce_currency' ) ) {
             $this->wmc_currency   = get_woocommerce_currency();
@@ -697,10 +697,10 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->wmc_currency       = 'USD';
         }
 
-        $this->wcml_currency      = isset( $feed_rules[ 'rex_feed_wcml_currency' ] ) ? $feed_rules[ 'rex_feed_wcml_currency' ] : 'USD';
+        $this->wcml_currency      = isset( $feed_configs[ 'rex_feed_wcml_currency' ] ) ? $feed_configs[ 'rex_feed_wcml_currency' ] : 'USD';
 
-        if ( isset( $feed_rules[ 'product_filter_condition' ] ) ) {
-            $this->product_filter_condition = $feed_rules[ 'product_filter_condition' ];
+        if ( isset( $feed_configs[ 'product_filter_condition' ] ) ) {
+            $this->product_filter_condition = $feed_configs[ 'product_filter_condition' ];
         }
 
         if ( $include_variable_product == 'yes' ) {

@@ -469,12 +469,15 @@ if ( ! function_exists( 'rex_feed_get_default_variable_attributes' ) ) {
      */
     function rex_feed_get_default_variable_attributes( $product )
     {
-        if( method_exists( $product, 'get_default_attributes' ) ) {
-            return $product->get_default_attributes();
+        if( $product ) {
+            if( method_exists( $product, 'get_default_attributes' ) ) {
+                return $product->get_default_attributes();
+            }
+            else {
+                return $product->get_variation_default_attributes();
+            }
         }
-        else {
-            return $product->get_variation_default_attributes();
-        }
+        return [];
     }
 }
 
@@ -518,30 +521,32 @@ if ( ! function_exists( 'rex_feed_get_product_price' ) ) {
      */
     function rex_feed_get_product_price( $product )
     {
-        if( $product->is_type( 'variable' ) ) {
-            $default_variations = rex_feed_get_default_variable_attributes( $product );
-            if( $default_variations ) {
-                $variation_id = rex_feed_find_matching_product_variation( $product, $default_variations );
-                if( $variation_id ) {
-                    $_variation_product = wc_get_product( $variation_id );
-                    return $_variation_product->get_regular_price();
+        if( $product && !is_wp_error( $product ) ) {
+            if( $product->is_type( 'variable' ) ) {
+                $default_variations = rex_feed_get_default_variable_attributes( $product );
+                if( $default_variations ) {
+                    $variation_id = rex_feed_find_matching_product_variation( $product, $default_variations );
+                    if( $variation_id ) {
+                        $_variation_product = wc_get_product( $variation_id );
+                        return $_variation_product->get_regular_price();
+                    }
+                }
+                else {
+                    return $product->get_variation_regular_price();
                 }
             }
-            else {
-                return $product->get_variation_regular_price();
+            elseif( $product->is_type( 'grouped' ) ) {
+                return rex_feed_get_grouped_price( $product, '_regular_price' );
             }
+            elseif( $product->is_type( 'composite' ) ) {
+                return $product->get_composite_regular_price();
+            }
+            elseif( $product->is_type( 'bundle' ) ) {
+                return $product->get_bundle_price();
+            }
+            return $product->get_regular_price();
         }
-        elseif( $product->is_type( 'grouped' ) ) {
-            return rex_feed_get_grouped_price( $product, '_regular_price' );
-        }
-        elseif( $product->is_type( 'composite' ) ) {
-            return $product->get_composite_regular_price();
-        }
-        elseif( $product->is_type( 'bundle' ) ) {
-            return $product->get_bundle_price();
-        }
-
-        return $product->get_regular_price();
+        return '';
     }
 }
 
@@ -554,20 +559,23 @@ if ( ! function_exists( 'rex_feed_get_grouped_price' ) ) {
      */
     function rex_feed_get_grouped_price( $product, $type )
     {
-        $groupProductIds = $product->get_children();
-        $price           = 99999999;
+        if( $product ) {
+            $groupProductIds = $product->get_children();
+            $price           = 99999999;
 
-        if( !empty( $groupProductIds ) ) {
-            foreach( $groupProductIds as $id ) {
-                if( get_post_meta( $id, $type, true ) !== '' ) {
-                    $price = $price > get_post_meta( $id, $type, true ) ? get_post_meta( $id, $type, true ) : $price;
+            if( !empty( $groupProductIds ) ) {
+                foreach( $groupProductIds as $id ) {
+                    if( get_post_meta( $id, $type, true ) !== '' ) {
+                        $price = $price > get_post_meta( $id, $type, true ) ? get_post_meta( $id, $type, true ) : $price;
+                    }
+                }
+                if( $price === 99999999 ) {
+                    $price = '';
                 }
             }
-            if( $price === 99999999 ) {
-                $price = '';
-            }
+            return $price;
         }
-        return $price;
+        return '';
     }
 }
 

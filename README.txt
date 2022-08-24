@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.17
+Stable tag:  7.2.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -706,6 +706,11 @@ WP Dashboard > Product Feed > Upgrade.
 10. Configure Google Merchant
 
 == Changelog ==
+
+= 7.2.18 (2022-08-24) =
+* Added: Output Filter [Replace comma (,) with backslash (/)] option added
+* Fixed: PHP critical error fixed
+* Fixed: Minor changes in default attribute for Heureka Availability feed merchant
 
 = 7.2.17 (2022-08-04) =
 * Added: Heureka [Availability] feed merchant support added

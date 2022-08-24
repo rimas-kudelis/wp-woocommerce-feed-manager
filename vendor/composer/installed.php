@@ -5,18 +5,18 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '93c1e8bd5d60fe02d021dfe179c7f73a99e51be4',
+        'reference' => '4540d7430e097015607ca383504091f04109eb18',
         'name' => 'rextheme/best-woocommerce-feed',
         'dev' => false,
     ),
     'versions' => array(
         'appsero/client' => array(
-            'pretty_version' => 'v1.2.0',
-            'version' => '1.2.0.0',
+            'pretty_version' => 'v1.2.1',
+            'version' => '1.2.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../appsero/client',
             'aliases' => array(),
-            'reference' => '5c3fdc4945c8680bca6fb01eee1ec5dc4f22de87',
+            'reference' => 'd110c537f4ca92ac7f3398eee67cc6bdf506a4fb',
             'dev_requirement' => false,
         ),
         'composer/installers' => array(
@@ -61,7 +61,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '93c1e8bd5d60fe02d021dfe179c7f73a99e51be4',
+            'reference' => '4540d7430e097015607ca383504091f04109eb18',
             'dev_requirement' => false,
         ),
         'roundcube/plugin-installer' => array(
