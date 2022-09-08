@@ -1,4 +1,4 @@
-=== Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, And 170+ Popular Marketplaces ===
+=== Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google shopping,google shopping feed,woocommerce product feed manager, google local products, google local products inventory, google ads, eBay MIP,google feed,data Feed,xml product feed,google adwords,marktplaats,rakuten,skroutz, walmart, fruugo, bing image feed, bing shopping, bonanza, bestprice, yml, yandex, market, yandex market, export, yandex feed, export csv, export xml, ean, gtin, isbn, upc,idealo, idealo feed,facebook ads,facebook feed, facebook, facebook catalog, google dynamic search ads
@@ -38,7 +38,7 @@ Create your preferred feed in seconds with 3 simple steps:
 
 Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimised feed for greater results.
 
-[youtube https://www.youtube.com/watch?v=YM4m_tpkYR4]
+[youtube https://www.youtube.com/watch?v=9-Q65zMYvfg]
 
 <blockquote>
 <b>Product Feed Manager <a target="_blank" href="https://rextheme.com/docs/product-feed-manager-documentation/">Documentation</a></b>
