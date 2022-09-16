@@ -104,6 +104,7 @@ class Rex_Feed_Attributes
             'description'                    => 'Product Description',
             'parent_desc'                    => 'Product Description [Parent]',
             'short_description'              => 'Product Short Description',
+            'product_cat_ids'                => 'Product Category ID(s)',
             'product_cats'                   => 'Product Categories',
             'product_cats_path'              => 'Product Categories Path (with separator ">")',
             'product_cats_path_pipe'         => 'Product Categories Path (with separator "|")',

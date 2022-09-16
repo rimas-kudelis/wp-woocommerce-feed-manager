@@ -71,6 +71,8 @@
         $( '#rex-bottom-publish-btn' ).text( publish_btn_txt );
 
         rex_feed_hide_all_admin_notices();
+
+        rex_feed_delete_publish_btn_id();
     } );
 
     /**
@@ -103,6 +105,8 @@
         $( 'select#sanitize-dropdown-' + rowId ).select2({
             closeOnSelect: false,
         });
+
+        $( 'select[name="fc[' + rowId + '][meta_key]"]' ).select2();
     } );
 
     /**
@@ -179,6 +183,8 @@
         $( 'select#sanitize-dropdown-' + rowId ).select2({
             closeOnSelect: false,
         });
+
+        $( 'select[name="fc[' + rowId + '][meta_key]"]' ).select2();
     } );
 
     /**
@@ -381,6 +387,19 @@
         rex_feed_ebay_seller_fields();
     } );
 
+    $( document ).on( 'change', '#rex_feed_merchant', function () {
+        let feed_merchant = $( this ).find( ':selected' ).val();
+
+        if ( feed_merchant === 'custom' ) {
+            if ( 'xml' === $( '#rex_feed_feed_format' ).find( ':selected' ).val() ) {
+                $( '.rex_feed_custom_items_wrapper, .rex_feed_custom_wrapper, .rex_feed_custom_wrapper' ).fadeIn();
+            }
+        }
+        else {
+            $( '.rex_feed_custom_items_wrapper, .rex_feed_custom_wrapper, .rex_feed_custom_wrapper' ).fadeOut();
+        }
+    } );
+
     /**
      * Event listener for Google schedule change change functionality.
      */
@@ -406,14 +425,26 @@
      * Event listener for Feed format change for CSV functionality.
      */
     $( document ).on( 'change', '#rex_feed_feed_format', function () {
-        var feed_format = $( this ).find( ':selected' ).val();
+        let feed_format = $( this ).find( ':selected' ).val();
 
         if ( feed_format === 'csv' ) {
             $( '.rex-feed-feed-separator' ).show();
         } else {
             $( '.rex-feed-feed-separator' ).hide();
         }
+    } );
 
+    $( document ).on( 'change', '#rex_feed_feed_format', function () {
+        let feed_format = $( this ).find( ':selected' ).val();
+
+        if ( feed_format === 'xml' ) {
+            if ( 'custom' === $( '#rex_feed_merchant' ).find( ':selected' ).val() ) {
+                $( '.rex_feed_custom_items_wrapper, .rex_feed_custom_wrapper, .rex_feed_custom_wrapper' ).fadeIn();
+            }
+        }
+        else {
+            $( '.rex_feed_custom_items_wrapper, .rex_feed_custom_wrapper, .rex_feed_custom_wrapper' ).fadeOut();
+        }
     } );
 
     // $( document ).on( 'change', '.merchant-change', product_feed_change_merchant_status );
@@ -432,7 +463,11 @@
 
     $( document ).on( 'change', 'select#wpfm_rollback_options', rex_feed_process_rollback_button ).trigger('change');
 
+    $( document ).on( 'change', 'input#wpfm_hide_char', rex_feed_save_character_limit_option );
+
     $( document ).on( 'change', 'select.sanitize-dropdown', rex_feed_update_multiple_filter_counter );
+
+    $( document ).on( 'change', '#rex_feed_cats_check_all_btn, #rex_feed_tags_check_all_btn', rex_feed_check_uncheck_all_tax );
 
     $( document ).on( 'submit', '#rex-google-merchant', save_google_merchant_settings );
 
@@ -579,16 +614,14 @@
                     $( '#rex_feed_conf .rex-feed-config-heading' ).css( 'display', 'block' );
                     $( '#rex-new-attr, #rex-new-custom-attr' ).css( 'display', 'inline-block' );
 
+                    rex_feed_hide_char_limit_col();
                     dynamic_pricing( event );
-
                     category_mapping_button( event );
-
                     rex_feed_hide_separators_group( event );
-
                     $( '.sanitize-dropdown' ).select2({
                         closeOnSelect: false,
                     });
-
+                    $( '.select2-attr-dropdown' ).select2();
                     rex_feed_render_multiple_filter_counter();
                 } )
                 .fail( function ( response ) {
@@ -1550,13 +1583,28 @@
      * Manage fields for cron custom scheduling
      */
     function rex_feed_manage_custom_cron_schedule_fields() {
-        var selected_cron = $('input[name="rex_feed_schedule"]:checked').val();
+        let selected_cron = $('input[name="rex_feed_schedule"]:checked').val();
 
         if ( selected_cron === 'custom' ) {
             $( '.rex_feed_custom_time_fields' ).slideDown();
         }
         else {
             $( '.rex_feed_custom_time_fields' ).slideUp();
+        }
+
+        if ( 'no' === selected_cron ) {
+            $( 'input#rex_feed_update_on_product_change' ).prop( 'disabled', true );
+            $( 'input#rex_feed_update_on_product_change' ).css( {
+                'border-color': '#c3c4cf',
+                'cursor': 'not-allowed'
+            } );
+        }
+        else {
+            $( 'input#rex_feed_update_on_product_change' ).prop( 'disabled', false );
+            $( 'input#rex_feed_update_on_product_change' ).css( {
+                'border-color': '#1db2fb',
+                'cursor': 'pointer'
+            } );
         }
     }
 
@@ -1676,6 +1724,13 @@
         let aria_controls = $('input.select2-search__field').attr( 'aria-controls' );
         if ( 'select2-rex_feed_merchant-results' === aria_controls ) {
             $( 'input.select2-search__field' ).get( 0 ).focus()
+        }
+        else {
+            // reg expression that starts with `select2-fc[any 3 digits numbers]meta_key-`
+            const regex = new RegExp('^select2-fc[0-9]|[0-9][0-9]|[0-9][0-9][0-9]meta_key-');
+            if ( regex.test(aria_controls) ) {
+                $( 'input.select2-search__field' ).get( 0 ).focus()
+            }
         }
     }
 
@@ -1835,9 +1890,17 @@
         let selected = $this.find( 'option:selected' ).length;
 
         if ( 1 < selected ) {
-            selected = selected - 1;
-            $this.siblings( 'span.rex-product-picker-count' ).show();
-            $this.siblings( 'span.rex-product-picker-count' ).html( '+' + selected + '..' );
+            let is_def_selected = $this.children('option[value=default]').attr( 'selected' );
+            if ( 'selected' === is_def_selected ) {
+                $this.children('option[value=default]').removeAttr( 'selected' );
+                $this.trigger('change.select2');
+                selected = selected - 1;
+            }
+            if ( 1 < selected ) {
+                selected = selected - 1;
+                $this.siblings('span.rex-product-picker-count').show();
+                $this.siblings('span.rex-product-picker-count').html('+' + selected + '..');
+            }
         }
         else {
             $this.siblings( 'span.rex-product-picker-count' ).hide();
@@ -1850,19 +1913,121 @@
      * @since 7.2.12
      */
     function rex_feed_render_multiple_filter_counter() {
-        let output_filter = $( 'select.sanitize-dropdown' ).length - 1;
+        let output_filter = $( 'div#rex_feed_config_heading' ).children( 'div.inside' ).children( 'table#config-table' ).children( 'tbody' ).children( 'tr' );
         let $select_field = '';
         let selected = 0;
 
-        for ( let i=0; i<output_filter; i++ ) {
-            $select_field = $( 'select[name="fc['+ i +'][escape][]"]' );
-            selected = $select_field.find( 'option:selected' ).length;
+        output_filter.each( function ( index, _element ) {
+            if ( 0 != index ) {
+                let row_id = $( this ).attr( 'data-row-id' );
 
-            if ( 1 < selected ) {
-                selected = selected - 1;
-                $select_field.siblings( 'span.rex-product-picker-count' ).show();
-                $select_field.siblings( 'span.rex-product-picker-count' ).html( '+' + selected + '..' );
+                $select_field = $( 'select[name="fc['+ row_id +'][escape][]"]' );
+                selected = $select_field.find( 'option:selected' ).length;
+
+                if ( 1 < selected ) {
+                    selected = selected - 1;
+                    $select_field.siblings( 'span.rex-product-picker-count' ).show();
+                    $select_field.siblings( 'span.rex-product-picker-count' ).html( '+' + selected + '..' );
+                }
             }
+        } );
+    }
+
+
+    /**
+     * @desc Helper function to save option
+     * to hide/view character limit field
+     */
+    function rex_feed_save_character_limit_option() {
+        let opt_val = $( this ).is( ':checked' );
+        opt_val = opt_val ? 'on' : 'off';
+
+        wpAjaxHelperRequest( 'rex-feed-save-char-limit-option', opt_val )
+            .success( function ( response ) {
+                console.log( 'Woohoo! Awesome!!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+            } );
+    }
+
+
+    /**
+     * @desc Check/Uncheck All Categories/Tags
+     * option in product filters section
+     * @since 7.2.18
+     */
+    function rex_feed_check_uncheck_all_tax() {
+        let button_id = $( this ).attr( 'id' );
+        if ( 'rex_feed_cats_check_all_btn' === button_id ) {
+            rex_feed_check_uncheck_all_cats( button_id );
         }
+        else if ( 'rex_feed_tags_check_all_btn' === button_id ) {
+            rex_feed_check_uncheck_all_tags( button_id );
+        }
+    }
+
+    /**
+     * @desc Check/Uncheck All Categories
+     * option in product filters section
+     * @since 7.2.18
+     */
+    function rex_feed_check_uncheck_all_cats( button_id ) {
+        if ( 1 <= $( 'input#' + button_id + ':checked' ).length ) {
+            $( 'input.rex_feed_cats' ).prop( 'checked', true )
+        }
+        else {
+            $( 'input.rex_feed_cats' ).prop( 'checked', false )
+        }
+    }
+
+    /**
+     * @desc Check/Uncheck All Tags
+     * option in product filters section
+     * @since 7.2.18
+     */
+    function rex_feed_check_uncheck_all_tags( button_id ) {
+        if ( 1 <= $( 'input#' + button_id + ':checked' ).length ) {
+            $( 'input.rex_feed_tags' ).prop( 'checked', true )
+        }
+        else {
+            $( 'input.rex_feed_tags' ).prop( 'checked', false )
+        }
+    }
+
+    /**
+     * @desc Deletes publish button id on document ready
+     * @since 7.2.18
+     */
+    function rex_feed_delete_publish_btn_id() {
+        let url = new URL( window.location.href );
+        let feed_id = url.searchParams.get( 'post' );
+
+        wpAjaxHelperRequest( 'rex-feed-delete-publish-btn-id', feed_id )
+            .success( function ( response ) {
+                console.log( 'Woohoo! Button id deleted!' );
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+                console.log( 'response.statusText' );
+            } );
+    }
+
+    /**
+     * @desc hide character limit column
+     * after mapping table load
+     * @since 7.2.18
+     */
+    function rex_feed_hide_char_limit_col() {
+        wpAjaxHelperRequest( 'rex-feed-hide-char-limit-col' )
+            .success( function ( response ) {
+                if ( 'on' === response.hide_char ) {
+                    $( 'th#rex_feed_output_limit_head' ).hide();
+                    $( 'td[data-title="Output Limit : "]' ).hide();
+                }
+            } )
+            .error( function ( response ) {
+                console.log( 'Uh, oh! Not Awesome!!' );
+            } );
     }
 })( jQuery );

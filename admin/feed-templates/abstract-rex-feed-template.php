@@ -255,6 +255,7 @@ abstract class Rex_Feed_Abstract_Template {
                 'integer'                      => 'Integer',
                 'price'                        => 'Price',
                 'remove_space'                 => 'Remove Space',
+                'remove_tab'                   => 'Remove Tab',
                 'first_word_uppercase'         => 'First Word Uppercase Only',
                 'remove_shortcodes'            => 'Remove ShortCodes',
                 'remove_shortcodes_and_tags'   => 'Remove ShortCodes and Strip Tags',
@@ -304,6 +305,4 @@ abstract class Rex_Feed_Abstract_Template {
      * @since    1.0.0
      */
     abstract protected function init_default_template_mappings();
-
-
 }

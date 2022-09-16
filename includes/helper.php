@@ -105,25 +105,30 @@ if( !function_exists('wpfm_run_schedule_update') ) {
 				$terms_array   = array();
 
 				for ( $i = 1; $i <= $total_batches; $i++ ) {
-					if ( $i === 1 ) update_post_meta( $feed_id, 'rex_feed_status', 'processing' );
-					if ( $i === $total_batches ) update_post_meta( $feed_id, 'rex_feed_status', 'completed' );
+					if ( $i === 1 ) update_post_meta( $feed_id, '_rex_feed_status', 'processing' );
+					if ( $i === $total_batches ) update_post_meta( $feed_id, '_rex_feed_status', 'completed' );
 
-					$merchant                = get_post_meta( $feed_id, 'rex_feed_merchant', true );
-					$feed_config             = get_post_meta( $feed_id, 'rex_feed_feed_config', true );
-					$feed_filter             = get_post_meta( $feed_id, 'rex_feed_feed_config_filter', true );
-					$product_scope           = get_post_meta( $feed_id, 'rex_feed_products', true );
-					$include_variations      = get_post_meta( $feed_id, 'rex_feed_variations', true ) === 'yes';
-					$variable_product        = get_post_meta( $feed_id, 'rex_feed_variable_product', true ) === 'yes';
-					$parent_product          = get_post_meta( $feed_id, 'rex_feed_parent_product', true ) === 'yes';
-					$exclude_hidden_products = get_post_meta( $feed_id, 'rex_feed_hidden_products', true ) === 'yes';
-					$append_variations       = get_post_meta( $feed_id, 'rex_feed_variation_product_name', true ) === 'yes';
-					$wpml                    = get_post_meta( $feed_id, 'rex_feed_wpml_language', true ) ? get_post_meta( $feed_id, 'rex_feed_wpml_language', true ) : '';
-					$feed_format             = get_post_meta( $feed_id, 'rex_feed_feed_format', true ) ?
-						get_post_meta( $feed_id, 'rex_feed_feed_format', true ) : 'xml';
-					$aelia_currency          = get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
-					$wmc_currency            = get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
-					$skip_row                = get_post_meta( $feed_id, 'rex_feed_skip_row', true );
-					$feed_separator          = get_post_meta( $feed_id, 'rex_feed_separator', true );
+					$merchant                = get_post_meta( $feed_id, '_rex_feed_merchant', true ) ?: get_post_meta( $feed_id, 'rex_feed_merchant', true );
+					$feed_config             = get_post_meta( $feed_id, '_rex_feed_feed_config', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config', true );
+					$feed_filter             = get_post_meta( $feed_id, '_rex_feed_feed_config_filter', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config_filter', true );
+					$product_scope           = get_post_meta( $feed_id, '_rex_feed_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_products', true );
+					$include_variations      = get_post_meta( $feed_id, '_rex_feed_variations', true ) ?: get_post_meta( $feed_id, 'rex_feed_variations', true );
+					$include_variations      = 'yes' === $include_variations;
+					$variable_product        = get_post_meta( $feed_id, '_rex_feed_variable_product', true ) ?: get_post_meta( $feed_id, 'rex_feed_variable_product', true );
+					$variable_product        = $variable_product === 'yes';
+					$parent_product          = get_post_meta( $feed_id, '_rex_feed_parent_product', true ) ?: get_post_meta( $feed_id, 'rex_feed_parent_product', true );
+					$parent_product          = $parent_product === 'yes';
+					$exclude_hidden_products = get_post_meta( $feed_id, '_rex_feed_hidden_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_hidden_products', true );
+					$exclude_hidden_products = $exclude_hidden_products === 'yes';
+					$append_variations       = get_post_meta( $feed_id, '_rex_feed_variation_product_name', true ) ?: get_post_meta( $feed_id, 'rex_feed_variation_product_name', true );
+					$append_variations       = $append_variations === 'yes';
+					$wpml                    = get_post_meta( $feed_id, '_rex_feed_wpml_language', true ) ?: get_post_meta( $feed_id, 'rex_feed_wpml_language', true );
+					$feed_format             = get_post_meta( $feed_id, '_rex_feed_feed_format', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_format', true );
+					$feed_format             = $feed_format ?: 'xml';
+					$aelia_currency          = get_post_meta( $feed_id, '_rex_feed_aelia_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
+					$wmc_currency            = get_post_meta( $feed_id, '_rex_feed_wmc_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
+					$skip_row                = get_post_meta( $feed_id, '_rex_feed_skip_row', true ) ?: get_post_meta( $feed_id, 'rex_feed_skip_row', true );
+					$feed_separator          = get_post_meta( $feed_id, '_rex_feed_separator', true ) ?: get_post_meta( $feed_id, 'rex_feed_separator', true );
 
 					if ( $product_scope !== 'all' && $product_scope !== 'filter' ) {
 						$terms = wp_get_post_terms( $feed_id, $product_scope );
@@ -257,16 +262,18 @@ if ( ! function_exists( 'wpfm_is_wpml_active' ) ) {
 	 * @return bool
      * @since 7.0.0
 	 */
-	function wpfm_is_wpml_active(){
-		$active_plugings             = get_option( 'active_plugins' );
-		$wpml                        = 'woocommerce-multilingual/wpml-woocommerce.php';
-		$sitepress                   = 'sitepress-multilingual-cms/sitepress.php';
-		$wpml_string_translation     = 'wpml-string-translation/plugin.php';
+    function wpfm_is_wpml_active(){
+        $active_plugings             = get_option( 'active_plugins' );
+        $wpml                        = 'woocommerce-multilingual/wpml-woocommerce.php';
+        $sitepress                   = 'sitepress-multilingual-cms/sitepress.php';
+        $wpml_string_translation     = 'wpml-string-translation/plugin.php';
 
-		return in_array( $wpml, $active_plugings )
-		       && in_array( $sitepress, $active_plugings )
-		       && in_array( $wpml_string_translation, $active_plugings );
-	}
+        $plugins_active = in_array( $wpml, $active_plugings )
+            && in_array( $sitepress, $active_plugings )
+            && in_array( $wpml_string_translation, $active_plugings );
+
+        return $plugins_active ?: is_plugin_active_for_network( $wpml ) && is_plugin_active_for_network( $sitepress ) && is_plugin_active_for_network( $wpml_string_translation );
+    }
 }
 
 if ( ! function_exists( 'wpfm_is_polylang_active' ) ) {
@@ -415,7 +422,8 @@ if ( ! function_exists( 'rex_feed_get_roll_back_versions' ) ) {
                 return [];
             }
 
-            krsort( $plugin_information->versions );
+            natsort( $plugin_information->versions );
+            $plugin_information->versions = array_reverse($plugin_information->versions);
 
             $rollback_versions = [];
 
@@ -619,5 +627,26 @@ if ( !function_exists( 'rex_feed_is_valid_xml' ) ) {
         $sxe = simplexml_load_file( $file_url, 'SimpleXMLElement', 0, $namespace  );
         $xml_errors = libxml_get_errors();
         return apply_filters( 'rex_feed_is_valid_xml', $sxe && empty( $xml_errors ), $sxe, $xml_errors, $feed_id );
+    }
+}
+
+
+if ( !function_exists( 'rex_feed_get_wc_shipping_state_country' ) ) {
+    /**
+     * @desc Check if a given xml file is valid.
+     * @since 7.2.9
+     * @param $file_url
+     * @return mixed|void
+     */
+    function rex_feed_get_wc_shipping_state_country()
+    {
+        global $wpdb;
+        $query = "SELECT DISTINCT `location_code`, `location_type` FROM {$wpdb->prefix}woocommerce_shipping_zone_locations WHERE `location_type` IN( 'country', 'state' ) ORDER BY `location_code` ASC";
+        $wc_shipping_locations = $wpdb->get_results( $query,ARRAY_A );
+
+        if( !is_wp_error( $wc_shipping_locations ) && is_array( $wc_shipping_locations ) && !empty( $wc_shipping_locations ) ) {
+            return $wc_shipping_locations;
+        }
+        return [];
     }
 }

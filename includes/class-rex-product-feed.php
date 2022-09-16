@@ -214,7 +214,7 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'wp_ajax_nopriv_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
         $this->loader->add_action( 'wp_ajax_rex_feed_check_for_missing_attributes', $ajax, 'rex_feed_check_for_missing_attributes' );
 
-        $this->loader->add_action( 'after_delete_post', $plugin_admin, 'delete_feed_files', 10, 2 );
+        $this->loader->add_action( 'after_delete_post', $plugin_admin, 'delete_feed_files' );
         $this->loader->add_action( 'admin_post_rex_feed_rollback', $plugin_admin, 'post_rex_feed_rollback' );
 
         $this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
@@ -223,7 +223,11 @@ class Rex_Product_Feed {
 
         $this->loader->add_action( 'admin_notices', $plugin_admin, 'render_xml_error_message' );
 
+        //$this->loader->add_action( 'admin_notices', $plugin_admin, 'render_new_feature_notices' );
+
         $this->loader->add_filter( 'best-woocommerce-feed_tracker_data', $plugin_admin, 'send_merchant_info' );
+
+        //$this->loader->add_action( 'plugin_loaded', $plugin_admin, 'remove_astra_meta_boxes', 9999 );
     }
 
 

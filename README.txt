@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.18
+Stable tag:  7.2.19
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -224,9 +224,9 @@ Anywhere you sell around Europe or the USA, you will find feed templates for maj
 – Pricespy (or Prisjakt) feed
 – Spartoo marketplace feed
 – Feed prodotto Trovaprezzi
-– Zalando JSON Feed
+– Zalando
 – Vergelijk feed
-- idealo
+- Idealo
 - Vivino
 
 And tons of other marketplaces where you can easily upload your WooCommerce products and maximize your online sales.
@@ -700,11 +700,10 @@ There is no limit to the number of products when generating feed. You can decide
 In the free version, you can generate product feed for up to 50 products per feed. If you are satisfied with the result, you can upgrade to the pro version and use it to the full extent.
 = What file formats does this plugin generate? =
 This plugin generates product feeds in the following file formats:
-- TXT
 - XML
+- TXT
 - CSV
 - TSV
-- JSON
 **For creating Google product feed, you must use XML format.
 = What is the feed auto-update feature? =
 For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily, hourly or weekly updates of feed.
@@ -741,6 +740,30 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.19 (2022-09-19) =
+* Added: Filter by Product Attributes option added on Custom Filter
+* Added: Search box added to the attribute value dropdown
+* Added: Option to hide character limit column option added to PFM Settings
+* Added: Check All/ Uncheck All button added in the Category and Tag filter
+* Added: Item wrapper option added to the Custom Feed template
+* Added: Multi-layer category path support added
+* Added: Heureka Availability Feed - Products are now excluded automatically if the Stock Quantity is 0
+* Added: Free Shipping support added
+* Added: Tooltips and doc links are added to the PFM Settings and Filter section
+* Added: Replace Comma with Backslash Output Filter for Google Shopping option added
+* Fixed: Yandex Feed availability attribute showing false value issue fixed
+* Fixed: Google Dynamic Search Ads now showing only the required attributes
+* Fixed: Undefined variable error issue fixed
+* Fixed: Custom feed schedule option is not working issue fixed
+* Fixed: Broken send to Google section issue fixed
+* Fixed: Output Filter "Default" value always stays issue fixed
+* Fixed: XML Feed Site link Tag goes missing when cron runs issue fixed
+* Fixed: PFM conflict with Astra theme - Feed settings do not update issue fixed
+* Fixed: Feed shows an error if a variation is included in the feed without Parent ID issue fixed
+* Fixed: Adding too many product attributes and custom attributes showing error issue fixed
+* Fixed: TSV feed tab separator issue fixed
+* Fixed: RSS feed fixed
 
 = 7.2.18 (2022-08-24) =
 * Added: Output Filter [Replace comma (,) with backslash (/)] option added

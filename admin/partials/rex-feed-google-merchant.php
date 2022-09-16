@@ -1,8 +1,9 @@
 <?php $icon = '../assets/icon/icon-svg/icon-question.php'; ?>
 
 <?php
-$value = get_post_meta( get_the_ID(), 'rex_feed_google_target_country', true );
-$value = $value == '' ? 'US' : $value;
+$value = get_post_meta( get_the_ID(), '_rex_feed_google_target_country', true );
+$value = $value ?: get_post_meta( get_the_ID(), 'rex_feed_google_target_country', true );
+$value = $value ?: 'US';
 ?>
 
 
@@ -38,8 +39,9 @@ $value = $value == '' ? 'US' : $value;
 			</div>
 
 			<?php
-			$value = get_post_meta( get_the_ID(), 'rex_feed_google_target_language', true );
-			$value = $value == '' ? 'en' : $value;
+			$value = get_post_meta( get_the_ID(), '_rex_feed_google_target_language', true );
+			$value = $value ?: get_post_meta( get_the_ID(), 'rex_feed_google_target_language', true );
+			$value = $value ?: 'en';
 			
 			?>
 			<div id="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_target_language__content'; ?>">
@@ -61,8 +63,9 @@ $value = $value == '' ? 'US' : $value;
 				</label>
 				<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>" id="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>">
 					<?php
-					$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule', true );
-					$prev_value = $prev_value !== '' ? $prev_value : 'monthly';
+					$prev_value = get_post_meta( get_the_ID(), '_rex_feed_google_schedule', true );
+					$prev_value = $prev_value ?: get_post_meta( get_the_ID(), 'rex_feed_google_schedule', true );
+					$prev_value = $prev_value ?: 'monthly';
 					foreach ( $schedules as $key => $value ) {
 						$selected = $key == $prev_value ? ' selected' : '';
 						echo '<option value="'.esc_attr($key).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';
@@ -71,10 +74,82 @@ $value = $value == '' ? 'US' : $value;
 				</select>
 			</div>
 		</div>
+
+		<div class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_all__content'; ?>">
+
+			<div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month__content'; ?>" style="display: none">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month';?>"><?php esc_html_e('Select Day of Month', 'rex-product-feed')?>
+					<span class="rex_feed-tooltip">
+						<?php include plugin_dir_path(__FILE__) . $icon;?>
+						<p><?php esc_html_e('Select Day of Month', 'rex-product-feed')?></p>
+					</span>
+				</label>
+
+				<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month'; ?>"
+						id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month'; ?>"
+						data-conditional-value="monthly"
+						data-conditional-id="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>">
+					<?php
+					$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule_month', true );
+					$prev_value = $prev_value !== '' ? $prev_value : '1';
+					foreach ( $month_array as $key => $value ) {
+						$selected = $key == $prev_value ? ' selected' : '';
+						echo '<option value="'.esc_attr($key).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';
+					}
+					?>
+				</select>
+			</div>
+
+			<div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_week_day__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_week_day__content'; ?>" style="display: none">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month';?>"><?php esc_html_e('Select Day of Week', 'rex-product-feed')?>
+					<span class="rex_feed-tooltip">
+						<?php include plugin_dir_path(__FILE__) . $icon;?>
+						<p><?php esc_html_e('Select Day of Week', 'rex-product-feed')?></p>
+					</span>
+				</label>
+
+				<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule_week_day'; ?>"
+						id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_week_day'; ?>"
+						data-conditional-value="weekly"
+						data-conditional-id="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>">
+					<?php
+					$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule_week_day', true );
+					$prev_value = $prev_value !== '' ? $prev_value : 'monday';
+					foreach ( $weeks as $key => $value ) {
+						$selected = $key == $prev_value ? ' selected' : '';
+						echo '<option value="'.esc_attr($key).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';
+					}
+					?>
+				</select>
+			</div style="display: none">
+
+			<div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time__content'; ?>" style="display: none">
+				<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time';?>"><?php esc_html_e('Select Hour', 'rex-product-feed')?>
+					<span class="rex_feed-tooltip">
+						<?php include plugin_dir_path(__FILE__) . $icon;?>
+						<p><?php esc_html_e('Select Hour', 'rex-product-feed')?></p>
+					</span>
+				</label>
+
+				<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time'; ?>"
+						id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time'; ?>">
+					<?php
+					$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule_time', true );
+					$prev_value = $prev_value !== '' ? $prev_value : '1';
+					foreach ( range( 0, 23 ) as $key => $value ) {
+						$selected = $key == $prev_value ? ' selected' : '';
+						echo '<option value="'.esc_attr($value).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';
+					}
+					?>
+				</select>
+			</div>
+
+		</div>
 		
 		<?php 
-			$feed_merchant = get_post_meta( get_the_ID(), 'rex_feed_merchant', true );
-			
+			$feed_merchant = get_post_meta( get_the_ID(), '_rex_feed_merchant', true );
+			$feed_merchant = $feed_merchant ?: get_post_meta( get_the_ID(), 'rex_feed_merchant', true );
+
 			if ( $feed_merchant === 'google' ) {
 				$rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
 
@@ -108,11 +183,11 @@ $value = $value == '' ? 'US' : $value;
 			}
 		?>
 
+	
+
 	</div>
 
 </div>
-
-
 
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month__content'; ?>" style="display: none">
 	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_month';?>"><?php esc_html_e('Select Day of Month', 'rex-product-feed')?>
@@ -126,8 +201,9 @@ $value = $value == '' ? 'US' : $value;
 	        data-conditional-value="monthly"
 	        data-conditional-id="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>">
 		<?php
-		$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule_month', true );
-		$prev_value = $prev_value !== '' ? $prev_value : '1';
+		$prev_value = get_post_meta( get_the_ID(), '_rex_feed_google_schedule_month', true );
+		$prev_value = $prev_value ?: get_post_meta( get_the_ID(), 'rex_feed_google_schedule_month', true );
+		$prev_value = $prev_value ?: '1';
 		foreach ( $month_array as $key => $value ) {
 			$selected = $key == $prev_value ? ' selected' : '';
 			echo '<option value="'.esc_attr($key).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';
@@ -148,15 +224,16 @@ $value = $value == '' ? 'US' : $value;
 	        data-conditional-value="weekly"
 	        data-conditional-id="<?php echo esc_attr( $this->prefix ) . 'google_schedule'; ?>">
 		<?php
-		$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule_week_day', true );
-		$prev_value = $prev_value !== '' ? $prev_value : 'monday';
+		$prev_value = get_post_meta( get_the_ID(), '_rex_feed_google_schedule_week_day', true );
+		$prev_value = $prev_value ?: get_post_meta( get_the_ID(), 'rex_feed_google_schedule_week_day', true );
+		$prev_value = $prev_value ?: 'monday';
 		foreach ( $weeks as $key => $value ) {
 			$selected = $key == $prev_value ? ' selected' : '';
 			echo '<option value="'.esc_attr($key).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';
 		}
 		?>
 	</select>
-</div style="display: none">
+</div>
 
 <div id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time__content'; ?>" class="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time__content'; ?>" style="display: none">
 	<label for="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time';?>"><?php esc_html_e('Select Hour', 'rex-product-feed')?>
@@ -168,8 +245,9 @@ $value = $value == '' ? 'US' : $value;
 	<select name="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time'; ?>"
 	        id="<?php echo esc_attr( $this->prefix ) . 'google_schedule_time'; ?>">
 		<?php
-		$prev_value = get_post_meta( get_the_ID(), 'rex_feed_google_schedule_time', true );
-		$prev_value = $prev_value !== '' ? $prev_value : '1';
+		$prev_value = get_post_meta( get_the_ID(), '_rex_feed_google_schedule_time', true );
+		$prev_value = $prev_value ?: get_post_meta( get_the_ID(), 'rex_feed_google_schedule_time', true );
+		$prev_value = $prev_value ?: '1';
 		foreach ( range( 0, 23 ) as $key => $value ) {
 			$selected = $key == $prev_value ? ' selected' : '';
 			echo '<option value="'.esc_attr($value).'" ' .esc_attr($selected). '>'.esc_attr($value).'</option>';

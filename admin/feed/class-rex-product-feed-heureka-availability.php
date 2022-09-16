@@ -45,11 +45,13 @@ class Rex_Product_Feed_Heureka_availability extends Rex_Product_Feed_Abstract_Ge
      */
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
+        $total_products = $total_products ?: get_post_meta($this->id, 'rex_feed_total_products', true);
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
-        $total_products = get_post_meta($this->id, 'rex_feed_total_products', true) ? get_post_meta($this->id, 'rex_feed_total_products', true) : array(
+        $total_products = $total_products ?: array(
             'total' => 0,
             'simple' => 0,
             'variable' => 0,
@@ -83,6 +85,12 @@ class Rex_Product_Feed_Heureka_availability extends Rex_Product_Feed_Abstract_Ge
             if( !$this->include_zero_priced ) {
                 $product_price = rex_feed_get_product_price($product);
                 if( 0 == $product_price || '' == $product_price ) {
+                    continue;
+                }
+            }
+
+            if ( !$this->include_out_of_stock ) {
+                if ( !$product->is_in_stock() || $product->is_on_backorder() || 0 >= $product->get_stock_quantity() ) {
                     continue;
                 }
             }
@@ -140,7 +148,7 @@ class Rex_Product_Feed_Heureka_availability extends Rex_Product_Feed_Abstract_Ge
             'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
-        update_post_meta( $this->id, 'rex_feed_total_products', $total_products );
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
     }
 
 
@@ -154,20 +162,23 @@ class Rex_Product_Feed_Heureka_availability extends Rex_Product_Feed_Abstract_Ge
     private function add_to_feed( $product, $meta_keys, $product_type = '' )
     {
         $attributes = $this->get_product_data( $product, $meta_keys );
-        $attributes = $this->process_depot_attributes( $attributes );
 
-        if( ( is_array( $attributes ) && !empty( $attributes) && $this->rex_feed_skip_product && empty( array_keys( $attributes, '' ) ) ) || !$this->rex_feed_skip_product ) {
-            $item = RexHeurekaAvailability::createItem();
-            $item->id( $product->get_id() );
+        if( is_array( $attributes ) && isset( $attributes[ 'stock_quantity' ] ) && 0 < $attributes[ 'stock_quantity' ] ) {
+            $attributes = $this->process_depot_attributes( $attributes );
 
-            foreach( $attributes as $key => $value ) {
-                if( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
-                    if( $value != '' ) {
+            if( ( is_array( $attributes ) && !empty( $attributes ) && $this->rex_feed_skip_product && empty( array_keys( $attributes, '' ) ) ) || !$this->rex_feed_skip_product ) {
+                $item = RexHeurekaAvailability::createItem();
+                $item->id( $product->get_id() );
+
+                foreach( $attributes as $key => $value ) {
+                    if( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
+                        if( $value != '' ) {
+                            $item->$key( $value ); // invoke $key as method of $item object.
+                        }
+                    }
+                    else {
                         $item->$key( $value ); // invoke $key as method of $item object.
                     }
-                }
-                else {
-                    $item->$key( $value ); // invoke $key as method of $item object.
                 }
             }
         }

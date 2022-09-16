@@ -87,7 +87,7 @@ class Rex_Product_Feed_Controller {
      * @param string $feed_id
      */
     public static function update_feed_status( $feed_id, $status ) {
-        update_post_meta($feed_id, 'rex_feed_status', $status);
+        update_post_meta($feed_id, '_rex_feed_status', $status);
     }
 }
 

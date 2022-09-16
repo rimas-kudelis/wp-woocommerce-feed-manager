@@ -38,7 +38,6 @@ class Rex_Product_Feed_Factory {
                 'winesearcher',
                 'whiskymarketplace',
                 'trovaprezzi',
-                'rss',
                 'nextag',
                 'nextag',
                 'pricegrabber',
@@ -197,6 +196,7 @@ class Rex_Product_Feed_Factory {
             'epoq',
             'google_local_inventory_ads',
             'google_manufacturer_center',
+            'rss',
         );
         self::$facebook_format = array(
             'instagram',

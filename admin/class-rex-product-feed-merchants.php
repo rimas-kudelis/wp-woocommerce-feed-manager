@@ -297,7 +297,7 @@ class Rex_Feed_Merchants {
             'rss'                             => array(
                 'free'   => true,
                 'name'   => 'RSS',
-                'formats' => []
+                'formats' => [ 'rss' ]
             ),
             'ciao'                            => array(
                 'free'   => true,

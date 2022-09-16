@@ -274,7 +274,7 @@ class Feed
                 if($itemNode->get('name') === 'id') {
                     $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value'));
                 }elseif ($itemNode->get('name') === 'available') {
-                    $feedItemNode->addAttribute('available', $itemNode->get('value') === 'in stock'? 'true' : 'false');
+                    $feedItemNode->addAttribute('available', $itemNode->get('value') === 'in stock' || $itemNode->get('value') === 'in_stock'? 'true' : 'false');
                 }elseif ($itemNode->get('name') === 'bid') {
                     $feedItemNode->addAttribute($itemNode->get('name'), $itemNode->get('value') );
                 }elseif ($itemNode->get('name') === 'cbid') {

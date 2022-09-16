@@ -119,6 +119,13 @@ class Rex_Product_Data_Retriever
     protected $feed_country;
 
     /**
+     * @desc Variable for feed zip code
+     * @since 7.2.18
+     * @var $feed_zip
+     */
+    protected $feed_zip_codes;
+
+    /**
      * Initialize the class and set its properties.
      *
      * Rex_Product_Data_Retriever constructor.
@@ -129,7 +136,6 @@ class Rex_Product_Data_Retriever
      */
     public function __construct( WC_Product $product, Rex_Product_Feed_Abstract_Generator $feed, $product_meta_keys )
     {
-
         $this->is_logging_enabled = is_wpfm_logging_enabled();
         $this->product            = $product;
         $this->analytics_params   = $feed->analytics_params;
@@ -143,7 +149,8 @@ class Rex_Product_Data_Retriever
         $this->feed               = $feed;
         $this->wcml               = in_array( 'woocommerce-multilingual/wpml-woocommerce.php', get_option( 'active_plugins', [] ) );
         $this->feed_format        = $feed->get_feed_format();
-        $this->feed_country      = $feed->get_shipping();
+        $this->feed_country       = $feed->get_shipping();
+        $this->feed_zip_codes           = $feed->get_zip_code();
 
         if( $this->is_logging_enabled ) {
             $log = wc_get_logger();
@@ -622,6 +629,10 @@ class Rex_Product_Data_Retriever
 
                 return $this->get_product_cats( 'product_cat' );
 
+            case 'product_cat_ids':
+
+                return $this->get_product_cat_ids( 'product_cat' );
+
             case 'product_cats_path':
                 return $this->get_product_cats_with_seperator( 'product_cat' );
 
@@ -845,45 +856,60 @@ class Rex_Product_Data_Retriever
      * @return int|mixed|string
      */
     private function get_shipping_cost( $type = 'cost' ) {
+        if( !$this->product || is_wp_error( $this->product ) ) {
+            return;
+        }
+        if( $this->product->is_virtual() ) {
+            return 0;
+        }
+
         $shipping_cost = '';
-        if( function_exists( 'wc_get_shipping_zone' ) ) {
-            $shipping_zone = wc_get_shipping_zone( [
+        $country_data  = explode( ':', $this->feed_country );
+        $country       = isset( $country_data[ 0 ] ) ? $country_data[ 0 ] : '';
+        $state         = isset( $country_data[ 1 ] ) ? $country_data[ 1 ] : '';
+
+        $shipping_methods = wpfm_get_cached_data( 'wc_shipping_methods_' . $country . $state . $this->feed_zip_codes );
+
+        if( function_exists( 'wc_get_shipping_zone' ) && !$shipping_methods ) {
+            $shipping_zone    = wc_get_shipping_zone( [
                 'destination' => [
-                    'country'  => $this->feed_country,
-                    'state'    => '',
-                    'postcode' => '',
+                    'country'  => $country,
+                    'state'    => $state,
+                    'postcode' => $this->feed_zip_codes,
                 ]
             ] );
             $shipping_methods = $shipping_zone ? $shipping_zone->get_shipping_methods( true ) : [];
+            wpfm_set_cached_data( 'wc_shipping_methods_' . $country . $state . $this->feed_zip_codes, $shipping_methods );
+        }
 
-            if ( !empty( $shipping_methods ) ) {
-                foreach ( $shipping_methods as $method ) {
-                    if( 'local_pickup_cost' !== $type ) {
-                        if ( 'WC_Shipping_Flat_Rate' === get_class( $method ) ) {
-                            $shipping_rates = isset( $method->instance_settings ) ? $method->instance_settings : [];
-                            if ( isset( $shipping_rates[ $type ] ) ) {
-                                $shipping_cost = $shipping_rates[ $type ];
-                            }
-                            else {
-                                $shipping_id = $this->product->get_shipping_class_id();
-                                if ( $shipping_id && isset( $shipping_rates[ $type . $shipping_id ] ) ) {
-                                    $shipping_cost = $shipping_rates[ $type . $shipping_id ];
-                                }
-                            }
+        if( is_array( $shipping_methods ) && !empty( $shipping_methods ) ) {
+            foreach( $shipping_methods as $method ) {
+                if( 'local_pickup_cost' !== $type ) {
+                    if( 'WC_Shipping_Flat_Rate' === get_class( $method ) ) {
+                        $shipping_rates = isset( $method->instance_settings ) ? $method->instance_settings : [];
+                        if( isset( $shipping_rates[ $type ] ) ) {
+                            $shipping_cost = $shipping_rates[ $type ];
                         }
-                        elseif( 'WC_Shipping_Free_Shipping' === get_class( $method ) && isset( $method->min_amount ) && $this->product->get_price() >= $method->min_amount && ( 'min_amount' === $method->requires || 'either' === $method->requires ) ) {
-                            $shipping_cost = 0;
+                        else {
+                            $shipping_id = $this->product->get_shipping_class_id();
+                            if( $shipping_id && isset( $shipping_rates[ $type . $shipping_id ] ) ) {
+                                $shipping_cost = $shipping_rates[ $type . $shipping_id ];
+                            }
                         }
                     }
-                    elseif( 'WC_Shipping_Local_Pickup' === get_class( $method ) ) {
-                        $shipping_rates = isset( $method->instance_settings ) ? $method->instance_settings : [];
-                        if ( isset( $shipping_rates[ 'cost' ] ) ) {
-                            $shipping_cost = $shipping_rates[ 'cost' ];
-                        }
+                    elseif( 'WC_Shipping_Free_Shipping' === get_class( $method ) && isset( $method->min_amount ) && $this->product->get_price() >= $method->min_amount && ( 'min_amount' === $method->requires || 'either' === $method->requires ) ) {
+                        $shipping_cost = 0;
+                    }
+                }
+                elseif( 'WC_Shipping_Local_Pickup' === get_class( $method ) ) {
+                    $shipping_rates = isset( $method->instance_settings ) ? $method->instance_settings : [];
+                    if( isset( $shipping_rates[ 'cost' ] ) ) {
+                        $shipping_cost = $shipping_rates[ 'cost' ];
                     }
                 }
             }
         }
+
         return $shipping_cost;
     }
 
@@ -897,11 +923,12 @@ class Rex_Product_Data_Retriever
     protected function set_tax_attr( $key ) {
         switch ( $key ) {
             case 'tax_class':
-                return $this->product->get_tax_class();
+                return $this->product ? $this->product->get_tax_class() : '';
 
             case 'tax':
-                $tax_class = $this->product->get_tax_class();
-                return WC_Tax::get_rates_for_tax_class( $tax_class );
+                $tax_class = $this->product ? $this->product->get_tax_class() : '';
+                $tax_rates = wpfm_get_cached_data( 'wc_tax_rates_' . $tax_class );
+                return $tax_rates ?: WC_Tax::get_rates_for_tax_class( $tax_class );
             default:
                 return '';
         }
@@ -2545,14 +2572,28 @@ class Rex_Product_Data_Retriever
      * @param string $after Optional. After list.
      * @return string|false
      */
-
     protected function get_product_cats( $taxonomy, $before = '', $sep = ', ', $after = '' ) {
         if ( 'WC_Product_Variation' == get_class($this->product) ) {
             return $this->get_the_term_list( $this->product->get_parent_id(), $taxonomy, $before, $sep, $after );
         }else {
             return $this->get_the_term_list( $this->product->get_id(), $taxonomy, $before, $sep, $after );
         }
+    }
 
+    /**
+     * Retrieve a product's category ids with comma separated
+     * @since 7.2.18
+     * @param string $before Optional. Before list.
+     * @param string $sep Optional. Separate items using this.
+     * @param string $after Optional. After list.
+     * @return string|false
+     */
+    protected function get_product_cat_ids( $taxonomy, $before = '', $sep = ', ', $after = '' ) {
+        if ( 'WC_Product_Variation' == get_class($this->product) ) {
+            return $this->get_the_term_list( $this->product->get_parent_id(), $taxonomy, $before, $sep, $after, true );
+        }else {
+            return $this->get_the_term_list( $this->product->get_id(), $taxonomy, $before, $sep, $after, true );
+        }
     }
 
 
@@ -2639,38 +2680,29 @@ class Rex_Product_Data_Retriever
      * @param string $sep Optional. Separate items using this.
      * @return string|false
      */
-    protected function get_product_subcategory( $sep = ' > ' )
-    {
-        $parent = 0;
-        if( 'WC_Product_Variation' == get_class( $this->product ) ) {
-            $terms = get_the_terms( $this->product->get_parent_id(), 'product_cat' );
-            if( empty( $terms ) || is_wp_error( $terms ) ) {
-                return '';
+    protected function get_product_subcategory( $sep = ' > ' ) {
+        if( $this->product && !is_wp_error( $this->product ) ) {
+            if( 'WC_Product_Variation' == get_class( $this->product ) ) {
+                $product_id = $this->product->get_parent_id();
             }
-            $term_names = array();
-            foreach( $terms as $term ) {
-                if( $term->parent ) {
-                    $term_names[] = $term->name;
-                }
+            else {
+                $product_id = $this->product->get_id();
             }
-            ksort( $term_names );
-            return '' . join( $sep, $term_names ) . '';
-        }
-        else {
-            $terms = get_the_terms( $this->product->get_id(), 'product_cat' );
-            if( empty( $terms ) || is_wp_error( $terms ) ) {
-                return '';
-            }
-            $term_names = array();
-            foreach( $terms as $term ) {
-                if( $term->parent ) {
-                    $term_names[] = $term->name;
-                }
-            }
-            ksort( $term_names );
-            return '' . join( $sep, $term_names ) . '';
-        }
 
+            $terms = get_the_terms( $product_id, 'product_cat' );
+            rsort( $terms );
+            $terms = array_reverse( $terms );
+
+            if( empty( $terms ) || is_wp_error( $terms ) ) {
+                return '';
+            }
+            $term_names = array();
+            foreach( $terms as $term ) {
+                $term_names[] = $term->name;
+            }
+            return join( $sep, $term_names );
+        }
+        return '';
     }
 
     /**
@@ -2777,12 +2809,15 @@ class Rex_Product_Data_Retriever
      * @param string $after Optional. After list.
      * @return string|false
      */
-    protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = '', $after = '' )
+    protected function get_the_term_list( $id, $taxonomy, $before = '', $sep = ', ', $after = '', $ids = false )
     {
         $terms = wp_get_post_terms( $id, $taxonomy, array( 'hide_empty' => false, 'orderby' => 'term_id' ) );
 
         if( empty( $terms ) || is_wp_error( $terms ) ) {
             return '';
+        }
+        if( $ids ) {
+            return implode( $sep, array_column($terms, 'term_id') );
         }
         $output       = array();
         $child_terms  = array();
@@ -3322,7 +3357,9 @@ class Rex_Product_Data_Retriever
             case 'price':
                 return intval( $val );
             case 'remove_space':
-                return preg_replace( '/\s+/', '', $val );
+                return trim( preg_replace( '/\s+/', '', $val ) );
+            case 'remove_tab':
+                return trim( preg_replace( '/\t+/', '', $val ) );
             case 'remove_shortcodes_and_tags':
                 $val            = preg_replace( '/(?:<|&lt;).*?(?:>|&gt;)/', '', $val );
                 $striped_string = strip_tags( $val );
@@ -3546,57 +3583,59 @@ class Rex_Product_Data_Retriever
      * @return array|string
      */
     public function get_shipping_methods( $rule = [] ) {
-        if ( 'all' !== $this->feed_country ) {
+        $feed_location          = explode( ':', $this->feed_country );
+        $country                = isset( $feed_location[ 0 ] ) ? $feed_location[ 0 ] : '';
+        $state                  = isset( $feed_location[ 1 ] ) ? $feed_location[ 1 ] : '';
+        $default_shipping_zones = wpfm_get_cached_data( 'wc_shipping_zones_' . $country . $state . $this->feed_zip_codes );
+
+        if( 'all' !== $this->feed_country && !$default_shipping_zones ) {
             $wc_shipping_zones = WC_Shipping_Zones::get_zones();
-            $default_shipping_zones = [];
 
-            foreach ( $wc_shipping_zones as $zone ) {
-                if ( isset( $zone[ 'zone_locations' ] ) ) {
-                    foreach ( $zone[ 'zone_locations' ] as $location ) {
-                        if ( isset( $location->code ) && $this->feed_country === $location->code && isset( $zone[ 'shipping_methods' ] ) ) {
-                            foreach ( $zone[ 'shipping_methods' ] as $method ) {
-                                if ( isset( $method->id ) && ( 'flat_rate' === $method->id || 'local_pickup' === $method->id ) ) {
-                                    $service = '';
-                                    $price = 0;
+            foreach( $wc_shipping_zones as $zone ) {
+                if( isset( $zone[ 'zone_locations' ] ) && is_array( $zone[ 'zone_locations' ] ) && !empty( $zone[ 'zone_locations' ] ) ) {
+                    $zone_locations = array_column( $zone[ 'zone_locations' ], 'code' );
+                    if( is_array( $zone_locations ) && !empty( $zone_locations ) && ( in_array( $this->feed_country, $zone_locations ) || in_array( $this->feed_zip_codes, $zone_locations ) ) && isset( $zone[ 'shipping_methods' ] ) ) {
+                        foreach( $zone[ 'shipping_methods' ] as $method ) {
+                            $service = '';
+                            $price   = 0;
 
-                                    if ( isset( $zone[ 'zone_name' ] ) ) {
-                                        $service .= $zone[ 'zone_name' ];
-                                    }
-                                    if ( isset( $method->instance_settings[ 'title' ] ) ) {
-                                        $service .= ' ' . $method->instance_settings[ 'title' ];
-                                    }
-                                    if ( isset( $method->instance_settings[ 'cost' ] ) ) {
-                                        $price = (int)$method->instance_settings[ 'cost' ];
-                                        $shipping_class_id = $this->product->get_shipping_class_id();
-                                        if ( $shipping_class_id ) {
-                                            $price += isset( $method->instance_settings[ 'class_cost_' . $shipping_class_id ] ) ? (int)$method->instance_settings[ 'class_cost_' . $shipping_class_id ] : 0;
-                                        }
-                                        else {
-                                            $price += isset( $method->instance_settings[ 'no_class_cost' ] ) ? (int)$method->instance_settings[ 'no_class_cost' ] : 0;
-                                        }
-
-                                        if ( isset( $rule[ 'prefix' ] ) ) {
-                                            $price = $rule[ 'prefix' ] . $price;
-                                        }
-                                        if ( isset( $rule[ 'suffix' ] ) ) {
-                                            $price = $price . $rule[ 'suffix' ];
-                                        }
-                                    }
-
-                                    $default_shipping_zones[] = [
-                                        'country' => $this->feed_country,
-                                        'service' => $service . ' ' . $this->feed_country,
-                                        'price'   => $price
-                                    ];
-                                }
+                            if( isset( $zone[ 'zone_name' ] ) ) {
+                                $service .= $zone[ 'zone_name' ];
                             }
+                            if( isset( $method->instance_settings[ 'title' ] ) ) {
+                                $service .= ' ' . $method->instance_settings[ 'title' ];
+                            }
+                            if( isset( $method->instance_settings[ 'cost' ] ) ) {
+                                $price = (int)$method->instance_settings[ 'cost' ];
+                                /*$shipping_class_id = $this->product->get_shipping_class_id();
+                                if ( $shipping_class_id ) {
+                                    $price += isset( $method->instance_settings[ 'class_cost_' . $shipping_class_id ] ) ? (int)$method->instance_settings[ 'class_cost_' . $shipping_class_id ] : 0;
+                                }
+                                else {
+                                    $price += isset( $method->instance_settings[ 'no_class_cost' ] ) ? (int)$method->instance_settings[ 'no_class_cost' ] : 0;
+                                }*/
+                            }
+
+                            if( isset( $rule[ 'prefix' ] ) ) {
+                                $price = $rule[ 'prefix' ] . $price;
+                            }
+                            if( isset( $rule[ 'suffix' ] ) ) {
+                                $price = $price . $rule[ 'suffix' ];
+                            }
+
+                            $default_shipping_zones[] = [
+                                'country' => $country,
+                                'region'  => $state,
+                                'service' => $service . ' ' . $this->feed_country,
+                                'price'   => $price
+                            ];
                         }
                     }
                 }
             }
-            return !empty( $default_shipping_zones ) ? $default_shipping_zones : '';
+            wpfm_set_cached_data( 'wc_shipping_zones_' . $country . $state . $this->feed_zip_codes, $default_shipping_zones );
         }
-        return '';
+        return $default_shipping_zones;
     }
 
     /**

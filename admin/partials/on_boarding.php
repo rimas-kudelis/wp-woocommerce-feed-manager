@@ -18,6 +18,7 @@ $structured_data             = get_option( 'rex-wpfm-product-structured-data' );
 $exclude_tax                 = get_option( 'rex-wpfm-product-structured-data-exclude-tax' );
 $wpfm_cache_ttl              = get_option( 'wpfm_cache_ttl', 3 * $hour_in_seconds );
 $wpfm_allow_private_products = get_option( 'wpfm_allow_private', 'no' );
+$wpfm_hide_char              = get_option( 'rex_feed_hide_character_limit_field', 'on' );
 
 if ( $is_premium_activated ) {
 	$per_batch = get_option( 'rex-wpfm-product-per-batch', WPFM_FREE_MAX_PRODUCT_LIMIT );
@@ -267,6 +268,22 @@ $schedule_hours = [
                                             <input class="switch-input" type="checkbox"
                                                 id="wpfm_enable_log" <?php echo esc_attr( $checked ); ?>>
                                             <label class="lever" for="wpfm_enable_log"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="single-merchant hide-character">
+                                    <span class="title">
+                                        <?php echo esc_html__('Hide Character Limit Column', 'rex-product-feed'); ?>
+                                    </span>
+                                    <div class="switch">
+                                        <?php
+                                        $checked = $wpfm_hide_char === 'on' ? 'checked' : '';
+                                        ?>
+                                        <div class="wpfm-switcher">
+                                            <input class="switch-input" type="checkbox"
+                                                id="wpfm_hide_char" <?php echo esc_attr( $checked ); ?>>
+                                            <label class="lever" for="wpfm_hide_char"></label>
                                         </div>
                                     </div>
                                 </div>

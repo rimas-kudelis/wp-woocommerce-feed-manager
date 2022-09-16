@@ -221,9 +221,10 @@ class Rex_Google_Merchant_Settings_Api {
     public function feed_exists($feed_id) {
         $client = $this->init_client();
         $service = new RexFeed\Google\Service\ShoppingContent( $client );
-        if(get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true)) {
+        $data_feed_id = get_post_meta($feed_id, '_rex_feed_google_data_feed_id', true) ?: get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true);
+        if( $data_feed_id ) {
             try {
-                $feed = $service->datafeeds->get(self::$merchant_id, get_post_meta($feed_id, 'rex_feed_google_data_feed_id', true));
+                $feed = $service->datafeeds->get( self::$merchant_id, $data_feed_id );
                 return true;
             }
             catch(Exception $e) {

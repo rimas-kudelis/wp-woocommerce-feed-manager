@@ -16,6 +16,7 @@
 if ( ! isset($feed_template) ) {
 	return;
 }
+$wpfm_hide_char              = get_option( 'rex_feed_hide_character_limit_field', 'on' );
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -93,7 +94,7 @@ $keyy = rand(999, 3000); ?>
         <td data-title="Value : ">
             <div class="meta-dropdown" <?php echo filter_var( $hide_meta ); ?>>
 				<?php
-				echo '<select class="attr-val-dropdown" name="fc['.esc_attr($key).'][' . esc_attr( 'meta_key' ) . ']" >';
+				echo '<select class="attr-val-dropdown select2-attr-dropdown" name="fc['.esc_attr($key).'][' . esc_attr( 'meta_key' ) . ']" >';
 				echo "<option value=''>".esc_html__('Please Select', 'rex-product-feed')."</option>";
 				echo $feed_template->printProductAttributes( isset( $item['meta_key'] ) ? $item['meta_key'] : '' ); // phpcs:ignore
 				echo "</select>";
