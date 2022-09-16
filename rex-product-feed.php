@@ -61,7 +61,7 @@ if( !defined( 'WPFM_PLUGIN_ASSETS_FOLDER_PATH' ) && defined( 'WPFM_PLUGIN_DIR_PA
     define( "WPFM_PLUGIN_ASSETS_FOLDER_PATH", WPFM_PLUGIN_DIR_PATH . 'admin/assets/' );
 }
 if( !defined( 'WPFM_PRO_REQUIRED_VERSION' ) ) {
-    define( 'WPFM_PRO_REQUIRED_VERSION', '6.0.0' );
+    define( 'WPFM_PRO_REQUIRED_VERSION', '6.3.3' );
 }
 if( !defined( 'WPFM_ETSY_REQUIRED_VERSION' ) ) {
     define( 'WPFM_ETSY_REQUIRED_VERSION', '1.0.1' );
