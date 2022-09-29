@@ -173,10 +173,18 @@ class Rex_Product_Feed_Shopping extends Rex_Product_Feed_Other {
             foreach ($attributes as $key => $value) {
                 if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
                     if ( $value != '' ) {
+                        if( is_array($value) ) {
+                            $value = call_user_func_array('array_merge', $value);
+                            $value = implode( ', ', $value );
+                        }
                         $item->$key($value); // invoke $key as method of $item object.
                     }
                 }
                 else {
+                    if( is_array($value) ) {
+                        $value = call_user_func_array('array_merge', $value);
+                        $value = implode( ', ', $value );
+                    }
                     $item->$key($value); // invoke $key as method of $item object.
                 }
             }

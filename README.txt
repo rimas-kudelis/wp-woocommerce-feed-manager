@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.19
+Stable tag:  7.2.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -740,6 +740,46 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.20 (2022-09-29) =
+* Added : Support added for the plugin EAN for WooCommerce by WPFactory
+* Added : Support added for the plugin Discount Rules and Dynamic Pricing for WooCommerce by Asana Plugins
+* Added : Option to include Primary Category ID by Rank Math SEO
+* Added : Option to include Primary Category ID by Yoast SEO
+* Added : Multiple/ additional image support for Yandex Feed
+* Added : Option added to the Custom Feed to remove additional header values (title, link, description, datetime)
+* Added : Plugin review section is repositioned to bottom
+* Added : Google feed alert changed to popup
+* Added : Product filter section description added
+* Added : Optimize Product Title anchor text added under the Product Title attribute
+* Fixed : Output Filter now showing "default" if all the values are unassigned
+* Fixed : Send to Google section was appearing when clicked on the Preview Feed button
+* Fixed : Criteo XML feed issue
+* Fixed : UTM Param is not added to the generated product URLs
+* Fixed : Template generating issue for Google Dynamic Search Ads merchant
+* Fixed : Template generating issue for Shopping merchant
+* Fixed : Template generating issue for Vergelijk merchant
+* Fixed : Template generating issue for Twenga merchant
+* Fixed : Template generating issue for Tweakers.nl merchant
+* Fixed : Template generating issue for Koopkeus merchant
+* Fixed : Template generating issue for Scoupz merchant
+* Fixed : Template generating issue for Uvinum merchant
+* Fixed : Template generating issue for Pricesearcher merchant
+* Fixed : Template generating issue for Pricemasher merchant
+* Fixed : Template generating issue for Fashinchick merchant
+* Fixed : Template generating issue for Choozen merchant
+* Fixed : Template generating issue for PowerReviews merchant
+* Fixed : Template generating issue for Otto merchant
+* Fixed : Template generating issue for Sears merchant
+* Fixed : Template generating issue for AmmoSeek merchant
+* Fixed : Template generating issue for Fnac merchant
+* Fixed : Template generating issue for Pixmania merchant
+* Fixed : Template generating issue for Coolblue merchant
+* Fixed : Template generating issue for Yahoo merchant
+* Fixed : Template generating issue for Kelko Group merchant
+* Fixed : Template generating issue for Target merchant
+* Fixed : Template generating issue for Pepperjam merchant
+* Fixed : Template generating issue for CJ Affiliate merchant
 
 = 7.2.19 (2022-09-19) =
 * Added: Filter by Product Attributes option added on Custom Filter

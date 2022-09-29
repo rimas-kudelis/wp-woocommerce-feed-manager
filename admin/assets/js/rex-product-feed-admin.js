@@ -1,10 +1,11 @@
 (function ( $ ) {
     'use strict';
-   
+
     var progressWidth = 0;
     var deferred = $.Deferred();
     var promise = deferred.promise();
-    var config_btn = rex_wpfm_admin_translate_strings.google_cat_map_btn;
+    let config_btn = rex_wpfm_admin_translate_strings.google_cat_map_btn;
+    let optimize_pr_title_btn = rex_wpfm_admin_translate_strings.optimize_pr_title_btn;
 
     $( function () {
         $( ".meter > span" ).each( function () {
@@ -253,7 +254,13 @@
 
     $( document ).on( "click", "#wpfm-log-copy", wpfm_copy_log );
 
-    $( document ).on( 'click', '#publish, #rex-bottom-publish-btn, #rex-bottom-preview-btn', get_product_number );
+    $( document ).on( 'click', '#publish, #rex-bottom-publish-btn, #rex-bottom-preview-btn', rex_feed_is_google_attribute_missing );
+
+    $( document ).on( 'click', 'a#rex_google_missing_attr_okay_btn', get_product_number );
+
+    $( document ).on( 'click', 'a#rex_google_missing_attr_cancel_btn, #rex_google_missing_attr_cross_btn', function () {
+        $( 'section#rex_feed_google_req_attr_warning_popup' ).hide();
+    } );
 
     $( document ).on( 'click', '#send-to-google', send_to_google );
 
@@ -289,7 +296,7 @@
 
         wpAjaxHelperRequest( 'trigger-review-request', payload )
             .success( function ( response ) {
-                $( '#rex_feed_review_request_body_content' ).fadeOut();
+                $( '.rex-feed-review' ).fadeOut();
                 console.log( 'Woohoo! Awesome!!' );
             } )
             .error( function ( response ) {
@@ -447,8 +454,6 @@
         }
     } );
 
-    // $( document ).on( 'change', '.merchant-change', product_feed_change_merchant_status );
-
     $( document ).on( 'change', '#wpfm_fb_pixel', enable_fb_pixel );
 
     $( document ).on( 'change', '#remove_plugin_data', remove_plugin_data );
@@ -459,7 +464,7 @@
 
     $( document ).on( 'change', 'input[name="rex_feed_schedule"]', rex_feed_manage_custom_cron_schedule_fields );
 
-    $( document ).on( 'change', '.attr-val-dropdown', category_mapping_button_on_change );
+    $( document ).on( 'change', '.attr-val-dropdown', render_custom_buttons_on_change );
 
     $( document ).on( 'change', 'select#wpfm_rollback_options', rex_feed_process_rollback_button ).trigger('change');
 
@@ -616,7 +621,7 @@
 
                     rex_feed_hide_char_limit_col();
                     dynamic_pricing( event );
-                    category_mapping_button( event );
+                    render_custom_buttons( event );
                     rex_feed_hide_separators_group( event );
                     $( '.sanitize-dropdown' ).select2({
                         closeOnSelect: false,
@@ -627,7 +632,7 @@
                 .fail( function ( response ) {
                     $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
                     console.log( 'Uh, oh! Merchant change returned error!' );
-                    console.log( response.statusText );
+                    
                 } );
         }
         else {
@@ -642,7 +647,6 @@
         }
 
         $( '#rex-feed-product-taxonomies' ).hide();
-        // $( '#rex-feed-config-filter' ).hide();
         $( '.rex-feed-tags-wrapper' ).hide();
         $( '.rex-feed-product-filter-ids__area' ).hide();
         $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).fadeIn();
@@ -653,30 +657,39 @@
                     if ( response.success ) {
                         var selected = $( '#rex_feed_products' ).find( ':selected' ).val();
 
-                        if ( selected === 'all' || selected === 'featured' ) {
+                        if ( 'all' === selected || 'featured' === selected ) {
                             $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
-                            // $( '#rex-feed-config-filter' ).hide();
                             $( '.rex-feed-tags-wrapper' ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
+                            if ( 'all' === selected ) {
+                                $( 'div#rex-feed-featured-product' ).hide();
+                                $( 'div#rex-feed-published-product' ).show();
+                            }
+                            else {
+                                $( 'div#rex-feed-published-product' ).hide();
+                                $( 'div#rex-feed-featured-product' ).show();
+                            }
                         }
                         else if ( selected === 'filter' ) {
                             $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
-                            // $( '#rex-feed-config-filter' ).show();
+                            $( 'div#rex-feed-published-product' ).hide();
+                            $( 'div#rex-feed-featured-product' ).hide();
                             $( '#rex-feed-config-rules' ).show();
                         }
                         else if ( selected === 'product_cat' || selected === 'product_tag' ) {
-                            var tax_contents = $( '#rex-feed-product-taxonomies-contents' );
+                            let tax_contents = $( '#rex-feed-product-taxonomies-contents' );
                             if ( tax_contents.length === 0 ) {
                                 $( '#rex-feed-product-taxonomies' ).append( response.html_content );
                             }
                             $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).hide();
-                            // $( '#rex-feed-config-filter' ).hide();
+                            $( 'div#rex-feed-published-product' ).hide();
+                            $( 'div#rex-feed-featured-product' ).hide();
                             $( '#rex-feed-product-taxonomies' ).show();
                             if ( selected === 'product_cat' ) {
                                 $( '#rex-feed-product-tags' ).hide();
@@ -688,14 +701,12 @@
                         }
                         else if ( selected === 'product_filter' ) {
                             $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
-                            // $( '#rex-feed-config-filter' ).hide();
                             $( '#rex-feed-product-taxonomies' ).hide();
                             $( '#rex-feed-product-taxonomies #rex-feed-product-taxonomies-contents' ).remove();
-                            $( '.select2-search__field' ).removeAttr('style')
+                            $( '.select2-search__field' ).removeAttr('style');
+                            $( 'div#rex-feed-published-product' ).hide();
+                            $( 'div#rex-feed-featured-product' ).hide();
                             $( '.rex-feed-product-filter-ids__area' ).show();
-
-                            /*var excluede_variable = $('#rex_feed_variable_product1').attr('checked');
-                            console.log(excluede_variable);*/
                         }
 
                         $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).fadeOut();
@@ -707,12 +718,11 @@
 
                 $( "#rex_feed_product_filters .inside .rex-loading-spinner" ).hide();
                 $( '#rex-feed-product-taxonomies' ).hide();
-                // $( '#rex-feed-config-filter' ).hide();
                 $( '.rex-feed-tags-wrapper' ).hide();
                 $( '.rex-feed-product-filter-ids__area' ).hide();
 
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -764,38 +774,67 @@
      * Category mapping button
      * @param event
      */
-    function category_mapping_button( event ) {
-        var rows = $('.attr-dropdown').length - 1;
-        for ( var rowId = 0; rowId <= rows; rowId++ ) {
-            var opt_group_label = $( 'select[name="fc[' + rowId + '][meta_key]"] :selected' ).parent().attr('label');
-            var meta_val = $( 'select[name="fc[' + rowId + '][meta_key]"]' ).val();
+    function render_custom_buttons( event ) {
+        let attr_tr = $( 'div#rex_feed_config_heading' ).children( 'div.inside' ).children( 'table#config-table' ).children( 'tbody' ).children( 'tr' );
 
-            if ( 'Category Map' === opt_group_label ) {
-                var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + meta_val;
-                $('select[name="fc[' + rowId + '][meta_key]"]').parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_cat_map_"+rowId+"'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+        attr_tr.each( function ( index, _element ) {
+            if ( index ) {
+                let row_id = $( this ).attr( 'data-row-id' );
+                let opt_group_label = $( 'select[name="fc[' + row_id + '][meta_key]"] :selected' ).parent().attr('label');
+                let meta_val = $( 'select[name="fc[' + row_id + '][meta_key]"]' ).val();
+
+                if ( 'Category Map' === opt_group_label ) {
+                    let url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + meta_val;
+                    $('select[name="fc[' + row_id + '][meta_key]"]').parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_cat_map_"+row_id+"'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
+                }
+
+                if ( 'title' === meta_val ) {
+                    let url = 'https://rextheme.com/docs/how-to-merge-multiple-attributes-values-together-with-the-combined-fields-feature/?utm_source=PFM+plugin&utm_medium=Optimize+Product+Title&utm_campaign=Combined+Attributes';
+                    $('select[name="fc[' + row_id + '][meta_key]"]').parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" + row_id + "'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+optimize_pr_title_btn+"</a></p>");
+                }
             }
-        }
+        } );
         // Google category mapping button ENDS
     }
 
-    function category_mapping_button_on_change() {
-        var rowId = $(this).parent().parent().parent().attr('data-row-id');
-        var selected_val = $( this ).val();
-        var opt_group_label = $("option:selected", this).parent().attr( 'label' );
+
+    /**
+     * @desc Render custom button on attribute value change
+     * @since 7.2.19
+     */
+    function render_custom_buttons_on_change() {
+        let rowId = $(this).parent().parent().parent().attr('data-row-id');
+        let selected_val = $( this ).val();
+        let opt_group_label = $("option:selected", this).parent().attr( 'label' );
 
         if ( 'Category Map' === opt_group_label ) {
-            var url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + selected_val;
+            let url = rex_wpfm_ajax.category_mapping_url + '&wpfm-expand=' + selected_val;
 
             if ( $( '#rex_cat_map_' + rowId ).length === 0 ) {
                 $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_cat_map_"+rowId+"'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
             else {
-                $( '#rex_cat_map_'+rowId ).remove();
+                $( '#rex_cat_map_' + rowId ).remove();
                 $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_cat_map_"+rowId+"'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+config_btn+"</a></p>");
             }
         }
         else {
-            $( '#rex_cat_map_'+rowId ).remove();
+            $( '#rex_cat_map_' + rowId ).remove();
+        }
+
+        if ( 'title' === selected_val ) {
+            let url = 'https://rextheme.com/docs/how-to-merge-multiple-attributes-values-together-with-the-combined-fields-feature/?utm_source=PFM+plugin&utm_medium=Optimize+Product+Title&utm_campaign=Combined+Attributes';
+
+            if ( $( '#rex_opt_title_btn_' + rowId ).length === 0 ) {
+                $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" + rowId + "'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+optimize_pr_title_btn+"</a></p>");
+            }
+            else {
+                $( '#rex_opt_title_btn_' + rowId ).remove();
+                $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" + rowId + "'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+optimize_pr_title_btn+"</a></p>");
+            }
+        }
+        else {
+            $( '#rex_opt_title_btn_'+rowId ).remove();
         }
     }
 
@@ -826,76 +865,117 @@
     }
 
     /**
+     * @desc Check if any required attribute(s) is/are missing
+     * @since 7.2.19
+     * @param event
+     */
+    function rex_feed_is_google_attribute_missing( event ) {
+        let is_trusted_event = true;
+        let is_attr_missing;
+
+        try {
+            is_trusted_event = event.originalEvent.isTrusted;
+        }
+        catch (e) {
+            is_trusted_event = false;
+            is_attr_missing = true;
+        }
+
+        if ( is_trusted_event ) {
+            event.preventDefault();
+            is_attr_missing = rex_feed_render_missing_attr_popup();
+            if ( 'rex-bottom-preview-btn' === $(this).attr('id') ) {
+                $( '#rex_google_missing_attr_okay_btn' ).addClass( 'bottom-preview-btn' )
+            }
+        }
+
+        if ( !is_attr_missing ) {
+            get_product_number( $( this ) );
+        }
+    }
+
+    /**
      * Start the feed processing
      * @param event
      */
-    function get_product_number( event ) {
-        event.preventDefault();
+    function get_product_number( $this ) {
+        $( 'section#rex_feed_google_req_attr_warning_popup' ).hide();
+        let merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
+        let feed_title = $( '.post-type-product-feed input#title' ).val();
+        let submit_button = '';
+        let is_preview = '';
+        
+        try {
+            submit_button = $this.attr( 'id' );
+            is_preview = $this.hasClass( 'bottom-preview-btn' );
+        }
+        catch (e) {
+            submit_button = $( this ).attr( 'id' );
+            is_preview = $( this ).hasClass( 'bottom-preview-btn' );
+        }
+        
+        if ( '-1' === merchant_name ) {
+            alert( 'Please choose a merchant!' );
+            return;
+        }
 
-        if ( rex_feed_is_req_attr_missing() ) {
-            let merchant_name = $( '#rex_feed_merchant' ).find( ':selected' ).val();
-            let is_preview = $( this ).hasClass( 'bottom-preview-btn' );
-            let feed_title = $( '.post-type-product-feed input#title' ).val();
+        if ( $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).css( 'display' ) == 'none' ) {
+            $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).remove();
+        }
 
-            if ( '-1' === merchant_name ) {
-                alert( 'Please choose a merchant!' );
-                return;
-            }
+        $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'start' );
 
-            if ( $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).css( 'display' ) == 'none' ) {
-                $( '.wpfm-field-mappings' ).find( 'tbody tr:first' ).remove();
-            }
+        if ( is_preview && ( 'rex_google_missing_attr_okay_btn' === submit_button ) ) {
+            submit_button = 'rex-bottom-preview-btn';
+        }
 
-            $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'start' );
+        let $payload = {
+            feed_id: rex_wpfm_ajax.feed_id,
+            feed_config: $( 'form' ).serialize(),
+            button_id: submit_button,
+            feed_title: feed_title
+        };
 
-            let $payload = {
-                feed_id: rex_wpfm_ajax.feed_id,
-                feed_config: $( 'form' ).serialize(),
-                button_id: $( this ).attr( 'id' ),
-                feed_title: feed_title
-            };
+        wpAjaxHelperRequest( 'my-handle', $payload )
+            .done( function ( response ) {
+                if ( 'duplicate' === response.feed_title ) {
+                    $( '.post-type-product-feed input#title' ).css( 'border', '1px solid red' );
+                    alert( 'Please set an unique feed title!' );
+                }
+                else {
+                    $( '#publishing-action span.spinner' ).addClass( 'is-active' );
+                    $( '.post-type-product-feed input#publish' ).addClass( 'disabled' );
 
-            wpAjaxHelperRequest( 'my-handle', $payload )
-                .done( function ( response ) {
-                    if ( 'duplicate' === response.feed_title ) {
-                        $( '.post-type-product-feed input#title' ).css( 'border', '1px solid red' );
-                        alert( 'Please set an unique feed title!' );
+                    $( '.rex-feed-publish-btn span.spinner' ).addClass( 'is-active' );
+
+                    $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'cursor', 'not-allowed' );
+                    $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'background-color', '#f6f7f7' );
+                    $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'border', '1px solid #e9e9ea' );
+                    $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'color', '#a7aaad' );
+
+                    $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeIn();
+                    $( '.rex-feed-progressbar, .progress-msg' ).fadeIn();
+                    $( '.progress-msg span' ).html( 'Calculating products.....' );
+
+                    $( '.post-type-product-feed input#title' ).css( 'border', 'unset' );
+
+                    let per_batch = 0;
+                    if ( is_preview ) {
+                        per_batch = 10;
+                        generate_feed( response.products, 0, 1, per_batch, 1 );
                     }
                     else {
-                        $( '#publishing-action span.spinner' ).addClass( 'is-active' );
-                        $( '.post-type-product-feed input#publish' ).addClass( 'disabled' );
-
-                        $( '.rex-feed-publish-btn span.spinner' ).addClass( 'is-active' );
-
-                        $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'cursor', 'not-allowed' );
-                        $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'background-color', '#f6f7f7' );
-                        $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'border', '1px solid #e9e9ea' );
-                        $( '#rex-bottom-publish-btn, #rex-bottom-preview-btn' ).css( 'color', '#a7aaad' );
-
-                        $( '.post-type-product-feed #rex_feed_progress_bar' ).fadeIn();
-                        $( '.rex-feed-progressbar, .progress-msg' ).fadeIn();
-                        $( '.progress-msg span' ).html( 'Calculating products.....' );
-
-                        $( '.post-type-product-feed input#title' ).css( 'border', 'unset' );
-
-                        let per_batch = 0;
-                        if ( is_preview ) {
-                            per_batch = 10;
-                            generate_feed( response.products, 0, 1, per_batch, 1 );
-                        }
-                        else {
-                            per_batch = response.per_batch ? parseInt( response.per_batch ) : 200;
-                            generate_feed( response.products, 0, 1, per_batch, response.total_batch );
-                        }
+                        per_batch = response.per_batch ? parseInt( response.per_batch ) : 200;
+                        generate_feed( response.products, 0, 1, per_batch, response.total_batch );
                     }
-                } )
-                .fail( function ( response ) {
-                    $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
-                    $( '#publish' ).removeClass( 'disabled' );
-                    $( '.rex-feed-publish-btn span.spinner' ).removeClass( 'is-active' );
-                    console.log( 'Uh, oh!' );
-                } );
-        }
+                }
+            } )
+            .fail( function ( response ) {
+                $( '#publishing-action span.spinner' ).removeClass( 'is-active' );
+                $( '#publish' ).removeClass( 'disabled' );
+                $( '.rex-feed-publish-btn span.spinner' ).removeClass( 'is-active' );
+                console.log( 'Uh, oh!' );
+            } );
     }
 
     /**
@@ -1015,7 +1095,7 @@
                 $( '#publish' ).removeClass( 'disabled' );
                 $( '#wpfm-feed-clock' ).stopwatch().stopwatch( 'stop' );
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1058,10 +1138,8 @@
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
                 $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'none' );
-                console.log( response.statusText );
+                
             } );
-
-
     }
 
     /*
@@ -1071,14 +1149,10 @@
     function send_to_google( event ) {
         event.preventDefault();
         $( '#rex_feed_config_heading .inside .rex-loading-spinner' ).css( 'display', 'flex' );
-        // var selected = [];
-        /*$('.rex-feed-google-destination input:checked').each(function() {
-            selected.push($(this).val());
-        });*/
-        var payload = {
+
+        let payload = {
             feed_id: $( '#post_ID' ).val(),
             schedule: $( '#rex_feed_google_schedule option:selected' ).val(),
-            /*destination: selected,*/
             hour: $( '#rex_feed_google_schedule_time option:selected' ).val(),
             country: $( '#rex_feed_google_target_country' ).val(),
             language: $( '#rex_feed_google_target_language' ).val()
@@ -1134,7 +1208,7 @@
                 $( '.rex-google-status' ).html( '<p>Something wrong happened. Please check.</p><p>' + response.reason + ': ' + response.message + '</p>' );
                 console.log( 'Uh, oh!' );
                 console.log( response );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1175,7 +1249,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1205,7 +1279,7 @@
                     $form.find( "button.save-batch span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1242,7 +1316,7 @@
                     $form.find( "button.save-wpfm-fields-show span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1262,7 +1336,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1313,7 +1387,7 @@
                 .error( function ( response ) {
 
                     console.log( 'uh, oh!' );
-                    console.log( response.statusText );
+                    
                 } );
         }
 
@@ -1370,7 +1444,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1393,11 +1467,11 @@
         wpAjaxHelperRequest( 'wpfm-remove-plugin-data', payload )
             .success( function ( response ) {
                 console.log( 'Saved' );
-                console.log( response.statusText );
+                
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1427,7 +1501,7 @@
                     $form.find( "button.save-fb-pixel span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1451,7 +1525,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1484,7 +1558,6 @@
                     $form.find( "button.save-fb-pixel span" ).text( "save" );
                 }, 1000 );
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
             } );
     }
 
@@ -1509,7 +1582,6 @@
             .error( function ( response ) {
                 $el.find( "i" ).hide();
                 console.log( 'uh, oh!' );
-                console.log( response.statusText );
             } );
     }
 
@@ -1533,7 +1605,7 @@
                     .error( function ( response ) {
                         $el.find( "i" ).hide();
                         console.log( 'uh, oh!' );
-                        console.log( response.statusText );
+                        
                     } );
             }
         } else {
@@ -1550,7 +1622,7 @@
                 .error( function ( response ) {
                     $el.find( "i" ).hide();
                     console.log( 'uh, oh!' );
-                    console.log( response.statusText );
+                    
                 } );
         }
     }
@@ -1575,7 +1647,7 @@
             } )
             .error( function ( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             } );
     }
 
@@ -1611,7 +1683,7 @@
     function rex_feed_show_review_request( e ) {
         var is_published = $( '#publish' ).val();
         if ( is_published !== 'Publish' ){
-            $( '#rex_feed_review_request_body_content' ).fadeIn();
+            $( '.rex-feed-review' ).fadeIn();
         }
     }
 
@@ -1632,13 +1704,19 @@
         }
     }
 
-    function rex_feed_is_req_attr_missing() {
-        var merchant_name = $('#rex_feed_merchant').find(':selected').val();
-        var status = true;
+    /**
+     * @desc Renders missing attributes warning popup
+     * for Google Shopping Feed
+     * @since 7.2.19
+     * @returns {boolean}
+     */
+    function rex_feed_render_missing_attr_popup() {
+        let merchant_name = $('#rex_feed_merchant').find(':selected').val();
+        let status = false;
 
         if (merchant_name === 'google') {
-            var missing_attr = [];
-            var payload = {
+            let missing_attr = [];
+            let payload = {
                 feed_config: $('form[id=post]').serialize()
             };
 
@@ -1654,14 +1732,14 @@
                 async: false,
 
                 success: function (response) {
-                    var attr_inx = 0;
+                    let attr_inx = 0;
 
-                    var req_attr = response.data.req_attr;
-                    var feed_attr = response.data.feed_attr;
-                    var feed_config = response.data.feed_config;
-                    var labels = response.data.labels;
+                    let req_attr = response.data.req_attr;
+                    let feed_attr = response.data.feed_attr;
+                    let feed_config = response.data.feed_config;
+                    let labels = response.data.labels;
 
-                    for (var i = 0; i < req_attr.length; i++) {
+                    for (let i = 0; i < req_attr.length; i++) {
                         if (!feed_attr.includes(req_attr[i])) {
                             if ((req_attr[i] === 'gtin' && !feed_attr.includes('mpn')) || (req_attr[i] === 'mpn' && !feed_attr.includes('gtin'))) {
                                 missing_attr[attr_inx++] = labels[req_attr[i]];
@@ -1685,9 +1763,20 @@
                     }
 
                     if ( missing_attr.length > 0 ) {
-                        missing_attr = missing_attr.join("\n  - ");
-                        missing_attr = '  - ' + missing_attr;
-                        status = confirm('Some required attributes are not configured properly.\n'+ missing_attr +'\nDo you still want to continue?');
+                        let html = '';
+                        missing_attr.forEach( ( attribute ) => {
+                            html += '<li class="rex-google-shopping__list">';
+                            html += '<p>' + attribute + '</p>';
+                            html += '<a href="https://rextheme.com/docs/google-shopping-product-feed-specification-attributes-list/" target="_blank">Learn more</a>';
+                            html += '</li>';
+                        })
+                        if ( '' !== html ) {
+                            $( 'ul.rex-google-shopping__lists-area li' ).remove();
+                            $( 'ul.rex-google-shopping__lists-area' ).append( html );
+
+                            $( 'section#rex_feed_google_req_attr_warning_popup' ).show();
+                            status = true;
+                        }
                     }
                 },
                 error: function (response) {
@@ -1716,7 +1805,7 @@
             })
             .error( function( response ) {
                 console.log( 'Uh, oh!' );
-                console.log( response.statusText );
+                
             });
     }
 
@@ -1784,10 +1873,21 @@
                 if ( 'added' === response.data.button_text ) {
                     $( '#rex_feed_custom_filter_button' ).text( 'Remove Custom Filter' );
                     $( '#rex-feed-config-filter' ).show();
+                    $( 'div#rex-feed-published-product' ).hide();
+                    $( 'div#rex-feed-featured-product' ).hide();
                 }
                 else {
                     $( '#rex_feed_custom_filter_button' ).text( 'Add Custom Filter' );
                     $( '#rex-feed-config-filter' ).hide();
+                    let pr_filter = $( 'select#rex_feed_products' ).find( 'option:selected' ).val();
+                    if ( 'all' === pr_filter ) {
+                        $( 'div#rex-feed-featured-product' ).hide();
+                        $( 'div#rex-feed-published-product' ).show();
+                    }
+                    else if ( 'featured' === pr_filter ) {
+                        $( 'div#rex-feed-published-product' ).hide();
+                        $( 'div#rex-feed-featured-product' ).show();
+                    }
                 }
                 $( 'input[name=rex_feed_custom_filter_option_btn]' ).val( response.data.button_text )
             } )
@@ -1893,7 +1993,7 @@
             let is_def_selected = $this.children('option[value=default]').attr( 'selected' );
             if ( 'selected' === is_def_selected ) {
                 $this.children('option[value=default]').removeAttr( 'selected' );
-                $this.trigger('change.select2');
+                $this.trigger( 'change.select2' );
                 selected = selected - 1;
             }
             if ( 1 < selected ) {
@@ -1904,6 +2004,14 @@
         }
         else {
             $this.siblings( 'span.rex-product-picker-count' ).hide();
+        }
+        if (0 == selected) {
+            $this.find('option:eq(1)').prop( 'selected', true );
+            $this.trigger( 'change.select2' );
+        }
+        else {
+            $this.find('option:eq(1)').prop( 'selected', false );
+            $this.trigger( 'change.select2' );
         }
     }
 
@@ -1918,7 +2026,7 @@
         let selected = 0;
 
         output_filter.each( function ( index, _element ) {
-            if ( 0 != index ) {
+            if ( index ) {
                 let row_id = $( this ).attr( 'data-row-id' );
 
                 $select_field = $( 'select[name="fc['+ row_id +'][escape][]"]' );
@@ -2030,4 +2138,5 @@
                 console.log( 'Uh, oh! Not Awesome!!' );
             } );
     }
+
 })( jQuery );

@@ -33,6 +33,9 @@ if ( isset( $get[ 'get' ][ 'post' ] ) ) {
         include_once plugin_dir_path(__FILE__) . 'rex-product-feed-xml-preview-popup.php';
     }
 }
+
+
+include_once plugin_dir_path( __FILE__ ) . 'rex-product-feed-google-missing-attribute-warning-popup.php';
 ?>
 
 <table id="config-table" class="responsive-table wpfm-field-mappings">

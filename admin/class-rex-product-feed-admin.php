@@ -314,7 +314,8 @@ class Rex_Product_Feed_Admin {
             wp_localize_script(
                 $this->plugin_name, 'rex_wpfm_admin_translate_strings',
                 array(
-                    'google_cat_map_btn' => __( 'Configure Category Mapping', 'rex-product-feed' ),
+                    'google_cat_map_btn'    => __( 'Configure Category Mapping', 'rex-product-feed' ),
+                    'optimize_pr_title_btn' => __( 'Optimize Product Title', 'rex-product-feed' ),
                 )
             );
             wp_enqueue_script(
@@ -1308,6 +1309,41 @@ class Rex_Product_Feed_Admin {
         if ( isset( $data[ 'rex_feed_tags' ] ) ) {
             update_post_meta( $post_id, '_rex_feed_tags', $data[ 'rex_feed_tags' ] );
         }
+        if ( isset( $data[ 'rex_feed_custom_filter_option_btn' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_custom_filter_option', $data[ 'rex_feed_custom_filter_option_btn' ] );
+        }
+        if ( isset( $data[ 'rex_feed_feed_country' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_feed_country', $data[ 'rex_feed_feed_country' ] );
+        }
+        if ( isset( $data[ 'rex_feed_custom_wrapper' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_custom_wrapper', $data[ 'rex_feed_custom_wrapper' ] );
+        }
+        if ( isset( $data[ 'rex_feed_custom_items_wrapper' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_custom_items_wrapper', $data[ 'rex_feed_custom_items_wrapper' ] );
+        }
+        if ( isset( $data[ 'rex_feed_custom_wrapper_el' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_custom_wrapper_el', $data[ 'rex_feed_custom_wrapper_el' ] );
+        }
+        if ( isset( $data[ 'rex_feed_custom_xml_header' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_custom_xml_header', $data[ 'rex_feed_custom_xml_header' ] );
+        }
+        if ( isset( $data[ 'rex_feed_cats_check_all_btn' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_cats_check_all_btn', $data[ 'rex_feed_cats_check_all_btn' ] );
+        }
+        else {
+            delete_post_meta( $post_id, '_rex_feed_cats_check_all_btn' );
+        }
+        if ( isset( $data[ 'rex_feed_tags_check_all_btn' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_tags_check_all_btn', $data[ 'rex_feed_tags_check_all_btn' ] );
+        }
+        else {
+            delete_post_meta( $post_id, '_rex_feed_tags_check_all_btn' );
+        }
+        if ( isset( $data[ 'rex_feed_zip_codes' ] ) ) {
+            update_post_meta( $post_id, '_rex_feed_zip_codes', $data[ 'rex_feed_zip_codes' ] );
+        }
+
+        do_action( 'rex_feed_after_draft_feed_config_saved', $post_id, $data );
 	}
 
 

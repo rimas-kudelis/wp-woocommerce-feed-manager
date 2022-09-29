@@ -331,6 +331,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $custom_wrapper_el;
 
     /**
+     * @desc Variable to store custom
+     * xml file header option to exclude/include
+     * @since 7.2.19
+     * @var $custom_xml_header
+     */
+    protected $custom_xml_header;
+
+    /**
      * @desc Variable to store country to retrieve
      * shipping and tax related values
      * @since 7.2.9
@@ -389,6 +397,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->custom_wrapper_el    = isset( $config[ 'custom_wrapper_el' ] ) ? $config[ 'custom_wrapper_el' ] : '';
             $this->custom_items_wrapper = isset( $config[ 'custom_items_wrapper' ] ) ? $config[ 'custom_items_wrapper' ] : '';
 	        $this->feed_zip_code        = isset( $config[ 'feed_zip_code' ] ) ? $config[ 'feed_zip_code' ] : '';
+	        $this->custom_xml_header    = isset( $config[ 'custom_xml_header' ] ) ? $config[ 'custom_xml_header' ] : '';
             $this->link                 = esc_url( home_url( '/' ) );
 
             if ( isset( $config[ 'custom_filter_option' ] ) && 'added' === $config[ 'custom_filter_option' ] ) {
@@ -415,7 +424,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->setup_feed_configs( $config[ 'feed_config' ] );
             $this->setup_feed_meta( $config[ 'feed_config' ] );
             $this->setup_feed_filter_rules( $config[ 'feed_config' ] );
-            $this->save_feed_meta( $config[ 'feed_config' ] );
+            if( 1 === $this->batch ) {
+                $this->save_feed_meta( $config[ 'feed_config' ] );
+            }
             $this->prepare_products_args( $config[ 'products' ] );
         }
 
@@ -641,11 +652,10 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 if ( $this->batch == 1 ) {
                     update_post_meta( $this->id, '_rex_feed_analytics_params_options', $analytics_on );
                 }
-                if ( $analytics_on == 'on' ) {
-                    $analytics_params       = $feed_rules[ 'rex_feed_analytics_params' ];
-                    $this->analytics_params = $analytics_params;
+                if ( 'on' === $analytics_on || 'yes' === $analytics_on ) {
+                    $this->analytics_params = isset( $feed_rules[ 'rex_feed_analytics_params' ] ) ? $feed_rules[ 'rex_feed_analytics_params' ] : [];
                     if ( $this->batch == 1 ) {
-                        update_post_meta( $this->id, '_rex_feed_analytics_params', $analytics_params );
+                        update_post_meta( $this->id, '_rex_feed_analytics_params', $this->analytics_params );
                     }
                 }
             }
@@ -751,6 +761,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->custom_wrapper_el    = isset( $feed_configs[ 'rex_feed_custom_wrapper_el' ] ) ? esc_attr( $feed_configs[ 'rex_feed_custom_wrapper_el' ] ) : '';
         $this->custom_items_wrapper = isset( $feed_configs[ 'rex_feed_custom_items_wrapper' ] ) ? esc_attr( $feed_configs[ 'rex_feed_custom_items_wrapper' ] ) : '';
         $this->feed_zip_code        = isset( $feed_configs[ 'rex_feed_zip_codes' ] ) ? esc_attr( $feed_configs[ 'rex_feed_zip_codes' ] ) : '';
+        $this->custom_xml_header    = isset( $feed_configs[ 'rex_feed_custom_xml_header' ] ) ? esc_attr( $feed_configs[ 'rex_feed_custom_xml_header' ] ) : '';
 
         if( isset( $feed_configs[ 'rex_feed_wmc_currency' ] ) ) {
             $this->wmc_currency   = $feed_configs[ 'rex_feed_wmc_currency' ];
@@ -1011,6 +1022,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         if ( isset( $feed_configs[ 'rex_feed_custom_wrapper_el' ] ) ) {
             update_post_meta( $this->id, '_rex_feed_custom_wrapper_el', $feed_configs[ 'rex_feed_custom_wrapper_el' ] );
+        }
+        if ( isset( $feed_configs[ 'rex_feed_custom_xml_header' ] ) ) {
+            update_post_meta( $this->id, '_rex_feed_custom_xml_header', $feed_configs[ 'rex_feed_custom_xml_header' ] );
         }
         if ( isset( $feed_configs[ 'rex_feed_cats_check_all_btn' ] ) ) {
             update_post_meta( $this->id, '_rex_feed_cats_check_all_btn', $feed_configs[ 'rex_feed_cats_check_all_btn' ] );
@@ -1804,6 +1818,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $feed_file_name = "feed-{$this->id}";
             $feed_file_meta_key = '_rex_feed_xml_file';
         }
+
         $prev_feed_name = $this->get_prev_feed_file_name();
 
         $path    = wp_upload_dir();
@@ -2011,7 +2026,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
             || $this->merchant === 'google_local_products_inventory'
             || $this->merchant === 'google_merchant_promotion'
             || $this->merchant === 'google_manufacturer_center'
+            || $this->merchant === 'bing_image'
             || $this->merchant === 'rss'
+            || $this->merchant === 'criteo'
         ) {
             $node = $feed->getElementsByTagName( "item" );
             if ( $this->batch === $this->tbatch ) {
@@ -2074,12 +2091,23 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</vivino-product-list>';
             }
         }
-        elseif ( $this->merchant === 'sooqr' || $this->merchant === 'pricegrabber'
+        elseif(
+            $this->merchant === 'sooqr' || $this->merchant === 'pricegrabber'
             || $this->merchant === 'bonanza' || $this->merchant === 'awin'
+            || $this->merchant === 'koopkeus' || $this->merchant === 'scoupz'
+            || $this->merchant === 'uvinum' || $this->merchant === 'pricesearcher'
+            || $this->merchant === 'pricemasher' || $this->merchant === 'fashionchick'
+            || $this->merchant === 'choozen' || $this->merchant === 'powerreviews'
+            || $this->merchant === 'otto' || $this->merchant === 'sears'
+            || $this->merchant === 'ammoseek' || $this->merchant === 'fnac'
+            || $this->merchant === 'pixmania' || $this->merchant === 'coolblue'
+            || $this->merchant === 'verizon' || $this->merchant === 'kelkoo_group'
+            || $this->merchant === 'target' || $this->merchant === 'pepperjam'
+            || $this->merchant === 'cj_affiliate'
         ) {
             $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
+            if( $this->batch == $this->tbatch ) {
+                $this->item_wrapper       = '<product>';
                 $this->feed_string_footer .= '</products>';
             }
         }
@@ -2542,6 +2570,15 @@ abstract class Rex_Product_Feed_Abstract_Generator
             if($this->batch == $this->tbatch) {
                 $this->item_wrapper = '<item>';
                 $this->feed_string_footer .= '</item_list>';
+            }
+        }
+        elseif ( $this->merchant === 'google_dsa' || $this->merchant === 'vergelijk'
+            || $this->merchant === 'twenga' || $this->merchant === 'tweakers'
+        ) {
+            $node = $feed->getElementsByTagName( "product" );
+            if ( $this->batch == $this->tbatch ) {
+                $this->item_wrapper = '<product>';
+                $this->feed_string_footer .= '</products>';
             }
         }
         else {

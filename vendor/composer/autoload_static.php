@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb0b8d9af34a14344dc2ab2fd4268dfc5
+class ComposerStaticInit00a7403547d57de6baa205c33c7a518c
 {
     public static $files = array (
         'db1766888a4f96ab813d6f6a38125eb9' => __DIR__ . '/..' . '/philipnewcomer/wp-ajax-helper/src/functions.php',
@@ -933,6 +933,7 @@ class ComposerStaticInitb0b8d9af34a14344dc2ab2fd4268dfc5
         'Rex\\Pinterest\\Node' => __DIR__ . '/../..' . '/admin/feed/pinterest/Node.php',
         'Rex_Feed_Abstract_Template' => __DIR__ . '/../..' . '/admin/feed-templates/abstract-rex-feed-template.php',
         'Rex_Feed_Attributes' => __DIR__ . '/../..' . '/admin/class-rex-feed-attributes.php',
+        'Rex_Feed_Discount_Rules_Asana_Plugins' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-discount-rules-asana-plugins.php',
         'Rex_Feed_Exception' => __DIR__ . '/../..' . '/admin/class-rex-feed-exception.php',
         'Rex_Feed_Merchants' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-merchants.php',
         'Rex_Feed_Rollback' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-rollback.php',
@@ -1197,7 +1198,6 @@ class ComposerStaticInitb0b8d9af34a14344dc2ab2fd4268dfc5
         'Rex_Product_Feed_Sooqr' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-sooqr.php',
         'Rex_Product_Feed_Spartoo' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-spartoo.php',
         'Rex_Product_Feed_SpartooFr' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_spartoofr.php',
-        'Rex_Product_Feed_Vergelijk' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-verjelijk.php',
         'Rex_Product_Feed_Vivino' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-vivino.php',
         'Rex_Product_Feed_Wish' => __DIR__ . '/../..' . '/admin/feed/class_rex_product_feed_wish.php',
         'Rex_Product_Feed_Yandex' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-yandex.php',
@@ -1221,9 +1221,9 @@ class ComposerStaticInitb0b8d9af34a14344dc2ab2fd4268dfc5
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb0b8d9af34a14344dc2ab2fd4268dfc5::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb0b8d9af34a14344dc2ab2fd4268dfc5::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb0b8d9af34a14344dc2ab2fd4268dfc5::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit00a7403547d57de6baa205c33c7a518c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit00a7403547d57de6baa205c33c7a518c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit00a7403547d57de6baa205c33c7a518c::$classMap;
 
         }, null, ClassLoader::class);
     }

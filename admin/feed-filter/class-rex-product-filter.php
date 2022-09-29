@@ -241,19 +241,13 @@ class Rex_Product_Filter {
      * @param $name
      * @param string $selected
      */
-    public function printSelectDropdown( $key, $name, $name_prefix = 'ff', $selected = '', $class = '', $style = '', $merchant_name = '' ){
+    public function printSelectDropdown( $key, $name, $name_prefix = 'ff', $selected = '', $class = '', $style = '' ){
 
         if ( $name === 'if' ) {
             $items = $this->product_meta_keys;
         }
         elseif ( $name === 'rules_if' || $name === 'rules_then' ) {
-            if ( '' !== $merchant_name ) {
-                $feed_template = Rex_Feed_Template_Factory::build( $merchant_name, [] );
-                $items = array_merge( $this->product_rule_meta_keys, $feed_template->getAttributes() );
-            }
-            else {
-                $items = $this->product_rule_meta_keys;
-            }
+            $items = $this->product_rule_meta_keys;
         }
         elseif ( $name === 'rules_replace' ) {
             $items = $this->product_rule_meta_keys;

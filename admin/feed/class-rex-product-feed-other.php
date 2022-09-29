@@ -958,12 +958,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 
         RexShopping::$container = null;
         RexShopping::init($this->get_wrapper(), $item_wrapper, $this->get_namespace(),  $this->get_version(), $items_wrapper, $this->get_stand_alone(), $wrapper_el, $this->get_namespace_prefix() );
-        RexShopping::title($this->title);
-        RexShopping::link($this->link);
-        RexShopping::description($this->desc);
 
-        if($this->is_datetime()) {
-            RexShopping::datetime(date("Y-m-d h:i:s"));
+        if( 'include' === $this->custom_xml_header ) {
+            RexShopping::title( $this->title );
+            RexShopping::link( $this->link );
+            RexShopping::description( $this->desc );
+            if( $this->is_datetime() ) {
+                RexShopping::datetime( date( "Y-m-d h:i:s" ) );
+            }
         }
 
         // Generate feed for both simple and variable products.
@@ -1192,7 +1194,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             || $this->merchant === 'kelkoo' || $this->merchant === 'billiger'
             || $this->merchant === 'bonanza' || $this->merchant === 'become'
             || $this->merchant === 'adroll' || $this->merchant === 'awin'
-            || $this->merchant === 'leguide'
+            || $this->merchant === 'leguide' || $this->merchant === 'vergelijk'
+            || $this->merchant === 'twenga' || $this->merchant === 'tweakers'
+            || $this->merchant === 'koopkeus' || $this->merchant === 'scoupz'
+            || $this->merchant === 'uvinum' || $this->merchant === 'pricesearcher'
+            || $this->merchant === 'pricemasher' || $this->merchant === 'fashionchick'
+            || $this->merchant === 'choozen' || $this->merchant === 'powerreviews'
+            || $this->merchant === 'otto' || $this->merchant === 'sears'
+            || $this->merchant === 'ammoseek' || $this->merchant === 'fnac'
+            || $this->merchant === 'pixmania' || $this->merchant === 'coolblue'
+            || $this->merchant === 'verizon' || $this->merchant === 'kelkoo_group'
+            || $this->merchant === 'target' || $this->merchant === 'pepperjam'
+            || $this->merchant === 'cj_affiliate'
         ) {
             $this->feed = str_replace( '</products>', '', $this->feed );
         }

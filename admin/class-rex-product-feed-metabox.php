@@ -27,9 +27,8 @@ class Rex_Product_Metabox
 
 		add_action( 'add_meta_boxes', array( $this, 'rex_feed_filter_settings_section' ) );
 
-        $publish_btn = get_post_meta( $post_id, '_rex_feed_publish_btn', true )
-            ?: get_post_meta( $post_id, 'rex_feed_publish_btn', true );
-        if ( $this->rex_feed_is_google_merchant() && 'rex-bottom-preview-btn' !== $publish_btn ) {
+        $feed_url = get_post_meta( $post_id, '_rex_feed_xml_file', true ) || get_post_meta( $post_id, 'rex_feed_xml_file', true );
+        if ( $this->rex_feed_is_google_merchant() && $feed_url ) {
             add_action( 'add_meta_boxes', array( $this, 'rex_feed_google_merchant_section' ) );
         }
 
@@ -41,13 +40,6 @@ class Rex_Product_Metabox
 		if ( $post_type === 'product-feed' ) {
 			$this->rex_feed_trigger_based_review_helper();
         }
-
-        /*if ( $post_type === '' && isset( $data[ 'post_type' ] ) ) {
-            $post_type = sanitize_text_field($data[ 'post_type' ]);
-        }
-        if ( $post_type === 'product-feed' ) {
-            $this->rex_feed_new_changes_message();
-        }*/
 
         add_action('add_meta_boxes', array($this, 'rex_feed_upgrade_notice_section'));
         add_action( 'add_meta_boxes', array( $this, 'rex_feed_feed_how_to_guide_section' ) );
@@ -241,10 +233,12 @@ class Rex_Product_Metabox
 			$options = apply_filters( 'wpfm_product_filter_options', $options );
 		}
 
-		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-filter-header-section.php';
+		include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-filter-header-section.php';
         // rex-contnet-filter__header end
 
-		require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-products-dropdown-section.php';
+		include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-products-dropdown-section.php';
+
+		include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-filter-description-body.php';
 
         $this->rex_feed_custom_filter_section();
 

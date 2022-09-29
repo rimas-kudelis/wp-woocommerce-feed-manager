@@ -27,7 +27,6 @@
 		<option value="text" <?php echo $file_format === 'text' ? 'selected' : '';?> ><?php echo esc_html__( 'TEXT', 'rex-product-feed' ) ?></option>
 		<option value="csv" <?php echo $file_format === 'csv' ? 'selected' : '';?> ><?php echo esc_html__( 'CSV', 'rex-product-feed' ) ?></option>
 		<option value="tsv" <?php echo $file_format === 'tsv' ? 'selected' : '';?> ><?php echo esc_html__( 'TSV', 'rex-product-feed' ) ?></option>
-		<option value="json" <?php echo $file_format === 'json' ? 'selected' : '';?> ><?php echo esc_html__( 'JSON', 'rex-product-feed' ) ?></option>
         <option value="rss" <?php echo $file_format === 'rss' ? 'selected' : '';?> ><?php echo esc_html__( 'RSS', 'rex-product-feed' ) ?></option>
 	</select>
 </div>
@@ -60,6 +59,25 @@ if( 'custom' !== $saved_merchant || ( 'custom' === $saved_merchant && 'xml' !== 
     $style = ' style="display: none"';
 }
 ?>
+
+<!-- New include and exclude header -->
+<div class="rex_feed_config_div rex_feed_custom_wrapper" <?php echo $style?>>
+    <label for="<?php echo esc_attr($this->prefix) . 'custom_xml_header'; ?>"><?php
+        _e( 'XML Header', 'rex-product-feed-pro' ) ?>
+        <span class="rex_feed-tooltip">
+            <?php include plugin_dir_path(__FILE__) . '../assets/icon/icon-svg/icon-question.php';?>
+            <p><?php _e('Include or exclude XML file header attributes (title, link, description, datetime)', 'rex-product-feed' )?></p>
+        </span>
+    </label>
+    <?php
+    $saved_value = get_post_meta( get_the_ID(), '_rex_feed_custom_xml_header', true );
+    ?>
+    <select name="<?php echo esc_attr($this->prefix) . 'custom_xml_header'; ?>" id="<?php echo esc_attr($this->prefix) . 'custom_xml_header'; ?>" class="<?php echo esc_attr($this->prefix) . 'custom-xml-header'; ?>">
+        <option value="include" <?php echo $saved_value === 'include' ? 'selected' : '';?> ><?php echo esc_html__( 'Include', 'rex-product-feed' ) ?></option>
+        <option value="exclude" <?php echo $saved_value === 'exclude' ? 'selected' : '';?> ><?php echo esc_html__( 'Exclude', 'rex-product-feed' ) ?></option>
+    </select>
+</div>
+
 <div class="rex_feed_config_div rex_feed_custom_items_wrapper" <?php echo $style?>>
     <label for="<?php echo esc_attr($this->prefix) . 'custom_items_wrapper'; ?>"><?php
         _e( 'Items Wrapper', 'rex-product-feed-pro' ) ?>
@@ -101,3 +119,5 @@ if( 'custom' !== $saved_merchant || ( 'custom' === $saved_merchant && 'xml' !== 
     ?>
     <input type="text" name="<?php echo 'rex_feed_custom_wrapper'; ?>" id="<?php echo esc_attr($this->prefix) . 'custom_wrapper'; ?>" value="<?php echo $saved_value;?>">
 </div>
+
+

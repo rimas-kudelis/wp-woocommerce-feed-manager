@@ -650,3 +650,20 @@ if ( !function_exists( 'rex_feed_get_wc_shipping_state_country' ) ) {
         return [];
     }
 }
+
+
+if ( ! function_exists( 'wpfm_is_discount_rules_asana_plugins_active' ) ) {
+    /**
+     * @desc check if Discount Rules and Dynamic Pricing for WooCommerce
+     * by Asana Plugins is active.
+     *
+     * @return bool
+     * @since 7.2.20
+     */
+    function wpfm_is_discount_rules_asana_plugins_active(){
+        $active_plugings             = get_option( 'active_plugins' );
+        $asana_plugin                = 'easy-woocommerce-discounts/easy-woocommerce-discounts.php';
+
+        return in_array( $asana_plugin, $active_plugings ) || is_plugin_active_for_network( $asana_plugin );
+    }
+}

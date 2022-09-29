@@ -196,7 +196,7 @@ $schedule_hours = [
                                         <form id="wpfm-per-batch" class="wpfm-per-batch">
                                             <input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch"
                                                 value="<?php echo esc_attr( $per_batch ); ?>"
-                                                min="1" <?php echo !$is_premium_activated ? "max='".esc_attr( WPFM_FREE_MAX_PRODUCT_LIMIT )."'" : '' ?>>
+                                                min="1" max="<?php echo !$is_premium_activated ? WPFM_FREE_MAX_PRODUCT_LIMIT : 500?>">
                                             <button type="submit" class="save-batch"><span>save</span> <i
                                                         class="fa fa-spinner fa-pulse fa-fw"></i></button>
                                         </form>

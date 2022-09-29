@@ -196,6 +196,7 @@ class Rex_Product_Feed_Factory {
             'epoq',
             'google_local_inventory_ads',
             'google_manufacturer_center',
+            'bing_image',
             'rss',
         );
         self::$facebook_format = array(

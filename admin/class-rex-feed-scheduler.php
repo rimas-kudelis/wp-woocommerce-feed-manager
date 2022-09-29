@@ -182,6 +182,7 @@ class Rex_Feed_Scheduler {
         $custom_wrapper              = get_post_meta( $feed_id, '_rex_feed_custom_wrapper', true );
         $custom_wrapper_el           = get_post_meta( $feed_id, '_rex_feed_custom_wrapper_el', true );
         $custom_items_wrapper        = get_post_meta( $feed_id, '_rex_feed_custom_items_wrapper', true );
+        $custom_xml_header           = get_post_meta( $feed_id, '_rex_feed_custom_xml_header', true );
 
         if( apply_filters( 'wpfm_is_premium', false ) ) {
             $feed_rules = get_post_meta( $feed_id, '_rex_feed_feed_config_rules', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config_rules', true );
@@ -243,6 +244,7 @@ class Rex_Feed_Scheduler {
             'custom_wrapper'              => $custom_wrapper,
             'custom_wrapper_el'           => $custom_wrapper_el,
             'custom_items_wrapper'        => $custom_items_wrapper,
+            'custom_xml_header'           => $custom_xml_header,
         );
     }
 
