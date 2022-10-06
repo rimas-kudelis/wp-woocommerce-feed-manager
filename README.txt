@@ -5,7 +5,7 @@ Tags: product feed,woocommerce product feed,google shopping,google shopping feed
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.20
+Stable tag:  7.2.21
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -740,6 +740,9 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.21 (2022-10-06) =
+* Fixed : Review request text corrections
 
 = 7.2.20 (2022-09-29) =
 * Added : Support added for the plugin EAN for WooCommerce by WPFactory

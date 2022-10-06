@@ -13,7 +13,7 @@
 				</a>
 			</div>
 
-			<p><?php _e( 'Please do give us a <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank">rating</a> if you like using our plugin. It will only takes 2 minutes.', 'rex-product-feed' ); // phpcs:ignore ?></p>
+			<p><?php _e( 'Please do give us a <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank">rating</a> if you like using our plugin. It will only take 2 minutes.', 'rex-product-feed' ); // phpcs:ignore ?></p>
 
 			
 		</div>
