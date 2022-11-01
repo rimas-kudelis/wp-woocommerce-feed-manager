@@ -1155,10 +1155,14 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		else if ( $this->merchant === 'zbozi' ) {
 			$this->feed = str_replace( '</SHOP>', '', $this->feed );
 		}
-		else if ( $this->merchant === 'skroutz' ) {
-			$this->feed = str_replace( '</products></mywebstore>', '', $this->feed );
-		}
-		else if ( $this->merchant === 'datatrics' || $this->merchant === 'homedeco' || $this->merchant === 'listupp' ) {
+        else if( $this->merchant === 'skroutz' ) {
+            $this->feed = str_replace( '</products></mywebstore>', '', $this->feed );
+        }
+		else if ( $this->merchant === 'datatrics'
+            || $this->merchant === 'homedeco'
+            || $this->merchant === 'listupp'
+            || $this->merchant === 'whiskymarketplace'
+        ) {
 			$this->feed = str_replace( '</items>', '', $this->feed );
 		}
 		else if ( $this->merchant === 'domodi' ) {
@@ -1249,9 +1253,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 		else if ( $this->merchant === 'kleding' || $this->merchant === 'winesearcher' ) {
 			$this->feed = str_replace( '</items>', '', $this->feed );
 		}
-		else if ( $this->merchant === 'skroutz' ) {
-			$this->feed = str_replace( '</product>', '', $this->feed );
-		}
 		else if ( $this->merchant === 'vivino' ) {
 			$this->feed = str_replace( '</vivino-product-list>', '', $this->feed );
 		}
@@ -1266,7 +1267,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
 			$this->feed = str_replace( $search, '', $this->feed );
 		}
 		else {
-			$this->feed = str_replace( '</channel></rss>', '', $this->feed );
+			$this->feed = str_replace( '</products>', '', $this->feed );
 		}
 	}
 }

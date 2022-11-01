@@ -218,6 +218,14 @@ $schedule_hours = [
                                     </button>
                                 </div>
 
+                                <div class="single-merchant">
+                                    <span class="title"><?php echo esc_html__('Update WooCommerce variation child list that has no parent assigned (abandoned child)', 'rex-product-feed'); ?></span>
+                                    <button id="rex_feed_abandoned_child_list_update_button" class="rex-feed-abandoned-child-list-update-button">
+                                        <span><?php echo esc_html__('Update List', 'rex-product-feed'); ?></span>
+                                        <i class="fa fa-spinner fa-pulse fa-fw"></i>
+                                    </button>
+                                </div>
+
                                 <div class="single-merchant detailed-product detailed-merchants">
                                     <span class="title"><?php echo esc_html__('WPFM cache TTL', 'rex-product-feed'); ?></span>
                                     <div class="wpfm-dropdown">

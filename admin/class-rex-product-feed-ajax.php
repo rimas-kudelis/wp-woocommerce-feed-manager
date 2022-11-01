@@ -288,6 +288,10 @@ class Rex_Product_Feed_Ajax {
 		wp_ajax_helper()->handle( 'rex-feed-hide-char-limit-col' )
 		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_hide_char_limit_col' ) )
 		                ->with_validation( $validations );
+
+		wp_ajax_helper()->handle( 'rex-feed-update-abandoned-child-list' )
+		                ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rex_feed_update_abandoned_child_list' ) )
+		                ->with_validation( $validations );
     }
 
 
@@ -1161,5 +1165,23 @@ class Rex_Product_Feed_Ajax {
      */
     public static function rex_feed_hide_char_limit_col() {
         wp_send_json( [ 'hide_char' => get_option( 'rex_feed_hide_character_limit_field', 'on' ) ] );
+    }
+
+
+    /**
+     * @desc Get abandoned child list
+     * and save them in database option table
+     * @since 7.2.20
+     * @return string[]
+     */
+    public static function rex_feed_update_abandoned_child_list() {
+        $abandoned_childs = wpfm_get_abandoned_child();
+        if( !is_wp_error( $abandoned_childs ) && !empty( $abandoned_childs ) ) {
+            update_option( 'rex_feed_abandoned_child_list', $abandoned_childs );
+        }
+        if( is_wp_error( $abandoned_childs ) ) {
+            return [ 'status' => 'error' ];
+        }
+        return [ 'status' => 'success' ];
     }
 }

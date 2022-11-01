@@ -25,11 +25,10 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
      **/
     public function make_feed() {
         RexShopping::$container = null;
-        RexShopping::init(true, $this->setItemWrapper(), null, '', $this->setItemsWrapper(), false, 'shop');
-        RexShopping::title($this->title);
-        RexShopping::company(get_option('blogname'));
-        RexShopping::link($this->link);
-        RexShopping::description($this->desc);
+        RexShopping::init( true, $this->setItemWrapper(), null, '', $this->setItemsWrapper(), false, 'shop' );
+        RexShopping::title( get_option( 'blogname' ) );
+        RexShopping::company( $this->yandex_company_name ?: get_option( 'blogname' ) );
+        RexShopping::link( $this->link );
 
         // Generate feed for both simple and variable products.
         $this->generate_product_feed();
@@ -46,6 +45,12 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
+    /**
+     * @desc Process product meta data
+     * @since 7.2.21
+     * @return void
+     * @throws Exception
+     */
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
@@ -168,10 +173,26 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
     private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
 
-        if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
+        if( ( $this->rex_feed_skip_product && is_array( $attributes ) && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
             $item = RexShopping::createItem();
 
             foreach ($attributes as $key => $value) {
+                if( 'picture' === $key ) {
+                    $value = array_slice( $value, 0, 10 );
+                }
+                elseif( 'oldprice' === $key ) {
+                    $regular_price = 0;
+                    if( isset( $attributes[ 'woo_discount_rules_price' ] ) ) {
+                        $regular_price = $attributes[ 'woo_discount_rules_price' ];
+                    }
+                    elseif( isset( $attributes[ 'price' ] ) ) {
+                        $regular_price = $attributes[ 'price' ];
+                    }
+
+                    if( !$this->yandex_old_price && $regular_price && $regular_price >= $value ) {
+                        continue;
+                    }
+                }
                 if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
                     if ( $value != '' ) {
                         $item->$key($value); // invoke $key as method of $item object.

@@ -165,8 +165,8 @@
     $( document ).on( 'click', '.best-woocommerce-feed-insights-data-we-collect', function () {
         let desc = $( this ).parents( '.updated' ).find( 'p.description' ).html();
         desc = desc.split( '. ' );
-        if ( -1 === desc[ 0 ].indexOf( ', Feed merchant lists' ) ) {
-            desc[0] = desc[0] + ', Feed merchant lists';
+        if ( -1 === desc[ 0 ].indexOf( ', Feed merchant lists, Feed title lists' ) ) {
+            desc[0] = desc[0] + ', Feed merchant lists, Feed title lists';
             $(this).parents('.updated').find('p.description').html(desc.join('. '));
         }
     } );

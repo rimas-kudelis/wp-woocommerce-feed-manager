@@ -173,10 +173,18 @@ class Feed
 
         if (! $this->channelCreated ) {
             $channel = $this->feed->addChild('shop');
-            $channel->addChild('name', htmlspecialchars($this->title));
-            $channel->addChild('company', htmlspecialchars($this->company));
-            $channel->addChild('url', htmlspecialchars($this->link));
-            $channel->addChild('description', htmlspecialchars($this->description));
+            if( $this->title ) {
+                $channel->addChild( 'name', htmlspecialchars( $this->title ) );
+            }
+            if( $this->company ) {
+                $channel->addChild( 'company', htmlspecialchars( $this->company ) );
+            }
+            if( $this->link ) {
+                $channel->addChild( 'url', htmlspecialchars( $this->link ) );
+            }
+            if( $this->description ) {
+                $channel->addChild( 'description', htmlspecialchars( $this->description ) );
+            }
             $currencies = $this->feed->shop->addChild('currencies');
             $currency = $currencies->addChild('currency');
             $currency->addAttribute('id', get_option('woocommerce_currency'));

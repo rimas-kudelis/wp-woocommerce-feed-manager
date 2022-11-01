@@ -382,7 +382,7 @@ class Rex_Feed_Merchants {
             'shopmania'                       => array(
                 'free'   => true,
                 'name'   => 'ShopMania',
-                'formats' => [ 'xml', 'csv', 'txt' ]
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'kleding'                         => array(
                 'free'   => true,
@@ -417,7 +417,7 @@ class Rex_Feed_Merchants {
             'kelkoo_group'                    => array(
                 'free'   => true,
                 'name'   => 'Kelkoo Group',
-                'formats' => [ 'xml', 'csv', 'txt' ]
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'target'                          => array(
                 'free'   => true,
@@ -437,7 +437,7 @@ class Rex_Feed_Merchants {
             'guenstiger'                      => array(
                 'free'   => true,
                 'name'   => 'Guenstiger',
-                'formats' => [ 'xml', 'csv', 'txt' ]
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'hood'                            => array(
                 'free'   => true,
@@ -502,7 +502,7 @@ class Rex_Feed_Merchants {
             'newegg'                          => array(
                 'free'   => true,
                 'name'   => 'NewEgg',
-                'formats' => [ 'xml', 'csv', 'txt' ]
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             '123i'                            => array(
                 'free'   => true,
@@ -697,7 +697,7 @@ class Rex_Feed_Merchants {
             'ledenicheur'                     => array(
                 'free'   => true,
                 'name'   => 'Le Dénicheur',
-                'formats' => []
+                'formats' => [ 'xml', 'csv', 'text' ]
             ),
             'les_bonnes_bouilles'             => array(
                 'free'   => true,
@@ -812,7 +812,7 @@ class Rex_Feed_Merchants {
             'admitad'                         => array(
                 'free'   => true,
                 'name'   => 'Admitad',
-                'formats' => []
+                'formats' => [ 'xml', 'csv' ]
             ),
             'bloomville'                      => array(
                 'free'   => true,

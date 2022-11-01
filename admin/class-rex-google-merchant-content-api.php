@@ -136,7 +136,7 @@ class Rex_Google_Merchant_Settings_Api {
                         ?>
                     </p>
                     <div class="single-merchant_pdf__link">
-                        <a href="<?php echo esc_url( 'https://rextheme.com/wp-content/uploads/2020/08/WPFM-New-Feed-Direct-Auto-sync-to-Google.pdf' )?>" target="_blank"><?php esc_html_e('Direct Upload Method (No need for authorization)', 'rex-product-feed')?></a>
+                        <a href="<?php echo esc_url( 'https://rextheme.com/docs/upload-woocomerce-product-feed-directly-to-google-merchant-center/' )?>" target="_blank"><?php esc_html_e('Direct Upload Method (No need for authorization)', 'rex-product-feed')?></a>
                         <a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/' )?>" target="_blank"><?php esc_html_e('API Method (Require authorization)', 'rex-product-feed')?></a>
                     </div>
                 </div>

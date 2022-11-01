@@ -120,4 +120,40 @@ if( 'custom' !== $saved_merchant || ( 'custom' === $saved_merchant && 'xml' !== 
     <input type="text" name="<?php echo 'rex_feed_custom_wrapper'; ?>" id="<?php echo esc_attr($this->prefix) . 'custom_wrapper'; ?>" value="<?php echo $saved_value;?>">
 </div>
 
+<?php
+$style = '';
+if( 'yandex' !== $saved_merchant || ( 'yandex' === $saved_merchant && 'xml' !== $file_format ) ) {
+    $style = ' style="display: none"';
+}
+?>
 
+<div class="rex_feed_config_div rex_feed_yandex_old_price" <?php echo $style?>>
+    <label for="<?php echo esc_attr($this->prefix) . 'yandex_old_price'; ?>"><?php
+        _e( 'Old Price', 'rex-product-feed-pro' ) ?>
+        <span class="rex_feed-tooltip">
+            <?php include plugin_dir_path(__FILE__) . '../assets/icon/icon-svg/icon-question.php';?>
+            <p><?php esc_html_e('Choose option if you want to include/exclude the old price attribute from the feed if it is less/equal than/to the current price.', 'rex-product-feed' )?></p>
+        </span>
+    </label>
+    <?php
+    $saved_value = get_post_meta( get_the_ID(), '_rex_feed_yandex_old_price', true );
+    ?>
+    <select name="<?php echo esc_attr($this->prefix) . 'yandex_old_price'; ?>" id="<?php echo esc_attr($this->prefix) . 'yandex_old_price'; ?>" class="<?php echo esc_attr($this->prefix) . 'yandex_old_price'; ?>">
+        <option value="include" <?php echo 'include' === $saved_value ? 'selected' : '';?> ><?php esc_html_e( 'Include', 'rex-product-feed' ) ?></option>
+        <option value="exclude" <?php echo 'exclude' === $saved_value ? 'selected' : '';?> ><?php esc_html_e( 'Exclude', 'rex-product-feed' ) ?></option>
+    </select>
+</div>
+
+<div class="rex_feed_config_div rex_feed_yandex_company_name" <?php echo $style?>>
+    <label for="<?php echo esc_attr($this->prefix) . 'yandex_company_name'; ?>"><?php
+        _e( 'Company Name', 'rex-product-feed-pro' ) ?>
+        <span class="rex_feed-tooltip">
+            <?php include plugin_dir_path(__FILE__) . '../assets/icon/icon-svg/icon-question.php';?>
+            <p><?php esc_html_e('Put your company name to include in the xml header section with company tag.', 'rex-product-feed-pro' )?></p>
+        </span>
+    </label>
+    <?php
+    $saved_value = get_post_meta( get_the_ID(), '_rex_feed_yandex_company_name', true );
+    ?>
+    <input type="text" name="<?php echo 'rex_feed_yandex_company_name'; ?>" id="<?php echo esc_attr($this->prefix) . 'yandex_company_name'; ?>" value="<?php echo $saved_value;?>">
+</div>

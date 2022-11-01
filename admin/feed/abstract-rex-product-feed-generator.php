@@ -347,6 +347,22 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $feed_zip_code;
 
     /**
+     * @desc Variable to store
+     * company name for yandex xml feed
+     * @since 7.2.21
+     * @var $yandex_company_name
+     */
+    protected $yandex_company_name;
+
+    /**
+     * @desc Variable to store option to
+     * include/exclude old price for yandex xml feed
+     * @since 7.2.21
+     * @var $yandex_company_name
+     */
+    protected $yandex_old_price;
+
+    /**
      * Define the core functionality of the plugin.
      *
      * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -398,6 +414,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->custom_items_wrapper = isset( $config[ 'custom_items_wrapper' ] ) ? $config[ 'custom_items_wrapper' ] : '';
 	        $this->feed_zip_code        = isset( $config[ 'feed_zip_code' ] ) ? $config[ 'feed_zip_code' ] : '';
 	        $this->custom_xml_header    = isset( $config[ 'custom_xml_header' ] ) ? $config[ 'custom_xml_header' ] : '';
+	        $this->yandex_company_name  = isset( $config[ 'yandex_company_name' ] ) ? $config[ 'yandex_company_name' ] : '';
+	        $this->yandex_old_price     = isset( $config[ 'yandex_old_price' ] ) ? $config[ 'yandex_old_price' ] : '';
             $this->link                 = esc_url( home_url( '/' ) );
 
             if ( isset( $config[ 'custom_filter_option' ] ) && 'added' === $config[ 'custom_filter_option' ] ) {
@@ -499,9 +517,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $post_status[] = 'private';
         }
 
-        $abandoned_child = $this->get_abandoned_child_ids();
-        $abandoned_child = is_array( $abandoned_child ) && !is_wp_error( $abandoned_child ) ? $abandoned_child : [];
-
         $this->products_args = array(
             'post_type'              => $post_types,
             'fields'                 => 'ids',
@@ -511,7 +526,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             'orderby'                => 'ID',
             'order'                  => 'ASC',
             'post__in'               => array(),
-            'post__not_in'           => $abandoned_child,
+            'post__not_in'           => get_option( 'rex_feed_abandoned_child_list', [] ),
             'update_post_term_cache' => true,
             'update_post_meta_cache' => true,
             'cache_results'          => false,
@@ -587,35 +602,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 'operator' => 'IN',
             );
         }
-    }
-
-
-    /**
-     * @desc Get abandoned variation child [by WooCommerce]
-     * to explude from the feed.
-     * @since 7.2.18
-     * @return int[]|WP_Post[]
-     */
-    private function get_abandoned_child_ids() {
-        $post_status = [ 'publish' ];
-        $wpfm_allow_private_products = get_option( 'wpfm_allow_private', 'no' );
-        if ( $wpfm_allow_private_products === 'yes' ) {
-            $post_status[] = 'private';
-        }
-
-        $args = [
-            'post_type'              => 'product_variation',
-            'fields'                 => 'ids',
-            'post_parent'            => 0,
-            'post_status'            => $post_status,
-            'posts_per_page'         => $this->posts_per_page,
-            'offset'                 => $this->offset,
-            'orderby'                => 'ID',
-            'order'                  => 'ASC',
-            'cache_results'          => false,
-            'suppress_filters'       => true,
-        ];
-        return get_posts( $args );
     }
 
     /**
@@ -762,6 +748,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->custom_items_wrapper = isset( $feed_configs[ 'rex_feed_custom_items_wrapper' ] ) ? esc_attr( $feed_configs[ 'rex_feed_custom_items_wrapper' ] ) : '';
         $this->feed_zip_code        = isset( $feed_configs[ 'rex_feed_zip_codes' ] ) ? esc_attr( $feed_configs[ 'rex_feed_zip_codes' ] ) : '';
         $this->custom_xml_header    = isset( $feed_configs[ 'rex_feed_custom_xml_header' ] ) ? esc_attr( $feed_configs[ 'rex_feed_custom_xml_header' ] ) : '';
+        $this->yandex_company_name  = isset( $feed_configs[ 'rex_feed_yandex_company_name' ] ) ? esc_attr( $feed_configs[ 'rex_feed_yandex_company_name' ] ) : '';
+        $this->yandex_old_price     = isset( $feed_configs[ 'rex_feed_yandex_old_price' ] ) ? esc_attr( $feed_configs[ 'rex_feed_yandex_old_price' ] ) : '';
+        $this->yandex_old_price     = 'include' === $this->yandex_old_price;
 
         if( isset( $feed_configs[ 'rex_feed_wmc_currency' ] ) ) {
             $this->wmc_currency   = $feed_configs[ 'rex_feed_wmc_currency' ];
@@ -1040,6 +1029,12 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         if ( isset( $feed_configs[ 'rex_feed_zip_codes' ] ) ) {
             update_post_meta( $this->id, '_rex_feed_zip_codes', $feed_configs[ 'rex_feed_zip_codes' ] );
+        }
+        if ( isset( $feed_configs[ 'rex_feed_yandex_company_name' ] ) ) {
+            update_post_meta( $this->id, '_rex_feed_yandex_company_name', $feed_configs[ 'rex_feed_yandex_company_name' ] );
+        }
+        if ( isset( $feed_configs[ 'rex_feed_yandex_old_price' ] ) ) {
+            update_post_meta( $this->id, '_rex_feed_yandex_old_price', $feed_configs[ 'rex_feed_yandex_old_price' ] );
         }
 
         do_action( 'rex_feed_after_feed_config_saved', $this->id, $feed_configs );
@@ -2029,6 +2024,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
             || $this->merchant === 'bing_image'
             || $this->merchant === 'rss'
             || $this->merchant === 'criteo'
+            || $this->merchant === 'adcrowd'
+            || $this->merchant === 'google_local_inventory_ads'
+            || $this->merchant === 'compartner'
         ) {
             $node = $feed->getElementsByTagName( "item" );
             if ( $this->batch === $this->tbatch ) {
@@ -2056,7 +2054,12 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</offers>';
             }
         }
-        elseif ( $this->merchant === 'heureka' ) {
+        elseif ( $this->merchant === 'heureka'
+            || $this->merchant === 'zbozi'
+            || $this->merchant === 'rakuten'
+            || $this->merchant === 'domodi'
+            || $this->merchant === 'glami'
+        ) {
             $node = $feed->getElementsByTagName( "SHOPITEM" );
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<SHOPITEM>';
@@ -2077,10 +2080,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</Products>';
             }
         }
-        elseif ( $this->merchant === 'yandex' ) {
+        elseif( $this->merchant === 'yandex'
+            || $this->merchant === 'rozetka'
+            || $this->merchant === 'admitad'
+            || $this->merchant === 'ibud'
+        ) {
             $node = $feed->getElementsByTagName( "offer" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<offer>';
+            if( $this->batch == $this->tbatch ) {
+                $this->item_wrapper       = '<offer>';
                 $this->feed_string_footer .= '</offers></shop></yml_catalog>';
             }
         }
@@ -2089,33 +2096,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<product>';
                 $this->feed_string_footer .= '</vivino-product-list>';
-            }
-        }
-        elseif(
-            $this->merchant === 'sooqr' || $this->merchant === 'pricegrabber'
-            || $this->merchant === 'bonanza' || $this->merchant === 'awin'
-            || $this->merchant === 'koopkeus' || $this->merchant === 'scoupz'
-            || $this->merchant === 'uvinum' || $this->merchant === 'pricesearcher'
-            || $this->merchant === 'pricemasher' || $this->merchant === 'fashionchick'
-            || $this->merchant === 'choozen' || $this->merchant === 'powerreviews'
-            || $this->merchant === 'otto' || $this->merchant === 'sears'
-            || $this->merchant === 'ammoseek' || $this->merchant === 'fnac'
-            || $this->merchant === 'pixmania' || $this->merchant === 'coolblue'
-            || $this->merchant === 'verizon' || $this->merchant === 'kelkoo_group'
-            || $this->merchant === 'target' || $this->merchant === 'pepperjam'
-            || $this->merchant === 'cj_affiliate'
-        ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if( $this->batch == $this->tbatch ) {
-                $this->item_wrapper       = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'zbozi' || $this->merchant === 'rakuten' ) {
-            $node = $feed->getElementsByTagName( "SHOPITEM" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<SHOPITEM>';
-                $this->feed_string_footer .= '</SHOP>';
             }
         }
         elseif ( $this->merchant === 'skroutz' ) {
@@ -2133,21 +2113,22 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</feed>';
             }
         }
-        elseif ( $this->merchant === 'datatrics' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
-        elseif ( $this->merchant === 'domodi' ) {
-            $node = $feed->getElementsByTagName( "SHOPITEM" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<SHOPITEM>';
-                $this->feed_string_footer .= '</SHOP>';
-            }
-        }
-        elseif ( $this->merchant === 'drezzy' ) {
+        elseif ( $this->merchant === 'drezzy'
+            || $this->merchant === 'homedeco'
+            || $this->merchant === 'fashiola'
+            || $this->merchant === 'datatrics'
+            || $this->merchant === 'listupp'
+            || $this->merchant === 'adform'
+            || $this->merchant === 'clubic'
+            || $this->merchant === 'drezzy'
+            || $this->merchant === 'drm'
+            || $this->merchant === 'job_board_io'
+            || $this->merchant === 'kleding'
+            || $this->merchant === 'shopalike'
+            || $this->merchant === 'ladenzeile'
+            || $this->merchant === 'winesearcher'
+            || $this->merchant === 'whiskymarketplace'
+        ) {
             $node = $feed->getElementsByTagName( "item" );
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<item>';
@@ -2156,37 +2137,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         elseif ( $this->merchant === 'homebook' ) {
             $node = $feed->getElementsByTagName( "offer" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<offer>';
+            if( $this->batch == $this->tbatch ) {
+                $this->item_wrapper       = '<offer>';
                 $this->feed_string_footer .= '</offers>';
-            }
-        }
-        elseif ( $this->merchant === 'homedeco' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
-        elseif ( $this->merchant === 'glami' ) {
-            $node = $feed->getElementsByTagName( "SHOPITEM" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<SHOPITEM>';
-                $this->feed_string_footer .= '</SHOP>';
-            }
-        }
-        elseif ( $this->merchant === 'favi' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'fashiola' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
             }
         }
         elseif ( $this->merchant === 'emag' ) {
@@ -2210,13 +2163,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</channel>';
             }
         }
-        elseif ( $this->merchant === 'listupp' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
         elseif ( $this->merchant === 'hertie' ) {
             $node = $feed->getElementsByTagName( "Artikel" );
             if ( $this->batch == $this->tbatch ) {
@@ -2224,7 +2170,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</Katalog>';
             }
         }
-        elseif ( $this->merchant === 'leguide' ) {
+        elseif ( $this->merchant === 'leguide' || $this->merchant === 'whiskymarketplace' ) {
             $node = $feed->getElementsByTagName( "item" );
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<item>';
@@ -2238,38 +2184,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</Imoveis></Carga>';
             }
         }
-        elseif ( $this->merchant === 'adcrowd' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</channel></rss>';
-            }
-        }
-        elseif ( $this->merchant === 'adform' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
-        elseif ( $this->merchant === 'ebay_seller_tickets' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'beslist' || $this->merchant === 'spartoo'
-            || $this->merchant === 'spartoo'
-            || $this->merchant === 'google_Ad'
-            || $this->merchant === 'shopmania' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'adtraction' ) {
+        elseif ( $this->merchant === 'adtraction' || $this->merchant === 'webgains' ) {
             $node = $feed->getElementsByTagName( "item" );
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<item>';
@@ -2281,20 +2196,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<CourseTemplate>';
                 $this->feed_string_footer .= '</CourseTemplates>';
-            }
-        }
-        elseif ( $this->merchant === 'cdiscount' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'clubic' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
             }
         }
         elseif ( $this->merchant === 'custom' ) {
@@ -2313,32 +2214,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 }
             }
         }
-        elseif ( $this->merchant === 'drm' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
-        elseif ( $this->merchant === 'deltaprojects' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
         elseif ( $this->merchant === 'domodi' ) {
             $node = $feed->getElementsByTagName( "SHOP" );
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<SHOP>';
                 $this->feed_string_footer .= '</SHOPITEM>';
-            }
-        }
-        elseif ( $this->merchant === 'drezzy' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
             }
         }
         elseif ( $this->merchant === 'incurvy' ) {
@@ -2369,129 +2249,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</feed>';
             }
         }
-        elseif ( $this->merchant === 'job_board_io' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
-        elseif ( $this->merchant === 'kieskeurig' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'kauftipp' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'kuantokusta' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'kleding' || $this->merchant === 'shopalike' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
-        elseif ( $this->merchant === 'kelkoo' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'kelkoonl' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'ladenzeile' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
-        elseif ( $this->merchant === 'mydeal' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'webgains' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</feed>';
-            }
-        }
-        elseif ( $this->merchant === 'prisjkat' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'pricefalls' || $this->merchant === 'pricerunner' || $this->merchant === 'nextag'
-            || $this->merchant === 'rakuten_advertising'
-            || $this->merchant === 'shopee'
-            || $this->merchant === 'vidaXL'
-            || $this->merchant === 'google_local_products'
-            || $this->merchant === 'billiger'
-        ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
         elseif ( $this->merchant === 'skroutz' ) {
             $node = $feed->getElementsByTagName( "mywebstore" );
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<mywebstore>';
                 $this->feed_string_footer .= '</product>';
-            }
-        }
-        elseif ( $this->merchant === 'vivino' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</vivino-product-list>';
-            }
-        }
-        elseif ( $this->merchant === 'winesearcher' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</items>';
-            }
-        }
-        elseif ( $this->merchant === 'whiskymarketplace' ) {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
-        elseif ( $this->merchant === 'shopping' || $this->merchant === 'become' || $this->merchant === 'adroll' ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
             }
         }
         elseif ( $this->merchant === 'ibud' ) {
@@ -2523,20 +2285,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
         }
         elseif ( $this->merchant === 'DealsForU' ) {
-            $node = $feed->getElementsByTagName( "offers" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<offers>';
-                $this->feed_string_footer .= '</offers>';
+            $node = $feed->getElementsByTagName( "offer" );
+            if( $this->batch == $this->tbatch ) {
+                $this->item_wrapper       = '<offer>';
+                $this->feed_string_footer .= '</offers></import>';
             }
         }
-        elseif ( $this->merchant === 'google_local_inventory_ads' ) {
-            $node = $feed->getElementsByTagName( "item" );
-
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</channel></rss>';
-            }
-        }elseif ($this->merchant === 'gulog_gratis') {
+        elseif ($this->merchant === 'gulog_gratis') {
             $node = $feed->getElementsByTagName("ad");
 
             if($this->batch == $this->tbatch) {
@@ -2557,14 +2312,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->item_wrapper = '<item>';
                 $this->feed_string_footer .= '</items></price>';
             }
-        }elseif ($this->merchant === 'rozetka') {
-            $node = $feed->getElementsByTagName("offer");
-
-            if($this->batch == $this->tbatch) {
-                $this->item_wrapper = '<offer>';
-                $this->feed_string_footer .= '</offers></shop></yml_catalog>';
-            }
-        }elseif ($this->merchant === 'heureka_availability') {
+        }
+        elseif ($this->merchant === 'heureka_availability') {
             $node = $feed->getElementsByTagName("item");
 
             if($this->batch == $this->tbatch) {
@@ -2572,20 +2321,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</item_list>';
             }
         }
-        elseif ( $this->merchant === 'google_dsa' || $this->merchant === 'vergelijk'
-            || $this->merchant === 'twenga' || $this->merchant === 'tweakers'
-        ) {
-            $node = $feed->getElementsByTagName( "product" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<product>';
-                $this->feed_string_footer .= '</products>';
-            }
-        }
         else {
-            $node = $feed->getElementsByTagName( "item" );
-            if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<item>';
-                $this->feed_string_footer .= '</produkte>';
+            $node = $feed->getElementsByTagName( "product" );
+            if( $this->batch == $this->tbatch ) {
+                $this->item_wrapper       = '<product>';
+                $this->feed_string_footer .= '</products>';
             }
         }
         $str = '';
@@ -2602,223 +2342,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $str .= $this->feed_string_footer;
 
         return $str;
-    }
-
-    /**
-     * Responsible for merge batch feeds.
-     * @return string
-     **/
-    protected function merge_feeds( $prev_feed )
-    {
-
-        $xml = simplexml_load_file( $prev_feed );
-        if ( $xml ) {
-            $xml_str = $xml->asXML();
-            $orgdoc  = new DOMDocument;
-            $orgdoc->loadXML( $xml_str );
-
-            if ( $this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest' || $this->merchant === 'ciao'
-                || $this->merchant === 'daisycon'
-                || $this->merchant === 'instagram'
-                || $this->merchant === 'liveintent'
-                || $this->merchant === 'rss'
-                || $this->merchant === 'google_shopping_actions'
-                || $this->merchant === 'google_express'
-                || $this->merchant === 'doofinder'
-                || $this->merchant === 'emarts'
-                || $this->merchant === 'epoq'
-                || $this->merchant === 'google_merchant_promotion'
-            ) {
-                $parent = $orgdoc->getElementsByTagName('channel')->item(0);
-            }elseif ($this->merchant === 'ebay_mip') {
-                $parent = $orgdoc->getElementsByTagName('productRequest')->item(0);
-            }elseif ($this->merchant === 'ceneo') {
-                $parent = $orgdoc->getElementsByTagName('offers')->item(0);
-            }elseif ($this->merchant === 'heureka') {
-                $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
-            }elseif ($this->merchant === 'marktplaats') {
-                $parent = $orgdoc->getElementsByTagName('admarkt:ads');
-            }elseif ($this->merchant === 'yandex') {
-                $parent = $orgdoc->getElementsByTagName('offers')->item(0);
-            }elseif ($this->merchant === 'zbozi') {
-                $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
-            }elseif ($this->merchant === 'skroutz') {
-                $parent = $orgdoc->getElementsByTagName('mywebstore')->item(0);
-            }elseif ($this->merchant === 'google_review') {
-                $parent = $orgdoc->getElementsByTagName('reviews')->item(0);
-            }elseif ($this->merchant === 'vivino') {
-                $parent = $orgdoc->getElementsByTagName('vivino-product-list')->item(0);
-            }elseif ($this->merchant === 'trovaprezzi') {
-                $parent = $orgdoc->getElementsByTagName('Products')->item(0);
-            }elseif ($this->merchant === 'datatrics') {
-                $parent = $orgdoc->getElementsByTagName('items')->item(0);
-            }elseif ($this->merchant === 'domodi') {
-                $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
-            }elseif ($this->merchant === 'drezzy') {
-                $parent = $orgdoc->getElementsByTagName('items')->item(0);
-            }elseif ($this->merchant === 'homebook') {
-                $parent = $orgdoc->getElementsByTagName('offers')->item(0);
-            }elseif ($this->merchant === 'homedeco') {
-                $parent = $orgdoc->getElementsByTagName('items')->item(0);
-            }elseif ($this->merchant === 'glami') {
-                $parent = $orgdoc->getElementsByTagName('SHOP')->item(0);
-            }elseif ($this->merchant === 'ibud') {
-                $parent = $orgdoc->getElementsByTagName('yml_catalog')->item(0);
-            }elseif ($this->merchant === 'mirakl') {
-                $parent = $orgdoc->getElementsByTagName('import')->item(0);
-            }elseif ($this->merchant === 'spartooFr') {
-                $parent = $orgdoc->getElementsByTagName('products')->item(0);
-            }elseif ($this->merchant === 'Bestprice') {
-                $parent = $orgdoc->getElementsByTagName('xml')->item(0);
-            }elseif ($this->merchant === 'DealsForU') {
-                $parent = $orgdoc->getElementsByTagName('offers')->item(0);
-            }elseif ($this->merchant === 'favi') {
-                $parent = $orgdoc->getElementsByTagName('products')->item(0);
-            }elseif ($this->merchant === 'fashiola') {
-                $parent = $orgdoc->getElementsByTagName('items')->item(0);
-            }elseif ($this->merchant === 'emag') {
-                $parent = $orgdoc->getElementsByTagName('shop')->item(0);
-            }elseif ($this->merchant === 'grupo_zap') {
-                $parent = $orgdoc->getElementsByTagName('Listings')->item(0);
-            }elseif ($this->merchant === 'lyst') {
-                $parent = $orgdoc->getElementsByTagName('channel')->item(0);
-            }elseif ($this->merchant === 'listupp') {
-                $parent = $orgdoc->getElementsByTagName('items')->item(0);
-            }elseif ($this->merchant === 'hertie') {
-                $parent = $orgdoc->getElementsByTagName('Artikel')->item(0);
-            }elseif ($this->merchant === 'google_local_inventory_ads') {
-                $parent = $orgdoc->getElementsByTagName('shop')->item(0);
-            }elseif ($this->merchant === 'gulog_gratis') {
-                $parent = $orgdoc->getElementsByTagName('ad')->item(0);
-            }elseif ($this->merchant === 'heureka_availability') {
-                $parent = $orgdoc->getElementsByTagName('item')->item(0);
-            }
-            else {
-                $parent = $orgdoc->getElementsByTagName( 'products' )->item( 0 );
-            }
-
-            if ( !$parent )
-                return $parent;
-
-            // Create a new document
-            $newdoc = new DOMDocument;
-            $newdoc->loadXML( $this->feed );
-
-            // The node we want to import to a new document
-
-            if ( $this->merchant === 'google' || $this->merchant === 'facebook' || $this->merchant === 'pinterest' || $this->merchant === 'ciao'
-                || $this->merchant === 'daisycon'
-                || $this->merchant === 'instagram'
-                || $this->merchant === 'liveintent'
-                || $this->merchant === 'rss'
-                || $this->merchant === 'google_shopping_actions'
-                || $this->merchant === 'google_express'
-                || $this->merchant === 'doofinder'
-                || $this->merchant === 'emarts'
-                || $this->merchant === 'epoq'
-            ) {
-                $node = $newdoc->getElementsByTagName( "item" );
-            }
-            elseif ( $this->merchant === 'ebay_mip' ) {
-                if ( $newdoc->getElementsByTagName( "product" ) ) {
-                    $node = $newdoc->getElementsByTagName( "product" );
-                }
-                else {
-                    $node = $newdoc->getElementsByTagName( "productVariationGroup" );
-                }
-            }
-            elseif ( $this->merchant === 'ceneo' ) {
-                $node = $newdoc->getElementsByTagName( "o" );
-            }
-            elseif ( $this->merchant === 'heureka' ) {
-                $node = $newdoc->getElementsByTagName( "SHOPITEM" );
-            }
-            elseif ( $this->merchant === 'marktplaats' ) {
-                $node = $newdoc->getElementsByTagName( "admarkt:ad" );
-            }
-            elseif ( $this->merchant === 'trovaprezzi' ) {
-                $node = $newdoc->getElementsByTagName( "Offer" );
-            }
-            elseif ( $this->merchant === 'yandex' ) {
-                $node = $newdoc->getElementsByTagName( "offer" );
-            }
-            elseif ( $this->merchant === 'zbozi' ) {
-                $node = $newdoc->getElementsByTagName( "SHOPITEM" );
-            }
-            elseif ( $this->merchant === 'skroutz' ) {
-                $node = $newdoc->getElementsByTagName( "product" );
-            }
-            elseif ( $this->merchant === 'google_review' ) {
-                $node = $newdoc->getElementsByTagName( "feed" );
-            }
-            elseif ( $this->merchant === 'datatrics' ) {
-                $node = $newdoc->getElementsByTagName( "item" );
-            }
-            elseif ( $this->merchant === 'domodi' ) {
-                $node = $newdoc->getElementsByTagName( "SHOPITEM" );
-            }
-            elseif ( $this->merchant === 'drezzy' ) {
-                $node = $newdoc->getElementsByTagName( "item" );
-            }
-            elseif ( $this->merchant === 'homebook' ) {
-                $node = $newdoc->getElementsByTagName( "offer" );
-            }
-            elseif ( $this->merchant === 'homedeco' ) {
-                $node = $newdoc->getElementsByTagName( "item" );
-            }
-            elseif ( $this->merchant === 'glami' ) {
-                $node = $newdoc->getElementsByTagName( "SHOPITEM" );
-            }
-            elseif ( $this->merchant === 'favi' ) {
-                $node = $newdoc->getElementsByTagName( "product" );
-            }
-            elseif ( $this->merchant === 'fashiola' ) {
-                $node = $newdoc->getElementsByTagName( "item" );
-            }
-            elseif ( $this->merchant === 'emag' ) {
-                $node = $newdoc->getElementsByTagName( "product" );
-            }
-            elseif ( $this->merchant === 'grupo_zap' ) {
-                $node = $newdoc->getElementsByTagName( "Listing" );
-            }
-            elseif ( $this->merchant === 'lyst' ) {
-                $node = $newdoc->getElementsByTagName( "item" );
-            }
-            elseif ( $this->merchant === 'listupp' ) {
-                $node = $newdoc->getElementsByTagName( "item" );
-            }
-            elseif ( $this->merchant === 'hertie' ) {
-                $node = $newdoc->getElementsByTagName( "Katalog" );
-            }
-            elseif ( $this->merchant === 'ibud' ) {
-                $node = $newdoc->getElementsByTagName( "shop" );
-            }
-            elseif ( $this->merchant === 'mirakl' ) {
-                $node = $newdoc->getElementsByTagName( "import" );
-            }
-            elseif ( $this->merchant === 'spartooFr' ) {
-                $node = $newdoc->getElementsByTagName( "products" );
-            }
-            elseif ( $this->merchant === 'Bestprice' ) {
-                $node = $newdoc->getElementsByTagName( "products" );
-            }
-            elseif ( $this->merchant === 'DealsForU' ) {
-                $node = $newdoc->getElementsByTagName( "offers" );
-            }
-            else {
-                $node = $newdoc->getElementsByTagName( "product" );
-            }
-
-            for ( $i = 0; $i < $node->length; $i++ ) {
-                $item = $node->item( $i );
-                if ( $item != NULL ) {
-                    $item = $orgdoc->importNode( $item, true );
-                    $parent->appendChild( $item );
-                }
-            }
-            return $orgdoc->saveXML();
-        }
-        return false;
     }
 
     /**

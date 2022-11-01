@@ -316,6 +316,6 @@ class Rex_Product_Feed_DealsForU extends Rex_Product_Feed_Abstract_Generator
     //replace footer of feed
     public function footer_replace()
     {
-        $this->feed = str_replace('</offers>', '', $this->feed);
+        $this->feed = str_replace('</offers></import>', '', $this->feed);
     }
 }

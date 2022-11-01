@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit00a7403547d57de6baa205c33c7a518c
+class ComposerStaticInit858baecc9980db0923cbc3e8801b2184
 {
     public static $files = array (
         'db1766888a4f96ab813d6f6a38125eb9' => __DIR__ . '/..' . '/philipnewcomer/wp-ajax-helper/src/functions.php',
@@ -1206,7 +1206,7 @@ class ComposerStaticInit00a7403547d57de6baa205c33c7a518c
         'Rex_Product_Feed_Zap_co_il' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-zap-co-il.php',
         'Rex_Product_Feed_Zbozi' => __DIR__ . '/../..' . '/admin/feed/class-rex-product-feed-zbozi.php',
         'Rex_Product_Filter' => __DIR__ . '/../..' . '/admin/feed-filter/class-rex-product-filter.php',
-        'Rex_Product_Glami_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/glami/glami-data-retriever.php',
+        'Rex_Product_Glami_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/glami/class-free-glami-data-retriever.php',
         'Rex_Product_Marktplaats_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/marktplaats/marktplaats-data-retriever.php',
         'Rex_Product_Metabox' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-metabox.php',
         'Rex_Product_Verjelijk_Data_Retriever' => __DIR__ . '/../..' . '/admin/feed/rex-shopping-feed/vergelijk/class-rex-product-feed-pro-verjelijk-data-retriever.php',
@@ -1221,9 +1221,9 @@ class ComposerStaticInit00a7403547d57de6baa205c33c7a518c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit00a7403547d57de6baa205c33c7a518c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit00a7403547d57de6baa205c33c7a518c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit00a7403547d57de6baa205c33c7a518c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit858baecc9980db0923cbc3e8801b2184::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit858baecc9980db0923cbc3e8801b2184::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit858baecc9980db0923cbc3e8801b2184::$classMap;
 
         }, null, ClassLoader::class);
     }

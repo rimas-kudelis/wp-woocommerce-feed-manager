@@ -270,6 +270,8 @@
 
     $( document ).on( "click", "#btn_on_feed", purge_transient_cache_on_feed );
 
+    $( document ).on( "click", "#rex_feed_abandoned_child_list_update_button", rex_feed_update_abandoned_child_list );
+
     // Trigger Based Review Request
     $( document ).on( 'click', '#rex_rate_now, #rex_rate_not_now, #rex_rated_already', function ( e ) {
         var btn_id = $( this ).attr( 'id' );
@@ -407,6 +409,19 @@
         }
     } );
 
+    // Event listener on feed merchant option change
+    // to hide/show yandex old price dropdown field
+    $( document ).on( 'change', '#rex_feed_merchant', function () {
+        let feed_merchant = $( this ).find( ':selected' ).val();
+
+        if ( 'yandex' === feed_merchant ) {
+            $( '.rex_feed_yandex_old_price, .rex_feed_yandex_company_name' ).fadeIn();
+        }
+        else {
+            $( '.rex_feed_yandex_old_price, .rex_feed_yandex_company_name' ).fadeOut();
+        }
+    } );
+
     /**
      * Event listener for Google schedule change change functionality.
      */
@@ -473,6 +488,8 @@
     $( document ).on( 'change', 'select.sanitize-dropdown', rex_feed_update_multiple_filter_counter );
 
     $( document ).on( 'change', '#rex_feed_cats_check_all_btn, #rex_feed_tags_check_all_btn', rex_feed_check_uncheck_all_tax );
+
+    $( document ).on( 'change', 'select.attr-dropdown, select.attr-val-dropdown', rex_feed_auto_select_google_shipping_tax );
 
     $( document ).on( 'submit', '#rex-google-merchant', save_google_merchant_settings );
 
@@ -2137,6 +2154,53 @@
             .error( function ( response ) {
                 console.log( 'Uh, oh! Not Awesome!!' );
             } );
+    }
+
+
+    /**
+     * @desc Update abandone child list ajax
+     */
+    function rex_feed_update_abandoned_child_list() {
+        let $el = $( this );
+        $el.find( "span" ).hide();
+        $el.find( "i" ).show();
+
+        wpAjaxHelperRequest( 'rex-feed-update-abandoned-child-list' )
+            .success( function ( response ) {
+                $el.find( "i" ).hide();
+                $el.find( "span" ).show();
+                console.log( 'woohoo!' );
+            } )
+            .error( function ( response ) {
+                $el.find( "i" ).hide();
+                $el.find( "span" ).show();
+                console.log( 'uh, oh!' );
+            } );
+    }
+
+
+    /**
+     * @desc Auto select attribute/attribute value
+     * if user select shipping/tax attributes for google format
+     * @since 7.3.0
+     */
+    function rex_feed_auto_select_google_shipping_tax() {
+        let $this = $( this );
+        let selected_val = $this.val();
+
+        if ( $this.hasClass( 'attr-dropdown' ) ) {
+            if ( 'shipping' === selected_val || 'tax' === selected_val ) {
+                $this.parent().siblings(':first').children().val('meta');
+                $this.parent().siblings(':nth-child(3)').children().hide();
+                $this.parent().siblings(':nth-child(3)').children(':first').show();
+                $this.parent().siblings(':nth-child(3)').children(':first').children('select.attr-val-dropdown').val(selected_val).trigger('change');
+            }
+        }
+        else {
+            if ( 'shipping' === selected_val || 'tax' === selected_val ) {
+                $this.parent().parent().siblings( ':first' ).children( 'select.attr-dropdown' ).val( selected_val )
+            }
+        }
     }
 
 })( jQuery );

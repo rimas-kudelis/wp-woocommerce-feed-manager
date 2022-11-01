@@ -1170,7 +1170,7 @@ return array(
     'Rex_Product_Feed_Zap_co_il' => $baseDir . '/admin/feed/class-rex-product-feed-zap-co-il.php',
     'Rex_Product_Feed_Zbozi' => $baseDir . '/admin/feed/class-rex-product-feed-zbozi.php',
     'Rex_Product_Filter' => $baseDir . '/admin/feed-filter/class-rex-product-filter.php',
-    'Rex_Product_Glami_Data_Retriever' => $baseDir . '/admin/feed/glami/glami-data-retriever.php',
+    'Rex_Product_Glami_Data_Retriever' => $baseDir . '/admin/feed/glami/class-free-glami-data-retriever.php',
     'Rex_Product_Marktplaats_Data_Retriever' => $baseDir . '/admin/feed/marktplaats/marktplaats-data-retriever.php',
     'Rex_Product_Metabox' => $baseDir . '/admin/class-rex-product-feed-metabox.php',
     'Rex_Product_Verjelijk_Data_Retriever' => $baseDir . '/admin/feed/rex-shopping-feed/vergelijk/class-rex-product-feed-pro-verjelijk-data-retriever.php',

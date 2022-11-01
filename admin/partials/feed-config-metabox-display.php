@@ -73,11 +73,17 @@ $keyy = rand(999, 3000); ?>
     $hide_meta = $display_none;
     $hide_static = $display_none;
 
-    if ( $item[ 'type' ] === 'meta' ) {
-        $hide_meta = '';
-    }
-    elseif ( $item[ 'type' ] === 'static' ) {
-        $hide_static = '';
+    if( isset( $item[ 'type' ] ) ) {
+        if ( $item[ 'type' ] === 'meta' ) {
+            $hide_meta = '';
+        }
+        elseif ( $item[ 'type' ] === 'static' ) {
+            $hide_static = '';
+        }
+        elseif( 'combined' === $item[ 'type' ] && ( function_exists( 'rex_feed_is_wpfm_pro_active' ) && !rex_feed_is_wpfm_pro_active() ) ) {
+            $hide_meta = '';
+            $item[ 'type' ] = 'meta';
+        }
     }
 	?>
     <tr data-row-id="<?php echo esc_html($key); ?>">

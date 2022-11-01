@@ -85,35 +85,93 @@
                     <?php
                     $saved_country = get_post_meta( get_the_ID(), '_' . esc_attr( $this->prefix ) . 'feed_country', true );
                     $saved_country = $saved_country ?: get_post_meta( get_the_ID(), esc_attr( $this->prefix ) . 'feed_country', true );
-                    $saved_country = $saved_country ?: (new WC_Countries())->get_base_country();
-                    $shipping_country = WC()->countries->get_shipping_countries();
-                    $available_shipping_locations = rex_feed_get_wc_shipping_state_country();
 
-                    if( is_array( $available_shipping_locations ) && !empty( $available_shipping_locations ) ) {
-                        foreach( $available_shipping_locations as $location ) {
-                            if( isset( $location[ 'location_code' ] ) ) {
-                                $country_code = '';
-                                $state_code = '';
-                                if( isset( $location[ 'location_type' ] ) ) {
-                                    if( 'state' === $location[ 'location_type' ] ) {
-                                        $location_code = explode( ':', $location[ 'location_code' ] );
-                                        $country_code  = isset( $location_code[ 0 ] ) ? $location_code[ 0 ] : '';
-                                        $state_code    = isset( $location_code[ 1 ] ) ? $location_code[ 1 ] : '';
+                    if( !$saved_country ) {
+                        $countries = new WC_Countries();
+                        $base_country_code   = $countries->get_base_country();
+                        $base_continent_code = $countries->get_continent_code_for_country( $base_country_code );
+                        $saved_country = ':' . $base_country_code . ':' . $base_continent_code;
+                    }
+
+                    $filtered_locations = wpfm_get_cached_data( 'filtered_country_list' );
+
+                    if( !is_array( $filtered_locations ) || empty( $filtered_locations ) ) {
+                        $shipping_country             = WC()->countries->get_shipping_countries();
+                        $available_shipping_locations = rex_feed_get_wc_shipping_state_country();
+                        $countries                    = [];
+                        $continents                   = [];
+                        $filtered_locations           = [];
+
+                        if( is_array( $available_shipping_locations ) && !empty( $available_shipping_locations ) ) {
+                            foreach( $available_shipping_locations as $location ) {
+                                if( isset( $location[ 'location_code' ] ) ) {
+                                    $country_code   = '';
+                                    $continent_code = '';
+                                    $state_code     = '';
+                                    $location_label = '';
+                                    if( isset( $location[ 'location_type' ] ) ) {
+                                        if( 'state' === $location[ 'location_type' ] ) {
+                                            $location_code = explode( ':', $location[ 'location_code' ] );
+                                            $country_code  = isset( $location_code[ 0 ] ) ? $location_code[ 0 ] : '';
+                                            $state_code    = isset( $location_code[ 1 ] ) ? $location_code[ 1 ] : '';
+                                        }
+                                        elseif( 'continent' === $location[ 'location_type' ] ) {
+                                            $continent_code = $location[ 'location_code' ];
+                                        }
+                                        else {
+                                            $country_code = $location[ 'location_code' ];
+                                        }
                                     }
-                                    else {
-                                        $country_code = $location[ 'location_code' ];
+
+                                    $states        = WC()->countries->get_states( $country_code );
+                                    $state_label   = isset( $states[ $state_code ] ) ? $states[ $state_code ] : '';
+                                    $country_label = isset( $shipping_country[ $country_code ] ) ? $shipping_country[ $country_code ] : '';
+
+                                    if( $state_label && $country_label ) {
+                                        $location_label = $state_label . ', ' . $country_label;
+                                    }
+                                    elseif( $country_label ) {
+                                        $location_label = $country_label;
+                                    }
+
+                                    if( !in_array( $country_code, $countries ) ) {
+                                        $countries[] = $country_code;
+                                        if( $location_label ) {
+                                            $filtered_locations[ $state_code . ':' . $country_code . ':' . $continent_code ] = $location_label;
+                                        }
+                                    }
+
+                                    if( !in_array( $continent_code, $continents ) ) {
+                                        $continents[]        = $continent_code;
+                                        $continents          = WC()->countries->get_continents();
+                                        $continent_countries = isset( $continents[ $continent_code ][ 'countries' ] ) ? $continents[ $continent_code ][ 'countries' ] : [];
+
+                                        if( !is_wp_error( $continent_countries ) && is_array( $continent_countries ) && !empty( $continent_countries ) ) {
+                                            $continent_countries = array_merge( array_diff( $continent_countries, [ $country_code ] ), array_diff( [ $country_code ], $continent_countries ) );
+
+                                            foreach( $continent_countries as $cont_country_code ) {
+
+                                                if( !in_array( $cont_country_code, $countries ) ) {
+                                                    $countries[]   = $cont_country_code;
+                                                    $country_label = isset( $shipping_country[ $cont_country_code ] ) ? $shipping_country[ $cont_country_code ] : '';
+                                                    if( $country_label ) {
+                                                        $filtered_locations[ $state_code . ':' . $cont_country_code . ':' . $continent_code ] = $country_label;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-
-                                $states        = WC()->countries->get_states( $country_code );
-                                $state_label   = isset( $states[ $state_code ] ) ? $states[ $state_code ] : '';
-                                $country_label = isset( $shipping_country[ $country_code ] ) ? $shipping_country[ $country_code ] : '';
-
-                                $location_label = $state_label ? $state_label . ', ' . $country_label : $country_label;
-                                $selected       = $saved_country === $location[ 'location_code' ] ? ' selected' : '';
-
-                                echo '<option value="' . esc_attr( $location[ 'location_code' ] ) . '" ' . esc_attr( $selected ) . '>' . esc_attr( $location_label ) . '</option>';
                             }
+                        }
+                        asort( $filtered_locations );
+                        wpfm_set_cached_data( 'filtered_country_list', $filtered_locations );
+                    }
+
+                    if( is_array( $filtered_locations ) && !empty( $filtered_locations ) ) {
+                        foreach( $filtered_locations as $value => $label ) {
+                            $selected = $saved_country === $value ? ' selected' : '';
+                            echo '<option value="' . esc_attr( $value ) . '" ' . esc_attr( $selected ) . '>' . esc_attr( $label ) . '</option>';
                         }
                     }
                     ?>

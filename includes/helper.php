@@ -641,13 +641,28 @@ if ( !function_exists( 'rex_feed_get_wc_shipping_state_country' ) ) {
     function rex_feed_get_wc_shipping_state_country()
     {
         global $wpdb;
-        $query = "SELECT DISTINCT `location_code`, `location_type` FROM {$wpdb->prefix}woocommerce_shipping_zone_locations WHERE `location_type` IN( 'country', 'state' ) ORDER BY `location_code` ASC";
+        $query = "SELECT DISTINCT `location_code`, `location_type` FROM {$wpdb->prefix}woocommerce_shipping_zone_locations WHERE `location_type` IN( 'country', 'state', 'continent' ) ORDER BY `location_code` ASC";
         $wc_shipping_locations = $wpdb->get_results( $query,ARRAY_A );
 
         if( !is_wp_error( $wc_shipping_locations ) && is_array( $wc_shipping_locations ) && !empty( $wc_shipping_locations ) ) {
             return $wc_shipping_locations;
         }
         return [];
+    }
+}
+
+
+if ( !function_exists( 'rex_feed_is_wpfm_pro_active' ) ) {
+    /**
+     * @desc Check if WPFM Pro is activated
+     * @since 7.2.20
+     * @return bool
+     */
+    function rex_feed_is_wpfm_pro_active()
+    {
+        $active_plugings = get_option( 'active_plugins' );
+        $wpfm_pro        = 'best-woocommerce-feed-pro/rex-product-feed-pro.php';
+        return in_array( $wpfm_pro, $active_plugings ) || is_plugin_active_for_network( $wpfm_pro );
     }
 }
 
@@ -665,5 +680,49 @@ if ( ! function_exists( 'wpfm_is_discount_rules_asana_plugins_active' ) ) {
         $asana_plugin                = 'easy-woocommerce-discounts/easy-woocommerce-discounts.php';
 
         return in_array( $asana_plugin, $active_plugings ) || is_plugin_active_for_network( $asana_plugin );
+    }
+}
+
+
+if ( ! function_exists( 'wpfm_get_abandoned_child' ) ) {
+    /**
+     * @desc Get abandoned WooCommerce variation product ids
+     * @param $skip
+     * @param $offset
+     * @param $current_batch
+     * @param $per_batch
+     * @param $total_batch
+     * @param $products
+     * @return array|int[]|WP_Post[]
+     * @since 7.2.0
+     */
+    function wpfm_get_abandoned_child( $skip = false, $offset = 0, $current_batch = 1, $per_batch = 0, $total_batch = 0, $products = [] ) {
+        if( !$skip ) {
+            $product_info = Rex_Product_Feed_Ajax::get_product_number( [] );
+            $total_batch  = $product_info[ 'total_batch' ];
+            $per_batch    = get_option( 'rex-wpfm-product-per-batch', $per_batch );
+        }
+
+        $args = [
+            'post_type'        => 'product_variation',
+            'fields'           => 'ids',
+            'post_parent'      => 0,
+            'post_status'      => 'publish',
+            'posts_per_page'   => $per_batch,
+            'offset'           => $offset,
+            'orderby'          => 'ID',
+            'order'            => 'ASC',
+            'cache_results'    => false,
+            'suppress_filters' => true,
+        ];
+
+        $products = array_merge( get_posts( $args ), $products );
+
+        if( $total_batch != $current_batch ) {
+            $current_batch = (int)$current_batch + 1;
+            $offset        = (int)$offset + (int)$per_batch;
+            return wpfm_get_abandoned_child( true, $offset, $current_batch, $per_batch, $total_batch, $products );
+        }
+        return $products;
     }
 }

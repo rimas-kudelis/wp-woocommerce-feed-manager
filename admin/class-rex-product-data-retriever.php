@@ -840,14 +840,16 @@ class Rex_Product_Data_Retriever
 
     /**
      * @desc Get shipping and tax attributes value
-     * @since 7.2.9
      * @param $key
-     * @return int|string
+     * @param $rule
+     * @return array|float|int|mixed|string
+     * @since 7.2.9
      */
     protected function set_shipping_attr( $key, $rule ) {
         switch ( $key ) {
             case 'shipping':
-                return $this->get_shipping_methods( $rule );
+                $methods = $this->get_shipping_methods();
+                return $this->add_class_no_class_cost( $methods, $rule );
 
             case 'shipping_class':
                 if ( $this->product->get_shipping_class_id() ) {
@@ -866,10 +868,10 @@ class Rex_Product_Data_Retriever
                 return $this->get_shipping_cost( 'no_class_cost' );
 
             case 'shipping_cost_base_class':
-                return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('class_cost_' );
+                return (float)$this->get_shipping_cost() + (float)$this->get_shipping_cost('class_cost_' );
 
             case 'shipping_cost_base_no_class':
-                return (int)$this->get_shipping_cost() + (int)$this->get_shipping_cost('no_class_cost' );
+                return (float)$this->get_shipping_cost() + (float)$this->get_shipping_cost('no_class_cost' );
 
             case 'local_pickup_cost':
                 return $this->get_shipping_cost( 'local_pickup_cost' );
@@ -890,16 +892,17 @@ class Rex_Product_Data_Retriever
         if( !$this->product || is_wp_error( $this->product ) ) {
             return;
         }
-        if( $this->product->is_virtual() ) {
+        if( $this->product->is_virtual() || $this->product->is_downloadable() ) {
             return 0;
         }
 
         $shipping_cost = '';
         $country_data  = explode( ':', $this->feed_country );
-        $country       = isset( $country_data[ 0 ] ) ? $country_data[ 0 ] : '';
-        $state         = isset( $country_data[ 1 ] ) ? $country_data[ 1 ] : '';
+        $state         = isset( $country_data[ 0 ] ) ? $country_data[ 0 ] : '';
+        $country       = isset( $country_data[ 1 ] ) ? $country_data[ 1 ] : '';
+        $continent     = isset( $country_data[ 2 ] ) ? $country_data[ 2 ] : '';
 
-        $shipping_methods = wpfm_get_cached_data( 'wc_shipping_methods_' . $country . $state . $this->feed_zip_codes );
+        $shipping_methods = wpfm_get_cached_data( 'wc_shipping_methods_' . $continent . $country . $state . $this->feed_zip_codes );
 
         if( function_exists( 'wc_get_shipping_zone' ) && !$shipping_methods ) {
             $shipping_zone    = wc_get_shipping_zone( [
@@ -910,7 +913,7 @@ class Rex_Product_Data_Retriever
                 ]
             ] );
             $shipping_methods = $shipping_zone ? $shipping_zone->get_shipping_methods( true ) : [];
-            wpfm_set_cached_data( 'wc_shipping_methods_' . $country . $state . $this->feed_zip_codes, $shipping_methods );
+            wpfm_set_cached_data( 'wc_shipping_methods_' . $continent . $country . $state . $this->feed_zip_codes, $shipping_methods );
         }
 
         if( is_array( $shipping_methods ) && !empty( $shipping_methods ) ) {
@@ -2143,7 +2146,7 @@ class Rex_Product_Data_Retriever
 
             case 'sale_price_db':
                 $sale_price = get_post_meta( $this->product->get_id(), '_sale_price', true );
-                if( (int)$sale_price > 0 ) {
+                if( (float)$sale_price > 0 ) {
                     if( $this->wcml ) {
                         global $woocommerce_wpml;
                         $_price = apply_filters( 'wcml_raw_price_amount', wc_format_decimal( $sale_price, wc_get_price_decimals() ), $this->wcml_currency );
@@ -2325,24 +2328,28 @@ class Rex_Product_Data_Retriever
     }
 
 
-    /**
-     * @desc get all product images with separators
-     * @since 7.2.19
-     * @param $sep
-     * @param $array_data
-     * @return array|string
-     */
-    private function get_all_image( $sep = ',', $array_data = false )
-    {
-        $attachment_ids = $this->product->get_gallery_image_ids();
-        $all_images     = [];
-        foreach( $attachment_ids as $key => $val ) {
-            $all_images[] = wp_get_attachment_url( $val );
+	/**
+	 * @desc get all product images with separators
+	 * @since 7.2.19
+	 * @param string $sep
+	 * @param bool $return_array
+	 * @return array|string
+	 */
+    private function get_all_image( $sep = ',', $return_array = false ) {
+        if( !is_wp_error( $this->product ) && $this->product ) {
+            $attachment_ids = $this->product->get_gallery_image_ids();
+            $attachment_ids = array_merge( [ $this->product->get_image_id() ], $attachment_ids );
+            $all_images     = [];
+
+            foreach( $attachment_ids as $key => $val ) {
+                $all_images[] = wp_get_attachment_url( $val );
+            }
+            if( $return_array ) {
+                return $all_images;
+            }
+            return implode( $sep, $all_images );
         }
-        if ( $array_data ) {
-            return $all_images;
-        }
-        return implode( $sep, $all_images );
+        return '';
     }
 
 
@@ -3862,15 +3869,15 @@ class Rex_Product_Data_Retriever
     /**
      * @desc Get shipping method(s)
      * available for the selected feed country
+     * @return bool
      * @since 7.2.11
-     * @param $rule
-     * @return array|string
      */
-    public function get_shipping_methods( $rule = [] ) {
+    public function get_shipping_methods() {
         $feed_location          = explode( ':', $this->feed_country );
-        $country                = isset( $feed_location[ 0 ] ) ? $feed_location[ 0 ] : '';
-        $state                  = isset( $feed_location[ 1 ] ) ? $feed_location[ 1 ] : '';
-        $default_shipping_zones = wpfm_get_cached_data( 'wc_shipping_zones_' . $country . $state . $this->feed_zip_codes );
+        $state                  = isset( $feed_location[ 0 ] ) ? $feed_location[ 0 ] : '';
+        $country                = isset( $feed_location[ 1 ] ) ? $feed_location[ 1 ] : '';
+        $continent              = isset( $feed_location[ 2 ] ) ? $feed_location[ 2 ] : '';
+        $default_shipping_zones = wpfm_get_cached_data( 'wc_shipping_zones_' . $continent . $country . $state . $this->feed_zip_codes );
 
         if( 'all' !== $this->feed_country && !$default_shipping_zones ) {
             $wc_shipping_zones = WC_Shipping_Zones::get_zones();
@@ -3878,48 +3885,84 @@ class Rex_Product_Data_Retriever
             foreach( $wc_shipping_zones as $zone ) {
                 if( isset( $zone[ 'zone_locations' ] ) && is_array( $zone[ 'zone_locations' ] ) && !empty( $zone[ 'zone_locations' ] ) ) {
                     $zone_locations = array_column( $zone[ 'zone_locations' ], 'code' );
-                    if( is_array( $zone_locations ) && !empty( $zone_locations ) && ( in_array( $this->feed_country, $zone_locations ) || in_array( $this->feed_zip_codes, $zone_locations ) ) && isset( $zone[ 'shipping_methods' ] ) ) {
+
+                    if( is_array( $zone_locations ) && !empty( $zone_locations ) && isset( $zone[ 'shipping_methods' ] ) && ( in_array( $country, $zone_locations ) || in_array( $this->feed_zip_codes, $zone_locations ) ) ) {
                         foreach( $zone[ 'shipping_methods' ] as $method ) {
-                            $service = '';
-                            $price   = 0;
+                            if( $method->is_enabled() ) {
+                                $service  = '';
+                                $price    = 0;
+                                $instance = [];
 
-                            if( isset( $zone[ 'zone_name' ] ) ) {
-                                $service .= $zone[ 'zone_name' ];
-                            }
-                            if( isset( $method->instance_settings[ 'title' ] ) ) {
-                                $service .= ' ' . $method->instance_settings[ 'title' ];
-                            }
-                            if( isset( $method->instance_settings[ 'cost' ] ) ) {
-                                $price = (int)$method->instance_settings[ 'cost' ];
-                                /*$shipping_class_id = $this->product->get_shipping_class_id();
-                                if ( $shipping_class_id ) {
-                                    $price += isset( $method->instance_settings[ 'class_cost_' . $shipping_class_id ] ) ? (int)$method->instance_settings[ 'class_cost_' . $shipping_class_id ] : 0;
+                                if( isset( $method->instance_settings[ 'cost' ] ) ) {
+                                    $price = (float)$method->instance_settings[ 'cost' ];
                                 }
-                                else {
-                                    $price += isset( $method->instance_settings[ 'no_class_cost' ] ) ? (int)$method->instance_settings[ 'no_class_cost' ] : 0;
-                                }*/
-                            }
 
-                            if( isset( $rule[ 'prefix' ] ) ) {
-                                $price = $rule[ 'prefix' ] . $price;
-                            }
-                            if( isset( $rule[ 'suffix' ] ) ) {
-                                $price = $price . $rule[ 'suffix' ];
-                            }
+                                if( isset( $zone[ 'zone_name' ] ) ) {
+                                    $service .= $zone[ 'zone_name' ];
+                                }
+                                if( isset( $method->instance_settings[ 'title' ] ) ) {
+                                    $service .= ' ' . $method->instance_settings[ 'title' ];
 
-                            $default_shipping_zones[] = [
-                                'country' => $country,
-                                'region'  => $state,
-                                'service' => $service . ' ' . $this->feed_country,
-                                'price'   => $price
-                            ];
+                                    if( 'WC_Shipping_Flat_Rate' === get_class( $method ) ) {
+                                        $instance = $method->instance_settings;
+                                    }
+                                }
+
+                                $default_shipping_zones[] = [
+                                    'country'  => $country,
+                                    'region'   => $state,
+                                    'service'  => $service . ' ' . $country,
+                                    'price'    => $price,
+                                    'instance' => $instance
+                                ];
+                            }
                         }
                     }
                 }
             }
-            wpfm_set_cached_data( 'wc_shipping_zones_' . $country . $state . $this->feed_zip_codes, $default_shipping_zones );
+            wpfm_set_cached_data( 'wc_shipping_zones_' . $continent . $country . $state . $this->feed_zip_codes, $default_shipping_zones );
         }
         return $default_shipping_zones;
+    }
+
+
+    /**
+     * @desc Add shipping class price/ no class price with base class
+     * @since 7.2.20
+     * @param $shipping_methods
+     * @param $rule
+     * @return array|mixed
+     */
+    private function add_class_no_class_cost( $shipping_methods = [], $rule = [] ) {
+        if( !is_wp_error( $this->product ) && $this->product && !empty( $shipping_methods ) ) {
+            for( $index = 0; $index < sizeof( $shipping_methods ); $index++ ) {
+                if( isset( $shipping_methods[ $index ][ 'instance' ] ) && !is_wp_error( $shipping_methods[ $index ][ 'instance' ] ) && is_array( $shipping_methods[ $index ][ 'instance' ] ) && isset( $shipping_methods[ $index ][ 'price' ] ) ) {
+                    if( !empty( $shipping_methods[ $index ][ 'instance' ] ) ) {
+                        $class_id = $this->product->get_shipping_class_id();
+                        if( 'variation' === $this->product->get_type() ) {
+                            $product_id = $this->product->get_parent_id();
+                            if( $product_id ) {
+                                $class_id = wc_get_product( $product_id )->get_shipping_class_id();
+                            }
+                        }
+                        if( isset( $shipping_methods[ $index ][ 'instance' ][ 'class_cost_' . $class_id ] ) && $shipping_methods[ $index ][ 'instance' ][ 'class_cost_' . $class_id ] ) {
+                            $shipping_methods[ $index ][ 'price' ] += $shipping_methods[ $index ][ 'instance' ][ 'class_cost_' . $class_id ];
+                        }
+                        elseif( isset( $shipping_methods[ $index ][ 'instance' ][ 'no_class_cost' ] ) && $shipping_methods[ $index ][ 'instance' ][ 'no_class_cost' ] ) {
+                            $shipping_methods[ $index ][ 'price' ] += $shipping_methods[ $index ][ 'instance' ][ 'no_class_cost' ];
+                        }
+                    }
+                    unset( $shipping_methods[ $index ][ 'instance' ] );
+                    if( isset( $rule[ 'prefix' ] ) ) {
+                        $shipping_methods[ $index ][ 'price' ] = $rule[ 'prefix' ] . $shipping_methods[ $index ][ 'price' ];
+                    }
+                    if( isset( $rule[ 'suffix' ] ) ) {
+                        $shipping_methods[ $index ][ 'price' ] = $shipping_methods[ $index ][ 'price' ] . $rule[ 'suffix' ];
+                    }
+                }
+            }
+        }
+        return $shipping_methods;
     }
 
     /**

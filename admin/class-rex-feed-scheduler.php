@@ -105,6 +105,7 @@ class Rex_Feed_Scheduler {
      * @since    2.0.0
      */
     public function rex_feed_cron_handler() {
+        Rex_Product_Feed_Ajax::rex_feed_update_abandoned_child_list();
         $this->configure_merchant_object(true );
         $this->start_batch_processing();
     }
@@ -183,6 +184,9 @@ class Rex_Feed_Scheduler {
         $custom_wrapper_el           = get_post_meta( $feed_id, '_rex_feed_custom_wrapper_el', true );
         $custom_items_wrapper        = get_post_meta( $feed_id, '_rex_feed_custom_items_wrapper', true );
         $custom_xml_header           = get_post_meta( $feed_id, '_rex_feed_custom_xml_header', true );
+        $yandex_company_name         = get_post_meta( $feed_id, '_rex_feed_yandex_company_name', true );
+        $yandex_old_price            = get_post_meta( $feed_id, '_rex_feed_yandex_old_price', true );
+        $yandex_old_price            = 'include' === $yandex_old_price;
 
         if( apply_filters( 'wpfm_is_premium', false ) ) {
             $feed_rules = get_post_meta( $feed_id, '_rex_feed_feed_config_rules', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config_rules', true );
@@ -245,6 +249,8 @@ class Rex_Feed_Scheduler {
             'custom_wrapper_el'           => $custom_wrapper_el,
             'custom_items_wrapper'        => $custom_items_wrapper,
             'custom_xml_header'           => $custom_xml_header,
+            'yandex_company_name'         => $yandex_company_name,
+            'yandex_old_price '           => $yandex_old_price,
         );
     }
 

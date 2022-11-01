@@ -1591,7 +1591,8 @@ class Rex_Product_Feed_Admin {
      * @return array
      */
     public function send_merchant_info( $tracking_data ) {
-        $merchants = [];
+        $merchants  = [];
+        $feed_title = [];
         $args      = [
             'post_type'        => 'product-feed',
             'post_status'      => 'publish',
@@ -1604,9 +1605,11 @@ class Rex_Product_Feed_Admin {
         if( !empty( $feed_ids ) ) {
             foreach( $feed_ids as $id ) {
                 $merchants[] = get_post_meta( $id, '_rex_feed_merchant', true ) ?: get_post_meta( $id, 'rex_feed_merchant', true );
+                $feed_title[] = get_the_title( $id );
             }
         }
         $tracking_data[ 'extra' ][ 'rex_feed_merchant' ] = implode( ', ', array_unique( $merchants ) );
+        $tracking_data[ 'extra' ][ 'rex_feed_title' ]    = implode( ', ', array_unique( $feed_title ) );
         return $tracking_data;
     }
 
