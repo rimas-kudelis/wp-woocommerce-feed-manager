@@ -8,7 +8,7 @@ Tags: product feed,woocommerce product feed,google feed,google shopping,facebook
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.22
+Stable tag:  7.2.23
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -755,6 +755,9 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.23 (2022-12-19) =
+* Security: Update plugin's libraries
 
 = 7.2.22 (2022-11-01) =
 * Added: Show all the countries within a zone in the PFM country dropdown if a Zone is selected on the WC backend
