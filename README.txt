@@ -756,7 +756,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
-= 7.2.24 (2022-12-28) =
+= 7.2.24 (2022-12-29) =
 * Added: Support added to generate text format Google Shopping Feed
 * Fixed: Product URL encoding issue fixed
 * Fixed: Custom feed update scheduling issue fixed
