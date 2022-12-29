@@ -1551,10 +1551,10 @@ class Rex_Product_Feed_Admin {
                     </p>
                     <ol style="margin-left: 20px; font-size: 13px;">
                         <li>
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpfm_dashboard' ) )?>" target="_blank"><?php esc_html_e( 'Clear Batch', 'rex-product-feed' );?></a> <?php esc_html_e( 'And Regenerate', 'rex-product-feed' );?> - <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/#error-on-top-of-xml-feed' )?>" target="_blank"><?php esc_html_e( 'View Doc', 'rex-product-feed' );?></a>
+                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpfm_dashboard' ) )?>" target="_blank"><?php esc_html_e( 'Clear Batch', 'rex-product-feed' );?></a> <?php esc_html_e( 'And Regenerate', 'rex-product-feed' );?> - <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/?utm_source=plugin&utm_medium=troubleshoot_button&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e( 'View Doc', 'rex-product-feed' );?></a>
                         </li>
                         <li>
-                            <?php esc_html_e( 'Use Strip Tags For Description', 'rex-product-feed' );?> - <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/#error-on-top-of-xml-feed' )?>" target="_blank"><?php esc_html_e( 'View Doc', 'rex-product-feed' );?></a>
+                            <?php esc_html_e( 'Use Strip Tags For Description', 'rex-product-feed' );?> - <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/?utm_source=plugin&utm_medium=troubleshoot_button&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e( 'View Doc', 'rex-product-feed' );?></a>
                         </li>
                     </ol>
                     <p>
@@ -1613,10 +1613,15 @@ class Rex_Product_Feed_Admin {
         return $tracking_data;
     }
 
-    public function remove_astra_meta_boxes() {
-        add_action( 'do_meta_boxes', function() {
-            remove_meta_box( 'astra_settings_meta_box', 'product-feed', 'side' );
-            remove_meta_box( 'postcustom', 'product-feed', 'side' );
-        }, 9999 );
+    /**
+     * @desc Register single cron schedule (on hourly schedule) to update
+     * abandoned child lists
+     * @return void
+     * @since 7.2.23
+     */
+    public function register_single_cron_schedule() {
+        if (! wp_next_scheduled ( 'rex_feed_update_wc_abandoned_child' )) {
+            wp_schedule_single_event( time(), 'rex_feed_update_wc_abandoned_child' );
+        }
     }
 }

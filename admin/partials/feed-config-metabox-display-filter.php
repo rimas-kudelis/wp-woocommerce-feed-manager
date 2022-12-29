@@ -41,7 +41,7 @@ if ( wpfm_pro_compatibility() ) {
                 </p>
             </span>
         </label>
-        <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-custom-filter-generating-product-feed/' )?>" target="_blank">
+        <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-custom-filter-generating-product-feed/?utm_source=plugin&utm_medium=custom_filter_link&utm_campaign=pfm_plugin' )?>" target="_blank">
         <?php esc_html_e('Learn How', 'rex-product-feed')?></a>
     </div>
 

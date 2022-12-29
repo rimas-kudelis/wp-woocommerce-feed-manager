@@ -1883,33 +1883,44 @@ abstract class Rex_Product_Feed_Abstract_Generator
             return 'true';
         }
         elseif ( $format === 'text' ) {
-            $this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
-            $file       = trailingslashit( $path ) . "{$feed_file_name}.txt";
-            update_post_meta( $this->id, '_rex_feed_feed_format', $this->feed_format );
+            if( $this->feed ) {
+                //$this->feed = iconv( "UTF-8", "Windows-1252//IGNORE", $this->feed );
+                $file = trailingslashit( $path ) . "{$feed_file_name}.txt";
 
-            if ( $this->batch != 1 ) {
-                $this->feed = substr( $this->feed, strpos( $this->feed, "\n" ) + 1 );
-            }
-
-            if ( file_exists( $file ) ) {
-                if ( $this->batch == 1 ) {
-                    file_put_contents( $file, $this->feed );
+                if( (int) $this->batch === 1 && file_exists( $file ) ) {
+                    unlink( $file );
                 }
-                else {
-                    $feed = $this->feed;
-                    if ( $feed ) {
-                        file_put_contents( $file, $feed, FILE_APPEND );
+
+                if ( (int) $this->batch > 1 && file_exists( $file ) ) {
+                    $header       = strtok( $this->feed, "\n" );
+                    $saved        = file_get_contents( $file );
+                    $saved_header = strtok( $saved, "\n" );
+
+                    if( false !== strpos( $saved_header, $header ) ) {
+                        $this->feed = substr( $this->feed, strpos( $this->feed, "\n" ) + 1 );
                     }
                 }
-            }
-            else {
-                file_put_contents( $file, $this->feed );
-            }
-            if( $this->batch === $this->tbatch ) {
-                if( 'publish' === $publish_btn ) {
-                    $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
+
+                if( file_exists( $file ) ) {
+                    if( $this->batch == 1 ) {
+                        file_put_contents( $file, $this->feed );
+                    }
+                    else {
+                        $feed = $this->feed;
+                        if( $feed ) {
+                            file_put_contents( $file, $feed, FILE_APPEND );
+                        }
+                    }
                 }
-                update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.txt" );
+                else {
+                    file_put_contents( $file, $this->feed );
+                }
+                if( $this->batch === $this->tbatch ) {
+                    if( 'publish' === $publish_btn ) {
+                        $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
+                    }
+                    update_post_meta( $this->id, $feed_file_meta_key, $baseurl . "/rex-feed/{$feed_file_name}.txt" );
+                }
             }
             return 'true';
         }

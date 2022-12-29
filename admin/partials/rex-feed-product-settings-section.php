@@ -21,7 +21,7 @@
 			<label for="<?php echo esc_attr( $this->prefix ) . 'schedule_label';?>"><?php esc_html_e('Auto-Generate Your Feed', 'rex-product-feed')?>
 				<span class="rex_feed-tooltip">
                     <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
-                    <p><?php esc_html_e( 'Set auto-update to keep your feed in sync with WooCommerce ', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-schedule-auto-update-of-feed-on-intervals/' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a></p>
+                    <p><?php esc_html_e( 'Set auto-update to keep your feed in sync with WooCommerce ', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-schedule-auto-update-of-feed-on-intervals/?utm_source=plugin&utm_medium=auto_update_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a></p>
                 </span>
 			</label>
 
@@ -76,7 +76,7 @@
                     <span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
 						<p>
-							<?php esc_html_e( 'Select a Country for the Shipping value. ', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-include-shipping-values-into-woocommerce-product-feed/' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
+							<?php esc_html_e( 'Select a Country for the Shipping value. ', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/product-feed-manager-documentation/?utm_source=plugin&utm_medium=shipping_link&utm_campaign=pfm_plugin#tax-shipping' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
 						</p>
 					</span>
                 </label>
@@ -267,7 +267,7 @@
 				<label for="<?php echo esc_attr( $this->prefix ) . 'hidden_products_label';?>"><?php esc_html_e('Exclude Invisible/Hidden Products', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
-						<p><?php esc_html_e( 'Enable this option to exclude invisible/hidden products from your feed ', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-exclude-invisible-products-hidden-products/' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
+						<p><?php esc_html_e( 'Enable this option to exclude invisible/hidden products from your feed ', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-exclude-invisible-products-hidden-products/?utm_source=plugin&utm_medium=exclude_invisible_products_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
 					</p>
 					</span>
 				</label>
@@ -301,7 +301,7 @@
 							echo "<br>";
 							esc_html_e( '</g:title>', 'rex-product-feed' );
 							?>
-							<a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-include-product-variation-term-to-the-product-name/' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
+							<a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-include-product-variation-term-to-the-product-name/?utm_source=plugin&utm_medium=exclude_variation_name_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
 						</p>
 					</span>
 				</label>
@@ -561,7 +561,7 @@
 				<label for="<?php echo esc_attr( $this->prefix ) . 'analytics_params_options_content';?>"><?php esc_html_e('Track Your Campaign', 'rex-product-feed')?>
 					<span class="rex_feed-tooltip">
 						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
-						<p><?php esc_html_e( 'Analytics Parameters ', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-add-utm-parameters-to-product-urls/' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
+						<p><?php esc_html_e( 'Analytics Parameters ', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-add-utm-parameters-to-product-urls/?utm_source=plugin&utm_medium=analytics_parameters_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
 					</p>
 					</span>
 				</label>

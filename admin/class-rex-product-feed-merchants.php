@@ -23,7 +23,7 @@ class Rex_Feed_Merchants {
             'google'    => array(
                 'free'   => true,
                 'name'   => 'Google Shopping',
-                'formats' => [ 'xml' ]
+                'formats' => [ 'xml', 'text' ]
             ),
             'facebook'  => array(
                 'free'   => true,

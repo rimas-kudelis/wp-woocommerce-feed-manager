@@ -136,8 +136,8 @@ class Rex_Google_Merchant_Settings_Api {
                         ?>
                     </p>
                     <div class="single-merchant_pdf__link">
-                        <a href="<?php echo esc_url( 'https://rextheme.com/docs/upload-woocomerce-product-feed-directly-to-google-merchant-center/' )?>" target="_blank"><?php esc_html_e('Direct Upload Method (No need for authorization)', 'rex-product-feed')?></a>
-                        <a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/' )?>" target="_blank"><?php esc_html_e('API Method (Require authorization)', 'rex-product-feed')?></a>
+                        <a href="<?php echo esc_url( 'https://rextheme.com/docs/upload-woocomerce-product-feed-directly-to-google-merchant-center/?utm_source=plugin&utm_medium=google_form_direct_upload_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('Direct Upload Method (No need for authorization)', 'rex-product-feed')?></a>
+                        <a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/?utm_source=plugin&utm_medium=get_started_auto_sync_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('API Method (Require authorization)', 'rex-product-feed')?></a>
                     </div>
                 </div>
             </div>

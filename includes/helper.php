@@ -726,3 +726,15 @@ if ( ! function_exists( 'wpfm_get_abandoned_child' ) ) {
         return $products;
     }
 }
+
+if( !function_exists( 'wpfm_get_woocommerce_shop_name' ) ) {
+    /**
+     * @desc Get the WooCommerce shop name
+     * @return string
+     * @since 7.2.21
+     */
+    function wpfm_get_woocommerce_shop_name() {
+        $wc_shop_page_id = get_option( 'woocommerce_shop_page_id' );
+        return get_the_title( $wc_shop_page_id );
+    }
+}

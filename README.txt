@@ -8,12 +8,12 @@ Tags: product feed,woocommerce product feed,google feed,google shopping,facebook
 Requires at least: 4.7
 Tested up to:  6.0
 Requires PHP: 7.0
-Stable tag:  7.2.23
+Stable tag:  7.2.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Generate WooCommerce product feeds for Google Shopping, Social Catalogs, Instagram, Google Local Products Inventory, Pinterest, Bing, Yandex, All Google Feed & more than 170+ Merchants
- 
+
 
 == Description ==
 Generating your WooCommerce Product Feed was never this easy!
@@ -45,7 +45,7 @@ Use features such as category mapping, custom fields, product filters, Google Au
 [youtube https://www.youtube.com/watch?v=9-Q65zMYvfg]
 
 <blockquote>
-<b>Product Feed Manager <a target="_blank" href="https://rextheme.com/docs/product-feed-manager-documentation/">Documentation</a></b>
+<b>Product Feed Manager <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/?utm_source=plugin&utm_medium=documentation_button&utm_campaign=pfm_plugin">Documentation</a></b>
 <br/>
 <b>Product Feed Manager Video <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Tutorials</a></b>
 <br/>
@@ -228,11 +228,11 @@ The Yandex Market Language (YML) format is a complex feed format that is difficu
 
 == Google Local Products Inventory ==
 
-The google local Products Inventory feed lets you list your products that you sell in each store. Create a Google product feed/ Google feed using Google Local Inventory feed template and submit the feed to the Google Merchant Center and start advertising your local products online 
+The google local Products Inventory feed lets you list your products that you sell in each store. Create a Google product feed/ Google feed using Google Local Inventory feed template and submit the feed to the Google Merchant Center and start advertising your local products online
 
 == Google Manufacturer Center Feed ==
 
-If you want to show special offers within your Shopping Ads, you can simply generate a Google feed/ Google product feed for the Google Manufacturer Centre and start promoting now. Your audience will be able to view the offer on a popup once they click on the link. 
+If you want to show special offers within your Shopping Ads, you can simply generate a Google feed/ Google product feed for the Google Manufacturer Centre and start promoting now. Your audience will be able to view the offer on a popup once they click on the link.
 
 == Skroutz (Skroutz.gr) ==
 
@@ -756,8 +756,15 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.2.24 (2022-12-28) =
+* Added: Support added to generate text format Google Shopping Feed
+* Fixed: Product URL encoding issue fixed
+* Fixed: Custom feed update scheduling issue fixed
+* Fixed: Product pricing issue with decimal points fixed
+* Fixed: eBay custom values not saving issue fixed
+
 = 7.2.23 (2022-12-19) =
-* Security: Update plugin's libraries
+* Security: Update plugin’s libraries
 
 = 7.2.22 (2022-11-01) =
 * Added: Show all the countries within a zone in the PFM country dropdown if a Zone is selected on the WC backend

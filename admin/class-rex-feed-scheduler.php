@@ -105,7 +105,6 @@ class Rex_Feed_Scheduler {
      * @since    2.0.0
      */
     public function rex_feed_cron_handler() {
-        Rex_Product_Feed_Ajax::rex_feed_update_abandoned_child_list();
         $this->configure_merchant_object(true );
         $this->start_batch_processing();
     }

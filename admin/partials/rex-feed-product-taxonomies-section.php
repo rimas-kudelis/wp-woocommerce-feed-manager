@@ -22,7 +22,7 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
                 <label for="rex_feed_cats_check_all_btn"><?php esc_html_e('Check All', 'rex-product-feed')?></label>
             </label>
 
-            <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-category-filter-generating-product-feed/' )?>" target="_blank">
+            <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-category-filter-generating-product-feed/?utm_source=plugin&utm_medium=category_filter_link&utm_campaign=pfm_plugin' )?>" target="_blank">
                 <?php esc_html_e('Learn How', 'rex-product-feed')?>
             </a>
 
@@ -70,7 +70,7 @@ $icon = '../assets/icon/icon-svg/icon-question.php';
                 <label for="rex_feed_tags_check_all_btn"><?php esc_html_e('Check All', 'rex-product-feed')?></label>
             </label>
 
-            <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-tag-filter-generating-product-feed/' )?>" target="_blank">
+            <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-tag-filter-generating-product-feed/?utm_source=plugin&utm_medium=tag_filter_link&utm_campaign=pfm_plugin' )?>" target="_blank">
                 <?php esc_html_e('Learn How', 'rex-product-feed')?>
             </a>
 

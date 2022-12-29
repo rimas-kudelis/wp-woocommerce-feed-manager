@@ -806,7 +806,7 @@
                 }
 
                 if ( 'title' === meta_val ) {
-                    let url = 'https://rextheme.com/docs/how-to-merge-multiple-attributes-values-together-with-the-combined-fields-feature/?utm_source=PFM+plugin&utm_medium=Optimize+Product+Title&utm_campaign=Combined+Attributes';
+                    let url = 'https://rextheme.com/docs/how-to-merge-multiple-attributes-values-together-with-the-combined-fields-feature/?utm_source=plugin&utm_medium=combined_attributes_link&utm_campaign=pfm_plugin\n';
                     $('select[name="fc[' + row_id + '][meta_key]"]').parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" + row_id + "'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+optimize_pr_title_btn+"</a></p>");
                 }
             }
@@ -840,7 +840,7 @@
         }
 
         if ( 'title' === selected_val ) {
-            let url = 'https://rextheme.com/docs/how-to-merge-multiple-attributes-values-together-with-the-combined-fields-feature/?utm_source=PFM+plugin&utm_medium=Optimize+Product+Title&utm_campaign=Combined+Attributes';
+            let url = 'https://rextheme.com/docs/how-to-merge-multiple-attributes-values-together-with-the-combined-fields-feature/?utm_source=plugin&utm_medium=combined_attributes_link&utm_campaign=pfm_plugin\n';
 
             if ( $( '#rex_opt_title_btn_' + rowId ).length === 0 ) {
                 $( this ).parent().append("<p style='margin-top: 10px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" + rowId + "'><a style='font-size: 10px;' class='rex_cat_map' href='"+ url +"' target='_blank'>"+optimize_pr_title_btn+"</a></p>");

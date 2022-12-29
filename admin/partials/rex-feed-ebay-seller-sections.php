@@ -7,7 +7,7 @@
         </span>
 	</label>
 	<?php
-	$saved_value = get_post_meta( get_the_ID(), 'rex_feed_ebay_seller_site_id', true );
+	$saved_value = get_post_meta( get_the_ID(), '_rex_feed_ebay_seller_site_id', true ) ?: get_post_meta( get_the_ID(), 'rex_feed_ebay_seller_site_id', true );
 	?>
 	<input type="text" name="<?php echo $this->prefix . 'ebay_seller_site_id'; ?>" id="<?php echo $this->prefix . 'ebay_seller_site_id'; ?>" value="<?php echo $saved_value;?>">
 </div>
@@ -20,7 +20,7 @@
         </span>
 	</label>
 	<?php
-	$saved_value = get_post_meta( get_the_ID(), 'rex_feed_ebay_seller_country', true );
+	$saved_value = get_post_meta( get_the_ID(), '_rex_feed_ebay_seller_country', true ) ?: get_post_meta( get_the_ID(), 'rex_feed_ebay_seller_country', true );
 	?>
 	<select name="<?php echo $this->prefix . 'ebay_seller_country'; ?>" id="<?php echo $this->prefix . 'ebay_seller_country'; ?>">
 		<?php
@@ -41,7 +41,7 @@
         </span>
 	</label>
 	<?php
-	$saved_value = get_post_meta( get_the_ID(), 'rex_feed_ebay_seller_currency', true );
+	$saved_value = get_post_meta( get_the_ID(), '_rex_feed_ebay_seller_currency', true ) ?: get_post_meta( get_the_ID(), 'rex_feed_ebay_seller_currency', true );
 	?>
 	<input type="text" name="<?php echo $this->prefix . 'ebay_seller_currency'; ?>" id="<?php echo $this->prefix . 'ebay_seller_currency'; ?>" value="<?php echo $saved_value;?>">
 </div>
