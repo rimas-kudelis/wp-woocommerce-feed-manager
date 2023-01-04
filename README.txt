@@ -2,11 +2,11 @@
 
 
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
-Contributors: rextheme, coderexco
+Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: product feed,woocommerce product feed,google feed,google shopping,facebook catalog,google shopping feed,woocommerce product feed manager, google local products, google local products inventory, google ads, eBay MIP,data Feed,xml product feed,google adwords,marktplaats,rakuten,skroutz, walmart, fruugo, bing image feed, bing shopping, bonanza, bestprice, yml, yandex, yandex market, export, yandex feed, export csv, export xml, idealo, idealo feed,facebook ads,facebook feed, facebook, google dynamic search ads
 Requires at least: 4.7
-Tested up to:  6.0
+Tested up to:  6.1.1
 Requires PHP: 7.0
 Stable tag:  7.2.25
 License: GPLv2 or later
