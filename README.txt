@@ -744,14 +744,12 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Screenshots ==
-1. Product Feed Manager Welcome Page
-2. Guided Tour
-3. Generating New Feed
-4. Feed Settings
-5. Feed Filter
-6. Add New and Custom Attributes
-7. Configure Google Merchant
-8. Product Feed Manager Plugin Settings
+1. Generate WooCommerce product feed in 3 simple steps
+2. Map your WooCommerce product categories according to your preferred merchant (Example: Google Merchant Category)
+3. Exclude or include products in your feed using filters and conditions
+4. Configure your feed settings
+5. Authorize your Google Merchant Center account to send your Google Shopping Feed via the content API method
+6. Find out all the product feeds information on a single page
 
 
 == Changelog ==
