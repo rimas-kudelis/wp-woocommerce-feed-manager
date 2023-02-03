@@ -44,10 +44,10 @@ Create your preferred feed in seconds with 3 simple steps:
 
 Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimised feed for greater results.
 
-><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo-pricing" target="_blank">Get Product Feed Manager for WooCommerce - Pro</a>
+><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get Product Feed Manager for WooCommerce - Pro</a>
 
 
-<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/?utm_source=plugin&utm_medium=documentation_button&utm_campaign=pfm_plugin">Documentation</a> | <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Tutorials</a> | <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/">All Features</a>
+<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/?utm_source=plugin&utm_medium=documentation_button&utm_campaign=pfm_plugin">Documentation</a> | <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Tutorials</a> | <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">All Features</a>
 
 
 [youtube https://www.youtube.com/watch?v=9-Q65zMYvfg]
@@ -243,8 +243,8 @@ You can easily generate a Yandex feed using PFM to upload your WooCommerce produ
 
 Along with the Yandex YML feed, you will also be able to generate feed for
 
-– Yandex Turbo-pages (Yandex Turbo)
-– Yandex Delivery
+- Yandex Turbo-pages (Yandex Turbo)
+- Yandex Delivery
 
 The Yandex Market Language (YML) format is a complex feed format that is difficult to create manually. PFM ensures you will be able to get the Yandex Market feed in the accurate YML format without any complex manual effort.
 
@@ -298,16 +298,16 @@ You will be able to generate product feeds, WooCommerce product catalog, or prod
 
 Anywhere you sell around Europe or the USA, you will find feed templates for major marketplaces there.
 
-– eBay Seller Center & eBay MIP Feed
-– Bonanza product feed
-– Fruugo marketplace feed
-– Pricerunner DK product feed
-– Kelkoo XML feed
-– Pricespy (or Prisjakt) feed
-– Spartoo marketplace feed
-– Feed prodotto Trovaprezzi
-– Zalando
-– Vergelijk feed
+- eBay Seller Center & eBay MIP Feed
+- Bonanza product feed
+- Fruugo marketplace feed
+- Pricerunner DK product feed
+- Kelkoo XML feed
+- Pricespy (or Prisjakt) feed
+- Spartoo marketplace feed
+- Feed prodotto Trovaprezzi
+- Zalando
+- Vergelijk feed
 - Idealo
 - Vivino
 
