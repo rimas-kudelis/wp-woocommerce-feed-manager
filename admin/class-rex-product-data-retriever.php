@@ -697,17 +697,17 @@ class Rex_Product_Data_Retriever
                         !empty( $this->analytics_params[ 'utm_medium' ] ) &&
                         !empty( $this->analytics_params[ 'utm_campaign' ] )
                     ) {
-                        if( in_array( 'decode_url', $rule, true ) ) {
+                        if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                             return add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink));
                         }
                         return $this->safeCharEncodeURL(add_query_arg( array_filter( $this->analytics_params ), urldecode($permalink) ));
                     }
-                    if( in_array( 'decode_url', $rule, true ) ) {
+                    if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                         return urldecode($permalink);
                     }
                     return $this->safeCharEncodeURL(urldecode($permalink));
                 }
-                if( in_array( 'decode_url', $rule, true ) ) {
+                if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                     return urldecode($permalink);
                 }
 
@@ -723,17 +723,17 @@ class Rex_Product_Data_Retriever
                         !empty( $this->analytics_params[ 'utm_medium' ] ) &&
                         !empty( $this->analytics_params[ 'utm_campaign' ] )
                     ) {
-                        if( in_array( 'decode_url', $rule, true ) ) {
+                        if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                             return add_query_arg( array_filter( $this->analytics_params ), urldecode( $_pr->get_permalink() ) );
                         }
                         return $this->safeCharEncodeURL( add_query_arg( array_filter( $this->analytics_params ), urldecode( $_pr->get_permalink() ) ) );
                     }
-                    if( in_array( 'decode_url', $rule, true ) ) {
+                    if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                         return urldecode( $_pr->get_permalink() );
                     }
                     return $this->safeCharEncodeURL( urldecode( $_pr->get_permalink() ) );
                 }
-                if( in_array( 'decode_url', $rule, true ) ) {
+                if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
                     return urldecode( $_pr->get_permalink() );
                 }
                 return $this->safeCharEncodeURL( urldecode( $_pr->get_permalink() ) );
@@ -1380,7 +1380,7 @@ class Rex_Product_Data_Retriever
                         $args[ 'fields' ] = 'ids';
                         $products         = get_posts( $args );
 
-                        if( $discount_obj->is_applicable( $_pid ) && in_array( $_pid, $products ) ) {
+                        if( $discount_obj->is_applicable( $_pid ) && is_array( $products ) && in_array( $_pid, $products ) ) {
                             $to_widthdraw = 0;
                             if( in_array( $discount_obj->settings[ "action" ], array( "percentage-off-pprice", "percentage-off-osubtotal" ) ) )
                                 $to_widthdraw = floatval( floatval( $sale_price ) ) * floatval( $discount_obj->settings[ "percentage-or-fixed-amount" ] ) / 100;
@@ -3130,15 +3130,8 @@ class Rex_Product_Data_Retriever
                     $output[] = implode( $sep, $temp );
                 }
             }
-            else if( $term->parent == 0 ) {
-                if( is_array( $term_name_arr ) ) {
-                    $output[] = implode( $sep, $term_name_arr );
-                }
-            }
-            else if( !in_array( $term->parent, $terms_id ) ) {
-                if( is_array( $term_name_arr ) ) {
-                    $output[] = implode( $sep, $term_name_arr );
-                }
+            else if( (($term->parent == 0) || (is_array( $terms_id ) && !in_array( $term->parent, $terms_id ))) && (is_array( $term_name_arr )) ) {
+                $output[] = implode( $sep, $term_name_arr );
             }
         }
         return implode( ', ', $output );
@@ -3707,6 +3700,9 @@ class Rex_Product_Data_Retriever
                 return $val;
             case 'replace_comma_with_backslash':
                 return str_replace( ',', '/', str_replace( ', ', '/', $val ) );
+                return $val;
+            case 'replace_decimal_with_hyphen':
+                return str_replace( '.', '-', str_replace( '. ', '-', $val ) );
 
             default:
                 return $val;

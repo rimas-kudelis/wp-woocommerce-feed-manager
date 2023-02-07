@@ -2118,7 +2118,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<review>';
-                $this->feed_string_footer .= '</feed>';
+                $this->feed_string_footer .= '</reviews></feed>';
             }
         }
         elseif ( $this->merchant === 'drezzy'

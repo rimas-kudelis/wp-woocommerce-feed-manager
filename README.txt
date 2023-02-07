@@ -8,7 +8,7 @@ Tags: product feed,woocommerce product feed,google feed,google shopping,facebook
 Requires at least: 4.7
 Tested up to:  6.1.1
 Requires PHP: 7.0
-Stable tag:  7.2.25
+Stable tag:  7.2.26
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -784,6 +784,11 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.26 (2023-02-07) =
+* Added: New output sanitization filter `Replace Decimal (.) Point with Hyphen (-)`
+* Fixed: Excluding out of stock option issue for variation
+* Fixed: PHP type error
 
 = 7.2.25 (2023-01-03) =
 * Fixed: Text feed format field value saving issue fixed

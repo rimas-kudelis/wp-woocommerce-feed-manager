@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c4b3d5ab7049af979843f33c03740bc5c1f608b2',
+        'reference' => '17cb6b84da1054a13fb37a274a05c9b42b166517',
         'name' => 'rextheme/best-woocommerce-feed',
         'dev' => false,
     ),
@@ -61,7 +61,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c4b3d5ab7049af979843f33c03740bc5c1f608b2',
+            'reference' => '17cb6b84da1054a13fb37a274a05c9b42b166517',
             'dev_requirement' => false,
         ),
         'roundcube/plugin-installer' => array(
