@@ -4,7 +4,7 @@
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: product feed,woocommerce product feed,google feed,google shopping,facebook catalog,google shopping feed,woocommerce product feed manager, google local products, google local products inventory, google ads, eBay MIP,data Feed,xml product feed,google adwords,marktplaats,rakuten,skroutz, walmart, fruugo, bing image feed, bing shopping, bonanza, bestprice, yml, yandex, yandex market, export, yandex feed, export csv, export xml, idealo, idealo feed,facebook ads,facebook feed, facebook, google dynamic search ads
+Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, google adwords, marktplaats, rakuten, skroutz,  walmart,  fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads, facebook feed,  facebook,  google dynamic search ads
 Requires at least: 4.7
 Tested up to:  6.1.1
 Requires PHP: 7.0
@@ -40,7 +40,7 @@ Create your preferred feed in seconds with 3 simple steps:
 2. Configure Product Data
 3. Generate Feed Easily
 
--- That's it. Your feed is ready and you can start selling in your desired marketplace.
+-- That's it. Your WooCommerce product feed is ready and you can start selling in your desired marketplace.
 
 Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimised feed for greater results.
 
@@ -54,7 +54,7 @@ Use features such as category mapping, custom fields, product filters, Google Au
 
 == Best Plugin To Generate WooCommerce Google Product Feed ==
 
-Currently, this plugin is considered the easiest and the most effective plugin to generate WooCommerce Google Shopping Feed.
+Currently, this plugin is considered the easiest and the most effective Product Feed Management plugin to generate WooCommerce Google Shopping Feed.
 
 You will get everything you need that is required by Google merchant feed (Google Shopping Feed) including:
 
@@ -92,7 +92,7 @@ The plugin is designed to make it easy for both beginners and advanced users. Wh
 
 Sure, you might find other plugins out there that are quite good. But with Product Feed Manager, we want to ensure that you, as the user, is the first priority. That is why we always provide high quality support and constantly work on improving the plugin with new and improved features to make the life easier for you when it comes to promoting your products on online marketplaces.
 
-Following are all the core features that we have released over the years to make this plugin the best solution for your business.
+Following are all the core features that we have released over the years to make this plugin the best Product Feed Management solution for your business.
 
 **Auto-sync with Google Shopping**
 You can auto-sync your store products with Google Merchant Shop (Google Shopping). You can set it up so that your generated product feed (product data feed) will automatically be updated and sent to your Google Merchant Shop as per your schedule. You do not need to download and upload the feed for Google Shopping Center manually.
@@ -186,7 +186,7 @@ With Facebook Pixel, you can track:
 
 As you already know, Product Feed Manager for WooCommerce is best known for generating Google Shopping feed also known as Google product feed.
 
-However, there’s more. You can also generate google product feed in the right format for most other Google Destinations as well.
+However, providing Google Merchant Center feed template is not the only thing. You can also generate google product feed in the right format for most other Google Destinations as well.
 
 The plugin comes with Google feed generation templates for almost all destinations that you will find on Surfaces Across Google to promote your WooCommerce products.
 
@@ -211,9 +211,11 @@ So, you can literally use just one single plugin to generate Google feed for all
 
 Facebook Dynamic Ads or Facebook Shop is currently among the top priorities for any online shop to promote and sell products, simply due to the targeted audience that Facebook can bring in.
 
+For that, creating an accurate WooCommerce Facebook product feed is cruical.
+
 With Product Feed Manager, you will get a pre-built merchant template for Facebook Catalog that will come with all the required attributes to successfully generate a WooCommerce Facebook Feed (Facebook product catalog feed).
 
-All you need to do is simply select Facebook Catalog from the merchant list, check and assign the values to the require facebook product catalog feed attributes, and publish the feed. It’s as simple as that.
+All you need to do is simply select Facebook Catalog from the merchant list, check and assign the values to the require facebook product catalog feed attributes, and publish the feed. Product Feed WooCommerce made it pretty simple.
 
 Just like Facebook, Instagram shop marketing (Instagram shop) is another big medium you can rely on when trying to increase your online sales.
 
@@ -223,7 +225,7 @@ This plugin will let you generate an Instagram Shopping Feed accurately too - ju
 
 Next to Google, Bing is probably a prime SERP that people prefer. And recently, the Bing Shopping marketplace is on the rise.
 
-With PFM, you will be able to generate Microsoft Advertising Feed, Bing Shopping Feed (Bing product feed), and Bing Image Feed, which are all great Bing feed services you can leverage to increase WooCommerce sales.
+With WooCommerce Product Feed, you will be able to generate Microsoft Advertising Feed, Bing Shopping Feed (Bing product feed), and Bing Image Feed, which are all great Bing feed services you can leverage to increase WooCommerce sales.
 
 >Bing Image Feed is a new trend that WooCommerce shop owners are embracing to increase their sales along with the Bing product feed.
 
