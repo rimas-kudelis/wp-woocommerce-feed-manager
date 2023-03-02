@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.1.1
 Requires PHP: 7.0
-Stable tag:  7.2.26
+Stable tag:  7.2.27
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -787,6 +787,11 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.2.27 (2023-03-02) =
+* Added: New `Product Review URL` attribute option
+* Fixed: Issue with hourly feed update
+* Fixed: Issue with brand attribute in custom filter
+
 = 7.2.26 (2023-02-07) =
 * Added: New output sanitization filter `Replace Decimal (.) Point with Hyphen (-)`
 * Fixed: Excluding out of stock option issue for variation
@@ -911,7 +916,7 @@ WP Dashboard > Product Feed > Upgrade.
 
 = 7.2.12 (2022-07-14) =
 * Add: WooCommerce Brands Pro plugin support added
-* Add: Popup added to the feed preview feature 
+* Add: Popup added to the feed preview feature
 * Fix: WooCommerce Multilingual & Multicurrency plugin currency switch issue fixed
 
 = 7.2.11 (2022-07-07) =

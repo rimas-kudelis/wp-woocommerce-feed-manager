@@ -1143,24 +1143,24 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * @return array|mixed|string|string[]
      */
     public function wpfm_custom_language_where_queries( $where, $query ) {
-        if ( wpfm_is_wpml_active() ) {
+        if( wpfm_is_wpml_active() ) {
             global $sitepress;
-            $search = "language_code = '".$sitepress->get_default_language()."'";
-            $replace = "language_code = '".$this->wpml_language."'";
-            return str_replace( $search, $replace, $where );
+            $search  = "language_code = '" . $sitepress->get_default_language() . "'";
+            $replace = "language_code = '" . $this->wpml_language . "'";
+            $where   = str_replace( $search, $replace, $where );
         }
-        if ( wpfm_is_polylang_active() && $this->bypass ) {
+        if( wpfm_is_polylang_active() && $this->bypass ) {
             global $wpdb;
             $polylang = get_the_terms( $this->id, 'language' );
-            $polylang = array_column($polylang, 'term_id');
+            $polylang = array_column( $polylang, 'term_id' );
             $polylang = implode( ', ', $polylang );
-            $where .= " AND {$wpdb->prefix}term_relationships.term_taxonomy_id IN({$polylang}) ";
+            $where    .= " AND {$wpdb->prefix}term_relationships.term_taxonomy_id IN({$polylang}) ";
         }
         if( $this->custom_filter_option ) {
             $search  = ') AND ( 
   ( wp_postmeta.meta_key =';
             $replace = ') OR ( ( wp_postmeta.meta_key =';
-            $where = str_replace( $search, $replace, $where );
+            $where   = str_replace( $search, $replace, $where );
         }
 
         return $where;
