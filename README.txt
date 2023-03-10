@@ -551,8 +551,6 @@ We use below mentioned third party services to improve user experience and enhan
 == Installation ==
 **Easy Product Feed Manager Installation Process in your WordPress Dashboard:**
 
-![Installation](https://ps.w.org/best-woocommerce-feed/assets/feed-generation.gif)
-
 **Step -1:** Upload the Product Feed Manager for WooCommerce to the `/wp-content/plugins/` directory and click `Install Now`
 
 **Step -2:** Activate the plugin through the `Plugins` menu in WordPress
@@ -560,8 +558,6 @@ We use below mentioned third party services to improve user experience and enhan
 **Step -3:** Now, a new menu called `Product Feed` will appear on your dashboard. From there, you can create and manage product feeds.
 
 **Easy Feed Generation Process Using Product Feed Manager:**
-
-![Installation](https://ps.w.org/best-woocommerce-feed/assets/installation.gif)
 
 **Step -1:** Hover on the Product Feed icon on your dashboard and click on `Add New Feed`
 
