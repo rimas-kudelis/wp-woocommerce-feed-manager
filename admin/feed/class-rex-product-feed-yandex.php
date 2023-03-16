@@ -185,7 +185,7 @@ class Rex_Product_Feed_Yandex extends Rex_Product_Feed_Abstract_Generator {
             $item = RexShopping::createItem();
 
             foreach ($attributes as $key => $value) {
-                if( 'picture' === $key ) {
+                if( 'picture' === $key && !empty( $value ) && is_array( $value ) ) {
                     $value = array_slice( $value, 0, 10 );
                 }
                 elseif( 'oldprice' === $key ) {

@@ -150,10 +150,10 @@ class Rex_Product_Data_Retriever
         $this->wcml               = in_array( 'woocommerce-multilingual/wpml-woocommerce.php', get_option( 'active_plugins', [] ) );
         $this->feed_format        = $feed->get_feed_format();
         $this->feed_country       = $feed->get_shipping();
-        $this->feed_zip_codes           = $feed->get_zip_code();
+        $this->feed_zip_codes     = $feed->get_zip_code();
 
+        $log = wc_get_logger();
         if( $this->is_logging_enabled ) {
-            $log = wc_get_logger();
             $log->info( '*************************', array( 'source' => 'WPFM', ) );
             $log->info( __( 'Start product processing.', 'rex-product-feed' ), array( 'source' => 'WPFM', ) );
             $log->info( 'Product ID: ' . $this->product->get_id(), array( 'source' => 'WPFM', ) );
@@ -161,6 +161,7 @@ class Rex_Product_Data_Retriever
         }
 
         $this->set_all_value();
+
         if( $this->is_logging_enabled ) {
             $log->info( __( 'End product processing.', 'rex-product-feed' ), array( 'source' => 'WPFM', ) );
             $log->info( '*************************', array( 'source' => 'WPFM', ) );

@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.1.1
 Requires PHP: 7.0
-Stable tag:  7.2.27
+Stable tag:  7.2.28
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -801,6 +801,11 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.28 (2023-03-16) =
+* Added: Multiple additional image support
+* Fixed: Error while generating `Yandex` feed
+* Fixed: Issue while updating feed with hourly cron
 
 = 7.2.27 (2023-03-02) =
 * Added: New `Product Review URL` attribute option
