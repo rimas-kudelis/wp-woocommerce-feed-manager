@@ -569,12 +569,14 @@ We use below mentioned third party services to improve user experience and enhan
 
 
 == Frequently Asked Questions ==
+
 = Why should I choose the Product Feed Manager for WooCommerce? =
 Product Feed Manager for WooCommerce is dedicated to user satisfaction. You will get the best interface with simplicity and quality.
 Everything you need to generate an effective product feed is included at Product Feed Manager for WooCommerce.
 This plugin was customized so that you can generate product feeds for all major merchant shops, including Google Merchant shop, Facebook Dynamic Ads, etc.
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that Product Feed Manager for WooCommerce is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
+
 = Which merchant shops are supported? =
 
 Currently, we support 168 major merchant shops:
@@ -758,6 +760,15 @@ Currently, we support 168 major merchant shops:
 
 There is no limit to the number of products when generating feed. You can decide on the products you want to generate feed for, and no matter how many, the feed will be generated. However, this limitless product feed is only available for pro-users.
 In the free version, you can generate product feed for up to 50 products per feed. If you are satisfied with the result, you can upgrade to the pro version and use it to the full extent.
+
+= How do I generate WooCommerce product feed for Google Shopping? =
+Check out the easiest way to create Google Shopping feeds for your store:
+[youtube https://youtu.be/Xg-zBdYfIZM]
+
+= How do I create a Facebook Catalog feed? =
+Check out the tutorial to generate an WooCommerce facebook product feed:
+[youtube https://youtu.be/cWwsiCZu55Q]
+
 = What file formats does this plugin generate? =
 This plugin generates product feeds in the following file formats:
 
@@ -766,25 +777,35 @@ This plugin generates product feeds in the following file formats:
 - CSV
 - TSV
 
-**For creating Google product feed, you must use XML format.
-
 = What is the feed auto-update feature? =
 For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily, hourly or weekly updates of feed.
+
 = Can I add attributes of my own choice? =
 Yes, with the dynamic attribute feature, you can include dynamic attributes to your product feed to be generated, without altering any details on your store.
+
 = Does it support product variation? =
 Yes, Product Feed Manager for WooCommerce generates feed with variations as well, if you select it.
+
 = Can I select one single variation? =
 No, Product Feed Manager for WooCommerce supports either all the variations or no variations at all. Currently, there is no option to select one single variation.
+
+= Does the plugin support Google product category? ==
+Yes, you can map your WooCommece product categories according to google product categories.
+
+= Can I add filters to my product feeds? =
+Yes, you can filter products in the feed based category, tag or any custom condition. You can even manually search for products and filter them.
+
 = Will the feed, I generated for any other merchant shop, work on Google Merchant Shop? =
 We have set up the important fields and saved the feed format compatible with each merchant shop. We advise you that you generate different feeds for different Merchant shops.
 In the case of Google, they will not approve feeds unless it is mapped according to their required format.
 We have a feed format specifically organized for the Google Merchant shop. You simply need to map your product categories with the Google Merchant shop.
+
 =  Can I send product feed to my Merchant Shop directly from Product Feed Manager for WooCommerce? =
 Product Feed Manager for WooCommerce lets you auto-sync the product feed to be automatically sent and updated on Google Merchant Shop.
 You can easily set this up by following the steps in this <a href="https://www.youtube.com/watch?v=CVMqRunbW5g" target="_blank">tutorial</a>
 This feature is only there for Google Merchant Shops and no other merchant shops for now.
 For other shops such as eBay, you will have to download the generated feed and upload it on your Merchant shop’s feed import section manually.
+
 =  How do I upgrade to pro? =
 You may use the Product Feed Manager for WooCommerce to generate feed for up to 50 items in total in the free version. You may remove this limit and get feed for unlimited products by upgrading to PRO.
 To upgrade to PRO, you may purchase a license key from:
