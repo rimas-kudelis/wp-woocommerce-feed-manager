@@ -83,7 +83,10 @@ class Node
      */
     public function attachNodeTo(\SimpleXMLElement $parent)
     {
-        if( !is_string( $this->value ) || !is_string( $this->name ) || ( 'sale_price' === $this->name && !$this->value ) ) {
+        if( 'sale_price' === $this->name && !$this->value ) {
+            return;
+        }
+        if( is_array( $this->value ) ) {
             return;
         }
 
