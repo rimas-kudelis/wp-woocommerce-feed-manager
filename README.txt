@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.0
-Stable tag:  7.2.28
+Stable tag:  7.2.29
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -822,6 +822,11 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.29 (2023-04-06) =
+* Fixed: Uncaught TypeError: htmlspecialchars()
+* Fixed: item_group_id attribute issue with simple product
+* Fixed: Issue with `Identifier Exists Calculator`
 
 = 7.2.28 (2023-03-16) =
 * Added: Multiple additional image support
