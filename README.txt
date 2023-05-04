@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.0
-Stable tag:  7.2.30
+Stable tag:  7.2.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -823,6 +823,9 @@ WP Dashboard > Product Feed > Upgrade.
 
 == Changelog ==
 
+= 7.2.31 (2023-05-04) =
+* Compatibility: Compatible with WooCommerce HPOS / High-Performance Order Storage
+
 = 7.2.30 (2023-04-06) =
 * Fixed: Missing product id issue
 
@@ -1005,11 +1008,9 @@ WP Dashboard > Product Feed > Upgrade.
 = 7.2.6 (2022-06-06) =
 * Improved: PFM design (Added new buttons and fixed some design issues)
 
-
 = 7.2.5 (2022-05-26) =
 * Improved: Custom Filter Restructured
 * Improved: Setup Wizard Front-End
-
 
 = 7.2.4 (2022-05-23) =
 * Added: Setup Wizard
@@ -1053,10 +1054,8 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Library function conflict with rankmath, Google placetopay, updraftplus issue fixed
 * Fixed: WooCommerce multicurrency plugin compatibility issue fixed
 
-
 = 7.1.1 (2022-02-23) =
 * Added: Custom feed schedule option to  auto-generate feed
-
 
 = 7.1.0 (2022-02-11) =
 * Added: WPFM Custom fields on the frontend feature added
@@ -1066,14 +1065,11 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Ceneo feed template updated
 * Fixed: UPI activation issue
 
-
 = 7.0.9 (2022-02-07) =
 * Fixed: UPI info missing for the product variations issue fix
 
-
 = 7.0.8 (2022-01-31) =
 * Fixed: Multiple variations included with custom filter issue fixed
-
 
 = 7.0.7 (2022-01-27) =
 * Added: How to guide and Troubleshoot section added
@@ -1089,7 +1085,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Duplicate feed categories are not checked issue fixed
 * Fixed: Feed file is removed once the feed feed is removed from the trash issue fixed
 * Fixed: Cron issue on attribute skipping with empty values issue fixed
-
 
 = 7.0.6 (2022-01-06) =
 * Fixed: Troubleshoot button wrong URL issue fixed
@@ -1133,12 +1128,10 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Guloggratis.dk feed template updated
 * Fixed: WooComposite plugin not working issue fixed
 
-
 = 6.7.5 (2021-10-21) =
 * Added: GulogGratis.dk template
 * Fixed: Dropship Mantel plugin error fixed
 * Fixed: WPML PHP error fixed
-
 
 = 6.7.4 (2021-10-04) =
 * Fixed: UTF-8 CSV issue updated
@@ -1148,7 +1141,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Trovino.it feed template added
 * Added: Cercavino feed template added
 * Added: Dropship Mantle plugin support added
-
 
 = 6.7.3 (2021-09-23) =
 * Fixed: Unique Product Identifiers not working bug fixed
@@ -1163,18 +1155,15 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Support for WooCommerce Brand added
 * Added: Skip row if no value found feature added
 
-
 = 6.7.1 (2021-08-27) =
 * Added: Shopee feed template added
 * Fixed: Marktplaats feed template updated
 * Fixed: Aelia Currency Switcher - PFM currency changing caching issue fixed
 
-
 = 6.7.0 (2021-08-24) =
 * Added: Trigger based review request
 * Added: Aelia Currency Converter for WooCommerce support added
 * Fixed: Bonanza feed template updated
-
 
 = 6.6.10 (2021-08-18) =
 * Fixed: Custom Filter Availability issue fixed
@@ -1183,7 +1172,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Vivino feed template updated
 * Added: Bing Image feed template added
 * Compatibility Checked : WooCommerce 5.6.0
-
 
 = 6.6.9 (2021-08-11) =
 * Changelog: Fixed: PHP warning for empty attributes
@@ -1237,7 +1225,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: New Template - BestPrice.gr
 * Added: New Template - Mirakl
 * Added: Brands For WooCommerce plugin support added
-
 
 = 6.6.0 (2021-05-07) =
 * Added: New Sanitization Filter - Replace Space With Hyphen (-)
@@ -1306,13 +1293,11 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Google Promotions Feed template
 * Added: Favi - Compari & Árukereső feed template
 
-
 = 6.3.1 (2021-02-04) =
 * Fixed: Facebook CSV Feed Template Error
 * Fixed: Issue Category Mapping Empty Result if Primary Category Not Mapped Issue
 * Added: Availability of OnBackorder results on_backorder
 * Added: Availability of OnBackorder results in_stock
-
 
 = 6.3.0 (2021-01-28) =
 * Fixed: Idealo template
@@ -1400,7 +1385,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Products in backorder will show out of stock on feed
 * Updated: Polish translation
 
-
 = 5.40 (2020-09-21) =
 * Added: Support for private products
 * Added: Cache frequent queries
@@ -1410,7 +1394,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Fixed: Facebook availability attribute mapping
 * Fixed: Custom filter bug. Previously no custom filter can be added if all filter rules are deleted
 * Compatibility Checked : WooCommerce 4.5.2
-
 
 = 5.39 (2020-09-01) =
 * Fixed: Category order
@@ -1441,14 +1424,12 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Add ajax on fetching category/tags
 * Updated: Google client library
 
-
 = 5.34 (2020-06-10) =
 * Fixed: Duplicate product issue on custom filter
 * Feature: Default variation support
 * Added: Webgains template
 * Updated: Trovaprezzi attribute fields
 * Updated: Translation
-
 
 = 5.33 (2020-06-03) =
 * Updated: Vivino attribute fields
@@ -1466,7 +1447,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Hertie template
 * Added: Etsy template
 
-
 = 5.31 (2020-05-21) =
 * Fixed: Updated attribute list for Amazon Seller
 * Fixed: Yoast seo title and description for variation product
@@ -1478,7 +1458,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Grupo Zap template
 * Added: Emag template
 * Compatibility Checked : WooCommerce 4.1.1
-
 
 = 5.30 (2020-05-15) =
 * Fixed: Remove underscore from custom attributes for CSV
@@ -1495,7 +1474,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Home Deco template
 * Compatibility Checked : WooCommerce 4.1.0
 
-
 = 5.28 (2020-05-06) =
 * Fixed: Yoast seo title and description
 * Fixed: Duplicate product on feed
@@ -1508,7 +1486,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Adtraction template
 * Added: Admitad template
 * Added: Bloomville template
-
 
 = 5.27 (2020-04-24) =
 * Fixed: CDATA Sanitization
@@ -1541,7 +1518,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Kauftipp template
 * Added: KuantoKusta template
 
-
 = 5.23 (2020-04-03) =
 * Feature: Facebook pixel support
 * Updated: Google Manufacturer Center attributes
@@ -1551,7 +1527,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Google Dynamic Display Ads template
 * Added: Pronto template
 * Added: Awin template
-
 
 = 5.22 (2020-03-26) =
 * Feature: UTM parameter support
@@ -1563,10 +1538,8 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Lions Home template
 * Added: Locamo template
 
-
 = 5.21 (2020-03-20) =
 * Bug fixed: Missing g:id on Google merchant
-
 
 = 5.20 (2020-03-19) =
 * Added: HomeTiger template
@@ -1578,7 +1551,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Bug fixed: Google merchant authentication issue
 * Improved: Feed processing query
 
-
 = 5.19 (2020-03-13) =
 * Added: Family Blend template
 * Added: Hitmeister template
@@ -1586,13 +1558,11 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: GetPrice.com.au template
 * Compatibility Checked : WooCommerce 4.0.0
 
-
 = 5.18 (2020-03-09) =
 * Added: Fyndiq template
 * Added: Fasha template
 * Added: Real.de template
 * Added: Hintaseuranta template
-
 
 = 5.17 (2020-02-27) =
 * Bug Fix: Update category path
@@ -1608,11 +1578,9 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Goed Geplaatst template
 * Added: Grosshandel template
 
-
 = 5.15.1 (2020-01-31) =
 * Added: Translation support added for Greek
 * Updated: Other translation updated
-
 
 = 5.15 (2020-01-30) =
 * Added: Cherchons template
@@ -1623,7 +1591,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Commerce Connector template
 * Added: Everysize template
 * Added: Encuentraprecios template
-
 
 = 5.14 (2020-01-23) =
 * Added: NewEgg template
@@ -1640,7 +1607,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Sparmedo template
 * Added: Whiskymarketplace template
 
-
 = 5.12 (2020-01-09) =
 * Added: Jet.com template
 * Added: Bonanza template
@@ -1648,7 +1614,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Adcell template
 * Added: Adform template
 * Added: Stylefruits.fr template
-
 
 = 5.11 (2020-01-02) =
 * Added: CJ Affiliate template
@@ -1687,7 +1652,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Coolblue template
 * Added: Shopmania template
 
-
 = 5.5 (2019-11-28) =
 * Bug Fix: Feed format TXT (unexpected string)
 * Feature: Add dynamic custom attribute field
@@ -1701,11 +1665,9 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Skroutz template
 * Compatibility Checked : WooCommerce 3.8.1
 
-
 = 5.4 (2019-11-26) =
 * Bug Fix: Product count issue
 * Bug Fix: Custom filter for variable product
-
 
 = 5.3 (2019-11-20) =
 * Bug Fix: Google Merchant authorization issue
@@ -1726,7 +1688,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added: Choozen template
 * Feature: Product feed log
 
-
 = 5.1 (2019-11-12) =
 * Bug Fix: Greater than and less than filter for custom filter
 
@@ -1739,12 +1700,10 @@ WP Dashboard > Product Feed > Upgrade.
 * Bug Fix: WPML Compatibility with taxonomy filter
 * Compatibility Checked : WooCommerce 3.8.0
 
-
 = 4.6 (2019-10-31) =
 * Added: OR filter
 * Increase feed creation page load speed
 * Update google_product_category list
-
 
 = 4.5 (2019-10-24) =
 * Added: Kelkoo.nl template added
@@ -1752,7 +1711,6 @@ WP Dashboard > Product Feed > Upgrade.
 * Added language support for Czech, Dutch, Polish, Danish, Finnish & Portuguese (Portugal)
 * Compatibility Added : Conditional Discounts for WooCommerce by Orion
 * Compatibility Checked : WordPress 5.3
-
 
 = 4.4 (2019-10-17) =
 * Added: New feed attribute (product_cats_path) Product Categories with separator (>)
@@ -1824,12 +1782,10 @@ WP Dashboard > Product Feed > Upgrade.
 * Compatibility Checked: WordPress 5.2.1
 * Compatibility Checked: WooCommerce 3.6.4
 
-
 = 2.2.6 (2019-05-16) =
 * Fixed: UI loading conflict with themify builder
 * Added: Missing google categories
 * Added: CSV format for Facebook
-
 
 = 2.2.5 (2019-05-02) =
 * Bug Fix: Fix feed schedule update for variation product settings
