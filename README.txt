@@ -4,7 +4,7 @@
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, google adwords, marktplaats, rakuten, skroutz,  walmart,  fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads, facebook feed,  facebook,  google dynamic search ads
+Tags: facebook feed, google feed, google shopping, google merchant, woocommerce product feed, product feed, facebook catalog, google shopping feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, google adwords, marktplaats, rakuten, skroutz,  walmart,  fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads,  facebook,  google dynamic search ads
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.0
@@ -184,11 +184,22 @@ With Facebook Pixel, you can track:
 
 == GOOGLE SHOPPING & OTHER GOOGLE DESTINATIONS ==
 
-As you already know, Product Feed Manager for WooCommerce is best known for generating Google Shopping feed also known as Google product feed.
+With our product feed plugin, you can accurately generate Google Shopping feeds, also known as Google product feeds.
 
-However, providing Google Merchant Center feed template is not the only thing. You can also generate google product feed in the right format for most other Google Destinations as well.
+This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping.You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily. 
 
-The plugin comes with Google feed generation templates for almost all destinations that you will find on Surfaces Across Google to promote your WooCommerce products.
+With the category mapping, you can map your WooCommerce product categories with google product categories. 
+
+Google prefers to hide parent products in the variable products. In the settings, you can select if you want to show parent products in the google product feed or not. 
+
+Moreover, you can set auto-feed update timing so your google merchant center feed always remains accurate and updated.
+
+With our woocommerce product feed plugin, you can generate google xml feed and google text feed.
+
+However, that's not all we offer. In addition to providing the Google Merchant Center feed template, our plugin can also generate Google product feeds in the correct format for various other Google Destinations.
+
+Here is a list of google shopping feed destinations we support:
+
 
 - Google Shopping feed (Google Product Feed)
 - Google Local Products Inventory feed
