@@ -8,7 +8,7 @@ Tags: facebook feed, google feed, google shopping, google merchant, woocommerce 
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.0
-Stable tag:  7.2.31
+Stable tag:  7.2.32
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -186,11 +186,11 @@ With Facebook Pixel, you can track:
 
 With our product feed plugin, you can accurately generate Google Shopping feeds, also known as Google product feeds.
 
-This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping.You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily. 
+This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping.You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily.
 
-With the category mapping, you can map your WooCommerce product categories with google product categories. 
+With the category mapping, you can map your WooCommerce product categories with google product categories.
 
-Google prefers to hide parent products in the variable products. In the settings, you can select if you want to show parent products in the google product feed or not. 
+Google prefers to hide parent products in the variable products. In the settings, you can select if you want to show parent products in the google product feed or not.
 
 Moreover, you can set auto-feed update timing so your google merchant center feed always remains accurate and updated.
 
@@ -833,6 +833,11 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.32 (2023-05-16) =
+* Fixed: Google merchant API settings field saving issue
+* Fixed: Category/Tag filter saving issue while duplicating/save as draft
+* Fixed: Text file saving issue
 
 = 7.2.31 (2023-05-04) =
 * Compatibility: Compatible with WooCommerce HPOS / High-Performance Order Storage
