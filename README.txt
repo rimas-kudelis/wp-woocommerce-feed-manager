@@ -8,7 +8,7 @@ Tags: facebook feed, google feed, google shopping, google merchant, woocommerce 
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.0
-Stable tag:  7.2.32
+Stable tag:  7.2.33
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -833,6 +833,9 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.33 (2023-05-16) =
+* Fixed: Missing files updated
 
 = 7.2.32 (2023-05-16) =
 * Fixed: Google merchant API settings field saving issue
