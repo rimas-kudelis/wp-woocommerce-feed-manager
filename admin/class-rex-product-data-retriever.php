@@ -254,7 +254,9 @@ class Rex_Product_Data_Retriever {
 				$val    = $this->set_pr_att( $rule[ 'meta_key' ], $escape );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_woodmart_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_woodmart_att( $rule[ 'meta_key' ] );
-			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_price_attr( $rule[ 'meta_key' ] ) ) {
+			} elseif( 'meta' === $rule[ 'type' ] && $this->is_divi_attr( $rule[ 'meta_key' ] ) ) {
+                $val = $this->set_divi_att( $rule[ 'meta_key' ] );
+            } elseif ( 'meta' === $rule[ 'type' ] && $this->is_price_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_price_attr( $rule[ 'meta_key' ], $rule );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_yoast_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_yoast_attr( $rule[ 'meta_key' ] );
@@ -327,6 +329,39 @@ class Rex_Product_Data_Retriever {
 		}
 		return '';
 	}
+
+    /**
+     * Set a Divi attribute
+     *
+     * @param string $key Attribute key.
+     *
+     * @return mixed|string
+     * @since 7.2.32
+     */
+    protected function set_divi_att( $key )
+    {
+        if( !$this->product ) {
+            return '';
+        }
+        if( !defined( 'ET_BUILDER_WC_PRODUCT_LONG_DESC_META_KEY' ) ) {
+            return '';
+        }
+
+        switch( $key ) {
+            case 'divi_pr_desc':
+                $product_id = $this->product->get_id();
+                $desc       = $product_id ? get_post_meta( $product_id, ET_BUILDER_WC_PRODUCT_LONG_DESC_META_KEY, true ) : '';
+                return $desc && '' !== $desc ? $desc : $this->set_pr_att( 'description' );
+
+            case 'divi_pr_parent_desc':
+                $product_id = $this->product->get_parent_id();
+                $product_id = $product_id ?: $this->product->get_id();
+                $desc       = $product_id ? get_post_meta( $product_id, ET_BUILDER_WC_PRODUCT_LONG_DESC_META_KEY, true ) : '';
+                return $desc && '' !== $desc ? $desc : $this->set_pr_att( 'parent_desc' );
+            default:
+                return '';
+        }
+    }
 
 	/**
 	 * Set a YOAST attribute.
@@ -3133,7 +3168,7 @@ class Rex_Product_Data_Retriever {
 	}
 
 	/**
-	 * Helper to check if a attribute is a Woodmart Attribute.
+	 * Helper to check if an attribute is a Woodmart Attribute.
 	 *
 	 * @param string $key Attribute key.
 	 *
@@ -3143,6 +3178,19 @@ class Rex_Product_Data_Retriever {
 	protected function is_woodmart_attr( $key ) {
 		return !empty( $this->product_meta_keys[ 'Woodmart Image Gallery' ] ) && array_key_exists( $key, $this->product_meta_keys[ 'Woodmart Image Gallery' ] );
 	}
+
+    /**
+     * Helper to check if an attribute is a Divi Attribute.
+     *
+     * @param string $key Attribute key.
+     *
+     * @return bool
+     * @since 7.2.32
+     */
+    protected function is_divi_attr( $key )
+    {
+        return !empty( $this->product_meta_keys[ 'Divi Builder' ] ) && array_key_exists( $key, $this->product_meta_keys[ 'Divi Builder' ] );
+    }
 
 	/**
 	 * Helper to check if a attribute is a YOAST Attribute.

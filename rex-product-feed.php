@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
- * Version:           7.2.33
+ * Version:           7.2.34
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -40,7 +40,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.2.33' );
+    define( 'WPFM_VERSION', '7.2.34' );
 }
 if ( !defined( 'WPFM__FILE__' ) ) {
 	define( 'WPFM__FILE__', __FILE__ );
@@ -61,7 +61,7 @@ if ( !defined( 'WPFM_PLUGIN_ASSETS_FOLDER_PATH' ) && defined( 'WPFM_PLUGIN_DIR_P
 	define( "WPFM_PLUGIN_ASSETS_FOLDER_PATH", WPFM_PLUGIN_DIR_PATH . 'admin/assets/' );
 }
 if ( !defined( 'WPFM_PRO_REQUIRED_VERSION' ) ) {
-	define( 'WPFM_PRO_REQUIRED_VERSION', '6.3.3' );
+	define( 'WPFM_PRO_REQUIRED_VERSION', '6.3.10' );
 }
 if ( !defined( 'WPFM_ETSY_REQUIRED_VERSION' ) ) {
 	define( 'WPFM_ETSY_REQUIRED_VERSION', '1.0.1' );
@@ -97,10 +97,11 @@ function rex_is_woocommerce_active() {
  * Check if WPFM Pro is compatible with new ui [version > 6.0.0]
  *
  * @return bool
+ * @since 1.0.0
  */
 function wpfm_pro_compatibility() {
-	if ( wpfm_get_plugin_version( WPFM_PRO ) ) {
-		return ( wpfm_get_plugin_version( WPFM_PRO ) >= WPFM_PRO_REQUIRED_VERSION );
+	if ( defined( 'REX_PRODUCT_FEED_PRO_VERSION' ) && defined( 'WPFM_PRO_REQUIRED_VERSION' ) ) {
+		return version_compare( REX_PRODUCT_FEED_PRO_VERSION, WPFM_PRO_REQUIRED_VERSION, '>=' );
 	}
 	return false;
 }

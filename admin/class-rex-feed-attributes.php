@@ -37,9 +37,13 @@ class Rex_Feed_Attributes {
 		);
 
 		$theme = wp_get_theme();
-		if ( 'Woodmart' === $theme->name || 'Woodmart' === $theme->parent_theme ) {
-			$attributes = array_merge( $attributes, self::get_woodmart_img_gallery_attributes() );
-		}
+
+        if( ( !empty( $theme->name ) && 'Divi' === $theme->name ) || ( !empty( $theme->parent_theme ) && 'Divi' === $theme->parent_theme ) ) {
+            $attributes = array_merge( $attributes, self::get_divi_builder_attributes() );
+        }
+        if( ( !empty( $theme->name ) && 'Woodmart' === $theme->name ) || ( !empty( $theme->parent_theme ) && 'Woodmart' === $theme->parent_theme ) ) {
+            $attributes = array_merge( $attributes, self::get_woodmart_img_gallery_attributes() );
+        }
 
 		$plugins = get_option( 'active_plugins' );
 
@@ -238,6 +242,21 @@ class Rex_Feed_Attributes {
 			),
 		);
 	}
+
+    /**
+     * Gets Divi Builder attributes
+     *
+     * @return string[][]
+     * @since 7.2.32
+     */
+    public static function get_divi_builder_attributes() {
+        return array(
+            'Divi Builder' => array(
+                'divi_pr_desc'        => 'Product Description',
+                'divi_pr_parent_desc' => 'Product Description [Parent]',
+            ),
+        );
+    }
 
 	/**
 	 * Gets Perfect Brand for WooCommerce attributes
