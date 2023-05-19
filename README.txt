@@ -115,6 +115,18 @@ You will have many more features to help you generate product feed at ease.
 
 You should use this plugin because it will save you time and create clean quality product feed to promote through other merchant shopping channels.
 
+**Exclusive WooCommerce Variable Product & Variation Options**
+
+If you have variable products in your WooCommerce site, you can easily choose between parent products and variations to show in your feed.
+
+In our WooCommerce product feed plugin, you’ll get these options -
+
+- Include Only Parent ProductS (without variations)
+- Include Variation Name In The Product Title
+- Include All Variable Products Variations
+
+You can just select the option and include variable products with or without parent products however you want.
+
 **Google Analytics Support**
 You can add and configure Google Analytics UTM tracking-codes to your product URLs. It will allow you to measure the effectiveness of marketing channels in Google Analytics.
 
