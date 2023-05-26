@@ -23,62 +23,40 @@ class Rex_Feed_Template_Mirakl extends Rex_Feed_Abstract_Template {
 	 *
 	 * @return void
 	 */
-	protected function init_atts() {
-		$this->attributes = array(
-			'Required Information'   => array(
-				'sku'                   => 'SKU',
-				'product-id'            => 'Product Id',
-				'product-id-type'       => 'Product Id type',
-				'description'           => 'Description',
-				'internal-description'  => 'Internal description',
-				'price'                 => 'Price',
-				'price-additional-info' => 'Price additional info',
-				'quantity'              => 'Quantity',
-				'min-quantity-alert'    => 'Min quantity alert',
-				'state'                 => 'State',
-				'available-start-date'  => 'Available Start date',
-				'available-end-date'    => 'Available End date',
-				'discount-start-date'   => 'Discount Start date',
-				'discount-end-date'     => 'Discount End date',
-				'discount-price'        => 'Discount Price',
-				'update-delete'         => 'Update delete',
+    protected function init_atts() {
+        $this->attributes = [
+            'Required Attributes' => [
+                'sku'                   => 'SKU',
+                'product-id'            => 'Product Id',
+                'product-id-type'       => 'Product Id type',
+                'description'           => 'Description',
+                'internal-description'  => 'Internal description',
+                'price'                 => 'Price',
+                'price-additional-info' => 'Price additional info',
+                'quantity'              => 'Quantity',
+                'min-quantity-alert'    => 'Min quantity alert',
+                'state'                 => 'State',
+                'available-start-date'  => 'Available Start date',
+                'available-end-date'    => 'Available End date',
+                'discount-start-date'   => 'Discount Start date',
+                'discount-end-date'     => 'Discount End date',
+                'discount-price'        => 'Discount Price',
+                'update-delete'         => 'Update delete',
+            ],
 
-			),
+            'Additional Attributes' => [
+                'logistic-class'   => 'Logistic Class',
+                'leadtime-to-ship' => 'Lead Time to Ship',
+            ],
+        ];
 
-			'Additional Information' => array(
-				'attribute_code_1'   => 'Attribute Code 1',
-				'attribute_value_1'  => 'Attribute value 1',
-				'attribute_code_2'   => 'Attribute Code 2',
-				'attribute_value_2'  => 'Attribute value 2',
-				'attribute_code_3'   => 'Attribute Code 3',
-				'attribute_value_3'  => 'Attribute value 3',
-				'attribute_code_4'   => 'Attribute Code 4',
-				'attribute_value_4'  => 'Attribute value 4',
-				'attribute_code_5'   => 'Attribute Code 5',
-				'attribute_value_5'  => 'Attribute value 5',
-				'attribute_code_6'   => 'Attribute Code 6',
-				'attribute_value_6'  => 'Attribute value 6',
-				'attribute_code_7'   => 'Attribute Code 7',
-				'attribute_value_7'  => 'Attribute value 7',
-				'attribute_code_8'   => 'Attribute Code 8',
-				'attribute_value_8'  => 'Attribute value 8',
-				'attribute_code_9'   => 'Attribute Code 9',
-				'attribute_value_9'  => 'Attribute value 9',
-				'attribute_code_10'  => 'Attribute Code 10',
-				'attribute_value_10' => 'Attribute value 10',
-				'attribute_code_11'  => 'Attribute Code 11',
-				'attribute_value_11' => 'Attribute value 11',
-				'attribute_code_12'  => 'Attribute Code 12',
-				'attribute_value_12' => 'Attribute value 12',
-				'attribute_code_13'  => 'Attribute Code 13',
-				'attribute_value_13' => 'Attribute value 13',
-				'attribute_code_14'  => 'Attribute Code 14',
-				'attribute_value_14' => 'Attribute value 14',
-				'attribute_code_15'  => 'Attribute Code 15',
-				'attribute_value_15' => 'Attribute value 15',
-			),
-		);
-	}
+        for( $index = 1; $index <= 15; $index++ ) {
+            $this->attributes[ 'Offer Additional Attributes' ][ "offer_additional_field_code_{$index}" ]  = "Offer Additional Field Code {$index}";
+            $this->attributes[ 'Offer Additional Attributes' ][ "offer_additional_field_value_{$index}" ] = "Offer Additional Field Value {$index}";
+            $this->attributes[ 'Product Attributes' ][ "attribute_code_{$index}" ]                        = "Attribute Code {$index}";
+            $this->attributes[ 'Product Attributes' ][ "attribute_value_{$index}" ]                       = "Attribute Value {$index}";
+        }
+    }
 
 	/**
 	 * Define merchant's default attributes

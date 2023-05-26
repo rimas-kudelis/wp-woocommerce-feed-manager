@@ -8,7 +8,7 @@ Tags: facebook feed, google feed, google shopping, google merchant, woocommerce 
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.0
-Stable tag:  7.2.34
+Stable tag:  7.2.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -845,6 +845,9 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.2.35 (2023-05-17) =
+* Fixed: Updated the Mirakl merchant XML feed format
 
 = 7.2.34 (2023-05-17) =
 * Added: Divi builder support for product description attribute

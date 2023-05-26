@@ -2088,9 +2088,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
         }
         elseif ( $this->merchant === 'mirakl' ) {
-            $node = $feed->getElementsByTagName( "import" );
+            $node = $feed->getElementsByTagName( "offer" );
             if ( $this->batch == $this->tbatch ) {
-                $this->item_wrapper = '<import>';
+                $this->item_wrapper = '<offer>';
                 $this->feed_string_footer .= '</import>';
             }
         }
