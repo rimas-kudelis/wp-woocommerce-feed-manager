@@ -115,11 +115,11 @@ With selecting your merchant, you can also select what type of feed you want to 
 
 Our supported feed type includes:
 
-- XML
-- CSV
-- TEXT
-- TSV
-- RSS
+- XML feed
+- CSV feed
+- TEXT feed
+- TSV feed
+- RSS feed
 
 **Advanced Custom Fields**
 WooCommerce doesn't provide certain fields such as Brand, GTIN, UPC, Age-group, Gender, etc. Many merchant shops require these data. Hence, Product Feed Manager for WooCommerce creates these custom fields for you so that you can generate accurate product feed without any extra coding or plugins.
@@ -822,11 +822,11 @@ Check out the tutorial to generate an WooCommerce facebook product feed:
 = What file formats does this plugin generate? =
 This plugin generates product feeds in the following file formats:
 
-- XML
-- CSV
-- TEXT
-- TSV
-- RSS
+- XML feed
+- CSV feed
+- TEXT feed
+- TSV feed
+- RSS feed
 
 = What is the feed auto-update feature? =
 For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily, hourly or weekly updates of feed.
