@@ -108,6 +108,19 @@ You can use the smooth filter options to include or exclude the required product
 **Schedule Auto Update Of the Product Feed**
 Any changes you make to product data, you can set a schedule for your product feed to be updated automatically. You do not need to manually update the product feed every time you make changes to your products.
 
+**Various Product Data Feed File Types**
+With our WooCommerce product feed plugin, you can create different types of feed files according to your merchant needs.
+
+With selecting your merchant, you can also select what type of feed you want to generate.
+
+Our supported feed type includes:
+
+- XML
+- CSV
+- TEXT
+- TSV
+- RSS
+
 **Advanced Custom Fields**
 WooCommerce doesn't provide certain fields such as Brand, GTIN, UPC, Age-group, Gender, etc. Many merchant shops require these data. Hence, Product Feed Manager for WooCommerce creates these custom fields for you so that you can generate accurate product feed without any extra coding or plugins.
 
@@ -810,9 +823,10 @@ Check out the tutorial to generate an WooCommerce facebook product feed:
 This plugin generates product feeds in the following file formats:
 
 - XML
-- TXT
 - CSV
+- TEXT
 - TSV
+- RSS
 
 = What is the feed auto-update feature? =
 For feeds that you extracted under certain specifications, you can now schedule it to be updated, with new products, automatically. You can choose daily, hourly or weekly updates of feed.
