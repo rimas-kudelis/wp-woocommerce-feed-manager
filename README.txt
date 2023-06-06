@@ -44,7 +44,7 @@ Create your preferred feed in seconds with 3 simple steps:
 
 Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimised feed for greater results.
 
-><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get 20% off on Product Feed Manager for WooCommerce - Pro</a>
+><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get Product Feed Manager for WooCommerce - Pro</a>
 
 
 <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/?utm_source=plugin&utm_medium=documentation_button&utm_campaign=pfm_plugin">Documentation</a> | <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Tutorials</a> | <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">All Features</a> | <a target="_blank" href="https://rextheme.com/product-feed-manager-for-woocommerce-survey/?utm_source=repo&utm_medium=repo&utm_campaign=repo_survey&utm_id=repo_survey">Give Your Feedback</a>
