@@ -26,7 +26,7 @@
  * WP Requirement & Test
  * Requires at least: 4.7
  * Tested up to: 6.2
- * Requires PHP: 7.0
+ * Requires PHP: 7.3
  *
  * WC Requirement & Test
  * WC requires at least: 5.6.0

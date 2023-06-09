@@ -7,7 +7,7 @@ Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, google adwords, marktplaats, rakuten, skroutz,  walmart,  fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads,  facebook,  google dynamic search ads
 Requires at least: 4.7
 Tested up to:  6.2
-Requires PHP: 7.0
+Requires PHP: 7.3
 Stable tag:  7.2.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
