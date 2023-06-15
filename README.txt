@@ -878,6 +878,7 @@ WP Dashboard > Product Feed > Upgrade.
 * Enhancement: New improved feed configuration UI
 * Enhancement: New improved custom filter UI
 * Enhancement: New improved attribute mapping UI
+* Enhancement: Introducing Action Scheduler by WooCommerce
 * Enhancement: Improved shipping value for Google/Facebook
 * Enhancement: Improved tax value for Google/Facebook
 * Fixed: Google category mapping issue
