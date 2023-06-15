@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.3
-Stable tag:  7.2.35
+Stable tag:  7.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -142,7 +142,7 @@ You can just select the option and include variable products with or without par
 
 **Create A Custom Feed For Any Merchant**
 
-The custom feed option will allow you to create a personalized feed for any marketplace you want. 
+The custom feed option will allow you to create a personalized feed for any marketplace you want.
 
 The custom WooCommerce feed option will help you to -
 
@@ -873,6 +873,14 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.3.0 (2023-06-15) =
+* Enhancement: New improved feed configuration UI
+* Enhancement: New improved custom filter UI
+* Enhancement: New improved attribute mapping UI
+* Enhancement: Improved shipping value for Google/Facebook
+* Enhancement: Improved tax value for Google/Facebook
+* Fixed: Google category mapping issue
 
 = 7.2.35 (2023-05-17) =
 * Fixed: Updated the Mirakl merchant XML feed format
