@@ -173,6 +173,14 @@ With Facebook Pixel, you can track:
 
 >  You will get a **reliable support team** to help you out at all times and detailed [documentation](https://rextheme.com/docs/WooCommerce-product-feed/) and [video tutorials](https://www.youtube.com/watch?v=WYRgnMFQGH8&list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq).
 
+== Combine Multiple Attributes In The Feed ==
+
+You can now merge different attributes in a single attribute, to show in your feed.
+
+For example, in the product title you can add brand name to attract your targeted audience. This feature removes the hassle of manually doing it.
+
+By combining different attributes, you can create more descriptive and keyword-rich product titles, which can help your  products rank higher in search engines and attract more organic traffic to your sites.
+
 == Free Features ==
 
 * Generate Product Feed in a few clicks
