@@ -173,7 +173,7 @@ With Facebook Pixel, you can track:
 
 >  You will get a **reliable support team** to help you out at all times and detailed [documentation](https://rextheme.com/docs/WooCommerce-product-feed/) and [video tutorials](https://www.youtube.com/watch?v=WYRgnMFQGH8&list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq).
 
-== Combine Multiple Attributes In The Feed ==
+**Combine Multiple Attributes In The Feed**
 
 You can now merge different attributes in a single attribute, to show in your feed.
 
