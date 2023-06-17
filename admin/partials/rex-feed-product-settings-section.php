@@ -77,7 +77,7 @@
 					<span class="rex_feed-tooltip">
 						<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question; ?>
 						<p>
-							<?php esc_html_e( 'Select a country for the Shipping & Tax values for Google/Facebook merchants.', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/product-feed-manager-documentation/?utm_source=plugin&utm_medium=shipping_link&utm_campaign=pfm_plugin#tax-shipping' ); ?>" target="_blank"><?php esc_html_e( 'Learn How', 'rex-product-feed' ); ?></a>
+							<?php esc_html_e( 'Select a country for the Shipping attribute value for Google/Facebook merchants.', 'rex-product-feed' ); ?><a href="<?php echo esc_url( 'https://rextheme.com/docs/product-feed-manager-documentation/?utm_source=plugin&utm_medium=shipping_link&utm_campaign=pfm_plugin#tax-shipping' ); ?>" target="_blank"><?php esc_html_e( 'Learn How', 'rex-product-feed' ); ?></a>
 						</p>
 					</span>
 				</label>

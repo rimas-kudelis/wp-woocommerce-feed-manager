@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.3
-Stable tag:  7.3.0
+Stable tag:  7.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -881,6 +881,10 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.3.1 (2023-06-16) =
+* Enhancement: Optimized custom filtering process
+* Fixed: Polylang compatibility
 
 = 7.3.0 (2023-06-15) =
 * Enhancement: New improved feed configuration UI

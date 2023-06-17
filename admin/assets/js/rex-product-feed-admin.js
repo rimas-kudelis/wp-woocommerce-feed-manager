@@ -951,12 +951,12 @@
                         .parent()
                         .append(
                             "<p style='margin-top: 5px; margin-left: 0px' class='rex_cat_map' id='rex_opt_title_btn_" +
-                            row_id +
-                            "'><a style='font-size: 10px;' class='rex_cat_map' href='" +
-                            url +
-                            "' target='_blank'>" +
-                            optimize_pr_title_btn +
-                            "</a></p>"
+                                row_id +
+                                "'><a style='font-size: 10px;' class='rex_cat_map' href='" +
+                                url +
+                                "' target='_blank'>" +
+                                optimize_pr_title_btn +
+                                "</a></p>"
                         );
                 }
             }
@@ -998,12 +998,12 @@
                     .parent()
                     .append(
                         "<p style='margin-top: 5px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" +
-                        rowId +
-                        "'><a style='font-size: 10px;' class='rex_cat_map' href='" +
-                        url +
-                        "' target='_blank'>" +
-                        optimize_pr_title_btn +
-                        "</a></p>"
+                            rowId +
+                            "'><a style='font-size: 10px;' class='rex_cat_map' href='" +
+                            url +
+                            "' target='_blank'>" +
+                            optimize_pr_title_btn +
+                            "</a></p>"
                     );
             } else {
                 $("#rex_opt_title_btn_" + rowId).remove();
@@ -1011,12 +1011,12 @@
                     .parent()
                     .append(
                         "<p style='margin-top: 5px; margin-left: 5px' class='rex_cat_map' id='rex_opt_title_btn_" +
-                        rowId +
-                        "'><a style='font-size: 10px;' class='rex_cat_map' href='" +
-                        url +
-                        "' target='_blank'>" +
-                        optimize_pr_title_btn +
-                        "</a></p>"
+                            rowId +
+                            "'><a style='font-size: 10px;' class='rex_cat_map' href='" +
+                            url +
+                            "' target='_blank'>" +
+                            optimize_pr_title_btn +
+                            "</a></p>"
                     );
             }
         } else {
@@ -2320,22 +2320,22 @@
             "select.sanitize-dropdown":
                 0 !== sanitize.length
                     ? $(row_data)
-                        .find("select.sanitize-dropdown")
-                        .find("option:selected")
-                        .map(function (_index, el) {
-                            return "default" === $(el).val() ? "" : $(el).val();
-                        })
-                        .get()
+                          .find("select.sanitize-dropdown")
+                          .find("option:selected")
+                          .map(function (_index, el) {
+                              return "default" === $(el).val() ? "" : $(el).val();
+                          })
+                          .get()
                     : [""],
             "select.default-sanitize-dropdown":
                 0 !== custom_sanitize.length
                     ? $(row_data)
-                        .find("select.default-sanitize-dropdown")
-                        .find("option:selected")
-                        .map(function (_index, el) {
-                            return "default" === $(el).val() ? "" : $(el).val();
-                        })
-                        .get()
+                          .find("select.default-sanitize-dropdown")
+                          .find("option:selected")
+                          .map(function (_index, el) {
+                              return "default" === $(el).val() ? "" : $(el).val();
+                          })
+                          .get()
                     : [""],
             "input.attribute-val-static-field": $(row_data).find("input.attribute-val-static-field").val(),
             "input.output-limit-field": $(row_data).find("input.output-limit-field").val(),
@@ -2776,7 +2776,7 @@
         };
         let updated = false;
 
-        await wpAjaxHelperRequest("rex-feed-is-settings-changed", payload)
+       await wpAjaxHelperRequest("rex-feed-is-settings-changed", payload)
             .success(function (response) {
                 if ( response?.status ) {
                     updated = response?.status;

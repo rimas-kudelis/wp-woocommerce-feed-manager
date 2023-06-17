@@ -429,11 +429,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->custom_wrapper       = !empty( $config[ 'custom_wrapper' ] ) ? $config[ 'custom_wrapper' ] : '';
             $this->custom_wrapper_el    = !empty( $config[ 'custom_wrapper_el' ] ) ? $config[ 'custom_wrapper_el' ] : '';
             $this->custom_items_wrapper = !empty( $config[ 'custom_items_wrapper' ] ) ? $config[ 'custom_items_wrapper' ] : '';
-            $this->feed_zip_code        = !empty( $config[ 'feed_zip_code' ] ) ? $config[ 'feed_zip_code' ] : '';
-            $this->custom_xml_header    = !empty( $config[ 'custom_xml_header' ] ) ? $config[ 'custom_xml_header' ] : '';
-            $this->yandex_company_name  = !empty( $config[ 'yandex_company_name' ] ) ? $config[ 'yandex_company_name' ] : '';
-            $this->yandex_old_price     = !empty( $config[ 'yandex_old_price' ] ) ? $config[ 'yandex_old_price' ] : '';
-            $this->feed_tax_id          = !empty( $config[ 'tax_id' ] ) ? $config[ 'tax_id' ] : '-1';
+	        $this->feed_zip_code        = !empty( $config[ 'feed_zip_code' ] ) ? $config[ 'feed_zip_code' ] : '';
+	        $this->custom_xml_header    = !empty( $config[ 'custom_xml_header' ] ) ? $config[ 'custom_xml_header' ] : '';
+	        $this->yandex_company_name  = !empty( $config[ 'yandex_company_name' ] ) ? $config[ 'yandex_company_name' ] : '';
+	        $this->yandex_old_price     = !empty( $config[ 'yandex_old_price' ] ) ? $config[ 'yandex_old_price' ] : '';
+	        $this->feed_tax_id          = !empty( $config[ 'tax_id' ] ) ? $config[ 'tax_id' ] : '-1';
             $this->link                 = esc_url( home_url( '/' ) );
 
             if ( isset( $config[ 'custom_filter_option' ] ) && 'added' === $config[ 'custom_filter_option' ] ) {
@@ -975,25 +975,32 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         if ( $this->custom_filter_option ) {
-            $this->custom_filter_args = Rex_Product_Filter::get_custom_filter_where_query( $this->feed_filters );
+            $this->custom_filter_args = wpfm_get_cached_data( "rexfeed_custom_filter_query_{$this->id}" );
+            if( empty( $this->custom_filter_args ) ) {
+                $this->custom_filter_args = Rex_Product_Filter::get_custom_filter_where_query( $this->feed_filters );
+                wpfm_set_cached_data( "rexfeed_custom_filter_query_{$this->id}", $this->custom_filter_args );
+            }
+            if( $this->tbatch === $this->batch ) {
+                wpfm_purge_cached_data( "rexfeed_custom_filter_query_{$this->id}" );
+            }
             add_filter( 'posts_where', array( $this, 'add_custom_filter_where_query' ) );
-            add_filter( 'posts_join', array( $this, 'add_custom_filter_join_query' ) );
+            add_filter( 'posts_join', array( $this, 'modify_join_query_for_custom_filter' ) );
         }
 
         add_filter( 'posts_distinct', array( $this, 'set_distinct' ) );
-        add_filter( 'posts_where', array( $this, 'wpfm_custom_language_where_queries' ) );
-        add_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
+        add_filter( 'posts_where', array( $this, 'modify_where_query_for_multi_lingual_support' ) );
+        add_filter( 'posts_join', array( $this, 'modify_join_query_for_polylang' ) );
 
         $result         = new WP_Query( $this->products_args );
         $this->products = $result->posts;
 
         if ( $this->custom_filter_option ) {
             remove_filter( 'posts_where', array( $this, 'add_custom_filter_where_query' ) );
-            remove_filter( 'posts_join', array( $this, 'add_custom_filter_join_query' ) );
+            remove_filter( 'posts_join', array( $this, 'modify_join_query_for_custom_filter' ) );
         }
         remove_filter( 'posts_distinct', array( $this, 'set_distinct' ) );
-        remove_filter( 'posts_where', array( $this, 'wpfm_custom_language_where_queries' ) );
-        remove_filter( 'posts_join', array( $this, 'wpfm_get_custom_join_query' ) );
+        remove_filter( 'posts_where', array( $this, 'modify_where_query_for_multi_lingual_support' ) );
+        remove_filter( 'posts_join', array( $this, 'modify_join_query_for_polylang' ) );
 
         if ( is_array( $this->products ) ) {
             $this->products = array_unique( $this->products );
@@ -1032,24 +1039,50 @@ abstract class Rex_Product_Feed_Abstract_Generator
     /**
      * Add custom join query for `Custom Filter` feature
      *
-     * @param $join
+     * @param string $join Join query.
      * @return mixed|string
+     *
      * @since 7.3.0
      */
-    public function add_custom_filter_join_query( $join ) {
+    public function modify_join_query_for_custom_filter( $join ) {
         global $wpdb;
+        $term_join = '';
+        $meta_join = '';
 
-        if( isset( $this->custom_filter_args[ 'term_exists' ] ) && $this->custom_filter_args[ 'term_exists' ] && strpos($join, 'term_relationships') === false ) {
-            $join .= " LEFT JOIN {$wpdb->term_relationships}";
-            $join .= " ON ({$wpdb->posts}.ID = {$wpdb->term_relationships}.object_id) ";
+        if( !empty( $this->custom_filter_args[ 'where' ] ) ) {
+            $query = $this->custom_filter_args[ 'where' ];
+
+            $term_join = wpfm_get_cached_data( "rexfeed_custom_filter_term_join_$this->id" );
+            if( empty( $term_join ) && !empty( $this->custom_filter_args[ 'term_exists' ] ) ) {
+                $total_join = preg_match_all('/RexTerm/i', $query);
+                if( $total_join ) {
+                    for( $i = 1; $i <= $total_join; $i++ ) {
+                        $term_join .= " LEFT JOIN {$wpdb->term_relationships} AS RexTerm{$i}";
+                        $term_join .= " ON ({$wpdb->posts}.ID = RexTerm{$i}.object_id) ";
+                    }
+                    wpfm_set_cached_data( "rexfeed_custom_filter_term_join_$this->id", $term_join );
+                }
+            }
+
+            $meta_join = wpfm_get_cached_data( "rexfeed_custom_filter_meta_join_$this->id" );
+            if( empty( $meta_join ) && !empty( $this->custom_filter_args[ 'meta_exists' ] ) ) {
+                $total_meta = preg_match_all('/RexMeta/i', $query) / 2;
+                if( $total_meta ) {
+                    for( $i = 1; $i <= $total_meta; $i++ ) {
+                        $meta_join .= " INNER JOIN {$wpdb->postmeta} AS RexMeta{$i}";
+                        $meta_join .= " ON ({$wpdb->posts}.ID = RexMeta{$i}.post_id) ";
+                    }
+                    wpfm_set_cached_data( "rexfeed_custom_filter_meta_join_$this->id", $meta_join );
+                }
+            }
         }
 
-        if( isset( $this->custom_filter_args[ 'meta_exists' ] ) && $this->custom_filter_args[ 'meta_exists' ] && strpos($join, 'postmeta') === false ) {
-            $join .= " INNER JOIN {$wpdb->postmeta}";
-            $join .= " ON ({$wpdb->posts}.ID = {$wpdb->postmeta}.post_id) ";
+        if( $this->tbatch === $this->batch ) {
+            wpfm_purge_cached_data( "rexfeed_custom_filter_term_join_$this->id" );
+            wpfm_purge_cached_data( "rexfeed_custom_filter_meta_join_$this->id" );
         }
 
-        return $join;
+        return $join . $term_join . $meta_join;
     }
 
     /**
@@ -1065,12 +1098,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
 
     /**
-     * Customize WPML where clause
+     * Customize where query for multilingual compatibility
      *
      * @param $where
      * @return array|mixed|string|string[]
+     *
+     * @since 7.3.0
      */
-    public function wpfm_custom_language_where_queries( $where ) {
+    public function modify_where_query_for_multi_lingual_support( $where ) {
         if( wpfm_is_wpml_active() ) {
             global $sitepress;
             $search  = "language_code = '" . $sitepress->get_default_language() . "'";
@@ -1078,11 +1113,10 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where   = str_replace( $search, $replace, $where );
         }
         if( wpfm_is_polylang_active() && $this->bypass ) {
-            global $wpdb;
             $polylang = get_the_terms( $this->id, 'language' );
             $polylang = array_column( $polylang, 'term_id' );
             $polylang = implode( ', ', $polylang );
-            $where    .= " AND ({$wpdb->prefix}term_relationships.term_taxonomy_id IN({$polylang})) ";
+            $where    .= " AND (RexPLL.term_taxonomy_id IN({$polylang})) ";
         }
         return $where;
     }
@@ -1092,114 +1126,19 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * in order to exclude variations with drafted/deleted parent
      *
      * @param $join
+     *
      * @return string
+     *
+     * @since 7.3.0
      */
-    public function wpfm_get_custom_join_query( $join )
-    {
-        if ( !strpos($join, 'JOIN wp_term_relationships' ) && wpfm_is_polylang_active() && $this->bypass ) {
-            global $wpdb;
-            $join .= " LEFT JOIN wp_term_relationships ";
-            $join .= " ON ({$wpdb->prefix}posts.ID = {$wpdb->prefix}term_relationships.object_id)";
-        }
-        return $join;
-    }
-
-    /**
-     * Get post_id by taxonomy.
-     * @return array
-     * params $title
-     **/
-
-    public function get_post_id_by_term( $title )
-    {
-        $term = get_term_by( 'name', $title, 'pwb-brand' );
-        if ( !empty( $term ) ) {
-            $args    = array(
-                'post_type' => array( 'product', 'product_variation' ),
-                'fields'    => 'ids',
-                'tax_query' => array(
-                    array(
-                        'taxonomy' => 'pwb-brand',
-                        'field'    => 'term_id',
-                        'terms'    => $term->term_id
-                    )
-                )
-            );
-            $query   = new WP_Query( $args );
-            return $query->get_posts();
-        }
-        return [];
-    }
-
-    /**
-     * Get post_id by attribute name.
-     * @param $title
-     * @return array post_id
-     */
-
-    public function get_post_by_attribute_name( $title )
+    public function modify_join_query_for_polylang( $join )
     {
         global $wpdb;
-        $query    = $wpdb->prepare( 'SELECT term_id FROM ' . $wpdb->prefix . 'terms WHERE name =  %s', $title );
-        $term     = $wpdb->get_results( $query );
-        $term_tax = get_term( $term[ 0 ]->term_id );
-        $args     = array(
-            'post_type' => array( 'product', 'product_variation' ),
-            'fields'    => 'ids',
-            'tax_query' => array(
-                array(
-                    'taxonomy' => $term_tax->taxonomy,
-                    'field'    => 'term_id',
-                    'terms'    => $term[ 0 ]->term_id
-                )
-            )
-        );
-        $query    = new WP_Query( $args );
-        return $query->get_posts();
-    }
-
-    /**
-     * Gets feed id.
-     *
-     * @return mixed
-     */
-    public function get_feed_id()
-    {
-        return $this->config[ 'info' ][ 'post_id' ];
-    }
-
-    public function cleanString( $string )
-    {
-        // allow only letters.
-        $res = preg_replace( "/[^a-zA-Z]/", "", $string );
-
-        // trim what's left to 8 chars.
-        $res = substr( $res, 0, 8 );
-
-        // make lowercase.
-        return strtolower( $res );
-    }
-
-    /**
-     * Setup the variable products from products array
-     *
-     * @param $product_id
-     * @return bool
-     */
-    protected function is_grouped_product( $product_id = false )
-    {
-
-        if ( false === $product_id ) {
-            return false;
+        if ( wpfm_is_polylang_active() && $this->bypass ) {
+            $join .= " LEFT JOIN {$wpdb->term_relationships} AS RexPLL";
+            $join .= " ON ({$wpdb->posts}.ID = RexPLL.object_id)";
         }
-
-        $product = wc_get_product( $product_id );
-
-        if ( $product->is_type( 'grouped' ) && $this->parent_product ) {
-            return true;
-        }
-
-        return false;
+        return $join;
     }
 
     /**
@@ -1394,7 +1333,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     file_put_contents( $file, $this->feed );
                 }
             }
-
+            
             if( $this->batch === $this->tbatch ) {
                 if( 'publish' === $publish_btn ) {
                     $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
@@ -1528,8 +1467,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->item_wrapper = '<productVariationGroup>';
             }
             if ( $this->batch === $this->tbatch ) {
-                $this->feed_string_footer .= '</productRequest>';
-            }
+		        $this->feed_string_footer .= '</productRequest>';
+	        }
         }
         elseif ( $this->merchant === 'ceneo' ) {
             $node = $feed->getElementsByTagName( "o" );

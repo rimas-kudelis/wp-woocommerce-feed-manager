@@ -26,7 +26,7 @@ class Rex_Product_Filter {
      *
      * @since    1.1.10
      * @access   protected
-     * @var      Rex_Product_Filter    attributes    Feed Attributes.
+     * @var      Rex_Product_Filter    $product_meta_keys    Feed Attributes.
      */
     protected $product_meta_keys;
 
@@ -34,7 +34,7 @@ class Rex_Product_Filter {
      * The Feed Attributes.
      *
      * @access   protected
-     * @var      Rex_Product_Filter    attributes    Feed Attributes.
+     * @var      Rex_Product_Filter    $product_rule_meta_keys    Feed Attributes.
      */
     protected $product_rule_meta_keys;
 
@@ -44,7 +44,7 @@ class Rex_Product_Filter {
      *
      * @since    1.1.10
      * @access   protected
-     * @var      Rex_Product_Filter    condition    Feed Condition.
+     * @var      Rex_Product_Filter    $condition    Feed Condition.
      */
     protected $condition;
 
@@ -54,7 +54,7 @@ class Rex_Product_Filter {
      *
      * @since    1.1.10
      * @access   protected
-     * @var      Rex_Product_Filter    then    Feed Condition Then.
+     * @var      Rex_Product_Filter    $then    Feed Condition Then.
      */
     protected $then;
 
@@ -64,7 +64,7 @@ class Rex_Product_Filter {
      *
      * @since    3.5
      * @access   protected
-     * @var      Rex_Product_Filter    then    Feed Condition Then.
+     * @var      Rex_Product_Filter    $rules    Feed Condition Then.
      */
     protected $rules;
 
@@ -74,7 +74,7 @@ class Rex_Product_Filter {
      *
      * @since    1.1.10
      * @access   protected
-     * @var      Rex_Product_Filter    filter_mappings    Feed Filter mapping for template generation.
+     * @var      Rex_Product_Filter    $filter_mappings    Feed Filter mapping for template generation.
      */
     protected $filter_mappings;
 
@@ -83,9 +83,27 @@ class Rex_Product_Filter {
      *
      * @since    1.1.10
      * @access   protected
-     * @var      Rex_Product_Filter    product    Product Object.
+     * @var      Rex_Product_Filter    $product    Product Object.
      */
     protected $product;
+
+    /**
+     * Term table count
+     *
+     * @since    7.3.1
+     * @access   protected
+     * @var      int    $term_table_count    Term table count.
+     */
+    protected static $term_table_count = 0;
+
+    /**
+     * Meta table count
+     *
+     * @since    7.3.1
+     * @access   protected
+     * @var      int    $meta_table_count    Meta table count.
+     */
+    protected static $meta_table_count = 0;
 
 
     /**
@@ -308,15 +326,13 @@ class Rex_Product_Filter {
      */
     public static function get_custom_filter_where_query( $filter_mappings ) {
         $where       = '';
+        $inner_where  = '';
         $meta_exists = false;
         $term_exists = false;
 
         foreach( $filter_mappings as $key1 => $filters ) {
-            $where .= $key1 === 0 ? '(' : ' OR (';
-            $count = 0;
             foreach( $filters as $key2 => $filter ) {
                 if( !empty( $filter[ 'if' ] ) && !empty( $filter[ 'then' ] ) && !empty( $filter[ 'condition' ] ) && isset( $filter[ 'value' ] ) ) {
-                    $count++;
                     $if        = self::get_column_name( $filter[ 'if' ] );
                     $then      = $filter[ 'then' ];
                     $condition = $filter[ 'condition' ];
@@ -325,6 +341,7 @@ class Rex_Product_Filter {
                     $prefix = self::get_method_prefix( $filter[ 'if' ] );
 
                     if( 'term_' === $prefix ) {
+                        self::$term_table_count++;
                         $column = $filter[ 'if' ];
                         $taxonomy = preg_match('/^pa_/i', $column) ? $column : substr($column, 0, -1);
                         $value = self::get_term_id_by_slug( $value, $taxonomy );
@@ -336,18 +353,24 @@ class Rex_Product_Filter {
                         $function    = "post_{$condition}";
                     }
                     elseif( 'postmeta_' === $prefix ) {
+                        self::$meta_table_count++;
                         $meta_exists = true;
                         $function    = "{$prefix}{$condition}";
                     }
                     else {
                         $function = "{$prefix}{$condition}";
                     }
-
-                    $where .= $key2 === 0 ? '' : ' AND ';
-                    $where .= self::$function( $if, $value, $then, $prefix );
+                    $temp_where = self::$function( $if, $value, $then, $prefix );
+                    if( $temp_where ) {
+                        $inner_where .= $key2 > 0 && $inner_where ? " AND ({$temp_where})" : "({$temp_where})";
+                    }
                 }
             }
-            $where .= $count > 0 ? ')' : '';
+
+            if( $inner_where ) {
+                $where .=  $key1 > 0 && $where ? " OR ({$inner_where})" : "({$inner_where})";
+                $inner_where = '';
+            }
         }
 
         return [
@@ -480,7 +503,7 @@ class Rex_Product_Filter {
      */
     private static function post_contain( $column, $value, $operator, $table_prefix ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? $wpdb->term_relationships : $wpdb->posts;
+        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? 'NOT LIKE' : 'LIKE';
         return "{$table}.{$column} {$op} '%{$wpdb->esc_like( $value )}%'";
     }
@@ -497,7 +520,7 @@ class Rex_Product_Filter {
      */
     private static function post_dn_contain( $column, $value, $operator, $table_prefix ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? $wpdb->term_relationships : $wpdb->posts;
+        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? 'LIKE' : 'NOT LIKE';
         return "{$table}.{$column} {$op} '%{$wpdb->esc_like( $value )}%'";
     }
@@ -514,7 +537,7 @@ class Rex_Product_Filter {
      */
     private static function post_equal_to( $column, $value, $operator, $table_prefix ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? $wpdb->term_relationships : $wpdb->posts;
+        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<>' : '=';
         return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
     }
@@ -531,7 +554,7 @@ class Rex_Product_Filter {
      */
     private static function post_nequal_to( $column, $value, $operator, $table_prefix ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? $wpdb->term_relationships : $wpdb->posts;
+        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '=' : '<>';
         return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
     }
@@ -548,7 +571,7 @@ class Rex_Product_Filter {
      */
     private static function post_greater_than( $column, $value, $operator, $table_prefix ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? $wpdb->term_relationships : $wpdb->posts;
+        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<' : '>';
         return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
     }
@@ -565,7 +588,7 @@ class Rex_Product_Filter {
      */
     private static function post_greater_than_equal( $column, $value, $operator, $table_prefix ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? $wpdb->term_relationships : $wpdb->posts;
+        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<=' : '>=';
         return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
     }
@@ -582,7 +605,7 @@ class Rex_Product_Filter {
      */
     private static function post_less_than( $column, $value, $operator, $table_prefix ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? $wpdb->term_relationships : $wpdb->posts;
+        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '>' : '<';
         return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
     }
@@ -599,7 +622,7 @@ class Rex_Product_Filter {
      */
     private static function post_less_than_equal( $column, $value, $operator, $table_prefix ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? $wpdb->term_relationships : $wpdb->posts;
+        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<=' : '>=';
         return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
     }
@@ -616,7 +639,7 @@ class Rex_Product_Filter {
     private static function postmeta_contain( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? 'NOT LIKE' : 'LIKE';
-        return "({$wpdb->postmeta}.meta_key = '{$column}' AND {$wpdb->postmeta}.meta_value {$op} '%{$wpdb->esc_like( $value )}%')";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '%{$wpdb->esc_like( $value )}%')";
     }
 
     /**
@@ -631,7 +654,7 @@ class Rex_Product_Filter {
     private static function postmeta_dn_contain( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? 'LIKE' : 'NOT LIKE';
-        return "({$wpdb->postmeta}.meta_key = '{$column}' AND {$wpdb->postmeta}.meta_value {$op} '%{$wpdb->esc_like( $value )}%')";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '%{$wpdb->esc_like( $value )}%')";
     }
 
     /**
@@ -646,7 +669,7 @@ class Rex_Product_Filter {
     private static function postmeta_equal_to( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? '<>' : '=';
-        return "({$wpdb->postmeta}.meta_key = '{$column}' AND {$wpdb->postmeta}.meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
     }
 
     /**
@@ -661,7 +684,7 @@ class Rex_Product_Filter {
     private static function postmeta_nequal_to( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? '=' : '<>';
-        return "({$wpdb->postmeta}.meta_key = '{$column}' AND {$wpdb->postmeta}.meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count ."meta_value {$op} '{$wpdb->esc_like( $value )}')";
     }
 
     /**
@@ -676,7 +699,7 @@ class Rex_Product_Filter {
     private static function postmeta_greater_than( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? '< ' : '>';
-        return "({$wpdb->postmeta}.meta_key = '{$column}' AND {$wpdb->postmeta}.meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
     }
 
     /**
@@ -691,7 +714,7 @@ class Rex_Product_Filter {
     private static function postmeta_greater_than_equal( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? '<= ' : '>=';
-        return "({$wpdb->postmeta}.meta_key = '{$column}' AND {$wpdb->postmeta}.meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
     }
 
     /**
@@ -706,7 +729,7 @@ class Rex_Product_Filter {
     private static function postmeta_less_than( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? '> ' : '<';
-        return "({$wpdb->postmeta}.meta_key = '{$column}' AND {$wpdb->postmeta}.meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
     }
 
     /**
@@ -721,7 +744,7 @@ class Rex_Product_Filter {
     private static function postmeta_less_than_equal( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? '<= ' : '>=';
-        return "({$wpdb->postmeta}.meta_key = '{$column}' AND {$wpdb->postmeta}.meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
     }
 
 
