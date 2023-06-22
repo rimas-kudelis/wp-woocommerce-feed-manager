@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.3
-Stable tag:  7.3.1
+Stable tag:  7.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -881,6 +881,10 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.3.2 (2023-06-22) =
+* Enhancement: Updated Hotline merchant feed
+* Added: New Output Filter `Each Word Uppercase`
 
 = 7.3.1 (2023-06-16) =
 * Enhancement: Optimized custom filtering process
