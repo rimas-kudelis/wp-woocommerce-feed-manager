@@ -44,7 +44,7 @@ Create your preferred feed in seconds with 3 simple steps:
 
 Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimised feed for greater results.
 
-<a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get 30% off on Product Feed Manager for WooCommerce - Pro</a>
+<a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get Product Feed Manager for WooCommerce - Pro</a>
 
 <a href="https://www.producthunt.com/posts/product-feed-manager-for-woocommerce?utm_source=repo&utm_medium=repo&utm_campaign=repo_ph&utm_id=repo_ph" target="_blank">🔥 Support Us On Product Hunt 🔥</a>
 
