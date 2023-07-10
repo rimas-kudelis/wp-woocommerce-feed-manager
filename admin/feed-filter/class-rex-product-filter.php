@@ -539,7 +539,8 @@ class Rex_Product_Filter {
         global $wpdb;
         $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<>' : '=';
-        return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return "{$table}.{$column} {$op} {$value}";
     }
 
     /**
@@ -556,7 +557,8 @@ class Rex_Product_Filter {
         global $wpdb;
         $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '=' : '<>';
-        return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return "{$table}.{$column} {$op} {$value}";
     }
 
     /**
@@ -573,7 +575,8 @@ class Rex_Product_Filter {
         global $wpdb;
         $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<' : '>';
-        return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return "{$table}.{$column} {$op} {$value}";
     }
 
     /**
@@ -590,7 +593,8 @@ class Rex_Product_Filter {
         global $wpdb;
         $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<=' : '>=';
-        return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return "{$table}.{$column} {$op} {$value}";
     }
 
     /**
@@ -607,7 +611,8 @@ class Rex_Product_Filter {
         global $wpdb;
         $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '>' : '<';
-        return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return "{$table}.{$column} {$op} {$value}";
     }
 
     /**
@@ -624,7 +629,8 @@ class Rex_Product_Filter {
         global $wpdb;
         $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<=' : '>=';
-        return "{$table}.{$column} {$op} '{$wpdb->esc_like( $value )}'";
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return "{$table}.{$column} {$op} {$value}";
     }
 
     /**
@@ -669,7 +675,8 @@ class Rex_Product_Filter {
     private static function postmeta_equal_to( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? '<>' : '=';
-        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} {$value})";
     }
 
     /**
@@ -684,7 +691,8 @@ class Rex_Product_Filter {
     private static function postmeta_nequal_to( $column, $value, $operator ) {
         global $wpdb;
         $op = 'exc' === $operator ? '=' : '<>';
-        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count ."meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count ."meta_value {$op} {$value})";
     }
 
     /**
@@ -698,8 +706,9 @@ class Rex_Product_Filter {
      */
     private static function postmeta_greater_than( $column, $value, $operator ) {
         global $wpdb;
-        $op = 'exc' === $operator ? '< ' : '>';
-        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        $op = 'exc' === $operator ? '<' : '>';
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} {$value})";
     }
 
     /**
@@ -713,8 +722,9 @@ class Rex_Product_Filter {
      */
     private static function postmeta_greater_than_equal( $column, $value, $operator ) {
         global $wpdb;
-        $op = 'exc' === $operator ? '<= ' : '>=';
-        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        $op = 'exc' === $operator ? '<' : '>=';
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} {$value})";
     }
 
     /**
@@ -728,8 +738,9 @@ class Rex_Product_Filter {
      */
     private static function postmeta_less_than( $column, $value, $operator ) {
         global $wpdb;
-        $op = 'exc' === $operator ? '> ' : '<';
-        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        $op = 'exc' === $operator ? '>=' : '<';
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} {$value})";
     }
 
     /**
@@ -743,8 +754,9 @@ class Rex_Product_Filter {
      */
     private static function postmeta_less_than_equal( $column, $value, $operator ) {
         global $wpdb;
-        $op = 'exc' === $operator ? '<= ' : '>=';
-        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} '{$wpdb->esc_like( $value )}')";
+        $op = 'exc' === $operator ? '>' : '<=';
+        $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} {$value})";
     }
 
 

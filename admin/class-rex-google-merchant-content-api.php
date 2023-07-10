@@ -288,7 +288,8 @@ class Rex_Google_Merchant_Settings_Api {
 		if ( !$this->is_authenticate() ) {
 			$client_obj->authenticate( $code );
 			$access_token = $client_obj->getAccessToken();
-			if ( $access_token ) {
+
+			if ( !empty( $access_token ) && is_array( $access_token ) ) {
 				update_option( 'rex_google_access_token', wp_json_encode( $access_token ) );
 			}
 		}

@@ -177,6 +177,7 @@ class Rex_Product_Feed_Mirakl extends Rex_Product_Feed_Abstract_Generator
      */
     private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
+        $attributes =$this->process_channel_prices( $attributes );
         $attributes = $this->process_attributes_for_delivery( $attributes );
         $attributes = $this->process_attributes_for_param( $attributes );
 
@@ -290,17 +291,53 @@ class Rex_Product_Feed_Mirakl extends Rex_Product_Feed_Abstract_Generator
                     'value'         => isset($atts['VALUE_'.$param_no]) ? $atts['VALUE_'.$param_no] : '',
                     'percentage'    => isset($atts['PERCENTAGE_'.$param_no]) ? $atts['PERCENTAGE_'.$param_no] : '',
                 );
-            }
-        }
-        foreach ($atts as $key => $value) {
-            if(preg_match('/^PARAM/im', $key)) {
-                $param_no = preg_replace('/[^0-9]/', '', $key);
                 unset($atts['VALUE_' . $param_no]);
                 unset($atts['PERCENTAGE_' . $param_no]);
                 unset($atts['PARAM_NAME_' . $param_no]);
             }
         }
         return $atts;
+    }
+
+    /**
+     * Process and format Mirakl channel prices
+     *
+     * @param array $attributes Feed attributes
+     *
+     * @return mixed
+     * @since 7.3.3
+     */
+    private function process_channel_prices( $attributes ) {
+        if( is_array( $attributes ) && !empty( $attributes ) ) {
+            foreach( $attributes as $key => $value ) {
+                if(
+                    preg_match( '/^channel-code-[0-9]$/', $key )
+                    || preg_match( '/^price-[0-9]$/', $key )
+                    || preg_match( '/^discount-price-[0-9]$/', $key )
+                    || preg_match( '/^discount-start-date-[0-9]$/', $key )
+                    || preg_match( '/^discount-end-date-[0-9]$/', $key )
+                ) {
+                    $index = preg_replace( '/[^0-9]/', '', $key );
+                    if( preg_match( '/^channel-code-[0-9]$/', $key ) ) {
+                        $attributes[ "Channel {$index} Prices" ][ 'channel-code' ] = $value;
+                    }
+                    elseif( preg_match( '/^price-[0-9]$/', $key ) ) {
+                        $attributes[ "Channel {$index} Prices" ][ 'price' ] = $value;
+                    }
+                    elseif( preg_match( '/^discount-price-[0-9]$/', $key ) ) {
+                        $attributes[ "Channel {$index} Prices" ][ 'discount-price' ] = $value;
+                    }
+                    elseif( preg_match( '/^discount-start-date-[0-9]$/', $key ) ) {
+                        $attributes[ "Channel {$index} Prices" ][ 'discount-start-date' ] = $value;
+                    }
+                    elseif( preg_match( '/^discount-end-date-[0-9]$/', $key ) ) {
+                        $attributes[ "Channel {$index} Prices" ][ 'discount-end-date' ] = $value;
+                    }
+                    unset( $attributes[ $key ] );
+                }
+            }
+        }
+        return $attributes;
     }
 
 
@@ -321,9 +358,14 @@ class Rex_Product_Feed_Mirakl extends Rex_Product_Feed_Abstract_Generator
         return RexShopping::asRss();
     }
 
-    //replace footer of feed
+    /**
+     * Replace footer of feed
+     *
+     * @return void
+     * @since 6.6.1
+     */
     public function footer_replace()
     {
-        $this->feed = str_replace('</import>', '', $this->feed);
+        $this->feed = str_replace('</offers></import>', '', $this->feed);
     }
 }

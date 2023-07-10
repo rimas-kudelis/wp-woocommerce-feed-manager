@@ -1721,7 +1721,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $node = $feed->getElementsByTagName( "offer" );
             if ( $this->batch == $this->tbatch ) {
                 $this->item_wrapper = '<offer>';
-                $this->feed_string_footer .= '</import>';
+                $this->feed_string_footer .= '</offers></import>';
             }
         }
         elseif ( $this->merchant === 'spartooFr' ) {

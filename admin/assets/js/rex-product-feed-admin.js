@@ -49,7 +49,6 @@
      */
 
     $(document).on("ready", function (event) {
-        init_accordions();
         if (rex_wpfm_ajax.current_screen === "rex_feed_edit") {
             rex_feed_niceselect(event);
             rex_feed_ebay_seller_fields();
@@ -805,6 +804,8 @@
 
                     // To track if any changes have been made.
                     rexfeed_set_init_form_data();
+
+                    init_accordions();
                 } )
                 .fail( function ( response ) {
                     $confBox.find( '.rex-loading-spinner' ).css( 'display', 'none' );
@@ -2857,7 +2858,7 @@
             const heading = accordion.querySelector("span");
             const accordionContentWrap = accordion.querySelector(".accordion__content-wrap");
 
-            const originalHeight = accordionContentWrap.offsetHeight;
+            const originalHeight = accordionContentWrap?.offsetHeight;
             accordionContentWrap.style.height = 0;
 
             let accordionActiveClass = "accordion__active";

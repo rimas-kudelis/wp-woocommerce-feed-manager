@@ -273,6 +273,15 @@ class Rex_Product_Data_Retriever {
                 $val = $this->set_divi_att( $rule[ 'meta_key' ] );
             } elseif ( 'meta' === $rule[ 'type' ] && $this->is_price_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_price_attr( $rule[ 'meta_key' ], $rule );
+
+                /**
+                 * Filters for product price in feed
+                 *
+                 * @param string|float $val Price value.
+                 *
+                 * @since 7.3.3
+                 */
+                $val = apply_filters( 'rex_feed_product_price', $val ) ?: '';
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_yoast_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_yoast_attr( $rule[ 'meta_key' ] );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_rankmath_attr( $rule[ 'meta_key' ] ) ) {

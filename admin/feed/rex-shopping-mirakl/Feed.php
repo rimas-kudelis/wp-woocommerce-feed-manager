@@ -250,32 +250,42 @@ class Feed
 
         foreach ($this->items as $item) {
             $nodes = $item->nodes();
-            $this->product = $productNodes->addChild('product');
+            $this->product = $productNodes->addChild( 'product' );
             $feedItemNode = $feedItemNodes->addChild('offer');
 
             if( !empty( $nodes ) ) {
-                foreach ($nodes as $itemNode) {
-                    if (is_array($itemNode)) {
-                        foreach ($itemNode as $node) {
-                            $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
-                        }
-                    } else {
-                        if(  stristr( $itemNode->get( 'name' ), 'attribute_' ) ){
-
-                            if( stristr( $itemNode->get( 'name' ), 'attribute_code_' ) ){
-                                $this->attr = $this->product->addChild('attribute');
-                                $this->attr->addChild('code',$itemNode->get('value'));
-                            }else{
-                                $this->attr->addChild('value',$itemNode->get('value'));
+                foreach( $nodes as $itemNode ) {
+                    if( is_array( $itemNode->get( 'value' ) ) ) {
+                        if( !empty( $itemNode->get( 'value' ) ) ) {
+                            if( preg_match( '/Channel [0-9] Prices$/', $itemNode->get( 'name' ) ) ) {
+                                $all_prices      = 'all-prices';
+                                $all_prices_node = $feedItemNode->$all_prices ?: $feedItemNode->addChild( $all_prices );
+                                $prices_node     = $all_prices_node->addChild( 'pricing' );
+                                foreach( $itemNode->get( 'value' ) as $key => $value ) {
+                                    $prices_node->addChild( $key, $value );
+                                }
                             }
                         }
-                        elseif( !stristr( $itemNode->get( 'name' ), 'offer_additional_field_code_' ) && !stristr($itemNode->get('name'),'offer_additional_field_value') ) {
+                    }
+                    else {
+                        if( stristr( $itemNode->get( 'name' ), 'attribute_' ) ) {
+
+                            if( stristr( $itemNode->get( 'name' ), 'attribute_code_' ) ) {
+                                $this->attr = $this->product->addChild( 'attribute' );
+                                $this->attr->addChild( 'code', $itemNode->get( 'value' ) );
+                            }
+                            else {
+                                $this->attr->addChild( 'value', $itemNode->get( 'value' ) );
+                            }
+                        }
+                        elseif( !stristr( $itemNode->get( 'name' ), 'offer_additional_field_code_' ) && !stristr( $itemNode->get( 'name' ), 'offer_additional_field_value' ) ) {
                             $itemNode->attachNodeTo( $feedItemNode );
                         }
                     }
                 }
 
-                $feed_item_node_offer = $feedItemNode->addChild( 'offer-additional-fields' );
+                $offer_additional = 'offer-additional-fields';
+                $feed_item_node_offer = $feedItemNode->addChild( $offer_additional );
 
                 foreach( $nodes as $itemNode ) {
                     if( !is_array( $itemNode ) && stristr( $itemNode->get( 'name' ), 'offer_additional_field_' ) ) {
@@ -287,6 +297,10 @@ class Feed
                             $this->additional_offer_info->addChild( 'value', $itemNode->get( 'value' ) );
                         }
                     }
+                }
+
+                if( empty( $feed_item_node_offer ) ) {
+                    unset( $feedItemNode->$offer_additional );
                 }
             }
         }

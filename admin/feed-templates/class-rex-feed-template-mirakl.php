@@ -43,12 +43,21 @@ class Rex_Feed_Template_Mirakl extends Rex_Feed_Abstract_Template {
                 'discount-price'        => 'Discount Price',
                 'update-delete'         => 'Update delete',
             ],
-
             'Additional Attributes' => [
                 'logistic-class'   => 'Logistic Class',
                 'leadtime-to-ship' => 'Lead Time to Ship',
             ],
         ];
+
+        for( $index = 1; $index <= 5; $index++ ) {
+            $this->attributes[ "Channel {$index} Prices" ] = [
+                "channel-code-{$index}"   => 'Channel Code',
+                "price-{$index}" => 'Price',
+                "discount-price-{$index}" => 'Discount Price',
+                "discount-start-date-{$index}" => 'Discount Start Date',
+                "discount-end-date-{$index}" => 'Discount End Date',
+            ];
+        }
 
         for( $index = 1; $index <= 15; $index++ ) {
             $this->attributes[ 'Offer Additional Attributes' ][ "offer_additional_field_code_{$index}" ]  = "Offer Additional Field Code {$index}";
