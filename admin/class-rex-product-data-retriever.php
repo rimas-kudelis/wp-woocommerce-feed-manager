@@ -973,19 +973,25 @@ class Rex_Product_Data_Retriever {
 	 * @return int|string
 	 * @since 7.2.10
 	 */
-	protected function set_tax_attr( $key ) {
-		switch ( $key ) {
-			case 'tax_class':
-				return $this->product ? $this->product->get_tax_class() : '';
+    protected function set_tax_attr( $key ) {
+        $product = $this->product;
+        if( 'variation' === $this->product->get_type() ) {
+            $parent_id = $this->product->get_parent_id();
+            $product = wc_get_product( $parent_id );
+        }
 
-			case 'tax':
-				$tax_class = $this->product ? $this->product->get_tax_class() : '';
-				$tax_rates = wpfm_get_cached_data( 'wc_tax_rates_' . $tax_class );
-				return $tax_rates ?: WC_Tax::get_rates_for_tax_class( $tax_class );
-			default:
-				return '';
-		}
-	}
+        switch ( $key ) {
+            case 'tax_class':
+                return $product ? $product->get_tax_class() : '';
+
+            case 'tax':
+                $tax_class = $product ? $product->get_tax_class() : '';
+                $tax_rates = wpfm_get_cached_data( 'wc_tax_rates_' . $tax_class );
+                return $tax_rates ?: WC_Tax::get_rates_for_tax_class( $tax_class );
+            default:
+                return '';
+        }
+    }
 
 
 	/**
@@ -2105,6 +2111,10 @@ class Rex_Product_Data_Retriever {
 			$meta_value = get_post_meta( $this->product->get_id(), $new_key, true );
 			// need to check if these attributes value is assigned to the mother product
 			if ( !$meta_value ) {
+                $meta_value = get_post_meta( $pr_id, $new_key, true );
+                if( $meta_value ) {
+                    return $meta_value;
+                }
 				$list = $this->product->get_attributes();
 
 				if ( array_key_exists( $new_key, $list ) ) {
@@ -2113,7 +2123,7 @@ class Rex_Product_Data_Retriever {
 					$acf_field = get_post_meta( $this->product->get_parent_id(), '_' . $new_key, true );
 
 					if ( '' !== $acf_field && preg_match( '/field_/', $acf_field ) ) {
-						$meta_value = get_post_meta( $this->product->get_parent_id(), $new_key, true );
+						$meta_value = get_post_meta( $pr_id, $new_key, true );
 					}
 				}
 			}

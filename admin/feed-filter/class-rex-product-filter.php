@@ -692,7 +692,7 @@ class Rex_Product_Filter {
         global $wpdb;
         $op = 'exc' === $operator ? '=' : '<>';
         $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
-        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count ."meta_value {$op} {$value})";
+        return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} {$value})";
     }
 
     /**

@@ -1032,6 +1032,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
         $result         = new WP_Query( $this->products_args );
         $this->products = $result->posts;
+//        error_log(print_r($result->request, 1));
 
         if ( $this->custom_filter_option ) {
             remove_filter( 'posts_where', array( $this, 'add_custom_filter_where_query' ) );

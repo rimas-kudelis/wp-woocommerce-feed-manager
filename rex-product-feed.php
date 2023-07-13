@@ -3,7 +3,7 @@
  * The plugin bootstrap file
  *
  * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
+ * admin area. This file also includes all the dependencies used by the plugin,
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
- * Version:           7.3.3
+ * Version:           7.3.4
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.3.3' );
+    define( 'WPFM_VERSION', '7.3.4' );
 }
 if ( !defined( 'WPFM__FILE__' ) ) {
 	define( 'WPFM__FILE__', __FILE__ );
@@ -101,15 +101,15 @@ if( !defined( 'WC_SINGLE_SCHEDULER' ) ) {
  **/
 function rex_is_woocommerce_active() {
 	$woocommerce = 'woocommerce/woocommerce.php';
+	$is_active   = false;
 	if( is_multisite() ) {
 		$plugins = get_site_option( 'active_sitewide_plugins', [] );
-		return isset( $plugins[ $woocommerce ] );
+		$is_active = isset( $plugins[ $woocommerce ] );
 	}
 	$plugins = get_option( 'active_plugins', [] );
 
-	return in_array( $woocommerce, $plugins );
+	return $is_active ?: in_array( $woocommerce, $plugins );
 }
-
 
 /**
  * Check if WPFM Pro is compatible with new ui [version > 6.0.0]

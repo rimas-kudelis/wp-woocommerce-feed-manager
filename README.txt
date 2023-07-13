@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.3
-Stable tag:  7.3.3
+Stable tag:  7.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -882,6 +882,10 @@ WP Dashboard > Product Feed > Upgrade.
 
 
 == Changelog ==
+
+= 7.3.4 (2023-07-13) =
+* Added: Get tax class attribute value for variation products
+* Added: Product review count for variation products
 
 = 7.3.3 (2023-07-10) =
 * Added: New attribute `all-prices` in Mirakl feed merchant
