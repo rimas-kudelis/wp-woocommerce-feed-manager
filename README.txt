@@ -886,6 +886,7 @@ WP Dashboard > Product Feed > Upgrade.
 = 7.3.4 (2023-07-13) =
 * Added: Get tax class attribute value for variation products
 * Added: Product review count for variation products
+* Fixed: Plugin activation error in multi-site
 
 = 7.3.3 (2023-07-10) =
 * Added: New attribute `all-prices` in Mirakl feed merchant
