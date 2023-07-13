@@ -871,6 +871,8 @@ You may use the Product Feed Manager for WooCommerce to generate feed for up to 
 To upgrade to PRO, you may purchase a license key from:
 WP Dashboard > Product Feed > Upgrade.
 
+= How can I report security bugs? =
+You can report security bugs through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/). The Patchstack team help validate, triage and handle any security vulnerabilities. If you have identified a security concern, we encourage you to utilize the platform to report it by accessing the following link: [Report a security vulnerability](https://patchstack.com/database/vdp/best-woocommerce-feed)
 
 == Screenshots ==
 1. Generate WooCommerce product feed in 3 simple steps
