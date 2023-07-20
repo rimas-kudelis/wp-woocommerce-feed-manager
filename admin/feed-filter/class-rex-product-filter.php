@@ -138,33 +138,37 @@ class Rex_Product_Filter {
      * Get Filter Attributes
      * @return array $attributes
      */
-    protected function getFilterAttribute () {
-        return array(
-            'Primary Attributes'        => array(
-                'id'                        => 'Product Id',
-                'title'                     => 'Product Title',
-                'description'               => 'Product Description',
-                'short_description'         => 'Product Short Description',
-                'total_sales'               => 'Total Sales',
-                'featured_image'            => 'Featured Image',
-                'product_cats'              => 'Product Categories',
-                'sku'                       => 'SKU',
-                'availability'              => 'Availability',
-                'quantity'                  => 'Quantity',
-                'price'                     => 'Reguler Price',
-                'sale_price'                => 'Sale price',
-                'weight'                    => 'Weight',
-                'width'                     => 'Width',
-                'height'                    => 'Height',
-                'length'                    => 'Length',
-                'rating_total'              => 'Total Rating',
-                'rating_average'            => 'Average Rating',
-                'product_tags'              => 'Tags',
-                'sale_price_dates_from'     => 'Sale Start Date',
-                'sale_price_dates_to'       => 'Sale End Date',
-                'manufacturer'              => 'Manufacturer',
-            ),
-        );
+    protected function getFilterAttribute() {
+        $attributes = [
+            'Primary Attributes' => [
+                'id'                    => 'Product Id',
+                'title'                 => 'Product Title',
+                'description'           => 'Product Description',
+                'short_description'     => 'Product Short Description',
+                'total_sales'           => 'Total Sales',
+                'featured_image'        => 'Featured Image',
+                'product_cats'          => 'Product Categorie',
+                'product_tags'          => 'Product Tag',
+                'sku'                   => 'SKU',
+                'availability'          => 'Availability',
+                'quantity'              => 'Quantity',
+                'price'                 => 'Regular Price',
+                'sale_price'            => 'Sale price',
+                'weight'                => 'Weight',
+                'width'                 => 'Width',
+                'height'                => 'Height',
+                'length'                => 'Length',
+                'rating_total'          => 'Total Rating',
+                'rating_average'        => 'Average Rating',
+                'sale_price_dates_from' => 'Sale Start Date',
+                'sale_price_dates_to'   => 'Sale End Date',
+                'manufacturer'          => 'Manufacturer'
+            ]
+        ];
+        if( rexfeed_is_woocommerce_brand_active() ) {
+            $attributes[ 'Primary Attributes' ][ 'product_brands' ] = 'Product Brand';
+        }
+        return $attributes;
     }
 
 
@@ -340,35 +344,35 @@ class Rex_Product_Filter {
 
                     $prefix = self::get_method_prefix( $filter[ 'if' ] );
 
-                    if( 'term_' === $prefix ) {
+                    if( 'postterm_' === $prefix ) {
                         self::$term_table_count++;
                         $column = $filter[ 'if' ];
                         $taxonomy = preg_match('/^pa_/i', $column) ? $column : substr($column, 0, -1);
-                        $value = self::get_term_id_by_slug( $value, $taxonomy );
+                        $value = self::get_term_id( $value, $taxonomy );
 
                         if( !$value ) {
                             continue;
                         }
                         $term_exists = true;
-                        $function    = "post_{$condition}";
                     }
                     elseif( 'postmeta_' === $prefix ) {
                         self::$meta_table_count++;
                         $meta_exists = true;
-                        $function    = "{$prefix}{$condition}";
                     }
-                    else {
-                        $function = "{$prefix}{$condition}";
-                    }
-                    $temp_where = self::$function( $if, $value, $then, $prefix );
-                    if( $temp_where ) {
-                        $inner_where .= $key2 > 0 && $inner_where ? " AND ({$temp_where})" : "({$temp_where})";
+
+                    $function = "{$prefix}{$condition}";
+
+                    if( method_exists( __CLASS__, $function ) ) {
+                        $temp_where = self::$function( $if, $value, $then );
+                        if( $temp_where ) {
+                            $inner_where .= $key2 > 0 && $inner_where ? " AND ({$temp_where})" : "({$temp_where})";
+                        }
                     }
                 }
             }
 
             if( $inner_where ) {
-                $where .=  $key1 > 0 && $where ? " OR ({$inner_where})" : "({$inner_where})";
+                $where .= $key1 > 0 && $where ? " OR ({$inner_where})" : "({$inner_where})";
                 $inner_where = '';
             }
         }
@@ -409,13 +413,14 @@ class Rex_Product_Filter {
         $term_rel_table_attr = [
             'product_cats',
             'product_tags',
+            'product_brands',
         ];
 
         if( in_array( $column, $meta_table_attr, true ) ) {
             return 'postmeta_';
         }
         elseif( in_array( $column, $term_rel_table_attr, true ) || preg_match( '/^pa_/i', $column ) ) {
-            return 'term_';
+            return 'postterm_';
         }
         return 'post_';
     }
@@ -473,6 +478,7 @@ class Rex_Product_Filter {
                 return '_sale_price_dates_to';
             case 'product_cats':
             case 'product_tags':
+            case 'product_brands':
                 return 'term_taxonomy_id';
             default:
                 return $column;
@@ -480,13 +486,13 @@ class Rex_Product_Filter {
     }
 
     /**
-     * Get term id by slug
+     * Get term id by slug or name
      *
      * @param $slug
      * @param $taxonomy
      * @return int|null
      */
-    private static function get_term_id_by_slug( $slug, $taxonomy ) {
+    private static function get_term_id( $slug, $taxonomy ) {
         $term = get_term_by( 'slug', $slug, $taxonomy );
         return !empty( $term->term_id ) ? $term->term_id : null;
     }
@@ -494,151 +500,144 @@ class Rex_Product_Filter {
     /**
      * Helper method to create custom where query for value `Contains` in `wp_post` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
-     * @param $table_prefix
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
-    private static function post_contain( $column, $value, $operator, $table_prefix ) {
+    private static function post_contain( $column, $value, $operator ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? 'NOT LIKE' : 'LIKE';
-        return "{$table}.{$column} {$op} '%{$wpdb->esc_like( $value )}%'";
+        return "{$wpdb->posts}.{$column} {$op} '%{$wpdb->esc_like( $value )}%'";
     }
 
     /**
      * Helper method to create custom where query for value `Does not contain` in `wp_post` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
-     * @param $table_prefix
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
-    private static function post_dn_contain( $column, $value, $operator, $table_prefix ) {
+    private static function post_dn_contain( $column, $value, $operator ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? 'LIKE' : 'NOT LIKE';
-        return "{$table}.{$column} {$op} '%{$wpdb->esc_like( $value )}%'";
+        return "{$wpdb->posts}.{$column} {$op} '%{$wpdb->esc_like( $value )}%'";
     }
 
     /**
      * Helper method to create custom where query for value `Is equal to` in `wp_post` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
-     * @param $table_prefix
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
-    private static function post_equal_to( $column, $value, $operator, $table_prefix ) {
+    private static function post_equal_to( $column, $value, $operator ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<>' : '=';
         $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
-        return "{$table}.{$column} {$op} {$value}";
+        return "{$wpdb->posts}.{$column} {$op} {$value}";
     }
 
     /**
      * Helper method to create custom where query for value `Is not equal to` in `wp_post` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
-     * @param $table_prefix
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
-    private static function post_nequal_to( $column, $value, $operator, $table_prefix ) {
+    private static function post_nequal_to( $column, $value, $operator ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '=' : '<>';
         $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
-        return "{$table}.{$column} {$op} {$value}";
+        return "{$wpdb->posts}.{$column} {$op} {$value}";
     }
 
     /**
      * Helper method to create custom where query for value `Greater than` in `wp_post` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
-     * @param $table_prefix
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
-    private static function post_greater_than( $column, $value, $operator, $table_prefix ) {
+    private static function post_greater_than( $column, $value, $operator ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<' : '>';
         $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
-        return "{$table}.{$column} {$op} {$value}";
+        return "{$wpdb->posts}.{$column} {$op} {$value}";
     }
 
     /**
      * Helper method to create custom where query for value `Greater than or equal to` in `wp_post` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
-     * @param $table_prefix
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
-    private static function post_greater_than_equal( $column, $value, $operator, $table_prefix ) {
+    private static function post_greater_than_equal( $column, $value, $operator ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<=' : '>=';
         $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
-        return "{$table}.{$column} {$op} {$value}";
+        return "{$wpdb->posts}.{$column} {$op} {$value}";
     }
 
     /**
      * Helper method to create custom where query for value `Less than` in `wp_post` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
-     * @param $table_prefix
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
-    private static function post_less_than( $column, $value, $operator, $table_prefix ) {
+    private static function post_less_than( $column, $value, $operator ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '>' : '<';
         $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
-        return "{$table}.{$column} {$op} {$value}";
+        return "{$wpdb->posts}.{$column} {$op} {$value}";
     }
 
     /**
      * Helper method to create custom where query for value `Less than or equal to` in `wp_post` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
-     * @param $table_prefix
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
-    private static function post_less_than_equal( $column, $value, $operator, $table_prefix ) {
+    private static function post_less_than_equal( $column, $value, $operator ) {
         global $wpdb;
-        $table = 'term_' === $table_prefix ? 'RexTerm' . self::$term_table_count : $wpdb->posts;
         $op = 'exc' === $operator ? '<=' : '>=';
         $value = is_numeric( $value ) ? $wpdb->esc_like( $value ) : "'{$wpdb->esc_like( $value )}'";
-        return "{$table}.{$column} {$op} {$value}";
+        return "{$wpdb->posts}.{$column} {$op} {$value}";
     }
 
     /**
      * Helper method to create custom where query for value `Contains` in `wp_postmeta` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
@@ -651,9 +650,10 @@ class Rex_Product_Filter {
     /**
      * Helper method to create custom where query for value `Does not contain` in `wp_postmeta` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
@@ -666,9 +666,10 @@ class Rex_Product_Filter {
     /**
      * Helper method to create custom where query for value `Is equal to` in `wp_postmeta` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
@@ -682,9 +683,10 @@ class Rex_Product_Filter {
     /**
      * Helper method to create custom where query for value `Is not equal to` in `wp_postmeta` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
@@ -698,9 +700,10 @@ class Rex_Product_Filter {
     /**
      * Helper method to create custom where query for value `Greater than` in `wp_postmeta` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
@@ -714,9 +717,10 @@ class Rex_Product_Filter {
     /**
      * Helper method to create custom where query for value `Greater than or equal to` in `wp_postmeta` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
@@ -730,9 +734,10 @@ class Rex_Product_Filter {
     /**
      * Helper method to create custom where query for value `Less than` in `wp_postmeta` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
@@ -746,9 +751,10 @@ class Rex_Product_Filter {
     /**
      * Helper method to create custom where query for value `Less than or equal to` in `wp_postmeta` table
      *
-     * @param $column
-     * @param $value
-     * @param $operator
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
      * @return string
      * @since 7.3.0
      */
@@ -759,6 +765,110 @@ class Rex_Product_Filter {
         return '(RexMeta' . self::$meta_table_count . ".meta_key = '{$column}' AND RexMeta". self::$meta_table_count .".meta_value {$op} {$value})";
     }
 
+    /**
+     * Helper method to create custom where query for value `Contains` in `wp_postmeta` table
+     *
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
+     * @return string
+     * @since 7.3.5
+     */
+    private static function postterm_contain( $column, $value, $operator ) {
+        global $wpdb;
+        $table_column = 'RexTerm' . self::$term_table_count . ".{$column}";
+        $op = 'IN';
+        if( 'exc' === $operator ) {
+            $op = 'NOT IN';
+            $value = self::get_term_product_ids( $value ); // Comma separated
+            $table_column = "$wpdb->posts.ID";
+        }
+        return $value ? "({$table_column} {$op} ({$value}))" : '';
+    }
+
+    /**
+     * Helper method to create custom where query for value `Does not contain` in `wp_postmeta` table
+     *
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
+     * @return string
+     * @since 7.3.5
+     */
+    private static function postterm_dn_contain( $column, $value, $operator ) {
+        global $wpdb;
+        $table_column = 'RexTerm' . self::$term_table_count . ".{$column}";
+        $op = 'IN';
+        if( 'inc' === $operator ) {
+            $op = 'NOT IN';
+            $value = self::get_term_product_ids( $value ); // Comma separated
+            $table_column = "$wpdb->posts.ID";
+        }
+        return $value ? "({$table_column} {$op} ({$value}))" : '';
+    }
+
+    /**
+     * Helper method to create custom where query for value `Is equal to` in `wp_postmeta` table
+     *
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
+     * @return string
+     * @since 7.3.5
+     */
+    private static function postterm_equal_to( $column, $value, $operator ) {
+        global $wpdb;
+        $table_column = 'RexTerm' . self::$term_table_count . ".{$column}";
+        $op = 'IN';
+        if( 'exc' === $operator ) {
+            $op = 'NOT IN';
+            $value = self::get_term_product_ids( $value ); // Comma separated
+            $table_column = "$wpdb->posts.ID";
+        }
+        return $value ? "({$table_column} {$op} ({$value}))" : '';
+    }
+
+    /**
+     * Helper method to create custom where query for value `Is not equal to` in `wp_postmeta` table
+     *
+     * @param string $column Table column name.
+     * @param string|int $value Attribute value.
+     * @param string $operator MySQL operator.
+     *
+     * @return string
+     * @since 7.3.5
+     */
+    private static function postterm_nequal_to( $column, $value, $operator ) {
+        global $wpdb;
+        $table_column = 'RexTerm' . self::$term_table_count . ".{$column}";
+        $op = 'IN';
+        if( 'inc' === $operator ) {
+            $op = 'NOT IN';
+            $value = self::get_term_product_ids( $value ); // Comma separated
+            $table_column = "$wpdb->posts.ID";
+        }
+        return $value ? "({$table_column} {$op} ({$value}))" : '';
+    }
+
+    /**
+     * Get product ids [comma separated] by term id
+     *
+     * @param int|string $term_id Taxonomy ID.
+     *
+     * @return string
+     * @since 7.3.5
+     */
+    private static function get_term_product_ids( $term_id ) {
+        global $wpdb;
+        if( empty( $term_id ) ) {
+            return '';
+        }
+        $product_ids = $wpdb->get_col( $wpdb->prepare( "SELECT `object_id` FROM %i WHERE `term_taxonomy_id` IN (%d)", [$wpdb->term_relationships, $term_id] ) );
+        return is_array( $product_ids ) && !empty( $product_ids ) ? implode( ', ', $product_ids ) : '';
+    }
 
     /**
      * @desc Gets WooCommerce product attributes [Global]

@@ -159,9 +159,14 @@ class Rex_Feed_Scheduler {
             $per_batch     = !empty( $data[ 'per_batch' ] ) ? $data[ 'per_batch' ] : '';
             $offset        = !empty( $data[ 'offset' ] ) ? $data[ 'offset' ] : '';
 
-            if( 1 === $current_batch ) {
-                delete_post_meta( $feed_id, 'rex_feed_status' );
-                update_post_meta( $feed_id, '_rex_feed_status', 'processing' );
+            $scheduled_actions = as_get_scheduled_actions( [
+                'hook' => 'rex_feed_regenerate_feed_batch',
+                'group' => "wpfm-feed-{$feed_id}",
+                'status' => ActionScheduler_Store::STATUS_PENDING
+            ] );
+
+            if( !empty( $scheduled_actions ) ) {
+                Rex_Product_Feed_Controller::update_feed_status( $feed_id, 'processing' );
             }
 
             try {
@@ -169,8 +174,8 @@ class Rex_Feed_Scheduler {
                 $merchant = Rex_Product_Feed_Factory::build( $payload, true );
                 $merchant->make_feed();
 
-                if( $current_batch === $total_batches ) {
-                    update_post_meta( $feed_id, '_rex_feed_status', 'completed' );
+                if( empty( $scheduled_actions ) ) {
+                    Rex_Product_Feed_Controller::update_feed_status( $feed_id, 'completed' );
                 }
             }
             catch( Exception $e ) {
@@ -270,7 +275,7 @@ class Rex_Feed_Scheduler {
                                 if( !$is_scheduled ) {
                                     $scheduled = function_exists( 'as_schedule_single_action' ) && as_schedule_single_action( time(), 'rex_feed_regenerate_feed_batch', $data, 'wpfm-feed-' . $feed_id );
                                     if( 1 === $current_batch && !is_wp_error( $scheduled ) && $scheduled ) {
-                                        update_post_meta( $feed_id, '_rex_feed_status', 'In queue' );
+                                        Rex_Product_Feed_Controller::update_feed_status( $feed_id, 'In queue' );
                                     }
                                 }
                                 $offset += $per_batch;

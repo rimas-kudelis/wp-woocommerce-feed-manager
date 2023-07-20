@@ -555,7 +555,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 foreach( $filters as $filter ) {
                     $if = $filter[ 'if' ];
 
-                    if ( $if === 'product_cats' || $if === 'product_tags' || preg_match( '/^pa_/i', $if ) ) {
+                    if ( $if === 'product_cats' || $if === 'product_tags' || $if === 'product_brands' || preg_match( '/^pa_/i', $if ) ) {
                         unset( $post_types[ 1 ] );
                         $this->custom_filter_var_exclude = true;
                     }
@@ -908,8 +908,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * @param $config
      */
     protected function save_feed_meta( $config ) {
-        update_post_meta( $this->id, '_rex_feed_status', 'processing' );
-        delete_post_meta( $this->id, 'rex_feed_status' );
+        if( !$this->bypass ) {
+            Rex_Product_Feed_Controller::update_feed_status( $this->id, 'processing' );
+        }
 
         $feed_configs = array();
         wp_parse_str( $config, $feed_configs );
@@ -1032,7 +1033,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
         $result         = new WP_Query( $this->products_args );
         $this->products = $result->posts;
-//        error_log(print_r($result->request, 1));
 
         if ( $this->custom_filter_option ) {
             remove_filter( 'posts_where', array( $this, 'add_custom_filter_where_query' ) );
@@ -1282,7 +1282,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         if ( $this->batch === $this->tbatch ) {
-            update_post_meta( $this->id, '_rex_feed_status', 'completed' );
+            if( !$this->bypass ) {
+                Rex_Product_Feed_Controller::update_feed_status( $this->id, 'completed' );
+            }
             if ( $this->is_logging_enabled ) {
                 $log = wc_get_logger();
                 $log->info( __( 'Completed feed generation job.', 'rex-product-feed' ), array( 'source' => 'WPFM', ) );

@@ -713,3 +713,24 @@ if ( !function_exists( 'rex_feed_get_allowed_kseser' ) ) {
 		return array_merge( $allowed_html_post, $allowed_html );
 	}
 }
+
+if ( !function_exists( 'rexfeed_is_woocommerce_brand_active' ) ) {
+
+	/**
+	 * Helper function to check if WooCommerce brand plugin is active
+	 *
+	 * @return bool
+	 * @since 7.3.5
+	 */
+	function rexfeed_is_woocommerce_brand_active() {
+		$woocommerce_brand = 'woocommerce-brands/woocommerce-brands.php';
+		$is_active   = false;
+		if( is_multisite() ) {
+			$plugins = get_site_option( 'active_sitewide_plugins', [] );
+			$is_active = isset( $plugins[ $woocommerce_brand ] );
+		}
+		$plugins = get_option( 'active_plugins', [] );
+
+		return $is_active ?: in_array( $woocommerce_brand, $plugins );
+	}
+}

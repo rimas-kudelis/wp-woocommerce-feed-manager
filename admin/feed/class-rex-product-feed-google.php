@@ -108,7 +108,7 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                     $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
 
-                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->custom_filter_var_exclude || $this->custom_filter_var_exclude ) {
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->custom_filter_var_exclude ) {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
                     }

@@ -53,7 +53,7 @@ class Rex_Feed_Attributes {
 		if ( in_array( 'brands-for-woocommerce/woocommerce-brand.php', $plugins, true ) ) {
 			$attributes = array_merge( $attributes, self::get_brands_for_wc_attributes() );
 		}
-		if ( in_array( 'woocommerce-brands/woocommerce-brands.php', $plugins, true ) || in_array( 'woo-brand/main.php', $plugins, true ) ) {
+		if ( rexfeed_is_woocommerce_brand_active() || in_array( 'woo-brand/main.php', $plugins, true ) ) {
 			$attributes = array_merge( $attributes, self::get_woocommerce_brand_attributes() );
 		}
 		if ( in_array( 'dropship-plugin/mantella.php', $plugins, true ) ) {
