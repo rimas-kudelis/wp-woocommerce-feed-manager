@@ -846,6 +846,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'          => true,
             'datetime'         => false,
         ),
+        "check24"             => array(
+            'container'        => false,
+            'item_wrapper'     => 'product',
+            'items_wrapper'    => 'products',
+            'namespace'        => null,
+            'namespace_prefix' => '',
+            'stand_alone'      => false,
+            'version'          => '',
+            'wrapper_el'       => '',
+            'wrapper'          => false,
+            'datetime'         => false,
+        )
     );
 
     public function __construct( $config, $bypass = false, $product_ids = array() ) {
@@ -988,12 +1000,12 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
      */
     protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
+        $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
+        $total_products = $total_products ?: get_post_meta($this->id, 'rex_feed_total_products', true);
         $simple_products = [];
         $variation_products = [];
         $variable_parent = [];
         $group_products = [];
-        $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
-        $total_products = $total_products ?: get_post_meta($this->id, 'rex_feed_total_products', true);
         $total_products = $total_products ?: array(
             'total' => 0,
             'simple' => 0,

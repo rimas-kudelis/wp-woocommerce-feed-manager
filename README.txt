@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.2
 Requires PHP: 7.3
-Stable tag:  7.3.5
+Stable tag:  7.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -884,6 +884,14 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.6 (2023-08-03) =
+* Enhancement: Removed unwanted php notices
+* Fixed: Generating feeds with no products in the background process
+* Fixed: Wrong product count in feed listing page for Idealo.de
+* Fixed: Wrong product count in feed listing page for Pinterest
+* Dev: Add filter `rex_feed_product_url`
+* Dev: Add filter `rex_feed_product_parent_url`
 
 = 7.3.5 (2023-07-19) =
 * Added: New custom filter taxonomy option `Product Brand` for [WooCommerce Brand](https://woocommerce.com/products/brands/)
@@ -2031,5 +2039,11 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 = 1.0.0 (2017-02-07) =
 * Initial version with support for Google Merchant
+
+== Upgrade Notice ==
+
+= 🚀 Recommended Upgrade 🚀 =
+For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
+
 README.txt
 Displaying README.txt.

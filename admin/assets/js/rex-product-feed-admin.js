@@ -490,12 +490,6 @@
         }
     });
 
-    $(document).on("change", "#rex_feed_merchant", function () {
-        const $feedFormat = $( '#rex_feed_feed_format' );
-        const firstOption = $feedFormat.find( 'option:first' ).val();
-        $feedFormat.val( firstOption ).trigger( 'change' );
-    });
-
     // Event listener on feed merchant option change
     // to hide/show yandex old price dropdown field
     $(document).on("change", "#rex_feed_merchant", function () {
@@ -755,6 +749,10 @@
                                 $( this ).removeAttr( 'disabled' );
                             }
                         } );
+
+                        const $feedFormat = $( '#rex_feed_feed_format' );
+                        const firstOption = $feedFormat.find( 'option:not([disabled])').first().val();
+                        $feedFormat.val( firstOption ).trigger( 'change' );
 
                         let selected = $( '.rex-feed-feed-format' ).find( '.rex_feed_feed-format' ).val();
                         let selected_sep = $( '.rex-feed-feed-separator' ).find( '#rex_feed_separator' ).val();

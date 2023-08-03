@@ -94,7 +94,7 @@ class Rex_Product_Filter {
      * @access   protected
      * @var      int    $term_table_count    Term table count.
      */
-    protected static $term_table_count = 0;
+    protected static $term_table_count;
 
     /**
      * Meta table count
@@ -103,7 +103,7 @@ class Rex_Product_Filter {
      * @access   protected
      * @var      int    $meta_table_count    Meta table count.
      */
-    protected static $meta_table_count = 0;
+    protected static $meta_table_count;
 
 
     /**
@@ -147,7 +147,7 @@ class Rex_Product_Filter {
                 'short_description'     => 'Product Short Description',
                 'total_sales'           => 'Total Sales',
                 'featured_image'        => 'Featured Image',
-                'product_cats'          => 'Product Categorie',
+                'product_cats'          => 'Product Category',
                 'product_tags'          => 'Product Tag',
                 'sku'                   => 'SKU',
                 'availability'          => 'Availability',
@@ -329,10 +329,12 @@ class Rex_Product_Filter {
      * @since 1.0.0
      */
     public static function get_custom_filter_where_query( $filter_mappings ) {
-        $where       = '';
-        $inner_where  = '';
-        $meta_exists = false;
-        $term_exists = false;
+        $where                  = '';
+        $inner_where            = '';
+        $meta_exists            = false;
+        $term_exists            = false;
+        self::$meta_table_count = 0;
+        self::$term_table_count = 0;
 
         foreach( $filter_mappings as $key1 => $filters ) {
             foreach( $filters as $key2 => $filter ) {

@@ -693,60 +693,74 @@ class Rex_Product_Data_Retriever {
 				$brand = get_products_brands( $this->product->get_id() );
 				return $this->product->get_id();*/
 
-			case 'link':
-			case 'review_url':
-				$permalink = $this->product->get_permalink();
-				if ( function_exists( 'wpfm_is_wpml_active' ) && wpfm_is_wpml_active() ) {
-					$permalink = apply_filters( 'wpml_permalink', $permalink, $this->feed->wpml_language );
-				}
+            case 'link':
+            case 'review_url':
+                $permalink = $this->product->get_permalink();
+                if( function_exists( 'wpfm_is_wpml_active' ) && wpfm_is_wpml_active() ) {
+                    $permalink = apply_filters( 'wpml_permalink', $permalink, $this->feed->wpml_language );
+                }
 
-				if ( $this->analytics_params ) {
-					if (
-						!empty( $this->analytics_params[ 'utm_source' ] ) &&
-						!empty( $this->analytics_params[ 'utm_medium' ] ) &&
-						!empty( $this->analytics_params[ 'utm_campaign' ] )
-					) {
-						if ( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
-							return add_query_arg( array_filter( $this->analytics_params ), urldecode( $permalink ) );
-						}
-						return $this->safe_char_encode_url( add_query_arg( array_filter( $this->analytics_params ), urldecode( $permalink ) ) );
-					}
-					if ( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
-						return urldecode( $permalink );
-					}
-					return $this->safe_char_encode_url( urldecode( $permalink ) );
-				}
-				if ( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
-					return urldecode( $permalink );
-				}
-
-				return $this->safe_char_encode_url( urldecode( $permalink ) );
+                if(
+                    $this->analytics_params &&
+                    !empty( $this->analytics_params[ 'utm_source' ] ) &&
+                    !empty( $this->analytics_params[ 'utm_medium' ] ) &&
+                    !empty( $this->analytics_params[ 'utm_campaign' ] )
+                ) {
+                    if( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
+                        $permalink = add_query_arg( array_filter( $this->analytics_params ), urldecode( $permalink ) );
+                    }
+                    else {
+                        $permalink = $this->safe_char_encode_url( add_query_arg( array_filter( $this->analytics_params ), urldecode( $permalink ) ) );
+                    }
+                }
+                elseif( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
+                    $permalink = urldecode( $permalink );
+                }
+                else {
+                    $permalink = $this->safe_char_encode_url( urldecode( $permalink ) );
+                }
+                /**
+                 * Modify the product url before including in the feed.
+                 *
+                 * @param string $permalink Product url.
+                 *
+                 * @since 7.3.6
+                 */
+                return apply_filters( 'rex_feed_product_url', $permalink );
 
 			case 'parent_url':
 				$_pr = $this->product;
 				if ( 'WC_Product_Variation' === get_class( $this->product ) ) {
 					$_pr = wc_get_product( $this->product->get_parent_id() );
 				}
-				if ( $this->analytics_params ) {
-					if (
-						!empty( $this->analytics_params[ 'utm_source' ] ) &&
-						!empty( $this->analytics_params[ 'utm_medium' ] ) &&
-						!empty( $this->analytics_params[ 'utm_campaign' ] )
-					) {
-						if ( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
-							return add_query_arg( array_filter( $this->analytics_params ), urldecode( $_pr->get_permalink() ) );
-						}
-						return $this->safe_char_encode_url( add_query_arg( array_filter( $this->analytics_params ), urldecode( $_pr->get_permalink() ) ) );
-					}
-					if ( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
-						return urldecode( $_pr->get_permalink() );
-					}
-					return $this->safe_char_encode_url( urldecode( $_pr->get_permalink() ) );
+                $permalink = $_pr->get_permalink();
+                if (
+                    $this->analytics_params &&
+                    !empty( $this->analytics_params[ 'utm_source' ] ) &&
+                    !empty( $this->analytics_params[ 'utm_medium' ] ) &&
+                    !empty( $this->analytics_params[ 'utm_campaign' ] )
+                ) {
+                    if ( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
+                        $permalink = add_query_arg( array_filter( $this->analytics_params ), urldecode( $permalink ) );
+                    }
+                    else {
+                        $permalink = $this->safe_char_encode_url( add_query_arg( array_filter( $this->analytics_params ), urldecode( $permalink ) ) );
+                    }
+                }
+				elseif ( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
+                    $permalink = urldecode( $permalink );
 				}
-				if ( is_array( $rule ) && in_array( 'decode_url', $rule, true ) ) {
-					return urldecode( $_pr->get_permalink() );
-				}
-				return $this->safe_char_encode_url( urldecode( $_pr->get_permalink() ) );
+                else {
+                    $permalink = $this->safe_char_encode_url( urldecode( $permalink ) );
+                }
+                /**
+                 * Modify the parent product url before including in the feed.
+                 *
+                 * @param string $permalink Parent product url.
+                 *
+                 * @since 7.3.6
+                 */
+				return apply_filters( 'rex_feed_product_parent_url', $permalink );
 
 			case 'condition':
 				return $this->get_condition();
