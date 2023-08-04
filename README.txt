@@ -351,6 +351,21 @@ They too have an advertising option that lets you reach all Rakuten service user
 
 You can easily generate a Rakuten advertising feed using PFM and promote your WooCommerce products through Rakuten to boost your sales.
 
+== PRODUCT FEED FOR POPULAR MARKETPLACES IN THE USA ==
+
+Product Feed Manager for WooCommerce supports merchant templates for popular marketplaces in the USA such as:
+
+- Google Shopping
+- Facebook
+- Walmart
+- Target
+- Bonanza
+- Wish
+
+Get pre-built templates for these marketplaces and optimize your product listings to sell in the best marketplaces in the USA effectively.
+
+You can even create a custom product catalog for your desired merchant, giving you the ultimate flexibility and control.
+
 == Product Feed For Major Marketplaces In Czechia ==
 
 You will be able to generate product feeds, WooCommerce product catalog, or product catalog CSV for large marketplaces in Czechia which include Heureka XML feed, Glami XML feed, and Favi Compari feed (to sell furniture online).
