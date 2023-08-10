@@ -397,7 +397,7 @@ class Rex_Feed_Scheduler {
         $variable_product            = 'yes' === $variable_product;
         $parent_product              = get_post_meta( $feed_id, '_rex_feed_parent_product', true ) ?: get_post_meta( $feed_id, 'rex_feed_parent_product', true );
         $parent_product              = 'yes' === $parent_product;
-        $exclude_hidden_products     = 'yes' === get_post_meta( $feed_id, '_rex_feed_hidden_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_hidden_products', true );
+        $exclude_hidden_products     = get_post_meta( $feed_id, '_rex_feed_hidden_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_hidden_products', true );
         $exclude_hidden_products     = 'yes' === $exclude_hidden_products;
         $append_variations           = get_post_meta( $feed_id, '_rex_feed_variation_product_name', true ) ?: get_post_meta( $feed_id, 'rex_feed_variation_product_name', true );
         $append_variations           = 'yes' === $append_variations;
@@ -415,6 +415,7 @@ class Rex_Feed_Scheduler {
         $feed_separator              = get_post_meta( $feed_id, '_rex_feed_separator', true ) ?: get_post_meta( $feed_id, 'rex_feed_separator', true );
         $include_zero_price_products = get_post_meta( $feed_id, '_rex_feed_include_zero_price_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_include_zero_price_products', true );
         $custom_filter_option        = get_post_meta( $feed_id, '_rex_feed_custom_filter_option', true ) ?: get_post_meta( $feed_id, 'rex_feed_custom_filter_option', true );
+        $feed_rules_button           = get_post_meta( $feed_id, '_rex_feed_feed_rules_button', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_rules_button', true );
         $feed_country                = get_post_meta( $feed_id, '_rex_feed_feed_country', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_country', true );
         $custom_wrapper              = get_post_meta( $feed_id, '_rex_feed_custom_wrapper', true );
         $custom_wrapper_el           = get_post_meta( $feed_id, '_rex_feed_custom_wrapper_el', true );
@@ -495,6 +496,7 @@ class Rex_Feed_Scheduler {
             'hotline_firm_id'             => $hotline_firm_id,
             'hotline_firm_name'           => $hotline_firm_name,
             'hotline_exch_rate'           => $hotline_exch_rate,
+            'feed_rules_button'           => $feed_rules_button
         );
     }
 

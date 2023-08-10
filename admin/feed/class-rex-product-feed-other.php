@@ -16,6 +16,8 @@
 use RexTheme\RexShoppingFeed\Containers\RexShopping;
 
 class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
+
+    private $variation_products = [];
     private $feed_merchants = array(
         "123i"                => array(
             'container'        => true,
@@ -1003,7 +1005,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         $total_products = get_post_meta($this->id, '_rex_feed_total_products', true);
         $total_products = $total_products ?: get_post_meta($this->id, 'rex_feed_total_products', true);
         $simple_products = [];
-        $variation_products = [];
         $variable_parent = [];
         $group_products = [];
         $total_products = $total_products ?: array(
@@ -1057,10 +1058,10 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
-                    $this->add_to_feed( $variable_product, $product_meta_keys );
+                    $this->add_to_feed( $variable_product, $product_meta_keys, 'variable' );
                 }
 
-                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->custom_filter_var_exclude ) {
+                if( ('product_cat' === $this->product_scope || 'product_tag' === $this->product_scope || $this->custom_filter_var_exclude ) && $this->variations && 'skroutz' !== $this->merchant ) {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
                     }else {
@@ -1068,20 +1069,19 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     }
 
                     if( $variations ) {
-                        foreach ($variations as $variation) {
-                            if($this->variations) {
-                                $variation_products[] = $variation;
-                                $variation_product = wc_get_product( $variation );
-                                if ( ( !$this->include_out_of_stock )
-                                    && ( !$variation_product->is_in_stock()
-                                        || $variation_product->is_on_backorder()
-                                        || (is_integer($variation_product->get_stock_quantity()) && 0 >= $variation_product->get_stock_quantity())
-                                    )
-                                ) {
-                                    continue;
-                                }
-                                $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
+                        foreach( $variations as $variation ) {
+                            $this->variation_products[] = $variation;
+                            $variation_product    = wc_get_product( $variation );
+                            if(
+                                ( !$this->include_out_of_stock )
+                                && ( !$variation_product->is_in_stock()
+                                    || $variation_product->is_on_backorder()
+                                    || ( is_integer( $variation_product->get_stock_quantity() ) && 0 >= $variation_product->get_stock_quantity() )
+                                )
+                            ) {
+                                continue;
                             }
+                            $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                         }
                     }
                 }
@@ -1092,9 +1092,9 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 $this->add_to_feed( $product, $product_meta_keys );
             }
 
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->custom_filter_option) {
+            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->custom_filter_option ) {
                 if ( $product->get_type() === 'variation' ) {
-                    $variation_products[] = $productId;
+                    $this->variation_products[] = $productId;
                     $this->add_to_feed( $product, $product_meta_keys, 'variation' );
                 }
             }
@@ -1107,13 +1107,13 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             }
         }
      
-        $total_products = array(
-            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variation_products) + (int) count($group_products) + (int) count($variable_parent),
-            'simple' => (int) $total_products['simple'] + (int) count($simple_products),
-            'variable' => (int) $total_products['variable'] + (int) count($variation_products),
-            'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
-            'group' => (int) $total_products['group'] + (int) count($group_products),
-        );
+        $total_products = [
+            'total' => (int) $total_products['total'] + count($simple_products) + count($this->variation_products) + count($group_products) + count($variable_parent),
+            'simple' => (int) $total_products['simple'] + count($simple_products),
+            'variable' => (int) $total_products['variable'] + count($this->variation_products),
+            'variable_parent' => (int) $total_products['variable_parent'] + count($variable_parent),
+            'group' => (int) $total_products['group'] + count($group_products)
+        ];
         update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
 	    if ( $this->tbatch === $this->batch ) {
 		    update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
@@ -1130,6 +1130,10 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
      */
     private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
+
+        if( 'variable' === $product_type && 'skroutz' === $this->merchant && $this->variations ) {
+            $attributes = $this->get_variation_attributes( $product, $meta_keys, $attributes );
+        }
 
         if( ( !empty( $attributes ) && is_array( $attributes ) )
             && ( ( $this->rex_feed_skip_product
@@ -1149,6 +1153,44 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
         }
+    }
+
+    /**
+     * Get variation products and their attribute data following the feed meta keys
+     *
+     * @param WC_Product $product WooCommerce product object.
+     * @param array $meta_keys Feed meta keys.
+     * @param array $attributes Feed attributes.
+     *
+     * @return array
+     * @since 7.3.7
+     */
+    private function get_variation_attributes( $product, $meta_keys, $attributes = [] ) {
+        if( $this->exclude_hidden_products ) {
+            $variations = $product->get_visible_children();
+        }
+        else {
+            $variations = $product->get_children();
+        }
+
+        if( is_array( $variations ) && !empty( $variations ) ) {
+            sort( $variations, 1 );
+            foreach( $variations as $variation_id ) {
+                $this->variation_products[] = $variation_id;
+                $variation_product            = wc_get_product( $variation_id );
+                if(
+                    ( !$this->include_out_of_stock )
+                    && ( !$variation_product->is_in_stock()
+                        || $variation_product->is_on_backorder()
+                        || ( is_integer( $variation_product->get_stock_quantity() ) && 0 >= $variation_product->get_stock_quantity() )
+                    )
+                ) {
+                    continue;
+                }
+                $attributes[ 'variations' ][] = $this->get_product_data( $variation_product, $meta_keys );
+            }
+        }
+        return $attributes;
     }
 
 

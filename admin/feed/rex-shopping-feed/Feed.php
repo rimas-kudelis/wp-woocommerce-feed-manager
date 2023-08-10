@@ -242,13 +242,33 @@ class Feed
             else {
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
+
             foreach ($item->nodes() as $itemNode) {
                 if (is_array($itemNode)) {
                     foreach ($itemNode as $node) {
                         $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
                     }
-                } else {
-                    $itemNode->attachNodeTo($feedItemNode);
+                }
+                else {
+                    // For Skroutz feed template Variation attributes.
+                    if( 'variations' === $itemNode->get( 'name' ) ) {
+                        $variations = $itemNode->get( 'value' );
+                        if( is_array( $variations ) && !empty( $variations ) ) {
+                            $variationsItemNode = $feedItemNode->addChild( 'variations' );
+                            foreach( $variations as $attributes ) {
+                                $variationItemNode = $variationsItemNode->addChild( 'variation' );
+                                foreach( $attributes as $key => $value ) {
+                                    if( 'id' === $key ) {
+                                        $key = 'variationid';
+                                    }
+                                    $variationItemNode->addChild( $key, htmlspecialchars( $value ) );
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        $feedItemNode->addChild( $itemNode->get( 'name' ), htmlspecialchars( $itemNode->get( 'value' ) ), $itemNode->get('_namespace') );
+                    }
                 }
             }
         }
@@ -278,9 +298,7 @@ class Feed
                 }
                 $this->items_row[] = $row;
             }
-            // if($batch != 1){
-            //     unset($this->items_row[0]);
-            // }
+
             foreach ($this->items_row as $fields) {
                 $str .= implode("\t", $fields) . "\n";
             }

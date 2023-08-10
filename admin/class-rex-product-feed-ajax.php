@@ -968,7 +968,7 @@ class Rex_Product_Feed_Ajax {
             if ( is_array( $feed_config ) ) {
                 $feed_config = filter_var_array( $feed_config, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                 array_shift( $feed_config );
-                $feed_attr = array_column( $feed_config, 'attr' );
+                $feed_attr = is_array( $feed_config ) && !empty( $feed_config ) ? array_column( $feed_config, 'attr' ) : [];
             }
 
             $required_attr = array( 'id', 'title', 'description', 'link', 'image_link', 'availability', 'price', 'brand', 'gtin', 'mpn' );

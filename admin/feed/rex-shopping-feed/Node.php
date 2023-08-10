@@ -82,6 +82,10 @@ class Node
      */
     public function attachNodeTo(\SimpleXMLElement $parent)
     {
+        if( !is_string( $this->value ) ) {
+            return;
+        }
+
         if ( preg_match("/CDATA/", $this->value)) {
             $this->value = str_replace("CDATA","",$this->value);
             $this->value = str_replace("%20","",$this->value);

@@ -218,34 +218,36 @@ class Rex_Product_Data_Retriever {
 	public function set_all_value() {
 		$this->data = array();
 
-		foreach ( $this->feed_config as $rule ) {
-			$value = $this->set_val( $rule );
-			$value = $this->maybe_processing_needed( $value, $rule );
+		if( !empty( $this->feed_config ) ) {
+            foreach ( $this->feed_config as $rule ) {
+                $value = $this->set_val( $rule );
+                $value = $this->maybe_processing_needed( $value, $rule );
 
-			if ( array_key_exists( 'attr', $rule ) ) {
-				if ( $rule[ 'attr' ] ) {
-					if ( 'attributes' === $rule[ 'attr' ] ) {
-						$this->data[ $rule[ 'attr' ] ][] = array(
-							'name'  => str_replace( 'bwf_attr_pa_', '', $rule[ 'meta_key' ] ),
-							'value' => $value,
-						);
-					} else {
-						$google_shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
-						if ( in_array( $rule[ 'attr' ], $google_shipping_attr, true ) && 'google' === $this->feed->merchant ) {
-							$this->data[ $rule[ 'attr' ] ][] = $value;
-						} else {
-							$this->data[ $rule[ 'attr' ] ] = $value;
-						}
-					}
-				}
-			} elseif ( array_key_exists( 'cust_attr', $rule ) ) {
-				if ( $rule[ 'cust_attr' ] ) {
-					$this->data[ $rule[ 'cust_attr' ] ] = $value;
-				}
-			} else {
-				$this->data[ $rule[ 'attr' ] ] = $value;
-			}
-		}
+                if ( array_key_exists( 'attr', $rule ) ) {
+                    if ( $rule[ 'attr' ] ) {
+                        if ( 'attributes' === $rule[ 'attr' ] ) {
+                            $this->data[ $rule[ 'attr' ] ][] = array(
+                                'name'  => str_replace( 'bwf_attr_pa_', '', $rule[ 'meta_key' ] ),
+                                'value' => $value,
+                            );
+                        } else {
+                            $google_shipping_attr = array( 'shipping_country', 'shipping_region', 'shipping_service', 'shipping_price' );
+                            if ( in_array( $rule[ 'attr' ], $google_shipping_attr, true ) && 'google' === $this->feed->merchant ) {
+                                $this->data[ $rule[ 'attr' ] ][] = $value;
+                            } else {
+                                $this->data[ $rule[ 'attr' ] ] = $value;
+                            }
+                        }
+                    }
+                } elseif ( array_key_exists( 'cust_attr', $rule ) ) {
+                    if ( $rule[ 'cust_attr' ] ) {
+                        $this->data[ $rule[ 'cust_attr' ] ] = $value;
+                    }
+                } else {
+                    $this->data[ $rule[ 'attr' ] ] = $value;
+                }
+            }
+        }
 	}
 
 
@@ -2601,7 +2603,8 @@ class Rex_Product_Data_Retriever {
 			return '';
 		}
 		if ( $return_ids ) {
-			return implode( $sep, array_column( $terms, 'term_id' ) );
+            $term_ids = is_array( $terms ) && !empty( $terms ) ? array_column( $terms, 'term_id' ) : [];
+			return implode( $sep, $term_ids );
 		}
 
 		$child_terms  = array();

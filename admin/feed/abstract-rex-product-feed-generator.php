@@ -421,6 +421,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->config             = $config;
         $this->is_logging_enabled = is_wpfm_logging_enabled();
         $this->bypass             = $bypass;
+        $this->merchant           = $config[ 'merchant' ] ?? '';
+        $this->feed_format        = $config[ 'feed_format' ] ?? '';
         if ( $this->bypass ) {
             $this->id                      = !empty( $config[ 'info' ][ 'post_id' ] ) ? $config[ 'info' ][ 'post_id' ] : 0;
             $this->title                   = !empty( $config[ 'info' ][ 'title' ] ) && '' !== $config[ 'info' ][ 'title' ] ? $config[ 'info' ][ 'title' ] : get_bloginfo();
@@ -501,8 +503,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         $this->setup_products();
-        $this->merchant    = $config[ 'merchant' ];
-        $this->feed_format = $config[ 'feed_format' ];
+
         /**
          * log for feed
          */
@@ -544,9 +545,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected function prepare_products_args( $args )
     {
         $this->product_scope = $args[ 'products_scope' ];
-        $post_types          = array( 'product' );
+        $post_types          = [ 'product' ];
 
-        if ( $this->variations ) {
+        if ( $this->variations && 'skroutz' !== $this->merchant ) {
             $post_types[] = 'product_variation';
         }
 
@@ -1154,7 +1155,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
         if( wpfm_is_polylang_active() && $this->bypass ) {
             $polylang = get_the_terms( $this->id, 'language' );
-            $polylang = array_column( $polylang, 'term_id' );
+            $polylang = is_array( $polylang ) && !empty( $polylang ) ? array_column( $polylang, 'term_id' ) : [];
             $polylang = implode( ', ', $polylang );
             $where    .= " AND (RexPLL.term_taxonomy_id IN({$polylang})) ";
         }
