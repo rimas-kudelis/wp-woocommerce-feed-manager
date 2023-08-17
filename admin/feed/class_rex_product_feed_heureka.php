@@ -272,27 +272,23 @@ class Rex_Product_Feed_Heureka extends Rex_Product_Feed_Abstract_Generator
      *
      * @since 6.3.2
      */
-    private function process_attributes_for_param($atts) {
-        foreach ($atts as $key => $value) {
-            if(preg_match('/^PARAM/im', $key)) {
+    private function process_attributes_for_param($attributes) {
+        foreach ($attributes as $key => $value) {
+            if(preg_match('/^Param_/im', $key)) {
                 $param_no = preg_replace('/[^0-9]/', '', $key);
-                $atts['param'][] = array(
-                    'key'           => $key,
-                    'name'          => $value,
-                    'value'         => isset($atts['VALUE_'.$param_no]) ? $atts['VALUE_'.$param_no] : '',
-                    'percentage'    => isset($atts['PERCENTAGE_'.$param_no]) ? $atts['PERCENTAGE_'.$param_no] : '',
-                );
+                $param_name = "Param_name_{$param_no}";
+                $param_value = "Param_value_{$param_no}";
+                if( empty( $attributes[ $param_name ] ) || empty( $attributes[ $param_value ] ) ) {
+                    if( isset( $attributes[ $param_name ] ) ) {
+                        unset( $attributes[ $param_name ] );
+                    }
+                    if( isset( $attributes[ $param_value ] ) ) {
+                        unset( $attributes[ $param_value ] );
+                    }
+                }
             }
         }
-        foreach ($atts as $key => $value) {
-            if(preg_match('/^PARAM/im', $key)) {
-                $param_no = preg_replace('/[^0-9]/', '', $key);
-                unset($atts['VALUE_' . $param_no]);
-                unset($atts['PERCENTAGE_' . $param_no]);
-                unset($atts['PARAM_NAME_' . $param_no]);
-            }
-        }
-        return $atts;
+        return $attributes;
     }
 
 

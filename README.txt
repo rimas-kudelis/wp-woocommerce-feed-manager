@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
-Stable tag:  7.3.7
+Stable tag:  7.3.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -899,6 +899,9 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.8 (2023-08-17) =
+* Enhancement: Updated `Heureka` feed template with dynamic param name and value attribute
 
 = 7.3.7 (2023-08-10) =
 * Added: Compatibility added for [Table Rate Shipping by WooCommerce](https://woocommerce.com/products/table-rate-shipping/)
