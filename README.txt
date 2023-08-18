@@ -1,6 +1,3 @@
-
-
-
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
@@ -265,6 +262,8 @@ Here is a list of google shopping feed destinations we support:
 - Google Dynamic Search Ads feed
 
 So, you can literally use just one single plugin to generate Google feed for all Google Shopping services and start making the most out of Google’s services to increase sales.
+
+[youtube https://youtu.be/Xg-zBdYfIZM]
 
 == Facebook Catalog & Instagram Shopping Feed ==
 
