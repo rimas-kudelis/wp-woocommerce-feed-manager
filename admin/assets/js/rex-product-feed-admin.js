@@ -750,9 +750,7 @@
                             }
                         } );
 
-                        const $feedFormat = $( '#rex_feed_feed_format' );
-                        const firstOption = $feedFormat.find( 'option:not([disabled])').first().val();
-                        $feedFormat.val( firstOption ).trigger( 'change' );
+                        $( '#rex_feed_feed_format' ).trigger( 'change.select2' );
 
                         let selected = $( '.rex-feed-feed-format' ).find( '.rex_feed_feed-format' ).val();
                         let selected_sep = $( '.rex-feed-feed-separator' ).find( '#rex_feed_separator' ).val();
