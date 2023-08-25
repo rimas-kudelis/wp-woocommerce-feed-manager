@@ -236,6 +236,8 @@ With our product feed plugin, you can accurately generate Google Shopping feeds,
 
 This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping.You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily.
 
+[youtube https://youtu.be/Xg-zBdYfIZM]
+
 With the category mapping, you can map your WooCommerce product categories with google product categories.
 
 Google prefers to hide parent products in the variable products. In the settings, you can select if you want to show parent products in the google product feed or not.
@@ -2067,5 +2069,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.7 =
+= 7.3.9 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
