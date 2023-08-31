@@ -368,7 +368,7 @@ class Feed
      */
     public function asTxt($output = false)
     {
-        ob_end_clean();
+        if (ob_get_contents()) ob_end_clean();
         $data = $this->addItemsToFeedText();
         if ($output) {
             die($data);
@@ -383,7 +383,7 @@ class Feed
      */
     public function asCsv($output = false)
     {
-        ob_end_clean();
+        if (ob_get_contents()) ob_end_clean();
         $data = $this->addItemsToFeedCSV();
         if ($output) {
             die($data);

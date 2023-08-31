@@ -25,33 +25,35 @@ class Rex_Feed_Template_Pricerunner extends Rex_Feed_Abstract_Template {
 	 */
 	protected function init_atts() {
 		$this->attributes = array(
-			'Required Information'   => array(
-				'Product_name'     => 'Product name',
-				'SKU'              => 'SKU',
-				'Category'         => 'Category',
-				'Price'            => 'Price',
-				'Product_URL'      => 'Product URL',
-				'Description'      => 'Description',
-				'Image_URL'        => 'Image URL',
-				'In_Stock'         => 'In Stock',
-				'Shipping_Cost'    => 'Shipping_Cost',
-				'EAN'              => 'EAN',
-				'Manufacturer'     => 'Manufacturer',
-				'Manufacturer_SKU' => 'Manufacturer SKU',
-				'Delivery_Time'    => 'Delivery Time',
-			),
-
-			'Additional Information' => array(
-				'marque'          => 'Marque',
-				'Full_price'      => 'Full Price',
-				'currency'        => 'Currency',
-				'second-hand'     => 'Second Hand',
-				'type_promotion'  => 'Type Promotion',
-				'mobile_URL'      => 'Mobile URL',
-				'guarantee'       => 'Guarantee',
-				'availability'    => 'Availability',
-				'delivery_charge' => 'Delivery Charge',
-			),
+            'Required Information' => [
+                'ProductId'    => 'Product ID [ProductId]',
+                'ProductName'  => 'Product name [ProductName]',
+                'Price'        => 'Price [Price]',
+                'ShippingCost' => 'Shipping Cost [ShippingCost]',
+                'StockStatus'  => 'Stock Status [StockStatus]',
+                'LeadTime'     => 'Delivery Time [LeadTime]',
+                'Brand'        => 'Manufacturer [Brand]',
+                'Msku'         => 'Manufacturer SKU [Msku]',
+                'Ean'          => 'GTIN/EAN [Ean]',
+                'Url'          => 'Product URL [Url]',
+                'ImageUrl'     => 'Image URL [ImageUrl]',
+                'Category'     => 'Product Category [Category]',
+                'Description'  => 'Description [Description]'
+            ],
+			'Additional Information' => [
+                'AdultContent'          => 'Adult Content [AdultContent]',
+                'AgeGroup'      => 'Age Group [AgeGroup]',
+                'Bundled'        => 'Bundled [Bundled]',
+                'Color'     => 'Color [Color]',
+                'EnergyEfficiencyClass'  => 'Energy Efficiency Class [EnergyEfficiencyClass]',
+                'Gender'      => 'Gender [Gender]',
+                'Condition'       => 'Condition [Condition]',
+                'GroupId'    => 'Group ID [GroupId]',
+                'Material' => 'Material [Material]',
+                'Pattern' => 'Pattern [Pattern]',
+                'Size' => 'Size [Size]',
+                'SizeSystem' => 'Size System [SizeSystem]'
+            ],
 		);
 	}
 
@@ -61,142 +63,137 @@ class Rex_Feed_Template_Pricerunner extends Rex_Feed_Abstract_Template {
 	 * @return void
 	 */
 	protected function init_default_template_mappings() {
-		$this->template_mappings = array(
-			array(
-				'attr'     => 'Product_name',
-				'type'     => 'meta',
-				'meta_key' => 'title',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-			array(
-				'attr'     => 'SKU',
-				'type'     => 'meta',
-				'meta_key' => 'id',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-			array(
-				'attr'     => 'Category',
-				'type'     => 'meta',
-				'meta_key' => 'product_cats',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-
-			array(
-				'attr'     => 'Price',
-				'type'     => 'meta',
-				'meta_key' => 'price',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => ' ' . get_option( 'woocommerce_currency' ),
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-
-			array(
-				'attr'     => 'Product_URL',
-				'type'     => 'meta',
-				'meta_key' => 'link',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => ' ',
-				'escape'   => 'cdata',
-				'limit'    => 0,
-			),
-			array(
-				'attr'     => 'Description',
-				'type'     => 'meta',
-				'meta_key' => 'description',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-			array(
-				'attr'     => 'Image_URL',
-				'type'     => 'meta',
-				'meta_key' => 'featured_image',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-			array(
-				'attr'     => 'In_Stock',
-				'type'     => 'static',
-				'meta_key' => 'yes',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-
-			array(
-				'attr'     => 'Shipping_Cost',
-				'type'     => 'static',
-				'meta_key' => '',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-			array(
-				'attr'     => 'Manufacturer',
-				'type'     => 'static',
-				'meta_key' => '',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-			array(
-				'attr'     => 'Manufacturer_SKU',
-				'type'     => 'meta',
-				'meta_key' => 'sku',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-
-			array(
-				'attr'     => 'EAN',
-				'type'     => 'static',
-				'meta_key' => '',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-
-			array(
-				'attr'     => 'Delivery_Time',
-				'type'     => 'static',
-				'meta_key' => '5 days',
-				'st_value' => '',
-				'prefix'   => '',
-				'suffix'   => '',
-				'escape'   => 'default',
-				'limit'    => 0,
-			),
-		);
+		$this->template_mappings = [
+            [
+                'attr'     => 'ProductId',
+                'type'     => 'meta',
+                'meta_key' => 'id',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'ProductName',
+                'type'     => 'meta',
+                'meta_key' => 'title',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'cdata',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'Price',
+                'type'     => 'meta',
+                'meta_key' => 'price',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => ' ' . get_option( 'woocommerce_currency' ),
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'ShippingCost',
+                'type'     => 'static',
+                'meta_key' => '',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'StockStatus',
+                'type'     => 'meta',
+                'meta_key' => 'availability_underscore',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'LeadTime',
+                'type'     => 'static',
+                'meta_key' => '1-3 days',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'Brand',
+                'type'     => 'static',
+                'meta_key' => '',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'Msku',
+                'type'     => 'meta',
+                'meta_key' => 'sku',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'Ean',
+                'type'     => 'meta',
+                'meta_key' => '',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'Url',
+                'type'     => 'meta',
+                'meta_key' => 'link',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => ' ',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'ImageUrl',
+                'type'     => 'meta',
+                'meta_key' => 'featured_image',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'default',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'Category',
+                'type'     => 'meta',
+                'meta_key' => 'product_cats',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'cdata',
+                'limit'    => 0
+            ],
+            [
+                'attr'     => 'Description',
+                'type'     => 'meta',
+                'meta_key' => 'description',
+                'st_value' => '',
+                'prefix'   => '',
+                'suffix'   => '',
+                'escape'   => 'cdata',
+                'limit'    => 0
+            ]
+        ];
 	}
 }

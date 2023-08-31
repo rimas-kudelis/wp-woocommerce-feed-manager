@@ -946,7 +946,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
      * @return bool
      */
     public function is_datetime() {
-        return $this->feed_merchants[$this->merchant]['datetime'];
+        return $this->feed_merchants[$this->merchant]['datetime'] ?? '';
     }
 
 
@@ -956,7 +956,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
      * @return string
      */
     public function get_namespace_prefix() {
-        return $this->feed_merchants[$this->merchant]['namespace_prefix'];
+        return $this->feed_merchants[$this->merchant]['namespace_prefix'] ?? '';
     }
 
     /**
@@ -1143,6 +1143,7 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             $item = RexShopping::createItem();
 
             foreach( $attributes as $key => $value ) {
+                $value = $this->get_value_for_kelkoo_group( $key, $value );
                 if( $this->rex_feed_skip_row && 'xml' === $this->feed_format ) {
                     if( $value != '' ) {
                         $item->$key( $value ); // invoke $key as method of $item object.
@@ -1193,6 +1194,31 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
         return $attributes;
     }
 
+    /**
+     * Modifies and returns a value based on specific conditions for the "KelkooGroup" merchant.
+     *
+     * This private method is used to modify and return a value based on certain conditions specific to the "KelkooGroup"
+     * merchant. It primarily adjusts the format of the value based on the provided key. For example, if the key is
+     * "availability", the value will be capitalized. If the key is "landing_page_url", the query string part will be removed.
+     *
+     * @param string $key The key representing the type of data.
+     * @param mixed  $value The value to be modified.
+     *
+     * @return mixed The modified value based on the provided conditions.
+     * @since 7.3.10
+     */
+    private function get_value_for_kelkoo_group( $key, $value ) {
+        if( 'kelkoo_group' === $this->merchant ) {
+            if( 'availability' === $key ) {
+                $value = ucfirst( $value );
+            }
+            if( 'landing_page_url' === $key ) {
+                $modified_value = strstr( $value, '?', true);
+                return false !== $modified_value ? $modified_value : $value;
+            }
+        }
+        return $value;
+    }
 
     /**
      * Return Feed

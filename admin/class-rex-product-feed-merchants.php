@@ -193,7 +193,7 @@ class Rex_Feed_Merchants {
 			'pricerunner'                     => array(
 				'free'    => true,
 				'name'    => 'PriceRunner',
-				'formats' => array( 'xml', 'csv', 'text' ),
+				'formats' => array( 'xml', 'text' ),
 			),
 			'billiger'                        => array(
 				'free'    => true,
@@ -427,8 +427,8 @@ class Rex_Feed_Merchants {
 			),
 			'kelkoo_group'                    => array(
 				'free'    => true,
-				'name'    => 'Kelkoo Group',
-				'formats' => array( 'xml', 'csv', 'text' ),
+				'name'    => 'KelkooGroup',
+				'formats' => array( 'xml', 'text' ),
 			),
 			'target'                          => array(
 				'free'    => true,

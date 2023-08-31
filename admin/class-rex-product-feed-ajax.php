@@ -308,15 +308,15 @@ class Rex_Product_Feed_Ajax {
      */
     public static function show_feed_template( $merchant ) {
         $post_id        = !empty( $merchant[ 'post_id' ] ) ? $merchant[ 'post_id' ] : '';
-        $feed_rules     = get_post_meta( $post_id, '_rex_feed_feed_config', true ) ?: get_post_meta( $post_id, 'rex_feed_feed_config', true );
+        $feed_configs     = get_post_meta( $post_id, '_rex_feed_feed_config', true ) ?: get_post_meta( $post_id, 'rex_feed_feed_config', true );
         $merchant_name  = !empty( $merchant[ 'merchant' ] ) ? $merchant[ 'merchant' ] : '';
         $saved_merchant = get_post_meta( $post_id, '_rex_feed_merchant', true ) ?: get_post_meta( $post_id, 'rex_feed_merchant', true );
 
         if ( $merchant_name !== $saved_merchant ) {
-            $feed_rules = false;
+            $feed_configs = false;
         }
 
-        $feed_template  = Rex_Feed_Template_Factory::build( $merchant_name, $feed_rules );
+        $feed_template  = Rex_Feed_Template_Factory::build( $merchant_name, $feed_configs );
         $feed_format    = Rex_Feed_Merchants::get_feed_formats( $merchant_name );
         $feed_separator = Rex_Feed_Merchants::get_csv_feed_separators( $merchant_name );
 
@@ -344,6 +344,7 @@ class Rex_Product_Feed_Ajax {
             'feed_format'    => $feed_format,
             'feed_separator' => $feed_separator,
             'select'         => $selected_format,
+            'saved_merchant' => $saved_merchant,
         );
     }
 

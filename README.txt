@@ -8,7 +8,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
-Stable tag:  7.3.9
+Stable tag:  7.3.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -901,6 +901,11 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.10 (2023-08-31) =
+* Enhancement: Updated [KelkooGroup](https://developers.kelkoogroup.com/app/documentation/navigate/_merchant/merchantProductData/_/_/ProductDataSpecs) feed template
+* Enhancement: Updated [PriceRunner](https://www.pricerunner.com/info/getting-started) feed template
+* Fixed: PHP warnings (unlink)
 
 = 7.3.9 (2023-08-24) =
 * Fixed: Feed type changing back to `XML` on page refresh
@@ -2069,5 +2074,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.9 =
+= 7.3.10 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

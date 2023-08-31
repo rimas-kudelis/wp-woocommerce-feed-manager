@@ -1864,8 +1864,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * @since 7.2.12
      */
     private function delete_prev_feed_file( $new_name, $prev_name, $path ) {
-        if( $prev_name !== $new_name ) {
-            unlink( trailingslashit( $path ) . $prev_name );
+        if( $prev_name && is_string( $prev_name ) && $prev_name !== $new_name ) {
+            $file_name = trailingslashit( $path ) . $prev_name;
+            if( file_exists( $file_name ) ) {
+                unlink( $file_name );
+            }
         }
     }
 

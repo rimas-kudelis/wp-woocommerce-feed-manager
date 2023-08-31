@@ -750,8 +750,6 @@
                             }
                         } );
 
-                        $( '#rex_feed_feed_format' ).trigger( 'change.select2' );
-
                         let selected = $( '.rex-feed-feed-format' ).find( '.rex_feed_feed-format' ).val();
                         let selected_sep = $( '.rex-feed-feed-separator' ).find( '#rex_feed_separator' ).val();
 
@@ -795,6 +793,12 @@
                     rex_feed_render_multiple_filter_counter();
 
                     document.querySelectorAll("[data-toggle~=dropdown2]").forEach(setupDropdownArea);
+
+                    const $feed_format = $( '#rex_feed_feed_format' );
+                    if ( merchant_name === response?.saved_merchant ) {
+                        $feed_format.val( response?.select );
+                    }
+                    $feed_format.trigger( 'change.select2' );
 
                     disable_all_config_table_fields();
 
