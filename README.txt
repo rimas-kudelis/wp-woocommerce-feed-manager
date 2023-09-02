@@ -1,3 +1,6 @@
+
+
+
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
@@ -50,11 +53,11 @@ Use features such as category mapping, custom fields, product filters, Google Au
 
 [youtube https://youtu.be/7VVuLP6bkoM?utm_source=repo&utm_medium=repo&utm_campaign=repo_relaunchvdo&utm_id=repo_relaunchvdo]
 
-== Best Plugin To Generate WooCommerce Google Product Feed & Facebook Catalog ==
+== Best Plugin To Generate WooCommerce Google Product Feed ==
 
-Currently, this plugin is considered the easiest and the most effective Product Feed Management plugin to generate WooCommerce Google Shopping Feed and Facebook catalog.
+Currently, this plugin is considered the easiest and the most effective Product Feed Management plugin to generate WooCommerce Google Shopping Feed.
 
-You will get everything you need that is required by Google merchant feed (Google Shopping Feed) and Facebook feed including:
+You will get everything you need that is required by Google merchant feed (Google Shopping Feed) including:
 
 - Custom Fields for Unique Identifiers
 - Advanced Category Mapping
@@ -64,7 +67,7 @@ You will get everything you need that is required by Google merchant feed (Googl
 
 And many more.
 
-Most of the features are pre-configured so that you can generate a google feed and Facebook feed with the least effort possible, and start promoting on Google Shopping immediately.
+Most of the features are pre-configured so that you can generate a google feed with the least effort possible, and start promoting on Google Shopping immediately.
 
 == Why Use Product Feed Manager for WooCommerce? ==
 
@@ -233,7 +236,7 @@ With our product feed plugin, you can accurately generate Google Shopping feeds,
 
 This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping.You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily.
 
-[youtube https://youtu.be/Xg-zBdYfIZM?utm_source=repo&utm_medium=repo&utm_campaign=repo_googlevdo&utm_id=repo_googlevdo]
+[youtube https://youtu.be/Xg-zBdYfIZM]
 
 With the category mapping, you can map your WooCommerce product categories with google product categories.
 
@@ -2072,4 +2075,4 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 == Upgrade Notice ==
 
 = 7.3.10 =
-Recommended Upgrade. For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
+Recommended Upgrade.For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing.
