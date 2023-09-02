@@ -2072,4 +2072,4 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 == Upgrade Notice ==
 
 = 7.3.10 =
-🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
+Recommended Upgrade. For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
