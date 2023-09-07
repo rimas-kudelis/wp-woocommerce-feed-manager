@@ -321,14 +321,28 @@ class Rex_Product_Feed_Ajax {
         $feed_separator = Rex_Feed_Merchants::get_csv_feed_separators( $merchant_name );
 
         ob_start();
-        if ( in_array( $merchant_name, apply_filters( 'wpfm_has_custom_feed_config', array() ) ) ) {
-            if ( wpfm_pro_compatibility() ) {
-                do_action( 'wpfm_custom_metabox_display_' . $merchant_name, $merchant_name, $feed_template );
-            }
-        }
-        else {
-            include_once plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php';
-        }
+
+        /**
+         * Applies filters to the template markup path and related parameters for displaying a feed configuration metabox.
+         *
+         * This function triggers the dynamic filter hook "rexfeed_{$merchant_name}_template_markups" which allows developers
+         * to modify the template markup path used for displaying a feed configuration metabox and related parameters.
+         *
+         * @param string  $template_markup       The default path to the template markup file.
+         * @param string  $feed_template         The current feed template.
+         * @param string  $feed_format           The format of the feed.
+         * @param string  $feed_separator        The separator used in the feed.
+         *
+         * @return string The filtered template markup path.
+         * @since 7.3.11
+         */
+        $template_markup = apply_filters(
+            "rexfeed_{$merchant_name}_template_markups",
+            plugin_dir_path( __FILE__ ) . 'partials/feed-config-metabox-display.php',
+            $feed_template, $feed_format, $feed_separator
+        );
+        include_once $template_markup;
+
         $result = ob_get_contents();
         ob_end_clean();
         ob_flush();

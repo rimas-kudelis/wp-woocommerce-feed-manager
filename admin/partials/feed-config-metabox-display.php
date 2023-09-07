@@ -16,7 +16,7 @@
 if ( ! isset($feed_template) ) {
 	return;
 }
-$wpfm_hide_char              = get_option( 'rex_feed_hide_character_limit_field', 'on' );
+$wpfm_hide_char = get_option( 'rex_feed_hide_character_limit_field', 'on' );
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -113,17 +113,29 @@ $keyy = rand(999, 3000); ?>
 <?php foreach ( $feed_template->get_template_mappings() as $key => $item): ?>
 	<?php
     $display_none = 'style="display: none"';
-    $hide_meta = $display_none;
-    $hide_static = $display_none;
+    $hide_meta = $item[ 'type' ] === 'meta' ? '' : $display_none;
+    $hide_static = $item[ 'type' ] === 'static' ? '' : $display_none;
 
     if( isset( $item[ 'type' ] ) ) {
-        if ( $item[ 'type' ] === 'meta' ) {
+        /**
+         * Applies filters to customize the available meta attribute types.
+         *
+         * This function triggers the filter hook "rexfeed_meta_attribute_types", allowing developers to modify
+         * the array of available meta attribute types.
+         *
+         * @param array $meta_types An array containing the default meta attribute types.
+         *
+         * @return array Modified array of meta attribute types.
+         * @since 7.3.11
+         */
+        $meta_types = apply_filters( 'rexfeed_meta_attribute_types', [ 'meta' ] );
+        if( in_array( $item[ 'type' ], $meta_types, true ) ) {
             $hide_meta = '';
         }
-        elseif ( $item[ 'type' ] === 'static' ) {
+        elseif( 'static' === $item[ 'type' ] ) {
             $hide_static = '';
         }
-        elseif( 'combined' === $item[ 'type' ] && ( function_exists( 'rex_feed_is_wpfm_pro_active' ) && !rex_feed_is_wpfm_pro_active() ) ) {
+        elseif ( function_exists( 'rex_feed_is_wpfm_pro_active' ) && !rex_feed_is_wpfm_pro_active() ) {
             $hide_meta = '';
             $item[ 'type' ] = 'meta';
         }

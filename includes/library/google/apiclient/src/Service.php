@@ -25,7 +25,8 @@ class Service
     public $rootUrl;
     public $version;
     public $servicePath;
-    public $availableScopes;
+    public $serviceName;
+
     public $resource;
     private $client;
     public function __construct($clientOrConfig = [])

@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
-Stable tag:  7.3.10
+Stable tag:  7.3.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -898,6 +898,10 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.11 (2023-09-07) =
+* Added: Compatibility with PHP version 8.x
+* Fixed: eBay Seller Center template mapping front-end issue
 
 = 7.3.10 (2023-08-31) =
 * Enhancement: Updated [KelkooGroup](https://developers.kelkoogroup.com/app/documentation/navigate/_merchant/merchantProductData/_/_/ProductDataSpecs) feed template

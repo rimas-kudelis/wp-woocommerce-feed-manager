@@ -24,8 +24,8 @@ class Rex_Feed_Template_Pricerunner extends Rex_Feed_Abstract_Template {
 	 * @return void
 	 */
 	protected function init_atts() {
-		$this->attributes = array(
-            'Required Information' => [
+        $this->attributes = array(
+            'Required Information'   => [
                 'ProductId'    => 'Product ID [ProductId]',
                 'ProductName'  => 'Product name [ProductName]',
                 'Price'        => 'Price [Price]',
@@ -40,21 +40,22 @@ class Rex_Feed_Template_Pricerunner extends Rex_Feed_Abstract_Template {
                 'Category'     => 'Product Category [Category]',
                 'Description'  => 'Description [Description]'
             ],
-			'Additional Information' => [
+            'Additional Information' => [
                 'AdultContent'          => 'Adult Content [AdultContent]',
-                'AgeGroup'      => 'Age Group [AgeGroup]',
-                'Bundled'        => 'Bundled [Bundled]',
-                'Color'     => 'Color [Color]',
-                'EnergyEfficiencyClass'  => 'Energy Efficiency Class [EnergyEfficiencyClass]',
-                'Gender'      => 'Gender [Gender]',
-                'Condition'       => 'Condition [Condition]',
-                'GroupId'    => 'Group ID [GroupId]',
-                'Material' => 'Material [Material]',
-                'Pattern' => 'Pattern [Pattern]',
-                'Size' => 'Size [Size]',
-                'SizeSystem' => 'Size System [SizeSystem]'
+                'AgeGroup'              => 'Age Group [AgeGroup]',
+                'Bundled'               => 'Bundled [Bundled]',
+                'Color'                 => 'Color [Color]',
+                'EnergyEfficiencyClass' => 'Energy Efficiency Class [EnergyEfficiencyClass]',
+                'Gender'                => 'Gender [Gender]',
+                'Condition'             => 'Condition [Condition]',
+                'GroupId'               => 'Group ID [GroupId]',
+                'Material'              => 'Material [Material]',
+                'Multipack'             => 'Multipack [Multipack]',
+                'Pattern'               => 'Pattern [Pattern]',
+                'Size'                  => 'Size [Size]',
+                'SizeSystem'            => 'Size System [SizeSystem]'
             ],
-		);
+        );
 	}
 
 	/**

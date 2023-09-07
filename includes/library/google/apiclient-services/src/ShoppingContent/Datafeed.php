@@ -20,6 +20,22 @@ namespace RexFeed\Google\Service\ShoppingContent;
 class Datafeed extends \RexFeed\Google\Collection
 {
     protected $collection_key = 'targets';
+
+    /**
+     * @var DatafeedFetchSchedule
+     */
+    public $fetchSchedule;
+
+    /**
+     * @var DatafeedFormat
+     */
+    public $format;
+
+    /**
+     * @var DatafeedTarget
+     */
+    public $targets;
+
     /**
      * @var string
      */
@@ -28,14 +44,11 @@ class Datafeed extends \RexFeed\Google\Collection
      * @var string
      */
     public $contentType;
-    protected $fetchScheduleType = DatafeedFetchSchedule::class;
-    protected $fetchScheduleDataType = '';
+
     /**
      * @var string
      */
     public $fileName;
-    protected $formatType = DatafeedFormat::class;
-    protected $formatDataType = '';
     /**
      * @var string
      */
@@ -48,8 +61,6 @@ class Datafeed extends \RexFeed\Google\Collection
      * @var string
      */
     public $name;
-    protected $targetsType = DatafeedTarget::class;
-    protected $targetsDataType = 'array';
     /**
      * @param string
      */

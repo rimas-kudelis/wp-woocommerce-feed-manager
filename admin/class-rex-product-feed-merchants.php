@@ -87,7 +87,7 @@ class Rex_Feed_Merchants {
 			'ebay_mip'      => array(
 				'free'           => false,
 				'name'           => 'eBay (MIP)',
-				'formats'        => array( 'xml', 'csv' ),
+				'formats'        => array( 'csv' ),
 				'csv_separators' => array( 'comma', 'semi_colon' ),
 			),
 			'drm'           => array(

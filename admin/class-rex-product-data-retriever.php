@@ -163,6 +163,11 @@ class Rex_Product_Data_Retriever {
      */
     public $feed_rules_option;
 
+    /**
+     * @var array Feed configurations.
+     */
+    public $feed_config;
+
 	/**
 	 * Initialize the class and set its properties
 	 * Rex_Product_Data_Retriever constructor
@@ -2262,7 +2267,7 @@ class Rex_Product_Data_Retriever {
 							preg_match( "~^(\d+)~", $map_value, $m );
 							if ( count( $m ) > 1 ) {
 								if ( $m[ 1 ] ) {
-									$attr_val = utf8_decode( urldecode( $m[ 1 ] ) );
+									$attr_val = iconv("UTF-8", "ISO-8859-1", urldecode( $m[ 1 ] ));
 								} else {
 									$attr_val = $map_value;
 								}
@@ -3233,7 +3238,7 @@ class Rex_Product_Data_Retriever {
 				$striped_string = wp_strip_all_tags( $val );
 				return trim( $striped_string );
 			case 'utf_8_encode':
-				return utf8_encode( $val );
+				return iconv('ISO-8859-1', 'UTF-8', $val );
 			case 'htmlentities':
 				return htmlentities( $val );
 			case 'integer':

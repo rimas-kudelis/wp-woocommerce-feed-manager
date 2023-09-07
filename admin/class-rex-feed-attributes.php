@@ -413,13 +413,13 @@ class Rex_Feed_Attributes {
 	 * @return array
 	 */
 	public static function get_product_attributes() {
-		$taxonomies = wpfm_get_cached_data( 'product_attributes' );
-		if ( false === $taxonomies ) {
+		$taxonomies = wpfm_get_cached_data( 'product_attributes' ) ?: [];
+		if ( empty( $taxonomies ) ) {
 			// Load the main attributes.
 			$global_attributes = wc_get_attribute_taxonomy_labels();
 			if ( count( $global_attributes ) ) {
 				foreach ( $global_attributes as $key => $value ) {
-					$taxonomies[ 'bwf_attr_pa_' . $key ] = $value;
+                    $taxonomies[ "bwf_attr_pa_{$key}" ] = $value;
 				}
 			}
 			wpfm_set_cached_data( 'product_attributes', $taxonomies );
@@ -428,7 +428,7 @@ class Rex_Feed_Attributes {
 		if ( is_array( $taxonomies ) ) {
 			asort( $taxonomies );
 		}
-		return is_array( $taxonomies ) ? $taxonomies : array();
+		return is_array( $taxonomies ) ? $taxonomies : [];
 	}
 
 	/**
@@ -437,8 +437,8 @@ class Rex_Feed_Attributes {
 	 * @return array
 	 */
 	public static function get_product_dynamic_attributes() {
-		$attributes = wpfm_get_cached_data( 'product_dynamic_attributes' );
-		if ( false === $attributes ) {
+		$attributes = wpfm_get_cached_data( 'product_dynamic_attributes' ) ?: [];
+		if ( empty( $attributes ) ) {
 			// Load the main attributes.
 			$no_taxonomies   = array( 'category', 'post_tag', 'nav_menu', 'link_category', 'post_format', 'product_type', 'product_visibility', 'product_cat', 'product_shipping_class', 'product_tag' );
 			$taxonomies      = get_taxonomies();
@@ -459,7 +459,7 @@ class Rex_Feed_Attributes {
 						}
 					}
 				}
-				$attributes[ "$attr_name" ] = $attr_name_clean;
+				$attributes[ $attr_name ] = $attr_name_clean;
 			}
 			wpfm_set_cached_data( 'product_dynamic_attributes', $attributes );
 		}
@@ -475,9 +475,9 @@ class Rex_Feed_Attributes {
 	 * @return bool
 	 */
 	public static function get_product_custom_attributes() {
-		$attributes = wpfm_get_cached_data( 'product_custom_attributes' );
+		$attributes = wpfm_get_cached_data( 'product_custom_attributes' ) ?: [];
 
-		if ( !$attributes ) {
+		if ( empty( $attributes ) ) {
 			global $wpdb;
 
 			$sql = $wpdb->prepare(
@@ -505,9 +505,9 @@ class Rex_Feed_Attributes {
 
 			if ( count( $data ) ) {
 				foreach ( $data as $value ) {
-					$value_display                                     = str_replace( '_', ' ', $value->name );
-					$value_display                                     = trim( $value_display );
-					$attributes[ 'custom_attributes_' . $value->name ] = ucfirst( $value_display );
+                    $value_display                                    = str_replace( '_', ' ', $value->name );
+                    $value_display                                    = trim( $value_display );
+                    $attributes[ "custom_attributes_{$value->name}" ] = ucfirst( $value_display );
 				}
 			}
 
