@@ -1,7 +1,7 @@
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, google adwords, marktplaats, rakuten, skroutz,  walmart,  fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads,  facebook,  google dynamic search ads
+Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, woocommerce xml feed, google adwords, marktplaats, rakuten, skroutz,  walmart,  fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads,  facebook,  google dynamic search ads
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
@@ -72,7 +72,7 @@ Product Feed Manager is the one stop solution to your WooCommerce product feeds 
 
 You will be able to create accurate product feeds in just a few steps, without having to spend hours on documentation. The plugin comes with a super easy UI that helps you understand the feed generation process even without any in-depth technical knowledge.
 
-The plugin includes pre-configured feed templates for all the supported merchants so that you do not need to manually create the whole feed from scratch. In fact, you can literally start from zero and create perfect product feeds in as low as 5 simple steps!
+The plugin includes pre-configured WooCommerce feed templates for all the supported merchants so that you do not need to manually create the whole feed from scratch. In fact, you can literally start from zero and create perfect product feeds in as low as 5 simple steps!
 
 1. Start Creating feed
 2. Choose your merchant
@@ -145,7 +145,7 @@ The custom feed option will allow you to create a personalized feed for any mark
 The custom WooCommerce feed option will help you to -
 
 - Select your preferred feed attributes
-- Choose custom feed type
+- Choose a custom feed type
 - Include/Exclude XML header
 - Add Wrapper Element
 - Add Item Wrapper
@@ -153,7 +153,7 @@ The custom WooCommerce feed option will help you to -
 So, if you’re wondering how to create a localized feed or a complex feed with specific attributes you can do this easily with the option.
 
 **Google Analytics Support**
-You can add and configure Google Analytics UTM tracking-codes to your product URLs. It will allow you to measure the effectiveness of marketing channels in Google Analytics.
+You can add and configure Google Analytics UTM tracking codes to your product URLs. It will allow you to measure the effectiveness of marketing channels in Google Analytics.
 
 **Track Products With Facebook Pixel**
 You can now add Facebook pixel code to your store and track the performance for every product you upload on Facebook dynamic shop using this plugin.
@@ -173,11 +173,11 @@ With Facebook Pixel, you can track:
 
 **Combine Multiple Attributes In The Feed**
 
-You can now merge different attributes in a single attribute, to show in your feed.
+You can now merge different attributes in a single attribute, to show in your woocommerce xml feed.
 
 For example, in the product title you can add brand name to attract your targeted audience. This feature removes the hassle of manually doing it.
 
-By combining different attributes, you can create more descriptive and keyword-rich product titles, which can help your  products rank higher in search engines and attract more organic traffic to your sites.
+By combining different attributes, you can create more descriptive and keyword-rich product titles, which can help your products rank higher in search engines and attract more organic traffic to your sites.
 
 == Free Features ==
 
@@ -231,7 +231,7 @@ By combining different attributes, you can create more descriptive and keyword-r
 
 With our product feed plugin, you can accurately generate Google Shopping feeds, also known as Google product feeds.
 
-This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping.You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily.
+This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping. You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily.
 
 [youtube https://youtu.be/Xg-zBdYfIZM?utm_source=repo&utm_medium=repo&utm_campaign=repo_googlevdo&utm_id=repo_googlevdo]
 
