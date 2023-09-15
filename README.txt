@@ -92,6 +92,9 @@ Sure, you might find other plugins out there that are quite good. But with Produ
 
 Following are all the core features that we have released over the years to make this plugin the best Product Feed Management solution for your business.
 
+[youtube https://www.youtube.com/watch?v=qw-VMpiI32Y&ab_channel=RexTheme&utm_source=repo&utm_medium=repo&utm_campaign=repo_featurevdo&utm_id=repo_featurevdo]
+
+
 **Auto-sync with Google Shopping**
 You can auto-sync your store products with Google Merchant Shop (Google Shopping). You can set it up so that your generated product feed (product data feed) will automatically be updated and sent to your Google Merchant Shop as per your schedule. You do not need to download and upload the feed for Google Shopping Center manually.
 
