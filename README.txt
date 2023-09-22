@@ -282,6 +282,8 @@ Just like Facebook, Instagram shop marketing (Instagram shop) is another big med
 
 This plugin will let you generate an Instagram Shopping Feed accurately too - just like the WooCommerce Facebook Product feed, real quick.
 
+[youtube https://youtu.be/cWwsiCZu55Q?si=Btep9g0BFSVVVldE&utm_source=repo&utm_medium=repo&utm_campaign=repo_fbvdo&utm_id=repo_fbvdo]
+
 == Bing Shopping feed ==
 
 Next to Google, Bing is probably a prime SERP that people prefer. And recently, the Bing Shopping marketplace is on the rise.
