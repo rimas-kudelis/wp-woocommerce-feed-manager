@@ -1401,7 +1401,7 @@ class Rex_Product_Feed_Ajax {
      * @since 7.3.1
      */
     public static function hide_deal_notice() {
-        update_option( 'rex_feed_new_ui_2_deal_notice', 'hidden' );
+        update_option( 'rex_feed_halloween_deal_notice', 'hidden' );
         return [ 'status' => true ];
     }
 }

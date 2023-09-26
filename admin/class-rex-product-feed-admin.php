@@ -623,7 +623,15 @@ class Rex_Product_Feed_Admin {
      * @return void
      */
     public function render_deal_notices() {
-        if( 'hidden' !== get_option( 'rex_feed_new_ui_2_deal_notice', '' ) && !defined( 'REX_PRODUCT_FEED_PRO_VERSION' ) ) {
+        $screen           = get_current_screen();
+        $alloweds_screens = [ 'dashboard', 'plugins', 'product-feed' ];
+
+        if (
+            'hidden' !== get_option( 'rex_feed_halloween_deal_notice', '' )
+            && !defined( 'REX_PRODUCT_FEED_PRO_VERSION' )
+            && ( in_array( $screen->base, $alloweds_screens )
+            || in_array( $screen->parent_base, $alloweds_screens ) )
+        ) {
             include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-deal-notice-content.php';
         }
     }

@@ -186,7 +186,7 @@
             day = hour * 24;
 
         let now = new Date( rex_wpfm_ajax.current_date ).getTime();
-        const countDown = new Date( '06/26/2023' ).getTime(),
+        const countDown = new Date( '10/03/2023 19:00:00' ).getTime(),
             x = setInterval(function() {
                 const distance = countDown - now;
                 now = now + 1000;
@@ -201,7 +201,6 @@
 
                 // do something later when date is reached
                 if ( 0 >= distance ) {
-                    $("#rex_deal_notification").hide();
                     rexfeed_hide_deal_notice();
                     clearInterval(x);
                 }

@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
-Stable tag:  7.3.11
+Stable tag:  7.3.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,9 +91,6 @@ The plugin is designed to make it easy for both beginners and advanced users. Wh
 Sure, you might find other plugins out there that are quite good. But with Product Feed Manager, we want to ensure that you, as the user, is the first priority. That is why we always provide high quality support and constantly work on improving the plugin with new and improved features to make the life easier for you when it comes to promoting your products on online marketplaces.
 
 Following are all the core features that we have released over the years to make this plugin the best Product Feed Management solution for your business.
-
-[youtube https://www.youtube.com/watch?v=qw-VMpiI32Y&ab_channel=RexTheme&utm_source=repo&utm_medium=repo&utm_campaign=repo_featurevdo&utm_id=repo_featurevdo]
-
 
 **Auto-sync with Google Shopping**
 You can auto-sync your store products with Google Merchant Shop (Google Shopping). You can set it up so that your generated product feed (product data feed) will automatically be updated and sent to your Google Merchant Shop as per your schedule. You do not need to download and upload the feed for Google Shopping Center manually.
@@ -281,8 +278,6 @@ All you need to do is simply select Facebook Catalog from the merchant list, che
 Just like Facebook, Instagram shop marketing (Instagram shop) is another big medium you can rely on when trying to increase your online sales.
 
 This plugin will let you generate an Instagram Shopping Feed accurately too - just like the WooCommerce Facebook Product feed, real quick.
-
-[youtube https://youtu.be/cWwsiCZu55Q?si=Btep9g0BFSVVVldE&utm_source=repo&utm_medium=repo&utm_campaign=repo_fbvdo&utm_id=repo_fbvdo]
 
 == Bing Shopping feed ==
 
@@ -903,6 +898,9 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.12 (2023-09-26) =
+* Enhancement: Compatibility updated with WooCommerce v8.1.1
 
 = 7.3.11 (2023-09-07) =
 * Added: Compatibility with PHP version 8.x
@@ -2080,5 +2078,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.11 =
+= 7.3.12 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
