@@ -186,7 +186,7 @@
             day = hour * 24;
 
         let now = new Date( rex_wpfm_ajax.current_date ).getTime();
-        const countDown = new Date( '10/03/2023 19:00:00' ).getTime(),
+        const countDown = new Date( '10/05/2023 20:00:00' ).getTime(),
             x = setInterval(function() {
                 const distance = countDown - now;
                 now = now + 1000;
