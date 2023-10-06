@@ -1,7 +1,7 @@
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory,  google ads,  eBay MIP, data Feed, xml product feed, woocommerce xml feed, XML feed, CSV feed, TEXT feed, google adwords, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads,  google dynamic search ads
+Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory, Meta Feed, google ads,  eBay MIP, data Feed, xml product feed, woocommerce xml feed, XML feed, CSV feed, TEXT feed, google adwords, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads,  google dynamic search ads
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
@@ -41,7 +41,7 @@ Create your preferred feed in seconds with 3 simple steps:
 
 Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimised feed for greater results.
 
-<a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get 20% OFF on Product Feed Manager for WooCommerce - Pro</a>
+<a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get Product Feed Manager for WooCommerce - Pro</a>
 
 <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/?utm_source=plugin&utm_medium=documentation_button&utm_campaign=pfm_plugin">Documentation</a> | <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Tutorials</a> | <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">All Features</a> | <a target="_blank" href="https://rextheme.com/product-feed-manager-for-woocommerce-survey/?utm_source=repo&utm_medium=repo&utm_campaign=repo_survey&utm_id=repo_survey">Give Your Feedback</a>
 
@@ -271,7 +271,7 @@ For that, creating an accurate WooCommerce Facebook product feed is cruical.
 
 With Product Feed Manager, you will get a pre-built merchant template for Facebook Catalog that will come with all the required attributes to successfully generate a WooCommerce Facebook Feed (Facebook product catalog feed).
 
-All you need to do is simply select Facebook Catalog from the merchant list, check and assign the values to the require facebook product catalog feed attributes, and publish the feed. Product Feed WooCommerce made it pretty simple.
+All you need to do is simply select Facebook Catalog from the merchant list, check and assign the values to the require facebook product catalog feed attributes, and publish the meta feed. Product Feed WooCommerce made it pretty simple.
 
 Just like Facebook, Instagram shop marketing (Instagram shop) is another big medium you can rely on when trying to increase your online sales.
 
