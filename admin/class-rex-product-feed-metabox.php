@@ -193,8 +193,7 @@ class Rex_Product_Metabox
             'no'     => __( 'No Interval', 'rex-product-feed' ),
             'hourly' => __( 'Hourly', 'rex-product-feed' ),
             'daily'  => __( 'Daily', 'rex-product-feed' ),
-            'weekly' => __( 'Weekly', 'rex-product-feed' ),
-            'custom' => __( 'Custom', 'rex-product-feed' ),
+            'weekly' => __( 'Weekly', 'rex-product-feed' )
         ) );
         require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-settings-section.php';
     }

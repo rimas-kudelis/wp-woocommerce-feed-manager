@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
-Stable tag:  7.3.13
+Stable tag:  7.3.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -896,6 +896,10 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.14 (2023-10-12) =
+* Added: New attribute option `Product Checkout URL`
+* Added: New attribute option `Product Cart URL`
 
 = 7.3.13 (2023-09-29) =
 * Fixed: PHP warnings for file upload

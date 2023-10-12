@@ -109,7 +109,7 @@ class Rex_Feed_Attributes {
 	 * @return string[]
 	 */
 	public static function get_primary_attributes() {
-		return array(
+		return [
 			'id'                             => 'Product Id',
 			'title'                          => 'Product Title',
 			'description'                    => 'Product Description',
@@ -121,6 +121,8 @@ class Rex_Feed_Attributes {
 			'product_cats_path_pipe'         => 'Product Categories Path (with separator "|")',
 			'product_subcategory'            => 'Product Sub Categories Path (with separator ">")',
 			'link'                           => 'Product URL',
+			'checkout_link'                  => 'Product Checkout URL',
+			'cart_link'                      => 'Product Cart URL',
 			'parent_url'                     => 'Parent Product URL',
 			'review_url'                     => 'Product Review URL',
 			'condition'                      => 'Condition',
@@ -146,8 +148,8 @@ class Rex_Feed_Attributes {
 			'promotion_id'                   => 'Promotion ID',
 			'current_page'                   => 'Current Page',
 			'author_name'                    => 'Author Name',
-			'author_url'                     => 'Author URL',
-		);
+			'author_url'                     => 'Author URL'
+		];
 	}
 
 	/**

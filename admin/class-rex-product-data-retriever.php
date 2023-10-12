@@ -695,10 +695,19 @@ class Rex_Product_Data_Retriever {
 			case 'sooqr_cats':
 				return $this->get_product_cats_for_sooqr();
 
-			/*
-			case 'perfect_brand':
-				$brand = get_products_brands( $this->product->get_id() );
-				return $this->product->get_id();*/
+			case 'checkout_link':
+				$product_link = wc_get_checkout_url();
+				return add_query_arg( [
+					'rexfeed-clear-cart' => true,
+					'add-to-cart' => $this->product->get_id()
+				], $product_link );
+
+			case 'cart_link':
+				$product_link = wc_get_cart_url();
+				return add_query_arg( [
+					'rexfeed-clear-cart' => true,
+					'add-to-cart' => $this->product->get_id()
+				], $product_link );
 
             case 'link':
             case 'review_url':

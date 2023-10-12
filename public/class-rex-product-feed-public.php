@@ -136,4 +136,24 @@ class Rex_Product_Feed_Public {
 		return $before . join( $sep, $term_names ) . $after;
 	}
 
+	/**
+	 * Clears the WooCommerce cart if a specific query parameter is present in the URL.
+	 *
+	 * This function checks if a query parameter named 'rexfeed-clear-cart' is present in the URL
+	 * and has a value of true. If the parameter is present and set to true, it empties the WooCommerce cart.
+	 *
+	 * @return void
+	 * @since 7.3.14
+	 */
+	public function clear_woocommerce_cart_data() {
+		// Check if the 'rexfeed-clear-cart' query parameter is set to true.
+		$clear_cart = filter_input( INPUT_GET, 'rexfeed-clear-cart', FILTER_VALIDATE_BOOLEAN );
+
+		if ( $clear_cart ) {
+			// If the parameter is true, empty the WooCommerce cart.
+			global $woocommerce;
+			$woocommerce->cart->empty_cart();
+		}
+	}
+
 }

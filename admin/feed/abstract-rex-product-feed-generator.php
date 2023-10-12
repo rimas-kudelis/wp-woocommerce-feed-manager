@@ -1186,7 +1186,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
      * Get product data
      * @param WC_Product $product
      * @param $product_meta_keys
-     * @return string
+     * @return array
      */
     protected function get_product_data( WC_Product $product, $product_meta_keys )
     {

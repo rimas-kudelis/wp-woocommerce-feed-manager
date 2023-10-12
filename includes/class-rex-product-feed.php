@@ -218,6 +218,7 @@ class Rex_Product_Feed {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_ajax_wpfm_add_to_cart', $plugin_public, 'wpfm_add_to_cart' );
 		$this->loader->add_action( 'wp_ajax_nopriv_wpfm_add_to_cart', $plugin_public, 'wpfm_add_to_cart' );
+		$this->loader->add_action( 'init', $plugin_public, 'clear_woocommerce_cart_data' );
 	}
 
     /**

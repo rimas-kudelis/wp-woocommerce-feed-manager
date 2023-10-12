@@ -39,36 +39,33 @@
 					echo '</li>';
 				}
 
-				echo '<li class="' . esc_attr( $this->prefix ) . 'custom_time_fields">';
-
-				$selected_hour = get_post_meta( get_the_ID(), '_rex_feed_custom_time', true );
-				$selected_hour = $selected_hour ?: get_post_meta( get_the_ID(), 'rex_feed_custom_time', true );
-
-				echo '<select id="' . esc_attr( $this->prefix ) . 'custom_time " name="' . esc_attr( $this->prefix ) . 'custom_time">';
-				for ( $i =1; $i <=24; $i++ ) {
-					if ( 12 === (int) $i ) {
-						$twelve_hr_format = '12 PM';
-					}
-					elseif ( 24 === (int) $i ) {
-						$twelve_hr_format = '12 AM';
-					}
-					elseif ( (int) $i > 12 ) {
-						$hr               = (int) $i - 12;
-						$twelve_hr_format = $hr . ' PM';
-					}
-					else {
-						$twelve_hr_format = $i . ' AM';
-					}
-					$selected = (int) $selected_hour === $i ? ' selected' : '';
-					echo '<option value="' . esc_attr( $i ) . '" ' . esc_html( $selected ) . '>' . esc_attr( $twelve_hr_format ) . '</option>';
-				}
-				echo '</select>';
-				echo '<label for="' . esc_attr( $this->prefix ) . 'custom_time' . '">' . esc_html__( 'Every Day', 'rex-product-feed' ) . '</label>';
-				echo '</li>';
+				/**
+				 * Fires when generating custom markup for an auto feed generation option in the Rex Product Feed plugin.
+				 *
+				 * This action provides a way to insert custom HTML markup or elements into the settings
+				 * related to the automatic generation of product feeds. Developers can use this hook to
+				 * add their own interface elements, such as custom schedule time dropdowns or other controls,
+				 * to tailor the feed generation options to their specific needs.
+				 *
+				 * @since 7.3.13
+				 */
+				do_action('rexfeed_auto_generation_option_markups');
 				?>
 			</ul>
 
-            <?php do_action( 'rex_feed_after_autogenerate_options_field' );?>
+            <?php
+            /**
+             * Fires after rendering the auto-generation options field in the Rex Product Feed plugin settings.
+             *
+             * This action provides developers with the opportunity to insert custom content or elements
+             * immediately after the auto-generation options field in the plugin settings. You can use this
+             * hook to add supplementary instructions, additional controls, or any other content that should
+             * appear after the auto-generation options for product feeds.
+             *
+             * @since 7.3.13
+             */
+            do_action('rex_feed_after_autogenerate_options_field');
+            ?>
 		</div>
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'country_list_area'; ?>">
