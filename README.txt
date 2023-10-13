@@ -1,7 +1,7 @@
 === Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory, Meta Feed, google ads,  eBay MIP, data Feed, xml product feed, woocommerce xml feed, XML feed, CSV feed, TEXT feed, google adwords, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo,  idealo feed, facebook ads,  google dynamic search ads
+Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory, Meta Feed, Instagram Feed, google ads,  eBay MIP, data Feed, xml product feed, woocommerce xml feed, XML feed, CSV feed, TEXT feed, google adwords, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo, facebook ads,  google dynamic search ads
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
@@ -185,7 +185,7 @@ By combining different attributes, you can create more descriptive and keyword-r
 * Auto-sync with Google Shopping Center
 * Compatible with both http and https sites
 * Auto feed update schedule options: weekly, daily, hourly, & custom schedule
-* Category Mapping for Google Shopping feed, Facebook Catalog feed and others
+* Category Mapping for Google Shopping feed, Facebook Catalog feed, Instagram feed and others
 * Extensive Filter Options (filter by category, product, tag or custom)
 * Include Dynamic Attributes
 * Add Static attributes if needed
@@ -2083,5 +2083,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.13 =
+= 7.3.14 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
