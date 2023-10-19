@@ -7,12 +7,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Appsero/client.git",
-                "reference": "20520c5bd529dc0ddfc335c813737858e6ce7301"
+                "reference": "fd06ae6ec3da9241541e7587a6d418640725f231"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Appsero/client/zipball/20520c5bd529dc0ddfc335c813737858e6ce7301",
-                "reference": "20520c5bd529dc0ddfc335c813737858e6ce7301",
+                "url": "https://api.github.com/repos/Appsero/client/zipball/fd06ae6ec3da9241541e7587a6d418640725f231",
+                "reference": "fd06ae6ec3da9241541e7587a6d418640725f231",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
                 "tareq1988/wp-php-cs-fixer": "dev-master",
                 "wp-coding-standards/wpcs": "dev-develop"
             },
-            "time": "2023-08-25T05:45:30+00:00",
+            "time": "2023-10-11T09:13:24+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

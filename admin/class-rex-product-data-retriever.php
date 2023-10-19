@@ -142,14 +142,6 @@ class Rex_Product_Data_Retriever {
 	protected $feed_country;
 
 	/**
-	 * Variable for feed tax id
-	 *
-	 * @since 7.3.1
-	 * @var string
-	 */
-	protected $feed_tax_id;
-
-	/**
 	 * Variable for feed zip code
 	 *
 	 * @since 7.2.18
@@ -195,7 +187,6 @@ class Rex_Product_Data_Retriever {
 		$this->feed_format        = $feed->get_feed_format();
 		$this->feed_country       = $feed->get_shipping();
 		$this->feed_zip_codes     = $feed->get_zip_code();
-		$this->feed_tax_id        = $feed->get_tax_id();
 
 		$log = wc_get_logger();
 		if ( $this->is_logging_enabled ) {
@@ -1641,28 +1632,34 @@ class Rex_Product_Data_Retriever {
 				return $sale_price > 0 ? wc_format_decimal( $sale_price, wc_get_price_decimals() ) : '';
 
 			case 'price_with_tax':
-                $_price = $this->set_price_attr( 'price', $rule );
-                return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $this->feed_tax_id );
+				$_price      = $this->set_price_attr( 'price', $rule );
+				$tax_rate_id = Rex_Product_Feed_Tax::get_wc_tax_rate_id( $this->product, $this->feed_country );
+				return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $tax_rate_id );
 
 			case 'current_price_with_tax':
-                $_price = $this->set_price_attr( 'current_price', $rule );
-                return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $this->feed_tax_id );
+				$_price      = $this->set_price_attr( 'current_price', $rule );
+				$tax_rate_id = Rex_Product_Feed_Tax::get_wc_tax_rate_id( $this->product, $this->feed_country );
+				return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $tax_rate_id );
 
 			case 'sale_price_with_tax':
-                $_price = $this->set_price_attr( 'sale_price', $rule );
-                return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $this->feed_tax_id );
+				$_price      = $this->set_price_attr( 'sale_price', $rule );
+				$tax_rate_id = Rex_Product_Feed_Tax::get_wc_tax_rate_id( $this->product, $this->feed_country );
+				return Rex_Product_Feed_Tax::get_price_with_tax( $_price, $tax_rate_id );
 
 			case 'price_excl_tax':
-                $_price = $this->set_price_attr( 'price', $rule );
-                return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $this->feed_tax_id );
+				$_price      = $this->set_price_attr( 'price', $rule );
+				$tax_rate_id = Rex_Product_Feed_Tax::get_wc_tax_rate_id( $this->product, $this->feed_country );
+				return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $tax_rate_id );
 
 			case 'current_price_excl_tax':
-                $_price = $this->set_price_attr( 'current_price', $rule );
-                return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $this->feed_tax_id );
+				$_price      = $this->set_price_attr( 'current_price', $rule );
+				$tax_rate_id = Rex_Product_Feed_Tax::get_wc_tax_rate_id( $this->product, $this->feed_country );
+				return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $tax_rate_id );
 
 			case 'sale_price_excl_tax':
-                $_price = $this->set_price_attr( 'sale_price', $rule );
-                return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $this->feed_tax_id );
+				$_price      = $this->set_price_attr( 'sale_price', $rule );
+				$tax_rate_id = Rex_Product_Feed_Tax::get_wc_tax_rate_id( $this->product, $this->feed_country );
+				return Rex_Product_Feed_Tax::get_price_without_tax( $_price, $tax_rate_id );
 
 			case 'price_db':
 				if ( $this->wcml ) {
@@ -3445,12 +3442,6 @@ class Rex_Product_Data_Retriever {
 				if ( isset( $shipping_methods[ $index ][ 'instance' ] ) && !is_wp_error( $shipping_methods[ $index ][ 'instance' ] ) && is_array( $shipping_methods[ $index ][ 'instance' ] ) && isset( $shipping_methods[ $index ][ 'price' ] ) ) {
 					if ( !empty( $shipping_methods[ $index ][ 'instance' ] ) ) {
 						$class_id = $this->product->get_shipping_class_id();
-						if ( 'variation' === $this->product->get_type() ) {
-							$product_id = $this->product->get_parent_id();
-							if ( $product_id ) {
-								$class_id = wc_get_product( $product_id )->get_shipping_class_id();
-							}
-						}
 						if ( isset( $shipping_methods[ $index ][ 'instance' ][ 'class_cost_' . $class_id ] ) && $shipping_methods[ $index ][ 'instance' ][ 'class_cost_' . $class_id ] ) {
 							$shipping_methods[ $index ][ 'price' ] += $shipping_methods[ $index ][ 'instance' ][ 'class_cost_' . $class_id ];
 						} elseif ( isset( $shipping_methods[ $index ][ 'instance' ][ 'no_class_cost' ] ) && $shipping_methods[ $index ][ 'instance' ][ 'no_class_cost' ] ) {

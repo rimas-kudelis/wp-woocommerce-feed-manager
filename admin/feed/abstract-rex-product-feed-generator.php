@@ -372,14 +372,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
     public $custom_filter_args;
 
     /**
-     * Variable for feed tax id
-     *
-     * @since 7.3.1
-     * @var string
-     */
-    protected $feed_tax_id;
-
-    /**
      * Hotline firm name
      *
      * @since 7.3.2
@@ -459,7 +451,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->custom_xml_header       = !empty( $config[ 'custom_xml_header' ] ) ? $config[ 'custom_xml_header' ] : '';
             $this->yandex_company_name     = !empty( $config[ 'yandex_company_name' ] ) ? $config[ 'yandex_company_name' ] : '';
             $this->yandex_old_price        = !empty( $config[ 'yandex_old_price' ] ) ? $config[ 'yandex_old_price' ] : '';
-            $this->feed_tax_id             = !empty( $config[ 'tax_id' ] ) ? $config[ 'tax_id' ] : '-1';
             $this->hotline_firm_id         = !empty( $config[ 'hotline_firm_id' ] ) ? $config[ 'hotline_firm_id' ] : '';
             $this->hotline_firm_name       = !empty( $config[ 'hotline_firm_name' ] ) ? $config[ 'hotline_firm_name' ] : '';
             $this->hotline_exch_rate       = !empty( $config[ 'hotline_exch_rate' ] ) ? $config[ 'hotline_exch_rate' ] : '';
@@ -804,7 +795,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->yandex_company_name  = isset( $feed_configs[ 'rex_feed_yandex_company_name' ] ) ? esc_attr( $feed_configs[ 'rex_feed_yandex_company_name' ] ) : '';
         $this->feed_rules_option    = isset( $feed_configs[ 'rex_feed_feed_rules_button' ] ) ? esc_attr( $feed_configs[ 'rex_feed_feed_rules_button' ] ) : 'removed';
         $this->yandex_old_price     = isset( $feed_configs[ 'rex_feed_yandex_old_price' ] ) ? esc_attr( $feed_configs[ 'rex_feed_yandex_old_price' ] ) : '';
-        $this->feed_tax_id          = isset( $feed_configs[ 'rex_feed_tax_id' ] ) ? esc_attr( $feed_configs[ 'rex_feed_tax_id' ] ) : '';
         $this->hotline_firm_name    = isset( $feed_configs[ 'rex_feed_hotline_firm_name' ] ) ? esc_attr( $feed_configs[ 'rex_feed_hotline_firm_name' ] ) : '';
         $this->hotline_firm_id      = isset( $feed_configs[ 'rex_feed_hotline_firm_id' ] ) ? esc_attr( $feed_configs[ 'rex_feed_hotline_firm_id' ] ) : '';
         $this->hotline_exch_rate    = isset( $feed_configs[ 'rex_feed_hotline_exchange_rate' ] ) ? esc_attr( $feed_configs[ 'rex_feed_hotline_exchange_rate' ] ) : '';
@@ -1819,16 +1809,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     public function get_shipping() {
         return $this->feed_country;
-    }
-
-    /**
-     * Gets selected tax id the feed
-     *
-     * @return mixed|string
-     * @since 7.3.1
-     */
-    public function get_tax_id() {
-        return $this->feed_tax_id;
     }
 
     /**

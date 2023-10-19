@@ -248,7 +248,7 @@ class License {
         if ( isset( $_POST['_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ), $this->client->name ) ) {
             $form_data = [
                 '_nonce' => sanitize_key( wp_unslash( $_POST['_nonce'] ) ),
-                'action' => isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '',
+                '_action' => isset( $_POST['_action'] ) ? sanitize_text_field( wp_unslash( $_POST['_action'] ) ) : '',
                 'license_key' => isset( $_POST['license_key'] ) ? sanitize_text_field( wp_unslash( $_POST['license_key'] ) ) : '',
             ];
             $this->license_form_submit( $form_data );
@@ -609,7 +609,7 @@ class License {
             <?php if ( $license && $license['key'] ) { ?>
             <form method="post" class="appsero-license-right-form" novalidate="novalidate" spellcheck="false">
                 <input type="hidden" name="_action" value="refresh">
-                <input type="hidden" name="_appsero_license_nonce" value="<?php echo wp_create_nonce( $this->client->name ); ?>">
+                <input type="hidden" name="_nonce" value="<?php echo wp_create_nonce( $this->client->name ); ?>">
                 <button type="submit" name="submit" class="appsero-license-refresh-button">
                     <span class="dashicons dashicons-update"></span>
                     <?php echo $this->client->__trans( 'Refresh License' ); ?>

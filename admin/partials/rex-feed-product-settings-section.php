@@ -104,33 +104,6 @@
 					?>
 				</select>
 			</div>
-
-			<div class="<?php echo esc_attr( $this->prefix ) . 'tax_rate_content'; ?> pl-10">
-				<label for="<?php echo esc_attr( $this->prefix ) . 'tax_rate_label'; ?>"><?php esc_html_e( 'Tax Rate', 'rex-product-feed' ); ?>
-					<span class="rex_feed-tooltip">
-						<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question; ?>
-						<p>
-							<?php esc_html_e( 'Select a tax rate to calculate prices including/excluding tax rate.', 'rex-product-feed' ); ?><a href="<?php echo esc_url( '#' ); ?>" target="_blank"><?php esc_html_e( 'Learn How', 'rex-product-feed' ); ?></a>
-						</p>
-					</span>
-				</label>
-
-				<select name="<?php echo esc_attr( $this->prefix ) . 'tax_id'; ?>" id="<?php echo esc_attr( $this->prefix ) . 'tax_id'; ?>" class="">
-					<?php
-					$saved_tax_id = get_post_meta( get_the_ID(), '_' . esc_attr( $this->prefix ) . 'tax_id', true );
-					$saved_tax_id = $saved_tax_id ?: get_post_meta( get_the_ID(), esc_attr( $this->prefix ) . 'tax_id', true );
-					$wc_tax_rates = Rex_Product_Feed_Tax::get_wc_tax_rates();
-					echo '<option value="-1">' . esc_html__( 'Please Select', 'rex-product-feed' ) . '</option>';
-					if ( is_array( $wc_tax_rates ) && !empty( $wc_tax_rates ) ) {
-						foreach( $wc_tax_rates as $rate ) {
-							$tax_rate = number_format( $rate->tax_rate, 2 );
-							$selected = $saved_tax_id === $rate->tax_rate_id ? ' selected' : '';
-							echo '<option value="' . esc_attr( $rate->tax_rate_id ) . '" ' . esc_attr( $selected ) . '>' . esc_attr( "{$rate->tax_rate_name} - $tax_rate%" ) . '</option>';
-						}
-					}
-					?>
-				</select>
-			</div>
 		</div>
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'include_out_of_stock'; ?> ">

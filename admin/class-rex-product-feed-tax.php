@@ -17,6 +17,34 @@
  */
 class Rex_Product_Feed_Tax {
 
+	/**
+	 * Get the WooCommerce tax rate ID for a product based on its tax class and the feed country code.
+	 *
+	 * This function is used to find the appropriate tax rate ID for a product based on its tax class
+	 * and the country code provided in the product feed. It checks the available tax rates for the
+	 * product's tax class and matches the country code to find the corresponding tax rate.
+	 *
+	 * @param object $product           The product for which the tax rate is being determined.
+	 * @param string $feed_country_code The country code provided in the product feed.
+	 *
+	 * @return int|null Tax rate ID if found, or null if no matching tax rate is found.
+	 * @since 7.3.15
+	 */
+	public static function get_wc_tax_rate_id( $product, $feed_country_code ) {
+		// Retrieve tax rates for the product's tax class.
+		$wc_tax_rates = WC_Tax::get_rates_for_tax_class( $product->get_tax_class() );
+
+		// Iterate through the tax rates to find a matching one.
+		foreach( $wc_tax_rates as $rate ) {
+			if ( !empty( $rate->tax_rate_country ) && $feed_country_code === $rate->tax_rate_country && !empty( $rate->tax_rate_id ) ) {
+				return $rate->tax_rate_id;
+			}
+		}
+
+		// Return null if no matching tax rate is found.
+		return null;
+	}
+
     /**
      * Retrieves all WooCommerce tax rates.
      *
@@ -43,7 +71,7 @@ class Rex_Product_Feed_Tax {
      * @since 7.3.1
      */
     public static function get_price_with_tax( $price_excl_tax, $tax_rate_id ) {
-        if( !$price_excl_tax || '-1' == $tax_rate_id ) {
+        if( empty( $price_excl_tax ) || empty( $tax_rate_id ) ) {
             return $price_excl_tax;
         }
 
@@ -95,16 +123,12 @@ class Rex_Product_Feed_Tax {
             return [];
         }
 
-        return $wpdb->get_row(
-            $wpdb->prepare(
-                "
-					SELECT `tax_rate` AS `rate`, `tax_rate_name` AS `label`, `tax_rate_shipping` AS `shipping`, `tax_rate_compound` AS `compound`
-					FROM {$wpdb->prefix}woocommerce_tax_rates
-					WHERE tax_rate_id = %d
-				",
-                $tax_rate_id
-            ),
-            $output_type
-        );
+	    return $wpdb->get_row(
+		    $wpdb->prepare(
+			    "SELECT `tax_rate` AS `rate`, `tax_rate_name` AS `label`, `tax_rate_shipping` AS `shipping`, `tax_rate_compound` AS `compound` FROM %i WHERE tax_rate_id = %d",
+			    [ "{$wpdb->prefix}woocommerce_tax_rates", $tax_rate_id ]
+		    ),
+		    $output_type
+	    );
     }
 }
