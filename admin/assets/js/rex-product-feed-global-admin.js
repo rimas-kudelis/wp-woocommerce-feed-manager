@@ -169,7 +169,7 @@
         }
         $( '#rex-feed-support-submenu, #rex-feed-gopro-submenu' ).parent().attr( 'target', '_blank' );
 
-        if ( $( 'section#rex_deal_notification' ).length ) {
+        if ( $( '#rex_deal_notification' ).length ) {
             rexfeed_deal_countdown_handler();
         }
     } );
@@ -186,7 +186,7 @@
             day = hour * 24;
 
         let now = new Date( rex_wpfm_ajax.current_date ).getTime();
-        const countDown = new Date( '10/03/2023 19:00:00' ).getTime(),
+        const countDown = new Date( '11/07/2023 19:00:00' ).getTime(),
             x = setInterval(function() {
                 const distance = countDown - now;
                 now = now + 1000;

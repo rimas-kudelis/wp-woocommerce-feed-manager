@@ -31,18 +31,25 @@ class Rex_Product_Feed_Tax {
 	 * @since 7.3.15
 	 */
 	public static function get_wc_tax_rate_id( $product, $feed_country_code ) {
+		$tax_rate_id = null;
 		// Retrieve tax rates for the product's tax class.
 		$wc_tax_rates = WC_Tax::get_rates_for_tax_class( $product->get_tax_class() );
 
 		// Iterate through the tax rates to find a matching one.
 		foreach( $wc_tax_rates as $rate ) {
-			if ( !empty( $rate->tax_rate_country ) && $feed_country_code === $rate->tax_rate_country && !empty( $rate->tax_rate_id ) ) {
-				return $rate->tax_rate_id;
+			if ( !empty( $rate->tax_rate_id ) ) {
+				if ( empty( $rate->tax_rate_country ) ) {
+					$tax_rate_id = empty( $tax_rate_id ) ? $rate->tax_rate_id : $tax_rate_id;
+					continue;
+				}
+				if ( $feed_country_code === $rate->tax_rate_country ) {
+					return $rate->tax_rate_id;
+				}
 			}
 		}
 
-		// Return null if no matching tax rate is found.
-		return null;
+		// Return null/matched tax rate id with no specific country.
+		return $tax_rate_id;
 	}
 
     /**

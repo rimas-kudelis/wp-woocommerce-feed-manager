@@ -623,16 +623,34 @@ class Rex_Product_Feed_Admin {
      * @return void
      */
     public function render_deal_notices() {
-        $screen           = get_current_screen();
-        $alloweds_screens = [ 'dashboard', 'plugins', 'product-feed' ];
+        $screen          = get_current_screen();
+        $allowed_screens = [ 'dashboard', 'plugins', 'product-feed' ];
+        $current_time    = strtotime( current_time( 'mysql' ) );
+        $deal_start_time = strtotime( '2023-10-27 19:00:00' );
 
         if (
-            'hidden' !== get_option( 'rex_feed_halloween_deal_notice', '' )
+            'hidden' !== get_option( 'rex_feed_original_halloween_deal_notice', '' )
             && !defined( 'REX_PRODUCT_FEED_PRO_VERSION' )
-            && ( in_array( $screen->base, $alloweds_screens )
-            || in_array( $screen->parent_base, $alloweds_screens ) )
+            && ( in_array( $screen->base, $allowed_screens )
+                || in_array( $screen->parent_base, $allowed_screens ) )
+            && $current_time >= $deal_start_time
         ) {
             include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-deal-notice-content.php';
         }
     }
+
+    /**
+     * Delete cached data for WooCommerce shipping methods.
+     *
+     * This function is designed to clear cached data related to WooCommerce shipping methods. It utilizes the wpfm_purge_cached_data function to perform the cleanup.
+     *
+     * @since 7.3.16
+     */
+    public function delete_shipping_transient() {
+        if ( function_exists( 'wpfm_purge_cached_data' ) ) {
+            // Use wpfm_purge_cached_data to remove cached data related to WooCommerce shipping methods.
+            wpfm_purge_cached_data( 'wc_shipping_methods_', true );
+        }
+    }
+
 }

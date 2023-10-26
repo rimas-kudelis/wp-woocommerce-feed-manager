@@ -121,27 +121,35 @@ if ( !function_exists( 'wpfm_set_cached_data' ) ) {
 
 
 if ( ! function_exists( 'wpfm_purge_cached_data' ) ) {
-    /**
-     * @desc Remove cached data from transient
-     * @param $key
-     * @return void
-     * @since 7.3.0
-     */
-    function wpfm_purge_cached_data( $key = false ) {
-        global $wpdb;
-        if( $key ) {
-            $query = "DELETE FROM $wpdb->options WHERE `option_name` = %s";
-            $wpdb->query( $wpdb->prepare( $query, "_transient_timeout__wpfm_cache_{$key}" ) );
+	/**
+	 * Purge cached data stored as WordPress options.
+	 *
+	 * This function deletes cached data stored as WordPress options, with the option to delete either exact matches or use a LIKE query to match option names.
+	 *
+	 * @param string|null $key  The cache key or part of the key to be purged.
+	 * @param bool        $like Set to true to use a LIKE query, or false to perform an exact match.
+	 * @since 7.3.0
+	 */
+	function wpfm_purge_cached_data( $key = null, $like = false ) {
+		global $wpdb;
 
-            $query = "DELETE FROM $wpdb->options WHERE option_name = %s";
-            $wpdb->query( $wpdb->prepare( $query, "_transient__wpfm_cache_{$key}" ) );
-        }
-        else {
-            $query = "DELETE FROM $wpdb->options WHERE ({$wpdb->options}.option_name LIKE %s) OR ({$wpdb->options}.option_name LIKE %s)";
-            $query = $wpdb->prepare( $query, '_transient_timeout__wpfm_cache%', '_transient__wpfm_cache_%' );
-            $wpdb->query( $query ); // phpcs:ignore
-        }
-    }
+		if ( !empty( $key ) ) {
+			if ( $like ) {
+				// Use a LIKE query to delete transient options matching the key pattern.
+				$query = "DELETE FROM $wpdb->options WHERE `option_name` LIKE %s OR `option_name` LIKE %s";
+				$wpdb->query( $wpdb->prepare( $query, "_transient_timeout__wpfm_cache_{$key}%", "_transient__wpfm_cache_{$key}%" ) );
+			} else {
+				// Perform an exact match to delete transient options with the key.
+				$query = "DELETE FROM $wpdb->options WHERE `option_name` = %s OR `option_name` = %s";
+				$wpdb->query( $wpdb->prepare( $query, "_transient_timeout__wpfm_cache_{$key}", "_transient__wpfm_cache_{$key}" ) );
+			}
+		} else {
+			// Purge all cached data when no specific key is provided.
+			$query = "DELETE FROM $wpdb->options WHERE ({$wpdb->options}.option_name LIKE %s) OR ({$wpdb->options}.option_name LIKE %s)";
+			$query = $wpdb->prepare( $query, '_transient_timeout__wpfm_cache%', '_transient__wpfm_cache_%' );
+			$wpdb->query( $query ); // Delete transients matching the specified pattern.
+		}
+	}
 }
 
 

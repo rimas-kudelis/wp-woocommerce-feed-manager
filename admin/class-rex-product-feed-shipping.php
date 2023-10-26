@@ -24,7 +24,7 @@ class Rex_Product_Feed_Shipping {
     protected static $feed_country;
 
     /**
-     * @var string $zone_countries - Feed zone countries variable.
+     * @var array $zone_countries - Feed zone countries variable.
      * @since 7.3.0
      */
     protected static $zone_countries;
@@ -277,4 +277,74 @@ class Rex_Product_Feed_Shipping {
             }
         }
     }
+
+	/**
+	 * Get the WooCommerce shipping zone ID for a specific country code.
+	 *
+	 * This function retrieves the shipping zone ID associated with a specific country code within WooCommerce.
+	 *
+	 * @return int|null Shipping zone ID if found, or null if not found.
+	 * @since 7.3.15
+	 */
+	public function get_wc_shipping_zone_id() {
+		global $wpdb;
+
+		// Prepare a SQL query to fetch the shipping zone ID for a given country code.
+		$query = $wpdb->prepare( 'SELECT `zone_id` FROM %i ', $wpdb->prefix . 'woocommerce_shipping_zone_locations' );
+		$query .= "WHERE ((location_type = 'country' ";
+		$query .= $wpdb->prepare( 'AND location_code = %s) ', self::$feed_country );
+		$query .= $wpdb->prepare( "OR location_code LIKE %s) ", '%' . self::$feed_country . '%' );
+		$query .= 'LIMIT 1';
+
+		return $wpdb->get_var( $query ); // Return the shipping zone ID if found, or null if not found.
+	}
+
+	/**
+	 * Get the cost associated with shipping for a WooCommerce product.
+	 *
+	 * This function calculates the cost of shipping for a given product based on various criteria, including
+	 * the product's type, shipping methods, and specific shipping rate settings.
+	 *
+	 * @param object $product The WooCommerce product for which shipping cost is being determined.
+	 * @param bool $min_cost A boolean value if the minimum shipping cost is expecting.
+	 *
+	 * @return float|string Shipping cost if applicable, or an empty string if not applicable.
+	 * @since 7.3.15
+	 */
+	public function get_wc_shipping_cost( $product, $min_cost = false ) {
+		if ( empty( $product ) || is_wp_error( $product ) || $product->is_virtual() || $product->is_downloadable() ) {
+			return '';
+		}
+		$class_id         = $product->get_shipping_class_id();
+		$shipping_methods = wpfm_get_cached_data( 'wc_shipping_methods_' . self::$feed_country );
+
+		if ( function_exists( 'wc_get_shipping_zone' ) && !$shipping_methods ) {
+			$shipping_zone_id = $this->get_wc_shipping_zone_id();
+			$shipping_zone    = new WC_Shipping_Zone( $shipping_zone_id ?: 0 );
+			$shipping_methods = $shipping_zone->get_shipping_methods( true );
+			wpfm_set_cached_data( 'wc_shipping_methods_' . self::$feed_country, $shipping_methods );
+		}
+
+		if ( is_array( $shipping_methods ) && !empty( $shipping_methods ) ) {
+			$shipping_costs = [];
+			foreach( $shipping_methods as $method ) {
+				$shipping_rates = $method->instance_settings ?? [];
+				if ( 'WC_Shipping_Free_Shipping' === get_class( $method ) && isset( $method->min_amount ) && $product->get_price() >= $method->min_amount && ( 'min_amount' === $method->requires || 'either' === $method->requires ) ) {
+					$shipping_costs[] = 0;
+				}
+				elseif ( isset( $shipping_rates[ 'cost' ] ) ) {
+					$rate = $shipping_rates[ 'cost' ];
+					if ( !empty( $class_id ) ) {
+						$class_rate = !empty( $shipping_rates[ "class_cost_{$class_id}" ] ) ? $shipping_rates[ "class_cost_{$class_id}" ] : 0;
+					}
+					else {
+						$class_rate = !empty( $shipping_rates[ 'no_class_cost' ] ) ? $shipping_rates[ 'no_class_cost' ] : 0;
+					}
+					$shipping_costs[] = !empty( $rate ) ? $rate + $class_rate : $class_rate;
+				}
+			}
+		}
+
+		return !empty( $shipping_costs ) ? $min_cost ? min( $shipping_costs ) : max( $shipping_costs ) : '';
+	}
 }

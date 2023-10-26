@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.3
 Requires PHP: 7.3
-Stable tag:  7.3.15
+Stable tag:  7.3.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -896,6 +896,12 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.16 (2023-10-26) =
+* Fixed: Patched security vulnerability.
+* Enhancement: Shipping price calculation [incl. class/no class cost]
+* Enhancement: All region tax rate support for feed
+* Fixed: Issue in `Product Categories with Pipe [ | ]` separator
 
 = 7.3.15 (2023-10-19) =
 * Enhancement: Improved price attributes calculation process incl./excl. tax
@@ -2087,5 +2093,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.15 =
+= 7.3.16 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

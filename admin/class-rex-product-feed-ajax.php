@@ -727,26 +727,34 @@ class Rex_Product_Feed_Ajax {
      * @return array
      */
     public static function show_wpfm_log( $payload ) {
-        if( !empty( $payload[ 'logKey' ] ) ) {
-            $key        = $payload[ 'logKey' ];
-            $upload_dir = wp_upload_dir( null, false );
-            $wc_log_url = $upload_dir[ 'basedir' ] . '/wc-logs/';
-            $file_url   = $wc_log_url . $key;
+        if ( !empty( $payload[ 'logKey' ] ) && defined( 'WC_LOG_DIR' ) ) {
+            $wc_log   = WC_Admin_Status::scan_log_files();
+            $key      = filter_var( $payload[ 'logKey' ], FILTER_SANITIZE_STRING );
+            $file_url = realpath( WC_LOG_DIR . $key );
+
+            if ( !in_array( $key, $wc_log ) || empty( $file_url ) || false === strpos( $file_url, WC_LOG_DIR ) ) {
+                return [
+                    'success'  => false,
+                    'content'  => 'Access Denied!',
+                    'file_url' => ''
+                ];
+            }
+
             ob_start();
             include_once $file_url;
             $out = ob_get_clean();
             ob_end_clean();
-            return array(
+            return [
                 'success'  => true,
                 'content'  => $out,
-                'file_url' => $file_url,
-            );
+                'file_url' => $file_url
+            ];
         }
-        return array(
+        return [
             'success'  => false,
             'content'  => '',
-            'file_url' => '',
-        );
+            'file_url' => ''
+        ];
     }
 
 
@@ -1401,7 +1409,7 @@ class Rex_Product_Feed_Ajax {
      * @since 7.3.1
      */
     public static function hide_deal_notice() {
-        update_option( 'rex_feed_halloween_deal_notice', 'hidden' );
+        update_option( 'rex_feed_original_halloween_deal_notice', 'hidden' );
         return [ 'status' => true ];
     }
 }
