@@ -1,25 +1,30 @@
 <?php
 
-namespace RexTheme\RexShoppingFeedCustom\idealo_de\Containers;
+namespace RexTheme\RexShoppingFeedCustom\Idealo_de\Containers;
 
-use RexTheme\RexShoppingFeed\Containers\RexShopping;
-use RexTheme\RexShoppingFeedCustom\idealo_de\Idealo_de_feed;
+use RexTheme\RexShoppingFeedCustom\Idealo_de\Feed;
 
-class Idealo_de extends RexShopping
+class Idealo_de
 {
+
+	/**
+	 * Feed container
+	 *
+	 * @var Feed
+	 */
+	public static $container = null;
 
     /**
      * Return feed container
-     * @return Feed
+     * @return \RexTheme\RexShoppingFeed\Feed
      */
-    public static function container()
-    {
-        if (is_null(static::$container)) {
-            static::$container = new Idealo_de_feed( static::$wrapper, static::$itemName, static::$namespace, static::$version , static::$rss );
-        }
+	public static function container() {
+		if ( empty( static::$container ) ) {
+			static::$container = new Feed();
+		}
 
-        return static::$container;
-    }
+		return static::$container;
+	}
 
     /**
      * @param string $name
@@ -28,6 +33,6 @@ class Idealo_de extends RexShopping
      */
     public static function __callStatic($name, $arguments)
     {
-        return call_user_func_array(array(static::container(), $name), $arguments);
+	    return call_user_func_array(array(static::container(), $name), $arguments);
     }
 }

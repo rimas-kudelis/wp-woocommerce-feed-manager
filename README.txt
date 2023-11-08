@@ -3,9 +3,9 @@ Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: facebook catalog, google feed, google shopping, google merchant, woocommerce product feed, product feed, google shopping feed, facebook feed, woocommerce product feed manager,  google local products,  google local products inventory, Meta Feed, Instagram Feed, google ads,  eBay MIP, data Feed, xml product feed, woocommerce xml feed, XML feed, CSV feed, TEXT feed, google adwords, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza,  bestprice,  yml,  yandex,  yandex market,  export,  yandex feed,  export csv,  export xml,  idealo, facebook ads,  google dynamic search ads
 Requires at least: 4.7
-Tested up to:  6.3
+Tested up to:  6.4
 Requires PHP: 7.3
-Stable tag:  7.3.16
+Stable tag:  7.3.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,7 +41,7 @@ Create your preferred feed in seconds with 3 simple steps:
 
 Use features such as category mapping, custom fields, product filters, Google Auto-sync, and many more to generate optimised feed for greater results.
 
-<a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_pricing&utm_id=halloween203" target="_blank">Get 31% OFF on Product Feed Manager for WooCommerce - Pro</a>
+<a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo&utm_medium=repo&utm_campaign=repo_to_pro&utm_id=repo_pricing" target="_blank">Get Product Feed Manager for WooCommerce - Pro</a>
 
 <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/?utm_source=plugin&utm_medium=documentation_button&utm_campaign=pfm_plugin">Documentation</a> | <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Tutorials</a> | <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">All Features</a> | <a target="_blank" href="https://rextheme.com/product-feed-manager-for-woocommerce-survey/?utm_source=repo&utm_medium=repo&utm_campaign=repo_survey&utm_id=repo_survey">Give Your Feedback</a>
 
@@ -896,6 +896,10 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.17 (2023-11-02) =
+* Fixed: Currency conversion compatibility issue with [WooCommerce Multilingual & Multicurrency with WPML](https://wordpress.org/plugins/woocommerce-multilingual/)
+* Fixed: Duplicate products issue while updating Idealo & Idealo.de feeds in the background
 
 = 7.3.16 (2023-10-26) =
 * Fixed: Patched security vulnerability.
@@ -2093,5 +2097,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.16 =
+= 7.3.17 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

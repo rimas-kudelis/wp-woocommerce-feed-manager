@@ -304,6 +304,9 @@ class Rex_Product_Feed_Factory {
 		elseif ( 'gulog_gratis' === $config[ 'merchant' ] ) {
 			$class_name = 'Rex_Product_Feed_Gulog_gratis';
 		}
+		elseif ( 'idealo' === $config[ 'merchant' ] || 'idealo_de' === $config[ 'merchant' ] ) {
+			$class_name = 'Rex_Product_Feed_Idealo';
+		}
 		else {
 			$class_name = 'Rex_Product_Feed_' . ucfirst( str_replace( ' ', '', $config[ 'merchant' ] ) );
 		}

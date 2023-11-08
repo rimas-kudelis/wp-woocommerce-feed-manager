@@ -366,3 +366,8 @@
 }
 
 /*# sourceMappingURL=style.css.map */
+
+/*Upgrade Notice*/
+.rex-feed-major-update-warning + p {
+  display: none;
+}

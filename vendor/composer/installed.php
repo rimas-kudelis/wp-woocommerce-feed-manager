@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-develop',
-        'version' => 'dev-develop',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '5cb154b28cc72dd11fbb68bffc6e3693d508c427',
+        'reference' => '6c44281ee0fa760b7b3426c13548715b7f999759',
         'name' => 'rextheme/best-woocommerce-feed',
         'dev' => false,
     ),
@@ -47,12 +47,12 @@
             'dev_requirement' => false,
         ),
         'rextheme/best-woocommerce-feed' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '5cb154b28cc72dd11fbb68bffc6e3693d508c427',
+            'reference' => '6c44281ee0fa760b7b3426c13548715b7f999759',
             'dev_requirement' => false,
         ),
         'roundcube/plugin-installer' => array(

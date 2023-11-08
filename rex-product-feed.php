@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
- * Version:           7.3.16
+ * Version:           7.3.17
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -25,12 +25,12 @@
  *
  * WP Requirement & Test
  * Requires at least: 4.7
- * Tested up to: 6.3
+ * Tested up to: 6.4
  * Requires PHP: 7.3
  *
  * WC Requirement & Test
  * WC requires at least: 5.6.0
- * WC tested up to: 8.1.1
+ * WC tested up to: 8.2.1
  */
 
 // If this file is called directly, abort.
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.3.16' );
+    define( 'WPFM_VERSION', '7.3.17' );
 }
 if ( !defined( 'WPFM__FILE__' ) ) {
 	define( 'WPFM__FILE__', __FILE__ );
@@ -320,15 +320,32 @@ function wpfm_top_pages_modify( $pages ) {
 }
 add_filter( 'themify_top_pages', 'wpfm_top_pages_modify' );
 
-function wpfm_plugin_major_update_message( $data, $response ) {
-	if ( isset( $data['upgrade_notice'] ) ) {
-		printf(
-			'<div class="update-message">%s</div>',
-			wpautop( $data['upgrade_notice'] )
-		);
+/**
+ * Display a custom upgrade notice message for a major plugin update.
+ *
+ * This function is responsible for displaying a custom message in the WordPress admin dashboard when a major update is available for a specific plugin. The message informs users to back up their data before proceeding with the upgrade.
+ */
+function wpfm_plugin_major_update_message( $data ) {
+	if ( !empty( $data['upgrade_notice'] ) ) {
+		$msg = str_replace( [ '<p>', '</p>' ], [ '<div>', '</div>' ], $data[ 'upgrade_notice' ] );
+		?>
+		<hr class="e-major-update-warning__separator" />
+		<div class="e-major-update-warning rex-feed-major-update-warning">
+			<div class="e-major-update-warning__icon">
+				<i class="eicon-info-circle"></i>
+			</div>
+			<div>
+				<div class="e-major-update-warning__message">
+					<?php
+					printf( wp_kses_post( wpautop( $msg ) ) );
+					?>
+				</div>
+			</div>
+		</div>
+	<?php
 	}
 }
-add_action( 'in_plugin_update_message-best-woocommerce-feed/rex-product-feed.php', 'wpfm_plugin_major_update_message', 10, 2 );
+add_action( 'in_plugin_update_message-best-woocommerce-feed/rex-product-feed.php', 'wpfm_plugin_major_update_message' );
 
 function rex_feed_redirect_after_activation( $plugin ) {
     if ( $plugin === plugin_basename( __FILE__ ) ) {

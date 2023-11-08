@@ -403,7 +403,6 @@ class Rex_Feed_Scheduler {
         $append_variations           = 'yes' === $append_variations;
         $wpml                        = get_post_meta( $feed_id, '_rex_feed_wpml_language', true ) ?: get_post_meta( $feed_id, 'rex_feed_wpml_language', true );
         $wcml_currency               = get_post_meta( $feed_id, '_rex_feed_wcml_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_wcml_currency', true );
-        $wcml                        = (bool)$wcml_currency;
         $feed_format                 = get_post_meta( $feed_id, '_rex_feed_feed_format', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_format', true );
         $feed_format                 = $feed_format ?: 'xml';
         $aelia_currency              = get_post_meta( $feed_id, '_rex_feed_aelia_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
@@ -475,7 +474,6 @@ class Rex_Feed_Scheduler {
             'exclude_hidden_products'     => $exclude_hidden_products,
             'wpml_language'               => $wpml,
             'wcml_currency'               => $wcml_currency,
-            'wcml'                        => $wcml,
             'analytics'                   => $analytics,
             'analytics_params'            => $analytics_params,
             'aelia_currency'              => $aelia_currency,

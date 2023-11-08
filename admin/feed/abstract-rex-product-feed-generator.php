@@ -415,10 +415,11 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->bypass             = $bypass;
         $this->merchant           = $config[ 'merchant' ] ?? '';
         $this->feed_format        = $config[ 'feed_format' ] ?? '';
+	    $this->wcml               = function_exists( 'wpfm_is_wcml_active' ) && wpfm_is_wcml_active();
         if ( $this->bypass ) {
             $this->id                      = !empty( $config[ 'info' ][ 'post_id' ] ) ? $config[ 'info' ][ 'post_id' ] : 0;
-            $this->title                   = !empty( $config[ 'info' ][ 'title' ] ) && '' !== $config[ 'info' ][ 'title' ] ? $config[ 'info' ][ 'title' ] : get_bloginfo();
-            $this->desc                    = !empty( $config[ 'info' ][ 'desc' ] ) && '' !== $config[ 'info' ][ 'desc' ] ? $config[ 'info' ][ 'desc' ] : get_bloginfo();
+            $this->title                   = !empty( $config[ 'info' ][ 'title' ] ) ? $config[ 'info' ][ 'title' ] : get_bloginfo();
+            $this->desc                    = !empty( $config[ 'info' ][ 'desc' ] ) ? $config[ 'info' ][ 'desc' ] : get_bloginfo();
             $this->batch                   = !empty( $config[ 'info' ][ 'batch' ] ) ? (int)$config[ 'info' ][ 'batch' ] : 1;
             $this->tbatch                  = !empty( $config[ 'info' ][ 'total_batch' ] ) ? (int)$config[ 'info' ][ 'total_batch' ] : 1;
             $this->offset                  = isset( $config[ 'info' ][ 'offset' ] ) ? (int)$config[ 'info' ][ 'offset' ] : -1;
@@ -437,7 +438,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->rex_feed_skip_product   = !empty( $config[ 'skip_product' ] ) ? $config[ 'skip_product' ] : false;
             $this->rex_feed_skip_row       = !empty( $config[ 'skip_row' ] ) ? $config[ 'skip_row' ] : false;
             $this->wpml_language           = !empty( $config[ 'wpml_language' ] ) ? $config[ 'wpml_language' ] : '';
-            $this->wcml                    = !empty( $config[ 'wcml' ] ) ? $config[ 'wcml' ] : '';
             $this->wcml_currency           = !empty( $config[ 'wcml_currency' ] ) ? $config[ 'wcml_currency' ] : 'USD';
             $this->analytics               = !empty( $config[ 'analytics' ] ) ? $config[ 'analytics' ] : '';
             $this->analytics_params        = !empty( $config[ 'analytics_params' ] ) ? $config[ 'analytics_params' ] : '';
@@ -454,7 +454,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->hotline_firm_id         = !empty( $config[ 'hotline_firm_id' ] ) ? $config[ 'hotline_firm_id' ] : '';
             $this->hotline_firm_name       = !empty( $config[ 'hotline_firm_name' ] ) ? $config[ 'hotline_firm_name' ] : '';
             $this->hotline_exch_rate       = !empty( $config[ 'hotline_exch_rate' ] ) ? $config[ 'hotline_exch_rate' ] : '';
-            $this->link                 = esc_url( home_url( '/' ) );
+            $this->link                    = esc_url( home_url( '/' ) );
 
             if ( isset( $config[ 'custom_filter_option' ] ) && 'added' === $config[ 'custom_filter_option' ] ) {
                 $this->custom_filter_option = true;
@@ -676,9 +676,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         parse_str( $info, $feed_rules );
 
         $this->product_scope = $feed_rules[ 'rex_feed_products' ];
-        if ( array_key_exists( 'rex_feed_analytics_params_options', $feed_rules ) ) {
+        if ( !empty( $feed_rules[ 'rex_feed_analytics_params_options' ] ) ) {
             $analytics_on    = $feed_rules[ 'rex_feed_analytics_params_options' ];
-            $this->analytics = $analytics_on == 'on' ? true : false;
+            $this->analytics = 'on' === $analytics_on;
             if ( $analytics_on ) {
                 if ( $this->batch === 1 ) {
                     update_post_meta( $this->id, '_rex_feed_analytics_params_options', $analytics_on );
@@ -693,9 +693,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
 
-        if ( array_key_exists( 'rex_feed_wcml_currency', $feed_rules ) ) {
+        if ( !empty( $feed_rules[ 'rex_feed_wcml_currency' ] ) ) {
             $this->wcml_currency = $feed_rules[ 'rex_feed_wcml_currency' ];
-            $this->wcml          = true;
         }
 
         if ( function_exists( 'icl_object_id' ) ) {
@@ -717,12 +716,12 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->wpml_language = false;
         }
 
-        if ( wpfm_is_wpml_active() ) {
-            $wcml_currency = isset( $feed_rules[ 'rex_feed_wcml_currency' ] ) ? $feed_rules[ 'rex_feed_wcml_currency' ] : '';
+        if ( wpfm_is_wcml_active() ) {
+            $wcml_currency = $feed_rules[ 'rex_feed_wcml_currency' ] ?? '';
             update_post_meta( $this->id, '_rex_feed_wcml_currency', $wcml_currency );
         }
 
-        $this->feed_config= isset( $feed_rules[ 'fc' ] ) ? $feed_rules[ 'fc' ] : array();
+        $this->feed_config= $feed_rules[ 'fc' ] ?? [];
 
         // save the feed_rules into feed post_meta.
         if ( $this->batch === 1 ) {

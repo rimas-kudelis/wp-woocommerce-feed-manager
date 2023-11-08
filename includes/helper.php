@@ -180,25 +180,15 @@ if ( ! function_exists( 'wpfm_is_aelia_active' ) ) {
 	}
 }
 
-
 if ( ! function_exists( 'wpfm_is_wpml_active' ) ) {
 	/**
-	 * @desc check if wpml is active.
+	 * @desc check if `WPML Multilingual CMS` is active.
 	 *
 	 * @return bool
 	 * @since 7.0.0
 	 */
 	function wpfm_is_wpml_active() {
-		$active_plugings         = get_option( 'active_plugins' );
-		$wpml                    = 'woocommerce-multilingual/wpml-woocommerce.php';
-		$sitepress               = 'sitepress-multilingual-cms/sitepress.php';
-		$wpml_string_translation = 'wpml-string-translation/plugin.php';
-
-		$plugins_active = in_array( $wpml, $active_plugings )
-			&& in_array( $sitepress, $active_plugings )
-			&& in_array( $wpml_string_translation, $active_plugings );
-
-		return $plugins_active ?: is_plugin_active_for_network( $wpml ) && is_plugin_active_for_network( $sitepress ) && is_plugin_active_for_network( $wpml_string_translation );
+		return defined( 'ICL_SITEPRESS_VERSION' );
 	}
 }
 
@@ -740,5 +730,23 @@ if ( !function_exists( 'rexfeed_is_woocommerce_brand_active' ) ) {
 		$plugins = get_option( 'active_plugins', [] );
 
 		return $is_active ?: in_array( $woocommerce_brand, $plugins );
+	}
+}
+
+
+
+if ( ! function_exists( 'wpfm_is_wcml_active' ) ) {
+	/**
+	 * Check if `WooCommerce Multilingual & Multicurrency` plugin is active
+	 *
+	 * @return bool
+	 * @since 7.3.17
+	 */
+	function wpfm_is_wcml_active() {
+		if ( defined( 'WCML_VERSION' ) ) {
+			$wcml_settings = get_option( '_wcml_settings', [] );
+			return !empty( $wcml_settings[ 'enable_multi_currency' ] );
+		}
+		return false;
 	}
 }

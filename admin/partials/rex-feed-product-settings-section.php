@@ -354,7 +354,7 @@
 		<div class="<?php echo esc_attr( $this->prefix ) . 'wcml_currency_area';?>">
 
 			<?php
-			if( in_array( 'woocommerce-multilingual/wpml-woocommerce.php', get_option( 'active_plugins', [] ) ) ) {
+			if( function_exists( 'wpfm_is_wcml_active' ) && wpfm_is_wcml_active() ) {
 				global $sitepress, $woocommerce_wpml;
 				$wcml_settings   = get_option( '_wcml_settings' );
 				$wcml_currencies = isset( $wcml_settings[ 'currency_options' ] ) ? $wcml_settings[ 'currency_options' ] : array();
