@@ -1010,6 +1010,7 @@ return array(
     'Rex_Feed_Merchants' => $baseDir . '/admin/class-rex-product-feed-merchants.php',
     'Rex_Feed_Rollback' => $baseDir . '/admin/class-rex-product-feed-rollback.php',
     'Rex_Feed_Scheduler' => $baseDir . '/admin/class-rex-feed-scheduler.php',
+    'Rex_Feed_Special_Occasion_Banner' => $baseDir . '/admin/class-special-occasion-banner.php',
     'Rex_Feed_System_Status' => $baseDir . '/admin/class-rex-product-feed-system-status.php',
     'Rex_Feed_Template_123i' => $baseDir . '/admin/feed-templates/class-rex-feed-template-123i.php',
     'Rex_Feed_Template_Adcell' => $baseDir . '/admin/feed-templates/class-rex-feed-template-adcell.php',

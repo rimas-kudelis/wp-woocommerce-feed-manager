@@ -233,7 +233,7 @@ if ( isset( $data[ 'get' ][ 'plugin_activated' ] ) ) {
 				<div class="rex-setup-wizard-price__button-area">
 					<span><?php esc_html_e( 'Prices start at $79.99 ', 'rex-product-feed' ); ?></span>
 					<button class="rex-setup-wizard-price__button wizard-btn" type="button">
-						<a  href="<?php echo esc_url( 'https://rextheme.com/best-woocommerce-product-feed/pricing/' ); ?>" target="_blank">
+						<a  href="<?php echo esc_url( 'https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=go_pro_button&utm_medium=plugin&utm_campaign=pfm_pro&utm_id=pfm_pro' ); ?>" target="_blank">
 							<?php esc_html_e( 'Get Pro Now', 'rex-product-feed' ); ?>
 						</a>
 					</button>

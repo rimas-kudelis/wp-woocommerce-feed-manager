@@ -56,7 +56,7 @@ jQuery(document).ready(function($){
         if ($('#map_name').val().length != 0){
             $('.rex-loading-spinner').css('display', 'flex');
 
-            wpAjaxHelperRequest( 'save-category-mapping', $payload )
+            wpAjaxHelperRequest( 'rexfeed-save-category-mapping', $payload )
                 .success( function( response ) {
                     $('.rex-loading-spinner').css('display', 'none');
                     setTimeout(function(){// wait for 5 secs(2)
@@ -96,7 +96,7 @@ jQuery(document).ready(function($){
         };
         $('.rex-loading-spinner').css('display', 'flex');
 
-        wpAjaxHelperRequest( 'update-category-mapping', $payload )
+        wpAjaxHelperRequest( 'rexfeed-update-category-mapping', $payload )
             .success( function( response ) {
                 $('.rex-loading-spinner').css('display', 'none');
                 console.log( 'Woohoo!' );
@@ -127,7 +127,7 @@ jQuery(document).ready(function($){
 
         $('.rex-loading-spinner').css('display', 'flex');
 
-        wpAjaxHelperRequest( 'delete-category-mapping', $payload )
+        wpAjaxHelperRequest( 'rexfeed-delete-category-mapping', $payload )
             .success( function( response ) {
                 $('.rex-loading-spinner').css('display', 'none');
                 container.fadeOut();

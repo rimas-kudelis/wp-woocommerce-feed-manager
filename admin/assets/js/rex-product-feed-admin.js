@@ -354,7 +354,7 @@
             frequency: frequency,
         };
 
-        wpAjaxHelperRequest("trigger-review-request", payload)
+        wpAjaxHelperRequest("rexfeed-trigger-review-request", payload)
             .success(function (response) {
                 $(".rex-feed-review").fadeOut();
                 console.log("Woohoo! Awesome!!");
@@ -368,7 +368,7 @@
 
     // New changes messages
     $( document ).on( 'click', '#view_changes_btn', function ( e ) {
-        wpAjaxHelperRequest( 'new-ui-changes-message' )
+        wpAjaxHelperRequest( 'rexfeed-new-ui-changes-message' )
             .success( function ( response ) {
                 $( '#rex_feed_new_changes_msg_content' ).fadeOut();
                 console.log( 'Woohoo! Awesome!!' );
@@ -727,7 +727,7 @@
                 post_id: $( '#post_ID' ).val(),
             };
 
-            wpAjaxHelperRequest( 'load-config-table', $payload )
+            wpAjaxHelperRequest( 'rexfeed-load-config-table', $payload )
                 .done( function ( response ) {
                     if ( response ) {
                         $( '.rex-feed-feed-format' ).find( '.rex_feed_feed-format option' ).each( function () {
@@ -1142,7 +1142,7 @@
             feed_title: feed_title,
         };
 
-        wpAjaxHelperRequest( 'get-total-products', $payload )
+        wpAjaxHelperRequest( 'rexfeed-get-total-products', $payload )
             .done( function ( response ) {
                 if ( 'duplicate' === response.feed_title ) {
                     $( '.post-type-product-feed input#title' ).css( 'border', '1px solid red' );
@@ -1237,7 +1237,7 @@
             $(".progress-msg span").html("Processing feed....");
         }
 
-        wpAjaxHelperRequest("generate-feed", $payload)
+        wpAjaxHelperRequest("rexfeed-generate-feed", $payload)
             .done(function (response) {
                 console.log("Woohoo!");
                 var msg =
@@ -1324,7 +1324,7 @@
             merchant_id: $(this).find("#merchant_id").val(),
             merchant_settings: true,
         };
-        wpAjaxHelperRequest("google-merchant-settings", payload)
+        wpAjaxHelperRequest("rexfeed-google-merchant-settings", payload)
             .success(function (response) {
                 console.log("Woohoo!");
                 $(".merchant-action").html(response.html);
@@ -1370,7 +1370,7 @@
         $(".rex-google-status").addClass("info");
         $(".rex-google-status").show();
         $(".rex-google-status").html("<p>Feed is sending. Please wait...</p>");
-        wpAjaxHelperRequest("send-to-google", payload)
+        wpAjaxHelperRequest("rexfeed-send-to-google", payload)
             .success(function (response) {
                 if (response.success) {
                     $(".rex-google-status").removeClass("info");

@@ -520,7 +520,7 @@ class Rex_Product_Feed_Actions {
 		$dashboard_link = sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'admin.php?page=wpfm_dashboard' ), __( 'Dashboard', 'rex-product-feed' ) );
 		array_unshift( $links, $dashboard_link );
 		if ( !$is_premium ) {
-			$links[ 'wpfm_go_pro' ] = sprintf( '<a href="%1$s" target="_blank" class="wpfm-plugins-gopro" style="color: #2BBBAC; font-weight: bold; ">%2$s</a>', 'https://rextheme.com/best-woocommerce-product-feed/pricing/', __( 'Go Pro', 'rex-product-feed' ) );
+			$links[ 'wpfm_go_pro' ] = sprintf( '<a href="%1$s" target="_blank" class="wpfm-plugins-gopro" style="color: #2BBBAC; font-weight: bold; ">%2$s</a>', 'https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=go_pro_button&utm_medium=plugin&utm_campaign=pfm_pro&utm_id=pfm_pro', __( 'Go Pro', 'rex-product-feed' ) );
 		}
 		return $links;
 	}

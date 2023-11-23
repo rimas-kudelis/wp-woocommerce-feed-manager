@@ -58,38 +58,38 @@ class Rex_Product_Feed_Ajax {
             'user_can'  => 'manage_options',
         );
 
-        wp_ajax_helper()->handle( 'get-total-products' )
+        wp_ajax_helper()->handle( 'rexfeed-get-total-products' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'get_product_number' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'generate-feed' )
+        wp_ajax_helper()->handle( 'rexfeed-generate-feed' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'generate_feed' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'load-config-table' )
+        wp_ajax_helper()->handle( 'rexfeed-load-config-table' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_feed_template' ) )
                         ->with_validation( $validations );
 
         // Google Category Mapping.
-        wp_ajax_helper()->handle( 'save-category-mapping' )
+        wp_ajax_helper()->handle( 'rexfeed-save-category-mapping' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_category_mapping' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'update-category-mapping' )
+        wp_ajax_helper()->handle( 'rexfeed-update-category-mapping' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'update_category_mapping' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'delete-category-mapping' )
+        wp_ajax_helper()->handle( 'rexfeed-delete-category-mapping' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'delete_category_mapping' ) )
                         ->with_validation( $validations );
 
         // Google merchant settings.
-        wp_ajax_helper()->handle( 'google-merchant-settings' )
+        wp_ajax_helper()->handle( 'rexfeed-google-merchant-settings' )
                         ->with_callback( array( 'Rex_Google_Merchant_Settings_Api', 'save_settings' ) )
                         ->with_validation( $validations );
 
         // Send to Google Merchant Center.
-        wp_ajax_helper()->handle( 'send-to-google' )
+        wp_ajax_helper()->handle( 'rexfeed-send-to-google' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'send_to_google' ) )
                         ->with_validation( $validations );
 
@@ -118,11 +118,6 @@ class Rex_Product_Feed_Ajax {
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'show_wpfm_log' ) )
                         ->with_validation( $validations );
 
-        // Show black friday notices.
-        wp_ajax_helper()->handle( 'black-friday-notice-dismiss' )
-                        ->with_callback( array( 'Rex_Product_Feed_Ajax', 'black_friday_notice_dismiss' ) )
-                        ->with_validation( $validations );
-
         wp_ajax_helper()->handle( 'wpfm-enable-fb-pixel' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'enable_fb_pixel' ) )
                         ->with_validation( $validations );
@@ -147,12 +142,8 @@ class Rex_Product_Feed_Ajax {
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'allow_private_products' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'bf-notice-dismiss' )
-                        ->with_callback( array( 'Rex_Product_Feed_Ajax', 'rt_black_friday_offer_notice_dismiss' ) )
-                        ->with_validation( $validations );
-
         // Trigger review request.
-        wp_ajax_helper()->handle( 'trigger-review-request' )
+        wp_ajax_helper()->handle( 'rexfeed-trigger-review-request' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'trigger_review_request' ) )
                         ->with_validation( $validations );
 
@@ -162,7 +153,7 @@ class Rex_Product_Feed_Ajax {
                         ->with_validation( $validations );
 
         // New UI changes message.
-        wp_ajax_helper()->handle( 'new-ui-changes-message' )
+        wp_ajax_helper()->handle( 'rexfeed-new-ui-changes-message' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'new_ui_changes_message' ) )
                         ->with_validation( $validations );
 
@@ -220,7 +211,7 @@ class Rex_Product_Feed_Ajax {
                         ->with_validation( $validations );
 
         wp_ajax_helper()->handle( 'rex-feed-hide-deal-notice' )
-                        ->with_callback( array( 'Rex_Product_Feed_Ajax', 'hide_deal_notice' ) )
+                        ->with_callback( array( 'Rex_Product_Feed_Ajax', 'hide_special_deal_notice' ) )
                         ->with_validation( $validations );
     }
 
@@ -1405,11 +1396,15 @@ class Rex_Product_Feed_Ajax {
      * Updates an option on notice dismissal [for deal],
      * so that deal notice doesn't appear again
      *
-     * @return true[]
+     * @return array
      * @since 7.3.1
      */
-    public static function hide_deal_notice() {
-        update_option( 'rex_feed_original_halloween_deal_notice', 'hidden' );
-        return [ 'status' => true ];
+    public static function hide_special_deal_notice( $payload ) {
+        $occasion = $payload[ 'occasion' ] ?? null;
+        if ( $occasion ) {
+            update_option( $occasion, 'hidden' );
+            return [ 'status' => true ];
+        }
+        return [ 'status' => false ];
     }
 }

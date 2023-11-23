@@ -22,7 +22,7 @@ $wpfm_fb_pixel_enabled       = get_option( 'wpfm_fb_pixel_enabled', 'no' );
 $wpfm_fb_pixel_data          = get_option( 'wpfm_fb_pixel_value' );
 $wpfm_enable_log             = get_option( 'wpfm_enable_log' );
 $current_user_email          = get_option( 'wpfm_user_email', '' );
-$pro_url                     = add_query_arg( 'pfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/pricing/' );
+$pro_url                     = add_query_arg( 'pfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=go_pro_button&utm_medium=plugin&utm_campaign=pfm_pro&utm_id=pfm_pro' );
 $rollback_versions           = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
 $wpfm_remove_plugin_data     = get_option( 'wpfm_remove_plugin_data' );
 $schedule_hours              = array(

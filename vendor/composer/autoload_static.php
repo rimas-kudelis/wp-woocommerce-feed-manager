@@ -1046,6 +1046,7 @@ class ComposerStaticInit4c4b99044a2541264cd0b6680902f5e3
         'Rex_Feed_Merchants' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-merchants.php',
         'Rex_Feed_Rollback' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-rollback.php',
         'Rex_Feed_Scheduler' => __DIR__ . '/../..' . '/admin/class-rex-feed-scheduler.php',
+        'Rex_Feed_Special_Occasion_Banner' => __DIR__ . '/../..' . '/admin/class-special-occasion-banner.php',
         'Rex_Feed_System_Status' => __DIR__ . '/../..' . '/admin/class-rex-product-feed-system-status.php',
         'Rex_Feed_Template_123i' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-123i.php',
         'Rex_Feed_Template_Adcell' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-adcell.php',

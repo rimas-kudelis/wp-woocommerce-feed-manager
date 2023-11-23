@@ -204,7 +204,7 @@ class Rex_Product_Feed_Admin {
                 $current_screen = '';
             }
 
-            wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery' ), $this->version );
+            wp_enqueue_script( 'rex-wpfm-global-js', WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-global-admin.js', array( 'jquery' ), $this->version, true );
             $wp_time_zone = new DateTimeZone( wp_timezone_string() );
             $current_date = new DateTime( 'now', $wp_time_zone );
 
@@ -363,7 +363,7 @@ class Rex_Product_Feed_Admin {
                 '',
                 '<span id="rex-feed-gopro-submenu" class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ),
                 'manage_woocommerce',
-                esc_url( 'https://rextheme.com/best-woocommerce-product-feed/pricing/' )
+                esc_url( 'https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=go_pro_button&utm_medium=plugin&utm_campaign=pfm_pro&utm_id=pfm_pro' )
             );
         } else {
             $this->wpfm_pro_submenu = apply_filters( 'rex_feed_license_submenu', array() );
@@ -614,28 +614,6 @@ class Rex_Product_Feed_Admin {
                 }
             </style>
             <?php
-        }
-    }
-
-    /**
-     * Renders deal notices
-     *
-     * @return void
-     */
-    public function render_deal_notices() {
-        $screen          = get_current_screen();
-        $allowed_screens = [ 'dashboard', 'plugins', 'product-feed' ];
-        $current_time    = strtotime( current_time( 'mysql' ) );
-        $deal_start_time = strtotime( '2023-10-27 19:00:00' );
-
-        if (
-            'hidden' !== get_option( 'rex_feed_original_halloween_deal_notice', '' )
-            && !defined( 'REX_PRODUCT_FEED_PRO_VERSION' )
-            && ( in_array( $screen->base, $allowed_screens )
-                || in_array( $screen->parent_base, $allowed_screens ) )
-            && $current_time >= $deal_start_time
-        ) {
-            include_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-deal-notice-content.php';
         }
     }
 

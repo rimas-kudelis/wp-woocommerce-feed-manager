@@ -149,20 +149,25 @@ class Rex_Product_Feed {
 	 * @access   private
 	 */
     private function define_admin_hooks() {
-        $plugin_admin = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
-        $feed_actions = new Rex_Product_Feed_Actions();
-        $cpt          = new Rex_Product_CPT();
-        $ajax         = new Rex_Product_Feed_Ajax();
-        $metabox      = new Rex_Product_Metabox();
-        $rollback     = new Rex_Feed_Rollback();
-        $appsero_data = new Rex_Product_Appsero_Data();
-        $scheduler    = new Rex_Feed_Scheduler();
+	    $plugin_admin   = new Rex_Product_Feed_Admin( $this->get_plugin_name(), $this->get_version() );
+	    $feed_actions   = new Rex_Product_Feed_Actions();
+	    $cpt            = new Rex_Product_CPT();
+	    $ajax           = new Rex_Product_Feed_Ajax();
+	    $metabox        = new Rex_Product_Metabox();
+	    $rollback       = new Rex_Feed_Rollback();
+	    $appsero_data   = new Rex_Product_Appsero_Data();
+	    $scheduler      = new Rex_Feed_Scheduler();
+	    $special_banner = new Rex_Feed_Special_Occasion_Banner(
+		    'black_friday_deal_23',
+		    '2023-11-22 00:00:00',
+		    '2023-12-06 00:00:00'
+	    ); // Date format: YYYY-MM-DD MM:HH:SS
 
-        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-        $this->loader->add_action( 'init', $cpt, 'register_cpt' );
+	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+	    $this->loader->add_action( 'init', $cpt, 'register_cpt' );
 
-        $this->loader->add_action( 'admin_init', $metabox, 'register_metaboxes' );
+	    $this->loader->add_action( 'admin_init', $metabox, 'register_metaboxes' );
 
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages' );
@@ -192,7 +197,6 @@ class Rex_Product_Feed {
         $this->loader->add_action( 'admin_post_rex_feed_rollback', $rollback, 'feeds_rollback' );
 
         $this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
-        $this->loader->add_action( 'admin_notices', $plugin_admin, 'render_deal_notices' );
 
         $this->loader->add_filter( 'best-woocommerce-feed_tracker_data', $appsero_data, 'send_merchant_info' );
 
@@ -205,6 +209,8 @@ class Rex_Product_Feed {
         $this->loader->add_action( SINGLE_SCHEDULE_HOOK, $scheduler, 'regenerate_feed_batch' );
 
 	    $this->loader->add_action( 'woocommerce_update_non_option_setting', $plugin_admin, 'delete_shipping_transient', 99 );
+
+	    $this->loader->add_action( 'admin_init', $special_banner, 'init' );
     }
 
 

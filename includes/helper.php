@@ -200,9 +200,7 @@ if ( ! function_exists( 'wpfm_is_polylang_active' ) ) {
 	 * @since 7.0.1
 	 */
 	function wpfm_is_polylang_active() {
-		$active_plugings = get_option( 'active_plugins' );
-		$polylang        = 'polylang/polylang.php';
-		return in_array( $polylang, $active_plugings );
+		return defined( 'POLYLANG_VERSION' ) || defined( 'POLYLANG_PRO' );
 	}
 }
 
