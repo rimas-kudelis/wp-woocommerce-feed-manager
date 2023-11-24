@@ -13,13 +13,14 @@ Generate WooCommerce product feeds for Google Shopping, Social Catalogs, Instagr
 
 
 == Description ==
+
 Generating your WooCommerce Product Feed was never this easy!
 
 Any marketplace you want to list your products on, you can generate an accurate product feed with your WooCommerce products in just a few clicks.
 
 Use our pre-defined merchant templates to generate flawless feeds for the popular merchants, including -
 
-- <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=pfmrepopage&utm_medium=google_landing_url&utm_campaign=wp_repo" target="_blank">Google Shopping feed</a>
+- <a href="https://youtu.be/Xg-zBdYfIZM?feature=shared&utm_source=repo&utm_medium=repo&utm_campaign=repo_googlevdo&utm_id=repo_googlevdo" target="_blank">Google Shopping feed</a>
 - <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-product-catalog/?utm_source=pfmrepopage&utm_medium=fb_landing_url&utm_campaign=wprepo" target="_blank">Facebook Catalog feed</a>
 - Google Local Products & Inventory
 - Google Ads & Google Dynamic Remarketing
@@ -29,7 +30,7 @@ Use our pre-defined merchant templates to generate flawless feeds for the popula
 - idealo
 - Ceneo
 - Heureka
-- Yandex Market (YML) & more than <a href="https://rextheme.com/best-woocommerce-product-feed/merchants/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_merchantspage&utm_id=repo_merchants" target="_blank"> 170+ merchants</a>.
+- Yandex Market (YML) & more than <a href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=repo&utm_medium=repo&utm_campaign=repo_merchantpage&utm_id=repo_merchantpage" target="_blank"> 170+ merchants</a>.
 
 Create your preferred feed in seconds with 3 simple steps:
 
