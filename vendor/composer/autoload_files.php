@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'db1766888a4f96ab813d6f6a38125eb9' => $vendorDir . '/philipnewcomer/wp-ajax-helper/src/functions.php',
-    '8b94e6d0c6db691d2e2aa0f87ec35fa6' => $vendorDir . '/johnbillion/extended-cpts/extended-cpts.php',
 );

@@ -321,11 +321,8 @@ class Rex_Product_Feed_Admin {
      * @since    1.0.0
      */
     public function load_admin_pages() {
-        add_menu_page( 'Product Feed', 'Product Feed', 'manage_woocommerce', 'product-feed', null, WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon-svg/dashboard-icon.svg', 20 );
-
-        add_submenu_page( 'product-feed', __( 'Add New Feed', 'rex-product-feed' ), __( 'Add New Feed', 'rex-product-feed' ), 'manage_woocommerce', esc_url( admin_url( 'post-new.php?post_type=product-feed' ) ) );
         $this->category_mapping_screen_hook_suffix = add_submenu_page(
-            'product-feed',
+            'edit.php?post_type=product-feed',
             __( 'Category Mapping', 'rex-product-feed' ),
             __( 'Category Mapping', 'rex-product-feed' ),
             'manage_woocommerce',
@@ -335,7 +332,7 @@ class Rex_Product_Feed_Admin {
             }
         );
         $this->google_screen_hook_suffix           = add_submenu_page(
-            'product-feed',
+            'edit.php?post_type=product-feed',
             __( 'Google Merchant Settings', 'rex-product-feed' ),
             __( 'Google Merchant Settings', 'rex-product-feed' ),
             'manage_woocommerce',
@@ -345,7 +342,7 @@ class Rex_Product_Feed_Admin {
             }
         );
         $this->dashboard_screen_hook_suffix        = add_submenu_page(
-            'product-feed',
+            'edit.php?post_type=product-feed',
             __( 'Settings', 'rex-product-feed' ),
             __( 'Settings', 'rex-product-feed' ),
             'manage_woocommerce',
@@ -355,11 +352,11 @@ class Rex_Product_Feed_Admin {
             }
         );
         $is_premium                                = apply_filters( 'wpfm_is_premium_activate', false );
-        add_submenu_page( 'product-feed', __( 'Support', 'rex-product-feed' ), '<span id="rex-feed-support-submenu">' . __( 'Support', 'rex-product-feed' ) . '</span>', 'manage_woocommerce', esc_url( 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0' ) );
+        add_submenu_page( 'edit.php?post_type=product-feed', __( 'Support', 'rex-product-feed' ), '<span id="rex-feed-support-submenu">' . __( 'Support', 'rex-product-feed' ) . '</span>', 'manage_woocommerce', esc_url( 'https://wordpress.org/support/plugin/best-woocommerce-feed/#new-topic-0' ) );
 
         if ( !$is_premium ) {
             $this->wpfm_pro_submenu = add_submenu_page(
-                'product-feed',
+                'edit.php?post_type=product-feed',
                 '',
                 '<span id="rex-feed-gopro-submenu" class="dashicons dashicons-star-filled" style="font-size: 17px; color:#1fb3fb;"></span> ' . __( 'Go Pro', 'rex-product-feed' ),
                 'manage_woocommerce',
@@ -370,7 +367,7 @@ class Rex_Product_Feed_Admin {
         }
 
         $this->setup_wizard_hook_suffix = add_submenu_page(
-            'product-feed',
+            'edit.php?post_type=product-feed',
             __( 'Get Started', 'rex-product-feed' ),
             __( 'Get Started', 'rex-product-feed' ),
             'manage_woocommerce',
@@ -383,6 +380,21 @@ class Rex_Product_Feed_Admin {
 
         // PFM actions.
         add_filter( 'plugin_action_links_' . $this->plugin_basename, array( new Rex_Product_Feed_Actions(), 'plugin_action_links' ) );
+    }
+
+    /**
+     * Modifies the placeholder text for the title field on the 'product-feed' post type editor screen.
+     * Checks the current screen's post type, and if it matches 'product-feed', changes the title placeholder.
+     * Returns the updated placeholder text.
+     *
+     * @since 7.3.19
+     */
+    public function change_feed_title_placeholder( $title ) {
+        $screen = get_current_screen();
+        if ( 'product-feed' == $screen->post_type ) {
+            $title = 'Enter your feed title';
+        }
+        return $title;
     }
 
     /**

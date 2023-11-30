@@ -26,29 +26,52 @@ class Rex_Product_CPT {
 	 * @since    1.0.0
 	 */
 	public function register_cpt() {
-		$this->post_types();
+		$this->create_post_type();
 		add_filter( 'manage_product-feed_posts_columns', array( $this, 'product_feed_custom_columns' ) );
 		add_action( 'manage_product-feed_posts_custom_column', array( $this, 'fill_product_feed_columns' ), 10, 2 );
 	}
 
 	/**
-	 * Metabox for Google Merchant
+	 * Creates a custom post type for Product Feeds
 	 *
-	 * @since    1.0.0
+	 * @since    7.3.19
 	 */
-	private function post_types() {
-		register_extended_post_type(
-			'product-feed',
-			array(
-				'show_in_menu'       => 'product-feed',
-				'rewrite'            => false,
-				'query_var'          => true,
-				'publicly_queryable' => false,
-				'supports'           => array( 'title' ),
-				'enter_title_here'   => 'Enter feed title here',
-				'menu_icon'          => WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon.png',
-			)
-		);
+	private function create_post_type() {
+		$labels = [
+			'name'               => 'Product Feeds',
+			'singular_name'      => 'Product Feed',
+			'all_items'          => 'All Product Feeds',
+			'menu_name'          => 'Product Feed',
+			'add_new'            => 'Add New Feed',
+			'add_new_item'       => 'Add New Product Feed',
+			'edit_item'          => 'Edit Product Feed',
+			'new_item'           => 'New Product Feed',
+			'view_item'          => 'View Product Feed',
+			'search_items'       => 'Search Product Feeds',
+			'not_found'          => 'No product feeds found',
+			'not_found_in_trash' => 'No product feeds found in Trash',
+			'parent_item_colon'  => 'Parent Product Feed:'
+		];
+
+		$args = [
+			'label'               => 'product-feed',
+			'labels'              => $labels,
+			'supports'            => [ 'title' ],
+			'hierarchical'        => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'menu_icon'           => WPFM_PLUGIN_ASSETS_FOLDER . 'icon/icon-svg/dashboard-icon.svg',
+			'show_in_admin_bar'   => true,
+			'show_in_nav_menus'   => true,
+			'can_export'          => true,
+			'has_archive'         => true,
+			'rewrite'             => [ 'slug' => 'product-feed' ],
+			'exclude_from_search' => false,
+			'publicly_queryable'  => true,
+			'capability_type'     => 'post'
+		];
+
+		register_post_type( 'product-feed', $args );
 	}
 
 	/**
@@ -58,19 +81,19 @@ class Rex_Product_CPT {
 	 * @since 6.1.2
 	 */
 	public function product_feed_custom_columns() {
-		return array(
+		return [
 			'cb'               => '<input type="checkbox" />',
-			'title'            => __( 'Title', 'rex-product-feed' ),
-			'merchant'         => __( 'Merchant', 'rex-product-feed' ),
-			'xml_feed'         => __( 'Feed File', 'rex-product-feed' ),
-			'refresh_interval' => __( 'Refresh Interval', 'rex-product-feed' ),
-			'feed_status'      => __( 'Status', 'rex-product-feed' ),
-			'update_feed'      => __( 'Update Feed', 'rex-product-feed' ),
-			'view_feed'        => __( 'View/Download', 'rex-product-feed' ),
-			'total_products'   => __( 'Total Products', 'rex-product-feed' ),
-			'date'             => __( 'Date', 'rex-product-feed' ),
-			'scheduled'        => __( 'Updated', 'rex-product-feed' ),
-		);
+			'title'            => esc_html__( 'Title', 'rex-product-feed' ),
+			'merchant'         => esc_html__( 'Merchant', 'rex-product-feed' ),
+			'xml_feed'         => esc_html__( 'Feed File', 'rex-product-feed' ),
+			'refresh_interval' => esc_html__( 'Refresh Interval', 'rex-product-feed' ),
+			'feed_status'      => esc_html__( 'Status', 'rex-product-feed' ),
+			'update_feed'      => esc_html__( 'Update Feed', 'rex-product-feed' ),
+			'view_feed'        => esc_html__( 'View/Download', 'rex-product-feed' ),
+			'total_products'   => esc_html__( 'Total Products', 'rex-product-feed' ),
+			'date'             => esc_html__( 'Date', 'rex-product-feed' ),
+			'scheduled'        => esc_html__( 'Updated', 'rex-product-feed' )
+		];
 	}
 
 	/**

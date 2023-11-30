@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'e5e281efac4bcad3b12aec0fb26af72886f7de31',
+        'reference' => '16894d3c4798dd9633971af7b4838ced684d28b1',
         'name' => 'rextheme/best-woocommerce-feed',
         'dev' => false,
     ),
@@ -17,24 +17,6 @@
             'install_path' => __DIR__ . '/../appsero/client',
             'aliases' => array(),
             'reference' => 'fd06ae6ec3da9241541e7587a6d418640725f231',
-            'dev_requirement' => false,
-        ),
-        'composer/installers' => array(
-            'pretty_version' => '1.x-dev',
-            'version' => '1.9999999.9999999.9999999-dev',
-            'type' => 'composer-plugin',
-            'install_path' => __DIR__ . '/./installers',
-            'aliases' => array(),
-            'reference' => '894a0b5c5d34c88b69b097f2aae1439730fa6836',
-            'dev_requirement' => false,
-        ),
-        'johnbillion/extended-cpts' => array(
-            'pretty_version' => '3.2.1',
-            'version' => '3.2.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../johnbillion/extended-cpts',
-            'aliases' => array(),
-            'reference' => '3a0c4fd338fce2e81496cbdca2cfea38bca6e34b',
             'dev_requirement' => false,
         ),
         'philipnewcomer/wp-ajax-helper' => array(
@@ -52,20 +34,8 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'e5e281efac4bcad3b12aec0fb26af72886f7de31',
+            'reference' => '16894d3c4798dd9633971af7b4838ced684d28b1',
             'dev_requirement' => false,
-        ),
-        'roundcube/plugin-installer' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'shama/baton' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
         ),
     ),
 );

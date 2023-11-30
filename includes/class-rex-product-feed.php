@@ -171,6 +171,7 @@ class Rex_Product_Feed {
 
         $this->loader->add_action( 'admin_init', 'Rex_Product_Feed_Ajax', 'init' );
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'load_admin_pages' );
+        $this->loader->add_action( 'enter_title_here', $plugin_admin, 'change_feed_title_placeholder' );
         $this->loader->add_action( 'admin_footer', $plugin_admin, 'rex_admin_footer_style' );
 
         $this->loader->add_action( 'post_submitbox_start', $feed_actions, 'register_purge_button' );

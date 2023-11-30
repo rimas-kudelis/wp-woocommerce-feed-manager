@@ -7,6 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PhilipNewcomer\\WP_Ajax_Helper\\' => array($vendorDir . '/philipnewcomer/wp-ajax-helper/src/components'),
-    'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
     'Appsero\\' => array($vendorDir . '/appsero/client/src'),
 );
