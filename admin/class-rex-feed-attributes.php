@@ -24,7 +24,7 @@ class Rex_Feed_Attributes {
 	 * @return mixed|void
 	 */
 	public static function get_attributes() {
-		$attributes = array(
+		$attributes = [
 			'Primary Attributes'           => self::get_primary_attributes(),
 			'Price Attributes'             => self::get_price_attributes(),
 			'Shipping Attributes'          => self::get_shipping_attributes(),
@@ -33,8 +33,8 @@ class Rex_Feed_Attributes {
 			'Product Attributes'           => self::get_product_attributes(),
 			'Product Variation Attributes' => self::get_product_dynamic_attributes(),
 			'Date Attributes'              => self::get_date_attributes(),
-			'Glami Attributes'             => array( 'param_size' => 'Value - Size' ),
-		);
+			'Glami Attributes'             => array( 'param_size' => 'Value - Size' )
+		];
 
 		$theme = wp_get_theme();
 
@@ -73,6 +73,9 @@ class Rex_Feed_Attributes {
 		}
 		if ( function_exists( 'wpfm_is_discount_rules_asana_plugins_active' ) && wpfm_is_discount_rules_asana_plugins_active() ) {
 			$attributes = array_merge( $attributes, self::get_discounts_by_asana_plugins_attributes() );
+		}
+		if ( defined( 'ACF_VERSION' ) ) {
+			$attributes = array_merge( $attributes, self::get_acf_fields() );
 		}
 		if ( apply_filters( 'wpfm_is_premium_activate', false ) ) {
 			$attributes = array_merge( $attributes, self::get_wpfm_custom_attributes() );
@@ -300,6 +303,65 @@ class Rex_Feed_Attributes {
 	}
 
 	/**
+	 * Retrieves ACF (Advanced Custom Fields) attributes from the WordPress database.
+	 *
+	 * @global wpdb $wpdb WordPress database access abstraction object.
+	 *
+	 * @return array Returns an associative array of ACF attributes (key-value pairs).
+	 * @since 7.3.20
+	 */
+	public static function get_acf_fields() {
+		$acf_attributes = wpfm_get_cached_data( 'acf_attributes' );
+		if ( !is_array( $acf_attributes ) || empty( $acf_attributes ) ) {
+			global $wpdb;
+			$query = $wpdb->prepare( "SELECT `post_excerpt` AS `key`, `post_title` AS `value` FROM %i WHERE `post_type`=%s AND `post_status`=%s GROUP BY `post_excerpt`", [ $wpdb->posts, 'acf-field', 'publish' ] );
+			$data  = $wpdb->get_results( $query, ARRAY_A );
+
+			if ( is_array( $data ) && !empty( $data ) ) {
+				foreach( $data as $item ) {
+					if ( !empty( $item[ 'key' ] ) && !empty( $item[ 'value' ] ) ) {
+						$acf_attributes[ 'ACF Attributes' ][ $item[ 'key' ] ] = $item[ 'value' ];
+					}
+				}
+			}
+			wpfm_set_cached_data( 'acf_attributes', $acf_attributes );
+		}
+		$acf_taxonomies = self::get_acf_taxonomy_fields();
+		if ( !empty( $acf_taxonomies[ 'ACF Taxonomies' ] ) && is_array( $acf_taxonomies[ 'ACF Taxonomies' ] ) ) {
+			$acf_attributes[ 'ACF Taxonomies' ] = $acf_taxonomies[ 'ACF Taxonomies' ];
+		}
+		return is_array( $acf_attributes ) && !empty( $acf_attributes ) ? $acf_attributes : [];
+	}
+
+	/**
+	 * Retrieves ACF (Advanced Custom Fields) attributes from the WordPress database.
+	 *
+	 * @global wpdb $wpdb WordPress database access abstraction object.
+	 *
+	 * @return array Returns an associative array of ACF attributes (key-value pairs).
+	 * @since 7.3.20
+	 */
+	public static function get_acf_taxonomy_fields() {
+		$acf_taxonomies = wpfm_get_cached_data( 'acf_taxonomies' );
+		if ( !is_array( $acf_taxonomies ) || empty( $acf_taxonomies ) ) {
+			global $wpdb;
+			$query = $wpdb->prepare( "SELECT `post_content` AS `settings` FROM %i WHERE `post_type`=%s AND `post_status`=%s GROUP BY `post_content`", [ $wpdb->posts, 'acf-taxonomy', 'publish' ] );
+			$data  = $wpdb->get_results( $query, ARRAY_A );
+
+			if ( is_array( $data ) && !empty( $data ) ) {
+				foreach( $data as $item ) {
+					$settings = @unserialize($item[ 'settings' ]);
+					if ( is_array( $settings[ 'object_type' ] ) && !empty( $settings[ 'object_type' ] ) && in_array( 'product', $settings[ 'object_type' ] ) && !empty( $settings[ 'taxonomy' ] ) ) {
+						$acf_taxonomies[ 'ACF Taxonomies' ][ $settings[ 'taxonomy' ] ] = $settings[ 'labels' ][ 'menu_name' ] ?? $settings[ 'taxonomy' ];
+					}
+				}
+			}
+			wpfm_set_cached_data( 'acf_taxonomies', $acf_taxonomies );
+		}
+		return is_array( $acf_taxonomies ) && !empty( $acf_taxonomies ) ? $acf_taxonomies : [];
+	}
+
+	/**
 	 * Gets Dropship by Mantella attributes
 	 *
 	 * @return string[][]
@@ -483,16 +545,16 @@ class Rex_Feed_Attributes {
 			global $wpdb;
 
 			$sql = $wpdb->prepare(
-				"SELECT `meta_key` AS name, `meta_value` AS value FROM %1s as postmeta
-                INNER JOIN %1s AS posts
+				"SELECT `meta_key` AS name, `meta_value` AS value FROM %i as postmeta
+                INNER JOIN %i AS posts
                 ON postmeta.post_id = posts.id
                 WHERE posts.post_type IN( 'product', 'product_variation' )
                 AND posts.post_status = %s
                 AND postmeta.meta_key != %s
                 AND postmeta.meta_key NOT LIKE %s
                 AND postmeta.meta_key NOT LIKE %s
-                AND postmeta.meta_key NOT LIKE %s
-                group by meta_key
+                AND postmeta.meta_value NOT LIKE %s
+                group by postmeta.meta_key
                 ORDER BY postmeta.meta_key",
 				$wpdb->postmeta,
 				$wpdb->posts,
@@ -500,22 +562,27 @@ class Rex_Feed_Attributes {
 				'_product_attributess',
 				'_wpfm_%',
 				'pyre%',
-				'sbg_%'
+				'field_%',
 			);
 
 			$data = $wpdb->get_results( $sql ); // phpcs:ignore
 
-			if ( count( $data ) ) {
+			if ( is_array( $data ) && !empty( $data ) ) {
 				foreach ( $data as $value ) {
-                    $value_display                                    = str_replace( '_', ' ', $value->name );
+					if ( !empty( $inner_value[ 'name' ] ) && is_string( $inner_value[ 'name' ] ) ) {
+						$value_display = str_replace( '_', ' ', $value->name );
+					}
+					else {
+						$value_display = is_string( $value->name ) ? $value->name : '';
+					}
                     $value_display                                    = trim( $value_display );
                     $attributes[ "custom_attributes_{$value->name}" ] = ucfirst( $value_display );
 				}
 			}
 
 			$sql = $wpdb->prepare(
-				'SELECT `meta_key` AS name, `meta_value` AS value FROM %1s AS postmeta
-                INNER JOIN %1s AS posts
+				'SELECT `meta_key` AS name, `meta_value` AS value FROM %i AS postmeta
+                INNER JOIN %i AS posts
                 ON postmeta.post_id = posts.id
                 WHERE posts.post_type = %s
                 AND posts.post_status = %s
@@ -530,13 +597,18 @@ class Rex_Feed_Attributes {
 
 			$data = $wpdb->get_results( $sql ); // phpcs:ignore
 
-			if ( count( $data ) ) {
+			if ( is_array( $data ) && !empty( $data ) ) {
 				foreach ( $data as $value ) {
 					$product_attributes = unserialize( $value->value );
 
 					if ( !empty( $product_attributes ) ) {
 						foreach ( $product_attributes as $inner_key => $inner_value ) {
-							$value_display                                   = str_replace( '_', ' ', $inner_value[ 'name' ] );
+							if ( !empty( $inner_value[ 'name' ] ) && is_string( $inner_value[ 'name' ] ) ) {
+								$value_display = str_replace( '_', ' ', $inner_value[ 'name' ] );
+							}
+							else {
+								$value_display = is_string( $inner_value ) ? $inner_value : '';
+							}
 							$attributes[ 'custom_attributes_' . $inner_key ] = ucfirst( $value_display );
 						}
 					}

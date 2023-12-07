@@ -67,7 +67,8 @@ class Rex_Product_CPT {
 			'has_archive'         => true,
 			'rewrite'             => [ 'slug' => 'product-feed' ],
 			'exclude_from_search' => false,
-			'publicly_queryable'  => true,
+			'publicly_queryable'  => false,
+			'public'              => false,
 			'capability_type'     => 'post'
 		];
 

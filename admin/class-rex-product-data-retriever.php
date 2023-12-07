@@ -294,12 +294,12 @@ class Rex_Product_Data_Retriever {
 				$val = $this->set_image_att( $rule[ 'meta_key' ] );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_product_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_product_attr( $rule[ 'meta_key' ] );
+			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_acf_taxonomies( $rule[ 'meta_key' ] ) ) {
+				$val = $this->set_acf_taxonomies( $rule[ 'meta_key' ] );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_product_dynamic_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_product_dynamic_attr( $rule[ 'meta_key' ] );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_wpfm_custom_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_wpfm_custom_att( $rule[ 'meta_key' ] );
-			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_product_custom_attr( $rule[ 'meta_key' ] ) ) {
-				$val = $this->set_product_custom_att( $rule[ 'meta_key' ] );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_product_category_mapper_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_cat_mapper_att( $rule[ 'meta_key' ] );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_glami_attr( $rule[ 'meta_key' ] ) ) {
@@ -320,6 +320,10 @@ class Rex_Product_Data_Retriever {
 				$val = $this->set_discount_price_by_asana_attr( $rule[ 'meta_key' ], $rule );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_ean_by_wc_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_ean_by_wc_attr( $rule[ 'meta_key' ] );
+			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_acf_attr( $rule[ 'meta_key' ] ) ) {
+				$val = $this->set_acf_attr( $rule[ 'meta_key' ] );
+			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_product_custom_attr( $rule[ 'meta_key' ] ) ) {
+				$val = $this->set_product_custom_att( $rule[ 'meta_key' ] );
 			}
 		}
 		return $val;
@@ -945,6 +949,34 @@ class Rex_Product_Data_Retriever {
 			return get_post_meta( $this->product->get_id(), $key, true );
 		}
 		return '';
+	}
+
+	/**
+	 * Retrieves a specific ACF (Advanced Custom Fields) attribute from the product post meta.
+	 *
+	 * @param string $key The key of the ACF attribute to retrieve.
+	 *
+	 * @return mixed|string Returns the value of the specified ACF attribute from the product's post meta if available; otherwise, an empty string.
+	 * @since 7.3.20
+	 */
+	protected function set_acf_attr( $key ) {
+		if ( !empty( $this->product ) && !is_wp_error( $this->product ) ) {
+			$product_id = 'variation' === $this->product->get_type() ? $this->product->get_parent_id() : $this->product->get_id();
+			return get_post_meta( $product_id, $key, true );
+		}
+		return '';
+	}
+
+	/**
+	 * Retrieves a specific ACF (Advanced Custom Fields) attribute from the product post meta.
+	 *
+	 * @param string $key The key of the ACF attribute to retrieve.
+	 *
+	 * @return mixed|string Returns the value of the specified ACF attribute from the product's post meta if available; otherwise, an empty string.
+	 * @since 7.3.20
+	 */
+	protected function set_acf_taxonomies( $key ) {
+		return $this->get_product_tags( ', ', $key );
 	}
 
 
@@ -2405,14 +2437,12 @@ class Rex_Product_Data_Retriever {
 	 * Retrieve a product's tags as a list with specified format.
 	 *
 	 * @param string $sep Optional. Separate items using this.
+	 * @param string $taxonomy Optional. Taxonomy.
 	 * @return string|false
 	 */
-	protected function get_product_tags( $sep = ', ' ) {
-		if ( 'WC_Product_Variation' === get_class( $this->product ) ) {
-			return $this->get_the_term_list( $this->product->get_parent_id(), 'product_tag', $sep );
-		} else {
-			return $this->get_the_term_list( $this->product->get_id(), 'product_tag', $sep );
-		}
+	protected function get_product_tags( $sep = ', ', $taxonomy = 'product_tag' ) {
+		$product_id = 'WC_Product_Variation' === get_class( $this->product ) ? $this->product->get_parent_id() : $this->product->get_id();
+		return $this->get_the_term_list( $product_id, $taxonomy, $sep );
 	}
 
 
@@ -2495,14 +2525,7 @@ class Rex_Product_Data_Retriever {
 	 * @return string
 	 */
 	protected function get_the_term_list( $id, $taxonomy, $sep = ', ', $return_ids = false ) {
-		$terms = wp_get_post_terms(
-			$id,
-			$taxonomy,
-			array(
-				'hide_empty' => false,
-				'orderby'    => 'term_id',
-			)
-		);
+		$terms = wp_get_post_terms( $id, $taxonomy, [ 'hide_empty' => false, 'orderby' => 'term_id' ] );
 
 		if ( empty( $terms ) || is_wp_error( $terms ) ) {
 			return '';
@@ -2963,6 +2986,30 @@ class Rex_Product_Data_Retriever {
 	 */
 	protected function is_ean_by_wc_attr( $key ) {
 		return !empty( $this->product_meta_keys[ 'EAN by WooCommerce' ] ) && array_key_exists( $key, $this->product_meta_keys[ 'EAN by WooCommerce' ] );
+	}
+
+	/**
+	 * Checks if a specific Advanced Custom Fields (ACF) attribute exists within the product meta keys.
+	 *
+	 * @param string $key The key of the ACF attribute to check.
+	 *
+	 * @return bool Returns true if the specified ACF attribute exists in the product meta keys; otherwise, false.
+	 * @since 7.3.20
+	 */
+	protected function is_acf_attr( $key ) {
+		return !empty( $this->product_meta_keys[ 'ACF Attributes' ][ $key ] );
+	}
+
+	/**
+	 * Checks if a key exists within the 'ACF Taxonomies' array.
+	 *
+	 * @param string $key The key to check for within the 'ACF Taxonomies' array.
+	 *
+	 * @return bool True if the key exists within 'ACF Taxonomies', false otherwise.
+	 * @since 7.3.20
+	 */
+	protected function is_acf_taxonomies( $key ) {
+		return !empty( $this->product_meta_keys[ 'ACF Taxonomies' ][ $key ] );
 	}
 
 

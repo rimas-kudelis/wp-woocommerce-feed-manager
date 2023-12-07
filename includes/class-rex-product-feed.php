@@ -212,6 +212,7 @@ class Rex_Product_Feed {
 	    $this->loader->add_action( 'woocommerce_update_non_option_setting', $plugin_admin, 'delete_shipping_transient', 99 );
 
 	    $this->loader->add_action( 'admin_init', $special_banner, 'init' );
+	    $this->loader->add_filter( 'post_updated_messages', $plugin_admin, 'post_updated_messages' );
     }
 
 

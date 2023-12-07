@@ -163,7 +163,9 @@ class Rex_Product_Feed_Actions {
 		}
 
 		if ( isset( $data[ 'fc' ] ) ) {
-			array_shift( $data[ 'fc' ] );
+			if ( 0 !== (int)array_key_first( $data[ 'fc' ] ) ) {
+				array_shift( $data[ 'fc' ] );
+			}
 			update_post_meta( $post_id, '_rex_feed_feed_config', $data[ 'fc' ] );
 		}
 

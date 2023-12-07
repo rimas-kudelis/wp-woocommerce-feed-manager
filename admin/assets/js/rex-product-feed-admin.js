@@ -2106,13 +2106,8 @@
      * @since 7.2.10
      */
     function rex_feed_hide_all_admin_notices() {
-        $.each($(".notice"), function (index, value) {
-            if (false === $(this).hasClass("rex-feed-notice") && "Product Feed updated." !== $(this).find("p").text()) {
-                $(this).hide();
-            }
-        });
-        $.each($(".updated"), function (index, value) {
-            if (false === $(this).hasClass("rex-feed-notice") && "Product Feed updated." !== $(this).find("p").text()) {
+        $.each($(".notice"), function () {
+            if (false === $(this).hasClass("rex-feed-notice") && false === $(this).find('p').text().includes( 'Product feed' )) {
                 $(this).hide();
             }
         });

@@ -643,4 +643,29 @@ class Rex_Product_Feed_Admin {
         }
     }
 
+    /**
+     * Defines custom update messages for the 'product-feed' custom post type.
+     *
+     * @param array $messages An array of post updated messages.
+     *
+     * @return array Modified array containing custom messages for 'product-feed' post type updates.
+     * @since 7.3.20
+     */
+    public function post_updated_messages( $messages ) {
+        $messages[ 'product-feed' ] = [
+            0  => '', // Unused. Messages start at index 1.
+            1  => __( 'Product feed updated.', 'rex-product-feed' ),
+            2  => __( 'Custom field updated.', 'rex-product-feed' ),
+            3  => __( 'Custom field deleted.', 'rex-product-feed' ),
+            4  => __( 'Product feed updated.', 'rex-product-feed' ),
+            5  => __( 'Revision restored.', 'rex-product-feed' ),
+            6  => __( 'Product feed published.', 'rex-product-feed' ),
+            7  => __( 'Product feed saved.', 'rex-product-feed' ),
+            8  => '',
+            9  => '',
+            10 => __( 'Product feed draft updated.', 'rex-product-feed' )
+        ];
+
+        return $messages;
+    }
 }
