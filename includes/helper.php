@@ -261,7 +261,17 @@ if ( ! function_exists( 'wpfm_generate_csv_feed' ) ) {
 			array_shift( $list );
 		}
 
-		$file = fopen( $file, "a+" );
+		$file = fopen(
+			$file,
+			/**
+			 * Allow developers to modify the file open mode for writing CSV files
+			 *
+			 * @param string $mode File open mode. (See: https://www.php.net/manual/en/function.fopen.php)
+			 *
+			 * @since 7.3.21
+			 */
+			apply_filters( 'rexfeed_csv_fopen_mode', 'a' )
+		);
 
 		foreach ( $list as $line ) {
 			$lines = array();

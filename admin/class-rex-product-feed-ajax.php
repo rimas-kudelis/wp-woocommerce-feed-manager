@@ -122,7 +122,7 @@ class Rex_Product_Feed_Ajax {
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'enable_fb_pixel' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'save-fb-pixel-value' )
+        wp_ajax_helper()->handle( 'rexfeed-save-fb-pixel-value' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_fb_pixel_value' ) )
                         ->with_validation( $validations );
 
@@ -130,15 +130,15 @@ class Rex_Product_Feed_Ajax {
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'enable_log' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'save-wpfm-transient' )
+        wp_ajax_helper()->handle( 'rexfeed-save-wpfm-transient' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_transient' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'purge-wpfm-transient-cache' )
+        wp_ajax_helper()->handle( 'rexfeed-purge-wpfm-transient-cache' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'purge_transient_cache' ) )
                         ->with_validation( $validations );
 
-        wp_ajax_helper()->handle( 'allow-private-products' )
+        wp_ajax_helper()->handle( 'rexfeed-allow-private-products' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'allow_private_products' ) )
                         ->with_validation( $validations );
 

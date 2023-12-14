@@ -1637,7 +1637,7 @@
         $form.find("button.save-fb-pixel span").text("");
         $form.find("button.save-fb-pixel i").show();
         var value = $form.find("#wpfm_fb_pixel").val();
-        wpAjaxHelperRequest("save-fb-pixel-value", value)
+        wpAjaxHelperRequest("rexfeed-save-fb-pixel-value", value)
             .success(function (response) {
                 $form.find("button.save-fb-pixel i").hide();
                 $form.find("button.save-fb-pixel span").text("saved");
@@ -1692,7 +1692,7 @@
         var payload = {
             value: value,
         };
-        wpAjaxHelperRequest("save-wpfm-transient", payload)
+        wpAjaxHelperRequest("rexfeed-save-wpfm-transient", payload)
             .success(function (response) {
                 $form.find("button.save-transient-button i").hide();
                 $form.find("button.save-transient-button span").text("saved");
@@ -1723,7 +1723,7 @@
         $el.find("span").hide();
         $el.find("i").show();
 
-        wpAjaxHelperRequest("purge-wpfm-transient-cache", payload)
+        wpAjaxHelperRequest("rexfeed-purge-wpfm-transient-cache", payload)
             .success(function (response) {
                 $el.find("i").hide();
                 $el.find("span").show();
@@ -1746,7 +1746,7 @@
                 var $el = $(this);
                 $el.find("i").show();
 
-                wpAjaxHelperRequest("purge-wpfm-transient-cache", payload)
+                wpAjaxHelperRequest("rexfeed-purge-wpfm-transient-cache", payload)
                     .success(function (response) {
                         $el.find("i").hide();
                         console.log("woohoo!");
@@ -1762,7 +1762,7 @@
             var $el = $(this);
             $el.find("i").show();
 
-            wpAjaxHelperRequest("purge-wpfm-transient-cache", payload)
+            wpAjaxHelperRequest("rexfeed-purge-wpfm-transient-cache", payload)
                 .success(function (response) {
                     $el.find("i").hide();
                     console.log("woohoo!");
@@ -1789,7 +1789,7 @@
                 allow_private: "no",
             };
         }
-        wpAjaxHelperRequest("allow-private-products", payload)
+        wpAjaxHelperRequest("rexfeed-allow-private-products", payload)
             .success(function (response) {
                 console.log("Woohoo!");
             })
@@ -1939,7 +1939,7 @@
             hash: "wpfm_google_product_category_default",
         };
 
-        wpAjaxHelperRequest( 'save-category-mapping', $payload )
+        wpAjaxHelperRequest( 'rexfeed-save-category-mapping', $payload )
             .success( function( response ) {
                 if ( response === 'reload' ) {
                     location.reload();
@@ -2929,48 +2929,6 @@ window.onclick = function (event) {
 function handleClass(node, className, action = "add") {
     node.classList[action](className);
 }
-
-/**
- * Icon click rotate dropdown
- * @author ts
- * @param event
- */
-
-document.addEventListener("DOMContentLoaded", () => {
-    //   You can get different selectors (class, id, tags...)
-    const button = document.querySelector(".dropdown-toggle");
-    const dropdown = document.querySelector(".dropdown-menu");
-
-    // Global open/close functions
-    const open = () => {
-        button.classList.add("open-button");
-        dropdown.classList.add("open-dropdown");
-    };
-
-    const close = () => {
-        button.classList.remove("open-button");
-        dropdown.classList.remove("open-dropdown");
-    };
-
-    // Check click on button
-    button.addEventListener("mousedown", () => {
-        if (!button.classList.contains("open-button")) {
-            open();
-        } else {
-            close();
-        }
-    });
-
-    // Close when user click outside
-    document.body.addEventListener("mousedown", (e) => {
-        let isClickInsideButton = button.contains(e.target);
-        let isClickInsideDropdown = dropdown.contains(e.target);
-
-        if (!isClickInsideButton && !isClickInsideDropdown) {
-            close();
-        }
-    });
-});
 
 /**
  * Text click  Prefix and suffix dropdown show

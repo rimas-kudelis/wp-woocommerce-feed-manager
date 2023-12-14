@@ -314,7 +314,7 @@ class Rex_Feed_Attributes {
 		$acf_attributes = wpfm_get_cached_data( 'acf_attributes' );
 		if ( !is_array( $acf_attributes ) || empty( $acf_attributes ) ) {
 			global $wpdb;
-			$query = $wpdb->prepare( "SELECT `post_excerpt` AS `key`, `post_title` AS `value` FROM %i WHERE `post_type`=%s AND `post_status`=%s GROUP BY `post_excerpt`", [ $wpdb->posts, 'acf-field', 'publish' ] );
+			$query = $wpdb->prepare( "SELECT `post_excerpt` AS `key`, `post_title` AS `value` FROM %1s WHERE `post_type`=%s AND `post_status`=%s GROUP BY `post_excerpt`", [ $wpdb->posts, 'acf-field', 'publish' ] );
 			$data  = $wpdb->get_results( $query, ARRAY_A );
 
 			if ( is_array( $data ) && !empty( $data ) ) {
@@ -345,7 +345,7 @@ class Rex_Feed_Attributes {
 		$acf_taxonomies = wpfm_get_cached_data( 'acf_taxonomies' );
 		if ( !is_array( $acf_taxonomies ) || empty( $acf_taxonomies ) ) {
 			global $wpdb;
-			$query = $wpdb->prepare( "SELECT `post_content` AS `settings` FROM %i WHERE `post_type`=%s AND `post_status`=%s GROUP BY `post_content`", [ $wpdb->posts, 'acf-taxonomy', 'publish' ] );
+			$query = $wpdb->prepare( "SELECT `post_content` AS `settings` FROM %1s WHERE `post_type`=%s AND `post_status`=%s GROUP BY `post_content`", [ $wpdb->posts, 'acf-taxonomy', 'publish' ] );
 			$data  = $wpdb->get_results( $query, ARRAY_A );
 
 			if ( is_array( $data ) && !empty( $data ) ) {
@@ -545,8 +545,8 @@ class Rex_Feed_Attributes {
 			global $wpdb;
 
 			$sql = $wpdb->prepare(
-				"SELECT `meta_key` AS name, `meta_value` AS value FROM %i as postmeta
-                INNER JOIN %i AS posts
+				"SELECT `meta_key` AS name, `meta_value` AS value FROM %1s as postmeta
+                INNER JOIN %1s AS posts
                 ON postmeta.post_id = posts.id
                 WHERE posts.post_type IN( 'product', 'product_variation' )
                 AND posts.post_status = %s
@@ -581,8 +581,8 @@ class Rex_Feed_Attributes {
 			}
 
 			$sql = $wpdb->prepare(
-				'SELECT `meta_key` AS name, `meta_value` AS value FROM %i AS postmeta
-                INNER JOIN %i AS posts
+				'SELECT `meta_key` AS name, `meta_value` AS value FROM %1s AS postmeta
+                INNER JOIN %1s AS posts
                 ON postmeta.post_id = posts.id
                 WHERE posts.post_type = %s
                 AND posts.post_status = %s
