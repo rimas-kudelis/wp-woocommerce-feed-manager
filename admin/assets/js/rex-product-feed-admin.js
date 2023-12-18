@@ -2960,3 +2960,39 @@ function setupDropdownArea(dropdownToggle) {
         return;
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    //   You can get different selectors (class, id, tags...)
+    const button = document.querySelector(".dropdown-toggle");
+    const dropdown = document.querySelector(".dropdown-menu");
+
+    // Global open/close functions
+    const open = () => {
+        button.classList.add("open-button");
+        dropdown.classList.add("open-dropdown");
+    };
+
+    const close = () => {
+        button.classList.remove("open-button");
+        dropdown.classList.remove("open-dropdown");
+    };
+
+    // Check click on button
+    button.addEventListener("mousedown", () => {
+        if (!button.classList.contains("open-button")) {
+            open();
+        } else {
+            close();
+        }
+    });
+
+    // Close when user click outside
+    document.body.addEventListener("mousedown", (e) => {
+        let isClickInsideButton = button.contains(e.target);
+        let isClickInsideDropdown = dropdown.contains(e.target);
+
+        if (!isClickInsideButton && !isClickInsideDropdown) {
+            close();
+        }
+    });
+});

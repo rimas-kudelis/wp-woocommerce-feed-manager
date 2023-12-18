@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.4
 Requires PHP: 7.3
-Stable tag:  7.3.21
+Stable tag:  7.3.22
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -897,6 +897,10 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.22 (2023-12-18) =
+* Fixed: Custom attribute row button issue in attribute mapping table
+* Fixed: Polylang settings option restored
 
 = 7.3.21 (2023-12-14) =
 * Added: Filter hook `rexfeed_csv_fopen_mode` added
@@ -2113,5 +2117,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.21 =
+= 7.3.22 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
