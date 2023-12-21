@@ -1941,13 +1941,27 @@ class Rex_Product_Data_Retriever {
 
 			case 'sale_price_dates_from':
 				$date_starts = $this->product->get_date_on_sale_from();
-				$format      = get_option( 'date_format' );
+				/**
+				 * This filter allows users to modify the sale price start date format
+				 *
+				 * @param string $format Date format.
+				 *
+				 * @since 7.3.23
+				 */
+				$format      = apply_filters( 'rexfeed_sale_price_start_date_format', get_option( 'date_format' ) );
 				$attr_val    = !$date_starts ? $date_starts : gmdate( $format, $date_starts->getTimestamp() );
 				break;
 
 			case 'sale_price_dates_to':
 				$date_ends = $this->product->get_date_on_sale_to();
-				$format    = get_option( 'date_format' );
+				/**
+				 * This filter allows users to modify the sale price end date format
+				 *
+				 * @param string $format Date format.
+				 *
+				 * @since 7.3.23
+				 */
+				$format      = apply_filters( 'rexfeed_sale_price_end_date_format', get_option( 'date_format' ) );
 				$attr_val  = !$date_ends ? $date_ends : gmdate( $format, $date_ends->getTimestamp() );
 				break;
 
@@ -1958,8 +1972,16 @@ class Rex_Product_Data_Retriever {
 				$sale_price_dates_from = $date_from ? date_i18n( 'Y-m-d', $date_from ) : '';
 
 				if ( !empty( $sale_price_dates_to ) && !empty( $sale_price_dates_from ) ) {
-					$from     = gmdate( "c", strtotime( $sale_price_dates_from ) );
-					$to       = gmdate( "c", strtotime( $sale_price_dates_to ) );
+					/**
+					 * This filter allows users to modify the sale price effective date format
+					 *
+					 * @param string $format Date format [c].
+					 *
+					 * @since 7.3.23
+					 */
+					$format   = apply_filters( 'rexfeed_sale_price_effective_date_format', 'c' );
+					$from     = gmdate( $format, strtotime( $sale_price_dates_from ) );
+					$to       = gmdate( $format, strtotime( $sale_price_dates_to ) );
 					$attr_val = $from . '/' . $to;
 				}
 				break;

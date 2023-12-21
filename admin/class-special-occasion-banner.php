@@ -74,6 +74,7 @@ class Rex_Feed_Special_Occasion_Banner {
 			add_action( 'admin_notices', [ $this, 'display_banner' ] );
 		}
 	}
+    
 
 	/**
 	 * Displays the special occasion banner if the current date and time are within the specified range.
@@ -86,49 +87,35 @@ class Rex_Feed_Special_Occasion_Banner {
         $time_remaining  = $this->end_date - current_time( 'timestamp' );
 
 		if ( in_array( $screen->base, $allowed_screens ) || in_array( $screen->parent_base, $allowed_screens ) || in_array( $screen->post_type, $allowed_screens ) || in_array( $screen->parent_file, $allowed_screens ) ) {
-			echo '<input type="hidden" id="rexfeed_special_occasion" name="rexfeed_special_occasion" value="'.$this->occasion.'">';
-            ?>
+        echo '<input type="hidden" id="rexfeed_special_occasion" name="rexfeed_special_occasion" value="'.$this->occasion.'">';
+        ?>
+
+            <!-- Name: Christmas Notification Banner -->
+
             <div class="rex-feed-tb__notification" id="rex_deal_notification">
                 <div class="rex-feed-tb__container">
                     <div class="rex-feed-tb__content-area">
 
-
-                        <div class="rex-feed-tb__image p-8 black-friday">
+                        <div class="rex-feed-tb__image p-8 christmas">
                             <figure>
-                                <img src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/black-friday-min.svg' ; ?>" alt="black friday"  />
+                                <img src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/christmas-logo.webp' ; ?>" alt=" Merry Christmas" />
+                            </figure>
+                        </div>
+
+                        <div class="rex-feed-tb__image twenty-five-pro-percent-logo ">
+                            <figure>
+                                <img src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/christmas-wpfm.webp' ; ?>" alt="25% off"  />
                             </figure>
                         </div>
                         <!-- .rex-feed-tb__image end -->
-
-                        <div class="rex-feed-tb__content">
-                            <h4><span>Super Sale </span> <?php esc_html_e('Is Live!','rextheme')?></h4>
-                        </div>
-                        <!-- .rex-feed-tb__content end -->
-
-
-                        <div class="rex-feed-tb__image rex-feed-tb__image-three">
-                            <figure>
-                                <img src="<?php echo plugin_dir_url( __FILE__ ).'./assets/icon/wpfm-fourty-min.svg' ; ?>" alt="forty percent"  />
-                            </figure>
-                        </div>
-                        <!-- .rex-feed-tb__image end -->
-
-                        <div id="rex-feed-tb__countdown" class="rex-feed-tb__countdown">
-                            <ul>
-                                <li><span id="rex-feed-tb__days">30</span>days</li>
-                                <li><span id="rex-feed-tb__hours">59</span>Hours</li>
-                                <li><span id="rex-feed-tb__mins">30</span>Mins</li>
-                                <!-- <li><span id="rextheme__secs"></span>secs</li> -->
-                            </ul>
-                        </div>
 
                         <div class="rex-feed-tb__btn-area">
-                            <a href="<?php echo esc_url('https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=plugin_dashboard&utm_medium=plugin&utm_campaign=bfcm_pfm&utm_id=bfcm_pfm'); ?>" role="button" class="rex-feed-tb__btn" target="_blank">
-                                FLAT <span class="rex-feed-tb__stroke-font">40%</span> OFF
+                            <a href="<?php echo esc_url('https://rextheme.com/best-woocommerce-product-feed/pricing'); ?>" role="button" class="rex-feed-tb__btn pfm-claim" target="_self">
+                                Get <span class="rex-feed-tb__stroke-font">25%</span> OFF
                             </a>
                         </div>
                         <!-- .rex-feed-tb__btn-area end -->
-
+                        
                     </div>
                     <!-- .rex-feed-tb__content-area end -->
                 </div>
@@ -136,6 +123,7 @@ class Rex_Feed_Special_Occasion_Banner {
                 <div class="rex-feed-tb__cross-top" id="rex_deal_close">
                     <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/cross-top.php'; ?>
                 </div>
+
             </div>
             <!-- .rex-feed-tb-notification end -->
 
@@ -152,33 +140,33 @@ class Rex_Feed_Special_Occasion_Banner {
 
                     // Update the countdown every second
                     setInterval(function() {
-                        const countdownElement = document.getElementById('countdown');
                         const daysElement = document.getElementById('rex-feed-tb__days');
                         const hoursElement = document.getElementById('rex-feed-tb__hours');
                         const minutesElement = document.getElementById('rex-feed-tb__mins');
                         //const secondsElement = document.getElementById('seconds');
 
-                        // Decrease the remaining time
                         timeRemaining--;
 
-                        // Calculate new days, hours, minutes, and seconds
-                        let days = Math.floor(timeRemaining / (60 * 60 * 24));
-                        let hours = Math.floor((timeRemaining % (60 * 60 * 24)) / (60 * 60));
-                        let minutes = Math.floor((timeRemaining % (60 * 60)) / 60);
-                        //let seconds = timeRemaining % 60;
+                        if ( daysElement && hoursElement && minutesElement ) {
+                            // Decrease the remaining time
 
-                        // Format values with leading zeros
-                        days = (days < 10) ? '0' + days : days;
-                        hours = (hours < 10) ? '0' + hours : hours;
-                        minutes = (minutes < 10) ? '0' + minutes : minutes;
-                        //seconds = (seconds < 10) ? '0' + seconds : seconds;
+                            // Calculate new days, hours, minutes, and seconds
+                            let days = Math.floor(timeRemaining / (60 * 60 * 24));
+                            let hours = Math.floor((timeRemaining % (60 * 60 * 24)) / (60 * 60));
+                            let minutes = Math.floor((timeRemaining % (60 * 60)) / 60);
+                            //let seconds = timeRemaining % 60;
 
-                        // Update the HTML
-                        daysElement.textContent = days;
-                        hoursElement.textContent = hours;
-                        minutesElement.textContent = minutes;
-                        //secondsElement.textContent = seconds;
+                            // Format values with leading zeros
+                            days = (days < 10) ? '0' + days : days;
+                            hours = (hours < 10) ? '0' + hours : hours;
+                            minutes = (minutes < 10) ? '0' + minutes : minutes;
+                            //seconds = (seconds < 10) ? '0' + seconds : seconds;
 
+                            // Update the HTML
+                            daysElement.textContent = days;
+                            hoursElement.textContent = hours;
+                            minutesElement.textContent = minutes;
+                        }
                         // Check if the countdown has ended
                         if (timeRemaining <= 0) {
                             rexfeed_hide_deal_notice();
@@ -200,6 +188,7 @@ class Rex_Feed_Special_Occasion_Banner {
                     wpAjaxHelperRequest( 'rex-feed-hide-deal-notice', payload );
                 }
             </script>
+
             <?php
 		}
 	}
@@ -216,212 +205,111 @@ class Rex_Feed_Special_Occasion_Banner {
             /* notification var css */
 
             @font-face {
-                font-family: "Circular Std Bold";
-                src: url(<?php echo "{$plugin_dir_url}assets/fonts/circularstd-bold.woff2"; ?>) format("woff2"), url(<?php echo "{$plugin_dir_url}assets/fonts/circularstd-bold.woff"; ?>) format("woff");
-                font-weight: 700;
-                font-style: normal;
-                font-display: swap;
-            }
-            @font-face {
                 font-family: "LexendDeca";
                 src: url(<?php echo "{$plugin_dir_url}assets/fonts/LexendDeca-Bold.woff2"; ?>) format("woff2"), url(<?php echo "{$plugin_dir_url}assets/fonts/LexendDeca-Bold.woff"; ?>) format("woff");
                 font-weight: 700;
                 font-style: normal;
                 font-display: swap;
             }
-            @font-face {
-                font-family: "Inter";
-                src: url(<?php echo "{$plugin_dir_url}assets/fonts/Inter-Black.woff2"; ?>) format("woff2"), url(<?php echo "{$plugin_dir_url}assets/fonts/Inter-Black.woff"; ?>) format("woff");
-                font-weight: 900;
-                font-style: normal;
-                font-display: swap;
-            }
-            @font-face {
-                font-family: "Inter";
-                src: url(<?php echo "{$plugin_dir_url}assets/fonts/Inter-Bold.woff2"; ?>) format("woff2"), url(<?php echo "{$plugin_dir_url}assets/fonts/Inter-Bold.woff"; ?>) format("woff");
-                font-weight: 700;
-                font-style: normal;
-                font-display: swap;
-            }
-            @font-face {
-                font-family: "Inter";
-                src: url(<?php echo "{$plugin_dir_url}assets/fonts/Inter-Medium.woff2"; ?>) format("woff2"), url(<?php echo "{$plugin_dir_url}assets/fonts/Inter-Medium.woff"; ?>) format("woff");
-                font-weight: 500;
-                font-style: normal;
-                font-display: swap;
-            }
-            @font-face {
-                font-family: "Circular Std Book";
-                src: url(<?php echo "{$plugin_dir_url}assets/fonts/CircularStd-Book.woff2"; ?>) format("woff2"), url(<?php echo "{$plugin_dir_url}assets/fonts/CircularStd-Book.woff"; ?>) format("woff");
-                font-weight: 500;
-                font-style: normal;
-                font-display: swap;
-            }
+
             .rex-feed-tb__notification {
                 position: relative;
                 width: calc(100% - 20px);
-                background-image: url(<?php echo "{$plugin_dir_url}assets/icon/notification.webp"; ?>);
+                background-image: url(<?php echo "{$plugin_dir_url}assets/icon/christmas-bg.webp"; ?>);
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
                 object-fit: cover;
-                background-color: #1E1F2E;
+                background-color: #100E1A;
                 z-index: 1111;
+                margin-top: 50px;
                 -webkit-animation-duration: 1s;
                 animation-duration: 1s;
                 -webkit-animation-fill-mode: both;
                 animation-fill-mode: both;
                 -webkit-animation-name: goDown;
                 animation-name: goDown;
-                margin-top: 50px;
-                box-shadow: 0px 10px 40px rgba(8, 28, 61, 0.15);
             }
+
             .rex-feed-tb__container {
-                /* width: 100%; */
                 margin: 0 auto;
-                max-width: 1400px;
                 padding: 0 15px;
+                position: relative;
             }
+
+            .rex-feed-tb__container {
+                max-width: 1430px;
+            }
+
             .rex-feed-tb__content-area {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
             }
+
+            .rex-feed-tb__image h4 {
+                font-family: "LexendDeca";
+                text-transform: capitalize;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 1.4;
+                color: #E5F7FF;
+                margin: 0;
+            }
+
+            @media only screen and (max-width: 1199px) {
+                .rex-feed-tb__image h4 {
+                    font-size: 20px;
+                }
+            }
+
+
+            @media only screen and (max-width: 991px) {
+                .rex-feed-tb__image h4 {
+                    font-size: 14px;
+                }
+            }
+
+            .rex-feed-tb__image h4 span {
+                display: block;
+                font-weight: 500;
+                color: #AECF9F;
+                text-transform: none;
+            }
+
+            .rex-feed-tb__image figure {
+                margin: 0;
+            }
+
+            .rex-feed-tb__image figure img {
+                width: auto;
+                max-width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+
+            .rex-feed-tb__image.p-8 {
+                padding: 5px 0;
+            }
+
+            .rex-feed-tb__image.christmas img {
+                width: 100%;
+                max-width: 275px;
+            }
+
+            .rex-feed-tb__image.twenty-five-pro-percent-logo img {
+                width: 100%;
+                max-width: 314px;
+            }
+
             .rex-feed-tb__btn-area {
                 display: flex;
                 align-items: flex-end;
                 justify-content: flex-end;
             }
-            .rex-feed-tb__image figure {
-                margin: 0;
-            }
-            .rex-feed-tb__image figure img {
-                max-width: 248px;
-            }
-            .rex-feed-tb__image.p-8 {
-                padding: 4px 0;
-            }
-            .rex-feed-tb__image-three {
-                max-width: 220px;
-                margin-top: -10px;
-            }
-            .rex-feed-tb__content h4 {
-                font-family: "LexendDeca";
-                font-size: 24px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: 137.3%;
-                letter-spacing: 1.68px;
-                color: #E5F7FF;
-                text-transform: uppercase;
-                margin: 0;
-            }
-            @media only screen and (max-width: 1199px) {
-                .rex-feed-tb__content h4 {
-                    font-size: 18px;
-                }
-            }
-            @media only screen and (max-width: 991px) {
-                .rex-feed-tb__content h4 {
-                    font-size: 12px;
-                }
-            }
-            .rex-feed-tb__content h4 span {
-                display: block;
-                font-size: 30px;
-                font-style: normal;
-                font-weight: 700;
-                line-height: 137.3%; /* 41.19px */
-                letter-spacing: 0;
-                color: #00B4FF;
-            }
-            @media only screen and (max-width: 1199px) {
-                .rex-feed-tb__content h4 span {
-                    font-size: 20px;
-                }
-            }
-            @media only screen and (max-width: 991px) {
-                .rex-feed-tb__content h4 span {
-                    font-size: 13px;
-                }
-            }
-            .rex-feed-tb__content figure {
-                margin: 0;
-            }
-            .rex-feed-tb__content figure img {
-                width: auto;
-                max-width: 202px;
-                height: auto;
-                object-fit: cover;
-            }
-            .rex-feed-tb__countdown li {
-                display: flex;
-                flex-direction: column;
-                width: 68.9px;
-                font-family: "Circular Std Book";
-                font-size: 16px;
-                font-style: normal;
-                font-weight: 500;
-                line-height: normal;
-                letter-spacing: 1.6px;
-                text-transform: uppercase;
-                text-align: center;
-                color: #A89CC3;
-            }
-            @media only screen and (max-width: 1199px) {
-                .rex-feed-tb__countdown li {
-                    width: 45px;
-                    font-size: 12px;
-                }
-            }
-            @media only screen and (max-width: 991px) {
-                .rex-feed-tb__countdown li {
-                    font-size: 10px;
-                }
-            }
-            @media only screen and (max-width: 767px) {
-                .rex-feed-tb__countdown li {
-                    padding: 0;
-                    font-size: 12px;
-                }
-            }
-            .rex-feed-tb__countdown ul {
-                display: flex;
-                align-items: flex-end;
-                justify-content: flex-end;
-                gap: 20px;
-            }
-            .rex-feed-tb__countdown li span {
-                font-size: 44px;
-                font-family: "Inter";
-                font-style: normal;
-                font-weight: 700;
-                line-height: normal;
-                color: #fff;
-                text-align: center;
-                border-radius: 10px;
-                border: 1px solid #00B4FF;
-                box-shadow: 0px 5px 0px 0px #018AC4;
-                background: linear-gradient(148deg, #2A0856 21.92%, #140102 80.41%) padding-box, linear-gradient(#00B4FF, #1F22FB) border-box;
-                border: 1px solid transparent;
-                margin-bottom: 6px;
-            }
-            @media only screen and (max-width: 1199px) {
-                .rex-feed-tb__countdown li span {
-                    font-size: 24px;
-                    border-radius: 6px;
-                }
-            }
-            @media only screen and (max-width: 991px) {
-                .rex-feed-tb__countdown li span {
-                    font-size: 22px;
-                }
-            }
-            @media only screen and (max-width: 767px) {
-                .rex-feed-tb__countdown li span {
-                    font-size: 30px;
-                }
-            }
+
+
             .rex-feed-tb__btn {
                 position: relative;
                 font-family: "LexendDeca";
@@ -440,76 +328,54 @@ class Rex_Feed_Special_Occasion_Banner {
                 text-decoration: none;
                 transition: all 0.3s ease;
             }
+
             .rex-feed-tb__btn:hover {
-                background-color: #216DF0;
+                background-color: #201cfe;
                 color: #ffffff;
             }
+
+            .rex-feed-tb__btn:active {
+                color: #ffffff;
+            }
+
+            .rex-feed-tb__btn.pfm-claim {
+                background-color: #216DF0;
+            }
+
+            .rex-feed-tb__btn.pfm-claim:hover {
+                background-color: #00B4FF;
+                color: #ffffff;
+                box-shadow: none;
+            }
+
+            .rex-feed-tb__stroke-font {
+                font-size: 26px;
+                font-weight: 700;
+            }
+
             .rex-feed-tb__cross-top {
                 position: absolute;
                 right: -12px;
                 top: -12px;
                 cursor: pointer;
             }
-            .rex-feed-tb__stroke-font {
-                font-size: 26px;
-                font-weight: 700;
-            }
 
-            @media only screen and (max-width: 1470px) {
-                .rex-feed-tb__notification {
-                    background-position: right;
-                }
-                .rex-feed-tb__content-area {
-                    padding: 0px 0;
-                }
-                .rex-feed-tb__image.black-friday img {
-                    max-width: 180px;
-                }
-                .rex-feed-tb__image.rex-feed-tb__image-three {
-                    margin-top: 0px;
-                }
-                .rex-feed-tb__image.rex-feed-tb__image-three img {
-                    max-width: 190px;
-                }
-                .rex-feed-tb__countdown li span {
-                    font-size: 35px;
-                }
-            }
             @media only screen and (max-width: 1399px) {
-                .rex-feed-tb__container {
-                    padding: 0 20px;
+                .rex-feed-tb__content h4 {
+                    font-size: 23px;
                 }
             }
             @media only screen and (max-width: 1199px) {
-                .rex-feed-tb__content figure img {
-                    max-width: 150px;
+                .rex-feed-tb__container {
+                    max-width: 1010px;
                 }
-                .rex-feed-tb__countdown ul {
-                    gap: 15px;
-                }
-                .rex-feed-tb__btn {
-                    font-size: 14px;
-                    line-height: 20px;
-                    padding: 10px 22px;
-                }
-                .rex-feed-tb__image figure {
-                    margin: 0;
-                }
-                .rex-feed-tb__image figure img {
+                .rex-feed-tb__image.christmas img {
                     max-width: 190px;
                 }
-                .rex-feed-tb__image.black-friday img {
-                    max-width: 130px;
+                .rex-feed-tb__image.twenty-five-pro-percent-logo {
+                    max-width: 240px;
                 }
-                .rex-feed-tb__image.rex-feed-tb__image-three {
-                    margin-top: 0px;
-                }
-                .rex-feed-tb__image.rex-feed-tb__image-three img {
-                    max-width: 130px;
-                }
-                .rex-feed-tb__countdown li span {
-                    font-size: 26px;
-                }
+                .rex-feed-tb__btn.pfm-claim,
                 .rex-feed-tb__btn {
                     font-size: 15px;
                     line-height: 20px;
@@ -517,62 +383,86 @@ class Rex_Feed_Special_Occasion_Banner {
                     border-radius: 10px;
                     font-weight: 400;
                 }
+                .rex-feed-tb__content h4 {
+                    font-size: 22px;
+                }
                 .rex-feed-tb__stroke-font {
                     font-size: 20px;
                 }
             }
+
             @media only screen and (max-width: 991px) {
-                .rex-feed-tb__content-area {
-                    gap: 20px;
+                .rex-feed-tb__container {
+                    max-width: 760px;
                 }
+
                 .rex-feed-tb__notification {
                     margin-top: 80px;
                 }
-                .rex-feed-tb__btn {
-                    font-size: 12px;
-                    line-height: 16px;
-                    padding: 10px 15px;
+
+                .rex-feed-tb__image.christmas img {
+                    max-width: 140px;
                 }
-                .rex-feed-tb__stroke-font {
-                    font-size: 18px;
-                }
-                .rex-feed-tb__image.black-friday img {
-                    max-width: 115px;
-                }
-                .rex-feed-tb__image.rex-feed-tb__image-three img {
-                    max-width: 120px;
-                }
-                .rex-feed-tb__countdown li span {
-                    font-size: 24px;
-                }
-            }
-            @media only screen and (max-width: 767px) {
-                .rex-feed-tb__notification {
-                    padding: 27px 0;
-                }
-                .rex-feed-tb__cross-top {
-                    right: -4px;
-                }
-                .rex-feed-tb__notification {
-                    margin-top: 60px;
-                }
-                .rex-feed-tb__content-area {
-                    gap: 10px;
-                    flex-direction: column;
+                .rex-feed-tb__image.twenty-five-pro-percent-logo {
+                    max-width: 180px;
                 }
                 .rex-feed-tb__btn {
                     font-size: 14px;
                     line-height: 18px;
-                    padding: 11px 22px;
+                    padding: 9px 10px;
+                    border-radius: 8px;
+                    margin-left: 0;
                 }
-                .rex-feed-tb__content h4 {
-                    font-size: 26px;
-                    text-align: center;
-                }
-                .rex-feed-tb__notification {
-                    background-position: 13%;
+                .rex-feed-tb__stroke-font {
+                    font-size: 18px;
                 }
             }
+
+            @media only screen and (max-width: 767px) {
+                .rex-feed-tb__image.p-8 {
+                    padding: 0;
+                }
+                .rex-feed-tb__notification {
+                    margin-top: 60px;
+                }
+
+                .rex-feed-tb__image.christmas img {
+                    max-width: 170px;
+                }
+                .rex-feed-tb__image.twenty-five-pro-percent-logo {
+                    max-width: 185px;
+                }
+                .rex-feed-tb__notification {
+                    padding: 30px 0;
+                    background-position: 14%;
+                }
+                .rex-feed-tb__stroke-font {
+                    font-size: 22px;
+                }
+
+                .rex-feed-tb__cross-top {
+                    right: -4px;
+                }
+
+                .rex-feed-tb__content-area {
+                    flex-flow: column;
+                    gap: 12px;
+                    text-align: center;
+                }
+                .rex-feed-tb__content h4 {
+                    font-size: 24px;
+                    line-height: 1.2;
+                }
+                .rex-feed-tb__btn-area {
+                    justify-content: center;
+                }
+                .rex-feed-tb__btn {
+                    font-size: 14px;
+                    padding: 11px 16px;
+                    border-radius: 8px;
+                }
+            }
+
             /* ANIMATION for go down */
             @-webkit-keyframes goDown {
                 0% {
@@ -584,6 +474,7 @@ class Rex_Feed_Special_Occasion_Banner {
                     transform: none;
                 }
             }
+            
             @keyframes goDown {
                 0% {
                     -webkit-transform: translate3d(0, -100%, 0);
@@ -594,7 +485,9 @@ class Rex_Feed_Special_Occasion_Banner {
                     transform: none;
                 }
             }
+
 		</style>
+
 		<?php
 	}
 }
