@@ -902,7 +902,7 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Changelog ==
 
-= 7.3.22 (2023-12-21) =
+= 7.3.23 (2023-12-21) =
 * Added: Filter hook added `rexfeed_sale_price_start_date_format`
 * Added: Filter hook added `rexfeed_sale_price_end_date_format`
 * Added: Filter hook added `rexfeed_sale_price_effective_date_format`
