@@ -903,7 +903,7 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 == Changelog ==
 
 = 7.3.24 (2023-12-29) =
-* Fixed: Draft feeds saving issue in the feed settings drawer
+* Fixed: Draft feeds saving issue in the feed filters & settings drawer
 * Fixed: PHP warning for undefined array key in checkout page
 
 = 7.3.23 (2023-12-21) =
