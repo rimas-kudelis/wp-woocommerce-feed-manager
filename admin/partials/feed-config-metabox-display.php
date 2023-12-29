@@ -113,8 +113,8 @@ $keyy = rand(999, 3000); ?>
 <?php foreach ( $feed_template->get_template_mappings() as $key => $item): ?>
 	<?php
     $display_none = 'style="display: none"';
-    $hide_meta = $item[ 'type' ] === 'meta' ? '' : $display_none;
-    $hide_static = $item[ 'type' ] === 'static' ? '' : $display_none;
+    $hide_meta    = !empty( $item[ 'type' ] ) && 'meta' === $item[ 'type' ] ? '' : $display_none;
+    $hide_static  = !empty( $item[ 'type' ] ) && 'static' === $item[ 'type' ] ? '' : $display_none;
 
     if( isset( $item[ 'type' ] ) ) {
         /**

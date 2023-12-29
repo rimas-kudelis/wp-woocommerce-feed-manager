@@ -96,17 +96,11 @@ class Rex_Product_Feed_Actions {
 			return $post_id;
 		}
 
-		$data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : array();
-		$data = !empty( $data[ 'post' ] ) ? $data[ 'post' ] : '';
+		$feed_data = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : array();
+		$feed_data = !empty( $feed_data[ 'post' ] ) ? $feed_data[ 'post' ] : '';
 
-		$meta_keys = [
+		$meta_keys       = [
 			'rex_feed_products',
-			'rex_feed_variable_product',
-			'rex_feed_variations',
-			'rex_feed_parent_product',
-			'rex_feed_variation_product_name',
-			'rex_feed_hidden_products',
-			'rex_feed_skip_row',
 			'rex_feed_aelia_currency',
 			'rex_feed_wcml_currency',
 			'rex_feed_google_destination',
@@ -119,10 +113,7 @@ class Rex_Product_Feed_Actions {
 			'rex_feed_ebay_seller_site_id',
 			'rex_feed_ebay_seller_country',
 			'rex_feed_ebay_seller_currency',
-			'rex_feed_analytics_params_options',
 			'rex_feed_analytics_params',
-			'rex_feed_product_filter_ids',
-			'product_filter_condition',
 			'rex_feed_merchant',
 			'rex_feed_feed_format',
 			'rex_feed_separator',
@@ -143,44 +134,69 @@ class Rex_Product_Feed_Actions {
 			'rex_feed_hotline_firm_name',
 			'rex_feed_hotline_exchange_rate',
 		];
-		$data_keys = !empty( $data ) ? array_keys( $data ) : [];
+		$settings_toggle = [
+			'rex_feed_include_out_of_stock',
+			'rex_feed_include_zero_price_products',
+			'rex_feed_variable_product',
+			'rex_feed_hidden_products',
+			'rex_feed_variation_product_name',
+			'rex_feed_parent_product',
+			'rex_feed_variations',
+			'rex_feed_skip_product',
+			'rex_feed_skip_row',
+			'rex_feed_analytics_params_options'
+		];
 
 		foreach( $meta_keys as $meta_key ) {
-			if( !empty( $data_keys ) && $meta_key && in_array( $meta_key, $data_keys, true ) ) {
-				update_post_meta( $post_id, "_{$meta_key}", $data[ $meta_key ] );
+			if( !empty( $feed_data[ $meta_key ] ) ) {
+				update_post_meta( $post_id, "_{$meta_key}", $feed_data[ $meta_key ] );
+			}
+			else {
+				delete_post_meta( $post_id, "_{$meta_key}" );
 			}
 		}
 
-		if ( isset( $data[ 'rex_feed_schedule' ] ) ) {
-			update_post_meta( $post_id, '_rex_feed_schedule', $data[ 'rex_feed_schedule' ] );
+		foreach( $settings_toggle as $toggle_key ) {
+			if( !empty( $feed_data[ $toggle_key ] ) ) {
+				update_post_meta( $post_id, "_{$toggle_key}", $feed_data[ $toggle_key ] );
+			}
+			else {
+				update_post_meta( $post_id, "_{$toggle_key}", 'no' );
+			}
+		}
 
-			if ( isset( $data[ 'rex_feed_custom_time' ] ) && 'custom' === $data[ 'rex_feed_schedule' ] ) {
-				update_post_meta( $post_id, '_rex_feed_custom_time', $data[ 'rex_feed_custom_time' ] );
+		if ( isset( $feed_data[ 'rex_feed_schedule' ] ) ) {
+			update_post_meta( $post_id, '_rex_feed_schedule', $feed_data[ 'rex_feed_schedule' ] );
+
+			if ( isset( $feed_data[ 'rex_feed_custom_time' ] ) && 'custom' === $feed_data[ 'rex_feed_schedule' ] ) {
+				update_post_meta( $post_id, '_rex_feed_custom_time', $feed_data[ 'rex_feed_custom_time' ] );
 			}
 			else {
 				delete_post_meta( $post_id, '_rex_feed_custom_time' );
 			}
 		}
 
-		if ( isset( $data[ 'fc' ] ) ) {
-			if ( 0 !== (int)array_key_first( $data[ 'fc' ] ) ) {
-				array_shift( $data[ 'fc' ] );
+		if ( isset( $feed_data[ 'fc' ] ) ) {
+			if ( 0 !== (int)array_key_first( $feed_data[ 'fc' ] ) ) {
+				array_shift( $feed_data[ 'fc' ] );
 			}
-			update_post_meta( $post_id, '_rex_feed_feed_config', $data[ 'fc' ] );
+			update_post_meta( $post_id, '_rex_feed_feed_config', $feed_data[ 'fc' ] );
 		}
 
-		if ( isset( $data[ 'ff' ] ) ) {
-			array_shift( $data[ 'ff' ] );
-			update_post_meta( $post_id, '_rex_feed_feed_config_filter', $data[ 'ff' ] );
+		if ( isset( $feed_data[ 'ff' ] ) ) {
+			if ( 0 !== (int)array_key_first( $feed_data[ 'ff' ] ) ) {
+				array_shift( $feed_data[ 'ff' ] );
+			}
+			update_post_meta( $post_id, '_rex_feed_feed_config_filter', $feed_data[ 'ff' ] );
 		}
 
-		if ( isset( $data[ 'rex_feed_custom_filter_option_btn' ] ) ) {
-			update_post_meta( $post_id, '_rex_feed_custom_filter_option', $data[ 'rex_feed_custom_filter_option_btn' ] );
+		if ( isset( $feed_data[ 'rex_feed_custom_filter_option_btn' ] ) ) {
+			update_post_meta( $post_id, '_rex_feed_custom_filter_option', $feed_data[ 'rex_feed_custom_filter_option_btn' ] );
 		}
 
-		if ( isset( $data[ 'rex_feed_cats' ] ) ) {
+		if ( isset( $feed_data[ 'rex_feed_cats' ] ) ) {
 			$cats = array();
-			foreach ( $data[ 'rex_feed_cats' ] as $cat ) {
+			foreach ( $feed_data[ 'rex_feed_cats' ] as $cat ) {
 				$cats[] = get_term_by('slug', $cat, 'product_cat' )->term_id;
 			}
 			wp_set_object_terms( $post_id, $cats, 'product_cat' );
@@ -188,9 +204,9 @@ class Rex_Product_Feed_Actions {
 		else {
 			wp_set_object_terms( $post_id, array(), 'product_cat' );
 		}
-		if ( isset( $data[ 'rex_feed_tags' ] ) ) {
+		if ( isset( $feed_data[ 'rex_feed_tags' ] ) ) {
 			$tags = array();
-			foreach ( $data[ 'rex_feed_tags' ] as $tag ) {
+			foreach ( $feed_data[ 'rex_feed_tags' ] as $tag ) {
 				$tags[] = get_term_by('slug', $tag, 'product_tag' )->term_id;
 			}
 			wp_set_object_terms( $post_id, $tags, 'product_tag' );
@@ -199,17 +215,17 @@ class Rex_Product_Feed_Actions {
 			wp_set_object_terms( $post_id, array(), 'product_tag' );
 		}
 
-		if ( !isset( $data[ 'rex_feed_update_on_product_change' ] ) ) {
+		if ( !isset( $feed_data[ 'rex_feed_update_on_product_change' ] ) ) {
 			delete_post_meta( $post_id, '_rex_feed_update_on_product_change' );
 		}
-		if ( !isset( $data[ 'rex_feed_cats_check_all_btn' ] ) ) {
+		if ( !isset( $feed_data[ 'rex_feed_cats_check_all_btn' ] ) ) {
 			delete_post_meta( $post_id, '_rex_feed_cats_check_all_btn' );
 		}
-		if ( !isset( $data[ 'rex_feed_tags_check_all_btn' ] ) ) {
+		if ( !isset( $feed_data[ 'rex_feed_tags_check_all_btn' ] ) ) {
 			delete_post_meta( $post_id, '_rex_feed_tags_check_all_btn' );
 		}
 
-		do_action( 'rex_feed_after_draft_feed_config_saved', $post_id, $data );
+		do_action( 'rex_feed_after_draft_feed_config_saved', $post_id, $feed_data );
 	}
 
 
@@ -610,7 +626,6 @@ class Rex_Product_Feed_Actions {
 					}
 					$view_content = "fbq(\"track\",\"ViewContent\",{content_category:\"$cats\", content_name:\"$product_title\", content_type:\"$content_type\", content_ids:[$product_id],value:\"$formatted_price\",currency:\"$currency\"});";
 					?>
-
 					<?php
 				}
 				elseif ( is_product_category() ) {
@@ -646,9 +661,7 @@ class Rex_Product_Feed_Actions {
 					$view_content  = "fbq(\"trackCustom\",\"ViewCategory\",{content_category:\"$category_path\", content_name:\"$category_name\", content_type:\"product\", content_ids:[$product_id]});";
 				}
 				elseif ( is_search() ) {
-					$data        = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : array();
-					$data        = isset( $data[ 'get' ] ) ? $data[ 'get' ] : array();
-					$search_term = sanitize_text_field( $data[ 's' ] );
+					$search_term = sanitize_text_field( filter_input( INPUT_GET, 's' ) );
 					global $wp_query;
 					$product_ids = wp_list_pluck( $wp_query->posts, 'ID' );
 
@@ -675,13 +688,11 @@ class Rex_Product_Feed_Actions {
 						}
 					}
 					$product_id   = rtrim( $product_id, ',' );
-					$view_content = "fbq(\"trackCustom\",\"Search\",{search_string:\"$search_term\", content_type:\"product\", content_ids:[$product_id]});";
+					$view_content = "fbq(\"trackCustom\",\"Search\",{search_string:\"$search_term\", content_type:\"product\", content_ids:[{$product_id}]});";
 				}
 				elseif ( is_cart() || is_checkout() ) {
 					if ( is_checkout() && !empty( is_wc_endpoint_url( 'order-received' ) ) ) {
-						$data      = function_exists( 'rex_feed_get_sanitized_get_post' ) ? rex_feed_get_sanitized_get_post() : array();
-						$data      = isset( $data[ 'get' ] ) ? $data[ 'get' ] : array();
-						$order_key = sanitize_text_field( $data[ 'key' ] );
+						$order_key = sanitize_text_field( filter_input( INPUT_GET, 'key' ) );
 						if ( !empty( $order_key ) ) {
 							$order_id    = wc_get_order_id_by_order_key( $order_key );
 							$order       = wc_get_order( $order_id );
@@ -706,14 +717,14 @@ class Rex_Product_Feed_Actions {
 						$cart_real = 0;
 						$contents  = '';
 						foreach ( WC()->cart->get_cart() as $cart_item ) {
-							$product_id = $cart_item[ 'product_id' ];
-							if ( $cart_item[ 'variation_id' ] > 0 ) {
+							$product_id = !empty( $cart_item[ 'product_id' ] ) ? $cart_item[ 'product_id' ] : null;
+							if ( !empty( $cart_item[ 'variation_id' ] ) ) {
 								$product_id = $cart_item[ 'variation_id' ];
 							}
-							$contents  .= "'" . $product_id . "'" . ',';
-							$line_total = (int) $cart_item[ 'line_total' ];
-							$line_tax   = (int) $cart_item[ 'line_tax' ];
-							$cart_real += (int) number_format( ( $line_total + $line_tax ), 2 );
+							$contents   .= !empty( $product_id ) ? "'{$product_id}'," : '';
+							$line_total = (int)$cart_item[ 'line_total' ];
+							$line_tax   = (int)$cart_item[ 'line_tax' ];
+							$cart_real  += (int)number_format( ( $line_total + $line_tax ), 2 );
 						}
 						$contents = rtrim( $contents, ',' );
 						if ( is_cart() ) {
@@ -756,7 +767,7 @@ class Rex_Product_Feed_Actions {
 				?>
 			</script>
 			<noscript>
-				<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=<?php echo esc_attr( "$wpfm_fb_pixel_data" ); ?>&ev=PageView&noscript=1"/>
+				<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=<?php echo esc_attr( "{$wpfm_fb_pixel_data}" ); ?>&ev=PageView&noscript=1"/>
 			</noscript>
 			<!-- End Facebook Pixel Code -->
 			<?php
