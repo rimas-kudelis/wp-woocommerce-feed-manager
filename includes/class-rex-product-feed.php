@@ -158,10 +158,10 @@ class Rex_Product_Feed {
 	    $appsero_data   = new Rex_Product_Appsero_Data();
 	    $scheduler      = new Rex_Feed_Scheduler();
 	    $special_banner = new Rex_Feed_Special_Occasion_Banner(
-		    'christmas_deal_23',
+		    'christmas_deal_23_extended',
 		    '2023-12-21 00:00:00',
-		    '2024-01-04 00:00:00'
-	    ); // Date format: YYYY-MM-DD MM:HH:SS
+		    '2024-01-06 00:00:00'
+	    ); // Date format: YYYY-MM-DD HH:MM:SS
 
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );

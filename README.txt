@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.4
 Requires PHP: 7.3
-Stable tag:  7.3.24
+Stable tag:  7.3.25
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -902,8 +902,11 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Changelog ==
 
+= 7.3.25 (2024-01-04) =
+* Fixed: Remove PHP notices
+
 = 7.3.24 (2023-12-29) =
-* Fixed: Draft feeds saving issue in the feed filters & settings drawer
+* Fixed: Draft feeds saving issue for in the feed settings drawer
 * Fixed: PHP warning for undefined array key in checkout page
 
 = 7.3.23 (2023-12-21) =
@@ -2130,5 +2133,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.24 =
+= 7.3.25 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
