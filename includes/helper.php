@@ -314,12 +314,31 @@ if ( ! function_exists( 'wpfm_purge_browser_cache' ) ) {
 
 if ( ! function_exists( 'wpfm_switch_site_lang' ) ) {
 	/**
-	 * Switches site language to the given language
+	 * Switches the site language and WooCommerce Multilingual (WCML) currency if WPML and WCML are active.
+	 *
+	 * @param string $language      The language to switch to.
+	 * @param string $wcml_currency The WCML currency to set.
+	 *
+	 * @since 7.3.26
 	 */
-	function wpfm_switch_site_lang( $language ) {
+	function wpfm_switch_site_lang( $language, $wcml_currency ) {
 		if ( wpfm_is_wpml_active() ) {
 			global $sitepress;
 			$sitepress->switch_lang( $language );
+		}
+
+		if ( wpfm_is_wcml_active() ) {
+			global $woocommerce_wpml;
+			$woocommerce_wpml->multi_currency->set_client_currency($wcml_currency);
+
+			/**
+			 * Run your custom functions right after the client currency for the front end is switched via AJAX requests.
+			 *
+			 * @param string $wcml_currency The new currency code is switched to, e.g. “USD”, “EUR”, etc.
+			 *
+			 * @since 7.3.26
+			 */
+			do_action('wcml_switch_currency', $wcml_currency);
 		}
 	}
 }

@@ -2583,7 +2583,7 @@ class Rex_Product_Data_Retriever {
 	 * @return string
 	 */
 	protected function get_the_term_list_with_path( $id, $taxonomy, $sep = '' ) {
-		wpfm_switch_site_lang( $this->feed->wpml_language );
+		wpfm_switch_site_lang( $this->feed->wpml_language, $this->feed->wcml_currency );
 		$terms = wp_get_post_terms(
 			$id,
 			$taxonomy,
@@ -2636,7 +2636,7 @@ class Rex_Product_Data_Retriever {
 	 * @return array
 	 */
 	protected function get_cat_names_array( $id, $taxonomy, $parent, $term_name_array ) {
-		wpfm_switch_site_lang( $this->feed->wpml_language );
+		wpfm_switch_site_lang( $this->feed->wpml_language, $this->feed->wcml_currency );
 		$terms = wp_get_post_terms(
 			$id,
 			$taxonomy,

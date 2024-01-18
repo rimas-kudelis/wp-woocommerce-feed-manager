@@ -998,7 +998,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function setup_products()
     {
-        wpfm_switch_site_lang( $this->wpml_language );
+        wpfm_switch_site_lang( $this->wpml_language, $this->wcml_currency );
 
         if ( isset( $this->products_args[ 'post__in' ] ) && $this->products_args[ 'post__in' ] && $this->product_filter_condition ) {
             update_post_meta( $this->id, '_rex_feed_product_condition', $this->product_filter_condition );

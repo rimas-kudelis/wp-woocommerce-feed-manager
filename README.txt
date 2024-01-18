@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.4
 Requires PHP: 7.3
-Stable tag:  7.3.25
+Stable tag:  7.3.26
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,10 +17,6 @@ Generate WooCommerce product feeds for Google Shopping, Social Catalogs, Instagr
 Generating your WooCommerce Product Feed was never this easy!
 
 Any marketplace you want to list your products on, you can generate an accurate product feed with your WooCommerce products in just a few clicks.
-
-Unwrap the joy of savings this Christmas! 🎁
-
-✨ <a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=pfm-repo-CTA&utm_medium=pfm-repo&utm_campaign=chirstmas-2023" target="_blank">**Enjoy a 25% off on all plans of Product Feed Manager For WooCommerce and start growing your business today!**🎄 </a>
 
 Use our pre-defined merchant templates to generate flawless feeds for the popular merchants, including -
 
@@ -901,6 +897,9 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.26 (2024-01-18) =
+* Fixed: Product price (with WCML) updating issue on CRON [(#issue)](https://wordpress.org/support/topic/bug-with-wcml-when-default-language-currency-has-price-adjustment/)
 
 = 7.3.25 (2024-01-04) =
 * Fixed: Remove PHP notices
@@ -2133,5 +2132,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.25 =
+= 7.3.26 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
