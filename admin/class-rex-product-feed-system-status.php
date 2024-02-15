@@ -168,7 +168,7 @@ class Rex_Feed_System_Status {
 		$installed_version = ( function_exists( 'WC' ) ) ? WC()->version : '1.0.0';
 		$latest_version    = self::get_plugin_info( 'woocommerce' );
 
-		if ( version_compare( $latest_version->version, $installed_version, '>' ) ) {
+		if ( !empty( $latest_version->version ) && version_compare( $latest_version->version, $installed_version, '>' ) ) {
 			$message = $installed_version . " - You are not using the latest version of WooCommerce. Update WooCommerce plugin to its latest version: " . $latest_version->version;
 		}
 		else {

@@ -238,37 +238,6 @@ class Rex_Product_Feed_Sooqr extends Rex_Product_Feed_Abstract_Generator {
         return SooqrShopping::asRss();
     }
 
-
-    /**
-     * @param bool $product_id
-     * @return string
-     */
-    protected function get_product_data(  WC_Product $product, $product_meta_keys ){
-
-        $data = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
-        return $data->get_all_data();
-
-        $include_analytics_params = get_post_meta($this->id, '_rex_feed_analytics_params_options', true);
-
-        if($include_analytics_params == 'on') {
-            $analytics_params = get_post_meta($this->id, '_rex_feed_analytics_params', true);
-        }else {
-            $analytics_params = null;
-        }
-
-        if ( function_exists('icl_object_id') ) {
-            global $sitepress;
-            $wpml = get_post_meta($this->id, '_rex_feed_wpml_language', true) ?: $sitepress->get_default_language();
-            if($wpml) {
-                $sitepress->switch_lang($wpml);
-                $data = new Rex_Sooqr_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params);
-            }
-        }else{
-            $data = new Rex_Sooqr_Product_Data_Retriever( $product, $this->feed_config, null, $this->append_variation, $product_meta_keys, $analytics_params);
-        }
-        return $data->get_all_data();
-    }
-
     public function footer_replace()
     {
         // TODO: Implement footer_replace() method.

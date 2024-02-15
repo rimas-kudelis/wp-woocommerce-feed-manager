@@ -207,17 +207,6 @@ class Rex_Product_Feed_Zbozi extends Rex_Product_Feed_Abstract_Generator
         }
     }
 
-
-    /**
-     * Get product data
-     * @param WC_Product $product
-     * @return string
-     */
-    protected function get_product_data( WC_Product $product, $product_meta_keys ){
-        $data = new Rex_Product_Data_Retriever( $product, $this, $product_meta_keys );
-        return $data->get_all_data();
-    }
-
     /**
      * Check if the merchants is valid or not
      * @param $feed_merchants

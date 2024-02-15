@@ -36,6 +36,7 @@ class ComposerStaticInit4c4b99044a2541264cd0b6680902f5e3
         'Appsero\\Client' => __DIR__ . '/..' . '/appsero/client/src/Client.php',
         'Appsero\\Insights' => __DIR__ . '/..' . '/appsero/client/src/Insights.php',
         'Appsero\\License' => __DIR__ . '/..' . '/appsero/client/src/License.php',
+        'Appsero\\Updater' => __DIR__ . '/..' . '/appsero/client/src/Updater.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'LukeSnowden\\GoogleShoppingFeed\\Containers\\GoogleShopping' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Containers/GoogleShopping.php',
         'LukeSnowden\\GoogleShoppingFeed\\Exceptions\\MissingIdentifierException' => __DIR__ . '/../..' . '/includes/library/GoogleShoppingFeed/Exceptions/MissingIdentifierException.php',
