@@ -1356,9 +1356,9 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             $this->feed = str_replace( '</ads>', '', $this->feed );
         }
         else if( $this->merchant === 'custom' ) {
-            $search = '</' . $this->get_items_wrapper() . '>';
+            $search = "</{$this->get_items_wrapper()}>";
             if( $this->custom_wrapper_el ) {
-                $search = '</' . $this->get_wrapper_el() . '>' . $search;
+                $search = "</{$this->get_wrapper_el()}>{$search}";
             }
             $this->feed = str_replace( $search, '', $this->feed );
         }

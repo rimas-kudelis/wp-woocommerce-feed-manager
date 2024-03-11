@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.4
 Requires PHP: 7.3
-Stable tag:  7.3.27
+Stable tag:  7.3.28
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -897,6 +897,10 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.3.28 (2024-03-11) =
+* Enhancement: Enhanced compatibility with [Discount Rules for WooCommerce](https://wordpress.org/plugins/woo-discount-rules/) plugin
+* Fixed: Custom wrappers issue on `Custom Feed` template
 
 = 7.3.27 (2024-02-15) =
 * Fixed: PHP warning for undefined object key in dashboard
@@ -2136,5 +2140,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.27 =
+= 7.3.28 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

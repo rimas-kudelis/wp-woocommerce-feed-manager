@@ -1310,7 +1310,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 if ( (int) $this->tbatch > 1 ) {
                     $this->footer_replace();
                 }
-
                 file_put_contents( $file, $this->feed, FILE_APPEND );
             }
 
@@ -1653,18 +1652,16 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
         }
         elseif ( $this->merchant === 'custom' ) {
-            $node = $feed->getElementsByTagName( "product" );
+            $item_wrapper = !empty( $this->custom_wrapper ) ? $this->custom_wrapper : 'product';
+            $node = $feed->getElementsByTagName( $item_wrapper );
             if ( $this->batch === $this->tbatch ) {
-                $this->item_wrapper = '<product>';
+                $this->item_wrapper = "</{$item_wrapper}>";
                 $this->feed_string_footer .= '</products>';
-                if( $this->custom_wrapper ) {
-                    $this->item_wrapper = '</' . $this->custom_wrapper . '>';
-                }
                 if( $this->custom_items_wrapper ) {
-                    $this->feed_string_footer = '</' . $this->custom_items_wrapper . '>';
+                    $this->feed_string_footer = "</{$this->custom_items_wrapper}>";
                 }
                 if( $this->custom_wrapper_el ) {
-                    $this->feed_string_footer = '</' . $this->custom_wrapper_el . '>' . $this->feed_string_footer;
+                    $this->feed_string_footer =  "</{$this->custom_wrapper_el}>{$this->feed_string_footer}";
                 }
             }
         }

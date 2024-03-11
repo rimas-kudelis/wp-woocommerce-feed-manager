@@ -2012,30 +2012,26 @@ class Rex_Product_Data_Retriever {
 	 *
 	 * @return mixed|string|void
 	 */
-	protected function set_woo_discount_rules( $key ) {
-		$attr_val        = '';
-		$discount_manage = new ManageDiscount();
-		if ( 'woo_discount_rules_price' === $key ) {
-			$discounted_price = $discount_manage->calculateInitialAndDiscountedPrice( $this->product, 1 );
-			$discounted_price = !empty( $discounted_price[ 'discounted_price' ] ) ? $discounted_price[ 'discounted_price' ] : '';
+    protected function set_woo_discount_rules( $key ) {
+        $attr_val        = '';
+        $discount_manage = new ManageDiscount();
+        if ( 'woo_discount_rules_price' === $key ) {
+            $discounted_price = $discount_manage->calculateInitialAndDiscountedPrice( $this->product, 1 );
+            $discounted_price = !empty( $discounted_price[ 'discounted_price' ] ) ? $discounted_price[ 'discounted_price' ] : '';
 
-			$attr_val = $this->product->get_regular_price();
-			if ( $discounted_price && '' !== $discounted_price ) {
-				$attr_val = $discounted_price;
-			}
-		}
-		elseif ( 'woo_discount_rules_expire_date' === $key ) {
-			$rules = DBTable::getRules();
-			foreach ( $rules as $rule ) {
-				if ( 'wdr_simple_discount' === $rule->discount_type ) {
-					$format   = "Y-m-d H:i";
-					$end_date = $rule->date_to;
-					$attr_val = $end_date && '' !== $end_date ? gmdate( $format, (int) $end_date ) : $end_date;
-				}
-			}
-		}
-		return $attr_val;
-	}
+            $attr_val = !empty( $discounted_price ) ? $discounted_price : $this->product->get_price();
+        } elseif ( 'woo_discount_rules_expire_date' === $key ) {
+            $rules = DBTable::getRules();
+            foreach ( $rules as $rule ) {
+                if ( 'wdr_simple_discount' === $rule->discount_type ) {
+                    $format   = "Y-m-d H:i";
+                    $end_date = $rule->date_to;
+                    $attr_val = $end_date && '' !== $end_date ? gmdate( $format, (int)$end_date ) : $end_date;
+                }
+            }
+        }
+        return $attr_val;
+    }
 
 	/**
 	 * Set a Product Dynamic attribute.
