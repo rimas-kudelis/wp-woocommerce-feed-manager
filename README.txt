@@ -901,6 +901,7 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 = 7.4.0 (2024-03-19) =
 * Added: New filter option `Product Creation Date` added in `Custom Filter` condition
 * Added: New filter option `Product Last Modified Date` added in `Custom Filter` condition
+* Added: New multiple attribute `IMGURL_ALTERNATIVE` support in Heureka feed template
 * Enhancement: Enhanced Right-to-Left (RTL) support
 * Enhancement: Enhanced localization support
 
@@ -2147,4 +2148,4 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 == Upgrade Notice ==
 
 = 7.4.0 =
-🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
+🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
