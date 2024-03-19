@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.4
 Requires PHP: 7.3
-Stable tag:  7.3.28
+Stable tag:  7.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -897,6 +897,12 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.0 (2024-03-19) =
+* Added: New filter option `Product Creation Date` added in `Custom Filter` condition
+* Added: New filter option `Product Last Modified Date` added in `Custom Filter` condition
+* Enhancement: Enhanced Right-to-Left (RTL) support
+* Enhancement: Enhanced localization support
 
 = 7.3.28 (2024-03-11) =
 * Enhancement: Enhanced compatibility with [Discount Rules for WooCommerce](https://wordpress.org/plugins/woo-discount-rules/) plugin
@@ -2140,5 +2146,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.3.28 =
+= 7.4.0 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

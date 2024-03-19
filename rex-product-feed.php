@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
- * Version:           7.3.28
+ * Version:           7.4.0
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.3.28' );
+    define( 'WPFM_VERSION', '7.4.0' );
 }
 if ( !defined( 'WPFM__FILE__' ) ) {
 	define( 'WPFM__FILE__', __FILE__ );
@@ -186,8 +186,16 @@ function wpfm_pro_update_notice() {
 	$wpfm_etsy     = file_exists( $wpfm_etsy_abs ) && ! wpfm_etsy_compatibility() ? '<strong>WooCommerce Product Feed Manager - Etsy Addon</strong>' : '';
 	$and           = file_exists( $wpfm_pro_abs ) && ! wpfm_pro_compatibility() && file_exists( $wpfm_etsy_abs ) && ! wpfm_etsy_compatibility() ? ' and ' : '';
 
-	$message = __( 'It looks like you have an older version of ' . $wpfm_pro . $and . $wpfm_etsy . '. Please update ' . $wpfm_pro . $and . $wpfm_etsy . ' to the latest version to use <strong>Pro</strong> features properly.', 'rex-product-feed' );
-	?>
+	$message = sprintf(
+        esc_html__(
+            'It looks like you have an older version of %1$s%2$s. Please update %1$s%2$s to the latest version to use Pro features properly.',
+            'rex-product-feed'
+        ),
+        $wpfm_pro,
+        $and,
+        $wpfm_etsy
+    );
+    ?>
 	<div class="error">
 		<p>
 			<?php echo $message; ?>

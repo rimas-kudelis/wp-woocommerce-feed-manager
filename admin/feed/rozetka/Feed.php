@@ -464,7 +464,7 @@ class Feed
 		$categories = $this->categories();
 		unset($categories[0]);
 		$select = '<select name="google_category">';
-		$select .= '<option value="">Please select a Google Category</option>';
+		$select .= '<option value="">'.__( 'Please select a Google Category', 'rex-product-feed' ).'</option>';
 		foreach ($categories as $category) {
 			$select .= '<option ' . ($category == $selected ? 'selected' : '') . ' name="' . $category . '">' . $category . '</option>';
 		}

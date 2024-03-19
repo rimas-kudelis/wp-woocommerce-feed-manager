@@ -8,7 +8,7 @@ $conditions = function_exists( 'wpfm_restructure_custom_filter_args' ) ? wpfm_re
     <div class="flex-table-row" data-row-id="<?php echo esc_html($rand_key); ?>" style="display: none;">
 
         <div class="flex-row" data-title="If : " role="cell">
-            <?php $feed_filter->print_select_dropdown( $rand_key, $rand_key, 'if', 'ff', '' ); ?>
+            <?php $feed_filter->print_select_dropdown( $rand_key, $rand_key, 'if', 'ff', '', 'rex-custom-filter-if' ); ?>
         </div>
 
         <div class="flex-row" data-title="condition : " role="cell">
@@ -37,7 +37,7 @@ $conditions = function_exists( 'wpfm_restructure_custom_filter_args' ) ? wpfm_re
     <div class="flex-table-row" data-row-id="<?php echo esc_html($rand_key); ?>">
 
         <div class="flex-row" data-title="If : " role="cell">
-            <?php $feed_filter->print_select_dropdown( $rand_key, $rand_key, 'if', 'ff', '' ); ?>
+            <?php $feed_filter->print_select_dropdown( $rand_key, $rand_key, 'if', 'ff', '', 'rex-custom-filter-if' ); ?>
         </div>
 
         <div class="flex-row" data-title="condition : " role="cell">
@@ -70,7 +70,7 @@ $conditions = function_exists( 'wpfm_restructure_custom_filter_args' ) ? wpfm_re
     <div class="flex-table-row" data-row-id="<?php echo esc_html($rand_key); ?>" style="display: none;">
 
         <div class="flex-row" data-title="If : " role="cell">
-            <?php $feed_filter->print_select_dropdown( $rand_key, $rand_key, 'if', 'ff', '' ); ?>
+            <?php $feed_filter->print_select_dropdown( $rand_key, $rand_key, 'if', 'ff', '', 'rex-custom-filter-if' ); ?>
         </div>
 
         <div class="flex-row" data-title="condition : " role="cell">
@@ -99,7 +99,7 @@ $conditions = function_exists( 'wpfm_restructure_custom_filter_args' ) ? wpfm_re
     <div class="flex-table-row" data-row-id="<?php echo esc_html($key2); ?>">
 
         <div class="flex-row" data-title="If : " role="cell">
-            <?php $feed_filter->print_select_dropdown( $key1, $key2, 'if', 'ff', $item['if'], 'filter-select2' ); ?>
+            <?php $feed_filter->print_select_dropdown( $key1, $key2, 'if', 'ff', $item['if'], 'filter-select2 rex-custom-filter-if' ); ?>
         </div>
 
         <div class="flex-row" data-title="condition : " role="cell">
@@ -107,7 +107,8 @@ $conditions = function_exists( 'wpfm_restructure_custom_filter_args' ) ? wpfm_re
         </div>
 
         <div class="flex-row" data-title="value : " role="cell">
-            <?php $feed_filter->print_input( $key1, $key2, 'value', 'ff', $item['value'] ); ?>
+            <?php $type = Rex_Product_Filter::is_date_column( $item['if'] ) ? 'date' : 'text'; ?>
+            <?php $feed_filter->print_input( $key1, $key2, 'value', 'ff', $item['value'], '', '', $type ); ?>
         </div>
 
         <div class="flex-row" data-title="then : " role="cell">
@@ -135,6 +136,6 @@ $conditions = function_exists( 'wpfm_restructure_custom_filter_args' ) ? wpfm_re
 <!-- .flex-table-and-box end -->
 
 <div class="flex-table-or-button-area">
-    <span class="custom-table-row-add"><?php esc_html_e('OR')?></span>
+    <span class="custom-table-row-add"><?php esc_html_e('OR', 'rex-product-feed')?></span>
 </div>
 <!-- .flex-table-or-button-area end  -->

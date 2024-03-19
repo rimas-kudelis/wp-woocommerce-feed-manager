@@ -1419,24 +1419,18 @@
     function update_per_batch(e) {
         e.preventDefault();
         var $form = $(this);
-        $form.find("button.save-batch span").text("");
+        $form.find("button.save-batch span").hide();
         $form.find("button.save-batch i").show();
         var per_batch = $form.find("#wpfm_product_per_batch").val();
         wpAjaxHelperRequest("rex-product-update-batch-size", per_batch)
             .success(function (response) {
                 $form.find("button.save-batch i").hide();
-                $form.find("button.save-batch span").text("saved");
-                setTimeout(function () {
-                    $form.find("button.save-batch span").text("save");
-                }, 1000);
+                $form.find("button.save-batch span").show();
                 console.log("woohoo!");
             })
             .error(function (response) {
                 $form.find("button.save-batch i").hide();
-                $form.find("button.save-batch span").text("failed");
-                setTimeout(function () {
-                    $form.find("button.save-batch span").text("save");
-                }, 1000);
+                $form.find("button.save-batch span").show();
                 console.log("uh, oh!");
             });
     }
@@ -1448,13 +1442,13 @@
     function save_wpfm_custom_fields_data(e) {
         e.preventDefault();
         var $form = $(this);
-        $form.find("button.save-wpfm-fields-show span").text("");
+        $form.find("button.save-wpfm-fields-show span").hide();
         $form.find("button.save-wpfm-fields-show i").show();
 
-        var fields_value = $.map($('input[name="wpfm_product_custom_fields_frontend[]"]:checked'), function (c) {
+        let fields_value = $.map($('input[name="wpfm_product_custom_fields_frontend[]"]:checked'), function (c) {
             return c.value;
         });
-        var payload = {
+        let payload = {
             security: rex_wpfm_ajax.ajax_nonce,
             fields_value: fields_value,
         };
@@ -1462,18 +1456,12 @@
         wpAjaxHelperRequest("rex-product-save-custom-fields-data", payload)
             .success(function (response) {
                 $form.find("button.save-wpfm-fields-show i").hide();
-                $form.find("button.save-wpfm-fields-show span").text("saved");
-                setTimeout(function () {
-                    $form.find("button.save-wpfm-fields-show span").text("save");
-                }, 1000);
+                $form.find("button.save-wpfm-fields-show span").show();
                 console.log("woohoo!");
             })
             .error(function (response) {
                 $form.find("button.save-wpfm-fields-show i").hide();
-                $form.find("button.save-wpfm-fields-show span").text("failed");
-                setTimeout(function () {
-                    $form.find("button.save-wpfm-fields-show span").text("save");
-                }, 1000);
+                $form.find("button.save-wpfm-fields-show span").show();
                 console.log("uh, oh!");
             });
     }
@@ -1634,24 +1622,18 @@
     function save_fb_pixel_id(e) {
         e.preventDefault();
         var $form = $(this);
-        $form.find("button.save-fb-pixel span").text("");
+        $form.find("button.save-fb-pixel span").hide();
         $form.find("button.save-fb-pixel i").show();
         var value = $form.find("#wpfm_fb_pixel").val();
         wpAjaxHelperRequest("rexfeed-save-fb-pixel-value", value)
             .success(function (response) {
                 $form.find("button.save-fb-pixel i").hide();
-                $form.find("button.save-fb-pixel span").text("saved");
-                setTimeout(function () {
-                    $form.find("button.save-fb-pixel span").text("save");
-                }, 1000);
+                $form.find("button.save-fb-pixel span").show();
                 console.log("woohoo!");
             })
             .error(function (response) {
                 $form.find("button.save-fb-pixel i").hide();
-                $form.find("button.save-fb-pixel span").text("failed");
-                setTimeout(function () {
-                    $form.find("button.save-fb-pixel span").text("save");
-                }, 1000);
+                $form.find("button.save-fb-pixel span").show();
                 console.log("uh, oh!");
             });
     }
@@ -1686,7 +1668,7 @@
     function save_wpfm_transient(e) {
         e.preventDefault();
         var $form = $(this);
-        $form.find("button.save-transient-button span").text("");
+        $form.find("button.save-transient-button span").hide();
         $form.find("button.save-transient-button i").show();
         var value = $form.find("#wpfm_cache_ttl").val();
         var payload = {
@@ -1695,18 +1677,12 @@
         wpAjaxHelperRequest("rexfeed-save-wpfm-transient", payload)
             .success(function (response) {
                 $form.find("button.save-transient-button i").hide();
-                $form.find("button.save-transient-button span").text("saved");
-                setTimeout(function () {
-                    $form.find("button.save-transient-button span").text("save");
-                }, 1000);
+                $form.find("button.save-transient-button span").show();
                 console.log("woohoo!");
             })
             .error(function (response) {
                 $form.find("button.ssave-fb-pixel i").hide();
-                $form.find("button.save-fb-pixel span").text("failed");
-                setTimeout(function () {
-                    $form.find("button.save-fb-pixel span").text("save");
-                }, 1000);
+                $form.find("button.save-transient-button span").show();
                 console.log("uh, oh!");
             });
     }
@@ -2898,10 +2874,21 @@
         }
     });
 
+    $( document ).on( 'change', '.rex-custom-filter-if', function () {
+        const selectedValue = $( this ).find( 'option:selected' ).val();
+        const $inputField = $(this).parent().parent().children( ':nth-child(3)' ).children( 'input' );
 
-    
-
-
+        if ( 'post_date_gmt' === selectedValue
+            || 'post_modified_gmt' === selectedValue
+            || 'sale_price_dates_from' === selectedValue
+            || 'sale_price_dates_to' === selectedValue
+        ) {
+            $inputField.attr( 'type', 'date' );
+        }
+        else {
+            $inputField.attr( 'type', 'text' );
+        }
+    });
 })(jQuery);
 
 /* When the user clicks on the button,

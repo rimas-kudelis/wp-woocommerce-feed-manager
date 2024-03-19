@@ -211,11 +211,11 @@
 							echo "<br>";
 							esc_html_e( 'Example:', 'rex-product-feed' );
 							echo "<br>";
-							esc_html_e( '<g:title>', 'rex-product-feed' );
+							echo esc_html( '<g:title>' );
 							echo "<br>";
-							esc_html_e( '<![CDATA[ V-Neck T-Shirt - Red ]]>', 'rex-product-feed' );
+							echo esc_html( '<![CDATA[ V-Neck T-Shirt - Red ]]>' );
 							echo "<br>";
-							esc_html_e( '</g:title>', 'rex-product-feed' );
+							echo esc_html( '</g:title>' );
 							?>
 							<a href="<?php echo esc_url( 'https://rextheme.com/docs/how-to-include-product-variation-term-to-the-product-name/?utm_source=plugin&utm_medium=exclude_variation_name_link&utm_campaign=pfm_plugin' )?>" target="_blank"><?php esc_html_e('Learn How', 'rex-product-feed')?></a>
 						</p>
@@ -268,17 +268,17 @@
 							echo "<br>";
 							esc_html_e( 'Example:', 'rex-product-feed' );
 							echo "<br>";
-							esc_html_e( '<g:title>', 'rex-product-feed' );
+							echo esc_html( '<g:title>' );
 							echo "<br>";
-							esc_html_e( '<![CDATA[ V-Neck T-Shirt]]>', 'rex-product-feed' );
+							echo esc_html( '<![CDATA[ V-Neck T-Shirt]]>' );
 							echo "<br>";
-							esc_html_e( '</g:title>', 'rex-product-feed' );
+							echo esc_html( '</g:title>' );
 							echo "<br>";
-							esc_html_e( '<g:link>', 'rex-product-feed' );
+							echo esc_html( '<g:link>' );
 							echo "<br>";
-							esc_html_e( '<![CDATA[ http://URL/]]>', 'rex-product-feed' );
+							echo esc_html( '<![CDATA[ http://URL/]]>' );
 							echo "<br>";
-							esc_html_e( '</g:link>' , 'rex-product-feed');
+							echo esc_html( '</g:link>');
 							echo "<br>";
 							?>
 						</p>

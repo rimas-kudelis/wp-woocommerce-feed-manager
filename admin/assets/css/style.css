@@ -588,7 +588,8 @@ a,
   height: 1.3125rem;
   width: 1.3125rem;
 }
-.post-type-product-feed input[type=text] {
+.post-type-product-feed input[type=text],
+.post-type-product-feed input[type=date] {
   width: 100%;
   border: 1px solid #C7D3E4;
   min-height: 50px;
@@ -2435,7 +2436,6 @@ a,
   display: flex;
   flex-flow: row;
   align-items: center;
-  width: 180px;
 }
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant input {
   height: 36px;
@@ -2514,6 +2514,10 @@ a,
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant button i {
   margin-left: 4px;
   display: none;
+}
+.rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant button.save-user-email,
+.rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant button.save-fb-pixel {
+  padding: 16px 10px;
 }
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant button.save-transient-button {
   order: 2;
@@ -3678,9 +3682,12 @@ body.post-type-product-feed.shepherd-active .shepherd-has-title .shepherd-conten
   padding-left: 25px;
 }
 #rex_feed_config_heading #config-table thead tr th .table-action {
+  display: flex;
+  gap: 10px;
   position: absolute;
   top: -47px;
   right: 90px;
+  color: #ff7d04;
 }
 #rex_feed_config_heading #config-table thead tr th:last-child {
   padding-right: 25px;

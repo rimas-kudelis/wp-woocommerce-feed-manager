@@ -162,7 +162,9 @@ class Rex_Product_Filter {
                 'rating_average'        => 'Average Rating',
                 'sale_price_dates_from' => 'Sale Start Date',
                 'sale_price_dates_to'   => 'Sale End Date',
-                'manufacturer'          => 'Manufacturer'
+                'manufacturer'          => 'Manufacturer',
+                'post_date_gmt'             => 'Product Creation Date',
+                'post_modified_gmt'         => 'Product Last Modified Date'
             ]
         ];
         if( rexfeed_is_woocommerce_brand_active() ) {
@@ -199,14 +201,14 @@ class Rex_Product_Filter {
     protected function init_product_filter_condition(){
         $this->condition = array(
             '' => array(
-                'contain'                  => 'Contains',
-                'dn_contain'               => 'Does not contain',
-                'equal_to'                 => 'Is equal to',
-                'nequal_to'                => 'Is not equal to',
-                'greater_than'             => 'Greater than',
-                'greater_than_equal'       => 'Greater than or equal to',
-                'less_than'                => 'Less than',
-                'less_than_equal'          => 'Less than or equal to',
+                'contain'                  => __('Contains', 'rex-product-feed' ),
+                'dn_contain'               => __('Does not contain', 'rex-product-feed' ),
+                'equal_to'                 => __('Is equal to', 'rex-product-feed' ),
+                'nequal_to'                => __('Is not equal to', 'rex-product-feed' ),
+                'greater_than'             => __('Greater than', 'rex-product-feed' ),
+                'greater_than_equal'       => __('Greater than or equal to', 'rex-product-feed' ),
+                'less_than'                => __('Less than', 'rex-product-feed' ),
+                'less_than_equal'          => __('Less than or equal to', 'rex-product-feed' )
             )
         );
     }
@@ -218,12 +220,12 @@ class Rex_Product_Filter {
      * @since    1.1.10
      */
     protected function init_product_filter_then() {
-        $this->then = array(
-            '' => array(
-                'inc' => 'Include',
-                'exc' => 'Exclude',
-            )
-        );
+        $this->then = [
+            '' => [
+                'inc' => __('Include', 'rex-product-feed' ),
+                'exc' => __('Exclude', 'rex-product-feed' )
+            ]
+        ];
     }
 
 
@@ -281,10 +283,10 @@ class Rex_Product_Filter {
 
         echo '<select class="' .esc_attr( $class ). '" name="'.esc_attr( $name_prefix ).'['.esc_attr( $key1 ).']['.esc_attr( $key2 ).'][' . esc_attr( $name ) . ']" style="' . esc_attr( $style ) . '">';
         if( 'rules' === $name) {
-            echo "<option value='or'>Please Select</option>";
+            echo "<option value='or'>".__( 'Please Select', 'rex-product-feed' )."</option>";
         }
         else {
-            echo "<option value=''>Please Select</option>";
+            echo "<option value=''>".__( 'Please Select', 'rex-product-feed' )."</option>";
         }
 
         foreach ($items as $groupLabel => $group) {
@@ -317,8 +319,8 @@ class Rex_Product_Filter {
      * @param string $name
      * @param string $val
      */
-    public function print_input( $key1, $key2, $name, $name_prefix = 'ff', $val = '', $class = '', $style = '' ){
-        echo '<input type="text" class="'. esc_attr( $class ) .'" name="'.esc_html( $name_prefix ).'['.esc_attr( $key1 ).']['.esc_attr( $key2 ).'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '" style="' . esc_attr( $style ) . '">';
+    public function print_input( $key1, $key2, $name, $name_prefix = 'ff', $val = '', $class = '', $style = '', $type = 'text' ){
+        echo '<input type="'. esc_attr( $type ) .'" class="'. esc_attr( $class ) .'" name="'.esc_html( $name_prefix ).'['.esc_attr( $key1 ).']['.esc_attr( $key2 ).'][' . esc_attr( $name ) . ']" value="' . esc_attr( $val ) . '" style="' . esc_attr( $style ) . '">';
     }
 
     /**
@@ -344,13 +346,17 @@ class Rex_Product_Filter {
                     $condition = $filter[ 'condition' ];
                     $value     = $filter[ 'value' ];
 
+                    if ( self::is_unix_date( $if ) ) {
+                        $value = strtotime( $value );
+                    }
+
                     $prefix = self::get_method_prefix( $filter[ 'if' ] );
 
                     if( 'postterm_' === $prefix ) {
                         self::$term_table_count++;
-                        $column = $filter[ 'if' ];
-                        $taxonomy = preg_match('/^pa_/i', $column) ? $column : substr($column, 0, -1);
-                        $value = self::get_term_id( $value, $taxonomy );
+                        $column   = $filter[ 'if' ];
+                        $taxonomy = preg_match( '/^pa_/i', $column ) ? $column : substr( $column, 0, -1 );
+                        $value    = self::get_term_id( $value, $taxonomy );
 
                         if( !$value ) {
                             continue;
@@ -384,6 +390,42 @@ class Rex_Product_Filter {
             'meta_exists' => $meta_exists,
             'term_exists' => $term_exists,
         ];
+    }
+
+    /**
+     * Checks if a given column is a date-related column.
+     *
+     * @param string $column The column name to check.
+     *
+     * @return bool True if the column is a date-related column, false otherwise.
+     * @since 7.3.28
+     */
+    private static function is_unix_date( $column ) {
+        return in_array( $column, [
+            '_sale_price_dates_from',
+            '_sale_price_dates_to',
+            'sale_price_dates_from',
+            'sale_price_dates_to'
+        ] );
+    }
+
+    /**
+     * Checks if a given column is a date-related column.
+     *
+     * @param string $column The column name to check.
+     *
+     * @return bool True if the column is a date-related column, false otherwise.
+     * @since 7.3.28
+     */
+    public static function is_date_column( $column ) {
+        return in_array( $column, [
+            'sale_price_dates_from',
+            'sale_price_dates_to',
+            '_sale_price_dates_from',
+            '_sale_price_dates_to',
+            'post_date_gmt',
+            'post_modified_gmt',
+        ] );
     }
 
     /**

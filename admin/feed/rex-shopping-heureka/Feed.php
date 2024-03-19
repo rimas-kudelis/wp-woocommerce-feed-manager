@@ -236,41 +236,42 @@ class Feed
     private function addItemsToFeed()
     {
 
-        foreach ($this->items as $item) {
+        foreach ( $this->items as $item ) {
             /** @var SimpleXMLElement $feedItemNode */
-            if ( $this->channelName && !empty($this->channelName) ) {
-                $feedItemNode = $this->feed->{$this->channelName}->addChild($this->itemlName);
-            }else{
-                $feedItemNode = $this->feed->addChild($this->itemlName);
+            if ( $this->channelName && !empty( $this->channelName ) ) {
+                $feedItemNode = $this->feed->{$this->channelName}->addChild( $this->itemlName );
+            } else {
+                $feedItemNode = $this->feed->addChild( $this->itemlName );
             }
-            foreach ($item->nodes() as $itemNode) {
-                if($itemNode->get('name') != 'param'){
-                    if(stristr($itemNode->get('name'),'Param_name_')){
-                        $this->param = $feedItemNode->addChild('PARAM');
-                        $this->param->addChild('PARAM_NAME',$itemNode->get('value'));
-                    }elseif(stristr($itemNode->get('name'),'Param_value_')){
-                        $this->param->addChild('VAL',$itemNode->get('value'));
-                    }elseif(stristr($itemNode->get('name'),'Delivery_id_')){
-                        $this->delivery = $feedItemNode->addChild('DELIVERY');
-                        $this->delivery->addChild('DELIVERY_ID',$itemNode->get('value'));
-                    }elseif(stristr($itemNode->get('name'),'Delivery_price_') && !stristr($itemNode->get('name'),'Delivery_price_cod_')){
-                        $this->delivery->addChild('DELIVERY_PRICE',$itemNode->get('value'));
-                    }elseif( stristr($itemNode->get('name'),'Delivery_price_cod_') ){
-                        $this->delivery->addChild('DELIVERY_PRICE_COD',$itemNode->get('value'));
-                    }else{
-    
-                        if (is_array($itemNode)) {
-                            foreach ($itemNode as $node) {
-                                $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
+            foreach ( $item->nodes() as $itemNode ) {
+                if ( $itemNode->get( 'name' ) != 'param' ) {
+                    if ( stristr( $itemNode->get( 'name' ), 'Param_name_' ) ) {
+                        $this->param = $feedItemNode->addChild( 'PARAM' );
+                        $this->param->addChild( 'PARAM_NAME', $itemNode->get( 'value' ) );
+                    } elseif ( stristr( $itemNode->get( 'name' ), 'Param_value_' ) ) {
+                        $this->param->addChild( 'VAL', $itemNode->get( 'value' ) );
+                    } elseif ( stristr( $itemNode->get( 'name' ), 'Delivery_id_' ) ) {
+                        $this->delivery = $feedItemNode->addChild( 'DELIVERY' );
+                        $this->delivery->addChild( 'DELIVERY_ID', $itemNode->get( 'value' ) );
+                    } elseif ( stristr( $itemNode->get( 'name' ), 'Delivery_price_' ) && !stristr( $itemNode->get( 'name' ), 'Delivery_price_cod_' ) ) {
+                        $this->delivery->addChild( 'DELIVERY_PRICE', $itemNode->get( 'value' ) );
+                    } elseif ( stristr( $itemNode->get( 'name' ), 'Delivery_price_cod_' ) ) {
+                        $this->delivery->addChild( 'DELIVERY_PRICE_COD', $itemNode->get( 'value' ) );
+                    } elseif ( preg_match( '/IMGURL_ALTERNATIVE_\d+/', $itemNode->get( 'name' ) ) ) {
+                        $feedItemNode->addChild( 'IMGURL_ALTERNATIVE', $itemNode->get( 'value' ) );
+                    } else {
+
+                        if ( is_array( $itemNode ) ) {
+                            foreach ( $itemNode as $node ) {
+                                $feedItemNode->addChild( str_replace( ' ', '_', $node->get( 'name' ) ), $node->get( 'value' ), $node->get( '_namespace' ) );
                             }
                         } else {
-                            $itemNode->attachNodeTo($feedItemNode);
+                            $itemNode->attachNodeTo( $feedItemNode );
                         }
                     }
                 }
             }
         }
-        
     }
 
 
@@ -384,7 +385,7 @@ class Feed
         $categories = $this->categories();
         unset($categories[0]);
         $select = '<select name="google_category">';
-        $select .= '<option value="">Please select a Google Category</option>';
+        $select .= '<option value="">'.__( 'Please select a Google Category', 'rex-product-feed' ).'</option>';
         foreach ($categories as $category) {
             $select .= '<option ' . ($category == $selected ? 'selected' : '') . ' name="' . $category . '">' . $category . '</option>';
         }

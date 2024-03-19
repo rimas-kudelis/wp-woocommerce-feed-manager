@@ -10,7 +10,7 @@
  */
 
 $post_new_feed_url = 'post-new.php?post_type=product-feed&rex_feed_merchant=';
-$generate_feed     = 'Generate Feed';
+$generate_feed     = __( 'Generate Feed', 'rex-product-feed' );
 $arrow_icon        = 'icon/icon-svg/new-arrow.php';
 $take_tour_icon    = 'icon/icon-svg/take-tour.php';
 
@@ -19,15 +19,15 @@ $merchants = array(
 		'name' => 'Google',
 		'urls' => array(
 			array(
-				'text' => 'A Complete Guide To Google Shopping',
+				'text' => __( 'A Complete Guide To Google Shopping', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/best-woocommerce-product-feed/?utm_source=blog&utm_medium=cta&utm_campaign=pfm_complete_guide',
 			),
 			array(
-				'text' => 'How to generate WooCommerce product feed for Google',
+				'text' => __( 'How to generate WooCommerce product feed for Google', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/docs/how-to-generate-woocommerce-product-feed-for-google/?utm_source=plugin&utm_medium=get_started_google_doc_link&utm_campaign=pfm_plugin',
 			),
 			array(
-				'text' => 'How to Auto-sync product feed to Google Merchant shop',
+				'text' => __( 'How to auto-sync product feed to Google Merchant Shop', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/docs/how-to-auto-sync-product-feed-to-google-merchant-shop/?utm_source=plugin&utm_medium=get_started_auto_sync_link&utm_campaign=pfm_plugin',
 			),
 		),
@@ -36,7 +36,7 @@ $merchants = array(
 		'name' => 'Vivino',
 		'urls' => array(
 			array(
-				'text' => 'How to generate WooCommerce product feed for Vivino',
+				'text' => __( 'How to generate WooCommerce product feed for Vivino', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/best-woocommerce-product-feed/?utm_source=blog&utm_medium=cta&utm_campaign=vivino_blog',
 			),
 		),
@@ -45,7 +45,7 @@ $merchants = array(
 		'name' => 'Glami',
 		'urls' => array(
 			array(
-				'text' => 'How to generate WooCommerce product feed for Glami',
+				'text' => __( 'How to generate WooCommerce product feed for Glami', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/best-woocommerce-product-feed/?utm_source=blog&utm_medium=cta&utm_campaign=glami_blog',
 			),
 		),
@@ -54,15 +54,15 @@ $merchants = array(
 		'name' => 'Facebook',
 		'urls' => array(
 			array(
-				'text' => 'A Complete Guide To Facebook',
+				'text' => __( 'A Complete Guide To Facebook', 'rex-product-feed'),
 				'url'  => 'https://rextheme.com/best-woocommerce-product-feed/?utm_source=blog&utm_medium=cta&utm_campaign=pfm_complete_guide',
 			),
 			array(
-				'text' => 'How to generate WooCommerce product feed for Facebook',
+				'text' => __( 'How to generate WooCommerce product feed for Facebook', 'rex-product-feed'),
 				'url'  => 'https://rextheme.com/docs/how-to-generate-woocommerce-product-feed-for-facebook/?utm_source=plugin&utm_medium=get_started_facebook_doc_link&utm_campaign=pfm_plugin',
 			),
 			array(
-				'text' => 'How to upload your WooCommerce products on the Facebook store',
+				'text' => __( 'How to upload your WooCommerce products on the Facebook store', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/docs/how-to-upload-your-woocommerce-products-on-the-facebook-store/?utm_source=plugin&utm_medium=get_started_upload_facebook_link&utm_campaign=pfm_plugin',
 			),
 		),
@@ -71,7 +71,7 @@ $merchants = array(
 		'name' => 'Fruugo',
 		'urls' => array(
 			array(
-				'text' => 'How to generate WooCommerce product feed for Fruugo',
+				'text' => __( 'How to generate WooCommerce product feed for Fruugo', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/start-selling-on-fruugo-product-feed-for-woocommerce/',
 			),
 		),
@@ -80,7 +80,7 @@ $merchants = array(
 		'name' => 'Favi',
 		'urls' => array(
 			array(
-				'text' => 'How to generate WooCommerce product feed for Favi',
+				'text' => __( 'How to generate WooCommerce product feed for Favi', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/best-woocommerce-product-feed/?utm_source=blog&utm_medium=cta&utm_campaign=favi_blog',
 			),
 		),
@@ -89,7 +89,7 @@ $merchants = array(
 		'name' => 'Idealo',
 		'urls' => array(
 			array(
-				'text' => 'How to List WooCommerce Store Products On Idealo',
+				'text' => __( 'How to List WooCommerce Store Products On Idealo', 'rex-product-feed'),
 				'url'  => 'https://rextheme.com/best-woocommerce-product-feed/?utm_source=blog&utm_medium=cta&utm_campaign=idealo_blog',
 			),
 		),
@@ -98,7 +98,7 @@ $merchants = array(
 		'name' => 'Ceneo',
 		'urls' => array(
 			array(
-				'text' => 'How to generate WooCommerce product feed for Ceneo',
+				'text' => __( 'How to generate WooCommerce product feed for Ceneo', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/best-woocommerce-product-feed/?utm_source=blog&utm_medium=cta&utm_campaign=ceneo_blog',
 			),
 		),
@@ -107,7 +107,7 @@ $merchants = array(
 		'name' => 'Heureka',
 		'urls' => array(
 			array(
-				'text' => 'How to generate WooCommerce product feed for Heureka',
+				'text' => __( 'How to generate WooCommerce product feed for Heureka', 'rex-product-feed' ),
 				'url'  => 'https://rextheme.com/best-woocommerce-product-feed/?utm_source=blog&utm_medium=cta&utm_campaign=heureka_blog',
 			),
 		),

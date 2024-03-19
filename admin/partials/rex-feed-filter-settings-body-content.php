@@ -21,15 +21,15 @@ $documentation_url = 'https://rextheme.com/docs/product-feed-manager-documentati
 	</a>
 	<a id="rex-feed-troubleshoot-btn" class="rex-fill-button" href="<?php echo esc_url( $troubleshoot_url ); ?>" role = "button" target="_blank">
 		<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/troubleshoot.php'; ?>
-		<?php echo esc_html__( 'Troubleshoot', 'rex-product-feed' ); ?>
+		<?php esc_html_e( 'Troubleshoot', 'rex-product-feed' ); ?>
 	</a>
 	<a id="rex-pr-filter-btn" class="rex-fill-button" role="button">
 		<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/productfilter.php'; ?>
-		<?php echo esc_html__( 'Product Filter', 'rex-product-feed' ); ?>
+		<?php esc_html_e( 'Product Filter', 'rex-product-feed' ); ?>
 	</a>
 	<a id="rex-feed-settings-btn" class="rex-fill-button" role="button">
 		<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/settings.php'; ?>
-		<?php echo esc_html__( 'Settings', 'rex-product-feed' ); ?>
+		<?php esc_html_e( 'Settings', 'rex-product-feed' ); ?>
 	</a>
 
 </div>

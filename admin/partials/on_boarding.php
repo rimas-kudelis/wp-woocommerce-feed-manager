@@ -26,12 +26,12 @@ $pro_url                     = add_query_arg( 'pfm-dashboard', '1', 'https://rex
 $rollback_versions           = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
 $wpfm_remove_plugin_data     = get_option( 'wpfm_remove_plugin_data' );
 $schedule_hours              = array(
-	'1'   => '1 Hour',
-	'3'   => '3 Hours',
-	'6'   => '6 Hours',
-	'12'  => '12 Hours',
-	'24'  => '24 Hours',
-	'168' => '1 Week',
+	'1'   => __( '1 Hour', 'rex-product-feed' ),
+	'3'   => __( '3 Hours', 'rex-product-feed' ),
+	'6'   => __( '6 Hours', 'rex-product-feed' ),
+	'12'  => __( '12 Hours', 'rex-product-feed' ),
+	'24'  => __( '24 Hours', 'rex-product-feed' ),
+	'168' => __( '1 Week', 'rex-product-feed' )
 );
 
 if ( $is_premium_activated ) {
@@ -174,14 +174,14 @@ else {
 							<div class="feed-left">
 
 								<div class="single-merchant product-batch">
-									<span class="title"><?php echo esc_html__( 'Product(s) per batch (Free users cannot generate more than ', 'rex-product-feed' ) . esc_html( WPFM_FREE_MAX_PRODUCT_LIMIT ) . esc_html__( ' products. For free users it will run only 1 batch)', 'rex-product-feed' ); ?></span>
+									<span class="title"><?php echo sprintf( esc_html__( 'Products per batch (Free users cannot generate more than %d products. For free users it will run only 1 batch)', 'rex-product-feed' ), esc_html( WPFM_FREE_MAX_PRODUCT_LIMIT ) );?></span>
 									<div class="switch">
 										<form id="wpfm-per-batch" class="wpfm-per-batch">
 											<input id="wpfm_product_per_batch" type="number" name="wpfm_product_per_batch"
 												value="<?php echo esc_attr( $per_batch ); ?>"
 												min="1" max="<?php echo !$is_premium_activated ? esc_attr( WPFM_FREE_MAX_PRODUCT_LIMIT ) : esc_attr( 500 ); ?>">
 											<button type="submit" class="save-batch">
-												<span>save</span>
+												<span><?php _e( 'Save', 'rex-product-feed' );?></span>
 												<i class="fa fa-spinner fa-pulse fa-fw"></i>
 											</button>
 										</form>
@@ -226,7 +226,7 @@ else {
 												</select>
 											
 												<button type="submit" class="save-transient-button">
-													<span><?php echo esc_html__( 'save', 'rex-product-feed' ); ?></span> 
+													<span><?php echo esc_html__( 'Save', 'rex-product-feed' ); ?></span>
 													<i class="fa fa-spinner fa-pulse fa-fw"></i>
 												</button>
 											</div>
@@ -306,7 +306,7 @@ else {
 											?>
 										</div>
 										
-                                        <span class="helper-text"><?php _e( '<b>Warning:</b> Please backup your database before making the rollback as you might loose you previous data.', 'rex-product-feed' ); // phpcs:ignore ?></span>
+                                        <span class="helper-text"><?php echo __( 'Warning: Please back up your database before making the rollback as you might lose you previous data.', 'rex-product-feed' );// phpcs:ignore ?></span>
 									</div>
 								</div>
 
@@ -322,7 +322,7 @@ else {
 										</a>
 									<?php } ?>
 
-									<span class="title"><?php echo esc_html__( 'Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date, Additional info ) to product', 'rex-product-feed' ); ?></span>
+									<span class="title"><?php esc_html_e( 'Add Unique Product Identifiers ( Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date, Additional info ) to product', 'rex-product-feed' ); ?></span>
 									<div class="switch">
 										<?php
 										if ( !$is_premium_activated ) {
@@ -347,11 +347,11 @@ else {
 									<?php if ( !$is_premium_activated ) { ?>
 										<a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
 										class="wpfm-pro-cta">
-											<span class="wpfm-pro-tag"><?php echo esc_html__( 'pro', 'rex-product-feed' ); ?></span>
+											<span class="wpfm-pro-tag"><?php esc_html_e( 'pro', 'rex-product-feed' ); ?></span>
 										</a>
 									<?php } ?>
 
-									<span class="title"><?php echo esc_html__( 'Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed' ); ?></span>
+									<span class="title"><?php esc_html_e( 'Add Detailed Product Attributes ( Size, Color, Pattern, Material, Age group, Gender ) to product', 'rex-product-feed' ); ?></span>
 									<div class="switch">
 										<?php
 										if ( !$is_premium_activated ) {
@@ -400,7 +400,7 @@ else {
 								</div>
 
 								<div class="single-merchant detailed-product">
-									<span class="title"><?php echo esc_html__( 'Allow private products', 'rex-product-feed' ); ?></span>
+									<span class="title"><?php esc_html_e( 'Allow Private Products', 'rex-product-feed' ); ?></span>
 									<div class="switch">
 										<?php
 										$disabled = '';
@@ -426,8 +426,7 @@ else {
 									<span class="title">
 										<?php
 										echo esc_html__(
-											'Increase the number of products that will be approved in Google\'s Merchant Center:
-                                            This option will fix WooCommerce\'s (JSON-LD) structured data bug and add extra structured data elements to your pages',
+											"Increase the number of products that will be approved in Google's Merchant Center: This option will fix WooCommerce's (JSON-LD) structured data bug and add extra structured data elements to your pages",
 											'rex-product-feed'
 										);
 										?>
@@ -473,12 +472,12 @@ else {
 								</div>
 
 								<div class="single-merchant wpfm-fb-pixel-field <?php echo esc_attr( $hidden_class ); ?>">
-									<span class="title"><?php echo esc_html__( 'Facebook Pixel id', 'rex-product-feed' ); ?></span>
+									<span class="title"><?php echo esc_html__( 'Facebook Pixel ID', 'rex-product-feed' ); ?></span>
 									<div class="switch">
 										<form id="wpfm-fb-pixel" class="wpfm-fb-pixel" style="width: 300px;">
 											<input id="wpfm_fb_pixel" type="text" name="wpfm_fb_pixel"
 												value="<?php echo esc_attr( $wpfm_fb_pixel_data ); ?>" style="width: 200px;">
-											<button type="submit" class="save-fb-pixel"><span><?php echo esc_html__( 'save', 'rex-product-feed' ); ?></span>
+											<button type="submit" class="save-fb-pixel"><span><?php echo esc_html__( 'Save', 'rex-product-feed' ); ?></span>
 												<i class="fa fa-spinner fa-pulse fa-fw"></i>
 											</button>
 										</form>
@@ -498,7 +497,7 @@ else {
 										<form id="wpfm-user-email" class="wpfm-fb-pixel" style="width: 300px;" disabled>
 											<input placeholder="user@email.com" id="wpfm_user_email" type="text" name="wpfm_user_email" value="<?php echo esc_attr( $current_user_email ); ?>" style="width: 200px;<?php echo !$is_premium_activated ? ' cursor: not-allowed; disabled' : ''; ?>">
 											<button type="submit" class="save-user-email" <?php echo !$is_premium_activated ? ' style="background-color: #f2f2f8; color: #d9d9db; cursor: not-allowed;" disabled' : ''; ?>>
-												<span><?php echo esc_html__( 'save', 'rex-product-feed' ); ?></span>
+												<span><?php echo esc_html__( 'Save', 'rex-product-feed' ); ?></span>
 												<i class="fa fa-spinner fa-pulse fa-fw"></i>
 											</button>
 										</form>
@@ -567,7 +566,7 @@ else {
 										</span>
 
 										<button class="single-merchant__button" type="button">
-											<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=product-feed&rex_feed_merchant=' . $key ) ); ?>" target="_self" <?php echo wp_kses( $style, wp_kses_allowed_html( 'post' ) ); ?>><?php echo esc_html__( 'Generate', 'rex-product-feed' ); ?></a>
+											<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=product-feed&rex_feed_merchant=' . $key ) ); ?>" target="_self" <?php echo wp_kses( $style, wp_kses_allowed_html( 'post' ) ); ?>><?php esc_html_e( 'Generate', 'rex-product-feed' ); ?></a>
 										</button>
 									</div>
 									<?php
@@ -594,7 +593,7 @@ else {
 						}
 						echo '<form id="wpfm-error-log-form" action="' . esc_url( admin_url( 'admin.php?page=wpfm_dashboard' ) ) . '" method="post">';
 						echo '<select id="wpfm-error-log" name="wpfm-error-log">';
-						echo '<option value="">Please Select</option>';
+						echo '<option value="">'. __( 'Please Select', 'rex-product-feed' ) .'</option>';
 						foreach ( $wpfm_logs as $key => $value ) {
 							echo '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
 						}

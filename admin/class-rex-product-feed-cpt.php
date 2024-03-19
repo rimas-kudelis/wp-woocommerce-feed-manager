@@ -38,19 +38,19 @@ class Rex_Product_CPT {
 	 */
 	private function create_post_type() {
 		$labels = [
-			'name'               => 'Product Feeds',
-			'singular_name'      => 'Product Feed',
-			'all_items'          => 'All Product Feeds',
-			'menu_name'          => 'Product Feed',
-			'add_new'            => 'Add New Feed',
-			'add_new_item'       => 'Add New Product Feed',
-			'edit_item'          => 'Edit Product Feed',
-			'new_item'           => 'New Product Feed',
-			'view_item'          => 'View Product Feed',
-			'search_items'       => 'Search Product Feeds',
-			'not_found'          => 'No product feeds found',
-			'not_found_in_trash' => 'No product feeds found in Trash',
-			'parent_item_colon'  => 'Parent Product Feed:'
+			'name'               => _x( 'Product Feeds', 'Post Type General Name', 'rex-product-feed' ),
+			'singular_name'      => _x( 'Product Feed', 'Post Type General Name', 'rex-product-feed' ),
+			'all_items'          => __( 'All Product Feeds', 'rex-product-feed' ),
+			'menu_name'          => _x( 'Product Feeds', 'Post Type General Name', 'rex-product-feed' ),
+			'add_new'            => __( 'Add New Feed', 'rex-product-feed' ),
+			'add_new_item'       => __( 'Add New Product Feed', 'rex-product-feed' ),
+			'edit_item'          => __( 'Edit Product Feed', 'rex-product-feed' ),
+			'new_item'           => __( 'New Product Feed', 'rex-product-feed' ),
+			'view_item'          => __( 'View Product Feed', 'rex-product-feed' ),
+			'search_items'       => __( 'Search Product Feeds', 'rex-product-feed' ),
+			'not_found'          => __( 'No product feeds found', 'rex-product-feed' ),
+			'not_found_in_trash' => __( 'No product feeds found in trash', 'rex-product-feed' ),
+			'parent_item_colon'  => __( 'Parent Product Feed:', 'rex-product-feed' ),
 		];
 
 		$args = [

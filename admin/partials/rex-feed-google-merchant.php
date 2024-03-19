@@ -162,12 +162,11 @@ $display_none = 'style="display: none"';
 				$rex_google_merchant = new Rex_Google_Merchant_Settings_Api();
 
                 if ( $rex_google_merchant::$client_id && $rex_google_merchant::$client_secret && $rex_google_merchant::$merchant_id ) {
-                    $message = __('Access token has expired. Please, authenticate again if you want to submit a completely new feed to Google Merchant Center.', 'rex-product-feed');
-                    $button = __( 'Authenticate', 'rex-product-feed' );
-                }
-                else {
-                    $message = __('Use Google Auto-sync to send data to your Google Merchant Center at fixed intervals. Configure and Authenticate Auto-sync with Google to be able to use this feature.', 'rex-product-feed');
-                    $button = __( 'Configure', 'rex-product-feed' );
+                    $message = esc_html__( 'Access token has expired. Please, authenticate again if you want to submit a completely new feed to Google Merchant Center.', 'rex-product-feed' );
+                    $button  = esc_html__( 'Authenticate', 'rex-product-feed' );
+                } else {
+                    $message = esc_html__( 'Use Google Auto-sync to send data to your Google Merchant Center at fixed intervals. Configure and Authenticate Auto-sync with Google to be able to use this feature.', 'rex-product-feed' );
+                    $button  = esc_html__( 'Configure', 'rex-product-feed' );
                 }
 				
 				if ( !( $rex_google_merchant->is_authenticate() ) ) {

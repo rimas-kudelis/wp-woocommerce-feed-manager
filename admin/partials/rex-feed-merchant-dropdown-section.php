@@ -15,7 +15,7 @@ $icon = 'icon/icon-svg/icon-question.php';
 ?>
 
 <div class="rex_feed_config_div rex-feed-merchant">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'merchant'; ?>"><?php echo __( 'Feed Merchant', 'rex-product-feed' ); ?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'merchant'; ?>"><?php esc_html_e( 'Feed Merchant', 'rex-product-feed' ); ?>
 		<span class="rex_feed-tooltip">
 			<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon; ?>
 			<p><?php echo __( 'Select your preferred merchant from the list', 'rex-product-feed' ); ?></p>
@@ -30,7 +30,7 @@ $icon = 'icon/icon-svg/icon-question.php';
 </div>
 
 <div class="rex_feed_config_div rex-feed-feed-format">
-	<label for="<?php echo esc_attr( $this->prefix ) . 'feed_format'; ?>"><?php echo __( 'Feed Type', 'rex-product-feed' ); ?>
+	<label for="<?php echo esc_attr( $this->prefix ) . 'feed_format'; ?>"><?php esc_html_e( 'Feed Type', 'rex-product-feed' ); ?>
 		<span class="rex_feed-tooltip">
 			<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon; ?>
 			<p><?php echo __( 'Select your feed file type', 'rex-product-feed' ); ?></p>
@@ -50,7 +50,7 @@ $icon = 'icon/icon-svg/icon-question.php';
 	<?php
 	echo esc_attr( $this->prefix ) . 'separator';
 	?>
-	"><?php echo __( 'Separator', 'rex-product-feed' ); ?>
+	"><?php esc_html_e( 'Separator', 'rex-product-feed' ); ?>
 		<span class="rex_feed-tooltip">
 			<?php require WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon; ?>
 			<p><?php echo __( 'Select separator', 'rex-product-feed' ); ?></p>

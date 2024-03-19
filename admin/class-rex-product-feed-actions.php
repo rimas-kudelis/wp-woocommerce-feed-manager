@@ -320,55 +320,26 @@ class Rex_Product_Feed_Actions {
 					</p>
 					<ol style="margin-left: 20px; font-size: 13px;">
 						<li>
-							<a href="
-							<?php
-							echo esc_url( admin_url( 'admin.php?page=wpfm_dashboard' ) );
-							?>
-							" target="_blank">
-							<?php
-								esc_html_e( 'Clear Batch', 'rex-product-feed' );
-							?>
-								</a> 
-								<?php
-								esc_html_e( 'And Regenerate', 'rex-product-feed' );
-								?>
-							 - <a href="
-							<?php
-							echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/?utm_source=plugin&utm_medium=troubleshoot_button&utm_campaign=pfm_plugin' );
-							?>
-							"
-																						target="_blank">
-																						<?php
-																						esc_html_e( 'View Doc', 'rex-product-feed' );
-																						?>
-								</a>
+                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpfm_dashboard' ) ); ?>" target="_blank">
+                                <?php esc_html_e( 'Clear Batch', 'rex-product-feed' ); ?>
+                            </a>
+                            <?php esc_html_e( 'and Regenerate', 'rex-product-feed' ); ?> -
+                            <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/?utm_source=plugin&utm_medium=troubleshoot_button&utm_campaign=pfm_plugin' ); ?>" target="_blank">
+                                <?php esc_html_e( 'View Doc', 'rex-product-feed' ); ?>
+                            </a>
 						</li>
 						<li>
-							<?php
-							esc_html_e( 'Use Strip Tags For Description', 'rex-product-feed' );
-							?>
-							 - <a href="
-							<?php
-							echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/?utm_source=plugin&utm_medium=troubleshoot_button&utm_campaign=pfm_plugin' );
-							?>
-							"
-																										target="_blank">
-																										<?php
-																										esc_html_e( 'View Doc', 'rex-product-feed' );
-																										?>
-								</a>
-						</li>
+                            <?php esc_html_e( 'Use Strip Tags For Description', 'rex-product-feed' ); ?> -
+                            <a href="<?php echo esc_url( 'https://rextheme.com/docs/wpfm-troubleshooting-for-common-issues/?utm_source=plugin&utm_medium=troubleshoot_button&utm_campaign=pfm_plugin' ); ?>" target="_blank">
+                                <?php esc_html_e( 'View Doc', 'rex-product-feed' ); ?>
+                            </a>
+                        </li>
 					</ol>
 					<p>
-						<?php
-						esc_html_e( 'If these doesn\'t work, please reach out to us at', 'rex-product-feed' );
-						?>
-						 <a
-							href="mailto: support@rextheme.com" target="_blank">support@rextheme.com</a> 
-							<?php
-							esc_html_e( 'and we will assist you.', 'rex-product-feed' );
-							?>
-					</p>
+                        <?php esc_html_e( 'If these don\'t work, please reach out to us at', 'rex-product-feed' ); ?>
+                        <a href="mailto: support@rextheme.com" target="_blank">support@rextheme.com</a>
+                        <?php esc_html_e( 'and we will assist you.', 'rex-product-feed' ); ?>
+                    </p>
 					<p>
 						<?php
 						esc_html_e( 'Attach your temporary feed link, and screenshots of your feed attributes, feed settings, and the feed filter section in the email.', 'rex-product-feed' );
@@ -553,7 +524,8 @@ class Rex_Product_Feed_Actions {
 	public function register_purge_button( $post ) {
 		if ( 'product-feed' === $post->post_type ) {
 			$html  = '<button id="btn_on_feed" ';
-			$html .= 'class="wpfm-purge-cache btn_on_feed">Purge Cache';
+			$html .= 'class="wpfm-purge-cache btn_on_feed">';
+			$html .= __( 'Purge Cache', 'rex-product-feed' );
 			$html .= '<i class="fa fa-spinner fa-pulse fa-fw" style="display: none"></i></button>';
 
             print $html; // phpcs:ignore

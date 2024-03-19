@@ -23,14 +23,15 @@ $wpfm_hide_char = get_option( 'rex_feed_hide_character_limit_field', 'on' );
 
 <thead>
     <tr>
-        <th class="" id="rex_feed_attr_head" style="width:20%" title="Required Attributes"><?php echo esc_html__('Required Attributes', 'rex-product-feed') ?><span>*</span></th>
-        <th class="" id="rex_feed_type_head" style="width:12%" title="Attribute Type"><?php echo esc_html__('Attribute Type', 'rex-product-feed') ?><span>*</span></th>
-        <th class="" id="rex_feed_val_head" style="width:13%" title="Assigned Values"><?php echo esc_html__('Assigned Values', 'rex-product-feed') ?><span>*</span></th>
+        <th class="" id="rex_feed_attr_head" style="width:20%" title="<?php esc_html_e('Required Attributes', 'rex-product-feed') ?>"><?php esc_html_e('Required Attributes', 'rex-product-feed') ?><span>*</span></th>
+        <th class="" id="rex_feed_type_head" style="width:12%" title="<?php esc_html_e('Attribute Type', 'rex-product-feed') ?>"><?php esc_html_e('Attribute Type', 'rex-product-feed') ?><span>*</span></th>
+        <th class="" id="rex_feed_val_head" style="width:13%" title="<?php esc_html_e('Assigned Values', 'rex-product-feed') ?>"><?php esc_html_e('Assigned Values', 'rex-product-feed') ?><span>*</span></th>
         <th class="" id="rex_feed_prefix_head" style="width:15%"> &nbsp;</th>
-        <th class="" id="rex_feed_sanitization_head" title="Output Filter"><?php echo esc_html__('Output Filter', 'rex-product-feed') ?></th>
-        <th class="" id="rex_feed_output_limit_head" title="Character Limit"><?php echo esc_html__('char Limit', 'rex-product-feed') ?></th>
+        <th class="" id="rex_feed_sanitization_head" title="<?php esc_html_e('Output Filter', 'rex-product-feed') ?>"><?php esc_html_e('Output Filter', 'rex-product-feed') ?></th>
+        <th class="" id="rex_feed_output_limit_head" title="<?php esc_html_e('char Limit', 'rex-product-feed') ?>"><?php esc_html_e('char Limit', 'rex-product-feed') ?></th>
         <th class="" id="rex_feed_output_action_head" style="width:12%">
             <div class="table-action">
+                <?php echo esc_html__('Click Here To Edit Attributes', 'rex-product-feed') ?>  
                 <?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/click-here.php';?>
             </div>
             <?php echo esc_html__('Action', 'rex-product-feed') ?>

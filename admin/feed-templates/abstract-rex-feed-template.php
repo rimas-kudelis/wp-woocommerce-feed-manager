@@ -164,7 +164,7 @@ abstract class Rex_Feed_Abstract_Template {
         }
 
         echo '<select class="' .esc_attr( $class ). '" name="fc['.esc_attr( $key ).'][' . esc_attr( $name ) . ']' .esc_attr( $array ). '" ' . esc_attr( $multiple ) . '>';
-        echo "<option value='-1' disabled>Please Select</option>";
+        echo "<option value='-1' disabled>".__( 'Please Select', 'rex-product-feed' )."</option>";
         $i = 1;
         foreach ($items as $groupLabel => $group) {
             if ( !empty($groupLabel)) {
@@ -198,9 +198,9 @@ abstract class Rex_Feed_Abstract_Template {
      * @param string $select
      */
     public function print_attr_type( $key, $select = '', $class = '' ){
-        $options = apply_filters('wpfm_pro_feed_attribute_type_render', array( 'meta' => 'Attribute', 'static' => 'Static'));
+        $options = apply_filters('wpfm_pro_feed_attribute_type_render', array( 'meta' => __( 'Attribute', 'rex-product-feed' ), 'static' => __( 'Static', 'rex-product-feed' )));
         echo "<select class='type-dropdown disable-custom-dropdown {$class}' name='fc[".esc_attr($key)."][type]' readonly='true'>";
-        echo "<option value=''>Please Select</option>";
+        echo "<option value=''>".__( 'Please Select', 'rex-product-feed' )."</option>";
         foreach ($options as $key => $option) {
             $selected = $select === $key ? "selected='selected'" : "";
             echo "<option value='".esc_attr($key)."' ".esc_html($selected).">".esc_html($option)."</option>";
@@ -234,36 +234,36 @@ abstract class Rex_Feed_Abstract_Template {
      *
      * @since    1.0.0
      */
-    protected function init_sanitization_options(){
-        $this->sanitization_options = array(
-            '' => array(
-                'default'                      => 'Default',
-                'strip_tags'                   => 'Strip Tags',
-                'utf_8_encode'                 => 'UTF-8 Encode',
-                'htmlentities'                 => 'htmlentities',
-                'integer'                      => 'Integer',
-                'price'                        => 'Price',
-                'remove_space'                 => 'Remove Space',
-                'remove_tab'                   => 'Remove Tab',
-                'first_word_uppercase'         => 'First Word Uppercase',
-                'each_word_uppercase'          => 'Each Word Uppercase',
-                'remove_shortcodes'            => 'Remove ShortCodes',
-                'remove_shortcodes_and_tags'   => 'Remove ShortCodes and Strip Tags',
-                'remove_special character'     => 'Remove Special Character',
-                'cdata'                        => 'CDATA',
-                'cdata_without_space'          => 'CDATA without space',
-                'remove_underscore'            => 'Remove underscore',
-                'decode_url'                   => 'Decode url',
-                'remove_decimal'               => 'Remove decimal points (Marktplaats only)',
-                'add_two_decimal'              => 'Two decimal points',
-                'comma_decimal'                => 'Decimal Separator - Comma (,)',
-                'remove_hyphen'                => 'Remove hyphen',
-                'remove_hyphen_space'          => 'Remove hyphen(space)',
-                'replace_space_with_hyphen'    => 'Replace space ( ) with hyphen (-)',
-                'replace_comma_with_backslash' => 'Replace comma (,) with backslash (/)',
-                'replace_decimal_with_hyphen'  => 'Replace decimal point (.) with hyphen (-)',
-            )
-        );
+    protected function init_sanitization_options() {
+        $this->sanitization_options = [
+            '' => [
+                'default'                      => __( 'Default', 'rex-product-feed' ),
+                'strip_tags'                   => __( 'Strip Tags', 'rex-product-feed' ),
+                'utf_8_encode'                 => __( 'UTF-8 Encode', 'rex-product-feed' ),
+                'htmlentities'                 => __( 'HTML Entities', 'rex-product-feed' ),
+                'integer'                      => __( 'Integer', 'rex-product-feed' ),
+                'price'                        => __( 'Price', 'rex-product-feed' ),
+                'remove_space'                 => __( 'Remove Space', 'rex-product-feed' ),
+                'remove_tab'                   => __( 'Remove Tab', 'rex-product-feed' ),
+                'first_word_uppercase'         => __( 'First Word Uppercase', 'rex-product-feed' ),
+                'each_word_uppercase'          => __( 'Each Word Uppercase', 'rex-product-feed' ),
+                'remove_shortcodes'            => __( 'Remove ShortCodes', 'rex-product-feed' ),
+                'remove_shortcodes_and_tags'   => __( 'Remove ShortCodes and Tags', 'rex-product-feed' ),
+                'remove_special character'     => __( 'Remove Special Character', 'rex-product-feed' ),
+                'cdata'                        => __( 'CDATA', 'rex-product-feed' ),
+                'cdata_without_space'          => __( 'CDATA without space', 'rex-product-feed' ),
+                'remove_underscore'            => __( 'Remove Underscore', 'rex-product-feed' ),
+                'decode_url'                   => __( 'Decode URL', 'rex-product-feed' ),
+                'remove_decimal'               => __( 'Remove Decimal Points', 'rex-product-feed' ),
+                'add_two_decimal'              => __( 'Add Two Decimal Points', 'rex-product-feed' ),
+                'comma_decimal'                => __( 'Decimal Separator - Comma (,)', 'rex-product-feed' ),
+                'remove_hyphen'                => __( 'Remove Hyphen', 'rex-product-feed' ),
+                'remove_hyphen_space'          => __( 'Remove Hyphen and Space', 'rex-product-feed' ),
+                'replace_space_with_hyphen'    => __( 'Replace Space with Hyphen', 'rex-product-feed' ),
+                'replace_comma_with_backslash' => __( 'Replace Comma with Backslash', 'rex-product-feed' ),
+                'replace_decimal_with_hyphen'  => __( 'Replace Decimal with Hyphen', 'rex-product-feed' )
+            ]
+        ];
     }
 
 

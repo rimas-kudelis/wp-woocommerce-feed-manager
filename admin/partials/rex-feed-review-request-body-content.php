@@ -23,10 +23,18 @@
 					<img src="<?php echo esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/star-rating.png' ); ?>"  alt="star-rating">
 				</a>
 			</div>
-
-			<p><?php _e( 'Please do give us a <a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank">rating</a> if you like using our plugin. It will only take 2 minutes.', 'rex-product-feed' ); // phpcs:ignore ?></p>
-
-			
+			<p>
+                <?php
+                echo sprintf(
+                    esc_html__(
+                        'Please do give us a %s if you like using our plugin. It will only take 2 minutes.',
+                        'rex-product-feed'
+                    ),
+                    '<a href="https://wordpress.org/support/plugin/best-woocommerce-feed/reviews/#new-post" target="_blank">' .
+                    esc_html__('rating', 'rex-product-feed') . '</a>'
+                ); // phpcs:ignore
+                ?>
+            </p>
 		</div>
 
 		<div class="rex-feed-review__btn-area">

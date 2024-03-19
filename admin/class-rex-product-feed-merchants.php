@@ -1101,23 +1101,23 @@ class Rex_Feed_Merchants {
 			'-1' => array(
 				'free'   => true,
 				'status' => 1,
-				'name'   => 'Select your merchant',
+				'name'   => __( 'Select your merchant', 'rex-product-feed' )
 			),
 		);
-		$all_merchants     = array_merge( $all_merchants, self::get_merchants() );
-		$is_premium        = apply_filters( 'wpfm_is_premium', false );
+        $all_merchants = array_merge( $all_merchants, self::get_merchants() );
+        $is_premium    = apply_filters( 'wpfm_is_premium', false );
 
 		echo '<select class="' . esc_attr( $class ) . '" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '">';
 		foreach ( $all_merchants as $group_label => $group ) {
 			if ( !empty( $group_label ) ) {
 				if ( 'popular' === $group_label ) {
-					$group_label = 'Popular Merchants';
+					$group_label = __( 'Popular Merchants', 'rex-product-feed' );
 				}
 				elseif ( 'pro_merchants' === $group_label ) {
-					$group_label = 'Pro Merchants';
+					$group_label = __( 'Pro Merchants', 'rex-product-feed' );
 				}
 				elseif ( 'free_merchants' === $group_label ) {
-					$group_label = 'Others';
+					$group_label = __( 'Others', 'rex-product-feed' );
 				}
 				$disabled = ( 'Pro Merchants' === $group_label && !$is_premium ) ? 'disabled' : '';
 				ob_start();?>
