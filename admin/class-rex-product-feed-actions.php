@@ -745,4 +745,118 @@ class Rex_Product_Feed_Actions {
 			<?php
 		}
 	}
+
+    /**
+     * Updates the product price compatibility with WPML.
+     *
+     * This method adjusts the product price if WPML is enabled and a custom price is set for the product in the specified currency.
+     *
+     * @param string $product_price The original product price.
+     * @param WC_Product $product The WooCommerce product object.
+     * @param string $type The type of price being updated (e.g., _regular_price, _sale_price).
+     * @param object $feed_retriever_obj The feed retriever object.
+     * @return string The updated product price considering WPML compatibility.
+     *
+     * @since 7.4.0
+     */
+    public function update_price_compatibility_with_wpml( $product_price, $product, $type, $feed_retriever_obj ) {
+        if ( $feed_retriever_obj->is_wcml_active() ) {
+            $updated_price = apply_filters(
+                'wcml_raw_price_amount',
+                $product_price,
+                $feed_retriever_obj->get_wcml_currency()
+            );
+            if ( !empty( $updated_price ) ) {
+                return $updated_price;
+            }
+        }
+        return $product_price;
+    }
+
+    /**
+     * Retrieves the converted product price using WooCommerce Multi-Currency (WMC).
+     *
+     * This method retrieves the converted product price if WMC (WooCommerce Multi-Currency) is active and the product has a fixed price set in the specified currency. If no fixed price is set, it calculates the converted price based on the currency exchange rate.
+     *
+     * @param string $product_price The original product price.
+     * @param WC_Product $product The WooCommerce product object.
+     * @param string $type The type of price being updated (e.g., regular price, sale price).
+     * @param object $feed_retriever_obj The feed retriever object.
+     * @return string The converted product price based on WMC settings.
+     *
+     * @since 7.4.1
+     */
+    public function get_converted_price_by_wmc( $product_price, $product, $type, $feed_retriever_obj ) {
+        if ( wpfm_is_wmc_active() ) {
+            $wmc_params = get_option( 'woo_multi_currency_params', array() );
+
+            if ( !empty( $wmc_params ) && isset( $wmc_params[ 'enable_fixed_price' ] ) && $wmc_params[ 'enable_fixed_price' ] ) {
+                $prices       = get_post_meta( $product->get_id(), "{$type}_wmcp", true );
+                $prices       = json_decode( $prices );
+                $wmc_currency = $feed_retriever_obj->get_wmc_currency();
+                if ( !empty( $prices ) && isset( $prices->$wmc_currency ) ) {
+                    return $prices->$wmc_currency;
+                }
+            }
+            $wmc_settings      = class_exists( 'WOOMULTI_CURRENCY_Data' ) ? WOOMULTI_CURRENCY_Data::get_ins() : array();
+            $wmc_currency_list = !empty( $wmc_settings ) ? $wmc_settings->currencies_list : array();
+
+            if ( !empty( $wmc_currency_list ) ) {
+                $to_currency = $feed_retriever_obj->get_wmc_currency();
+                $rate        = $wmc_currency_list[ $to_currency ][ 'rate' ];
+                return $product_price * $rate;
+            }
+        }
+        return $product_price;
+    }
+
+    /**
+     * Retrieves the converted product price using Aelia Currency Switcher.
+     *
+     * This method retrieves the converted product price if Aelia Currency Switcher is active. It converts the product price from the base currency to the target currency specified in the feed retriever object.
+     *
+     * @param string $product_price The original product price.
+     * @param WC_Product $product The WooCommerce product object.
+     * @param string $type The type of price being updated (e.g., regular price, sale price).
+     * @param object $feed_retriever_obj The feed retriever object.
+     * @return string The converted product price based on Aelia Currency Switcher settings.
+     *
+     * @since 7.4.0
+     */
+    public function get_converted_price_by_aelia( $product_price, $product, $type, $feed_retriever_obj ) {
+        if ( wpfm_is_aelia_active() ) {
+            $from_currency = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD';
+            $to_currency   = $feed_retriever_obj->aelia_currency;
+
+            try {
+                return apply_filters( 'wc_aelia_cs_convert', $product_price, $from_currency, $to_currency );
+            }
+            catch ( Exception $e ) {
+                if ( $feed_retriever_obj->is_logging_enabled ) {
+                    $log = wc_get_logger();
+                    $log->warning( $e->getMessage(), [ 'source' => 'wpfm-error' ] );
+                }
+            }
+        }
+        return $product_price;
+    }
+
+    /**
+     * Checks if a specific Advanced Custom Fields (ACF) field type is associated with a product.
+     *
+     * @param int $product_id The ID of the product.
+     * @param string $field_key The key of the ACF field.
+     * @param string $field_type The type of the ACF field to check.
+     *
+     * @return bool True if the field type matches, false otherwise.
+     *
+     * @since 7.4.1
+     */
+    public static function is_acf_field_type( $product_id, $field_key, $field_type ) {
+        $field = get_field_object( get_post_meta( $product_id, "_{$field_key}", true ) );
+        if ( !empty( $field[ 'type' ] ) && $field[ 'type' ] === $field_type ) {
+            return true;
+        }
+        return false;
+    }
 }

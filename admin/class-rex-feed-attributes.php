@@ -74,6 +74,9 @@ class Rex_Feed_Attributes {
 		if ( function_exists( 'wpfm_is_discount_rules_asana_plugins_active' ) && wpfm_is_discount_rules_asana_plugins_active() ) {
 			$attributes = array_merge( $attributes, self::get_discounts_by_asana_plugins_attributes() );
 		}
+        if ( function_exists( 'wpfm_is_rex_dynamic_discount_active' ) && wpfm_is_rex_dynamic_discount_active() ) {
+			$attributes = array_merge( $attributes, self::get_discounts_by_rex_dynamic_discount() );
+		}
 		if ( defined( 'ACF_VERSION' ) ) {
 			$attributes = array_merge( $attributes, self::get_acf_fields() );
 		}
@@ -675,21 +678,47 @@ class Rex_Feed_Attributes {
 	 * @return string[][]
 	 */
 	public static function get_discounts_by_asana_plugins_attributes() {
-		return array(
-			'Discounted Price - by Asana Plugins' => array(
-				'asana_price'                  => 'Regular Price',
-				'asana_current_price'          => 'Price',
-				'asana_sale_price'             => 'Sale Price',
-				'asana_price_with_tax'         => 'Regular price with tax',
-				'asana_current_price_with_tax' => 'Price with tax',
-				'asana_sale_price_with_tax'    => 'Sale price with tax',
-				'asana_price_excl_tax'         => 'Regular price excl. tax',
-				'asana_current_price_excl_tax' => 'Price excl. tax',
-				'asana_sale_price_excl_tax'    => 'Sale price excl. tax',
-				'asana_price_db'               => 'Regular Price (From DB)',
-				'asana_current_price_db'       => 'Price (From DB)',
-				'asana_sale_price_db'          => 'Sale Price (From DB)',
-			),
-		);
+		return [
+            'Discounted Price - by Asana Plugins' => [
+                'asana_price'                  => 'Regular Price',
+                'asana_current_price'          => 'Price',
+                'asana_sale_price'             => 'Sale Price',
+                'asana_price_with_tax'         => 'Regular price with tax',
+                'asana_current_price_with_tax' => 'Price with tax',
+                'asana_sale_price_with_tax'    => 'Sale price with tax',
+                'asana_price_excl_tax'         => 'Regular price excl. tax',
+                'asana_current_price_excl_tax' => 'Price excl. tax',
+                'asana_sale_price_excl_tax'    => 'Sale price excl. tax',
+                'asana_price_db'               => 'Regular Price (From DB)',
+                'asana_current_price_db'       => 'Price (From DB)',
+                'asana_sale_price_db'          => 'Sale Price (From DB)'
+            ]
+        ];
 	}
+
+    /**
+     * Retrieves discounts provided by the WooCommerce Dynamic Discount [by RexTheme] plugin.
+     *
+     * @return array Discount attributes provided by the WooCommerce Dynamic Discount[by RexTheme] plugin.
+     *
+     * @since 7.4.1
+     */
+    public static function get_discounts_by_rex_dynamic_discount() {
+        return [
+            'Product Based Discounted Price - by WooCommerce Dynamic Discount [by RexTheme]' => [
+                'rexdd_price'                  => 'Discounted Regular Price',
+                'rexdd_sale_price'             => 'Discounted Sale Price',
+                'rexdd_current_price'          => 'Discounted Current Price',
+                'rexdd_price_with_tax'         => 'Discounted Regular price with tax',
+                'rexdd_current_price_with_tax' => 'Discounted Price with tax',
+                'rexdd_sale_price_with_tax'    => 'Discounted Sale price with tax',
+                'rexdd_price_excl_tax'         => 'Discounted Regular price excl. tax',
+                'rexdd_current_price_excl_tax' => 'Discounted Price excl. tax',
+                'rexdd_sale_price_excl_tax'    => 'Discounted Sale price excl. tax',
+                'rexdd_price_db'               => 'Discounted Regular Price (From DB)',
+                'rexdd_current_price_db'       => 'Discounted Price (From DB)',
+                'rexdd_sale_price_db'          => 'Discounted Sale Price (From DB)'
+            ]
+        ];
+    }
 }

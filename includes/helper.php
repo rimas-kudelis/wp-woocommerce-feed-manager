@@ -760,8 +760,6 @@ if ( !function_exists( 'rexfeed_is_woocommerce_brand_active' ) ) {
 	}
 }
 
-
-
 if ( ! function_exists( 'wpfm_is_wcml_active' ) ) {
 	/**
 	 * Check if `WooCommerce Multilingual & Multicurrency` plugin is active
@@ -776,4 +774,16 @@ if ( ! function_exists( 'wpfm_is_wcml_active' ) ) {
 		}
 		return false;
 	}
+}
+
+if ( ! function_exists( 'wpfm_is_rex_dynamic_discount_active' ) ) {
+    /**
+     * check if WooCommerce Dynamic Discount [by RexTheme] is active.
+     *
+     * @return bool
+     * @since 7.4.1
+     */
+    function wpfm_is_rex_dynamic_discount_active() {
+        return defined( 'REX_DYNAMIC_DISCOUNT_VERSION' );
+    }
 }

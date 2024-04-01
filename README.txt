@@ -5,7 +5,7 @@ Tags: facebook catalog, google feed, google shopping, google merchant, woocommer
 Requires at least: 4.7
 Tested up to:  6.4
 Requires PHP: 7.3
-Stable tag:  7.4.0
+Stable tag:  7.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -897,6 +897,10 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.1 (2024-04-01) =
+* Added: Compatibility with the brand new [Dynamic Discount for WooCommerce](https://rextheme.com/dynamic-discount-for-woocommerce/) plugin
+* Enhancement: Fetch image URLs from [Advanced Custom Fields (ACF)](https://wordpress.org/plugins/advanced-custom-fields/) image type attributes
 
 = 7.4.0 (2024-03-19) =
 * Added: New filter option `Product Creation Date` added in `Custom Filter` condition
@@ -2147,5 +2151,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.4.0 =
+= 7.4.1 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

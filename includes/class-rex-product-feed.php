@@ -158,9 +158,9 @@ class Rex_Product_Feed {
 	    $appsero_data   = new Rex_Product_Appsero_Data();
 	    $scheduler      = new Rex_Feed_Scheduler();
 	    $special_banner = new Rex_Feed_Special_Occasion_Banner(
-		    'christmas_deal_23_extended',
-		    '2023-12-21 00:00:00',
-		    '2024-01-06 00:00:00'
+		    'wc_sell_kit_release_2024',
+		    '2024-03-25 00:00:00',
+		    '2024-04-08 00:00:00'
 	    ); // Date format: YYYY-MM-DD HH:MM:SS
 
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -213,6 +213,10 @@ class Rex_Product_Feed {
 
 	    $this->loader->add_action( 'admin_init', $special_banner, 'init' );
 	    $this->loader->add_filter( 'post_updated_messages', $plugin_admin, 'post_updated_messages' );
+
+	    $this->loader->add_filter( 'rex_feed_product_price_before_formatting', $feed_actions, 'update_price_compatibility_with_wpml', 10, 4 );
+        $this->loader->add_filter( 'rex_feed_product_price_before_formatting', $feed_actions, 'get_converted_price_by_wmc', 10, 4 );
+        $this->loader->add_filter( 'rex_feed_product_price_before_formatting', $feed_actions, 'get_converted_price_by_aelia', 10, 4 );
     }
 
 
