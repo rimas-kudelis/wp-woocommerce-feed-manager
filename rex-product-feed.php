@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
- * Version:           7.4.1
+ * Version:           7.4.2
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -25,7 +25,7 @@
  *
  * WP Requirement & Test
  * Requires at least: 4.7
- * Tested up to: 6.4
+ * Tested up to: 6.5
  * Requires PHP: 7.3
  *
  * WC Requirement & Test
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.4.1' );
+    define( 'WPFM_VERSION', '7.4.2' );
 }
 if ( !defined( 'WPFM__FILE__' ) ) {
 	define( 'WPFM__FILE__', __FILE__ );
@@ -365,7 +365,7 @@ function rex_feed_redirect_after_activation( $plugin ) {
         exit( wp_redirect( $url ) );
     }
 }
-add_action( 'activated_plugin', 'rex_feed_redirect_after_activation' );
+//add_action( 'activated_plugin', 'rex_feed_redirect_after_activation' );
 
 /**
  * Declare plugin's compatibility with WooCommerce HPOS
