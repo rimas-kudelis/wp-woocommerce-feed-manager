@@ -65,7 +65,7 @@ class Rex_Feed_Special_Occasion_Banner {
 
 		if (
 			'hidden' !== get_option( $this->occasion, '' )
-			//&& !defined( 'REX_PRODUCT_FEED_PRO_VERSION' )
+			&& !defined( 'REX_PRODUCT_FEED_PRO_VERSION' )
 			&& ( $current_date_time >= $this->start_date && $current_date_time <= $this->end_date )
 		) {
 			// Add styles
@@ -86,49 +86,62 @@ class Rex_Feed_Special_Occasion_Banner {
 		$allowed_screens = [ 'dashboard', 'plugins', 'product-feed' ];
         $time_remaining  = $this->end_date - current_time( 'timestamp' );
 
-        $btn_link = 'https://rextheme.com/woocommerce-sell-kit/#pricing';
+        $btn_link = 'https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=plugin-CTA&utm_medium=plugin&utm_campaign=eid-fitr-campaign-24';
 
 		if ( in_array( $screen->base, $allowed_screens ) || in_array( $screen->parent_base, $allowed_screens ) || in_array( $screen->post_type, $allowed_screens ) || in_array( $screen->parent_file, $allowed_screens ) ) {
         echo '<input type="hidden" id="rexfeed_special_occasion" name="rexfeed_special_occasion" value="'.$this->occasion.'">';
         ?>
 
-            <!-- Name: Christmas Notification Banner -->
+            <!-- Name: Eid Ul Fitr Notification Banner -->
 
             <div class="rex-feed-tb__notification" id="rex_deal_notification">
 
                 <div class="banner-overflow">
-                    <div class="rextheme-td__content-area">
-                        <div class="rextheme-td__image p-8 christmas">
+                    <div class="rextheme-eid__container-area">
+
+                        <div class="rextheme-eid__image rextheme-eid__image--one">
                             <figure>
-                                <img loading="lazy" src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/launch-campaign-img/launch-campaign-woo-logo.webp' ; ?>"  alt="Launch Campaign Rextheme">
+                                <img src="<?php echo plugin_dir_url( __FILE__ ) .'./assets/icon/eid-ul-fitr/eid-mubark.webp' ; ?>" alt="Eid Mubark Rextheme" />
                             </figure>
                         </div>
 
-                        <div class="rextheme-td__image">
-                            <div class="rextheme-td__text-container">
-                                <h4>WooCommerce <span class="rextheme-td__image addon-bundle">Addon Bundle</span><span> Pricing </span>Just Got Affordable</h4>
+                        <div class="rextheme-eid__content-area">
+
+                            <div class="rextheme-eid__image rextheme-eid__image--two">
                                 <figure>
-                                    <img loading="lazy" class="rextheme-td__campaign-text-icon" src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/launch-campaign-img/campaign-text-icon.webp' ; ?>" alt="campaing button icon">
+                                    <img src="<?php echo plugin_dir_url( __FILE__ ) .'./assets/icon/eid-ul-fitr/eid-mubarak-icon.webp'; ?>" alt="Eid Mubark Rextheme" />
                                 </figure>
                             </div>
+
+                            <div class="rextheme-eid__image--group">
+
+                                <div class="rextheme-eid__image rextheme-eid__image--three">
+                                    <figure>
+                                        <img src="<?php echo plugin_dir_url( __FILE__ ) .'./assets/icon/eid-ul-fitr/celebrate.webp' ; ?>" alt="Celebrate Rextheme" />
+                                    </figure>
+                                </div>
+
+                                <div class="rextheme-eid__image rextheme-eid__image--four">
+                                    <figure>
+                                        <img src="<?php echo plugin_dir_url( __FILE__ ) .'./assets/icon/eid-ul-fitr/eid-discount.webp' ; ?>" alt="25% discount"  />
+                                    </figure>
+                                </div>
+
+                            </div>
+
+                            <!-- .rextheme-eid__image end -->
+                            <div class="rextheme-eid__btn-area">
+                                <a href="<?php echo esc_url($btn_link); ?>" role="button" class="rextheme-eid__btn" target="_blank">
+                                    Get <span class="rextheme-eid__stroke-font">25%</span> OFF
+                                </a>
+
+                            </div>
+
                         </div>
 
-                        <div class="rextheme-td__image twenty-five-percent-logo">
+                        <div class="rextheme-eid__image rextheme-eid__image--five">
                             <figure>
-                                <img loading="lazy" src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/launch-campaign-img/launch-campaign-discount.webp' ; ?>"  alt="60% discount">
-                            </figure>
-                        </div>
-
-                        <div class="rextheme-td__btn-area">
-                            <a href="<?php echo esc_url($btn_link); ?>" role="button" class="rextheme-td__btn" target="_blank"> Get Discount Now </a>
-                            <figure>
-                                <img loading="lazy" class="rextheme-td__btn-icon" src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/launch-campaign-img/campaign-button-icon.webp'; ?>" alt="campaing button icon">
-                            </figure>
-                        </div>
-
-                        <div class="rextheme-td__image campaign-note-image">
-                            <figure>
-                                <img loading="lazy" src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/launch-campaign-img/launch-campaign-note.webp'; ?>" alt="launch campaign note image">
+                                <img src="<?php echo plugin_dir_url( __FILE__ ) . './assets/icon/eid-ul-fitr/masjid.webp' ; ?>" alt="Masjid"  />
                             </figure>
                         </div>
 
@@ -222,8 +235,8 @@ class Rex_Feed_Special_Occasion_Banner {
 
             @font-face {
                 font-family: 'Lexend Deca';
-                src: url(<?php echo "{$plugin_dir_url}assets/fonts/campaign-font/LexendDeca-SemiBold.woff2";?>) format('woff2'),
-                    url(<?php echo "{$plugin_dir_url}assets/fonts/campaign-font/LexendDeca-SemiBold.woff";?>) format('woff');
+                src: url(<?php echo "{$plugin_dir_url}assets/fonts/eid-ul-fitr-campaign-font/LexendDeca-SemiBold.woff2";?>) format('woff2'),
+                    url(<?php echo "{$plugin_dir_url}assets/fonts/eid-ul-fitr-campaign-font/LexendDeca-SemiBold.woff";?>) format('woff');
                 font-weight: 600;
                 font-style: normal;
                 font-display: swap;
@@ -231,8 +244,8 @@ class Rex_Feed_Special_Occasion_Banner {
 
             @font-face {
                 font-family: 'Lexend Deca';
-                src: url(<?php echo "{$plugin_dir_url}assets/fonts/campaign-font/LexendDeca-Bold.woff2";?>) format('woff2'),
-                    url(<?php echo "{$plugin_dir_url}assets/fonts/campaign-font/LexendDeca-Bold.woff";?>) format('woff');
+                src: url(<?php echo "{$plugin_dir_url}assets/fonts/eid-ul-fitr-campaign-font/LexendDeca-Bold.woff2";?>) format('woff2'),
+                    url(<?php echo "{$plugin_dir_url}assets/fonts/eid-ul-fitr-campaign-font/LexendDeca-Bold.woff";?>) format('woff');
                 font-weight: bold;
                 font-style: normal;
                 font-display: swap;
@@ -244,12 +257,11 @@ class Rex_Feed_Special_Occasion_Banner {
             box-sizing: border-box;
         }
                 
-
         .rex-feed-tb__notification {
             background-color: #d6e4ff;
             width: calc(100% - 20px);
             margin: 50px 0 20px;
-            background-image: url(<?php echo "{$plugin_dir_url}assets/icon/launch-campaign-img/launch-campaign-background-bar.webp"; ?>);
+            background-image: url(<?php echo "{$plugin_dir_url}assets/icon/eid-ul-fitr/notification-bar-bg.webp"; ?>);
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -257,6 +269,7 @@ class Rex_Feed_Special_Occasion_Banner {
             border: none;
             box-shadow: none;
             display: block;
+            max-height: 110px;
         }
 
         .rex-feed-tb__notification .banner-overflow {
@@ -264,149 +277,7 @@ class Rex_Feed_Special_Occasion_Banner {
             position: relative;
             width: 100%;
         }
-
-        .rextheme-td__content-area {
-            width: 100%;
-            max-height: 110px;
-            margin: 0 auto;
-            padding-left: 30px;
-            position: relative;
-        }
-
-        .rex-feed-tb__notification figure {
-            margin: 0;
-        }
-
-        .rextheme-td__content-area {
-            max-width: 1920px;
-        }
-
-        .rextheme-td__content-area {
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .rextheme-td__image h4 {
-            font-family: 'Lexend Deca';
-            text-transform: capitalize;
-            font-size: 26px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: 34px;
-            color: #0a0933;
-            margin: 0;
-        }
-
-        @media only screen and (max-width: 1199px) {
-            .rextheme-td__image h4 {
-                font-size: 24px;
-            }
-        }
-        @media only screen and (max-width: 991px) {
-            .rextheme-td__image h4 {
-                font-size: 20px;
-                line-height: 28px;
-            }
-        }
-        .rextheme-td__image h4 span {
-            font-weight: 700;
-            color: #211cfd;
-            text-transform: none;
-        }
-        .rextheme-td__image figure {
-            margin: 0;
-        }
-        .rextheme-td__image.addon-bundle {
-            color: #211cfd;
-            text-shadow: 2px 2px 0 #84dbff, -2px 2px 0 #84dbff, -2px -2px 0 #84dbff, 2px -2px 0 #84dbff;
-        }
-        .rextheme-td__image.p-8 {
-            padding: 0;
-        }
-        .rextheme-td__image.christmas img {
-            width: 100%;
-            max-height: 114px;
-            
-        }
-        .rextheme-td__image.twenty-five-percent-logo img {
-            width: 100%;
-            max-height: 110px;
-        }
-        .rextheme-td__image.twenty-five-pro-percent-logo img {
-            width: 100%;
-            max-height: 110px;
-        }
-        .rextheme-td__image.campaign-note-image img {
-            width: 100%;
-            max-height: 114px;
-        }
-        .rextheme-td__text-container {
-            position: relative;
-            max-width: 390px;
-        }
-        .rextheme-td__campaign-text-icon {
-            position: absolute;
-            top: -14px;
-            right: -24px;
-            max-width: 100%;
-            max-height: 24px;
-        }
-        .rextheme-td__btn-area {
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
-            position: relative;
-        }
-        .rextheme-td__btn {
-            font-family: 'Lexend Deca';
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 700;
-            color: #fff;
-            text-align: center;
-            border-radius: 30px;
-            background: linear-gradient(to bottom, #6460fe 0%, #211cfd 100%);
-            padding: 14px 24px;
-            display: inline-block;
-            cursor: pointer;
-            text-decoration: none;
-            text-transform: capitalize;
-            transition: all 0.3s ease;
-        }
-        .rextheme-td__btn:hover {
-            background-color: #201cfe;
-            color: #fff;
-        }
-        .rextheme-td__btn.pfm-claim {
-            background-color: #216df0;
-        }
-        .rextheme-td__btn.pfm-claim:hover {
-            background-color: #00b4ff;
-            color: #fff;
-            box-shadow: none;
-        }
-        .rextheme-td__btn.wpvr-claim {
-            background-color: #3f04fe;
-        }
-        .rextheme-td__btn.wpvr-claim:hover {
-            background-color: #211fa5;
-            color: #fff;
-            box-shadow: none;
-        }
-        .rextheme-td__btn-icon {
-            position: absolute;
-            top: -14px;
-            right: -23px;
-            width: 40px;
-            height: 35px;
-        }
-        .rextheme-td__stroke-font {
-            font-size: 26px;
-            font-weight: 700;
-        }
-
+       
         .rex-feed-tb__notification .rex-feed-tb__cross-top {
             position: absolute;
             top: -10px;
@@ -425,222 +296,383 @@ class Rex_Feed_Special_Occasion_Banner {
             height:15px;
         }
 
+        .rextheme-eid__container {
+            width: 100%;
+            margin: 0 auto;
+            max-width: 1640px;
+            position: relative;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .rextheme-eid__container-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rextheme-eid__content-area {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            max-width: 1340px;
+            position: relative;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin: 0 auto;
+        }
+        
+        .rextheme-eid__image--group {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding: 0 140px 0 170px;
+        }
+      
+        .rextheme-eid__image--one img {
+            width: 100%;
+            max-width: 85px;
+            margin-left: 30px;
+        }
+        .rextheme-eid__image--two img {
+            width: 100%;
+            max-width: 154px;
+        }
+        .rextheme-eid__image--three img {
+            width: 100%;
+            max-width: 225px;
+        }
+        .rextheme-eid__image--four img {
+            width: 100%;
+            max-width: 362px;
+        }
+        .rextheme-eid__image--five img {
+            width: 100%;
+            max-width: 78px;
+            margin-right: 30px;
+        }
+        .rextheme-eid__image figure {
+            margin: 0;
+        }
+        .rextheme-eid__text-container {
+            position: relative;
+            max-width: 330px;
+        }
+        .rextheme-eid__campaign-text-icon {
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            max-width: 100%;
+            max-height: 24px;
+        }
+        .rextheme-eid__btn-area {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            position: relative;
+        }
+        .rextheme-eid__btn {
+            position: relative;
+            font-family: 'Lexend Deca';
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1;
+            text-align: center;
+            border-radius: 30px;
+            background: linear-gradient(180deg, #6460fe 11.67%, #211cfd 100%);
+            box-shadow: 0px 8px 20px rgba(12, 10, 81, 0.25);
+            padding: 17px 28px;
+            display: inline-block;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-top: -6px;
+        }
+
+        .rextheme-eid__btn-area a:focus {
+            color: #fff;
+            box-shadow: none;
+            outline: 0px solid transparent;
+        }
+
+        .rextheme-eid__btn::before {
+            content: url(<?php echo "{$plugin_dir_url}assets/icon/eid-ul-fitr/pattern-vectors.webp"; ?>);
+            position: absolute;
+            top: -38%;
+            right: -40px;
+        }
+        .rextheme-eid__btn:hover {
+            background-color: #201cfe;
+            color: #fff;
+        }
+        .rextheme-eid__btn-icon {
+            position: absolute;
+            top: -14px;
+            right: -23px;
+            width: 40px;
+            height: 35px;
+        }
+        .rextheme-eid__stroke-font {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
         @media only screen and (max-width: 1440px) {
-            .rextheme-td__content h4 {
-                font-size: 22px;
+            .rextheme-eid__image--group {
+                gap: 20px;
+                padding: 0 30px 0 40px;
             }
-            .rextheme-td__text-container {
-                max-width: 570px;
+
+            .rextheme-eid__btn {
+                margin-top: -7px;
             }
-            .rextheme-td__image h4 {
-                font-size: 22px;
-                line-height: 1.2;
+
+            .rex-feed-tb__notification {
+                max-height: 90px;
             }
-            .rextheme-td__image.addon-bundle {
-                color: #211cfd;
-                text-shadow: 2px 2px 0 #84dbff, -2px 2px 0 #84dbff, -2px -2px 0 #84dbff, 2px -2px 0 #84dbff;
+
+
+
+            .wpvr-promotional-banner {
+                max-height: 90px;
             }
-            .rextheme-td__campaign-text-icon {
-                top: -11px;
-                right: 17px;
+
+            .rextheme-eid__image--one img {
+                max-width: 75px;
+                margin-left: 30px;
             }
-            .rextheme-td__btn-area {
-                min-width: 200px;
+
+            .rextheme-eid__stroke-font {
+                font-size: 20px;
+                font-weight: 700;
             }
-            .rextheme-td__btn {
+
+            .rextheme-eid__image--five img {
+                max-width: 60px;
+                margin-right: 30px;
+            }
+
+            .rextheme-eid__image--two img {
+                max-width: 110px;
+            }
+
+            .rextheme-eid__content-area {
+                max-width: 900px;
+            }
+
+            .rextheme-eid__image--four img {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .rextheme-eid__image--three img {
+                width: 100%;
+                max-width: 175px;
+            }
+
+            .rextheme-eid__btn {
                 font-size: 16px;
                 font-weight: 600;
                 line-height: 34px;
                 border-radius: 30px;
                 padding: 8px 27px;
             }
+
             .rextheme-td__btn-icon {
                 position: absolute;
                 top: -10px;
                 right: -25px;
                 max-height: 32px;
             }
-            .rextheme-td__image.campaign-note-image img,
-            .rextheme-td__image.christmas img {
-                margin-bottom: -6px;
-            }
-
-            
+           
         }
 
         @media only screen and (max-width: 1399px) {
-            .rextheme-td__image h4 {
-                font-size: 19px;
-                line-height: 1.2;
+
+            .rextheme-eid__btn::before {
+                top: -38%;
+                right: -20px;
             }
 
-            .rextheme-td__campaign-text-icon {
-                top: -11px;
-                right: -9px;
+            .rextheme-eid__btn {
+                margin-top: -6px;
             }
 
-            .rextheme-td__btn {
-                font-size: 14px;
-                font-weight: 600;
-                line-height: 1.2;
-                border-radius: 30px;
-                padding: 12px 28px;
+            .rextheme-eid__image--five img {
+                margin-right: 20px;
             }
 
+            .rextheme-eid__image--one img {
+                margin-left: 20px;
+            }
+            
         }
 
         @media only screen and (max-width: 1024px) {
-            .rextheme-td__content h4 {
-                font-size: 16px;
-            }
-            .rextheme-td__notification .rextheme-td__text-container h4 {
-                font-size: 16px;
-            }
-            .campaign-note-image img {
-                max-width: 400px;
-            }
-            .rextheme-td__image h4 {
-                font-size: 13px;
-                line-height: 17px;
-            }
-            .rextheme-td__image.addon-bundle {
-                color: #211cfd;
-                text-shadow: 1px 1px 0 #84dbff, -1px 1px 0 #84dbff, -1px -1px 0 #84dbff, 1px -1px 0 #84dbff;
-            }
-            .rextheme-td__campaign-text-icon {
-                display: none;
-            }
-            .rextheme-td__content-area {
-                gap: 15px;
-            }
-            .rextheme-td__image.christmas img {
-                max-width: 100%;
-                margin-bottom: -6px;
-            }
-            .rextheme-td__image.twenty-five-pro-percent-logo {
-                max-width: 100%;
-            }
-            .rextheme-td__image.twenty-five-percent-logo img {
-                max-width: 80%;
-            }
-            .rextheme-td__btn-area {
-                min-width: 150px;
+
+            .rex-feed-tb__notification{
+                max-height: 63px;
             }
 
-            .rextheme-td__btn-icon {
-                display: none;
+            .rextheme-eid__btn {
+                margin-top: 0px;
             }
 
-            .rextheme-td__btn {
+            .rextheme-eid__content-area {
+                max-width: 653px;
+            }
+
+            .rextheme-eid__image--five img {
+                 max-width: 46px;
+            }
+
+            .rextheme-eid__image--one img {
+                max-width: 56px;
+            }
+
+            .rextheme-eid__image--five img {
+                max-width: 45px;
+            }
+            .rextheme-eid__image--two img {
+                max-width: 85px;
+            }
+            .rextheme-eid__image--group {
+                gap: 20px;
+                padding: 0 20px 0 25px;
+            }
+            .rextheme-eid__image--four img {
+                max-width: 200px;
+            }
+            .rextheme-eid__image--three img {
+                max-width: 130px;
+            }
+            .rextheme-eid__btn::before {
+                display: none;
+            }
+            .rextheme-eid__btn {
                 font-size: 12px;
-                line-height: 1.3;
-                padding: 10px 21px;
-                border-radius: 20px;
+                line-height: 26px;
+                padding: 8px 21px;
                 font-weight: 400;
             }
-            .rextheme-td__content h4 {
-                font-size: 22px;
+            .rextheme-eid__stroke-font {
+                font-size: 18px;
             }
-    
 
-            .rextheme-td__image.campaign-note-image img {
-                margin-bottom: -9px;
+            .rextheme-eid__btn-area {
+                margin-top: -5px;
             }
+
+            .rextheme-eid__btn {
+                box-shadow: none;
+            }
+
         }
-        
+
         @media only screen and (max-width: 768px) {
 
-            .rex-feed-tb__notification {
-                margin: 64px 0 20px;
+            .rextheme-eid__btn-area {
+                margin-top: -6px;
             }
 
-            .rextheme-td__notification .rextheme-td__text-container h4 {
-                font-size: 13px;
+            .rex-feed-tb__notification {
+                margin: 79px 0 20px;
             }
-            .rextheme-td__content-area {
-                gap: 16px;
-            }
-            .rextheme-td__image h4 {
-                font-size: 11px;
-                line-height: 12px;
-            }
-            .rextheme-td__campaign-text-icon {
-                display: none;
-            }
-            .rextheme-td__btn-area {
-                min-width: 120px;
-            }
-            .rextheme-td__btn {
-                font-size: 10px;
-                line-height: 9px;
-                font-weight: 400;
-                padding: 10px 14px;
-                border-radius: 15px;
-                margin-left: 0;
-            }
-           
-        }
-        @media only screen and (max-width: 767px) {
-            .rextheme-td__notification .rextheme-td__text-container h4 {
-                font-size: 23px;
-            }
-            .rextheme-td__content-area {
-                padding-left: 0;
-            }
-            .rextheme-td__image.p-8 {
-                display: none;
-            }
-            .rextheme-td__image.twenty-five-percent-logo img {
-                width: 70%;
-                margin: 0 auto;
-                max-height: 110px;
+
+            .rextheme-eid__content-area {
+                max-width: 690px;
             }
             .wpvr-promotional-banner {
+                 max-height: 62px;
+            }
+
+            .rextheme-eid__image--one img {
+                display: none;
+            }
+
+            .rextheme-eid__image--two img {
+                max-width: 84px;
+            }
+
+            .rextheme-eid__image--group {
+                gap: 15px;
+                padding: 0px 50px 0 66px;
+            }
+
+            .rextheme-eid__image--three img {
+                max-width: 110px;
+                margin-bottom: -6px;
+            }
+            .rextheme-eid__image--four img {
+                max-width: 200px;
+            }
+            .rextheme-eid__image--five img {
+                display: none;
+            }
+            .rextheme-eid__btn {
+                font-size: 12px;
+                line-height: 1;
+                font-weight: 400;
+                padding: 13px 20px;
+                margin-left: 0;
+                box-shadow: none;
+            }
+
+            .rextheme-eid__stroke-font {
+                font-size: 18px;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            .wpvr-promotional-banner {
                 padding-top: 20px;
-                padding-bottom: 342px;
-                background-position: 14%;
+                padding-bottom: 30px;
+                max-height: none;
             }
-            .rextheme-td__image h4 {
-                font-size: 20px;
-                line-height: 27px;
-                padding: 0 20px 0 20px;
+
+            .wpvr-promotional-banner {
+                max-height: none;
             }
-            .rextheme-td__stroke-font {
-                font-size: 22px;
+
+            .rextheme-eid__image--two {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-direction: row-reverse;
             }
-            .rextheme-td__content-area {
+           
+            .rextheme-eid__image--five, .rextheme-eid__image--one {
+                display: none;
+            }
+            .rextheme-eid__image--four img {
+                margin-right: -25px;
+            }
+           
+            .rextheme-eid__stroke-font {
+                font-size: 16px;
+            }
+            .rextheme-eid__content-area {
                 flex-direction: column;
-                gap: 12px;
+                gap: 25px;
                 text-align: center;
                 align-items: center;
             }
-            .rextheme-td__content h4 {
-                font-size: 24px;
-                line-height: 1.2;
-            }
-            .rextheme-td__btn-area {
+            .rextheme-eid__btn-area {
                 justify-content: center;
-                padding-top: 20px;
+                padding-top: 5px;
             }
-            .rextheme-td__btn {
+            .rextheme-eid__btn {
                 font-size: 12px;
-                padding: 18px 24px;
-                border-radius: 30px;
+                padding: 15px 24px;
             }
-            .rextheme-td__btn-icon {
-                position: absolute;
-                top: 11px;
-                right: -17px;
+            .rextheme-eid__image--group {
+                gap: 10px;
+                padding: 0;
             }
         }
-        @media only screen and (max-width: 320px) {
-            .rextheme-td__notification {
-                padding-top: 20px;
-                padding-bottom: 361px;
-                background-position: 14%;
-            }
-        }
-
 
 		</style>
 

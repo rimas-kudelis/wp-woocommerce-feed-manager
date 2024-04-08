@@ -158,10 +158,10 @@ class Rex_Product_Feed {
 	    $appsero_data   = new Rex_Product_Appsero_Data();
 	    $scheduler      = new Rex_Feed_Scheduler();
 	    $special_banner = new Rex_Feed_Special_Occasion_Banner(
-		    'wc_sell_kit_release_2024',
-		    '2024-03-25 00:00:00',
-		    '2024-04-08 00:00:00'
-	    ); // Date format: YYYY-MM-DD HH:MM:SS
+            'eid_ul_fitr_banner_2024',
+            '2024-04-08 00:00:00',
+            '2024-04-16 00:00:00'
+        ); // Date format: YYYY-MM-DD HH:MM:SS
 
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
