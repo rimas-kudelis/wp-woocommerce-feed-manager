@@ -22,25 +22,29 @@ class Rex_Feed_Template_Rozetka extends Rex_Feed_Abstract_Template {
 	 * @return void
 	 */
 	protected function init_atts() {
-		$this->attributes = array(
-			'Required Information' => array(
-				'stock_quantity' => 'Quantity in Stock [stock_quantity]',
-				'price'          => 'Price [price]',
-				'currencyId'     => 'Currency ID [currencyId]',
-				'categoryId'     => 'Category ID [categoryId]',
-				'picture'        => 'Image [picture]',
-				'vendor'         => 'Vendor [vendor]',
-				'name'           => 'Product Name [name]',
-				'description'    => 'Product Description [description]',
-				'param'          => 'Parameter [param]',
-			),
-			'Optional Information' => array(
-				'url'       => 'Product URL',
-				'price_old' => 'Old Price [price_old]',
-				'name_ua'   => 'Ukrainian Product Name [name_ua]',
-				'state'     => 'Product Condition [state]',
-			),
-		);
+		$this->attributes = [
+            'Required Information' => [
+                'stock_quantity' => 'Quantity in Stock [stock_quantity]',
+                'price'          => 'Price [price]',
+                'currencyId'     => 'Currency ID [currencyId]',
+                'categoryId'     => 'Category ID [categoryId]',
+                'picture'        => 'Image [picture]',
+                'vendor'         => 'Vendor [vendor]',
+                'name'           => 'Product Name [name]',
+                'description'    => 'Product Description [description]',
+            ],
+            'Optional Information' => [
+                'url'       => 'Product URL',
+                'price_old' => 'Old Price [price_old]',
+                'name_ua'   => 'Ukrainian Product Name [name_ua]',
+                'state'     => 'Product Condition [state]'
+            ]
+        ];
+
+        for ( $i = 1; $i <= 10; $i++ ) {
+            $this->attributes[ 'Params [param]' ][ "param_value_$i" ] = "Parameter Value {$i}";
+            $this->attributes[ 'Params [param]' ][ "param_name_$i" ] = "Parameter Name {$i}";
+        }
 	}
 
 	/**
@@ -131,7 +135,7 @@ class Rex_Feed_Template_Rozetka extends Rex_Feed_Abstract_Template {
 				'limit'    => 0,
 			),
 			array(
-				'attr'     => 'param',
+				'attr'     => 'param_1',
 				'type'     => 'meta',
 				'meta_key' => '',
 				'st_value' => '',

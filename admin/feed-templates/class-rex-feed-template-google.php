@@ -138,8 +138,12 @@ class Rex_Feed_Template_Google extends Rex_Feed_Abstract_Template {
 
 			'Merchant Promotions Attribute'       => array(
 				'promotion_id' => 'Promotion Id [promotion_id]',
-			),
+			)
 		);
+
+        for ( $i = 1; $i <= 10; $i++ ) {
+            $this->attributes[ 'Product Highlights' ][ "product_highlight_$i" ] = "Product Highlight {$i}";
+        }
 	}
 
 	/**

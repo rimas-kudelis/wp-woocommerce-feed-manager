@@ -396,6 +396,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $hotline_exch_rate;
 
     /**
+     * Polylang taxonomy ids
+     *
+     * @since 7.4.4
+     * @var string
+     */
+    protected $polylang_taxonomy_ids = [];
+
+    /**
      * Define the core functionality of the plugin.
      *
      * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -1018,7 +1026,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
 
         add_filter( 'posts_distinct', array( $this, 'set_distinct' ) );
-        add_filter( 'posts_where', array( $this, 'modify_where_query_for_multi_lingual_support' ) );
+        add_filter( 'posts_where', array( $this, 'modify_where_query_for_multilingual_support' ) );
         add_filter( 'posts_join', array( $this, 'modify_join_query_for_polylang' ) );
 
         $result         = new WP_Query( $this->products_args );
@@ -1029,7 +1037,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             remove_filter( 'posts_join', array( $this, 'modify_join_query_for_custom_filter' ) );
         }
         remove_filter( 'posts_distinct', array( $this, 'set_distinct' ) );
-        remove_filter( 'posts_where', array( $this, 'modify_where_query_for_multi_lingual_support' ) );
+        remove_filter( 'posts_where', array( $this, 'modify_where_query_for_multilingual_support' ) );
         remove_filter( 'posts_join', array( $this, 'modify_join_query_for_polylang' ) );
 
         if ( is_array( $this->products ) ) {
@@ -1135,7 +1143,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
      *
      * @since 7.3.0
      */
-    public function modify_where_query_for_multi_lingual_support( $where ) {
+    public function modify_where_query_for_multilingual_support( $where ) {
         if( wpfm_is_wpml_active() ) {
             global $sitepress;
             $search  = "language_code = '" . $sitepress->get_default_language() . "'";
@@ -1143,10 +1151,12 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $where   = str_replace( $search, $replace, $where );
         }
         if( wpfm_is_polylang_active() && $this->bypass ) {
-            $polylang = get_the_terms( $this->id, 'language' );
-            $polylang = is_array( $polylang ) && !empty( $polylang ) ? array_column( $polylang, 'term_id' ) : [];
-            $polylang = implode( ', ', $polylang );
-            $where    .= " AND (RexPLL.term_taxonomy_id IN({$polylang})) ";
+            $this->polylang_taxonomy_ids = get_the_terms( $this->id, 'language' );
+            $this->polylang_taxonomy_ids = is_array( $this->polylang_taxonomy_ids ) && !empty( $this->polylang_taxonomy_ids ) ? array_column( $this->polylang_taxonomy_ids, 'term_id' ) : [];
+            $this->polylang_taxonomy_ids = implode( ', ', $this->polylang_taxonomy_ids );
+            if ( !empty( $this->polylang_taxonomy_ids ) ) {
+                $where .= " AND (RexPLL.term_taxonomy_id IN({$this->polylang_taxonomy_ids})) ";
+            }
         }
         return $where;
     }
@@ -1164,9 +1174,10 @@ abstract class Rex_Product_Feed_Abstract_Generator
     public function modify_join_query_for_polylang( $join )
     {
         global $wpdb;
-        if ( wpfm_is_polylang_active() && $this->bypass ) {
+        if ( wpfm_is_polylang_active() && $this->bypass && !empty( $this->polylang_taxonomy_ids ) ) {
             $join .= " LEFT JOIN {$wpdb->term_relationships} AS RexPLL";
             $join .= " ON ({$wpdb->posts}.ID = RexPLL.object_id)";
+            $this->polylang_taxonomy_ids = [];
         }
         return $join;
     }
@@ -1461,7 +1472,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $feed = new DOMDocument;
         $feed->loadXML( $this->feed );
 
-        if ( $this->merchant === 'google' || $this->merchant === 'facebook'
+        if ( $this->merchant === 'google'
+            || $this->merchant === 'facebook'
+            || $this->merchant === 'tiktok'
             || $this->merchant === 'pinterest'
             || $this->merchant === 'ciao'
             || $this->merchant === 'daisycon'

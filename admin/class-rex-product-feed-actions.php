@@ -787,7 +787,7 @@ class Rex_Product_Feed_Actions {
      * @since 7.4.1
      */
     public function get_converted_price_by_wmc( $product_price, $product, $type, $feed_retriever_obj ) {
-        if ( wpfm_is_wmc_active() ) {
+        if ( wpfm_is_wmc_active() && !empty( $product_price ) && !empty( $product ) && !empty( $type ) && !empty( $feed_retriever_obj ) ) {
             $wmc_params = get_option( 'woo_multi_currency_params', array() );
 
             if ( !empty( $wmc_params ) && isset( $wmc_params[ 'enable_fixed_price' ] ) && $wmc_params[ 'enable_fixed_price' ] ) {
@@ -842,9 +842,29 @@ class Rex_Product_Feed_Actions {
     }
 
     /**
+     * Retrieves the ACF Fields configurations.
+     *
+     * @param string $selector The field name or key.
+     *
+     * @return array
+     *
+     * @since 7.4.4
+     */
+    private static function get_acf_field_configs( $selector ) {
+        global $wpdb;
+        $query = "SELECT `ID` AS `field_id`, `post_content` AS `configs`, `post_name` AS `unique_key`, `post_parent` AS `parent_id` ";
+        $query .= "FROM {$wpdb->posts} WHERE `post_type` = %s AND `post_excerpt` = %s";
+        $query = $wpdb->prepare( $query, 'acf-field', $selector );
+        $field_data = $wpdb->get_row( $query, ARRAY_A );
+        if ( !empty( $field_data[ 'configs' ] ) ) {
+            $field_data[ 'configs' ] = @unserialize( $field_data[ 'configs' ] );
+        }
+        return $field_data;
+    }
+
+    /**
      * Checks if a specific Advanced Custom Fields (ACF) field type is associated with a product.
      *
-     * @param int $product_id The ID of the product.
      * @param string $field_key The key of the ACF field.
      * @param string $field_type The type of the ACF field to check.
      *
@@ -852,9 +872,9 @@ class Rex_Product_Feed_Actions {
      *
      * @since 7.4.1
      */
-    public static function is_acf_field_type( $product_id, $field_key, $field_type ) {
-        $field = get_field_object( get_post_meta( $product_id, "_{$field_key}", true ) );
-        if ( !empty( $field[ 'type' ] ) && $field[ 'type' ] === $field_type ) {
+    public static function is_acf_field_type( $field_key, $field_type ) {
+        $field_data = self::get_acf_field_configs( $field_key );
+        if ( !empty( $field_data[ 'configs' ][ 'type' ] ) && $field_data[ 'configs' ][ 'type' ] === $field_type ) {
             return true;
         }
         return false;

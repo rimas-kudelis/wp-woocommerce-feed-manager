@@ -957,8 +957,16 @@ class Rex_Product_Data_Retriever {
         if ( !empty( $this->product ) && !is_wp_error( $this->product ) ) {
             $product_id = 'variation' === $this->product->get_type() ? $this->product->get_parent_id() : $this->product->get_id();
             $value      = get_post_meta( $product_id, $key, true );
-            if ( Rex_Product_Feed_Actions::is_acf_field_type( $product_id, $key, 'image' ) ) {
+            if ( Rex_Product_Feed_Actions::is_acf_field_type( $key, 'image' ) ) {
                 return wp_get_attachment_url( $value );
+            }
+            elseif ( Rex_Product_Feed_Actions::is_acf_field_type( $key, 'date_time_picker' )
+                || Rex_Product_Feed_Actions::is_acf_field_type( $key, 'date_picker' )
+                || Rex_Product_Feed_Actions::is_acf_field_type( $key, 'time_picker' )
+            ) {
+                $field = get_field_object( get_post_meta( $product_id, "_{$key}", true ) );
+                $format = $field[ 'return_format' ] ?? '';
+                return !empty( $format ) ? date( $format, strtotime( $value ) ) : $value;
             }
             return $value;
         }
@@ -1270,16 +1278,15 @@ class Rex_Product_Data_Retriever {
 
 				case 'thumbnail_image':
 					if ( 'WC_Product_Variation' === get_class( $this->product ) ) {
-						$attr_val = get_the_post_thumbnail_url( $this->product->get_parent_id() );
+                        $product_id = $this->product->get_parent_id();
 					} else {
-						$attr_val = get_the_post_thumbnail_url( $this->product->get_id() );
+                        $product_id = $this->product->get_id();
 					}
+                    $attr_val = get_the_post_thumbnail_url( $product_id, 'thumbnail' );
 					break;
 
 				case 'featured_image':
-					if ( wp_get_attachment_url( $this->product->get_image_id() ) ) {
-						$attr_val = wp_get_attachment_url( $this->product->get_image_id() );
-					}
+                    $attr_val = wp_get_attachment_url( $this->product->get_image_id() );
 					break;
 
 				case 'all_image_array':

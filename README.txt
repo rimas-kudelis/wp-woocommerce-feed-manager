@@ -1,15 +1,16 @@
-=== Product Feed Manager – WooCommerce to Google Shopping, Social Catalogs, and 170+ Popular Marketplaces ===
+=== Product Feed Manager- WooCommerce Product Feeds For Google Shopping, Social Catalog, TikTok, and 180+ Popular Marketplaces ===
+
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, facebook catalog, google feed, google shopping, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Meta Feed, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, ideal, facebook pixel, pinterest feed
+Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Meta Feed, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed
 Requires at least: 4.7
 Tested up to:  6.5
 Requires PHP: 7.3
-Stable tag:  7.4.3
+Stable tag:  7.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Generate WooCommerce product feeds for Google Shopping, Social Catalogs, Instagram, Google Local Products Inventory, Pinterest, Bing, Yandex, All Google Feed & more than 170+ Merchants
+Generate WooCommerce product feeds for Google Shopping, Social Catalogs, Instagram, Google Local Products Inventory, Pinterest, Bing, Yandex, All Google Feed & more than 180+ Merchants.
 
 
 == Description ==
@@ -25,12 +26,12 @@ Use our pre-defined merchant templates to generate flawless feeds for the popula
 - Google Local Products & Inventory
 - Google Ads & Google Dynamic Remarketing
 - Bing
+- TikTok Shop
 - <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-product-catalog/?utm_source=pfmrepopage&utm_medium=instagram_landing_url&utm_campaign=wp_repo" target="_blank">Instagram</a>
 - Pinterest
 - idealo
-- Ceneo
 - Heureka
-- Yandex Market (YML) & more than <a href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=repo&utm_medium=repo&utm_campaign=repo_merchantpage&utm_id=repo_merchantpage" target="_blank"> 170+ merchants</a>.
+- Yandex Market (YML) & more than <a href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=repo&utm_medium=repo&utm_campaign=repo_merchantpage&utm_id=repo_merchantpage" target="_blank"> 180+ merchants</a>.
 
 Create your preferred feed in seconds with 3 simple steps:
 
@@ -44,15 +45,21 @@ Use features such as category mapping, custom fields, product filters, Google Au
 
 <a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo_pricing&utm_medium=pfm_repo" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro</a>
 
-<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/?utm_source=plugin&utm_medium=documentation_button&utm_campaign=pfm_plugin"> 📃 Documentation</a> | <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">📹 Tutorials</a> |
-<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">🌟 All Features</a>
+<blockquote>
+<h4>👉 Read Step by Step <a target="_blank" href="https://rextheme.com/docs-category/product-feed-manager/?utm_source=repo&utm_medium=documentation_button&utm_campaign=repo-to-doc/">Documentation</a> 
+<br>
+<h4>👉 Check Out Our <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Video Tutorials</a></h4>
+<br/>
+<h4>👉 Checkout All Features: <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">From here</a></h4>
+<br/>
+</blockquote>
 
 
 [youtube https://youtu.be/7VVuLP6bkoM?utm_source=repo&utm_medium=repo&utm_campaign=repo_relaunchvdo&utm_id=repo_relaunchvdo]
 
-== Best Plugin To Generate WooCommerce Google Product Feed & Facebook Catalog ==
+== 🌟 Best Plugin To Generate WooCommerce Product Feeds For Google Shopping & Facebook Catalog 🌟==
 
-Currently, this plugin is considered the easiest and the most effective Product Feed Management plugin to generate WooCommerce Google Shopping Feed and Facebook catalog.
+Currently, Product Feed Manager for WooCommerce is considered the easiest and the most effective Product Feed Management plugin to generate WooCommerce Google Shopping Feed and Facebook catalog.
 
 You will get everything you need that is required by Google merchant feed (Google Shopping Feed) and Facebook feed including:
 
@@ -62,47 +69,70 @@ You will get everything you need that is required by Google merchant feed (Googl
 - Accurate Structured Data Format
 - Auto-sync With Google Merchant Center
 
-And many more.
+And so many more!
 
 Most of the features are pre-configured so that you can generate a Google feed and Facebook feed with the least effort possible, and start promoting on Google Shopping immediately.
 
-== Why Use Product Feed Manager for WooCommerce? ==
+== 🌟 Why Use Product Feed Manager for WooCommerce? 🌟 ==
 
-Product Feed Manager is the one stop solution to your WooCommerce product feeds for Google Shopping and 170+ popular marketplaces.
+Product Feed Manager is the one-stop solution for your WooCommerce product feeds for Google Shopping and **180+ popular marketplaces**.
 
-You will be able to create accurate WooCommerce feeds in just a few steps, without having to spend hours on documentation. The plugin comes with a super easy UI that helps you understand the feed generation process even without any in-depth technical knowledge.
+Create accurate WooCommerce feeds in just a few steps, without having to spend hours on documentation.
 
-The plugin includes pre-configured WooCommerce feed templates for all the supported merchants so that you do not need to manually create the whole feed from scratch. In fact, you can literally start from zero and create perfect product feeds in as low as 5 simple steps!
+The plugin comes with a super easy UI that helps you understand the feed generation process even without any in-depth technical knowledge.
 
-1. Start Creating feed
-2. Choose your merchant
-3. Map out missing fields
-4. Click on publish
-5. Download your feed
+You also get pre-configured WooCommerce feed templates for all the supported merchants so that you do not need to manually create the whole feed from scratch.
 
-And that’s it.
+In fact, you can literally start from zero and create perfect product feeds in as low as **3 simple steps**!
 
-But that’s not all. Getting pre-made feed templates is only one aspect of Product Feed Manager.
+1. Select Your Preferred Merchant
+2. Configure Product Data For Your Feed
+3. Generate Feed With Clicking The Publish Button.
 
-But you can do so much more with it such as adding additional product data, category mapping, advanced filter options to generate feed with selected products, or even create a custom feed for merchants that we do have a template for.
+And that’s it. It's That Easy! 🤩
 
-You can also automate the feed generation process whenever you make changes to your store (such as adding a new product, or changing product details, etc) using it’s scheduled update feature.
+== 🌟 Customize Product Feeds 🌟 ==
 
-The plugin is designed to make it easy for both beginners and advanced users. Whether you are starting out and have little knowledge on feed requirements for marketplaces, or an advanced user who wants to customize the feed data, Product Feed Manager has you covered.
+Getting pre-made feed templates is only one aspect of Product Feed Manager.
 
-Sure, you might find other plugins out there that are quite good. But with Product Feed Manager, we want to ensure that you, as the user, is the first priority. That is why we always provide high quality support and constantly work on improving the plugin with new and improved features to make life easier for you when it comes to promoting your products on online marketplaces.
+But you can do so much more with it such as, 
+
+- Add additional product data,
+- Category mapping with Google's category, 
+- Advanced filter options to generate feed with selected products, 
+- Create a custom feed for merchants that we do have a template for.
+
+==🌟 Automate Feed Generation Processs 🌟==
+
+You can also automate the feed generation process whenever you make changes to your store such as,
+
+- Adding a new product, or 
+- Changing product details, etc
+
+And to do that you can use its scheduled update feature.
+
+== 🌟 Who Can Use Product Feed Manager For WooCommerce 🌟 ==
+
+The plugin is designed to make it easy for both beginners and advanced users.
+
+Whether you are starting as a **beginner** and have little knowledge of feed requirements for marketplaces, or an **advanced user** who wants to customize the feed data, we got you covered.
+
+With Product Feed Manager For WooCommerce we want to ensure that you, as the user, is the first priority.
+
+That is why we always provide high-quality support and constantly work on improving the plugin with new and improved features to make life easier for you when it comes to promoting your products on online marketplaces.
 
 Following are all the core features that we have released over the years to make this plugin the best Product Feed Management solution for your business.
 
-**Auto-sync with Google Shopping**
+**👉 Auto-sync with Google Shopping**
 
 You can auto-sync your store products with Google Merchant Shop (Google Shopping).
 
 You can set it up so that your generated product feed (product data feed) will automatically be updated and sent to your Google Merchant Shop as per your schedule.
 
-You do not need to download and upload the feed for Google Shopping Center manually.
+You do not need to download and upload the feed for <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/
+?utm_source=pfm_repo&utm_medium=google_landing_url&utm_campaign=wp_repo" target="_blank">Google Shopping Center</a> manually.
 
-**Category Mapping**
+**👉 Category Mapping (Not Limited To Google)**
 
 Google requires you to set your products under their fixed Category Lists. But changing your own store's categories is not necessary.
 
@@ -110,26 +140,28 @@ You can use the category mapping feature to map your store categories according 
 
 So your store's categories will still be the same while your products will be placed under the relevant Google category on the product feed.
 
-You can use it to map categories for other sites as well (i.e., > *it is not limited to Google Shopping*).
+You can use it to map product categories for other sites as well (i.e., > *it is not limited to Google Shopping*).
 
-It used to be a required field for generating WooCommerce product feeds for google merchants and Google Shopping, but now this is an optional field.
+It used to be a required field for generating WooCommerce product feeds for Google merchants and Google Shopping, but now this is an optional field.
 
 > *Not only does it support 1-to-1 category mapping but you can also map subsets of products on a merchant-category based on product names.*
 
-**Extensive Filter Options**
+**👉 Extensive Filter Options**
 
-You can use the smooth filter options to include or exclude the required products of your store from the product feed. You can filter by categories, tags, or apply custom filters using other attributes.
+You can use the smooth filter options to include or exclude the required products of your store from the product feed.
+
+You can filter by **categories**, **tags**, or **apply custom filters** using other attributes.
 
 You also get custom filter options. Now you can generate feed more precisely using new Product Creation Date & Product Last Modified Date conditions for Custom Filter.
 
 
-**Schedule Auto Update Of the Product Feed**
+**👉 Schedule Auto Update Of the Product Feed**
 
 Any changes you make to product data, you can set a schedule for your product feed to be updated automatically.
 
 You do not need to manually update the product feed every time you make changes to your products.
 
-**Various Product Data Feed File Types**
+**👉 Supports Various Product Feed File Types**
 
 With our WooCommerce product feed plugin, you can create different types of feed files according to your merchant needs.
 
@@ -137,21 +169,25 @@ With selecting your merchant, you can also select what type of feed you want to 
 
 Our supported feed type includes:
 
-- XML feed
-- CSV feed
-- TEXT feed
-- TSV feed
-- RSS feed
+- **XML** Product feed
+- **CSV** Product feed
+- **TEXT** Product feed
+- **TSV** Product feed
+- **RSS** Product feed
 
-**Advanced Custom Fields**
+**👉 Advanced Custom Fields**
 
-WooCommerce doesn't provide certain fields such as Brand, GTIN, UPC, Age-group, Gender, etc. Many merchant shops require these data.
+WooCommerce doesn't provide certain fields such as 
+
+**Brand, GTIN, UPC, Age-group, Gender**, etc.
+
+However, Many merchant shops require this data.
 
 Hence, Product Feed Manager for WooCommerce creates these custom fields for you so that you can generate accurate product feed without any extra coding or plugins.
 
-You should use this plugin because it will save you time and create clean quality product feed to promote through other merchant shopping channels.
+It will save you time and create clean quality product feed to promote through other merchant shopping channels.
 
-**Exclusive WooCommerce Variable Product & Variation Options**
+**👉 Exclusive WooCommerce Variable Product & Variation Options**
 
 If you have variable products in your WooCommerce site, you can easily choose between parent products and variations to show in your feed.
 
@@ -163,7 +199,7 @@ In our WooCommerce product feed plugin, you’ll get these options -
 
 You can just select the option and include variable products with or without parent products however you want.
 
-**Create A Custom Feed For Any Merchant**
+**👉 Create A Custom Feed For Any Merchant**
 
 The custom feed option will allow you to create a personalized feed for any marketplace you want.
 
@@ -177,11 +213,13 @@ The custom WooCommerce feed option will help you to -
 
 So, if you’re wondering how to create a localized feed or a complex feed with specific attributes you can do this easily with the option.
 
-**Google Analytics Support**
+**👉 Google Analytics Support**
 
-You can add and configure Google Analytics UTM tracking codes to your product URLs. It will allow you to measure the effectiveness of marketing channels in Google Analytics.
+You can add and configure Google Analytics UTM tracking codes to your product URLs.
 
-**Track Products With Facebook Pixel**
+It will allow you to measure the effectiveness of marketing channels in Google Analytics.
+
+**👉 Track Products With Facebook Pixel**
 
 You can now add Facebook pixel code to your store and track the performance for every product you upload on Facebook Dynamic Shop using this plugin.
 
@@ -198,27 +236,27 @@ With Facebook Pixel, you can track:
 
 >  You will get a **reliable support team** to help you out at all times and detailed [documentation](https://rextheme.com/docs/WooCommerce-product-feed/) and [video tutorials](https://www.youtube.com/watch?v=WYRgnMFQGH8&list=PLelDqLncNWcVoPA7T4eyyfzTF0i_Scbnq).
 
-**Combine Multiple Attributes In The Feed**
+**👉 Combine Multiple Attributes In The Feed**
 
-You can now merge different attributes in a single attribute, to show in your woocommerce XML product feed.
+You can now merge different attributes in a single attribute, to show in your WooCommerce XML product feed.
 
-For example, in the product title you can add brand name to attract your targeted audience. This feature removes the hassle of manually doing it.
+*For example, in the **product title**, you can add a brand name to attract your targeted audience without manually changing it.*
 
-By combining different attributes, you can create more descriptive and keyword-rich product titles, which can help your products rank higher in search engines and attract more organic traffic to your sites.
+Create more descriptive and keyword-rich product titles, to help your products rank higher in search engines and attract more organic traffic to your sites.
 
-==ACF Support==
+==🌟 ACF Support 🌟==
 Get [Advanced Custom Fields (ACF)](https://wordpress.org/plugins/advanced-custom-fields/) plugin's custom fields support in Product Feed Manager For WooCommerce.
 
 You can not only generate feeds but also fetch custom images using ACF to your product feed easily without any hassle.
 
 
-==Localization & RTL Support==
+==🌟 Localization & RTL Support 🌟==
 
-*Right-to-left (RTL) Language Support*
+*👉 Right-to-left (RTL) Language Support*
 
 We have added support for right-to-left languages like Arabic and Hebrew. The user interface will automatically adjust for RTL languages.
 
-*Localization Support*
+*👉 Localization Support*
 
 All PHP code, JavaScript, and static content are now translatable, allowing for better localization and language support across the platform.
 
@@ -226,10 +264,10 @@ All PHP code, JavaScript, and static content are now translatable, allowing for 
 Take advantage of the new [Dynamic Discount For WooCommerce](https://rextheme.com/dynamic-discount-for-woocommerce/) plugin seamlessly within our product feed management.
 
 
-== Free Features ==
+== 🌟🌟 Free Features 🌟🌟 ==
 
 * Generate Product Feed in a few clicks
-* 170+ pre-built templates of Merchant Shop feed
+* 180+ pre-built templates of Merchant Shop feed
 * Generate feed in XML, CSV or Text file format
 * Auto-sync with Google Shopping Center
 * Compatible with both http and https sites
@@ -254,7 +292,7 @@ Take advantage of the new [Dynamic Discount For WooCommerce](https://rextheme.co
 * WPML support
 * Rollback to Older Version
 
-== Premium Features: ==
+== 🌟🌟 Premium Features 🌟🌟==
 
 * All Free features
 * Unlimited Product Feed Generated (Free version limited to 200 products)
@@ -272,25 +310,29 @@ Take advantage of the new [Dynamic Discount For WooCommerce](https://rextheme.co
 * Option To Fix WooCommerce's (Json-Ld) Structured Data Bug
 * 5 more pre-built templates (including eBay MIP, Google Product Review, Google Re-marketing (DRM) and others)
 
-== MOST POPULAR MARKETPLACES YOU CAN GENERATE FEED FOR ==
+== MOST POPULAR MARKETPLACES YOU CAN GENERATE Product FEED FOR ==
 
-== GOOGLE SHOPPING & OTHER GOOGLE DESTINATIONS ==
+== ⭐ GOOGLE SHOPPING & OTHER GOOGLE DESTINATIONS ⭐ ==
 
 With our product feed plugin, you can accurately generate Google Shopping feeds, also known as Google product feeds.
 
-This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping. You can even add all the unique product identifiers (brand,mpn,gtin) to your google shopping feed easily.
+This WooCommerce google product feed template includes all the required attributes that you need to sell on Google Shopping.
+
+You can even add all the unique product identifiers **(brand,mpn,gtin)** to your google shopping feed easily.
 
 [youtube https://youtu.be/Xg-zBdYfIZM?utm_source=repo&utm_medium=repo&utm_campaign=repo_googlevdo&utm_id=repo_googlevdo]
 
 With the category mapping, you can map your WooCommerce product categories with google product categories.
 
-Google prefers to hide parent products in the variable products. In the settings, you can select if you want to show parent products in the google product feed or not.
+Google prefers to hide parent products in the variable products.
 
-Moreover, you can set auto-feed update timing so your google merchant center feed always remains accurate and updated.
+In the settings, you can select if you want to show parent products in the google product feed or not.
 
-With our woocommerce product feed plugin, you can generate google xml feed and google text feed.
+Moreover, you can set **auto-feed update timing** so your Google merchant center feed always remains accurate and updated.
 
-However, that's not all we offer. In addition to providing the Google Merchant Center feed template, our plugin can also generate Google product feeds in the correct format for various other Google Destinations.
+However, that's not all we offer.
+
+In addition to providing the Google Merchant Center feed template, our plugin can also generate Google product feeds in the correct format for various other Google Destinations.
 
 Here is a list of google shopping feed destinations we support:
 
@@ -312,21 +354,36 @@ Here is a list of google shopping feed destinations we support:
 
 So, you can literally use just one single plugin to generate Google feed for all Google Shopping services and start making the most out of Google’s services to increase sales.
 
-== Facebook Catalog & Instagram Shopping Feed ==
+==⭐ Facebook Catalog & Instagram Shopping Feed ⭐==
 
 Facebook Dynamic Ads or Facebook Shop is currently among the top priorities for any online shop to promote and sell products, simply due to the targeted audience that Facebook can bring in.
 
 For that, creating an accurate WooCommerce Facebook product feed is cruical.
 
-With Product Feed Manager, you will get a pre-built merchant template for Facebook Catalog that will come with all the required attributes to successfully generate a WooCommerce Facebook Feed (Facebook product catalog feed).
+With Product Feed Manager, you will get a pre-built merchant template for Facebook Catalog that comes with all the required attributes to successfully generate a **WooCommerce Facebook Feed** (Facebook product catalog feed).
 
-All you need to do is simply select Facebook Catalog from the merchant list, check and assign the values to the require facebook product catalog feed attributes, and publish the meta feed. Product Feed WooCommerce made it pretty simple.
+All you need to do is simply 
 
-Just like Facebook, Instagram shop marketing (Instagram shop) is another big medium you can rely on when trying to increase your online sales.
+- Select Facebook Catalog from the merchant list,
+- Check and assign the values to the required Facebook product catalog feed attributes,
+- Publish the meta feed. 
+
+Just like Facebook, Instagram shop marketing (Instagram shop) is another big marketplace you can rely on when trying to increase your online sales.
 
 This plugin will let you generate an Instagram Shopping Feed accurately too - just like the WooCommerce Facebook Product feed, real quick.
 
-== Bing Shopping feed ==
+== ⭐ TikTok Shopping feed ⭐ ==
+TikTok has been one of the most popular social media channels for the last couple of years and business owners are making a ton of money from it.
+
+Product Feed Manager For WooCommerce will now help you create TikTok feed for your products and promote them on TikTok.
+
+All you have to do is,
+
+- Map products available for sale on your store to TikTok shop’s categories
+- Choose WooCommerce products that you would like to display on your TikTok Shop
+- Select, sync, and sell only what you want on TikTok Shop
+
+== ⭐ Bing Shopping feed ⭐==
 
 Next to Google, Bing is probably a prime SERP that people prefer. And recently, the Bing Shopping marketplace is on the rise.
 
@@ -336,13 +393,13 @@ With WooCommerce Product Feed, you will be able to generate Microsoft Advertisin
 
 The pre-built bing product feed templates in the plugin ensure you can list your products as Bing Ads with the help of Bing product feed real quick.
 
-== Pinterest Product Feed (Product Data Feed) & Snapchat Feed ==
+==⭐ Pinterest Product Feed (Product Data Feed) & Snapchat Feed ⭐==
 
 Pinterest and Snapchat are two large social platforms and their dynamic advertisement options made them prime marketplaces to promote WooCommerce products on.
 
 You can easily generate Pinterest Product Feed (XML, CSV or TSV) and Snapchat Ads feed in the right format using Product Feed Manager for WooCommerce.
 
-== Yandex YML Feed (Yandex Market) ==
+==⭐ Yandex YML Feed (Yandex Market) ⭐==
 
 One of the latest marketplaces that the plugin supports is the Yandex market.
 
@@ -357,39 +414,39 @@ The Yandex Market Language (YML) format is a complex feed format that is difficu
 
 >Product Feed Manager for WooCommerce is one of the few plugins that provide the YML format, hence you can easily rely on it to sell WooCommerce products on the Yandex Market.
 
-== Google Local Products Inventory ==
+==⭐ Google Local Products Inventory ⭐==
 
 The google local Products Inventory feed lets you list your products that you sell in each store. Create a Google product feed/ Google feed using Google Local Inventory feed template and submit the feed to the Google Merchant Center and start advertising your local products online
 
-== Google Manufacturer Center Feed ==
+==⭐ Google Manufacturer Center Feed ⭐==
 
 If you want to show special offers within your Shopping Ads, you can simply generate a Google feed/ Google product feed for the Google Manufacturer Centre and start promoting now. Your audience will be able to view the offer on a popup once they click on the link.
 
-== Skroutz (Skroutz.gr) ==
+==⭐ Skroutz (Skroutz.gr) ⭐==
 
 Skroutz is one of the popular marketplaces in Greece. And with Product Feed Manager for WooCommerce, you can easily generate a Skroutz XML feed to list your products in this vast marketplace.
 
-== BestPrice (BestPrice.gr) ==
+==⭐ BestPrice (BestPrice.gr) ⭐==
 
 BestPrice GR is another Greek marketplace that you would probably want to promote your products on if you are looking for quick local traction.
 
 And PFM is currently the best plugin in WordPress to help you generate a BestPrice XML feed.
 
-== Ceneo Product Feed ==
+==⭐ Ceneo Product Feed ⭐==
 
-Speaking of local marketplaces, if you run a WooCommerce shop in Poland, then Ceneo.pl is the best marketplace you can list your products on.
+Speaking of local marketplaces, if you run a WooCommerce shop in Poland, then Ceneo.pl is the best marketplace you can list your products.
 
 Ceneo has a complex feed format and there are almost no other plugins that can successfully generate a proper Ceneo XML feed.
 
 Product Feed Manager for WooCommerce is currently the best option you have to successfully generate a Ceneo product feed.
 
-== Vivino XML Feed ==
+==⭐ Vivino XML Feed ⭐==
 
 Another specialty of Product Feed Manager For WooCommerce is the Vivino marketplace feed generation.
 
 If you sell wine online, then Vivino is among the top online wine marketplaces out there, and with PFM, you can easily generate a Vivino XML feed in just a few clicks.
 
-== Rakuten Marketplace Feed ==
+==⭐ Rakuten Marketplace Feed ⭐==
 
 Rakuten is a pioneer brand that we all know of.
 
@@ -397,7 +454,7 @@ They too have an advertising option that lets you reach all Rakuten service user
 
 You can easily generate a Rakuten advertising feed using PFM and promote your WooCommerce products through Rakuten to boost your sales.
 
-== PRODUCT FEED FOR POPULAR MARKETPLACES IN THE USA ==
+==⭐⭐ PRODUCT FEED FOR POPULAR USA MARKETPLACES ⭐⭐==
 
 Product Feed Manager for WooCommerce supports merchant templates for popular marketplaces in the USA such as:
 
@@ -412,7 +469,7 @@ Get pre-built templates for these marketplaces and optimize your product listing
 
 You can even create a custom product catalog for your desired merchant, giving you the ultimate flexibility and control.
 
-== Product Feed For Major Marketplaces In Czechia ==
+== ⭐ Product Feed For Major Marketplaces In Czechia ⭐ ==
 
 You will be able to generate product feeds, WooCommerce product catalog, or product catalog CSV for large marketplaces in Czechia which include Heureka XML feed, Glami XML feed, and Favi Compari feed (to sell furniture online).
 
@@ -639,6 +696,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 == Supported Plugins ==
 
 * Supports "WPC Composite Products for WooCommerce" plugin
+* Supports ["Dynamic Discount For WooCommerce"](https://rextheme.com/dynamic-discount-for-woocommerce/) plugin
 * Supports Loco Translate
 * Supports "Brands for WooCommerce" plugin
 * Supports "Perfect Brands for WooCommerce" plugin
@@ -654,7 +712,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 * Supports Rank Math primary attributes
 * Supports YITH brand attributes
 
->  If you want to know more about the [Pro version then click here!](https://rextheme.com/best-WooCommerce-product-feed/)
+**⭐ If you want to know more about the [Pro version then click here!](https://rextheme.com/best-WooCommerce-product-feed/)⭐**
 
 ## Privacy Policy
 Product Feed Manager for WooCommerce uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
@@ -945,6 +1003,14 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.4 (2024-04-30) =
+* Added: TikTok Catalog Feed template added
+* Added: Compatibility added for Advanced Custom Fields (ACF) Attributes & Taxonomies in `Custom Filters`
+* Added: Date Types Field Format compatibility added for Advanced Custom Fields (ACF)
+* Added: Google Shopping attribute `product_highlight` support added
+* Added: Rozetka attribute `param` support added
+* Enhancement: Thumbnail image URL updated in the feed template
 
 = 7.4.3 (2024-04-08) =
 * Enhancement: Compatibility with WP 6.5
@@ -2205,5 +2271,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.4.3 =
+= 7.4.4 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

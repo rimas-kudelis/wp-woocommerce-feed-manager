@@ -194,7 +194,11 @@ class Feed
                     foreach ($itemNode as $node) {
                         $feedItemNode->addChild($node->get('name'), $node->get('value'), $node->get('_namespace'));
                     }
-                } else {
+                }
+                elseif( stristr( $itemNode->get( 'name' ), 'product_highlight_' ) ) {
+                    $feedItemNode->addChild( 'product_highlight', $itemNode->get( 'value' ) );
+                }
+                else {
                     $itemNode->attachNodeTo($feedItemNode);
                 }
             }

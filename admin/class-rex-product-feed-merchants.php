@@ -38,8 +38,14 @@ class Rex_Feed_Merchants {
 			),
 			'facebook'  => array(
 				'free'           => true,
-				'name'           => 'Facebook',
+				'name'           => 'Facebook Catalog',
 				'formats'        => array( 'xml', 'csv' ),
+				'csv_separators' => array( 'comma', 'semi_colon' ),
+			),
+			'tiktok'  => array(
+				'free'           => true,
+				'name'           => 'TikTok Catalog',
+				'formats'        => array( 'xml', 'csv', 'tsv' ),
 				'csv_separators' => array( 'comma', 'semi_colon' ),
 			),
 			'instagram' => array(

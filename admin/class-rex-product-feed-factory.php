@@ -36,13 +36,6 @@ class Rex_Product_Feed_Factory {
 	private static $google_format;
 
 	/**
-	 * Facebook merchant list
-	 *
-	 * @var array Facebook merchant list.
-	 */
-	private static $facebook_format;
-
-	/**
 	 * Mirakl merchant list
 	 *
 	 * @var array Mirakl merchant list.
@@ -255,11 +248,10 @@ class Rex_Product_Feed_Factory {
 			'google_manufacturer_center',
 			'bing_image',
 			'rss',
-		);
-		self::$facebook_format  = array(
-			'instagram',
-			'facebook',
-			'snapchat',
+            'facebook',
+            'instagram',
+            'facebook',
+            'snapchat',
 		);
 		self::$bestprice_format = array(
 			'Bestprice',
@@ -279,9 +271,6 @@ class Rex_Product_Feed_Factory {
 		}
 		elseif ( in_array( $config[ 'merchant' ], self::$google_format ) ) {
 			$class_name = 'Rex_Product_Feed_Google';
-		}
-		elseif ( in_array( $config[ 'merchant' ], self::$facebook_format ) ) {
-			$class_name = 'Rex_Product_Feed_Facebook';
 		}
 		elseif ( in_array( $config[ 'merchant' ], self::$mirakl_format ) ) {
 			$class_name = 'Rex_Product_Feed_Mirakl';

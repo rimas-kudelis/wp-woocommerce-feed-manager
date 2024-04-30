@@ -185,6 +185,11 @@ class Rex_Product_Filter {
 
         $this->product_meta_keys = array_merge( $this->product_meta_keys, $product_attributes );
 
+        if ( defined( 'ACF_VERSION' ) ) {
+            $acf_attributes          = Rex_Feed_Attributes::get_acf_fields();
+            $this->product_meta_keys = array_merge( $this->product_meta_keys, $acf_attributes );
+        }
+
         $this->product_rule_meta_keys = Rex_Feed_Attributes::get_attributes();
 
         if( isset( $this->product_rule_meta_keys[ 'Attributes Separator' ] ) ) {
@@ -349,13 +354,23 @@ class Rex_Product_Filter {
                     if ( self::is_unix_date( $if ) ) {
                         $value = strtotime( $value );
                     }
+                    elseif ( Rex_Product_Feed_Actions::is_acf_field_type( $if, 'date_time_picker' )
+                        || Rex_Product_Feed_Actions::is_acf_field_type( $if, 'date_picker' )
+                        || Rex_Product_Feed_Actions::is_acf_field_type( $if, 'time_picker' )
+                    ) {
+                        $value = date( 'Y-m-d H:i:s', strtotime( $value ) );
+                    }
 
                     $prefix = self::get_method_prefix( $filter[ 'if' ] );
 
                     if( 'postterm_' === $prefix ) {
+                        $acf_attributes = [];
+                        if ( defined( 'ACF_VERSION' ) ) {
+                            $acf_attributes = Rex_Feed_Attributes::get_acf_fields();
+                        }
                         self::$term_table_count++;
                         $column   = $filter[ 'if' ];
-                        $taxonomy = preg_match( '/^pa_/i', $column ) ? $column : substr( $column, 0, -1 );
+                        $taxonomy = preg_match( '/^pa_/i', $column ) || ( !empty( $acf_attributes[ 'ACF Taxonomies' ] ) && array_key_exists( $column, $acf_attributes[ 'ACF Taxonomies' ] ) ) ? $column : substr( $column, 0, -1 );
                         $value    = self::get_term_id( $value, $taxonomy );
 
                         if( !$value ) {
@@ -460,10 +475,20 @@ class Rex_Product_Filter {
             'product_brands',
         ];
 
-        if( in_array( $column, $meta_table_attr, true ) ) {
+        $acf_attributes = [];
+        if ( defined( 'ACF_VERSION' ) ) {
+            $acf_attributes = Rex_Feed_Attributes::get_acf_fields();
+        }
+
+        if( in_array( $column, $meta_table_attr, true )
+            || ( !empty( $acf_attributes[ 'ACF Attributes' ] ) && array_key_exists( $column, $acf_attributes[ 'ACF Attributes' ] ) )
+        ) {
             return 'postmeta_';
         }
-        elseif( in_array( $column, $term_rel_table_attr, true ) || preg_match( '/^pa_/i', $column ) ) {
+        elseif( in_array( $column, $term_rel_table_attr, true )
+            || preg_match( '/^pa_/i', $column )
+            || ( !empty( $acf_attributes[ 'ACF Taxonomies' ] ) && array_key_exists( $column, $acf_attributes[ 'ACF Taxonomies' ] ) )
+        ) {
             return 'postterm_';
         }
         return 'post_';
@@ -479,6 +504,13 @@ class Rex_Product_Filter {
     private static function get_column_name( $column ) {
         if( preg_match( '/^pa_/i', $column ) ) {
             return 'term_taxonomy_id';
+        }
+
+        if ( defined( 'ACF_VERSION' ) ) {
+            $acf_attributes = Rex_Feed_Attributes::get_acf_fields();
+            if ( !empty( $acf_attributes[ 'ACF Taxonomies' ] ) && array_key_exists( $column, $acf_attributes[ 'ACF Taxonomies' ] ) ) {
+                return 'term_taxonomy_id';
+            }
         }
 
         switch( $column ) {

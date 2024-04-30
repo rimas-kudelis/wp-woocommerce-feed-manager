@@ -192,7 +192,6 @@ class Rex_Product_Feed_Rozetka extends Rex_Product_Feed_Other {
         }
     }
 
-
     /**
      * Return Feed
      *

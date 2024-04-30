@@ -104,6 +104,8 @@ class Feed
 
 	protected $shop = null;
 
+	protected $paramNode = null;
+
 	/**
 	 * Feed constructor
 	 */
@@ -269,45 +271,21 @@ class Feed
 					}
 				}
 				else {
-					/*if ( $itemNode->get( 'name' ) === 'id' ) {
-						$feedItemNode->addAttribute( $itemNode->get( 'name' ), $itemNode->get( 'value' ));
-					}
-					elseif ( $itemNode->get( 'name' ) === 'images' ) {
-						$imageNode = $feedItemNode->addChild( $itemNode->get( 'name' ) );
-
-						if ( strpos( $itemNode->get( 'value' ), ',' ) ) {
-							$value = explode( ',', $itemNode->get( 'value' ) );
-						}
-						elseif ( strpos( $itemNode->get( 'value' ), '|' ) ) {
-							$value = explode( '|', $itemNode->get( 'value' ) );
-						}
-						else {
-							$value = $itemNode->get( 'value' );
-						}
-
-						if ( is_array( $value ) ) {
-							foreach ( $value as $val ) {
-								$imageNode->addChild( 'image', $val );
-							}
-						}
-						else {
-							$imageNode->addChild( 'image', $itemNode->get( 'value' ) );
-						}
-					}
-					elseif ( in_array( $itemNode->get( 'name' ), $addresses ) ) {
-						if ( !array_key_exists( 'address', (array)$feedItemNode->children() ) ) {
-						     $addressNode = $feedItemNode->addChild( 'address' );
-						}
-						$addressNode->addChild( $itemNode->get( 'name' ), $itemNode->get( 'value' ) );
-					}
-					else {
-						$itemNode->attachNodeTo($feedItemNode);
-					}*/
                     if( $itemNode->get( 'name' ) === 'id' ) {
                         $feedItemNode->addAttribute( $itemNode->get( 'name' ), $itemNode->get( 'value' ) );
                     }
                     elseif( $itemNode->get( 'name' ) === 'available' ) {
                         $feedItemNode->addAttribute( $itemNode->get( 'name' ), $itemNode->get( 'value' ) );
+                    }
+                    elseif( stristr( $itemNode->get( 'name' ), 'param_value_' ) ) {
+                        if ( !empty( $itemNode->get( 'value' ) ) ) {
+                            $this->paramNode = $feedItemNode->addChild( 'param', $itemNode->get( 'value' ) );
+                        }
+                    }
+                    elseif( stristr( $itemNode->get( 'name' ), 'param_name_' ) ) {
+                        if ( !empty( $this->paramNode ) && method_exists( $this->paramNode, 'addAttribute' ) ) {
+                            $this->paramNode->addAttribute( 'name', $itemNode->get( 'value' ) );
+                        }
                     }
                     else {
                         $itemNode->attachNodeTo( $feedItemNode );
@@ -341,9 +319,7 @@ class Feed
 				}
 				$this->items_row[] = $row;
 			}
-			// if($batch != 1){
-			//     unset($this->items_row[0]);
-			// }
+
 			foreach ($this->items_row as $fields) {
 				$str .= implode("\t", $fields) . "\n";
 			}
