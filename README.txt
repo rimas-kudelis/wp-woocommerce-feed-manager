@@ -1004,7 +1004,7 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Changelog ==
 
-= 7.4.5 (2024-05-08) =
+= 7.4.5 (2024-05-09) =
 * Added: X (Twitter) Shopping Feed template added
 * Enhancement: Exclude disabled attributes from Advanced Custom Fields (ACF) in feed attributes
 * Enhancement: Improved `product_highlight` attribute in Google Shopping feed template
