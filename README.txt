@@ -56,7 +56,7 @@ Use features such as **Category mapping, Custom fields, Product filters, Google 
 <h4>👉 Checkout All Features: <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">From here</a></h4>
 
 
-[https://youtu.be/shv3-tMqWWU?si=dOjZKAYhN19COmlW?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
+[youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
 
 == 🌟 Best Plugin To Generate WooCommerce Product Feeds For Google Shopping & Facebook Catalog 🌟==
 
@@ -80,24 +80,24 @@ Product Feed Manager is the one-stop solution for your WooCommerce product feeds
 
 - Create accurate WooCommerce feeds in just a few steps, without spending hours
 - Get super easy UI that helps you understand the feed generation process even without any in-depth technical knowledge.
-- Get pre-configured WooCommerce feed templates for all the supported merchants. 
+- Get pre-configured WooCommerce feed templates for all the supported merchants.
 
 == 🌟 Customize Product Feeds 🌟 ==
 
 Getting pre-made feed templates is only one aspect of Product Feed Manager.
 
-But you can do so much more with it such as, 
+But you can do so much more with it such as,
 
 - Add additional product data,
-- Category mapping with Google's category, 
-- Advanced filter options to generate feed with selected products, 
+- Category mapping with Google's category,
+- Advanced filter options to generate feed with selected products,
 - Create a custom feed for merchants that we do have a template for.
 
 ==🌟 Automate Feed Generation Processs 🌟==
 
 You can also automate the feed generation process whenever you make changes to your store such as,
 
-- Adding a new product, or 
+- Adding a new product, or
 - Changing product details, etc
 
 And to do that you can use its scheduled update feature.
@@ -159,7 +159,7 @@ Our supported feed type includes:
 
 **👉 Advanced Custom Fields**
 
-WooCommerce doesn't provide certain fields such as 
+WooCommerce doesn't provide certain fields such as
 
 **Brand, GTIN, UPC, Age-group, Gender**, etc.
 
