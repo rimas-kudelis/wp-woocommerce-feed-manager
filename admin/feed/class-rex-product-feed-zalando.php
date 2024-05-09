@@ -115,7 +115,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ( $product->is_type( 'variable' ) && $product->has_child() ) {
+            if ( ( $product->is_type( 'variable' ) || $product->is_type( 'variable-subscription' ) ) && $product->has_child() ) {
                 $variable_parent[] = $productId;
                 $parent_atts = $this->get_product_data( $product, $product_meta_keys );
 	            $item = RexShopping::createItem();
@@ -153,7 +153,7 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
                 $this->feed[] = $json_array;
             }
 
-            if ( $product->is_type( 'simple' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'subscription' ) ) {
 	            $item = RexShopping::createItem();
                 $simple_products[] = $productId;
                 $atts = $this->get_product_data( $product, $product_meta_keys );
@@ -167,17 +167,17 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
 		                $item->$key($value); // invoke $key as method of $item object.
 	                }
                 }
-                $json_array = $this->get_product_model($atts);
+                $json_array = $this->get_product_model( $atts );
                 $json_array['product_model']['product_configs'][0]['product_simples'][] = $this->get_product_simples($atts);
                 $this->feed[] = $json_array;
             }
 
             if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->custom_filter_option) {
-		        if ( $product->get_type() === 'variation' ) {
+		        if ( $product->get_type() === 'variation' || $product->get_type() === 'subscription_variation' ) {
 			        $variation_products[] = $productId;
 			        $item = RexShopping::createItem();
 			        $atts = $this->get_product_data($product, $product_meta_keys);
-			        foreach ($atts as $key => $value) {
+			        foreach ( $atts as $key => $value ) {
 				        if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
 					        if ( $value != '' ) {
 						        $item->$key($value); // invoke $key as method of $item object.
@@ -192,11 +192,11 @@ class Rex_Product_Feed_Zalando extends Rex_Product_Feed_Abstract_Generator {
         }
 
         $total_products = array(
-            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variation_products) + (int) count($group_products) + (int) count($variable_parent),
-            'simple' => (int) $total_products['simple'] + (int) count($simple_products),
-            'variable' => (int) $total_products['variable'] + (int) count($variation_products),
-            'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
-            'group' => (int) $total_products['group'] + (int) count($group_products),
+            'total' => (int) $total_products['total'] + count($simple_products) + count($variation_products) + count($group_products) + count($variable_parent),
+            'simple' => (int) $total_products['simple'] + count($simple_products),
+            'variable' => (int) $total_products['variable'] + count($variation_products),
+            'variable_parent' => (int) $total_products['variable_parent'] + count($variable_parent),
+            'group' => (int) $total_products['group'] + count($group_products),
         );
 
         update_post_meta( $this->id, '_rex_feed_total_products', $total_products );

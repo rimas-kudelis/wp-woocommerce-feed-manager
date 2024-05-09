@@ -1127,6 +1127,7 @@ class ComposerStaticInit4c4b99044a2541264cd0b6680902f5e3
         'Rex_Feed_Template_Trovino' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-trovino.php',
         'Rex_Feed_Template_Tweakers' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-tweakers.php',
         'Rex_Feed_Template_Twenga' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-twenga.php',
+        'Rex_Feed_Template_Twitter' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-twitter.php',
         'Rex_Feed_Template_Uvinum' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-uvinum.php',
         'Rex_Feed_Template_Vergelijk' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-vergelijk.php',
         'Rex_Feed_Template_Verizon' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-verizon.php',

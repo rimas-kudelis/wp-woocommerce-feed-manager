@@ -317,7 +317,12 @@ class Rex_Feed_Attributes {
 		$acf_attributes = wpfm_get_cached_data( 'acf_attributes' );
 		if ( !is_array( $acf_attributes ) || empty( $acf_attributes ) ) {
 			global $wpdb;
-			$query = $wpdb->prepare( "SELECT `post_excerpt` AS `key`, `post_title` AS `value` FROM %1s WHERE `post_type`=%s AND `post_status`=%s GROUP BY `post_excerpt`", [ $wpdb->posts, 'acf-field', 'publish' ] );
+            $query = "SELECT child.post_excerpt AS `key`, child.post_title AS `value` FROM %1s AS child ";
+            $query .= "JOIN %1s AS parent ON child.post_parent = parent.ID ";
+            $query .= "WHERE parent.post_status=%s AND parent.post_type=%s ";
+            $query .= "AND child.post_type=%s AND child.post_status=%s ";
+            $query .= "GROUP BY child.post_excerpt";
+			$query = $wpdb->prepare( $query, [ $wpdb->posts, $wpdb->posts, 'publish', 'acf-field-group', 'acf-field', 'publish' ] );
 			$data  = $wpdb->get_results( $query, ARRAY_A );
 
 			if ( is_array( $data ) && !empty( $data ) ) {
@@ -331,6 +336,9 @@ class Rex_Feed_Attributes {
 		}
 		$acf_taxonomies = self::get_acf_taxonomy_fields();
 		if ( !empty( $acf_taxonomies[ 'ACF Taxonomies' ] ) && is_array( $acf_taxonomies[ 'ACF Taxonomies' ] ) ) {
+            if ( !is_array( $acf_attributes ) || empty( $acf_attributes ) ) {
+                $acf_attributes = [];
+            }
 			$acf_attributes[ 'ACF Taxonomies' ] = $acf_taxonomies[ 'ACF Taxonomies' ];
 		}
 		return is_array( $acf_attributes ) && !empty( $acf_attributes ) ? $acf_attributes : [];

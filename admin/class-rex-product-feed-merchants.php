@@ -53,6 +53,11 @@ class Rex_Feed_Merchants {
 				'name'    => 'Instagram (by Facebook)',
 				'formats' => array( 'xml', 'csv', 'tsv' ),
 			),
+			'twitter' => array(
+				'free'    => true,
+				'name'    => 'X (Twitter) Shopping',
+				'formats' => array( 'xml', 'csv', 'tsv' ),
+			),
 			'pinterest' => array(
 				'free'    => true,
 				'name'    => 'Pinterest',

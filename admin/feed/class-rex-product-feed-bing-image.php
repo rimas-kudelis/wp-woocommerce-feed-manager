@@ -26,9 +26,7 @@ class Rex_Product_Feed_Bing_image extends Rex_Product_Feed_Abstract_Generator
 	 * @return boolean
 	 * @author
 	 **/
-	public function make_feed()
-	{
-
+	public function make_feed() {
 		RexShopping::$container = null;
 		RexShopping::title( $this->title );
 		RexShopping::link( $this->link );
@@ -121,7 +119,6 @@ class Rex_Product_Feed_Bing_image extends Rex_Product_Feed_Abstract_Generator
 			if ( $product->is_type( 'variable' ) && $product->has_child() ) {
 				$variable_parent[] = $productId;
 				$parent_atts       = $this->get_product_data( $product, $product_meta_keys );
-				$item              = RexShopping::createItem();
 
 				if ( $this->exclude_hidden_products ) {
 					$variations = $product->get_visible_children();
@@ -158,11 +155,11 @@ class Rex_Product_Feed_Bing_image extends Rex_Product_Feed_Abstract_Generator
 		}
 
 		$total_products = array(
-			'total'           => (int) $total_products[ 'total' ] + (int) count( $simple_products ) + (int) count( $variation_products ) + (int) count( $group_products ) + (int) count( $variable_parent ),
-			'simple'          => (int) $total_products[ 'simple' ] + (int) count( $simple_products ),
-			'variable'        => (int) $total_products[ 'variable' ] + (int) count( $variation_products ),
-			'variable_parent' => (int) $total_products[ 'variable_parent' ] + (int) count( $variable_parent ),
-			'group'           => (int) $total_products[ 'group' ] + (int) count( $group_products ),
+			'total'           => (int) $total_products[ 'total' ] + count( $simple_products ) + count( $variation_products ) + count( $group_products ) + count( $variable_parent ),
+			'simple'          => (int) $total_products[ 'simple' ] + count( $simple_products ),
+			'variable'        => (int) $total_products[ 'variable' ] + count( $variation_products ),
+			'variable_parent' => (int) $total_products[ 'variable_parent' ] + count( $variable_parent ),
+			'group'           => (int) $total_products[ 'group' ] + count( $group_products ),
 		);
 
 		$this->feed[ 'itemCount' ] = $total_products[ 'total' ];

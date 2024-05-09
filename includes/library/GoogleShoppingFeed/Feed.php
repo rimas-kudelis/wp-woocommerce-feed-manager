@@ -196,7 +196,7 @@ class Feed
                     }
                 }
                 elseif( stristr( $itemNode->get( 'name' ), 'product_highlight_' ) ) {
-                    $feedItemNode->addChild( 'product_highlight', $itemNode->get( 'value' ) );
+                    $feedItemNode->addChild( 'product_highlight', $itemNode->get( 'value' ), $itemNode->get('_namespace') );
                 }
                 else {
                     $itemNode->attachNodeTo($feedItemNode);

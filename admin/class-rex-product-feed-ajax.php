@@ -800,7 +800,6 @@ class Rex_Product_Feed_Ajax {
         }
     }
 
-
     /**
      * Save facebook pixel key
      *
@@ -814,7 +813,6 @@ class Rex_Product_Feed_Ajax {
             'success' => true,
         );
     }
-
 
     /**
      * Enable logging

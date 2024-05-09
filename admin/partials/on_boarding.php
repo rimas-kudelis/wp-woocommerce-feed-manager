@@ -9,22 +9,22 @@
  * @subpackage Rex_Product_Feed/admin/partials
  */
 
-$hour_in_seconds             = defined( 'HOUR_IN_SECONDS' ) ? HOUR_IN_SECONDS : 3600;
-$is_premium_activated        = apply_filters( 'wpfm_is_premium', false );
-$custom_field                = get_option( 'rex-wpfm-product-custom-field', 'no' );
-$pa_field                    = get_option( 'rex-wpfm-product-pa-field' );
-$structured_data             = get_option( 'rex-wpfm-product-structured-data' );
-$exclude_tax                 = get_option( 'rex-wpfm-product-structured-data-exclude-tax' );
-$wpfm_cache_ttl              = get_option( 'wpfm_cache_ttl', 3 * $hour_in_seconds );
-$wpfm_allow_private_products = get_option( 'wpfm_allow_private', 'no' );
-$wpfm_hide_char              = get_option( 'rex_feed_hide_character_limit_field', 'on' );
-$wpfm_fb_pixel_enabled       = get_option( 'wpfm_fb_pixel_enabled', 'no' );
-$wpfm_fb_pixel_data          = get_option( 'wpfm_fb_pixel_value' );
-$wpfm_enable_log             = get_option( 'wpfm_enable_log' );
-$current_user_email          = get_option( 'wpfm_user_email', '' );
-$pro_url                     = add_query_arg( 'pfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=go_pro_button&utm_medium=plugin&utm_campaign=pfm_pro&utm_id=pfm_pro' );
-$rollback_versions           = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
-$wpfm_remove_plugin_data     = get_option( 'wpfm_remove_plugin_data' );
+$hour_in_seconds               = defined( 'HOUR_IN_SECONDS' ) ? HOUR_IN_SECONDS : 3600;
+$is_premium_activated          = apply_filters( 'wpfm_is_premium', false );
+$custom_field                  = get_option( 'rex-wpfm-product-custom-field', 'no' );
+$pa_field                      = get_option( 'rex-wpfm-product-pa-field' );
+$structured_data               = get_option( 'rex-wpfm-product-structured-data' );
+$exclude_tax                   = get_option( 'rex-wpfm-product-structured-data-exclude-tax' );
+$wpfm_cache_ttl                = get_option( 'wpfm_cache_ttl', 3 * $hour_in_seconds );
+$wpfm_allow_private_products   = get_option( 'wpfm_allow_private', 'no' );
+$wpfm_hide_char                = get_option( 'rex_feed_hide_character_limit_field', 'on' );
+$wpfm_fb_pixel_enabled         = get_option( 'wpfm_fb_pixel_enabled', 'no' );
+$wpfm_fb_pixel_data            = get_option( 'wpfm_fb_pixel_value' );
+$wpfm_enable_log               = get_option( 'wpfm_enable_log' );
+$current_user_email            = get_option( 'wpfm_user_email', '' );
+$pro_url                       = add_query_arg( 'pfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=go_pro_button&utm_medium=plugin&utm_campaign=pfm_pro&utm_id=pfm_pro' );
+$rollback_versions             = function_exists( 'rex_feed_get_roll_back_versions' ) ? rex_feed_get_roll_back_versions() : array();
+$wpfm_remove_plugin_data       = get_option( 'wpfm_remove_plugin_data' );
 $schedule_hours              = array(
 	'1'   => __( '1 Hour', 'rex-product-feed' ),
 	'3'   => __( '3 Hours', 'rex-product-feed' ),
@@ -483,6 +483,50 @@ else {
 										</form>
 									</div>
 								</div>
+
+                                <div class="single-merchant google-drm-pixel">
+                                    <?php
+                                    /**
+                                     * Apply filter to enable or disable Google DRM (Digital Rights Management) pixel.
+                                     *
+                                     * This method applies the 'rexfeed_enable_google_drm_pixel' filter hook to determine
+                                     * whether the Google DRM pixel should be enabled or disabled for a specific context.
+                                     *
+                                     * @param bool $default_value The default value for enabling Google DRM pixel (true/false).
+                                     * @return bool The filtered value to enable or disable Google DRM pixel.
+                                     *
+                                     * @since 7.4.5
+                                     */
+                                    $enable_google_drm = apply_filters( 'rexfeed_enable_google_drm_pixel', false );
+                                    ?>
+                                    <?php if ( !$enable_google_drm ) { ?>
+                                        <a href="<?php echo esc_url( $pro_url ); ?>" target="_blank" title="Click to Upgrade Pro"
+                                           class="wpfm-pro-cta">
+                                            <span class="wpfm-pro-tag"><?php echo esc_html__( 'pro', 'rex-product-feed' ); ?></span>
+                                        </a>
+                                    <?php } ?>
+									<span class="title">
+										<?php echo esc_html__( 'Enable Google Dynamic Remarketing Pixel', 'rex-product-feed' ); ?>
+									</span>
+                                    <div class="switch">
+                                        <?php
+                                        $disabled = '';
+                                        $checked  = 'yes' === get_option( 'wpfm_google_drm_pixel_enabled', 'no' ) ? 'checked' : '';
+                                        if ( !$enable_google_drm ) {
+                                            $disabled = 'disabled';
+                                            $checked  = '';
+                                        }
+                                        ?>
+                                        <div class="wpfm-switcher  <?php echo esc_attr( $disabled ); ?>">
+                                            <input class="switch-input" type="checkbox" id="wpfm_google_drm_pixel" <?php echo esc_attr( $checked ); echo esc_attr( $disabled ); ?>>
+                                            <label class="lever" for="wpfm_google_drm_pixel"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <?php do_action( 'rexfeed_after_google_drm_pixel_field' );?>
+
+                                <?php do_action( 'rexfeed_after_google_drm_pixel_fields' );?>
 
 								<div class="single-merchant">
 									<?php if ( !$is_premium_activated ) { ?>

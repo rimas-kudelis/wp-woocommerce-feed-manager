@@ -2432,6 +2432,7 @@ a,
   margin-bottom: 0;
 }
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant .wpfm-fb-pixel,
+.rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant .wpfm-google-drm-pixel,
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant .wpfm-per-batch {
   display: flex;
   flex-flow: row;
@@ -2516,6 +2517,7 @@ a,
   display: none;
 }
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant button.save-user-email,
+.rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant button.save-google-drm-pixel,
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant button.save-fb-pixel {
   padding: 16px 10px;
 }
@@ -2526,7 +2528,7 @@ a,
   display: block;
   margin-left: 40px;
 }
-.rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant.wpfm-fb-pixel-field {
+.rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant.wpfm-fb-pixel-field, .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant.wpfm-google-drm-pixel-field {
   margin-left: 40px;
 }
 .rex-onboarding .rex-settings-tab-content .feed-settings .single-merchant .wpfm-rollback-option-area,

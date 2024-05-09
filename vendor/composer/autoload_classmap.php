@@ -1100,6 +1100,7 @@ return array(
     'Rex_Feed_Template_Trovino' => $baseDir . '/admin/feed-templates/class-rex-feed-template-trovino.php',
     'Rex_Feed_Template_Tweakers' => $baseDir . '/admin/feed-templates/class-rex-feed-template-tweakers.php',
     'Rex_Feed_Template_Twenga' => $baseDir . '/admin/feed-templates/class-rex-feed-template-twenga.php',
+    'Rex_Feed_Template_Twitter' => $baseDir . '/admin/feed-templates/class-rex-feed-template-twitter.php',
     'Rex_Feed_Template_Uvinum' => $baseDir . '/admin/feed-templates/class-rex-feed-template-uvinum.php',
     'Rex_Feed_Template_Vergelijk' => $baseDir . '/admin/feed-templates/class-rex-feed-template-vergelijk.php',
     'Rex_Feed_Template_Verizon' => $baseDir . '/admin/feed-templates/class-rex-feed-template-verizon.php',

@@ -133,7 +133,7 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
      * feed config
      *
      */
-    private function generate_product_feed(){
+    protected function generate_product_feed(){
         $product_meta_keys = Rex_Feed_Attributes::get_attributes();
         $simple_products = [];
         $variation_products = [];
@@ -187,10 +187,9 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ( $product->is_type( 'variable' ) && $product->has_child() ) {
+            if ( ( $product->is_type( 'variable' ) || $product->is_type( 'variable-subscription' ) ) && $product->has_child() ) {
                 $variable_parent[] = $productId;
-                $variable_product = new WC_Product_Variable($productId);
-                $attributes = $this->get_product_data( $variable_product, $product_meta_keys );
+                $attributes = $this->get_product_data( $product, $product_meta_keys );
                 
                 if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
                     if (preg_match('#(\d+)$#', $this->ebay_cat_id, $matches)) {
@@ -202,7 +201,7 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
                     // get the variation attributes of
                     // this product
                     $relationshipDetails = '';
-                    $_variation_atts = $variable_product->get_variation_attributes();
+                    $_variation_atts = $product->get_variation_attributes();
                     end($_variation_atts);
                     $_key = key($_variation_atts);
 
@@ -298,7 +297,7 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
 
                 }
             }
-            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'subscription' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $this->add_to_feed( $product, $product_meta_keys );
             }
@@ -309,13 +308,13 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
             }
         }
 
-        $total_products = array(
-            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variation_products) + (int) count($group_products) + (int) count($variable_parent),
-            'simple' => (int) $total_products['simple'] + (int) count($simple_products),
-            'variable' => (int) $total_products['variable'] + (int) count($variation_products),
-            'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
-            'group' => (int) $total_products['group'] + (int) count($group_products),
-        );
+        $total_products = [
+            'total' => (int) $total_products['total'] + count($simple_products) + count($variation_products) + count($group_products) + count($variable_parent),
+            'simple' => (int) $total_products['simple'] + count($simple_products),
+            'variable' => (int) $total_products['variable'] + count($variation_products),
+            'variable_parent' => (int) $total_products['variable_parent'] + count($variable_parent),
+            'group' => (int) $total_products['group'] + count($group_products)
+        ];
 
         update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
         if ( $this->tbatch === $this->batch ) {
@@ -331,7 +330,7 @@ class Rex_Product_Feed_Ebay_seller extends Rex_Product_Feed_Abstract_Generator {
      * @param $meta_keys
      * @param string $product_type
      */
-    private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
+    protected function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
 
         if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {

@@ -299,6 +299,22 @@
 				</div>
 			</div>
 
+			<?php
+            /**
+             * Fires after rendering product type fields in the feed settings form.
+             *
+             * This action hook allows developers to inject custom content or perform additional
+             * actions after rendering the product type fields within the feed settings form.
+             * It provides a convenient way to extend or modify the product type settings section
+             * dynamically.
+             *
+             * @since 7.4.5
+             *
+             * @hook rexfeed_feed_settings_after_product_types_fields
+             */
+            do_action( 'rexfeed_feed_settings_after_product_types_fields' );
+            ?>
+
 		</div>
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'skip_product_area';?> ">

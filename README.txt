@@ -3,10 +3,10 @@
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Meta Feed, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed
-Requires at least: 4.7
+Requires at least: 5.0
 Tested up to:  6.5
-Requires PHP: 7.3
-Stable tag:  7.4.4
+Requires PHP: 7.4
+Stable tag:  7.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,7 +46,7 @@ Use features such as category mapping, custom fields, product filters, Google Au
 <a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo_pricing&utm_medium=pfm_repo" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro</a>
 
 <blockquote>
-<h4>👉 Read Step by Step <a target="_blank" href="https://rextheme.com/docs-category/product-feed-manager/?utm_source=repo&utm_medium=documentation_button&utm_campaign=repo-to-doc/">Documentation</a> 
+<h4>👉 Read Step by Step <a target="_blank" href="https://rextheme.com/docs-category/product-feed-manager/?utm_source=repo&utm_medium=documentation_button&utm_campaign=repo-to-doc/">Documentation</a>
 <br>
 <h4>👉 Check Out Our <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Video Tutorials</a></h4>
 <br/>
@@ -95,18 +95,18 @@ And that’s it. It's That Easy! 🤩
 
 Getting pre-made feed templates is only one aspect of Product Feed Manager.
 
-But you can do so much more with it such as, 
+But you can do so much more with it such as,
 
 - Add additional product data,
-- Category mapping with Google's category, 
-- Advanced filter options to generate feed with selected products, 
+- Category mapping with Google's category,
+- Advanced filter options to generate feed with selected products,
 - Create a custom feed for merchants that we do have a template for.
 
 ==🌟 Automate Feed Generation Processs 🌟==
 
 You can also automate the feed generation process whenever you make changes to your store such as,
 
-- Adding a new product, or 
+- Adding a new product, or
 - Changing product details, etc
 
 And to do that you can use its scheduled update feature.
@@ -177,7 +177,7 @@ Our supported feed type includes:
 
 **👉 Advanced Custom Fields**
 
-WooCommerce doesn't provide certain fields such as 
+WooCommerce doesn't provide certain fields such as
 
 **Brand, GTIN, UPC, Age-group, Gender**, etc.
 
@@ -362,11 +362,11 @@ For that, creating an accurate WooCommerce Facebook product feed is cruical.
 
 With Product Feed Manager, you will get a pre-built merchant template for Facebook Catalog that comes with all the required attributes to successfully generate a **WooCommerce Facebook Feed** (Facebook product catalog feed).
 
-All you need to do is simply 
+All you need to do is simply
 
 - Select Facebook Catalog from the merchant list,
 - Check and assign the values to the required Facebook product catalog feed attributes,
-- Publish the meta feed. 
+- Publish the meta feed.
 
 Just like Facebook, Instagram shop marketing (Instagram shop) is another big marketplace you can rely on when trying to increase your online sales.
 
@@ -1003,6 +1003,11 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.5 (2024-05-08) =
+* Added: X (Twitter) Shopping Feed template added
+* Enhancement: Exclude disabled attributes from Advanced Custom Fields (ACF) in feed attributes
+* Enhancement: Improved `product_highlight` attribute in Google Shopping feed template
 
 = 7.4.4 (2024-04-30) =
 * Added: TikTok Catalog Feed template added
@@ -2271,5 +2276,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.4.4 =
+= 7.4.5 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

@@ -423,7 +423,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->bypass             = $bypass;
         $this->merchant           = $config[ 'merchant' ] ?? '';
         $this->feed_format        = $config[ 'feed_format' ] ?? '';
-	    $this->wcml               = function_exists( 'wpfm_is_wcml_active' ) && wpfm_is_wcml_active();
+        $this->wcml               = function_exists( 'wpfm_is_wcml_active' ) && wpfm_is_wcml_active();
         if ( $this->bypass ) {
             $this->id                      = !empty( $config[ 'info' ][ 'post_id' ] ) ? $config[ 'info' ][ 'post_id' ] : 0;
             $this->title                   = !empty( $config[ 'info' ][ 'title' ] ) ? $config[ 'info' ][ 'title' ] : get_bloginfo();
@@ -546,7 +546,19 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->product_scope = $args[ 'products_scope' ];
         $post_types          = [ 'product' ];
 
-        if ( $this->variations && 'skroutz' !== $this->merchant ) {
+        /**
+         * Apply filters to fetch variation products for a feed.
+         *
+         * This method applies the 'rexfeed_fetch_variation_products' filter hook to allow customization
+         * of the list of variation products fetched for the feed based on specific conditions.
+         *
+         * @param array $variations The array of variation products to be fetched for the feed.
+         * @param int $feed_id The ID of the feed being processed.
+         * @return array The filtered array of variation products to be fetched for the feed.
+         *
+         * @since 7.4.5
+         */
+        if ( apply_filters( 'rexfeed_fetch_variation_products', $this->variations, $this->id ) && 'skroutz' !== $this->merchant ) {
             $post_types[] = 'product_variation';
         }
 
@@ -1375,7 +1387,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                     file_put_contents( $file, $this->feed );
                 }
             }
-            
+
             if( $this->batch === $this->tbatch ) {
                 if( 'publish' === $publish_btn ) {
                     $this->delete_prev_feed_file( "{$feed_file_name}.txt", $prev_feed_name, $path );
@@ -1475,6 +1487,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         if ( $this->merchant === 'google'
             || $this->merchant === 'facebook'
             || $this->merchant === 'tiktok'
+            || $this->merchant === 'twitter'
             || $this->merchant === 'pinterest'
             || $this->merchant === 'ciao'
             || $this->merchant === 'daisycon'
@@ -1511,8 +1524,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->item_wrapper = '<productVariationGroup>';
             }
             if ( $this->batch === $this->tbatch ) {
-		        $this->feed_string_footer .= '</productRequest>';
-	        }
+                $this->feed_string_footer .= '</productRequest>';
+            }
         }
         elseif ( $this->merchant === 'ceneo' ) {
             $node = $feed->getElementsByTagName( "o" );
@@ -1858,6 +1871,199 @@ abstract class Rex_Product_Feed_Abstract_Generator
             if( file_exists( $file_name ) ) {
                 unlink( $file_name );
             }
+        }
+    }
+
+    /**
+     * Generate product feed
+     *
+     * @return void
+     *
+     * @since 7.4.5
+     */
+    protected function generate_product_feed() {
+        $product_meta_keys  = Rex_Feed_Attributes::get_attributes();
+        $total_products     = get_post_meta( $this->id, '_rex_feed_total_products', true );
+        $total_products     = $total_products ?: get_post_meta( $this->id, 'rex_feed_total_products', true );
+        $simple_products    = [];
+        $variation_products = [];
+        $variable_parent    = [];
+        $group_products     = [];
+        $total_products     = $total_products ?: [
+            'total'           => 0,
+            'simple'          => 0,
+            'variable'        => 0,
+            'variable_parent' => 0,
+            'group'           => 0
+        ];
+
+        if ( $this->batch == 1 ) {
+            $total_products = [
+                'total'           => 0,
+                'simple'          => 0,
+                'variable'        => 0,
+                'variable_parent' => 0,
+                'group'           => 0
+            ];
+        }
+        $custom_simple_types = [ 'simple' ];
+        $custom_variable_types = [ 'variable' ];
+        $custom_variation_types = [ 'variation' ];
+
+        foreach ( $this->products as $productId ) {
+            $product = wc_get_product( $productId );
+
+            if ( !is_object( $product ) ) {
+                continue;
+            }
+
+            if ( $this->exclude_hidden_products ) {
+                if ( !$product->is_visible() ) {
+                    continue;
+                }
+            }
+
+            if ( ( !$this->include_out_of_stock )
+                && ( !$product->is_in_stock()
+                    || $product->is_on_backorder()
+                    || ( is_integer( $product->get_stock_quantity() ) && 0 >= $product->get_stock_quantity() )
+                )
+            ) {
+                continue;
+            }
+
+            if ( !$this->include_zero_priced ) {
+                $product_price = rex_feed_get_product_price( $product );
+                if ( 0 == $product_price || '' == $product_price ) {
+                    continue;
+                }
+            }
+
+            /**
+             * Apply filters to customize the list of variable product types for a feed.
+             *
+             * This method applies the 'rexfeed_custom_variable_product_types' filter hook to allow customization
+             * of the list of variable product types that should be included in the feed based on specific conditions.
+             *
+             * @param array $custom_variable_types The array of custom variable product types to be included in the feed.
+             * @param int $feed_id The ID of the feed being processed.
+             * @return array The filtered array of custom variable product types to be included in the feed.
+             *
+             * @since 7.4.5
+             */
+            $custom_variable_types = apply_filters( 'rexfeed_custom_variable_product_types', $custom_variable_types, $this->id );
+            if ( in_array( $product->get_type(), $custom_variable_types, true ) && $product->has_child() ) {
+                /**
+                 * Apply filters to determine whether to include a variable product in a feed.
+                 *
+                 * This method applies the 'rexfeed_include_variable' filter hook to allow customization
+                 * of whether a specific variable product should be included in the feed based on specific conditions.
+                 *
+                 * @param mixed $variable_product The variable product object or data to be included in the feed.
+                 * @param int $feed_id The ID of the feed being processed.
+                 * @param string $product_type The type of product associated with the variable product.
+                 * @return mixed The filtered variable product data or object to be included in the feed.
+                 *
+                 * @since 7.4.5
+                 */
+                if ( apply_filters( 'rexfeed_include_variable', $this->variable_product, $this->id, $product->get_type() ) ) {
+                    $variable_parent[] = $productId;
+                    $this->add_to_feed( $product, $product_meta_keys );
+                }
+                if ( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->custom_filter_var_exclude ) {
+                    if ( $this->exclude_hidden_products ) {
+                        $variations = $product->get_visible_children();
+                    }
+                    else {
+                        $variations = $product->get_children();
+                    }
+                    if ( is_array( $variations ) && !empty( $variations ) ) {
+                        foreach ( $variations as $variation ) {
+                            $variation_products[] = $variation;
+                            $variation_product    = wc_get_product( $variation );
+                            /**
+                             * Apply filters to determine whether to include variations in a feed.
+                             *
+                             * This method applies the 'rexfeed_include_variations' filter hook to allow customization
+                             * of whether variations should be included in the feed based on specific conditions.
+                             *
+                             * @param array $variations The array of variations to be included in the feed.
+                             * @param int $feed_id The ID of the feed being processed.
+                             * @param string $product_type The type of product associated with the variations.
+                             * @return array The filtered array of variations to be included in the feed.
+                             *
+                             * @since 7.4.5
+                             */
+                            if ( apply_filters( 'rexfeed_include_variations', $this->variations, $this->id, $variation_product->get_type() ) ) {
+                                if ( ( !$this->include_out_of_stock )
+                                    && ( !$variation_product->is_in_stock()
+                                        || $variation_product->is_on_backorder()
+                                        || ( is_integer( $variation_product->get_stock_quantity() ) && 0 >= $variation_product->get_stock_quantity() )
+                                    )
+                                ) {
+                                    continue;
+                                }
+                                $this->add_to_feed( $variation_product, $product_meta_keys, $variation_product->get_type() );
+                            }
+                        }
+                    }
+                }
+            }
+
+            /**
+             * Apply filters to customize the list of simple product types for a feed.
+             *
+             * This method applies the 'rexfeed_custom_simple_product_types' filter hook to allow customization
+             * of the list of simple product types that should be included in the feed based on specific conditions.
+             *
+             * @param array $custom_simple_types The array of custom simple product types to be included in the feed.
+             * @param int $feed_id The ID of the feed being processed.
+             * @return array The filtered array of custom simple product types to be included in the feed.
+             *
+             * @since 7.4.5
+             */
+            $custom_simple_types = apply_filters( 'rexfeed_custom_simple_product_types', $custom_simple_types, $this->id );
+            if ( in_array( $product->get_type(), $custom_simple_types, true ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' ) || $product->is_type( 'woosb' ) ) {
+                $simple_products[] = $productId;
+                $this->add_to_feed( $product, $product_meta_keys );
+            }
+
+            if ( $this->product_scope === 'all' || $this->product_scope == 'product_filter' || $this->custom_filter_option ) {
+                /**
+                 * Apply filters to customize the list of variation product types for a feed.
+                 *
+                 * This method applies the 'rexfeed_custom_variation_product_types' filter hook to allow customization
+                 * of the list of variation product types that should be included in the feed based on specific conditions.
+                 *
+                 * @param array $custom_variation_types The array of custom variation product types to be included in the feed.
+                 * @param int $feed_id The ID of the feed being processed.
+                 * @return array The filtered array of custom variation product types to be included in the feed.
+                 *
+                 * @since 7.4.5
+                 */
+                $custom_variation_types = apply_filters( 'rexfeed_custom_variation_product_types', $custom_variation_types, $this->id );
+                if ( in_array( $product->get_type(), $custom_variation_types, true ) ) {
+                    $variation_products[] = $productId;
+                    $this->add_to_feed( $product, $product_meta_keys, $product->get_type() );
+                }
+            }
+
+            if ( $product->is_type( 'grouped' ) && $this->parent_product ) {
+                $group_products[] = $productId;
+                $this->add_to_feed( $product, $product_meta_keys );
+            }
+        }
+
+        $total_products = [
+            'total'           => (int)$total_products[ 'total' ] + count( $simple_products ) + count( $variation_products ) + count( $group_products ) + count( $variable_parent ),
+            'simple'          => (int)$total_products[ 'simple' ] + count( $simple_products ),
+            'variable'        => (int)$total_products[ 'variable' ] + count( $variation_products ),
+            'variable_parent' => (int)$total_products[ 'variable_parent' ] + count( $variable_parent ),
+            'group'           => (int)$total_products[ 'group' ] + count( $group_products )
+        ];
+        update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
+        if ( $this->tbatch === $this->batch ) {
+            update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
         }
     }
 

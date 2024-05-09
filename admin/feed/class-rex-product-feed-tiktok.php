@@ -24,7 +24,7 @@ class Rex_Product_Feed_Tiktok extends Rex_Product_Feed_Google {
      * @param $meta_keys
      * @param string $product_type
      */
-    public function add_to_feed( $product, $meta_keys, $product_type = '' )
+    protected function add_to_feed( $product, $meta_keys, $product_type = '' )
     {
         $attributes = $this->get_product_data( $product, $meta_keys );
 

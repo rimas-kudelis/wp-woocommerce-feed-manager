@@ -252,6 +252,7 @@ class Rex_Product_Feed_Factory {
             'instagram',
             'facebook',
             'snapchat',
+            'twitter',
 		);
 		self::$bestprice_format = array(
 			'Bestprice',

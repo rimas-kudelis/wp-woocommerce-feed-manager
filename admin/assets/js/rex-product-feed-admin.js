@@ -601,7 +601,7 @@
 
     $(document).on("submit", "#wpfm-error-log-form", show_wpfm_error_log);
 
-    $(document).on("submit", "#wpfm-fb-pixel", save_fb_pixel_id);
+    $(document).on("submit", "#wpfm-fb-pixel", save_fb_pixel_id );
 
     $(document).on("submit", "#wpfm-transient-settings", save_wpfm_transient);
 
