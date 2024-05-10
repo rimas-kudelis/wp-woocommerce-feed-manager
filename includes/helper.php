@@ -617,10 +617,22 @@ if ( ! function_exists( 'wpfm_get_abandoned_child' ) ) {
 	 * @since 7.2.0
 	 */
 	function wpfm_get_abandoned_child( $skip = false, $offset = 0, $current_batch = 1, $per_batch = 0, $total_batch = 0, $products = array() ) {
+        $child_ids = [];
 		if ( !$skip ) {
 			$product_info = Rex_Product_Feed_Ajax::get_product_number( array() );
 			$total_batch  = $product_info[ 'total_batch' ];
 			$per_batch    = get_option( 'rex-wpfm-product-per-batch', $per_batch );
+
+            $query = 'SELECT child.ID FROM %1s AS child ';
+            $query .= 'JOIN %1s AS parent ';
+            $query .= 'ON child.post_parent = parent.ID ';
+            $query .= 'WHERE child.post_type = %s ';
+            $query .= 'AND parent.post_type = %s ';
+            $query .= 'AND parent.post_status = %s';
+
+            global $wpdb;
+            $query = $wpdb->prepare( $query, $wpdb->posts, $wpdb->posts, 'product_variation', 'product', 'draft' );
+            $child_ids = $wpdb->get_col( $query );
 		}
 
 		$args = array(
@@ -637,6 +649,7 @@ if ( ! function_exists( 'wpfm_get_abandoned_child' ) ) {
 		);
 
 		$products = array_merge( get_posts( $args ), $products );
+        $products = is_array( $child_ids ) && !empty( $child_ids ) ? array_merge( $child_ids, $products ) : $products;
 
 		if ( $total_batch != $current_batch ) {
 			$current_batch = (int) $current_batch + 1;
