@@ -51,7 +51,7 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
         }
     }
 
-    protected function generate_product_feed(){
+    private function generate_product_feed(){
 
         //get feed rules filter if value
         $feed_if_val = '';
@@ -121,11 +121,12 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
             }
 
 
-            if ( ( $product->is_type( 'variable' ) || $product->is_type( 'variable-subscription' ) ) && $product->has_child() ) {
+            if ( $product->is_type( 'variable' ) && $product->has_child() ) {
 
                 if($this->variable_product) {
                     $variable_parent[] = $productId;
-                    $this->add_to_feed( $product, $product_meta_keys );
+                    $variable_product = new WC_Product_Variable($productId);
+                    $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
 
                 if($feed_if_val!== 'id' || $feed_if_val!== 'price' || $feed_if_val!== 'sale_price'){
@@ -182,7 +183,7 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
                 }
             }
 
-            if ( $product->is_type( 'simple' ) || $product->is_type( 'subscription' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
                 $simple_products[] = $productId;
                 $this->add_to_feed( $product, $product_meta_keys );
             }
@@ -228,7 +229,7 @@ class Rex_Product_Feed_Ceneo extends Rex_Product_Feed_Abstract_Generator {
      * @param $meta_keys
      * @param string $product_type
      */
-    protected function add_to_feed( $product, $meta_keys, $product_type = '' ) {
+    private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
 
         if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {

@@ -312,7 +312,7 @@
              *
              * @hook rexfeed_feed_settings_after_product_types_fields
              */
-            do_action( 'rexfeed_feed_settings_after_product_types_fields' );
+            // do_action( 'rexfeed_feed_settings_after_product_types_fields' );
             ?>
 
 		</div>

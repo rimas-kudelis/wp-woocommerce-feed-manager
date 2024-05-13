@@ -44,7 +44,7 @@ class Rex_Feed_Merchants {
 			),
 			'tiktok'  => array(
 				'free'           => true,
-				'name'           => 'TikTok Catalog',
+				'name'           => 'TikTok Ads',
 				'formats'        => array( 'xml', 'csv', 'tsv' ),
 				'csv_separators' => array( 'comma', 'semi_colon' ),
 			),

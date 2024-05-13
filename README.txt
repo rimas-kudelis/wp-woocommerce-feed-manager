@@ -6,7 +6,7 @@ Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, 
 Requires at least: 5.0
 Tested up to:  6.5
 Requires PHP: 7.4
-Stable tag:  7.4.6
+Stable tag:  7.4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -876,6 +876,9 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.7 (2024-05-13) =
+* Fixed: Feed generation issue with variable and variation products
 
 = 7.4.6 (2024-05-10) =
 * Fixed: Exclude draft product variations [(#issue)](https://wordpress.org/support/topic/product-feed-showing-draft-products-not-just-published/)
@@ -2152,5 +2155,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.4.6 =
+= 7.4.7 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
