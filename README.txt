@@ -6,7 +6,7 @@ Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, 
 Requires at least: 5.0
 Tested up to:  6.5
 Requires PHP: 7.4
-Stable tag:  7.4.8
+Stable tag:  7.4.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,13 +26,15 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - Google Local Products & Inventory
 - Google Ads & Google Dynamic Remarketing
 - Bing
-- TikTok Shop
+- TikTok Ads
 - <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-product-catalog/?utm_source=pfmrepopage&utm_medium=instagram_landing_url&utm_campaign=wp_repo" target="_blank">Instagram</a>
 - Pinterest
 - idealo
-- Heureka
 - Yandex Market (YML) & more than <a href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=repo&utm_medium=repo&utm_campaign=repo_merchantpage&utm_id=repo_merchantpage" target="_blank"> 180+ merchants</a>.
 - Twitter Ads (Currently X)
+
+**🎊 Celebrating WordPress 21st Anniversary! 🎊**
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=WPVR-Repo&utm_campaign=WP-anniversary-sale24" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro</a> </h4>
 
 You can literally start from zero and create perfect product feeds in as low as **3 simple steps!**
 
@@ -45,8 +47,6 @@ And that’s it. It’s That Easy! 🤩
 Your WooCommerce product feed is ready and you can start selling in your desired marketplace.
 
 Use features such as **Category mapping, Custom fields, Product filters, Google Auto-sync,** and many more to generate optimized feeds for greater results.
-
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo_pricing&utm_medium=pfm_repo" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro</a> </h4>
 
 <h4>👉 Read Step by Step <a target="_blank" href="https://rextheme.com/docs-category/product-feed-manager/?utm_source=repo&utm_medium=documentation_button&utm_campaign=repo-to-doc/">Documentation</a> </h4>
 
@@ -876,6 +876,9 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.9 (2024-05-21) =
+* Fixed: Custom wrappers issue on  template
 
 = 7.4.8 (2024-05-15) =
 * Fixed: Feed generation error

@@ -157,10 +157,10 @@ class Rex_Product_Feed {
 	    $rollback       = new Rex_Feed_Rollback();
 	    $appsero_data   = new Rex_Product_Appsero_Data();
 	    $scheduler      = new Rex_Feed_Scheduler();
-	    $special_banner = new Rex_Feed_Special_Occasion_Banner(
-            'eid_ul_fitr_banner_2024',
-            '2024-04-08 00:00:00',
-            '2024-04-16 00:00:00'
+        $special_banner = new Rex_Feed_Special_Occasion_Banner(
+            'wp_birthday_2024',
+            '2024-05-20 00:00:00',
+            '2024-06-04 00:00:00'
         ); // Date format: YYYY-MM-DD HH:MM:SS
 
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
