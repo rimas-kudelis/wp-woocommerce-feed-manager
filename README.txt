@@ -33,8 +33,8 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - Yandex Market (YML) & more than <a href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=repo&utm_medium=repo&utm_campaign=repo_merchantpage&utm_id=repo_merchantpage" target="_blank"> 180+ merchants</a>.
 - Twitter Ads (Currently X)
 
-**🎊 Celebrating WordPress 21st Anniversary! 🎊**
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=WPVR-Repo&utm_campaign=WP-anniversary-sale24" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro</a> </h4>
+**🎊 Celebrating 21st Anniversary Of WordPress! 🎊**
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=WPVR-Repo&utm_campaign=WP-anniversary-sale24" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro at a Flat 25% Discount!</a> </h4>
 
 You can literally start from zero and create perfect product feeds in as low as **3 simple steps!**
 
