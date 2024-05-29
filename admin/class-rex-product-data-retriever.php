@@ -87,7 +87,7 @@ class Rex_Product_Data_Retriever {
 	 *
 	 * @var string
 	 */
-	protected $aelia_currency;
+    public $aelia_currency;
 
 	/**
 	 * Currency WC Multi-Currency
