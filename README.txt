@@ -2,9 +2,9 @@
 
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Meta Feed, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, rakuten, skroutz, fruugo,  bing image feed,  bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads
+Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Meta Feed, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, rakuten, skroutz, produktfeed,  bing image feed,  bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads
 Requires at least: 5.0
-Tested up to:  6.5
+Tested up to:  6.5.4
 Requires PHP: 7.4
 Stable tag:  7.4.10
 License: GPLv2 or later
@@ -15,32 +15,34 @@ Generate WooCommerce product feeds for Google Shopping, Social Catalogs, Instagr
 
 == Description ==
 
-Generating your WooCommerce Product Feed was never this easy! 🤩
+<h4> The easiest plugin to generate your WooCommerce Product Feed for 180+ Online marketplaces 🤩 </h4>
 
 Create accurate product feeds with your WooCommerce products in just a few clicks for any marketplace of your choice.
 
 Use our pre-defined merchant templates to generate flawless feeds for popular merchants, including -
 
-- <a href="https://youtu.be/Xg-zBdYfIZM?feature=shared&utm_source=repo&utm_medium=repo&utm_campaign=repo_googlevdo&utm_id=repo_googlevdo" target="_blank">Google Shopping feed</a>
-- <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-product-catalog/?utm_source=pfmrepopage&utm_medium=fb_landing_url&utm_campaign=wprepo" target="_blank">Facebook Catalog feed</a>
+- <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-Google-Landing" target="_blank">Google Shopping feed</a>
+- <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-catalog/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-FB-Landing" target="_blank">Facebook Catalog feed</a>
 - Google Local Products & Inventory
 - Google Ads & Google Dynamic Remarketing
 - Bing
 - TikTok Ads
-- <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-product-catalog/?utm_source=pfmrepopage&utm_medium=instagram_landing_url&utm_campaign=wp_repo" target="_blank">Instagram</a>
+- <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-catalog/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-Instagram-Landing" target="_blank">Instagram Feeds</a>
 - Pinterest
 - idealo
 - Yandex Market (YML) & more than <a href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=repo&utm_medium=repo&utm_campaign=repo_merchantpage&utm_id=repo_merchantpage" target="_blank"> 180+ merchants</a>.
 - Twitter Ads (Currently X)
 
-**🎊 Celebrating 21st Anniversary Of WordPress! 🎊**
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=WPVR-Repo&utm_campaign=WP-anniversary-sale24" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro at a Flat 25% Discount!</a> </h4>
+
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro Today!</a> </h4>
+
+[youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
 
 You can literally start from zero and create perfect product feeds in as low as **3 simple steps!**
 
 1. Select Your Preferred Merchant.
 2. Configure Product Data For Your Feed.
-3. Generate Feed by clicking The Publish Button.
+3. Generate The Product Feed by clicking The Publish Button.
 
 And that’s it. It’s That Easy! 🤩
 
@@ -54,9 +56,6 @@ Use features such as **Category mapping, Custom fields, Product filters, Google 
 
 
 <h4>👉 Checkout All Features: <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">From here</a></h4>
-
-
-[youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
 
 == 🌟 Best Plugin To Generate WooCommerce Product Feeds For Google Shopping & Facebook Catalog 🌟==
 
@@ -74,7 +73,7 @@ And so many more!
 
 Most of the features are pre-configured so that you can generate a Google feed and Facebook feed with the least effort possible, and start promoting them immediately.
 
-Also you get Facebook Pixel and Google Dynamic Remarketing Pixel support in Product Feed Manager For WooCommerce.
+Also, you get Facebook Pixel and Google Dynamic Remarketing Pixel support in Product Feed Manager For WooCommerce.
 
 == 🌟 Why Use Product Feed Manager for WooCommerce? 🌟 ==
 
@@ -119,7 +118,8 @@ You can set it up so that your generated product feed (product data feed) will a
 You do not need to download and upload the feed for <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/
 ?utm_source=pfm_repo&utm_medium=google_landing_url&utm_campaign=wp_repo" target="_blank">Google Shopping Center</a> manually.
 
-**👉 Google Category Mapping (Use it for other marketplaces who uses google category mapping)**
+
+**👉 Google Category Mapping (Use it for other marketplaces that uses google category mapping)**
 
 Google requires you to set your products under their fixed Category Lists. But changing your own store's categories is not necessary.
 
