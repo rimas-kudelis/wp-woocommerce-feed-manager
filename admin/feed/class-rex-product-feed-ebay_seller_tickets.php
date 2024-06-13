@@ -154,7 +154,7 @@ class Rex_Product_Feed_Ebay_seller_tickets extends Rex_Product_Feed_Abstract_Gen
                 }
             }
 
-            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
+            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )|| $product->is_type('yith_bundle') || $product->is_type('yith-composite')) {
                 $simple_products[] = $productId;
                 $this->add_to_feed( $product, $product_meta_keys );
             }

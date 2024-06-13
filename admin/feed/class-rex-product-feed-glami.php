@@ -132,7 +132,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
                 }
             }
 
-            if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle')) {
+            if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle')|| $product->is_type('yith_bundle') || $product->is_type('yith-composite')) {
                 $simple_products[] = $productId;
                 $this->add_to_feed( $product, $product_meta_keys );
             }
@@ -179,9 +179,7 @@ class Rex_Product_Feed_Glami extends Rex_Product_Feed_Abstract_Generator
      */
     private function add_to_feed( $product, $meta_keys, $product_type = '' ) {
         $attributes = $this->get_product_data( $product, $meta_keys );
-        $attributes = $this->process_attributes_for_delivery($attributes);
         $attributes = $this->process_attributes_for_param($attributes);
-
         if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
             $item = GlamiShopping::createItem();
 

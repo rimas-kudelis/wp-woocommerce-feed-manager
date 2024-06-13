@@ -158,9 +158,9 @@ class Rex_Product_Feed {
 	    $appsero_data   = new Rex_Product_Appsero_Data();
 	    $scheduler      = new Rex_Feed_Scheduler();
         $special_banner = new Rex_Feed_Special_Occasion_Banner(
-            'wp_birthday_2024',
-            '2024-05-20 00:00:00',
-            '2024-06-04 00:00:00'
+            'eid_ul_adha_2024',
+            '2024-06-14 00:00:00',
+            '2024-06-25 00:00:00'
         ); // Date format: YYYY-MM-DD HH:MM:SS
 
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );

@@ -800,3 +800,16 @@ if ( ! function_exists( 'wpfm_is_rex_dynamic_discount_active' ) ) {
         return defined( 'REX_DYNAMIC_DISCOUNT_VERSION' );
     }
 }
+
+if( ! function_exists('wpfm_aioseo_is_active')){
+	/**
+	 * Check if All in One SEO Pack is active
+	 *
+	 * @return bool
+	 * @since 7.4.10
+	 */
+	function wpfm_aioseo_is_active(){
+		return function_exists( 'aioseo' );
+	}
+
+}

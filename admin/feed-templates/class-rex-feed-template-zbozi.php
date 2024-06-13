@@ -34,16 +34,23 @@ class Rex_Feed_Template_Zbozi extends Rex_Feed_Abstract_Template {
 				'DELIVERY_DATE' => 'Delivery Date',
 			),
 			'Recommended Information' => array(
-				'CATEGORYTEXT'  => 'Product Category',
-				'ITEM_ID'       => 'Product ID',
-				'IMGURL'        => 'Product image URL',
-				'EAN'           => 'EAN',
-				'ISBN'          => 'ISBN',
-				'PRODUCTNO'     => 'MPN',
-				'ITEMGROUP_ID'  => 'Product Group ID',
-				'MANUFACTURER'  => 'Product Manufacturer',
-				'EROTIC'        => 'Special Offer',
-				'EXTRA_MESSAGE' => 'Additional Information',
+				'CATEGORYTEXT'          => 'Product Category',
+				'ITEM_ID'               => 'Product ID',
+				'IMGURL'                => 'Product image URL',
+				'EAN'                   => 'EAN',
+				'ISBN'                  => 'ISBN',
+				'PRODUCTNO'             => 'MPN',
+				'ITEMGROUP_ID'          => 'Product Group ID',
+				'MANUFACTURER'          => 'Product Manufacturer',
+				'EROTIC'                => 'Special Offer',
+				'EXTRA_MESSAGE'         => 'Additional Information',
+                'IMGURL_ALTERNATIVE'    => 'Alternative product Image URL',
+                'DELIVERY'              => 'Delivery item information',
+                'PRICE_BEFORE_DISCOUNT' => 'Price before discount',
+                'CONDITION'             => 'Product condition',
+                'CONDITION_DESC'        => 'Product condition description',
+                'WARRANTY'              => 'Product warranty',
+                'PRODUCTNO'             => 'Product number',
 			),
 
 			'Additional Information'  => array(
@@ -118,7 +125,7 @@ class Rex_Feed_Template_Zbozi extends Rex_Feed_Abstract_Template {
 				'suffix'   => '',
 				'escape'   => 'default',
 				'limit'    => 0,
-			),
+			)
 		);
 	}
 }

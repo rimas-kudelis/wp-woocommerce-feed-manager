@@ -361,6 +361,18 @@ class Item
     }
 
     /**
+     * [params attribute]
+     * @param $values
+     *
+     * @since 6.1.3
+     */
+    public function param($key, $values)
+    {
+        $node = new Node('PARAM');
+        $this->nodes['PARAM'] = $node->value($values);
+    }
+
+    /**
      * @param string $customLabel
      */
     public function custom_label_2($customLabel)
@@ -430,6 +442,8 @@ class Item
     {
         RexShopping::removeItemByIndex($this->index);
     }
+
+    
 
     /**
      * Clones an item

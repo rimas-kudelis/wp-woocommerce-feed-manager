@@ -129,7 +129,7 @@ class Rex_Product_Feed_Zbozi extends Rex_Product_Feed_Abstract_Generator
                 }
             }
 
-            if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle')) {
+            if ($product->is_type('simple') || $product->is_type('external') || $product->is_type('composite') || $product->is_type('bundle') || $product->is_type('yith_bundle')) {
                 $simple_products[] = $productId;
                 $this->add_to_feed( $product, $product_meta_keys );
             }
@@ -179,7 +179,6 @@ class Rex_Product_Feed_Zbozi extends Rex_Product_Feed_Abstract_Generator
 
         if( ( $this->rex_feed_skip_product && empty( array_keys($attributes, '') ) ) || !$this->rex_feed_skip_product ) {
             $item = RexShopping::createItem();
-
             if ( $product_type === 'variation' ) {
                 $check_item_group_id = 0;
             }
@@ -187,9 +186,9 @@ class Rex_Product_Feed_Zbozi extends Rex_Product_Feed_Abstract_Generator
             foreach ($attributes as $key => $value) {
                 if ($key == 'delivery') {
                     $item->$key($value['DELIVERY_ID'], $value['DELIVERY_PRICE'], $value['DELIVERY_PRICE_COD']); // invoke $key as method of $item object.
-                } elseif ($key === 'param') {
+                } elseif ( $key === 'param' || $key === 'PARAM' ) {
                     $item->$key($key, $value);
-                } else {
+                }  else {
                     if ( $this->rex_feed_skip_row && $this->feed_format === 'xml' ) {
                         if ( $value != '' ) {
                             $item->$key($value); // invoke $key as method of $item object.
@@ -207,6 +206,7 @@ class Rex_Product_Feed_Zbozi extends Rex_Product_Feed_Abstract_Generator
         }
     }
 
+    
     /**
      * Check if the merchants is valid or not
      * @param $feed_merchants
@@ -270,20 +270,13 @@ class Rex_Product_Feed_Zbozi extends Rex_Product_Feed_Abstract_Generator
         foreach ($atts as $key => $value) {
             if(preg_match('/^PARAM/im', $key)) {
                 $param_no = preg_replace('/[^0-9]/', '', $key);
-                $atts['param'][] = array(
+                $atts['param'] = array(
                     'key'           => $key,
                     'name'          => $value,
                     'value'         => isset($atts['VALUE_'.$param_no]) ? $atts['VALUE_'.$param_no] : '',
                     'percentage'    => isset($atts['PERCENTAGE_'.$param_no]) ? $atts['PERCENTAGE_'.$param_no] : '',
                 );
-            }
-        }
-        foreach ($atts as $key => $value) {
-            if(preg_match('/^PARAM/im', $key)) {
-                $param_no = preg_replace('/[^0-9]/', '', $key);
-                unset($atts['VALUE_' . $param_no]);
-                unset($atts['PERCENTAGE_' . $param_no]);
-                unset($atts['PARAM_NAME_' . $param_no]);
+                unset($atts[$key]);
             }
         }
         return $atts;

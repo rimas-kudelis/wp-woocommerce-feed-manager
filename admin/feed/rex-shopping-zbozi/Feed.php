@@ -9,6 +9,41 @@ use Gregwar\Cache\Cache;
 class Feed
 {
 
+    static $keys = array(
+        'PRODUCTNAME',
+        'DESCRIPTION',
+        'URL',
+        'PRICE_VAT',
+        'DELIVERY_DATE',
+        'CATEGORYTEXT',
+        'ITEM_ID',
+        'IMGURL',
+        'EAN',
+        'ISBN',
+        'PRODUCTNO',
+        'ITEMGROUP_ID',
+        'MANUFACTURER',
+        'EROTIC',
+        'EXTRA_MESSAGE',
+        'CUSTOM_LABEL_0',
+        'CUSTOM_LABEL_1',
+        'CUSTOM_LABEL_2',
+        'BRAND',
+        'SHOP_DEPOTS',
+        'VISIBILITY',
+        'MAX_CPC',
+        'MAX_CPC_SEARCH',
+        'LIST_PRICE',
+        'RELEASE_DATE',
+        'IMGURL_ALTERNATIVE',
+        'DELIVERY',
+        'PRICE_BEFORE_DISCOUNT',
+        'CONDITION',
+        'CONDITION_DESC',
+        'WARRANTY',
+        'PRODUCTNO',
+    );
+
     /**
      * Define Google Namespace url
      * @var string
@@ -236,6 +271,7 @@ class Feed
      */
     private function addItemsToFeed()
     {
+        $s_nodes = array('PARAM');
         
         foreach ($this->items as $item) {
             /** @var SimpleXMLElement $feedItemNode */
@@ -244,8 +280,16 @@ class Feed
             }else{
                 $feedItemNode = $this->feed->addChild($this->itemlName);
             }
+
             foreach ($item->nodes() as $itemNode) {
-                if($itemNode->get('name') != 'item_group_id'){
+               
+                if ( ! in_array($itemNode->get('name'), self::$keys ) ) {
+                    $value = $itemNode->get('value');
+                    $param = $feedItemNode->addChild('PARAM');
+                    $param->addChild('PARAM_NAME', $itemNode->get('name'));
+                    $param->addChild('VAL', $value);
+                }
+                elseif($itemNode->get('name') != 'item_group_id' && $itemNode->get('name') != 'PARAM') {
                     if (is_array($itemNode)) {
                         foreach ($itemNode as $node) {
                             $feedItemNode->addChild(str_replace(' ', '_', $node->get('name')), $node->get('value'), $node->get('_namespace'));
@@ -253,7 +297,7 @@ class Feed
                     } else {
                         $itemNode->attachNodeTo($feedItemNode);
                     }
-                }else{
+                } else{
                     $feedItemNode->addChild('ITEMGROUP_ID',$itemNode->get('value'));
                 }
                 

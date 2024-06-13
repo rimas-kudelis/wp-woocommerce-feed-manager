@@ -258,7 +258,7 @@ class Rex_Product_Data_Retriever {
 	 */
 	protected function set_val( $rule ) {
 		$val = '';
-
+		
 		if ( isset( $rule[ 'meta_key' ] ) && isset( $rule[ 'type' ] ) ) {
 			if ( 'static' === $rule[ 'type' ] ) {
 				$val = $rule[ 'st_value' ];
@@ -317,6 +317,8 @@ class Rex_Product_Data_Retriever {
 				$val = $this->set_product_custom_att( $rule[ 'meta_key' ] );
 			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_rex_dynamic_discount_attr( $rule[ 'meta_key' ] ) ) {
 				$val = $this->set_rex_dynamic_discount_attr( $rule[ 'meta_key' ] );
+			} elseif ( 'meta' === $rule[ 'type' ] && $this->is_aioseo_attr( $rule[ 'meta_key' ] ) ) {
+				$val = $this->set_aioseo_attr( $rule[ 'meta_key' ] );
 			}
 		}
 		return $val;
@@ -1974,7 +1976,6 @@ class Rex_Product_Data_Retriever {
 		if ( is_wp_error( $this->product ) && !$this->product ) {
 			return '';
 		}
-
 		$pr_id = $this->product->get_id();
 		if ( $this->product->is_type( 'variation' ) ) {
 			$pr_id = $this->product->get_parent_id();
@@ -1984,14 +1985,17 @@ class Rex_Product_Data_Retriever {
 			$meta_key = '_yoast_wpseo_primary_product_cat';
 		} elseif ( 'rankmath' === $seo_name ) {
 			$meta_key = 'rank_math_primary_product_cat';
-		}
+		} 
 
-		if ( !$meta_key ) {
+		if ( !$meta_key && 'aioseo' !== $seo_name ) {
 			return '';
 		}
 
-		$primary_cat_id = get_post_meta( $pr_id, $meta_key, true );
-
+		if('aioseo' === $seo_name ){
+			$primary_cat_id = $this->get_aioseo_primary_category_id( $pr_id );
+		} else{
+			$primary_cat_id = get_post_meta( $pr_id, $meta_key, true );
+		}
 		if ( $return_id ) {
 			return $primary_cat_id;
 		}
@@ -3020,4 +3024,63 @@ class Rex_Product_Data_Retriever {
     public function get_wmc_currency() {
         return $this->wmc_currency;
     }
+
+	/**
+	 * Helper to check if a attribute is a AIOSEO Attribute.
+	 *
+	 * @param string $key Attribute key.
+	 *
+	 * @return bool
+	 * @since    7.4.10
+	 */
+	protected function is_aioseo_attr( $key ) {
+		return !empty( $this->product_meta_keys[ 'AIO SEO Attributes' ] ) && array_key_exists( $key, $this->product_meta_keys[ 'AIO SEO Attributes' ] );
+	}
+
+	/**
+	 * Set AIO SEO attribute.
+	 *
+	 * @param string $key Attribute key.
+	 *
+	 * @since    7.4.10
+	 */
+	protected function set_aioseo_attr( $key ) {
+		$attr_val = '';
+		switch ( $key ) {
+			case 'aioseo_primary_cat':
+				$attr_val = $this->get_seo_primary_cat( 'aioseo' );
+				break;
+
+			case 'aioseo_primary_cat_id':
+				$attr_val = $this->get_seo_primary_cat( 'aioseo', true );
+				break;
+			default:
+				return '';
+		}
+		return $attr_val;
+	}
+
+	/**
+	 * Retrieves the primary category ID for a given product ID from the aioseo_posts table.
+	 *
+	 * This function queries the aioseo_posts table to find the primary category term
+	 * associated with the specified product ID. It then decodes the JSON data to extract
+	 * the primary category ID
+	 * @param int $product_id The ID of the product for which to retrieve the primary category ID.
+	 * @return mixed The primary category ID if found, or an empty string if not found.
+	 *
+	 * @since 7.4.10
+	 */
+	public function get_aioseo_primary_category_id( $product_id ){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'aioseo_posts';
+		$sql = $wpdb->prepare( "SELECT primary_term FROM $table_name WHERE post_id = %d", $product_id );
+		$primary_cat = $wpdb->get_var( $sql );
+		if ( !empty( $primary_cat ) ) {
+			$category_data = json_decode( $primary_cat, true );
+			return is_array( $category_data ) && !empty( $category_data['product_cat'] ) ? $category_data['product_cat'] : '';
+		} else {
+			return '';
+		}
+	}
 }

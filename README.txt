@@ -2,11 +2,11 @@
 
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Meta Feed, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, rakuten, skroutz, produktfeed,  bing image feed,  bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads
+Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, rakuten, skroutz, produktfeed, bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads
 Requires at least: 5.0
 Tested up to:  6.5.4
 Requires PHP: 7.4
-Stable tag:  7.4.10
+Stable tag:  7.4.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,9 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - Twitter Ads (Currently X)
 
 
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro Today!</a> </h4>
+<h4> 🎊🌟Celebrate Eid-Ul-Adha with a 20% Flat Discount! 🎊🌟</h4>
+
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=eid-ul-adha-24" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro At 20% Off Today!</a> </h4>
 
 [youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
 
@@ -392,184 +394,9 @@ Generate feed in supported file formats by the merchants such as XML, CSV, or Te
 
 Also, add your own dynamic attributes or custom taxonomy where required.
 
->   <a href="https://rextheme.com/best-woocommerce-product-feed/" target="_blank">Have a suggestion or feature request? Let us know!</a>
+<h4> <a href="https://rextheme.com/contact-us/" target="_blank">Have a suggestion or feature request? Let us know! </h4>
 
-Product Feed Manager for WooCommerce is completely compatible with WPML. You can choose to save products in different languages and then generate feed for each language using this plugin.
-
-**Supported Merchants:**
-
-- WooCommerce to [Google Shopping](https://www.google.com/retail/merchant-center/)
-- WooCommerce to [Google Adwords](https://www.google.com/adwords/)
-- WooCommerce to [Google Dynamic Search Ads](https://support.google.com/google-ads/answer/2471185?hl=en)
-- WooCommerce to [Google Local Products](https://support.google.com/merchants/answer/3061198?hl=en#:~:targetText=Local%20products%20feed%20specification,successful%20ads%20for%20your%20products)
-- WooCommerce to [Google Local Products Inventory](https://support.google.com/merchants/answer/3061342?hl=en)
-- WooCommerce to [Google Merchant Promotions](https://support.google.com/merchants/answer/2906014?hl=en)
-- WooCommerce to [Google shopping action](https://support.google.com/merchants/answer/7679273?hl=en)
-- RSS Feed
-- WooCommerce to [Google Manufacturer Center](https://www.google.com/retail/solutions/manufacturer-center/)
-- WooCommerce to [Facebook Catalog Feed](https://www.facebook.com/business/a/online-sales/dynamic-product-ads/)
-- WooCommerce to [Pinterest](https://www.pinterest.com/)
-- WooCommerce to [Instagram](https://www.instagram.com/)
-- WooCommerce to [Walmart](https://www.walmart.com/)
-- WooCommerce to [SnapChat](https://www.snapchat.com/)
-- WooCommerce to [Yahoo/Verizon Dynamic Product Ads](https://developer.verizonmedia.com/native/guide/dynamic-product-ads/operations-dpa/)
-- WooCommerce to [Bing Ads](http://advertise.bingads.microsoft.com/en-uk/home)
-- WooCommerce to [Target](https://www.target.com/)
-- WooCommerce to [Pepperjam](https://www.pepperjam.com/)
-- WooCommerce to [AdRoll.com](https://www.adroll.com/)
-- WooCommerce to [Nextag](http://www.nextag.com/)
-- WooCommerce to [Pricegrabber](http://www.pricegrabber.com/)
-- WooCommerce to [Kelkoo](https://www.kelkoo.com/)
-- WooCommerce to [Kelkoo Group Network](https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/shopping-guides/product-data-feed/)
-- WooCommerce to [Kelkoo.nl](https://www.kelkoo.nl/)
-- WooCommerce to [Become](http://www.become.com/)
-- WooCommerce to [Shopzilla](http://www.shopzilla.com/)
-- WooCommerce to [Shopping](http://www.shopping.com/)
-- WooCommerce to [Pricerunner](https://www.pricerunner.com/)
-- WooCommerce to [Billiger.de](https://www.billiger.de/)
-- WooCommerce to [Vergelijk.nl](https://www.vergelijk.nl/)
-- WooCommerce to [Twenga.nl](https://www.twenga.nl/)
-- WooCommerce to [Marktplaats](https://www.marktplaats.nl/)
-- WooCommerce to [Beslist](https://www.beslist.nl/)
-- WooCommerce to [Daisycon](https://www.daisycon.com/)
-- WooCommerce to [Yandex Market YML](https://yandex.com/)
-- WooCommerce to [Tweakers](https://tweakers.net/)
-- WooCommerce to [Spartoo](https://www.spartoo.nl/)
-- WooCommerce to [Kieskeurig](https://www.kieskeurig.nl/)
-- WooCommerce to [Sooqr](https://www.sooqr.com/)
-- WooCommerce to [Heureka](https://www.heureka.cz/)
-- WooCommerce to [Koopkeus](https://www.koopkeus.nl/)
-- WooCommerce to [Scoupz](https://www.scoupz.nl/)
-- WooCommerce to [CDiscount](https://www.cdiscount.com/)
-- WooCommerce to [Uvinum/DrinsksAndCo](https://www.drinksandco.co.uk/)
-- WooCommerce to [Rakuten](https://www.rakuten.com/)
-- WooCommerce to [Idealo](https://www.idealo.de/)
-- WooCommerce to [Pricemasher](https://www.pricemasher.co.uk/)
-- WooCommerce to [Pricesearcher](https://www.pricesearcher.com/gb/home/)
-- WooCommerce to [Fashionchick](https://www.fashionchick.nl/)
-- WooCommerce to [Ceneo](https://www.ceneo.pl/)
-- WooCommerce to [Choozen](https://www.choozen.co.uk/)
-- WooCommerce to [Ciao](https://www.ciao.fr/)
-- WooCommerce to [Pricespy](https://pricespy.co.uk/)
-- WooCommerce to [Prisjakt](https://www.prisjakt.nu/kategori.php?k=328)
-- WooCommerce to [Crowdfox](https://www.crowdfox.com/)
-- WooCommerce to [Powerreviews](https://www.powerreviews.com/)
-- WooCommerce to [Trovaprezzi](https://www.trovaprezzi.it/)
-- WooCommerce to [Zbozi](https://www.zbozi.cz/)
-- WooCommerce to [Liveintent](https://www.liveintent.com/)
-- WooCommerce to [Skroutz](https://www.skroutz.gr/)
-- WooCommerce to [Otto](https://www.otto.de/)
-- WooCommerce to [Sears](https://www.sears.com/)
-- WooCommerce to [Ammoseek](https://ammoseek.com/)
-- WooCommerce to [Fnac](https://www.fnac.com/)
-- WooCommerce to [Zalando](https://www.zalando.nl/)
-- WooCommerce to [Pixmania](https://www.pixmania.nl/)
-- WooCommerce to [Coolblue](https://www.coolblue.nl/)
-- WooCommerce to [Shopmania](https://partner.shopmania.com/)
-- WooCommerce to [Kleding](https://www.kleding.nl/)
-- WooCommerce to [Ladenzeile](https://www.ladenzeile.de/)
-- WooCommerce to [Preis](https://www.preis.de/)
-- WooCommerce to [Winesearcher](https://www.wine-searcher.com/)
-- WooCommerce to [CJ Affiliate](https://www.cj.com/)
-- WooCommerce to [Guenstiger](https://www.guenstiger.de/)
-- WooCommerce to [Hood](https://www.hood.de/)
-- WooCommerce to [Livingo](https://www.livingo.de/)
-- WooCommerce to [Jet](https://jet.com/)
-- WooCommerce to [Bonanza](https://www.bonanza.com/)
-- WooCommerce to [Medizinfuchs.de](https://www.medizinfuchs.de/)
-- WooCommerce to [Adcell](https://www.adcell.de/)
-- WooCommerce to [Adform](https://site.adform.com/)
-- WooCommerce to [Stylefruits.fr](https://www.desired.de/fashion/styling-tipps/)
-- WooCommerce to [Moebel](https://www.moebel.de/)
-- WooCommerce to [Restposten](https://www.restposten.de/)
-- WooCommerce to [Sparmedo](https://www.sparmedo.de/)
-- WooCommerce to [Whiskymarketplace](https://www.whiskymarketplace.com/)
-- WooCommerce to [NewEgg](https://www.newegg.com/)
-- WooCommerce to [Bike Exchange](https://www.bikeexchange.com.au/)
-- WooCommerce to [Cenowarka](https://cenowarka.pl/)
-- WooCommerce to [Cezigue](https://www.cezigue.fr/)
-- WooCommerce to [Check24](https://www.check24.de/)
-- WooCommerce to [Clang](https://www.e-village.nl/clang/)
-- WooCommerce to [Cherchons](https://www.cherchons.com/)
-- WooCommerce to Boetiek B.V
-- WooCommerce to [Comparer](https://www.comparer.be/)
-- WooCommerce to [Converto](https://www.converto.com/en/converto/)
-- WooCommerce to [Coolshop](https://www.coolshop.com/)
-- WooCommerce to [Commerce Connector](https://www.commerce-connector.com/web/)
-- WooCommerce to [Everysize](https://www.everysize.com/)
-- WooCommerce to [Encuentraprecios](https://www.encuentraprecios.es/)
-- WooCommerce to [Geizhals](https://geizhals.de/)
-- WooCommerce to [Geizkragen](https://www.geizkragen.de/)
-- WooCommerce to [Giftboxx](https://giftboxx.me/)
-- WooCommerce to [Go-Banana](https://www.go-banana.com/)
-- WooCommerce to [Goed-Geplaatst](https://www.goedgeplaatst.nl/)
-- WooCommerce to [Grosshandel](https://www.grosshandel.eu/)
-- WooCommerce to [Hardware.info](https://nl.hardware.info/)
-- WooCommerce to [Hatch](https://www.gethatch.com/en/)
-- WooCommerce to [Hintaopas](https://hintaopas.fi/)
-- WooCommerce to [Fyndiq](https://fyndiq.se/)
-- WooCommerce to [Fasha](https://www.fasha.nl/)
-- WooCommerce to [Real.de](https://www.real.de/)
-- WooCommerce to [Hintaseuranta](https://hintaseuranta.fi/)
-- WooCommerce to [Family Blend](https://familyblend.nl/)
-- WooCommerce to [Hitmeister](https://www.crunchbase.com/organization/hitmeister)
-- WooCommerce to [Lazada](https://www.lazada.com.my/)
-- WooCommerce to [GetPrice.com.au](https://www.getprice.com.au/)
-- WooCommerce to [HomeTiger](https://www.hometiger.com/)
-- WooCommerce to [Jurkjes.nl](https://www.jurkjes.nl/)
-- WooCommerce to [Kiesproduct](https://www.kiesproduct.nl/)
-- WooCommerce to [Kiyoh](https://www.kiyoh.com/)
-- WooCommerce to [Kompario](https://kompario.pl/)
-- WooCommerce to [Kwanko](https://www.kwanko.com/)
-- WooCommerce to [Le Dénicheur](https://ledenicheur.fr/)
-- WooCommerce to [Les Bonnes Bouilles](https://www.lesbonnesbouilles.fr/)
-- WooCommerce to [Lions Home](https://www.lionshome.co.uk/)
-- WooCommerce to [Locamo](https://www.locamo.de/)
-- WooCommerce to [Logicsale](https://www.logicsale.cn/)
-- WooCommerce to [Pronto](https://www.pronto.com/)
-- WooCommerce to [Awin](https://www.awin.com/gb)
-- WooCommerce to [Incurvy](https://www.incurvy.de/)
-- WooCommerce to [Indeed](https://www.indeed.com/)
-- WooCommerce to [Jobbrid](https://www.jobbird.com/nl)
-- WooCommerce to [Joblift](https://joblift.com/)
-- WooCommerce to [Jobboard](https://www.jobboard.io/)
-- WooCommerce to [Adcrowd](https://www.adcrowd.com/nl)
-- WooCommerce to [KuantoKusta](https://www.kuantokusta.pt/)
-- WooCommerce to [Kauftipp](https://www.kauftipp.ch/)
-- WooCommerce to [Vivino](https://www.vivino.com/)
-- WooCommerce to [Rakuten marketing](https://rakutenadvertising.com/)
-- WooCommerce to [Pricefalls](http://www.pricefalls.com/)
-- WooCommerce to [123i](https://123i.uol.com.br/)
-- WooCommerce to [Clubic](https://www.clubic.com/)
-- WooCommerce to [Criteo](https://www.criteo.com/)
-- WooCommerce to [Shopalike](https://www.shopalike.it/)
-- WooCommerce to [Compartner](https://compartner.nl/)
-- WooCommerce to [Adtraction](https://adtraction.com/)
-- WooCommerce to [Admitad](https://www.admitad.com/)
-- WooCommerce to [Bloomville](https://bloomville.nl/)
-- WooCommerce to [Datatrics](https://www.datatrics.com/)
-- WooCommerce to [Delta Projects](https://deltaprojects.com/)
-- WooCommerce to [Drezzy](https://www.drezzy.it/)
-- WooCommerce to [Domodi](https://domodi.pl/)
-- WooCommerce to [Doofinder](https://www.doofinder.com/en/)
-- WooCommerce to [Homebook.pl](https://www.homebook.pl/)
-- WooCommerce to [Home Deco](https://homedeco.co.uk/)
-- WooCommerce to [Glami](https://www.glami.ro/)
-- WooCommerce to [Fashiola](https://www.fashiola.com/)
-- WooCommerce to [Emarts](https://www.emarts.nl/)
-- WooCommerce to [Epoq](https://www.epoq.de/en/)
-- WooCommerce to [Grupo Zap](https://www.grupozap.com/)
-- WooCommerce to [Emag](https://www.grupozap.com/)
-- WooCommerce to [Lyst](https://www.lyst.com/)
-- WooCommerce to [Listupp](http://listupp.it/)
-- WooCommerce to [Hertie](https://www.hertie.de/)
-- WooCommerce to [Webgains](https://www.webgains.com/public/en/)
-- WooCommerce to [MyDeal](https://www.mydeal.com.au/)
-- WooCommerce to [Deals4U.gr](https://deals4u.gr/)
-- WooCommerce to [ibud](https://ibud.ua/)
-- WooCommerce to [BestPrice.gr](https://www.bestprice.gr/)
-- WooCommerce to [Spartoo.fr](https://www.spartoo.com/)
-- WooCommerce to [Mirakl](https://www.mirakl.com/)
+Product Feed Manager for WooCommerce has multilingual support. You can choose to save products in different languages and then generate feed for each language using this plugin.
 
 **Supported Merchants In Pro Version**
 
@@ -585,7 +412,7 @@ Product Feed Manager for WooCommerce is completely compatible with WPML. You can
 - WooCommerce to [Google Remarketing (DRM)](https://onlinesales.ai/blog/dynamic-remarketing-must-e-commerce/)
 - WooCommerce to [Google Product Review](https://developers.google.com/product-review-feeds)
 
-**⭐ If you want to know more about the [Pro version then click here!](https://rextheme.com/best-WooCommerce-product-feed/)⭐**
+**⭐ If you want to know more about the [Pro version then click here!](https://rextheme.com/best-woocommerce-product-feed/pricing/)⭐**
 
 ## Privacy Policy
 Product Feed Manager for WooCommerce uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
@@ -627,185 +454,6 @@ Everything you need to generate an effective product feed is included at Product
 This plugin was customized so that you can generate product feeds for all major merchant shops, including Google Merchant shop, Facebook Dynamic Ads, etc.
 Plus, you will get a support team that is always ready to help you out.
 You may test out our free version. If you see that Product Feed Manager for WooCommerce is easier to use than other such plugins and you are able to generate feed as required, then you may upgrade to our PRO version and enjoy our service to the fullest.
-
-= Which merchant shops are supported? =
-
-Currently, we support 180+ major merchant shops:
-
-- Google Shopping
-- Google Adwords
-- Google Dynamic Search Ads
-- Google Local Products
-- Google Local Products Inventory
-- Google Merchant Promotions
-- Google Manufacturer Center
-- Google shopping actions
-- RSS Feed
-- Facebook Catalog Feed
-- Instagram
-- Pinterest
-- Walmart
-- SnapChat
-- Yahoo/Verizon Dynamic Product Ads
-- Bing Ads
-- Target
-- Pepperjam
-- AdRoll.com
-- Nextag
-- Pricegrabber
-- Kelkoo
-- Kelkoo Group Network
-- Shopzilla
-- Shopping
-- Become
-- Pricerunner
-- Billiger
-- Vergelijk
-- Twenga.nl
-- Marktplaats
-- Beslist
-- Daisycon
-- Yandex Market
-- Tweakers
-- Spartoo
-- Kieskeurig
-- Sooqr
-- Scoupz
-- Koopkeus
-- Heureka
-- CDiscount
-- Kelkoo.nl
-- Uvinum / DrinsksAndCo
-- Rakuten
-- Idealo
-- Pricemasher
-- Pricesearcher
-- Fashionchick
-- Ceneo
-- Choozen
-- Ciao
-- Pricespy
-- Prisjakt
-- Crowdfox
-- Powerreviews
-- Trovaprezzi
-- Zbozi
-- Liveintent
-- Skroutz
-- Otto
-- Sears
-- Ammoseek
-- Fnac
-- Zalando
-- Pixmania
-- Coolblue
-- Shopmania
-- Kleding
-- Ladenzeile
-- Preis
-- Winesearcher
-- CJ Affiliate
-- Guenstiger
-- Hood
-- Livingo
-- Jet.com
-- Bonanza
-- Medizinfuchs.de
-- Adcell
-- Adform
-- Stylefruits.fr
-- Moebel
-- Restposten
-- Sparmedo
-- Whiskymarketplace
-- NewEgg
-- Bike Exchange
-- Cenowarka
-- Cezigue
-- Check24
-- Clang
-- Cherchons
-- Boetiek B.V
-- Comparer
-- Converto
-- Coolshop
-- Commerce Connector
-- Everysize
-- Encuentraprecios
-- Geizhals
-- Geizkragen
-- Giftboxx
-- Go Banana
-- Goed Geplaatst
-- Grosshandel
-- Hardware
-- Hatch
-- Hintaopas
-- Fyndiq
-- Fasha
-- Realde
-- Hintaseuranta
-- Family Blend
-- Hitmeister
-- Lazada
-- GetPrice.com.au
-- HomeTiger
-- Jurkjes.nl
-- Kiesproduct
-- Kiyoh
-- Kompario
-- Kwanko
-- Le Dénicheur
-- Les Bonnes Bouilles
-- Lions Home
-- Locamo
-- Logicsale
-- Pronto
-- Awin
-- Incurvy
-- Indeed
-- Jobbrid
-- Joblift
-- Jobboard
-- Adcrowd
-- KuantoKusta
-- Kauftipp
-- Vivino
-- Rakuten marketing
-- Pricefalls
-- 123i
-- Clubic
-- Criteo
-- Shopalike
-- Compartner
-- Adtraction
-- Admitad
-- Bloomville
-- Datatrics
-- Delta Projects
-- Drezzy
-- Domodi
-- Doofinder
-- Homebook.pl
-- Home Deco
-- Glami
-- Fashiola
-- Emarts
-- Epoq
-- Grupo Zap
-- Emag
-- Lyst
-- Listupp
-- Hertie
-- Webgains
-- MyDeal
-- Deals4u.gr
-- Ibud
-- Spartoo.fr
-- Mirakl
-- BestPrice.gr
-- Bing Image Feed
-
 
 = Is there a product limit? =
 
@@ -877,9 +525,18 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Changelog ==
 
+= 7.4.11 (2024-06-13) =
+* Fixed: Compatibility with Aelia Currency Switcher
+* Compatibility: All In One SEO;
+* Compatibility: Dokan WooCommerce Multivendor Marketplace Solution;
+* Compatibility: YITH WooCommerce Product Bundles;
+* Compatibility: WC Vendors – WooCommerce Multi-Vendor, WooCommerce Marketplace, Product Vendors;
+* Fixed: Vivino feed `Product ID` and `Inventory count` attributes don't get included in the feed;
+* Improvement: Param Attribute Support for Zbozi Merchant;
+* Fixed: Conflict if ACF field title name is the same as PFM-defined attribute title.
+
 = 7.4.10 (2024-05-29) =
 * Fixed: Compatibility with Aelia Currency Switcher
-
 = 7.4.9 (2024-05-21) =
 * Fixed: Custom wrappers issue on  template
 

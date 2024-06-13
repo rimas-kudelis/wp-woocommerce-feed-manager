@@ -83,6 +83,9 @@ class Rex_Feed_Attributes {
 		if ( apply_filters( 'wpfm_is_premium_activate', false ) ) {
 			$attributes = array_merge( $attributes, self::get_wpfm_custom_attributes() );
 		}
+		if ( wpfm_aioseo_is_active() ) {
+			$attributes = array_merge( $attributes, self::get_aioseo_attributes() );
+		}
 
 		// Get product custom attributes.
 		$_custom_attributes                        = self::get_product_custom_attributes();
@@ -105,7 +108,6 @@ class Rex_Feed_Attributes {
 		}
 
 		$attributes['Category Map'] = $cat_maps_array;
-
 		return apply_filters( 'rex_wpfm_attributes', $attributes );
 	}
 
@@ -154,7 +156,7 @@ class Rex_Feed_Attributes {
 			'promotion_id'                   => 'Promotion ID',
 			'current_page'                   => 'Current Page',
 			'author_name'                    => 'Author Name',
-			'author_url'                     => 'Author URL'
+			'author_url'                     => 'Author URL',
 		];
 	}
 
@@ -328,7 +330,9 @@ class Rex_Feed_Attributes {
 			if ( is_array( $data ) && !empty( $data ) ) {
 				foreach( $data as $item ) {
 					if ( !empty( $item[ 'key' ] ) && !empty( $item[ 'value' ] ) ) {
-						$acf_attributes[ 'ACF Attributes' ][ $item[ 'key' ] ] = $item[ 'value' ];
+						if ( !array_key_exists( $item[ 'key' ], self::get_primary_attributes() ) ) {
+							$acf_attributes[ 'ACF Attributes' ][ $item[ 'key' ] ] = $item[ 'value' ];
+						}
 					}
 				}
 			}
@@ -729,4 +733,20 @@ class Rex_Feed_Attributes {
             ]
         ];
     }
+
+	/**
+	 * Gets All In One SEO attributes
+	 *
+	 * @return string[][]
+	 */
+	public static function get_aioseo_attributes() {
+		$attributes = array(
+			'aioseo_primary_cat'        => 'All In One SEO Primary Category Name',
+			'aioseo_primary_cat_id'     => 'All In One SEO Category ID',
+		);
+		asort( $attributes );
+		return array(
+			'AIO SEO Attributes' => $attributes,
+		);
+   }
 }
