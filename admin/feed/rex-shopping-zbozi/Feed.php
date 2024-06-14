@@ -42,6 +42,7 @@ class Feed
         'CONDITION_DESC',
         'WARRANTY',
         'PRODUCTNO',
+        'item_group_id'
     );
 
     /**
@@ -282,7 +283,6 @@ class Feed
             }
 
             foreach ($item->nodes() as $itemNode) {
-               
                 if ( ! in_array($itemNode->get('name'), self::$keys ) ) {
                     $value = $itemNode->get('value');
                     $param = $feedItemNode->addChild('PARAM');
