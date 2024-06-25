@@ -6,7 +6,7 @@ Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, 
 Requires at least: 5.0
 Tested up to:  6.5.4
 Requires PHP: 7.4
-Stable tag:  7.4.12
+Stable tag:  7.4.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -524,6 +524,9 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.13 (2024-06-25) =
+* Compatibility: WooCommerce 9.0.1 compatibility
 
 = 7.4.12 (2024-06-14) =
 * Fixed: Zbozi merchant feed `param` attribute issue

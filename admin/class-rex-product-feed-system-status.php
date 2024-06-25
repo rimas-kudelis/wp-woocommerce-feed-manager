@@ -5,6 +5,8 @@
  * @package Product Feed Manager for WooCommerce
  */
 
+use Automattic\WooCommerce\Utilities\RestApiUtil;
+
 /**
  * This class is responsible for showing the system statuses in settings menu
  *
@@ -209,7 +211,7 @@ class Rex_Feed_System_Status {
 	 * @return array
 	 */
 	private static function get_server_info() {
-		$report         = wc()->api->get_endpoint_data( '/wc/v3/system_status' );
+		$report         = self::get_woocommerce_system_status_data();
 		$environment    = $report[ 'environment' ];
 		$theme          = $report[ 'theme' ];
 		$active_plugins = $report[ 'active_plugins' ];
@@ -425,4 +427,25 @@ class Rex_Feed_System_Status {
 
 		return ( new WP_Query( $args ) )->post_count;
 	}
+
+    /**
+     * Retrieve the WooCommerce system status data.
+     *
+     * This method checks if WooCommerce is installed and active, then retrieves the system status data
+     * based on the WooCommerce version. If WooCommerce version is 9.0.1 or higher, it uses the new REST API.
+     * Otherwise, it uses the legacy API.
+     *
+     * @return array|null The system status data if WooCommerce is active, otherwise null.
+     * @since 7.4.13
+     */
+    private static function get_woocommerce_system_status_data(){
+        if ( class_exists( 'WooCommerce' ) && defined( 'WC_VERSION' ) ) {
+            if ( version_compare( WC_VERSION, '9.0.1', '>=' ) ) {
+                return wc_get_container()->get( RestApiUtil::class )->get_endpoint_data( '/wc/v3/system_status' );
+            } else {
+                return WC()->api->get_endpoint_data( '/wc/v3/system_status' );
+            }
+        }
+        return null;
+    }
 }
