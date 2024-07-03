@@ -2,9 +2,9 @@
 
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, rakuten, skroutz, produktfeed, bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, tiktok shop
+Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, tiktok shop
 Requires at least: 5.0
-Tested up to:  6.5.4
+Tested up to:  6.5.5
 Requires PHP: 7.4
 Stable tag:  7.4.13
 License: GPLv2 or later
@@ -36,9 +36,7 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - eBay Seller Center & eBay MIP Feed
 -  **<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=PFM-repo-cta&utm_medium=PFM-repo&utm_campaign=repo_to_merchant">And 180+ More!</a>**
 
-<h4> 🎊🌟Celebrate Eid-Ul-Adha with a 20% Flat Discount! 🎊🌟</h4>
-
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=eid-ul-adha-24" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro At 20% Off Today!</a> </h4>
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-Repo-to-pricing" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro At 20% Off Today!</a> </h4>
 
 [youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
 
@@ -54,12 +52,12 @@ Your WooCommerce product feed is ready and you can start selling in your desired
 
 Use features such as **Category mapping, Custom fields, Product filters, Google Auto-sync,** and many more to generate optimized feeds for greater results.
 
-<h4>👉 Read Step by Step <a target="_blank" href="https://rextheme.com/docs-category/product-feed-manager/?utm_source=repo&utm_medium=documentation_button&utm_campaign=repo-to-doc/">Documentation</a> </h4>
+<h4>👉 Read Step by Step <a target="_blank" href="https://rextheme.com/docs-category/product-feed-manager/?utm_source=repo&utm_medium=pfm-documentation&utm_campaign=pfm-repo-to-doc/">Documentation</a> </h4>
 
 <h4>👉 Check Out Our <a target="_blank" href="https://www.youtube.com/playlist?list=PLelDqLncNWcVCJ_VARq1W8SQypFLwyKq0">Video Tutorials</a></h4>
 
 
-<h4>👉 Checkout All Features: <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=wp-repo&utm_medium=repo&utm_campaign=repo_to_featurepage&utm_id=repo_features">From here</a></h4>
+<h4>👉 Checkout All Features: <a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/features/?utm_source=pfm-repo&utm_medium=pfm-repo&utm_campaign=pfm-repo-features">From here</a></h4>
 
 == 🌟 Best Plugin To Generate WooCommerce Product Feeds For Google Shopping & Facebook Catalog 🌟==
 
@@ -120,7 +118,7 @@ You can auto-sync your store products with Google Merchant Shop (Google Shopping
 You can set it up so that your generated product feed (product data feed) will automatically be updated and sent to your Google Merchant Shop as per your schedule.
 
 You do not need to download and upload the feed for <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/
-?utm_source=pfm_repo&utm_medium=google_landing_url&utm_campaign=wp_repo" target="_blank">Google Shopping Center</a> manually.
+?utm_source=pfm_repo&utm_medium=google-landing-url&utm_campaign=pfm-repo-to-google-landing" target="_blank">Google Shopping Center</a> manually.
 
 
 **👉 Google Category Mapping (Use it for other marketplaces that use Google category mapping)**
@@ -1813,5 +1811,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.4.7 =
+= 7.4.13 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
