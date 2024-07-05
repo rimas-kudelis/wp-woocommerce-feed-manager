@@ -36,7 +36,9 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - eBay Seller Center & eBay MIP Feed
 -  **<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=PFM-repo-cta&utm_medium=PFM-repo&utm_campaign=repo_to_merchant">And 180+ More!</a>**
 
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-Repo-to-pricing" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro At 20% Off Today!</a> </h4>
+<h4> 🎊🌟Celebrate US Independence Day with a 20% Flat Discount! 🎊🌟</h4>
+
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=US-independece-day" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro At 20% Off Today!</a> </h4>
 
 [youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
 
