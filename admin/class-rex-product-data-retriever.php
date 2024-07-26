@@ -30,9 +30,16 @@ class Rex_Product_Data_Retriever {
 	protected $feed_rules;
 
 	/**
+	 * Analytics parameter switcher.
+	 *
+	 * @var bool $analytics_switcher The UTM switcher.
+	 */
+	protected $analytics_switcher;
+
+	/**
 	 * Analytics parameters
 	 *
-	 * @var string $feed_id The id of the feed.
+	 * @var array $analytics_params The UTM params.
 	 */
 	protected $analytics_params;
 
@@ -172,18 +179,19 @@ class Rex_Product_Data_Retriever {
 	 */
 	public function __construct( WC_Product $product, Rex_Product_Feed_Abstract_Generator $feed, $product_meta_keys ) {
 		$this->is_logging_enabled = is_wpfm_logging_enabled();
-		$this->product            = $product;
-		$this->analytics_params   = $feed->analytics_params;
-		$this->feed_config        = $feed->feed_config;
-		$this->feed_rules         = $feed->feed_rules;
-        $this->feed_rules_option  = $feed->feed_rules_option;
+        $this->feed               = $feed;
+        $this->product            = $product;
         $this->product_meta_keys  = $product_meta_keys;
-		$this->append_variation   = $feed->append_variation;
-		$this->aelia_currency     = $feed->aelia_currency;
-		$this->wmc_currency       = $feed->wmc_currency;
-		$this->wcml_currency      = $feed->wcml_currency;
-		$this->feed               = $feed;
-		$this->wcml               = $feed->wcml;
+        $this->analytics_switcher = $feed->analytics ?? false;
+        $this->analytics_params   = $feed->analytics_params ?? [];
+        $this->feed_config        = $feed->feed_config ?? [];
+        $this->feed_rules         = $feed->feed_rules ?? [];
+        $this->feed_rules_option  = $feed->feed_rules_option ?? false;
+        $this->append_variation   = $feed->append_variation ?? false;
+        $this->aelia_currency     = $feed->aelia_currency ?? '';
+        $this->wmc_currency       = $feed->wmc_currency ?? '';
+        $this->wcml_currency      = $feed->wcml_currency ?? '';
+		$this->wcml               = $feed->wcml ?? false;
 		$this->feed_format        = $feed->get_feed_format();
 		$this->feed_country       = $feed->get_shipping();
 		$this->feed_zip_codes     = $feed->get_zip_code();
@@ -707,7 +715,7 @@ class Rex_Product_Data_Retriever {
                 }
 
                 if(
-                    $this->analytics_params &&
+                    $this->analytics_switcher &&
                     !empty( $this->analytics_params[ 'utm_source' ] ) &&
                     !empty( $this->analytics_params[ 'utm_medium' ] ) &&
                     !empty( $this->analytics_params[ 'utm_campaign' ] )
@@ -741,7 +749,7 @@ class Rex_Product_Data_Retriever {
 				}
                 $permalink = $_pr->get_permalink();
                 if (
-                    $this->analytics_params &&
+                    $this->analytics_switcher &&
                     !empty( $this->analytics_params[ 'utm_source' ] ) &&
                     !empty( $this->analytics_params[ 'utm_medium' ] ) &&
                     !empty( $this->analytics_params[ 'utm_campaign' ] )

@@ -4,9 +4,9 @@ Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
 Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, tiktok shop
 Requires at least: 5.0
-Tested up to:  6.5.5
+Tested up to:  6.6
 Requires PHP: 7.4
-Stable tag:  7.4.13
+Stable tag:  7.4.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ Create accurate product feeds with your WooCommerce products in just a few click
 
 Use our pre-defined merchant templates to generate flawless feeds for popular merchants
 <h4>👉 Check Out 180+ supported Marketplaces with Product Feed Manager </a> </h4>
- 
+
 - <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-Google-Landing" target="_blank">Google Shopping feed </a> & Other Google Product Feeds.
 - <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-catalog/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-FB-Landing" target="_blank">Facebook Catalog feed & Instagram Feeds</a>
 - TikTok Ads
@@ -36,9 +36,7 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - eBay Seller Center & eBay MIP Feed
 -  **<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=PFM-repo-cta&utm_medium=PFM-repo&utm_campaign=repo_to_merchant">And 180+ More!</a>**
 
-<h4> 🎊🌟Celebrate US Independence Day with a 20% Flat Discount! 🎊🌟</h4>
-
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=US-independece-day" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro At 20% Off Today!</a> </h4>
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-pricing" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro Today!</a> </h4>
 
 [youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
 
@@ -281,7 +279,7 @@ All PHP code, JavaScript, and static content are now translatable, allowing for 
 * Unique Product Identifiers Custom Fields (Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date)
 * Detailed Product Attributes Custom Fields (Size, Pattern, Material, Age Group, Gender, Color)
 * Feed Rules - Set Conditional Attribute Values
-* Combined Attributes - Optimise Product Title
+* Combined Attributes - Optimize Product Title
 * Dynamic Pricing - Manipulate Product Pricing
 * Auto-suggestion Product Filter
 * Ability To Exclude Tax From Structured Data Prices
@@ -337,24 +335,9 @@ However, that's not all we offer.
 
 In addition to providing the Google Merchant Center feed template, our plugin can also generate Google product feeds in the correct format for various other Google Destinations.
 
-Here is a list of Google shopping feed destinations we support:
+👉 [Check out all the Google Merchant Center Supports](https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-google-feeds)
 
-- Google Shopping feed (Google Product Feed)
-- Google Local Products Inventory feed
-- Google Manufacturer Center feed
-- Google AdWords feed
-- Google Review feed
-- Google Remarketing (DRM) feed, & Google Remarketing Pixel
-- Google Local Products feed
-- Google Merchant Promotion Feed
-- Google Shopping Actions feed
-- Google Express feed
-- Google Local Inventory Ads feed
-- Google Custom Search Ads feed
-- Google Dynamic Display Ads feed
-- Google Dynamic Search Ads feed
-
-So, use just one single plugin to generate Google shopping feed for all Google Shopping services.
+So, use just one single plugin to generate a Google shopping feed for all Google Shopping services.
 
 ==⭐⭐ PRODUCT FEED FOR POPULAR USA MARKETPLACES ⭐⭐==
 
@@ -368,7 +351,7 @@ Product Feed Manager for WooCommerce supports merchant templates for popular mar
 - Wish
 - eBay
 
-Get pre-built templates for these marketplaces and optimize your product listings to sell in the best marketplaces in the USA effectively.
+Get pre-built templates for these marketplaces and optimize your product listings to sell in the [best marketplaces in the USA effectively](https://rextheme.com/best-woocommerce-product-feed/top-usa-marketplaces/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-us-marketplace).
 
 You can even create a custom product catalog for your desired merchant, giving you the ultimate flexibility and control.
 
@@ -380,7 +363,7 @@ Generate feed in supported file formats by the merchants such as XML, CSV, or Te
 
 Also, add your own dynamic attributes or custom taxonomy where required.
 
-<h4> <a href="https://rextheme.com/contact-us/" target="_blank">Have a suggestion or feature request? Let us know! </h4>
+<h4> <a href="https://rextheme.com/contact-us/" target="_blank">🌟 Have a suggestion or feature request? Let us know! 🌟</h4>
 
 Product Feed Manager for WooCommerce has multilingual support. You can choose to save products in different languages and then generate feed for each language using this plugin.
 
@@ -510,6 +493,10 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.14 (2024-07-26) =
+* Enhancement: Updated attribute in Zbozi feed template
+* Fixed: Missing UTM Params while in background feed process
 
 = 7.4.13 (2024-06-25) =
 * Compatibility: WooCommerce 9.0.1 compatibility
@@ -1813,5 +1800,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.4.13 =
+= 7.4.14 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

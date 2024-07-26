@@ -447,7 +447,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->rex_feed_skip_row       = !empty( $config[ 'skip_row' ] ) ? $config[ 'skip_row' ] : false;
             $this->wpml_language           = !empty( $config[ 'wpml_language' ] ) ? $config[ 'wpml_language' ] : '';
             $this->wcml_currency           = !empty( $config[ 'wcml_currency' ] ) ? $config[ 'wcml_currency' ] : 'USD';
-            $this->analytics               = !empty( $config[ 'analytics' ] ) ? $config[ 'analytics' ] : '';
+            $this->analytics               = !empty( $config[ 'analytics' ] ) && ( 'yes' === $config[ 'analytics' ] || 'on' === $config[ 'analytics' ] );
             $this->analytics_params        = !empty( $config[ 'analytics_params' ] ) ? $config[ 'analytics_params' ] : '';
             $this->product_condition       = !empty( $config[ 'product_condition' ] ) ? $config[ 'product_condition' ] : '';
             $this->aelia_currency          = !empty( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : 'USD';
@@ -697,17 +697,12 @@ abstract class Rex_Product_Feed_Abstract_Generator
 
         $this->product_scope = $feed_rules[ 'rex_feed_products' ];
         if ( !empty( $feed_rules[ 'rex_feed_analytics_params_options' ] ) ) {
-            $analytics_on    = $feed_rules[ 'rex_feed_analytics_params_options' ];
-            $this->analytics = 'on' === $analytics_on;
-            if ( $analytics_on ) {
+            $this->analytics = 'yes' === $feed_rules[ 'rex_feed_analytics_params_options' ] || 'on' === $feed_rules[ 'rex_feed_analytics_params_options' ];
+            if ( $this->analytics ) {
+                $this->analytics_params = $feed_rules[ 'rex_feed_analytics_params' ] ?? [];
                 if ( $this->batch === 1 ) {
-                    update_post_meta( $this->id, '_rex_feed_analytics_params_options', $analytics_on );
-                }
-                if ( 'on' === $analytics_on || 'yes' === $analytics_on ) {
-                    $this->analytics_params = isset( $feed_rules[ 'rex_feed_analytics_params' ] ) ? $feed_rules[ 'rex_feed_analytics_params' ] : [];
-                    if ( $this->batch === 1 ) {
-                        update_post_meta( $this->id, '_rex_feed_analytics_params', $this->analytics_params );
-                    }
+                    update_post_meta( $this->id, '_rex_feed_analytics_params_options', $feed_rules[ 'rex_feed_analytics_params_options' ] );
+                    update_post_meta( $this->id, '_rex_feed_analytics_params', $this->analytics_params );
                 }
             }
         }

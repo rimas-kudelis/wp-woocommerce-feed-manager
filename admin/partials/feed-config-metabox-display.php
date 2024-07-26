@@ -170,7 +170,7 @@ $keyy = rand(999, 3000); ?>
 				?>
             </div>
             <div class="static-input" <?php echo filter_var( $hide_static ); ?>>
-				<?php $feed_template->print_input( $key, 'st_value', !empty( $item['st_value'] ) ? $item['st_value'] : '', 'attribute-val-static-field disable-custom-id-dropdown' ); ?>
+				<?php $feed_template->print_input( $key, 'st_value', $item['st_value'] ?? '', 'attribute-val-static-field disable-custom-id-dropdown' ); ?>
             </div>
             <?php do_action( 'rex_feed_after_static_input', $feed_template, $key, $item );?>
         </td>

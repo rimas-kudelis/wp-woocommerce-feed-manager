@@ -157,8 +157,8 @@ class Item
      */
     public function condition($condition)
     {
-        $node = new Node('condition');
-        $this->nodes['condition'] = $node->value($condition)->_namespace($this->namespace);
+        $node = new Node('CONDITION');
+        $this->nodes['CONDITION'] = $node->value($condition)->_namespace($this->namespace);
     }
 
     /**

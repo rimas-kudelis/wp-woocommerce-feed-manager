@@ -52,11 +52,11 @@
         }
     } );
 
-    $( document ).on( 'click', '.settings_tab_close_next_btn, .settings_tab_close_prev_btn, #rex-contnet-setting__close-icon', function ( event ) {
+    $( document ).on( 'click', '.settings_tab_close_next_btn, .settings_tab_close_prev_btn', function ( event ) {
         if ( $( this ).hasClass( 'settings_tab_close_next_btn' ) || $( this ).hasClass( 'settings_tab_close_prev_btn' ) ) {
-            $( '#rex-contnet-setting__close-icon' ).trigger( 'click' );
+            $( '#rex_feed_settings_modal_close_btn' ).trigger( 'click' );
         }
-        else if ( $( this ).attr( 'id' ) === 'rex-contnet-setting__close-icon' ) {
+        else if ( $( this ).attr( 'id' ) === 'rex_feed_settings_modal_close_btn' ) {
             if ( undefined !== event.originalEvent ) {
                 $( '.settings_tab_close_next_btn' ).trigger('click');
             }
@@ -226,7 +226,7 @@
             settings_tab_close: {
                 title: window?.rexOnboardingJs?.settings_tab_close?.title ?? 'Close The Settings Drawer',
                 desc: window?.rexOnboardingJs?.settings_tab_close?.desc ?? 'Once you make any changes, click on the Close button to get back to the Attributes section.',
-                attach_element: '.post-type-product-feed span.rex-contnet-setting__close-icon',
+                attach_element: '.post-type-product-feed #rex_feed_settings_modal_close_btn',
                 attach_element_on: 'bottom',
                 next_button: next_button,
                 prev_button: prev_button,

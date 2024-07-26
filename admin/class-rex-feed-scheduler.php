@@ -377,16 +377,13 @@ class Rex_Feed_Scheduler {
      * @return array
      * @since 7.3.0
      */
-    private function get_feed_settings_payload( $feed_id, $current_batch, $total_batches, $per_batch, $offset ) {
+    private function get_feed_settings_payload( $feed_id, $current_batch, $total_batches, $per_batch, $offset ) {        $analytics_params  = [];
         $merchant          = get_post_meta( $feed_id, '_rex_feed_merchant', true ) ?: get_post_meta( $feed_id, 'rex_feed_merchant', true );
         $product_condition = get_post_meta( $feed_id, '_rex_feed_product_condition', true ) ?: get_post_meta( $feed_id, 'rex_feed_product_condition', true );
         $feed_config       = get_post_meta( $feed_id, '_rex_feed_feed_config', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config', true );
         $analytics         = get_post_meta( $feed_id, '_rex_feed_analytics_params_options', true ) ?: get_post_meta( $feed_id, 'rex_feed_analytics_params_options', true );
-        if( 'on' === $analytics ) {
+        if( 'on' === $analytics || 'yes' === $analytics ) {
             $analytics_params = get_post_meta( $feed_id, '_rex_feed_analytics_params', true ) ?: get_post_meta( $feed_id, 'rex_feed_analytics_params', true );
-        }
-        else {
-            $analytics_params = [];
         }
         $feed_filter                 = get_post_meta( $feed_id, '_rex_feed_feed_config_filter', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_config_filter', true );
         $product_scope               = get_post_meta( $feed_id, '_rex_feed_products', true ) ?: get_post_meta( $feed_id, 'rex_feed_products', true );

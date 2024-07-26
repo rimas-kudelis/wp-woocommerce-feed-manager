@@ -470,15 +470,7 @@ class Rex_Feed_Attributes {
 			'custom_attributes__wpfm_product_material'    => 'WPFM Product Material',
 			'custom_attributes__wpfm_product_age_group'   => 'WPFM Product Age Group',
 			'custom_attributes__wpfm_product_gender'      => 'WPFM Product Gender',
-			'custom_attributes__wpfm_product_item_type'   => 'WPFM Product Item Type',
-			'custom_attributes__wpfm_product_bullet_point_1' => 'WPFM Product Bullet Point 1',
-			'custom_attributes__wpfm_product_bullet_point_2' => 'WPFM Product Bullet Point 2',
-			'custom_attributes__wpfm_product_bullet_point_3' => 'WPFM Product Bullet Point 3',
-			'custom_attributes__wpfm_product_bullet_point_4' => 'WPFM Product Bullet Point 4',
-			'custom_attributes__wpfm_product_bullet_point_5' => 'WPFM Product Bullet Point 5',
-			'custom_attributes__wpfm_product_search_terms_1' => 'WPFM Product Search Terms 1',
-			'custom_attributes__wpfm_product_search_terms_2' => 'WPFM Product Search Terms 2',
-			'custom_attributes__wpfm_product_search_terms_3' => 'WPFM Product Search Terms 3',
+			'custom_attributes__wpfm_product_item_type'   => 'WPFM Product Item Type'
 		);
 		asort( $attributes );
 		return array(
