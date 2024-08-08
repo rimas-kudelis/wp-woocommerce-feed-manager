@@ -143,7 +143,7 @@ class Rex_Product_Feed_Admin {
         if ( 'edit.php' === $hook ) {
             return;
         }
-        $pages = array( $this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->setup_wizard_hook_suffix, $this->wpfm_pro_submenu );
+        $pages = array( $this->category_mapping_screen_hook_suffix, $this->dashboard_screen_hook_suffix, $this->google_screen_hook_suffix, $this->setup_wizard_hook_suffix, $this->wpfm_pro_submenu);
         $pages = apply_filters( 'wpfm_page_hooks', $pages );
         if ( 'product-feed' === $screen->post_type || in_array( $screen->id, $pages, true ) ) {
             wp_enqueue_style( $this->plugin_name . '-font-awesome', WPFM_PLUGIN_ASSETS_FOLDER . 'css/font-awesome.min.css', array(), $this->version );
@@ -216,6 +216,7 @@ class Rex_Product_Feed_Admin {
                     'ajax_nonce'           => wp_create_nonce( 'rex-wpfm-ajax' ),
                     'is_premium'           => apply_filters( 'wpfm_is_premium', false ),
                     'feed_id'              => get_the_ID(),
+                    'user_information'     => $this->get_logged_in_user_information(),
                     'category_mapping_url' => admin_url( 'admin.php?page=category_mapping' ),
                     'current_screen'       => $current_screen,
                     'current_date'         => $current_date->format( 'm/d/Y H:i:s' ),
@@ -251,6 +252,21 @@ class Rex_Product_Feed_Admin {
                 array( 'jquery' ),
                 $this->version
             );
+
+            //Setup Wizard start
+            wp_enqueue_script(
+                'rex-setup-wizard-manager',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/library/setupwizard.bundle.js',
+                array('jquery'),
+                $this->version,
+                true
+            );
+
+
+            //Setup Wizard end
+
+
+
             wp_enqueue_script(
                 $this->plugin_name,
                 WPFM_PLUGIN_ASSETS_FOLDER . 'js/rex-product-feed-admin.js',
@@ -377,6 +393,18 @@ class Rex_Product_Feed_Admin {
                 )
             );
         }
+
+        if('dashboard_page_wpfm-setup-wizard' === $screen->id){
+            wp_enqueue_script(
+                'rex-setup-wizard-manager',
+                WPFM_PLUGIN_ASSETS_FOLDER . 'js/library/setupwizard.bundle.js',
+                array('jquery'),
+                $this->version,
+                true
+            );
+            wp_enqueue_style($this->plugin_name . '-style-css', WPFM_PLUGIN_ASSETS_FOLDER . 'css/style.css', array(), $this->version);
+        }
+
     }
 
     /**
@@ -430,14 +458,21 @@ class Rex_Product_Feed_Admin {
             $this->wpfm_pro_submenu = apply_filters( 'rex_feed_license_submenu', array() );
         }
 
-        $this->setup_wizard_hook_suffix = add_submenu_page(
+        add_submenu_page(
             'edit.php?post_type=product-feed',
-            __( 'Get Started', 'rex-product-feed' ),
-            __( 'Get Started', 'rex-product-feed' ),
+            __( 'Setup Wizard', 'rex-product-feed' ),
+            __( 'Setup Wizard', 'rex-product-feed' ),
             'manage_woocommerce',
-            'setup-wizard',
+            'wpfm-setup-wizard',
             function() {
-                require_once plugin_dir_path( __FILE__ ) . '/partials/setup-wizard.php';
+                add_action('admin_menu', function () {
+                    add_dashboard_page('WPFM Setup', 'WPFM Setup', 'manage_options', 'wpfm-setup-wizard', function () {
+                        return '';
+                    });
+                });
+                add_action('current_screen', function () {
+                    ( new Rex_Product_Feed_Setup_Wizard() )->setup_wizard();
+                }, 999);
             },
             10
         );
@@ -637,63 +672,6 @@ class Rex_Product_Feed_Admin {
     }
 
     /**
-     * Loads custom styles for setup wizard
-     *
-     * @return void
-     * @since 7.2.5
-     */
-    public function load_custom_styles() {
-        if ( !is_plugin_active( 'best-woocommerce-feed-pro/rex-product-feed-pro.php' ) ) {
-            ?>
-            <style>
-
-                .rex-setup-wizard-cta-area {
-                    padding: 370px 10px 125px;
-                }
-
-                @media (max-width: 1399px) {
-                    .rex-setup-wizard-cta-area {
-                        padding: 200px 10px 100px;
-                    }
-                }
-
-                @media (max-width: 1199px) {
-                    .rex-setup-wizard-cta-area {
-                        padding: 150px 10px 100px;
-                    }
-                }
-
-                @media (max-width: 991px) {
-                    .rex-setup-wizard-cta-area {
-                        padding: 120px 10px 80px;
-                    }
-                }
-            </style>
-            <?php
-        } else {
-            ?>
-            <style>
-                .rex-setup-wizard-cta-area {
-                    padding: 125px 10px 125px;
-                }
-
-                @media (max-width: 1399px) {
-                    .rex-setup-wizard-cta-area {
-                        padding: 100px 10px 100px;
-                    }
-                }
-
-                @media (max-width: 991px) {
-                    .rex-setup-wizard-cta-area {
-                        padding: 80px 10px 80px;
-                    }
-                }
-            </style>
-            <?php
-        }
-    }
-
-    /**
      * Delete cached data for WooCommerce shipping methods.
      *
      * This function is designed to clear cached data related to WooCommerce shipping methods. It utilizes the wpfm_purge_cached_data function to perform the cleanup.
@@ -731,5 +709,57 @@ class Rex_Product_Feed_Admin {
         ];
 
         return $messages;
+    }
+
+    /**
+     * Register setup wizard
+     * @since 7.4.14
+     */
+    public function register_setup_wizard_page() {
+        if (!empty($_GET['page']) && 'wpfm-setup-wizard' == sanitize_text_field( $_GET['page'] )) {
+            add_action('admin_menu', function () {
+                add_dashboard_page('WPFM Setup', 'WPFM Setup', 'manage_options', 'wpfm-setup-wizard', function () {
+                    return '';
+                });
+            });
+            add_action('current_screen', function () {
+                ( new Rex_Product_Feed_Setup_Wizard() )->setup_wizard();
+            }, 999);
+        }
+    }
+
+    /**
+     * Handle redirects to setup/welcome page after install and updates.
+     *
+     * For setup wizard, transient must be present, the user must have access rights, and we must ignore the network/bulk plugin updaters.
+     *
+     * @since 7.4.14
+     */
+    public function admin_redirects()
+    {
+        // Setup wizard redirect.
+        if (get_transient('rex_wpfm_activation_redirect')) {
+            $do_redirect = true;
+            // On these pages, or during these events, postpone the redirect.
+            if (wp_doing_ajax() || is_network_admin() || !current_user_can('manage_options')) {
+                $do_redirect = false;
+            }
+
+            if ( $do_redirect ) {
+                delete_transient('rex_wpfm_activation_redirect');
+                $url = admin_url('edit.php?post_type=product-feed&page=wpfm-setup-wizard');
+                wp_safe_redirect(  wp_sanitize_redirect( esc_url_raw( $url ) ) );
+                exit;
+            }
+        }
+    }
+
+    public function get_logged_in_user_information(): array
+    {
+        $admin_user = wp_get_current_user();
+        return array(
+            'email' => !empty( $admin_user->user_email ) ? $admin_user->user_email : '',
+            'name' => !empty( $admin_user->display_name ) ? $admin_user->display_name : '',
+        );
     }
 }

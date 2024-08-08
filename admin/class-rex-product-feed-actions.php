@@ -842,6 +842,49 @@ class Rex_Product_Feed_Actions {
     }
 
     /**
+     * Retrieves the converted product price using WooCommerce Currency Switcher (WOOCS).
+     *
+     * This method retrieves the converted product price if WOOCS is active. It converts the product price from the base currency to the target currency specified in the feed retriever object.
+     *
+     * @param string $product_price The original product price.
+     * @param WC_Product $product The WooCommerce product object.
+     * @param string $type The type of price being updated (e.g., regular price, sale price).
+     * @param object $feed_retriever_obj The feed retriever object.
+     * @return string The converted product price based on WOOCS settings.
+     *
+     * @since 7.4.15
+     */
+    public function get_converted_price_by_woocs( $product_price, $product, $type, $feed_retriever_obj ) {
+        if ( defined( 'WOOCS_VERSION' ) ) {
+            global $WOOCS;
+            $to_currency = $feed_retriever_obj->woocs_currency ?? get_woocommerce_currency();
+
+            try {
+                // Store the current currency
+                $current_currency = $WOOCS->current_currency ?? get_woocommerce_currency();
+
+                // Set the currency to $to_currency
+                $WOOCS->current_currency = $to_currency;
+
+                // Convert the price to the active currency (USD in this case)
+                $converted_price = $WOOCS->woocs_exchange_value( $product_price );
+
+                // Restore the original currency
+                $WOOCS->current_currency = $current_currency;
+
+                return $converted_price;
+            }
+            catch ( Exception $e ) {
+                if ( $feed_retriever_obj->is_logging_enabled ) {
+                    $log = wc_get_logger();
+                    $log->warning( $e->getMessage(), [ 'source' => 'wpfm-error' ] );
+                }
+            }
+        }
+        return $product_price;
+    }
+
+    /**
      * Retrieves the ACF Fields configurations.
      *
      * @param string $selector The field name or key.

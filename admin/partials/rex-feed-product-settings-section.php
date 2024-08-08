@@ -365,10 +365,12 @@
 			</div>
 
 		</div>
+        <!-- .rex_feed_skip_product_area end -->
 
-		<!-- .rex_feed_skip_product_area end -->
-		<div class="<?php echo esc_attr( $this->prefix ) . 'wcml_currency_area';?>">
+        <!-- Multi-currency plugin support starts from here -->
+		<div class="<?php echo esc_attr( $this->prefix ) . 'currency_switcher_area';?>">
 
+            <!-- Multi-currency by WPML -->
 			<?php
 			if( function_exists( 'wpfm_is_wcml_active' ) && wpfm_is_wcml_active() ) {
 				global $sitepress, $woocommerce_wpml;
@@ -405,6 +407,7 @@
 			</div>
 			<?php } ?>
 
+            <!-- Multi-currency by Aelia -->
 			<?php
 			if ( wpfm_is_aelia_active() ) {
 				$aelia_settings = get_option( 'wc_aelia_currency_switcher' );
@@ -443,6 +446,7 @@
 
 			<?php } ?>
 
+            <!-- Multi-currency by WMC -->
 			<?php
 			if ( wpfm_is_wmc_active() ) {
 				$wmc_settings = class_exists( 'WOOMULTI_CURRENCY_Data' ) ? WOOMULTI_CURRENCY_Data::get_ins() : array();
@@ -486,7 +490,36 @@
 
 			<?php } ?>
 
+            <!-- Multi-currency by WOOCS -->
+            <?php
+            if( defined( 'WOOCS_VERSION' ) ) {
+                global $WOOCS;
+                $woocs_currencies = $WOOCS->get_currencies();
+                ?>
+
+                <div class="<?php echo esc_attr( $this->prefix ) . 'woocs_currency';?>">
+                    <label for="<?php echo esc_attr( $this->prefix ) . 'woocs_currency';?>"><?php esc_html_e('Currency by WOOCS', 'rex-product-feed')?>
+                        <span class="rex_feed-tooltip">
+						<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . $icon_question;?>
+						<p><?php esc_html_e( 'This option will convert all your product prices using FOX – Currency Switcher Professional for WooCommerce (formerly WOOCS)', 'rex-product-feed' ); ?></p>
+					</span>
+                    </label>
+                    <select name="<?php echo esc_html( $this->prefix ) . 'woocs_currency';?>" id="<?php echo esc_html( $this->prefix ) . 'woocs_currency';?>" class="">
+                        <?php
+                        $selected_woocs = get_post_meta( get_the_ID(), '_rex_feed_woocs_currency', true );
+                        if ( is_array( $woocs_currencies ) && !empty( $woocs_currencies ) ) {
+                            foreach ( $woocs_currencies as $key => $value ) {
+                                $selected = $selected_woocs === $key ? ' selected' : '';
+                                echo '<option value="' . esc_attr( $key ) . '" ' . esc_html( $selected ) . '>' . esc_html( $key ) . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+            <?php } ?>
+
 		</div>
+        <!-- Multi-currency plugin support ends here -->
 
 		<div class="<?php echo esc_attr( $this->prefix ) . 'analytics_params_options';?>">
 			<div class="<?php echo esc_attr( $this->prefix ) . 'analytics_params_content';?>">

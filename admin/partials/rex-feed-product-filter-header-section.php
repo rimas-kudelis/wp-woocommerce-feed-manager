@@ -25,7 +25,7 @@
         $style = 'added' === $status && apply_filters('wpfm_is_premium', false) ? 'style="display: none;"' : '';
         ?>
         <input type="hidden" name="rex_feed_feed_rules_button" value="<?php echo $status?>">
-        <span class="rex-contnet-filter__close-icon" id="rex_feed_rules_button" <?php echo $style?>>
+        <span class="rex-contnet-filter__close-icon <?php echo !apply_filters( 'wpfm_is_premium', false ) ? 'rexfeed-pro-disabled' : ''; ?>" id="rex_feed_rules_button" <?php echo $style?>>
             <?php if( !apply_filters( 'wpfm_is_premium', false ) ):?>
             <span class="wpfm-pro-tag"><?php echo esc_html__('pro', 'rex-product-feed'); ?></span>
             <?php endif;?>

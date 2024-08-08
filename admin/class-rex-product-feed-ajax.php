@@ -1234,7 +1234,7 @@ class Rex_Product_Feed_Ajax {
      */
     public static function update_abandoned_child_list() {
         $abandoned_childs = wpfm_get_abandoned_child();
-        if ( !is_wp_error( $abandoned_childs ) && !empty( $abandoned_childs ) ) {
+        if ( !is_wp_error( $abandoned_childs ) && is_array( $abandoned_childs ) ) {
             update_option( 'rex_feed_abandoned_child_list', $abandoned_childs );
         }
         if ( is_wp_error( $abandoned_childs ) ) {
@@ -1405,4 +1405,45 @@ class Rex_Product_Feed_Ajax {
         }
         return [ 'status' => false ];
     }
+
+    /**
+     * Creates a contact using the provided name and email.
+     *
+     * This function verifies a nonce for security, then extracts the name and email
+     * from the POST request. It then creates a new contact instance and sends it via webhook.
+     *
+     * @since 4.7.14
+     * @return void
+     */
+    public function create_contact() {
+        $nonce = filter_input(INPUT_POST, 'security', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if ( !wp_verify_nonce( $nonce, 'rex-wpfm-ajax' ) ) {
+            wp_send_json_error( array( 'message' => __('Unauthorized request', 'rex-product-feed') ), 400 );
+            return;
+        }
+
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $name = !empty( $name) ? $name  : '';
+
+
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $email = !empty($email) ? $email : '';
+
+        if ( empty( $email ) ) {
+            wp_send_json_error( array( 'message' => __('Email is required', 'rex-product-feed') ), 400 );
+        }elseif(!is_email( $_POST['email'])){
+            wp_send_json_error( array( 'message' => __('Email is invalid', 'rex-product-feed') ), 400 );
+        }
+
+        $create_contact_instance = new Rex_Product_Feed_Create_Contact( $email, $name );
+
+        $response = $create_contact_instance->create_contact_via_webhook();
+
+        if ( $response ) {
+            wp_send_json_success( array( 'message' => __('Contact created successfully', 'rex-product-feed') ), 200 );
+        } else {
+            wp_send_json_error( array( 'message' => __('Failed to create contact', 'rex-product-feed') ), 500 );
+        }
+    }
+
 }

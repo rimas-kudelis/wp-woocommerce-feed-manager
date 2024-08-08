@@ -36,13 +36,20 @@ class Rex_Product_Feed_Shipping {
     protected static $shipping_methods;
 
     /**
+     * @var \WC_Product $product - Feed product variable.
+     * @since 7.4.15
+     */
+    protected static $product;
+
+    /**
      * Constructor for the Rex_Product_Feed_Shipping class
      *
      * @param string $country_code - A string containing country data in the format "state:country:continent".
      * @since 7.3.0
      */
-    public function __construct( $country_code ) {
-        self::$feed_country   = $country_code;
+    public function __construct( $country_code, \WC_Product $product ) {
+        self::$feed_country = $country_code;
+        self::$product      = $product;
     }
 
     /**
@@ -79,28 +86,31 @@ class Rex_Product_Feed_Shipping {
     /**
      * Get shipping zones and their shipping methods for a given product.
      *
-     * @param WC_Product $product The product object for which to retrieve the shipping zones.
-     *
      * @return array An array containing information about the shipping zones and their shipping methods.
      *              Each element in the array represents a shipping zone and includes the country, region, service, price, and instance settings.
      * @since 7.3.0
      */
-    public function get_shipping_zones( WC_Product $product ) {
-        $wc_shipping_zones = WC_Shipping_Zones::get_zones();
-        if( !empty( $wc_shipping_zones ) ) {
-            foreach( $wc_shipping_zones as $zone ) {
-                if( empty( $zone[ 'shipping_methods' ] ) ) continue;
-                if( empty( $zone[ 'zone_locations' ] ) ) continue;
+    public function get_shipping_zones() {
+        self::$shipping_methods = wpfm_get_cached_data( 'shipping_methods' );
+        if ( empty( self::$shipping_methods ) ) {
+            $wc_shipping_zones = WC_Shipping_Zones::get_zones();
+            if ( !empty( $wc_shipping_zones ) ) {
+                foreach ( $wc_shipping_zones as $zone ) {
+                    if ( empty( $zone[ 'shipping_methods' ] ) ) continue;
+                    if ( empty( $zone[ 'zone_locations' ] ) ) continue;
 
-                self::format_zone_locations( $zone[ 'zone_locations' ] );
+                    self::format_zone_locations( $zone[ 'zone_locations' ] );
 
-                if( self::$feed_country && ( empty( self::$zone_countries ) || !in_array( self::$feed_country, self::$zone_countries ) ) ) continue;
+                    if ( self::$feed_country && ( empty( self::$zone_countries ) || !in_array( self::$feed_country, self::$zone_countries ) ) ) continue;
 
-                $zone_name = !empty( $zone[ 'zone_name' ] ) ? $zone[ 'zone_name' ] : '';
+                    $zone_name = !empty( $zone[ 'zone_name' ] ) ? $zone[ 'zone_name' ] : '';
 
-                self::get_formatted_shipping_methods( $zone[ 'shipping_methods' ], $product, $zone_name );
+                    self::get_formatted_shipping_methods( $zone[ 'shipping_methods' ], $zone_name );
+                }
             }
+            wpfm_set_cached_data( 'shipping_methods', self::$shipping_methods );
         }
+        $this->set_shipping_price();
         return self::$shipping_methods;
     }
 
@@ -162,13 +172,12 @@ class Rex_Product_Feed_Shipping {
      * @since 7.3.7
      */
     protected function calculate_rate( $rate, $product_price ) {
-        // Initialize variables with default values.
-        $rate_cost       = !empty( $rate->rate_cost ) ? $rate->rate_cost : 0;
-        $cost_per_item   = !empty( $rate->rate_cost_per_item ) ? $rate->rate_cost_per_item : 0;
-        $cost_per_weight = !empty( $rate->rate_cost_per_weight_unit ) ? $rate->rate_cost_per_weight_unit : 0;
-        $cost_percentage = !empty( $rate->rate_cost_percent ) ? $rate->rate_cost_percent : 0;
+        $rate_cost       = $rate->rate_cost ?? 0;
+        $cost_per_item   = $rate->rate_cost_per_item ?? 0;
+        $cost_per_weight = $rate->rate_cost_per_weight_unit ?? 0;
+        $cost_percentage = $rate->rate_cost_percent ?? 0;
 
-        return $rate_cost + $cost_per_item + $cost_per_weight + ( ( $product_price * $cost_percentage ) / 100 );
+        return $rate_cost + $cost_per_item + $cost_per_weight + ( $product_price * $cost_percentage / 100 );
     }
 
     /**
@@ -181,13 +190,13 @@ class Rex_Product_Feed_Shipping {
      * @since 7.3.7
      */
     protected function get_shipping_rate( $rates, $product_price ) {
-        if( !empty( $rates ) ) {
-            $rate_abort = is_array( $rates ) ? array_column( $rates, 'rate_abort' ) : [];
+        if( is_array( $rates ) && !empty( $rates ) ) {
+            $rate_abort = array_column( $rates, 'rate_abort' );
             if( in_array( 1, $rate_abort ) ) {
                 // If rate_abort is found in any of the rates, return an empty string
                 return '';
             }
-            $rate_priority = is_array( $rates ) && !empty( $rates ) ? array_column( $rates, 'rate_priority' ) : [];
+            $rate_priority = array_column( $rates, 'rate_priority' );
             $index = array_search( 1, $rate_priority );
 
             if( !empty( $rates[ $index ] ) ) {
@@ -239,41 +248,32 @@ class Rex_Product_Feed_Shipping {
      * @return void
      * @since 7.3.0
      */
-    protected function get_formatted_shipping_methods( $shipping_methods, WC_Product $product, $zone_name = '' ) {
+    protected function get_formatted_shipping_methods( $shipping_methods, $zone_name = '' ) {
         self::$shipping_methods = [];
         foreach( $shipping_methods as $method ) {
             if( $method->is_enabled() ) {
                 $service  = '';
-                $price    = 0;
                 $instance = [];
-
-                if( isset( $method->instance_settings[ 'cost' ] ) ) {
-                    $price = (float)$method->instance_settings[ 'cost' ];
-                }
 
                 $service .= $zone_name;
 
                 if( isset( $method->instance_settings[ 'title' ] ) ) {
                     $service .= ' ' . $method->instance_settings[ 'title' ];
+                }
+                $instance_id = $method->id ?? '';
+                $instance_id .= !empty( $instance_id ) ? ':' : '';
+                $instance_id .= !empty( $instance_id ) ? $method->instance_id : '';
 
-                    if( 'WC_Shipping_Flat_Rate' === get_class( $method ) ) {
-                        $instance = $method->instance_settings;
-                    }
-                    if( 'WC_Shipping_Table_Rate' === get_class( $method ) ) {
-                        $cost  = self::get_wc_table_rate_shipping_cost( $product, $method );
-                        $price = is_numeric( $cost[ 'shipping_cost' ] ) ? $cost[ 'shipping_cost' ] : '';
-                    }
+                if ( 'WC_Shipping_Table_Rate' === get_class( $method ) && !empty( $instance_id ) && !empty( $method->table_rate_id ) ) {
+                    $instance_id .= ':' . $method->table_rate_id;
                 }
 
-                if( '' !== $price ) {
-                    self::$shipping_methods[] = [
-                        'country'  => self::$feed_country,
-                        //'region'   => self::$state,
-                        'service'  => "{$service} " . self::$feed_country,
-                        'price'    => $price,
-                        'instance' => $instance,
-                    ];
-                }
+                self::$shipping_methods[] = [
+                    'country'     => self::$feed_country,
+                    'service'     => "{$service} " . self::$feed_country,
+                    'instance_id' => $instance_id,
+                    'instance'    => $instance,
+                ];
             }
         }
     }
@@ -347,4 +347,63 @@ class Rex_Product_Feed_Shipping {
 
 		return !empty( $shipping_costs ) ? $min_cost ? min( $shipping_costs ) : max( $shipping_costs ) : '';
 	}
+
+    /**
+     * Set the shipping price for the product.
+     *
+     * @return void
+     * @since 7.4.15
+     */
+    protected function set_shipping_price() {
+        if ( !is_object( self::$product ) || empty( self::$shipping_methods ) ) {
+            return "";
+        }
+
+        foreach ( self::$shipping_methods as $key => $shipping ) {
+            if ( !empty( $shipping['instance_id'] ) ) {
+                defined( 'WC_ABSPATH' ) || exit;
+
+                // Load cart functions which are loaded only on the front-end.
+                include_once WC_ABSPATH . 'includes/wc-cart-functions.php';
+                include_once WC_ABSPATH . 'includes/class-wc-cart.php';
+
+                wc_load_cart();
+                global $woocommerce;
+
+                // Make sure to empty the cart again
+                $woocommerce->cart->empty_cart();
+
+                // Set Shipping Country and State.
+                $woocommerce->customer->set_shipping_country( $shipping[ 'country' ] ?? '' );
+
+                // Set shipping method in the cart
+                $chosen_ship_method_id = $shipping[ 'instance_id' ];
+                WC()->session->set( 'chosen_shipping_methods', [ $chosen_ship_method_id ] );
+
+                // Get product id
+                $id = self::$product->get_id();
+                if ( "variation" === self::$product->get_type() ) {
+                    $id = self::$product->get_parent_id();
+                }
+                elseif ( "grouped" === self::$product->get_type() ) {
+                    $children = self::$product->get_children();
+                    $id       = reset( $children );
+                }
+
+                $woocommerce->cart->add_to_cart( $id, 1 );
+
+                // Read cart and get shipping costs
+                $shipping_cost = $woocommerce->cart->get_shipping_total();
+                $tax           = $woocommerce->cart->get_shipping_tax();
+
+                // Reset chosen shipping methods in the cart
+                WC()->session->set( 'chosen_shipping_methods', [ '' ] );
+
+                // Make sure to empty the cart again
+                $woocommerce->cart->empty_cart();
+
+                self::$shipping_methods[ $key ][ 'shipping_cost' ] = $shipping_cost + $tax;
+            }
+        }
+    }
 }

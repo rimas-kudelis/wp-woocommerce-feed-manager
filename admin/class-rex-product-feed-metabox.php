@@ -303,6 +303,7 @@ class Rex_Product_Metabox
     {
         require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-save-filters-changes-warning-popup.php';
         require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-save-settings-changes-warning-popup.php';
+        require_once plugin_dir_path( __FILE__ ) . 'partials/rex-feed-product-popup-pricing.php';
     }
 
 

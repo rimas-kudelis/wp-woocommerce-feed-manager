@@ -180,10 +180,16 @@ class Rex_Product_Filter {
      * @since    1.1.10
      */
     protected function init_product_meta_keys() {
-        $this->product_meta_keys   = $this->getFilterAttribute();
-        $product_attributes        = self::get_product_attributes();
+        $this->product_meta_keys = $this->getFilterAttribute();
+        $product_attributes      = self::get_product_attributes();
+        $pr_var_attributes       = self::get_product_variation_attributes();
 
-        $this->product_meta_keys = array_merge( $this->product_meta_keys, $product_attributes );
+        if ( is_array( $product_attributes ) && !empty( $product_attributes ) ) {
+            $this->product_meta_keys = array_merge( $this->product_meta_keys, $product_attributes );
+        }
+        if ( is_array( $pr_var_attributes ) && !empty( $pr_var_attributes ) ) {
+            $this->product_meta_keys = array_merge( $this->product_meta_keys, $pr_var_attributes );
+        }
 
         if ( defined( 'ACF_VERSION' ) ) {
             $acf_attributes          = Rex_Feed_Attributes::get_acf_fields();
@@ -347,9 +353,9 @@ class Rex_Product_Filter {
             foreach( $filters as $key2 => $filter ) {
                 if( !empty( $filter[ 'if' ] ) && !empty( $filter[ 'then' ] ) && !empty( $filter[ 'condition' ] ) && isset( $filter[ 'value' ] ) ) {
                     $if        = self::get_column_name( $filter[ 'if' ] );
-                    $then      = $filter[ 'then' ];
-                    $condition = $filter[ 'condition' ];
-                    $value     = $filter[ 'value' ];
+                    $then      = htmlspecialchars( $filter[ 'then' ] );
+                    $condition = htmlspecialchars( $filter[ 'condition' ] );
+                    $value     = htmlspecialchars( $filter[ 'value' ] );
 
                     if ( self::is_unix_date( $if ) ) {
                         $value = strtotime( $value );
@@ -381,6 +387,7 @@ class Rex_Product_Filter {
                     elseif( 'postmeta_' === $prefix ) {
                         self::$meta_table_count++;
                         $meta_exists = true;
+                        $if = preg_replace('/^va_pa_/i', 'attribute_pa_', $if );
                     }
 
                     $function = "{$prefix}{$condition}";
@@ -482,6 +489,7 @@ class Rex_Product_Filter {
 
         if( in_array( $column, $meta_table_attr, true )
             || ( !empty( $acf_attributes[ 'ACF Attributes' ] ) && array_key_exists( $column, $acf_attributes[ 'ACF Attributes' ] ) )
+            || preg_match( '/^va_pa_/i', $column )
         ) {
             return 'postmeta_';
         }
@@ -947,7 +955,8 @@ class Rex_Product_Filter {
     }
 
     /**
-     * @desc Gets WooCommerce product attributes [Global]
+     * Gets WooCommerce product attributes [Global]
+     *
      * @since 7.2.18
      * @return array
      */
@@ -960,12 +969,38 @@ class Rex_Product_Filter {
             if( is_array( $product_attributes ) && !empty( $product_attributes ) ) {
                 foreach( $product_attributes as $attribute ) {
                     if( isset( $attribute->attribute_name, $attribute->attribute_label ) && $attribute->attribute_name && $attribute->attribute_label ) {
-                        $taxonomies[ 'Product Attributes' ][ 'pa_' . $attribute->attribute_name ] = $attribute->attribute_label;
+                        $taxonomies[ 'Product Attributes' ][ "pa_{$attribute->attribute_name}" ] = $attribute->attribute_label;
                     }
                 }
             }
             wpfm_set_cached_data( 'product_attributes_custom_filter', $taxonomies );
         }
         return $taxonomies;
+    }
+
+    /**
+     * Retrieve product variation attributes. [Global]
+     *
+     * This method retrieves the cached data for product variation attributes.
+     * If the cached data is not an array or is empty, it fetches the product
+     * attributes, processes them to create the product variation attributes,
+     * and then caches this processed data.
+     *
+     * @return array The product variation attributes.
+     *
+     * @since 7.4.15
+     */
+    protected static function get_product_variation_attributes() {
+        $var_attributes = wpfm_get_cached_data( 'product_variation_attributes_custom_filter' );
+        if ( !is_array( $var_attributes ) || empty( $var_attributes ) ) {
+            $pr_attribtues = wpfm_get_cached_data( 'product_attributes_custom_filter' );
+            if ( !empty( $pr_attribtues[ 'Product Attributes' ] ) ) {
+                foreach ( $pr_attribtues[ 'Product Attributes' ] as $key => $value ) {
+                    $var_attributes[ 'Product Variation Attributes' ][ "va_{$key}" ] = $value;
+                }
+            }
+            wpfm_set_cached_data( 'product_variation_attributes_custom_filter', $var_attributes );
+        }
+        return $var_attributes;
     }
 }

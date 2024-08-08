@@ -387,6 +387,16 @@
         $("#rex_feed_product_settings").addClass("show-settings");
     });
 
+
+    $(document).on("click", ".feed-settings .wpfm-switcher.disabled, .rexfeed-pro-disabled, .single-merchant.wpfm-pro .single-merchant__button", function (e) {
+        e.preventDefault()
+        $("#rex_premium_feature_popup").show();
+    });
+    
+    $(document).on("click", "#rex_premium_feature_close", function () {
+        $("#rex_premium_feature_popup").hide();
+    });
+    
     $(document).on("click", "#rex-pr-filter-btn", function () {
         $(".post-type-product-feed #wpcontent .clear").remove();
         $(".post-type-product-feed #wpcontent").append('<div id="body-overlay"></div>');
@@ -2889,6 +2899,9 @@
             $inputField.attr( 'type', 'text' );
         }
     });
+
+   
+
 })(jQuery);
 
 /* When the user clicks on the button,
@@ -2916,6 +2929,9 @@ window.onclick = function (event) {
 function handleClass(node, className, action = "add") {
     node.classList[action](className);
 }
+
+
+
 
 /**
  * Text click  Prefix and suffix dropdown show
@@ -2953,33 +2969,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.querySelector(".dropdown-toggle");
     const dropdown = document.querySelector(".dropdown-menu");
 
-    // Global open/close functions
-    const open = () => {
-        button.classList.add("open-button");
-        dropdown.classList.add("open-dropdown");
-    };
+    if (button && dropdown) {
+        // Global open/close functions
+        const open = () => {
+            button.classList.add("open-button");
+            dropdown.classList.add("open-dropdown");
+        };
 
-    const close = () => {
-        button.classList.remove("open-button");
-        dropdown.classList.remove("open-dropdown");
-    };
+        const close = () => {
+            button.classList.remove("open-button");
+            dropdown.classList.remove("open-dropdown");
+        };
 
-    // Check click on button
-    button.addEventListener("mousedown", () => {
-        if (!button.classList.contains("open-button")) {
-            open();
-        } else {
-            close();
-        }
-    });
+        // Check click on button
+        button.addEventListener("mousedown", () => {
+            if (!button.classList.contains("open-button")) {
+                open();
+            } else {
+                close();
+            }
+        });
 
-    // Close when user click outside
-    document.body.addEventListener("mousedown", (e) => {
-        let isClickInsideButton = button.contains(e.target);
-        let isClickInsideDropdown = dropdown.contains(e.target);
+        // Close when user click outside
+        document.body.addEventListener("mousedown", (e) => {
+            let isClickInsideButton = button.contains(e.target);
+            let isClickInsideDropdown = dropdown.contains(e.target);
 
-        if (!isClickInsideButton && !isClickInsideDropdown) {
-            close();
-        }
-    });
+            if (!isClickInsideButton && !isClickInsideDropdown) {
+                close();
+            }
+        });
+    }
 });
+
+
+

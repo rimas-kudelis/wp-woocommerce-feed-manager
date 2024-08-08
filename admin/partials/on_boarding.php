@@ -46,8 +46,10 @@ else {
 	<div class="column">
 		<div class="rex-onboarding">
 			<div class="rex-settings-tab-wrapper">
+
 				<ul class="rex-settings-tabs">
-					<li class="tab-link active" data-tab="tab4">
+
+					<li class="tab-link active" role="tab" data-tab="tab4">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 23" width="31" height="23">
 							<defs>
 								<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
@@ -100,7 +102,8 @@ else {
 						</svg>
 						<?php echo esc_html__( 'Controls', 'rex-product-feed' ); ?>
 					</li>
-					<li class="tab-link" data-tab="tab2">
+
+					<li class="tab-link" role="tab" data-tab="tab2">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 22" width="20" height="22">
 							<defs>
 								<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
@@ -132,7 +135,8 @@ else {
 						</svg>
 						<?php echo esc_html__( 'Merchants', 'rex-product-feed' ); ?>
 					</li>
-					<li class="tab-link status" data-tab="tab5">
+
+					<li class="tab-link status" role="tab" data-tab="tab5">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 18" width="16" height="18">
 							<defs>
 								<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
@@ -155,7 +159,8 @@ else {
 						</svg>
 						<?php echo esc_html__( 'System Status', 'rex-product-feed' ); ?>
 					</li>
-					<li class="tab-link" data-tab="tab7">
+
+					<li class="tab-link" role="tab" data-tab="tab7">
 						<svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M10.8242 1.29437H3.32422C2.82694 1.29437 2.35002 1.49192 1.99839 1.84355C1.64676 2.19518 1.44922 2.67209 1.44922 3.16937V18.1694C1.44922 18.6667 1.64676 19.1436 1.99839 19.4952C2.35002 19.8468 2.82694 20.0444 3.32422 20.0444H14.5742C15.0715 20.0444 15.5484 19.8468 15.9 19.4952C16.2517 19.1436 16.4492 18.6667 16.4492 18.1694V6.91937L10.8242 1.29437Z" stroke="#A8A7BE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 						<path d="M10.8242 1.29437V6.91937H16.4492" stroke="#A8A7BE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -164,6 +169,15 @@ else {
 						</svg>
 						<?php echo esc_html__( 'Logs', 'rex-product-feed' ); ?>
 					</li>
+
+					<?php if ( !$is_premium_activated ) : ?>
+
+						<li class="tab-link free-pro-icon" role="tab" data-tab="tab8">
+							<?php include WPFM_PLUGIN_ASSETS_FOLDER_PATH . 'icon/icon-svg/free-vs-pro.php'; ?>
+							<?php echo esc_html__( 'Free vs Pro', 'rex-product-feed' ); ?>
+						</li>
+					<?php endif ?>
+
 				</ul>
 
 				<div class="rex-settings-tab-content">
@@ -539,8 +553,8 @@ else {
 									<span class="title"><?php echo esc_html__( 'Get email notification if your feed is not generated properly', 'rex-product-feed' ); ?></span>
 									<div class="switch">
 										<form id="wpfm-user-email" class="wpfm-fb-pixel" style="width: 300px;" disabled>
-											<input placeholder="user@email.com" id="wpfm_user_email" type="text" name="wpfm_user_email" value="<?php echo esc_attr( $current_user_email ); ?>" style="width: 200px;<?php echo !$is_premium_activated ? ' cursor: not-allowed; disabled' : ''; ?>">
-											<button type="submit" class="save-user-email" <?php echo !$is_premium_activated ? ' style="background-color: #f2f2f8; color: #d9d9db; cursor: not-allowed;" disabled' : ''; ?>>
+											<input class="<?php echo !$is_premium_activated ? 'rexfeed-pro-disabled' : ''; ?>" placeholder="user@email.com" id="wpfm_user_email" type="text" name="wpfm_user_email" value="<?php echo esc_attr( $current_user_email ); ?>" style="width: 200px;<?php echo !$is_premium_activated ? ' cursor:pointer;' : ''; ?>">
+											<button type="submit" class="save-user-email <?php echo !$is_premium_activated ? 'rexfeed-pro-disabled' : ''; ?>" <?php echo !$is_premium_activated ? ' style="background-color: #f2f2f8; color: #d9d9db;" ' : ''; ?>>
 												<span><?php echo esc_html__( 'Save', 'rex-product-feed' ); ?></span>
 												<i class="fa fa-spinner fa-pulse fa-fw"></i>
 											</button>
@@ -651,6 +665,80 @@ else {
 						echo '</div>';
 						?>
 					</div>
+
+					<div id="tab8" class="tab-content block-wrapper">
+
+						<?php if ( !$is_premium_activated ) : ?>
+						
+							<div class="wpfm-compare">
+								<?php
+									$pro_url = add_query_arg('wpfm-dashboard', '1', 'https://rextheme.com/best-woocommerce-product-feed/pricing/');
+									
+									$features = [
+										__('Products per batch', 'rex-product-feed'),
+										__('Allow Private Products', 'rex-product-feed'),
+										__('Facebook Pixel', 'rex-product-feed'),
+										__('Update WooCommerce variation child list that has no parent assigned', 'rex-product-feed'),
+										__('Feeds for Unlimited Products', 'rex-product-feed'),
+                                        __('Feed Rules', 'rex-product-feed'),
+                                        __('Custom daily time for feed auto update', 'rex-product-feed'),
+                                        __('Combined Attributes', 'rex-product-feed'),
+										__('Unique Product Identifiers (Brand, GTIN, MPN, UPC, EAN, JAN, ISBN, ITF14, Offer price, Offer effective date, Additional info)', 'rex-product-feed'),
+										__('Add Detailed Product Attributes', 'rex-product-feed'),
+										__('Exclude TAX from structured data prices', 'rex-product-feed'),
+										__('Fix WooCommerce (JSON-LD) structured data bug', 'rex-product-feed'),
+										__('Google Dynamic Remarketing Pixel', 'rex-product-feed'),
+										__('Get email notification if feed is not generated properly', 'rex-product-feed'),
+										__('Google Product Review Feed Template', 'rex-product-feed'),
+										__('eBay MIP Feed Template', 'rex-product-feed'),
+										__('LeGuide.com Feed Template', 'rex-product-feed'),
+										__('Google Remarketing (DRM) Feed Template', 'rex-product-feed')
+									];
+
+                                    $free_icons = array_fill(0, count($features), 'cross-list');
+									$free_icons[0] = 'check';
+									$free_icons[1] = 'check';
+									$free_icons[2] = 'check';
+									$free_icons[3] = 'check';
+
+									echo '<div class="wpfm-compare__table">';
+										echo '<div class="wpfm-compare__table-wrapper">';
+
+											echo '<ul class="wpfm-compare__header">';
+											echo '<li class="wpfm-compare__col wpfm-compare__col--feature">' . __('Features', 'wpfm') . '</li>';
+											echo '<li class="wpfm-compare__col wpfm-compare__col--free">' . __('Free', 'wpfm') . '</li>';
+											echo '<li class="wpfm-compare__col wpfm-compare__col--pro">' . __('Pro', 'wpfm') . '</li>';
+											echo '</ul>';
+
+											echo '<div class="wpfm-compare__body">';
+
+												foreach ($features as $index => $feature) {
+													echo '<ul class="wpfm-compare__feature">';
+														echo '<li class="wpfm-compare__col wpfm-compare__col--feature"><p>' . $feature . '</p></li>';
+														echo '<li class="wpfm-compare__col wpfm-compare__col--free"><span class="wpfm-compare__icon wpfm-compare__icon--' . $free_icons[$index] . '"><img loading="lazy" src="' . WPFM_PLUGIN_DIR_URL . 'admin/assets/icon/icon-svg/' . $free_icons[$index] . '.svg" alt="' . $free_icons[$index] . '"></span></li>';
+														echo '<li class="wpfm-compare__col wpfm-compare__col--pro"><span class="wpfm-compare__icon wpfm-compare__icon--check"><img loading="lazy" src="' . WPFM_PLUGIN_DIR_URL . 'admin/assets/icon/icon-svg/check.svg" alt="check-mark"></span></li>';
+													echo '</ul>';
+												}
+
+											echo '</div>';
+
+										echo '</div>';
+
+										echo '<div class="wpfm-compare__footer">';
+											echo '<div class="wpfm-compare__footer-btn">';
+												echo '<a class="wpfm-compare__btn wpfm-compare__btn--pro" href="' . esc_url($pro_url) . '" title="' . esc_attr__('Upgrade to Pro', 'wpfm') . '" target="_blank">';
+													echo esc_html__('Upgrade to Pro', 'wpfm');
+												echo '</a>';
+											echo '</div>';
+										echo '</div>';
+									echo '</div>';
+								?>
+							</div>
+							
+						<?php endif; ?>
+
+					</div>
+
 				</div>
 			</div>
 		</div>

@@ -404,6 +404,14 @@ abstract class Rex_Product_Feed_Abstract_Generator
     protected $polylang_taxonomy_ids = [];
 
     /**
+     * Currency by WOOCS
+     *
+     * @since 7.4.15
+     * @var string
+     */
+    public $woocs_currency = '';
+
+    /**
      * Define the core functionality of the plugin.
      *
      * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -425,6 +433,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->feed_format        = $config[ 'feed_format' ] ?? '';
         $this->wcml               = function_exists( 'wpfm_is_wcml_active' ) && wpfm_is_wcml_active();
         if ( $this->bypass ) {
+            $wc_currency                   = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : 'USD';
             $this->id                      = !empty( $config[ 'info' ][ 'post_id' ] ) ? $config[ 'info' ][ 'post_id' ] : 0;
             $this->title                   = !empty( $config[ 'info' ][ 'title' ] ) ? $config[ 'info' ][ 'title' ] : get_bloginfo();
             $this->desc                    = !empty( $config[ 'info' ][ 'desc' ] ) ? $config[ 'info' ][ 'desc' ] : get_bloginfo();
@@ -446,11 +455,13 @@ abstract class Rex_Product_Feed_Abstract_Generator
             $this->rex_feed_skip_product   = !empty( $config[ 'skip_product' ] ) ? $config[ 'skip_product' ] : false;
             $this->rex_feed_skip_row       = !empty( $config[ 'skip_row' ] ) ? $config[ 'skip_row' ] : false;
             $this->wpml_language           = !empty( $config[ 'wpml_language' ] ) ? $config[ 'wpml_language' ] : '';
-            $this->wcml_currency           = !empty( $config[ 'wcml_currency' ] ) ? $config[ 'wcml_currency' ] : 'USD';
+            $this->wcml_currency           = !empty( $config[ 'wcml_currency' ] ) ? $config[ 'wcml_currency' ] : $wc_currency;
+            $this->aelia_currency          = !empty( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : $wc_currency;
+            $this->wmc_currency            = !empty( $config[ 'wmc_currency' ] ) ? $config[ 'wmc_currency' ] : $wc_currency;
+            $this->woocs_currency          = !empty( $config[ 'woocs_currency' ] ) ? $config[ 'woocs_currency' ] : $wc_currency;
             $this->analytics               = !empty( $config[ 'analytics' ] ) && ( 'yes' === $config[ 'analytics' ] || 'on' === $config[ 'analytics' ] );
             $this->analytics_params        = !empty( $config[ 'analytics_params' ] ) ? $config[ 'analytics_params' ] : '';
             $this->product_condition       = !empty( $config[ 'product_condition' ] ) ? $config[ 'product_condition' ] : '';
-            $this->aelia_currency          = !empty( $config[ 'aelia_currency' ] ) ? $config[ 'aelia_currency' ] : 'USD';
             $this->feed_country            = !empty( $config[ 'feed_country' ] ) ? $config[ 'feed_country' ] : '';
             $this->custom_wrapper          = !empty( $config[ 'custom_wrapper' ] ) ? $config[ 'custom_wrapper' ] : '';
             $this->custom_wrapper_el       = !empty( $config[ 'custom_wrapper_el' ] ) ? $config[ 'custom_wrapper_el' ] : '';
@@ -476,16 +487,6 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
             else {
                 $this->feed_rules_option = false;
-            }
-
-            if( isset( $config[ 'wmc_currency' ] ) ) {
-                $this->wmc_currency   = $config[ 'wmc_currency' ];
-            }
-            elseif( function_exists( 'get_woocommerce_currency' ) ) {
-                $this->wmc_currency   = get_woocommerce_currency();
-            }
-            else {
-                $this->wmc_currency       = 'USD';
             }
 
             $this->prepare_products_args( $config[ 'info' ] );
@@ -567,7 +568,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 foreach( $filters as $filter ) {
                     $if = $filter[ 'if' ];
 
-                    if ( $if === 'product_cats' || $if === 'product_tags' || $if === 'product_brands' || preg_match( '/^pa_/i', $if ) ) {
+                    if ( $if === 'product_cats' || $if === 'product_tags' || $if === 'product_brands' ) {
                         unset( $post_types[ 1 ] );
                         $this->custom_filter_var_exclude = true;
                     }
@@ -785,7 +786,8 @@ abstract class Rex_Product_Feed_Abstract_Generator
      */
     protected function setup_feed_meta( $config )
     {
-        $feed_configs = array();
+        $feed_configs = [];
+        $wc_currency  = get_woocommerce_currency();
         wp_parse_str( $config, $feed_configs );
 
         $include_variable_product   = isset( $feed_configs[ 'rex_feed_variable_product' ] ) ? esc_attr( $feed_configs[ 'rex_feed_variable_product' ] ) : '';
@@ -812,100 +814,27 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $this->hotline_firm_name    = isset( $feed_configs[ 'rex_feed_hotline_firm_name' ] ) ? esc_attr( $feed_configs[ 'rex_feed_hotline_firm_name' ] ) : '';
         $this->hotline_firm_id      = isset( $feed_configs[ 'rex_feed_hotline_firm_id' ] ) ? esc_attr( $feed_configs[ 'rex_feed_hotline_firm_id' ] ) : '';
         $this->hotline_exch_rate    = isset( $feed_configs[ 'rex_feed_hotline_exchange_rate' ] ) ? esc_attr( $feed_configs[ 'rex_feed_hotline_exchange_rate' ] ) : '';
+        $this->wcml_currency        = !empty( $feed_configs[ 'rex_feed_wcml_currency' ] ) ? esc_html( $feed_configs[ 'rex_feed_wcml_currency' ] ) : $wc_currency;
+        $this->wmc_currency         = !empty( $feed_configs[ 'rex_feed_wmc_currency' ] ) ? esc_html( $feed_configs[ 'rex_feed_wmc_currency' ] ) : $wc_currency;
+        $this->woocs_currency       = !empty( $feed_configs[ 'rex_feed_woocs_currency' ] ) ? esc_html( $feed_configs[ 'rex_feed_woocs_currency' ] ) : $wc_currency;
         $this->yandex_old_price     = 'include' === $this->yandex_old_price;
 
-        if( isset( $feed_configs[ 'rex_feed_wmc_currency' ] ) ) {
-            $this->wmc_currency = $feed_configs[ 'rex_feed_wmc_currency' ];
-        }
-        elseif( function_exists( 'get_woocommerce_currency' ) ) {
-            $this->wmc_currency = get_woocommerce_currency();
-        }
-        else {
-            $this->wmc_currency = 'USD';
-        }
-
-        $this->wcml_currency = !empty( $feed_configs[ 'rex_feed_wcml_currency' ] ) ? $feed_configs[ 'rex_feed_wcml_currency' ] : 'USD';
 
         if ( isset( $feed_configs[ 'product_filter_condition' ] ) ) {
             $this->product_filter_condition = $feed_configs[ 'product_filter_condition' ];
         }
 
-        if ( 'yes' === $include_variable_product ) {
-            $this->variable_product = true;
-        }
-        else {
-            $this->variable_product = false;
-        }
-
-        if ( 'yes' === $include_out_of_stock ) {
-            $this->include_out_of_stock = true;
-        }
-        else {
-            $this->include_out_of_stock = false;
-        }
-
-        if ( 'yes' === $include_variations ) {
-            $this->variations = true;
-        }
-        else {
-            $this->variations = false;
-        }
-
-        if ( 'yes' === $include_parent ) {
-            $this->parent_product = true;
-        }
-        else {
-            $this->parent_product = false;
-        }
-
-        if ( 'yes' === $include_variations_name ) {
-            $this->append_variation = true;
-        }
-        else {
-            $this->append_variation = false;
-        }
-
-        if ( 'yes' === $exclude_hidden_products ) {
-            $this->exclude_hidden_products = true;
-        }
-        else {
-            $this->exclude_hidden_products = false;
-        }
-
-        if ( 'yes' === $rex_feed_skip_product ) {
-            $this->rex_feed_skip_product = true;
-        }
-        else {
-            $this->rex_feed_skip_product = false;
-        }
-
-        if ( 'yes' === $rex_feed_skip_row ) {
-            $this->rex_feed_skip_row = true;
-        }
-        else {
-            $this->rex_feed_skip_row = false;
-        }
-
-        if ( 'yes' === $include_zero_priced ) {
-            $this->include_zero_priced = true;
-        }
-        else {
-            $this->include_zero_priced = false;
-        }
-
-        if ( 'added' === $custom_filter_option ) {
-            $this->custom_filter_option = true;
-        }
-        else {
-            $this->custom_filter_option = false;
-        }
-
-        if ( 'added' === $this->feed_rules_option ) {
-            $this->feed_rules_option = true;
-        }
-        else {
-            $this->feed_rules_option = false;
-        }
+        $this->variable_product        = 'yes' === $include_variable_product;
+        $this->include_out_of_stock    = 'yes' === $include_out_of_stock;
+        $this->variations              = 'yes' === $include_variations;
+        $this->parent_product          = 'yes' === $include_parent;
+        $this->append_variation        = 'yes' === $include_variations_name;
+        $this->exclude_hidden_products = 'yes' === $exclude_hidden_products;
+        $this->rex_feed_skip_product   = 'yes' === $rex_feed_skip_product;
+        $this->rex_feed_skip_row       = 'yes' === $rex_feed_skip_row;
+        $this->include_zero_priced     = 'yes' === $include_zero_priced;
+        $this->custom_filter_option    = 'added' === $custom_filter_option;
+        $this->feed_rules_option       = 'added' === $this->feed_rules_option;
     }
 
     /**
@@ -921,70 +850,35 @@ abstract class Rex_Product_Feed_Abstract_Generator
         wp_parse_str( $config, $feed_configs );
 
         // Attribute Configs section STARTS.
-        if( isset( $feed_configs[ 'rex_feed_merchant' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_merchant', $feed_configs[ 'rex_feed_merchant' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_separator' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_separator', $feed_configs[ 'rex_feed_separator' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_google_destination' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_google_destination', $feed_configs[ 'rex_feed_google_destination' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_google_target_country' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_google_target_country', $feed_configs[ 'rex_feed_google_target_country' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_google_target_language' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_google_target_language', $feed_configs[ 'rex_feed_google_target_language' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_google_schedule' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_google_schedule', $feed_configs[ 'rex_feed_google_schedule' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_google_schedule_month' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_google_schedule_month', $feed_configs[ 'rex_feed_google_schedule_month' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_google_schedule_week_day' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_google_schedule_week_day', $feed_configs[ 'rex_feed_google_schedule_week_day' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_google_schedule_time' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_google_schedule_time', $feed_configs[ 'rex_feed_google_schedule_time' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_ebay_seller_site_id' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_ebay_seller_site_id', $feed_configs[ 'rex_feed_ebay_seller_site_id' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_ebay_seller_country' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_ebay_seller_country', $feed_configs[ 'rex_feed_ebay_seller_country' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_ebay_seller_currency' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_ebay_seller_currency', $feed_configs[ 'rex_feed_ebay_seller_currency' ] );
-        }
+        $config_keys = [
+            'rex_feed_merchant',
+            'rex_feed_separator',
+            'rex_feed_google_destination',
+            'rex_feed_google_target_country',
+            'rex_feed_google_target_language',
+            'rex_feed_google_schedule',
+            'rex_feed_google_schedule_month',
+            'rex_feed_google_schedule_week_day',
+            'rex_feed_google_schedule_time',
+            'rex_feed_ebay_seller_site_id',
+            'rex_feed_ebay_seller_country',
+            'rex_feed_ebay_seller_currency',
+            'rex_feed_custom_wrapper',
+            'rex_feed_custom_items_wrapper',
+            'rex_feed_custom_wrapper_el',
+            'rex_feed_custom_xml_header',
+            'rex_feed_yandex_company_name',
+            'rex_feed_yandex_old_price',
+            'rex_feed_hotline_firm_id',
+            'rex_feed_hotline_firm_name',
+            'rex_feed_hotline_exchange_rate',
+            'rex_feed_woocs_currency',
+        ];
 
-        if( isset( $feed_configs[ 'rex_feed_custom_wrapper' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_custom_wrapper', $feed_configs[ 'rex_feed_custom_wrapper' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_custom_items_wrapper' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_custom_items_wrapper', $feed_configs[ 'rex_feed_custom_items_wrapper' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_custom_wrapper_el' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_custom_wrapper_el', $feed_configs[ 'rex_feed_custom_wrapper_el' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_custom_xml_header' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_custom_xml_header', $feed_configs[ 'rex_feed_custom_xml_header' ] );
-        }
-
-        if( isset( $feed_configs[ 'rex_feed_yandex_company_name' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_yandex_company_name', $feed_configs[ 'rex_feed_yandex_company_name' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_yandex_old_price' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_yandex_old_price', $feed_configs[ 'rex_feed_yandex_old_price' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_hotline_firm_id' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_hotline_firm_id', $feed_configs[ 'rex_feed_hotline_firm_id' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_hotline_firm_name' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_hotline_firm_name', $feed_configs[ 'rex_feed_hotline_firm_name' ] );
-        }
-        if( isset( $feed_configs[ 'rex_feed_hotline_exchange_rate' ] ) ) {
-            update_post_meta( $this->id, '_rex_feed_hotline_exchange_rate', $feed_configs[ 'rex_feed_hotline_exchange_rate' ] );
+        foreach ( $config_keys as $key ) {
+            if ( isset( $feed_configs[ $key ] ) ) {
+                update_post_meta( $this->id, "_$key", $feed_configs[ $key ] );
+            }
         }
 
         $filter_data = Rex_Product_Feed_Data_Handle::get_filter_drawer_data( $feed_configs );
@@ -1027,6 +921,7 @@ abstract class Rex_Product_Feed_Abstract_Generator
             }
             if( $this->tbatch === $this->batch ) {
                 wpfm_purge_cached_data( "rexfeed_custom_filter_query_{$this->id}" );
+                wpfm_purge_cached_data( 'shipping_methods' );
             }
             add_filter( 'posts_where', array( $this, 'add_custom_filter_where_query' ) );
             add_filter( 'posts_join', array( $this, 'modify_join_query_for_custom_filter' ) );

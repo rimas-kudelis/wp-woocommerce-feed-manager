@@ -399,11 +399,12 @@ class Rex_Feed_Scheduler {
         $append_variations           = get_post_meta( $feed_id, '_rex_feed_variation_product_name', true ) ?: get_post_meta( $feed_id, 'rex_feed_variation_product_name', true );
         $append_variations           = 'yes' === $append_variations;
         $wpml                        = get_post_meta( $feed_id, '_rex_feed_wpml_language', true ) ?: get_post_meta( $feed_id, 'rex_feed_wpml_language', true );
-        $wcml_currency               = get_post_meta( $feed_id, '_rex_feed_wcml_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_wcml_currency', true );
         $feed_format                 = get_post_meta( $feed_id, '_rex_feed_feed_format', true ) ?: get_post_meta( $feed_id, 'rex_feed_feed_format', true );
         $feed_format                 = $feed_format ?: 'xml';
+        $wcml_currency               = get_post_meta( $feed_id, '_rex_feed_wcml_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_wcml_currency', true );
         $aelia_currency              = get_post_meta( $feed_id, '_rex_feed_aelia_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_aelia_currency', true );
         $wmc_currency                = get_post_meta( $feed_id, '_rex_feed_wmc_currency', true ) ?: get_post_meta( $feed_id, 'rex_feed_wmc_currency', true );
+        $woocs_currency              = get_post_meta( $feed_id, '_rex_feed_woocs_currency', true );
         $skip_product                = get_post_meta( $feed_id, '_rex_feed_skip_product', true ) ?: get_post_meta( $feed_id, 'rex_feed_skip_product', true );
         $skip_product                = 'yes' === $skip_product;
         $skip_row                    = get_post_meta( $feed_id, '_rex_feed_skip_row', true ) ?: get_post_meta( $feed_id, 'rex_feed_skip_row', true );
@@ -470,11 +471,12 @@ class Rex_Feed_Scheduler {
             'parent_product'              => $parent_product,
             'exclude_hidden_products'     => $exclude_hidden_products,
             'wpml_language'               => $wpml,
-            'wcml_currency'               => $wcml_currency,
             'analytics'                   => $analytics,
             'analytics_params'            => $analytics_params,
+            'wcml_currency'               => $wcml_currency,
             'aelia_currency'              => $aelia_currency,
             'wmc_currency'                => $wmc_currency,
+            'woocs_currency'              => $woocs_currency,
             'skip_product'                => $skip_product,
             'skip_row'                    => $skip_row,
             'feed_separator'              => $feed_separator,

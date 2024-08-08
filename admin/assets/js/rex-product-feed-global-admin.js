@@ -125,6 +125,29 @@
         }
         $( '#rex-feed-support-submenu, #rex-feed-gopro-submenu' ).parent().attr( 'target', '_blank' );
     } );
+
+
+
+          // ------window on scroll add class to comparison table header------
+          $(window).on('scroll', function() {
+            var $header = $('.wpfm-compare__header');
+    
+            if ($header.length > 0) {
+                var headerOffset = $header.offset().top - $(window).scrollTop();
+        
+                if (headerOffset < 27) {
+                    $header.addClass('sticked');
+                } else {
+                    $header.removeClass('sticked');
+                }
+    
+            }
+            
+        });
+
+
+  
+
 })( jQuery );
 
 

@@ -26,6 +26,8 @@
  * @subpackage Rex_Product_Feed/includes
  * @author     RexTheme <info@rextheme.com>
  */
+
+
 class Rex_Product_Feed {
 
 	/**
@@ -123,6 +125,8 @@ class Rex_Product_Feed {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-rex-product-feed-public.php';
+		require plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rex-product-feed-setup-wizard.php';
+		require plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rex-product-feed-create-contact.php';
 
 		$this->loader = new Rex_Product_Feed_Loader();
 	}
@@ -163,6 +167,14 @@ class Rex_Product_Feed {
             '2024-06-25 00:00:00'
         ); // Date format: YYYY-MM-DD HH:MM:SS
 
+        if ( !defined( 'REX_PRODUCT_FEED_PRO_VERSION' ) && 'no' === get_option( 'rexfeed_hide_sales_notification_bar', 'no' ) ) {
+            new Rex_Feed_Sales_Notification_Bar();
+        }
+
+	    $this->loader->add_action( 'admin_init', $plugin_admin, 'register_setup_wizard_page' );
+	    $this->loader->add_action( 'admin_init', $plugin_admin, 'admin_redirects' );
+
+
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 	    $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 	    $this->loader->add_action( 'init', $cpt, 'register_cpt' );
@@ -197,8 +209,6 @@ class Rex_Product_Feed {
 
         $this->loader->add_action( 'admin_post_rex_feed_rollback', $rollback, 'feeds_rollback' );
 
-        $this->loader->add_action( 'admin_footer', $plugin_admin, 'load_custom_styles' );
-
         $this->loader->add_filter( 'best-woocommerce-feed_tracker_data', $appsero_data, 'send_merchant_info' );
 
         $this->loader->add_action( 'init', $scheduler, 'register_background_schedulers' );
@@ -217,6 +227,11 @@ class Rex_Product_Feed {
 	    $this->loader->add_filter( 'rex_feed_product_price_before_formatting', $feed_actions, 'update_price_compatibility_with_wpml', 10, 4 );
         $this->loader->add_filter( 'rex_feed_product_price_before_formatting', $feed_actions, 'get_converted_price_by_wmc', 10, 4 );
         $this->loader->add_filter( 'rex_feed_product_price_before_formatting', $feed_actions, 'get_converted_price_by_aelia', 10, 4 );
+        $this->loader->add_filter( 'rex_feed_product_price_before_formatting', $feed_actions, 'get_converted_price_by_woocs', 10, 4 );
+
+        //setup wizard ajax
+        $this->loader->add_action( 'wp_ajax_create_contact', $ajax, 'create_contact' );
+        $this->loader->add_action( 'wp_ajax_nopriv_create_contact', $ajax, 'create_contact' );
     }
 
 

@@ -167,6 +167,14 @@ class Rex_Product_Data_Retriever {
      */
     public $feed_config;
 
+    /**
+     * Currency by WOOCS
+     *
+     * @since 7.4.15
+     * @var string
+     */
+    public $woocs_currency = '';
+
 	/**
 	 * Initialize the class and set its properties
 	 * Rex_Product_Data_Retriever constructor
@@ -191,6 +199,7 @@ class Rex_Product_Data_Retriever {
         $this->aelia_currency     = $feed->aelia_currency ?? '';
         $this->wmc_currency       = $feed->wmc_currency ?? '';
         $this->wcml_currency      = $feed->wcml_currency ?? '';
+        $this->woocs_currency     = $feed->woocs_currency ?? '';
 		$this->wcml               = $feed->wcml ?? false;
 		$this->feed_format        = $feed->get_feed_format();
 		$this->feed_country       = $feed->get_shipping();
@@ -880,11 +889,11 @@ class Rex_Product_Data_Retriever {
 	 * @since 7.2.9
 	 */
 	protected function set_shipping_attr( $key, $rule ) {
-		$rex_feed_shipping = new Rex_Product_Feed_Shipping( $this->feed_country );
+		$rex_feed_shipping = new Rex_Product_Feed_Shipping( $this->feed_country, $this->product );
 		$attr_val = '';
 		switch ( $key ) {
 			case 'shipping':
-				$methods  = $rex_feed_shipping->get_shipping_zones( $this->product );
+				$methods  = $rex_feed_shipping->get_shipping_zones();
 				$attr_val = $this->add_class_no_class_cost( $methods, $rule );
 				break;
 

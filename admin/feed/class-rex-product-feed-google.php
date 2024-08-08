@@ -192,12 +192,12 @@ class Rex_Product_Feed_Google extends Rex_Product_Feed_Abstract_Generator {
                 if( 'shipping' === $key ) {
                     if ( is_array( $value ) && !empty( $value ) ) {
                         foreach ( $value as $shipping ) {
-                            $shipping_country = isset( $shipping[ 'country' ] ) ? $shipping[ 'country' ] : '';
-                            $shipping_region = isset($shipping['region']) ? $shipping['region'] : '';
-                            $shipping_service = isset( $shipping[ 'service' ] ) ? $shipping[ 'service' ] : '';
-                            $shipping_price = isset( $shipping[ 'price' ] ) ? $shipping[ 'price' ] : '';
+                            $shipping_country = $shipping[ 'country' ] ?? '';
+                            $shipping_region  = $shipping[ 'region' ] ?? '';
+                            $shipping_service = $shipping[ 'service' ] ?? '';
+                            $shipping_price   = $shipping[ 'shipping_cost' ] ?? '';
 
-                            $item->$key( $shipping_country, $shipping_region, $shipping_service, $shipping_price ); // invoke $key as method of $item object.
+                            $item->$key( $shipping_country, $shipping_region, $shipping_service, $shipping_price );
                         }
                     }
                 }
