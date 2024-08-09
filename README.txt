@@ -2,7 +2,7 @@
 
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, tiktok shop
+Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, woocommerce google shopping
 Requires at least: 5.0
 Tested up to:  6.6
 Requires PHP: 7.4
@@ -24,7 +24,7 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 
 - <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-Google-Landing" target="_blank">Google Shopping feed </a> & Other Google Product Feeds.
 - <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-catalog/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-FB-Landing" target="_blank">Facebook Catalog feed & Instagram Feeds</a>
-- TikTok Ads
+- <a href="https://rextheme.com/tiktok-feed-for-woocommerce-products/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=repo-to-tiktok-blog" target="_blank">TikTok Ads</a>
 - Idealo
 - Yandex Market (YML)
 - Twitter Ads (Currently X)
@@ -116,6 +116,8 @@ Following are all the **core features** that we have released over the years,
 You can auto-sync your store products with Google Merchant Shop (Google Shopping).
 
 You can set it up so that your generated product feed (product data feed) will automatically be updated and sent to your Google Merchant Shop as per your schedule.
+
+Creating WooCommerce google shopping feed is easier than ever!
 
 You do not need to download and upload the feed for <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/
 ?utm_source=pfm_repo&utm_medium=google-landing-url&utm_campaign=pfm-repo-to-google-landing" target="_blank">Google Shopping Center</a> manually.
@@ -302,6 +304,7 @@ All PHP code, JavaScript, and static content are now translatable, allowing for 
 * Supports the official "WooCommerce Brands" plugin
 * Supports "Discount Rules For WooCommerce" plugin
 * Supports "Aelia Currency Switcher for WooCommerce" Plugin
+* Supports "FOX – Currency Switcher Professional for WooCommerce (formerly WOOCS)"
 * Supports "WooCommerce Multi-Currency" Plugin
 * Supports the official “WooCommerce Composite Products” plugin
 * Supports the official “WooCommerce Product Bundles” plugin
