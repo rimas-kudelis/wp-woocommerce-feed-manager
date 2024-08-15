@@ -30,7 +30,8 @@ class Rex_Feed_Template_Factory {
 	 * @throws Exception Throws exception if no matching merchant found.
 	 */
 	public static function build( $merchant, $attribute_mappings ) {
-		$class_name = 'Rex_Feed_Template_' . ucfirst( str_replace( ' ', '', $merchant ) );
+        $merchant   = 'bing' === $merchant ? 'google' : $merchant;
+        $class_name = 'Rex_Feed_Template_' . ucfirst( str_replace( ' ', '', $merchant ) );
 
 		if ( !$merchant || ! class_exists( $class_name ) ) {
 			throw new Exception( 'Invalid Merchant.' );

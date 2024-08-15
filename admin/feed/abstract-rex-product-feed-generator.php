@@ -1374,33 +1374,17 @@ abstract class Rex_Product_Feed_Abstract_Generator
         $feed = new DOMDocument;
         $feed->loadXML( $this->feed );
 
-        if ( $this->merchant === 'google'
-            || $this->merchant === 'facebook'
-            || $this->merchant === 'tiktok'
-            || $this->merchant === 'twitter'
-            || $this->merchant === 'pinterest'
-            || $this->merchant === 'ciao'
-            || $this->merchant === 'daisycon'
-            || $this->merchant === 'instagram'
-            || $this->merchant === 'liveintent'
-            || $this->merchant === 'google_shopping_actions'
-            || $this->merchant === 'google_express'
-            || $this->merchant === 'doofinder'
-            || $this->merchant === 'emarts'
-            || $this->merchant === 'epoq'
-            || $this->merchant === 'google_local_products_inventory'
-            || $this->merchant === 'google_merchant_promotion'
-            || $this->merchant === 'google_manufacturer_center'
-            || $this->merchant === 'bing_image'
-            || $this->merchant === 'rss'
-            || $this->merchant === 'criteo'
-            || $this->merchant === 'adcrowd'
-            || $this->merchant === 'google_local_inventory_ads'
-            || $this->merchant === 'compartner'
-        ) {
+        $google_merchants = [
+            'google', 'facebook', 'tiktok', 'twitter', 'pinterest', 'ciao', 'daisycon', 'instagram', 'liveintent',
+            'google_shopping_actions', 'google_express', 'doofinder', 'emarts', 'epoq', 'google_local_products_inventory',
+            'google_merchant_promotion', 'google_manufacturer_center', 'bing_image', 'rss', 'criteo', 'adcrowd',
+            'google_local_inventory_ads', 'compartner', 'bing'
+        ];
+
+        if ( in_array( $this->merchant, $google_merchants ) ) {
             $node = $feed->getElementsByTagName( "item" );
             if ( $this->batch === $this->tbatch ) {
-                $this->item_wrapper = '<item>';
+                $this->item_wrapper       = '<item>';
                 $this->feed_string_footer .= '</channel></rss>';
             }
         }
@@ -1764,6 +1748,23 @@ abstract class Rex_Product_Feed_Abstract_Generator
         }
     }
 
+    /**
+     * Check if the product is out of stock
+     *
+     * @param WC_Product $product
+     * @return bool
+     */
+    protected function is_out_of_stock( $product ) {
+        if ( ( !$this->include_out_of_stock )
+            && ( !$product->is_in_stock()
+                || $product->is_on_backorder()
+                || (is_integer($product->get_stock_quantity()) && 0 >= $product->get_stock_quantity())
+            )
+        ) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Responsible for creating the feed

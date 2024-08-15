@@ -340,7 +340,7 @@ class Rex_Product_Feed_Shipping {
 					else {
 						$class_rate = !empty( $shipping_rates[ 'no_class_cost' ] ) ? $shipping_rates[ 'no_class_cost' ] : 0;
 					}
-					$shipping_costs[] = !empty( $rate ) ? $rate + $class_rate : $class_rate;
+					$shipping_costs[] = !empty( $rate ) && is_numeric( $rate ) && is_numeric( $class_rate ) ? $rate + $class_rate : $class_rate;
 				}
 			}
 		}
@@ -402,7 +402,7 @@ class Rex_Product_Feed_Shipping {
                 // Make sure to empty the cart again
                 $woocommerce->cart->empty_cart();
 
-                self::$shipping_methods[ $key ][ 'shipping_cost' ] = $shipping_cost + $tax;
+                self::$shipping_methods[ $key ][ 'shipping_cost' ] = (float)$shipping_cost + (float)$tax;
             }
         }
     }

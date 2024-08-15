@@ -85,20 +85,10 @@ class Rex_Product_Feed_Google_local_inventory_ads extends Rex_Product_Feed_Abstr
             if ( ! is_object( $product ) ) {
                 continue;
             }
-
             if ( $this->exclude_hidden_products ) {
                 if ( !$product->is_visible() ) {
                     continue;
                 }
-            }
-
-            if ( ( !$this->include_out_of_stock )
-                && ( !$product->is_in_stock()
-                    || $product->is_on_backorder()
-                    || (is_integer($product->get_stock_quantity()) && 0 >= $product->get_stock_quantity())
-                )
-            ) {
-                continue;
             }
 
             if( !$this->include_zero_priced ) {
@@ -107,69 +97,67 @@ class Rex_Product_Feed_Google_local_inventory_ads extends Rex_Product_Feed_Abstr
                     continue;
                 }
             }
-
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-                if($this->variable_product) {
+                if($this->variable_product && $this->is_out_of_stock( $product ) ) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
                     $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
+
                 if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->custom_filter_var_exclude ) {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
-                    }else {
+                    }
+                    else {
                         $variations = $product->get_children();
                     }
+
                     if( $variations ) {
                         foreach ($variations as $variation) {
                             if($this->variations) {
-                                $variable_products[] = $variation;
                                 $variation_product = wc_get_product( $variation );
-                                if ( ( !$this->include_out_of_stock )
-                                    && ( !$variation_product->is_in_stock()
-                                        || $variation_product->is_on_backorder()
-                                        || (is_integer($variation_product->get_stock_quantity()) && 0 >= $variation_product->get_stock_quantity())
-                                    )
-                                ) {
-                                    continue;
+                                if ( $this->is_out_of_stock( $variation_product ) ) {
+                                    $variation_products[] = $variation;
+                                    $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                                 }
-                                $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                             }
                         }
                     }
                 }
             }
 
-            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' ) || $product->is_type( 'woosb' ) || $product->is_type('yith_bundle') || $product->is_type('yith-composite')) {
-                $simple_products[] = $productId;
-                $this->add_to_feed( $product, $product_meta_keys );
-            }
-
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->custom_filter_option) {
-                if ( $product->get_type() === 'variation' ) {
-                    $variable_products[] = $productId;
-                    $this->add_to_feed( $product, $product_meta_keys, 'variation' );
+            if ( $this->is_out_of_stock( $product ) ) {
+                if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' ) ) {
+                    $simple_products[] = $productId;
+                    $this->add_to_feed( $product, $product_meta_keys );
                 }
-            }
 
-            if( $product->is_type( 'grouped' ) && $this->parent_product ){
-                $group_products[] = $productId;
-                $this->add_to_feed( $product, $product_meta_keys );
+                if ( $this->product_scope === 'all' || $this->product_scope === 'product_filter' || $this->custom_filter_option ) {
+                    if ( $product->get_type() === 'variation' ) {
+                        $variation_products[] = $productId;
+                        $this->add_to_feed( $product, $product_meta_keys, 'variation' );
+                    }
+                }
+
+                if ( $product->is_type( 'grouped' ) && $this->parent_product || $product->is_type( 'woosb' ) ) {
+                    $group_products[] = $productId;
+                    $this->add_to_feed( $product, $product_meta_keys );
+                }
             }
         }
 
         $total_products = array(
-            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variable_products) + (int) count($group_products) + (int) count($variable_parent),
+            'total' => (int) $total_products['total'] + (int) count($simple_products) + (int) count($variation_products) + (int) count($group_products) + (int) count($variable_parent),
             'simple' => (int) $total_products['simple'] + (int) count($simple_products),
-            'variable' => (int) $total_products['variable'] + (int) count($variable_products),
+            'variable' => (int) $total_products['variable'] + (int) count($variation_products),
             'variable_parent' => (int) $total_products['variable_parent'] + (int) count($variable_parent),
             'group' => (int) $total_products['group'] + (int) count($group_products),
         );
 
         update_post_meta( $this->id, '_rex_feed_total_products', $total_products );
-	    if ( $this->tbatch === $this->batch ) {
-		    update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
-	    }
+        if ( $this->tbatch === $this->batch ) {
+            update_post_meta( $this->id, '_rex_feed_total_products_for_all_feed', $total_products[ 'total' ] );
+        }
     }
 
 

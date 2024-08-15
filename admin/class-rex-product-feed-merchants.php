@@ -71,7 +71,7 @@ class Rex_Feed_Merchants {
 			'bing'      => array(
 				'free'    => true,
 				'name'    => 'Bing',
-				'formats' => array( 'text' ),
+				'formats' => array( 'xml', 'text' ),
 			),
 			'yandex'    => array(
 				'free'    => true,

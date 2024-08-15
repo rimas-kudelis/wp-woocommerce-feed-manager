@@ -227,7 +227,7 @@ $merged_merchants  = array_merge( $popular_merchant, $pro_merchant, $free_mercha
 ?>
 <script type="text/javascript">
     const rex_wpfm_wizard_translate_string = <?php echo wp_json_encode( $data ); ?>;
-    const logoUrl = <?php echo json_encode( esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/setup-wizard-images/pfm-logo.webp' ) ); ?>;
+    const logoUrl = <?php echo json_encode( esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/setup-wizard-images/pfm.webp' ) ); ?>;
     const bannerUrl = <?php echo json_encode( esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/setup-wizard-images/welcome-image.webp' ) ); ?>;
     const thumnailImage = <?php echo json_encode( esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/setup-wizard-images/youtube-thumbnill.webp' ) ); ?>;
     const woocommerceUrl = <?php echo json_encode( esc_url( WPFM_PLUGIN_ASSETS_FOLDER . 'icon/setup-wizard-images/woocommerce-logo.webp' ) ); ?>;

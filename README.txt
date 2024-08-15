@@ -6,7 +6,7 @@ Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, 
 Requires at least: 5.0
 Tested up to:  6.6
 Requires PHP: 7.4
-Stable tag:  7.4.15
+Stable tag:  7.4.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,9 +36,7 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - eBay Seller Center & eBay MIP Feed
 -  **<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=PFM-repo-cta&utm_medium=PFM-repo&utm_campaign=repo_to_merchant">And 180+ More!</a>**
 
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-pricing" target="_blank">👉 Get Product Feed Manager for WooCommerce - Pro Today!</a> </h4>
-
-[youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-pricing" target="_blank">🔥 Get Product Feed Manager for WooCommerce - Pro at a 20% Discount Today! 🔥</a> </h4>
 
 You can literally start from zero and create perfect product feeds in as low as **3 simple steps!**
 
@@ -47,6 +45,9 @@ You can literally start from zero and create perfect product feeds in as low as 
 3. Generate The Product Feed by clicking The Publish Button.
 
 And that’s it. It’s That Easy! 🤩
+
+[youtube https://youtu.be/shv3-tMqWWU?utm_source=repo&utm_medium=pfm_repo&utm_campaign=pfm-intro]
+
 
 Your WooCommerce product feed is ready and you can start selling in your desired marketplace.
 
@@ -497,10 +498,13 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Changelog ==
 
+= 7.4.16 (2024-08-15) =
+* Enhancement: Update Bing Shopping feed template
+* Fixed: Currency conversion issue with WCML
+
 = 7.4.15 (2024-08-08) =
 * Added: New setup wizard
 * Added: Compatibility with FOX – Currency Switcher Professional for WooCommerce (formerly WOOCS)
-
 
 = 7.4.14 (2024-07-26) =
 * Enhancement: Updated attribute in Zbozi feed template
@@ -1808,5 +1812,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.4.15 =
+= 7.4.16 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧

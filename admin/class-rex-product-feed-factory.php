@@ -93,7 +93,6 @@ class Rex_Product_Feed_Factory {
 				'nextag',
 				'nextag',
 				'pricegrabber',
-				'bing',
 				'cercavino',
 				'kelkoo',
 				'ebay',
@@ -253,6 +252,7 @@ class Rex_Product_Feed_Factory {
             'facebook',
             'snapchat',
             'twitter',
+            'bing'
 		);
 		self::$bestprice_format = array(
 			'Bestprice',

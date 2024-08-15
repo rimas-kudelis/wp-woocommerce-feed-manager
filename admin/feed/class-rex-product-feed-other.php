@@ -235,18 +235,6 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'          => true,
             'datetime'         => true,
         ),
-        "bing"                => array(
-            'container'        => true,
-            'item_wrapper'     => 'product',
-            'items_wrapper'    => 'products',
-            'namespace'        => null,
-            'namespace_prefix' => '',
-            'stand_alone'      => true,
-            'version'          => '',
-            'wrapper_el'       => '',
-            'wrapper'          => true,
-            'datetime'         => true,
-        ),
         "cercavino"           => array(
             'container'        => true,
             'item_wrapper'     => 'product',
@@ -1031,20 +1019,10 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             if ( ! is_object( $product ) ) {
                 continue;
             }
-
             if ( $this->exclude_hidden_products ) {
                 if ( !$product->is_visible() ) {
                     continue;
                 }
-            }
-
-            if ( ( !$this->include_out_of_stock )
-                && ( !$product->is_in_stock()
-                    || $product->is_on_backorder()
-                    || (is_integer($product->get_stock_quantity()) && 0 >= $product->get_stock_quantity())
-                )
-            ) {
-                continue;
             }
 
             if( !$this->include_zero_priced ) {
@@ -1053,54 +1031,49 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
                     continue;
                 }
             }
-			
             if ( $product->is_type( 'variable' ) && $product->has_child() ) {
-                if($this->variable_product) {
+                if($this->variable_product && $this->is_out_of_stock( $product ) ) {
                     $variable_parent[] = $productId;
                     $variable_product = new WC_Product_Variable($productId);
-                    $this->add_to_feed( $variable_product, $product_meta_keys, 'variable' );
+                    $this->add_to_feed( $variable_product, $product_meta_keys );
                 }
 
-                if( ('product_cat' === $this->product_scope || 'product_tag' === $this->product_scope || $this->custom_filter_var_exclude ) && $this->variations && 'skroutz' !== $this->merchant ) {
+                if( $this->product_scope === 'product_cat' || $this->product_scope === 'product_tag' || $this->custom_filter_var_exclude ) {
                     if ( $this->exclude_hidden_products ) {
                         $variations = $product->get_visible_children();
-                    }else {
+                    }
+                    else {
                         $variations = $product->get_children();
                     }
 
                     if( $variations ) {
-                        foreach( $variations as $variation ) {
-                            $this->variation_products[] = $variation;
-                            $variation_product    = wc_get_product( $variation );
-                            if(
-                                ( !$this->include_out_of_stock )
-                                && ( !$variation_product->is_in_stock()
-                                    || $variation_product->is_on_backorder()
-                                    || ( is_integer( $variation_product->get_stock_quantity() ) && 0 >= $variation_product->get_stock_quantity() )
-                                )
-                            ) {
-                                continue;
+                        foreach ($variations as $variation) {
+                            if($this->variations) {
+                                $variation_product = wc_get_product( $variation );
+                                if ( $this->is_out_of_stock( $variation_product ) ) {
+                                    $variation_products[] = $variation;
+                                    $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
+                                }
                             }
-                            $this->add_to_feed( $variation_product, $product_meta_keys, 'variation' );
                         }
                     }
                 }
             }
 
-            if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' )) {
-                $simple_products[] = $productId;
-                $this->add_to_feed( $product, $product_meta_keys );
-            }
-
-            if( $this->product_scope === 'all' || $this->product_scope =='product_filter' || $this->custom_filter_option ) {
-                if ( $product->get_type() === 'variation' ) {
-                    $this->variation_products[] = $productId;
-                    $this->add_to_feed( $product, $product_meta_keys, 'variation' );
+            if ( $this->is_out_of_stock( $product ) ) {
+                if ( $product->is_type( 'simple' ) || $product->is_type( 'external' ) || $product->is_type( 'composite' ) || $product->is_type( 'bundle' ) ) {
+                    $simple_products[] = $productId;
+                    $this->add_to_feed( $product, $product_meta_keys );
                 }
-            }
 
-            if( $product->is_type( 'grouped' ) && $this->parent_product || $product->is_type( 'woosb' )){
-                if($this->parent_product) {
+                if ( $this->product_scope === 'all' || $this->product_scope === 'product_filter' || $this->custom_filter_option ) {
+                    if ( $product->get_type() === 'variation' ) {
+                        $variation_products[] = $productId;
+                        $this->add_to_feed( $product, $product_meta_keys, 'variation' );
+                    }
+                }
+
+                if ( $product->is_type( 'grouped' ) && $this->parent_product || $product->is_type( 'woosb' ) ) {
                     $group_products[] = $productId;
                     $this->add_to_feed( $product, $product_meta_keys );
                 }

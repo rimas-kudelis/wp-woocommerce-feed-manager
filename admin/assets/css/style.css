@@ -407,7 +407,8 @@ a,
   text-align: center;
   margin: auto;
   display: block;
-  max-width: 100%;
+  width: 100%;
+  max-width: 55px;
 }
 .wpfm-setup-wizard__container .setup-wizard__pregress-bar {
   width: 100%;
@@ -1249,13 +1250,17 @@ a,
   justify-content: start;
   gap: 17px;
 }
+.wpfm-setup-wizard__container .setup-wizard__inner-container .setup-wizard__features-section-container .setup-wizard__pro-features-section-container .setup-wizard__pro-features .setup-wizard__pro-feature-lists .setup-wizard__single-pro-feature svg {
+  margin-top: 3px;
+  display: block;
+}
 .wpfm-setup-wizard__container .setup-wizard__inner-container .setup-wizard__features-section-container .setup-wizard__pro-features-section-container .setup-wizard__pro-features .setup-wizard__pro-feature-lists .setup-wizard__single-pro-feature .setup-wizard__single-pro-feature-title {
   color: #0C2044;
   font-family: "Urbanist", sans-serif;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 27px;
+  line-height: 1.4;
 }
 @media (max-width: 768px) {
   .wpfm-setup-wizard__container .setup-wizard__inner-container .setup-wizard__features-section-container .setup-wizard__pro-features-section-container .setup-wizard__pro-features .setup-wizard__pro-feature-lists .setup-wizard__single-pro-feature .setup-wizard__single-pro-feature-title {

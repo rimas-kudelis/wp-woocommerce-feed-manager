@@ -923,7 +923,6 @@ return array(
     'Rex_Feed_Template_Bestprice' => $baseDir . '/admin/feed-templates/class-rex-feed-template-bestprice.php',
     'Rex_Feed_Template_Bikeexchange' => $baseDir . '/admin/feed-templates/class-rex-feed-template-bikeexchange.php',
     'Rex_Feed_Template_Billiger' => $baseDir . '/admin/feed-templates/class-rex-feed-template-billiger.php',
-    'Rex_Feed_Template_Bing' => $baseDir . '/admin/feed-templates/class-rex-feed-template-bing.php',
     'Rex_Feed_Template_Bing_image' => $baseDir . '/admin/feed-templates/class-rex-feed-template-bing-image.php',
     'Rex_Feed_Template_Bipp' => $baseDir . '/admin/feed-templates/class-rex-feed-template-bipp.php',
     'Rex_Feed_Template_Bloomville' => $baseDir . '/admin/feed-templates/class-rex-feed-template-bloomville.php',

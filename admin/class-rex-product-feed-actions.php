@@ -760,6 +760,9 @@ class Rex_Product_Feed_Actions {
      * @since 7.4.0
      */
     public function update_price_compatibility_with_wpml( $product_price, $product, $type, $feed_retriever_obj ) {
+        if ( defined( 'ICL_LANGUAGE_CODE' ) && $feed_retriever_obj->get_wcml_currency() === ICL_LANGUAGE_CODE ) {
+            return $product_price;
+        }
         if ( $feed_retriever_obj->is_wcml_active() ) {
             $updated_price = apply_filters(
                 'wcml_raw_price_amount',

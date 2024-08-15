@@ -950,7 +950,6 @@ class ComposerStaticInit4c4b99044a2541264cd0b6680902f5e3
         'Rex_Feed_Template_Bestprice' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-bestprice.php',
         'Rex_Feed_Template_Bikeexchange' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-bikeexchange.php',
         'Rex_Feed_Template_Billiger' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-billiger.php',
-        'Rex_Feed_Template_Bing' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-bing.php',
         'Rex_Feed_Template_Bing_image' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-bing-image.php',
         'Rex_Feed_Template_Bipp' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-bipp.php',
         'Rex_Feed_Template_Bloomville' => __DIR__ . '/../..' . '/admin/feed-templates/class-rex-feed-template-bloomville.php',
