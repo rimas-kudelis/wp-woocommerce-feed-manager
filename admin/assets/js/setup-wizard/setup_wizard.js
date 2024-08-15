@@ -468,15 +468,8 @@
                             <h3 class="rex-wpfm-setup-plugin-heading">WooCommerce</h3>
                             <p class="rex-wpfm-setup-plugin-subheading">Required for Product Feed.</p>
                           </div>
-
-                          <span class="rex-wpfm-required-tag">Required</span>
-                                        
+                          <span class="rex-wpfm-required-tag">Required</span>         
                         </div>
-
-                        <div class="rex-wpfm-setup-no-plugin-needed" style="display: none;">
-                          <img src="http://localhost:10024/wp-content/uploads/2024/06/image-6.png"  alt="No Plugin Needed" id="rex-wpfm-no-plugin-img"/>
-                        </div>
-
                       </div>
 
                     </div>
