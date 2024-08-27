@@ -416,7 +416,7 @@
 
     $(document).on( 'click', '#rex_save_settings', rexfeed_save_settings_data );
 
-    $(document).on("click", "ul.rex-settings-tabs li", rex_feed_settings_tab);
+    $(document).on("click", "ul.rex-settings__tabs li", rex_feed_settings_tab);
 
     $(document).on("click", ".rex-feed-rollback-button", rex_feed_rollback_confirmation);
 
@@ -1499,22 +1499,47 @@
     //----------setting tab-------
     function rex_feed_settings_tab(event) {
         var url = window.location.href;
+    
+        // Check if there's a stored tab ID in localStorage
+        var savedTab = localStorage.getItem("currentTab");
+        
         if ($(this).length > 0) {
             var tab_id = $(this).attr("data-tab");
-            $("ul.rex-settings-tabs li").removeClass("active");
-            $(".rex-settings-tab-content .tab-content").removeClass("active");
-
+            
+            // Save the current tab ID to localStorage
+            localStorage.setItem("currentTab", tab_id);
+    
+            $("ul.rex-settings__tabs li").removeClass("active");
+            $(".rex-settings__tab-contents .tab-content").removeClass("active");
+    
             $(this).addClass("active");
             $("#" + tab_id).addClass("active");
-        }
-        if ($(this).length === 0 && url.includes("page=wpfm_dashboard&tab=merchants")) {
-            $("ul.rex-settings-tabs li[data-tab=tab4]").removeClass("active");
-            $(".rex-settings-tab-content #tab4").removeClass("active");
-
-            $("ul.rex-settings-tabs li[data-tab=tab2]").addClass("active");
+        } else if (url.includes("page=wpfm_dashboard&tab=merchants")) {
+            $("ul.rex-settings__tabs li[data-tab=tab4]").removeClass("active");
+            $(".rex-settings__tab-contents #tab4").removeClass("active");
+    
+            $("ul.rex-settings__tabs li[data-tab=tab2]").addClass("active");
             $("#tab2").addClass("active");
         }
+    
+        // If there's a saved tab in localStorage, activate it
+        if (savedTab) {
+            $("ul.rex-settings__tabs li").removeClass("active");
+            $(".rex-settings__tab-contents .tab-content").removeClass("active");
+    
+            $("ul.rex-settings__tabs li[data-tab=" + savedTab + "]").addClass("active");
+            $("#" + savedTab).addClass("active");
+        }
     }
+    
+    // Attach the event handler to the tabs
+    $(document).ready(function() {
+        $("ul.rex-settings__tabs li").on("click", rex_feed_settings_tab);
+    
+        // Trigger the function to check for saved tab on page load
+        rex_feed_settings_tab();
+    });
+    
 
     /**
      * WPFM error log
@@ -2932,7 +2957,6 @@ function handleClass(node, className, action = "add") {
 
 
 
-
 /**
  * Text click  Prefix and suffix dropdown show
  * @author ts
@@ -3000,6 +3024,88 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+
+
+ 
+    const productList = document.getElementById("rex-settings__merchant-lists");
+
+    if (productList && productList.children.length > 0) {
+        // Convert the list of products into an array for easier manipulation
+        const products = Array.from(productList.getElementsByClassName("single-merchant"));
+        const searchInput = document.getElementById("search"); // Get the search input field
+        const searchButton = document.getElementById("search-button"); // Get the search button
+        
+        // Create a "No results found" message element and hide it initially
+        const noResultsMessage = document.createElement("p");
+        noResultsMessage.className = "rex-wpfm-no-result-found";
+        noResultsMessage.textContent = "No Merchant found";
+        noResultsMessage.style.display = "none";
+        productList.appendChild(noResultsMessage);
+
+        // Function to handle real-time search input filtering
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let found = false; // Tracks if any matching product is found
+        
+            // Loop through each product to check if it matches the search term
+            products.forEach((product) => {
+                const productText = product.textContent.toLowerCase();
+                if (searchTerm.length && productText.includes(searchTerm)) {
+                    product.style.display = "flex"; // Show matching products
+                    found = true;
+                } else if (!searchTerm.length) {
+                    product.style.display = "flex"; // Show all products when search is cleared
+                    found = true;
+                } else {
+                    product.style.display = "none"; // Hide non-matching products
+                }
+            });
+        
+            // Display "No results found" message if no products match the search term
+            noResultsMessage.style.display = found ? "none" : "block";
+        }
+
+        // Function to toggle the visibility of products based on search button click
+        function toggleContentVisibility() {
+            const isSearchEmpty = !searchInput.value.trim(); // Check if the search input is empty
+            let found = false; // Tracks if any matching product is found
+        
+            // Loop through each product to show or hide it based on the search term
+            products.forEach((product) => {
+                if (isSearchEmpty) {
+                    product.style.display = "flex"; // Show all products if search is empty
+                    found = true;
+                } else {
+                    const productText = product.textContent.toLowerCase();
+                    if (productText.includes(searchInput.value.toLowerCase())) {
+                        product.style.display = "flex"; // Show matching products
+                        found = true;
+                    } else {
+                        product.style.display = "none"; // Hide non-matching products
+                    }
+                }
+            });
+        
+            // Display "No results found" message if no products match the search term
+            noResultsMessage.style.display = found ? "none" : "block";
+        }
+
+        // Add event listener for real-time search input filtering
+        searchInput.addEventListener("input", handleSearch);
+
+        // Add event listener for search button to trigger content visibility toggle
+        searchButton.addEventListener("click", function () {
+            toggleContentVisibility();
+        });
+
+        // Initialize the display of products when the page loads (show all initially)
+        toggleContentVisibility();
+    }
+
+    
+    
+
 });
 
 

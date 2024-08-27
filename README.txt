@@ -2,11 +2,11 @@
 
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping,  bonanza, yml, YML for Yandex Market, yandex market, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, woocommerce google shopping
+Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping,  bonanza, yml, YML for Yandex Market, woocommerce google product feed, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, woocommerce google shopping
 Requires at least: 5.0
 Tested up to:  6.6
 Requires PHP: 7.4
-Stable tag:  7.4.16
+Stable tag:  7.4.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ Create accurate product feeds with your WooCommerce products in just a few click
 Use our pre-defined merchant templates to generate flawless feeds for popular merchants
 <h4>👉 Check Out 180+ supported Marketplaces with Product Feed Manager </a> </h4>
 
-- <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-Google-Landing" target="_blank">Google Shopping feed </a> & Other Google Product Feeds.
+- <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-Google-Landing" target="_blank">Google Shopping feed </a> & Other WooCommerce Google Product Feeds.
 - <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-catalog/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-FB-Landing" target="_blank">Facebook Catalog feed & Instagram Feeds</a>
 - <a href="https://rextheme.com/tiktok-feed-for-woocommerce-products/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=repo-to-tiktok-blog" target="_blank">TikTok Ads</a>
 - Idealo
@@ -337,7 +337,7 @@ Moreover, you can set **auto-feed update timing** so your Google merchant center
 
 However, that's not all we offer.
 
-In addition to providing the Google Merchant Center feed template, our plugin can also generate Google product feeds in the correct format for various other Google Destinations.
+In addition to providing the Google Merchant Center feed template, our plugin can also generate WooCommerce Google product feeds in the correct format for various other Google Destinations.
 
 👉 [Check out all the Google Merchant Center Supports](https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-google-feeds)
 
@@ -497,6 +497,9 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.17 (2024-08-27) =
+* Enhancement: Update Settings page
 
 = 7.4.16 (2024-08-15) =
 * Enhancement: Update Bing Shopping feed template

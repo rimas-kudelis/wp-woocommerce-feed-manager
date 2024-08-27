@@ -135,7 +135,7 @@
             if ($header.length > 0) {
                 var headerOffset = $header.offset().top - $(window).scrollTop();
         
-                if (headerOffset < 27) {
+                if (headerOffset < 28) {
                     $header.addClass('sticked');
                 } else {
                     $header.removeClass('sticked');

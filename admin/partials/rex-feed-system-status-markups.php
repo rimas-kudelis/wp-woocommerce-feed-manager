@@ -12,7 +12,7 @@
 $system_status = Rex_Feed_System_Status::get_all_system_status();
 ?>
 
-<div id="tab5" class="tab-content block-wrapper">
+<div id="tab3" class="tab-content block-wrapper">
 
 	<!-- `rex-system-status`  block -->
 	<div class="system-status rex-system-status">
@@ -23,8 +23,11 @@ $system_status = Rex_Feed_System_Status::get_all_system_status();
 				<?php echo esc_html__( 'System Status', 'rex-product-feed' ); ?>
 			</h3>
 			<button type="button" class="rex-system-status__button" id="rex-feed-system-status-copy-btn">
-				<i class="fa fa-files-o"></i>
-				<?php esc_html_e( 'Copy Status', 'rex-product-feed' ); ?>
+				<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+					<path d="M14.1 5.90002H7.80002C7.02683 5.90002 6.40002 6.52683 6.40002 7.30002V13.6C6.40002 14.3732 7.02683 15 7.80002 15H14.1C14.8732 15 15.5 14.3732 15.5 13.6V7.30002C15.5 6.52683 14.8732 5.90002 14.1 5.90002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M3.6 10.1H2.9C2.5287 10.1 2.1726 9.9525 1.91005 9.68995C1.6475 9.4274 1.5 9.0713 1.5 8.7V2.4C1.5 2.0287 1.6475 1.6726 1.91005 1.41005C2.1726 1.1475 2.5287 1 2.9 1H9.2C9.5713 1 9.9274 1.1475 10.1899 1.41005C10.4525 1.6726 10.6 2.0287 10.6 2.4V3.1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+				<?php esc_html_e( 'Copy System Status', 'rex-product-feed' ); ?>
 			</button>
 		</div>
 
