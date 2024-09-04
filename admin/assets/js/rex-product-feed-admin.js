@@ -613,6 +613,8 @@
 
     $(document).on("submit", "#wpfm-fb-pixel", save_fb_pixel_id );
 
+    $(document).on("submit", "#wpfm-tiktok-pixel", save_tiktok_pixel_id );
+
     $(document).on("submit", "#wpfm-transient-settings", save_wpfm_transient);
 
     $(document).on("select2:open", rex_feed_focus_merchant_search_bar);
@@ -1669,6 +1671,28 @@
             .error(function (response) {
                 $form.find("button.save-fb-pixel i").hide();
                 $form.find("button.save-fb-pixel span").show();
+                console.log("uh, oh!");
+            });
+    }
+    /**
+     * Save FB pixel ID
+     * @param e
+     */
+    function save_tiktok_pixel_id(e) {
+        e.preventDefault();
+        var $form = $(this);
+        $form.find("button.save-tiktok-pixel span").hide();
+        $form.find("button.save-tiktok-pixel i").show();
+        var value = $form.find("#wpfm_tiktok_pixel").val();
+        wpAjaxHelperRequest("rexfeed-save-tiktok-pixel-value", value)
+            .success(function (response) {
+                $form.find("button.save-tiktok-pixel i").hide();
+                $form.find("button.save-tiktok-pixel span").show();
+                console.log("woohoo!");
+            })
+            .error(function (response) {
+                $form.find("button.save-tiktok-pixel i").hide();
+                $form.find("button.save-tiktok-pixel span").show();
                 console.log("uh, oh!");
             });
     }

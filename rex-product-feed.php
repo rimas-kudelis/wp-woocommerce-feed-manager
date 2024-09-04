@@ -15,7 +15,7 @@
  * Plugin Name:       Product Feed Manager for WooCommerce
  * Plugin URI:        https://rextheme.com
  * Description:       Generate and maintain your WooCommerce product feed for Google Shopping, Social Catalogs, Yandex, Idealo, Vivino, Pinterest, eBay MIP, BestPrice, Skroutz, Fruugo, Bonanza & 180+ Merchants.
- * Version:           7.4.17
+ * Version:           7.4.18
  * Author:            RexTheme
  * Author URI:        https://rextheme.com
  * License:           GPL-2.0+
@@ -39,7 +39,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 if( !defined( 'WPFM_VERSION' ) ) {
-    define( 'WPFM_VERSION', '7.4.17' );
+    define( 'WPFM_VERSION', '7.4.18' );
 }
 if ( !defined( 'WPFM__FILE__' ) ) {
 	define( 'WPFM__FILE__', __FILE__ );
@@ -60,7 +60,7 @@ if ( !defined( 'WPFM_PLUGIN_ASSETS_FOLDER_PATH' ) && defined( 'WPFM_PLUGIN_DIR_P
 	define( "WPFM_PLUGIN_ASSETS_FOLDER_PATH", WPFM_PLUGIN_DIR_PATH . 'admin/assets/' );
 }
 if( !defined( 'WPFM_PRO_REQUIRED_VERSION' ) ) {
-    define( 'WPFM_PRO_REQUIRED_VERSION', '6.4.0' );
+    define( 'WPFM_PRO_REQUIRED_VERSION', '6.5.3' );
 }
 if ( !defined( 'WPFM_ETSY_REQUIRED_VERSION' ) ) {
 	define( 'WPFM_ETSY_REQUIRED_VERSION', '1.0.1' );
@@ -174,7 +174,7 @@ function rex_check_dependency() {
 		add_action( 'admin_notices', 'rex_product_feed_admin_notice' );
 	}
 
-	if ( ( file_exists( $wpfm_pro_abs ) && ! wpfm_pro_compatibility() ) || ( file_exists( $wpfm_etsy_abs ) && ! wpfm_etsy_compatibility() ) ) {
+	if ( defined( 'REX_PRODUCT_FEED_PRO_VERSION' ) && ( file_exists( $wpfm_pro_abs ) && ! wpfm_pro_compatibility() ) || ( file_exists( $wpfm_etsy_abs ) && ! wpfm_etsy_compatibility() ) ) {
 		add_action( 'admin_notices', 'wpfm_pro_update_notice' );
 	}
 }

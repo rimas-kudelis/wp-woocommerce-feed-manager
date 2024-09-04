@@ -3591,11 +3591,32 @@ a,
   border-radius: 6px;
   border: 1px solid #EBEDF0;
 }
-.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel {
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-fb-pixel-field input {
+  width: 172px !important;
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+@media (max-width: 991px) {
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-fb-pixel-field input {
+    width: 130px !important;
+  }
+}
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel {
   display: flex;
   flex-direction: column;
   gap: 19px;
 }
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-google-drm-pixel-field,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-tiktok-pixel-field,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-tiktok-pixel-pro,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-fb-pixel-field,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-fb-pixel-pro, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-google-drm-pixel-field,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-tiktok-pixel-field,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-tiktok-pixel-pro,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-fb-pixel-field,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-fb-pixel-pro, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-google-drm-pixel-field,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-tiktok-pixel-field,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-tiktok-pixel-pro,
 .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-fb-pixel-field,
 .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-fb-pixel-pro {
   display: flex;
@@ -3604,9 +3625,116 @@ a,
   width: 100%;
 }
 @media (max-width: 1399px) {
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-google-drm-pixel-field .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-tiktok-pixel-field .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-tiktok-pixel-pro .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-fb-pixel-field .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-fb-pixel-pro .title, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-google-drm-pixel-field .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-tiktok-pixel-field .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-tiktok-pixel-pro .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-fb-pixel-field .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-fb-pixel-pro .title, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-google-drm-pixel-field .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-tiktok-pixel-field .title,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-tiktok-pixel-pro .title,
   .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-fb-pixel-field .title,
   .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-fb-pixel-pro .title {
     width: 100%;
+  }
+}
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel {
+  display: flex;
+  justify-content: space-between;
+  width: 100% !important;
+}
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel input, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel input, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel input,
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel input {
+  width: 172px !important;
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+@media (max-width: 991px) {
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.google-drm-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel input, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.tiktok-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel input, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-google-drm-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-google-drm-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-tiktok-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-tiktok-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-tiktok-pixel-pro .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-tiktok-pixel-pro .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-fb-pixel-field .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .wpfm-fb-pixel-field .wpfm-tiktok-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-fb-pixel-pro .wpfm-google-drm-pixel input,
+  .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.fb-pixel .single-merchant-fb-pixel-pro .wpfm-tiktok-pixel input {
+    width: 130px !important;
   }
 }
 @media (max-width: 1399px) {
@@ -3767,7 +3895,7 @@ a,
   margin: 8px 0;
   font-size: 14px;
 }
-.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-custom-field-frontend, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-fb-pixel-field, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-google-drm-pixel-field {
+.rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-tiktok-pixel-field, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-custom-field-frontend, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-fb-pixel-field, .rex-onboarding .rex-settings__tab-contents .feed-settings .single-merchant.wpfm-google-drm-pixel-field {
   border-radius: 3px;
   background: #F1F6FF;
   border: none;

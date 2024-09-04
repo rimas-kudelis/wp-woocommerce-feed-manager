@@ -126,6 +126,10 @@ class Rex_Product_Feed_Ajax {
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_fb_pixel_value' ) )
                         ->with_validation( $validations );
 
+        wp_ajax_helper()->handle( 'rexfeed-save-tiktok-pixel-value' )
+                        ->with_callback( array( 'Rex_Product_Feed_Ajax', 'save_tiktok_pixel_value' ) )
+                        ->with_validation( $validations );
+
         wp_ajax_helper()->handle( 'rex-enable-log' )
                         ->with_callback( array( 'Rex_Product_Feed_Ajax', 'enable_log' ) )
                         ->with_validation( $validations );
@@ -809,6 +813,20 @@ class Rex_Product_Feed_Ajax {
      */
     public static function save_fb_pixel_value( $payload ) {
         update_option( 'wpfm_fb_pixel_value', $payload );
+        return array(
+            'success' => true,
+        );
+    }
+
+    /**
+     * Save facebook pixel key
+     *
+     * @param array $payload Payload.
+     *
+     * @return array
+     */
+    public static function save_tiktok_pixel_value( $payload ) {
+        update_option( 'wpfm_tiktok_pixel_value', $payload );
         return array(
             'success' => true,
         );
