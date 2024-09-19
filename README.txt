@@ -2,7 +2,7 @@
 
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, facebook product feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping, yml, YML for Yandex Market, woocommerce google product feed, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, woocommerce google shopping
+Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, facebook product feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping, yml, YML for Yandex Market, woocommerce google product feed, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, woocommerce google shopping, Instagram product feed
 Requires at least: 5.0
 Tested up to:  6.6
 Requires PHP: 7.4
@@ -15,7 +15,7 @@ Generate WooCommerce product feeds for Google Shopping, Social Catalogs, Instagr
 
 == Description ==
 
-<h4> The Easiest Plugin to Generate Your WooCommerce Product Feed for 180+ Online Marketplaces 🤩 </h4>
+<h4> 🏆 The Easiest Plugin to Generate Your WooCommerce Product Feed for 180+ Online Marketplaces 🤩 </h4>
 
 Create accurate product feeds with your WooCommerce products in just a few clicks for any marketplace of your choice.
 
@@ -23,7 +23,7 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 <h4>👉 Check Out 180+ supported Marketplaces with Product Feed Manager </a> </h4>
 
 - <a href="https://rextheme.com/best-woocommerce-product-feed/google-product-feed/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-Google-Landing" target="_blank">Google Shopping feed </a> & Other WooCommerce Google Product Feeds.
-- <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-catalog/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-FB-Landing" target="_blank">Facebook Catalog feed & Instagram Feeds</a>
+- <a href="https://rextheme.com/best-woocommerce-product-feed/facebook-catalog/?utm_source=repo-CTA&utm_medium=PFM-Repo&utm_campaign=PFM-repo-FB-Landing" target="_blank">Facebook Catalog feed & Instagram Product Feeds</a>
 - <a href="https://rextheme.com/tiktok-feed-for-woocommerce-products/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=repo-to-tiktok-blog" target="_blank">TikTok Ads</a>
 - Idealo
 - Yandex Market (YML)
@@ -247,7 +247,7 @@ All PHP code, JavaScript, and static content are now translatable, allowing for 
 * Auto-sync with Google Shopping Center
 * Compatible with both HTTP and HTTPS sites
 * Auto feed update schedule options: weekly, daily, hourly, & custom schedule
-* Category Mapping for Google Shopping feed, Facebook Catalog feed, Instagram feed and others
+* Category Mapping for Google Shopping feed, [Facebook Product feed](https://rextheme.com/facebook-product-feed/?utm_source=Repo-CTA&utm_medium=PFM-Repo&utm_campaign=repo-to-facebook-feed-blog), [Instagram product feed](https://rextheme.com/instagram-product-feed/?utm_source=Repo-CTA&utm_medium=PFM-Repo&utm_campaign=repo-to-instagram-feed-blog) and others
 * Extensive Filter Options (filter by category, product, tag or custom)
 * Include Dynamic Attributes
 * Add Static attributes if needed
@@ -1409,7 +1409,7 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 = 5.23 (2020-04-03) =
 * Feature: Facebook pixel support
 * Updated: Google Manufacturer Center attributes
-* Updated: Instagram feed attributes
+* Updated: Instagram Product feed attributes
 * Updated: Pinterest feed attributes
 * Added: Logicsale template
 * Added: Google Dynamic Display Ads template
