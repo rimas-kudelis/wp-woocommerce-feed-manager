@@ -1638,7 +1638,9 @@ abstract class Rex_Product_Feed_Abstract_Generator
                 $this->feed_string_footer .= '</offers></import>';
             }
         }
-        elseif ( $this->merchant === 'spartooFr' ) {
+        elseif ( $this->merchant === 'spartooFr'
+            || $this->merchant === 'varle'
+        ) {
             $node = $feed->getElementsByTagName( "product" );
             if ( $this->batch === $this->tbatch ) {
                 $this->item_wrapper = '<product>';

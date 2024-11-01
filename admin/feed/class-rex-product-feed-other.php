@@ -668,6 +668,18 @@ class Rex_Product_Feed_Other extends Rex_Product_Feed_Abstract_Generator {
             'wrapper'          => false,
             'datetime'         => false,
         ),
+        "varle"              => array(
+            'container'        => true,
+            'item_wrapper'     => 'product',
+            'items_wrapper'    => 'root',
+            'namespace'        => null,
+            'namespace_prefix' => '',
+            'stand_alone'      => false,
+            'version'          => '',
+            'wrapper_el'       => 'products',
+            'wrapper'          => true,
+            'datetime'         => false,
+        ),
         "vidaXL"              => array(
             'container'        => false,
             'item_wrapper'     => 'product',

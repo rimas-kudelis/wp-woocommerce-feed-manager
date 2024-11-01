@@ -1041,6 +1041,11 @@ class Rex_Feed_Merchants {
 				'name'    => 'Rozetka',
 				'formats' => array( 'xml' ),
 			),
+			'varle'    => array(
+				'free'    => true,
+				'name'    => 'Varle.lt',
+				'formats' => array( 'xml' ),
+			),
 		);
 
 		$merchants[ 'popular' ]        = $popular;
