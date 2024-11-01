@@ -1051,6 +1051,11 @@ class Rex_Feed_Merchants {
                 'name'    => 'Shareasale',
                 'formats' => array( 'csv' ),
             ),
+            'varle'    => array(
+                'free'    => true,
+                'name'    => 'Varle.lt',
+                'formats' => array( 'xml' ),
+            ),
             'kogan'     => array(
                 'free'    => true,
                 'name'    => 'Kogan',
