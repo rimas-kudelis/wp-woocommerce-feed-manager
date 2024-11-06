@@ -36,9 +36,8 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - eBay Seller Center & eBay MIP Feed
 -  **<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=PFM-repo-cta&utm_medium=PFM-repo&utm_campaign=repo_to_merchant">And 180+ More!</a>**
 
-<h4>🎃 Halloween Special Sale - 30% Off! 🎃 </h4>
 
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=halloween-2024" target="_blank">🔥 Get Product Feed Manager for WooCommerce - Pro at a 30% Discount Today! 🔥</a> </h4>
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-pricing" target="_blank">🔥 Get Product Feed Manager for WooCommerce - Pro Today! 🔥</a> </h4>
 
 == 🌟 Why Use Product Feed Manager for WooCommerce? 🌟 ==
 
@@ -1830,5 +1829,5 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Upgrade Notice ==
 
-= 7.4.21 =
+= 7.4.22 =
 🚀 Recommended Upgrade 🚀 For users on v7.2.x or older, it'll amp up your plugin experience with better product filtering and RTL support. Some tweaks may be needed in your current feed settings/filters, so give 'em a check after switching to this version for smooth sailing. 😎🔧
