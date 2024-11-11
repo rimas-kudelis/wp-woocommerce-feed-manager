@@ -6,12 +6,11 @@ Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, 
 Requires at least: 5.0
 Tested up to:  6.6
 Requires PHP: 7.4
-Stable tag:  7.4.22
+Stable tag:  7.4.23
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Generate WooCommerce product feeds for Google Shopping, Facebook product feed, Instagram, Google Local Products Inventory, Pinterest, Bing, Yandex, & more than 180+ Marketplaces.
-
+Generate accurate WooCommerce Product Feed for Google Shopping, Facebook, Instagram, Pinterest, Bing, Idealo, Snapchat, TikTok & 180+ Others.
 
 == Description ==
 
@@ -32,12 +31,15 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - Pinterest Product Feed & Snapchat Product Feed
 - Vivino XML Feed
 - Rakuten Marketplace Feed
-- Large marketplaces in Czechia which include Heureka XML feed, Glami XML feed, and Favi Compari feed (to sell furniture online).
+- Large marketplaces in Czechia include Heureka XML feed, Glami XML feed, and Favi Compari feed (to sell furniture online).
 - eBay Seller Center & eBay MIP Feed
 -  **<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=PFM-repo-cta&utm_medium=PFM-repo&utm_campaign=repo_to_merchant">And 180+ More!</a>**
 
 
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-pricing" target="_blank">🔥 Get Product Feed Manager for WooCommerce - Pro Today! 🔥</a> </h4>
+🙌 Special Black Friday Sale 🙌
+
+
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=bfcm-2024" target="_blank">🔥 Get Product Feed Manager for WooCommerce - Pro at a 40% Discount Today! 💸 🔥 </a> </h4>
 
 == 🌟 Why Use Product Feed Manager for WooCommerce? 🌟 ==
 
@@ -490,6 +492,9 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 
 == Changelog ==
+
+= 7.4.23 (2024-11-11) =
+* Fixed: PHP deprecated warning in the feed generation process
 
 = 7.4.22 (2024-10-30) =
 * Fixed: Incomplete Title Output When Variation Title Contains " , "
