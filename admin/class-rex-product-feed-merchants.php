@@ -1056,6 +1056,11 @@ class Rex_Feed_Merchants {
                 'name'    => 'Varle.lt',
                 'formats' => array( 'xml' ),
             ),
+            'kainos'   => array(
+                'free'    => true,
+                'name'    => 'Kainos.lt',
+                'formats' => array('xml'),
+            ),
             'kogan'     => array(
                 'free'    => true,
                 'name'    => 'Kogan',
@@ -1085,7 +1090,7 @@ class Rex_Feed_Merchants {
 				'free'    => true,
 				'name'    => 'Webmarchand',
 				'formats' => array( 'xml', 'csv', 'tsv' ),
-            ),
+			),
 		);
 
 		$merchants[ 'popular' ]        = $popular;
