@@ -2,7 +2,7 @@
 
 Contributors: rextheme, coderexltd, coderexco
 Donate link: https://rextheme.com/best-WooCommerce-product-feed/
-Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, facebook product feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, skroutz, produktfeed, bing shopping, yml, YML for Yandex Market, woocommerce google product feed, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, woocommerce google shopping, Instagram product feed
+Tags: woocommerce product feed, woocommerce, facebook catalog ,google shopping, product feed, google feed, google merchant, product feed, google shopping feed, facebook feed, facebook product feed, woocommerce product feed manager, XML feed, google local products inventory, Instagram Feed, eBay MIP, woocommerce xml feed, CSV feed, marktplaats, feed generator wordpress, produktfeed, bing shopping, yml, YML for Yandex Market, woocommerce google product feed, facebook pixel, pinterest feed, tiktok feed, Google Remarketing Pixel, twitter ads, woocommerce google shopping, Instagram product feed
 Requires at least: 5.0
 Tested up to:  6.6
 Requires PHP: 7.4
