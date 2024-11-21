@@ -12,6 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Generate accurate WooCommerce Product Feed for Google Shopping, Facebook, Instagram, Pinterest, Bing, Idealo, Snapchat, TikTok & 180+ Others.
 
+
 == Description ==
 
 <h4> 🏆 The Easiest Plugin to Generate Your WooCommerce Product Feed for 180+ Online Marketplaces 🤩 </h4>
