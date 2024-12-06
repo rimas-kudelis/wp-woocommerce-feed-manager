@@ -27,7 +27,7 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 - <a href="https://rextheme.com/tiktok-feed-for-woocommerce-products/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=repo-to-tiktok-blog" target="_blank">TikTok Ads</a>
 - Idealo
 - Yandex Market (YML)
-- Twitter Ads (Currently X)
+- [Twitter Ads](https://youtu.be/he1zVVyoeTM?si=DFtrVK6A-o12fLf-) (Currently X)
 - Bing Shopping feed
 - Pinterest Product Feed & Snapchat Product Feed
 - Vivino XML Feed
@@ -37,10 +37,8 @@ Use our pre-defined merchant templates to generate flawless feeds for popular me
 -  **<a target="_blank" href="https://rextheme.com/best-woocommerce-product-feed/online-merchants/?utm_source=PFM-repo-cta&utm_medium=PFM-repo&utm_campaign=repo_to_merchant">And 180+ More!</a>**
 
 
-🙌 Special Black Friday Sale 🙌
+<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=PFM-repo-to-pricing" target="_blank">🔥 Get Product Feed Manager for WooCommerce - Pro at a 20% Discount Today! 🔥</a> </h4>
 
-
-<h4><a href="https://rextheme.com/best-woocommerce-product-feed/pricing/?utm_source=repo-CTA&utm_medium=PFM-repo&utm_campaign=bfcm-2024" target="_blank">🔥 Get Product Feed Manager for WooCommerce - Pro at a 40% Discount Today! 💸 🔥 </a> </h4>
 
 == 🌟 Why Use Product Feed Manager for WooCommerce? 🌟 ==
 
