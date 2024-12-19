@@ -492,7 +492,7 @@ You can report security bugs through the [Patchstack Vulnerability Disclosure Pr
 
 == Changelog ==
 
-= 7.4.26 (2024-12-18) =
+= 7.4.26 (2024-12-19) =
 * Added: Compatibility with `CURCY – Multi Currency for WooCommerce` plugin
 * Added: New output filter option `Strip Slashes`
 * Enhancement: Add target country and language for `Google Shopping` feed content API
