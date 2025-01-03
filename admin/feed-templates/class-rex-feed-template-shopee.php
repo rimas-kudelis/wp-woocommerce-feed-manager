@@ -1,6 +1,6 @@
 <?php
 /**
- * The shopalike marketplace Feed Template class.
+ * The adform Feed Template class.
  *
  * @link       https://rextheme.com
  * @since      1.1.4
@@ -10,10 +10,10 @@
  */
 
 /**
- * Defines the attributes and template for shopee marketplace feed.
+ * Defines the attributes and template for adform feed.
  *
  * @package    Rex_Product_Feed
- * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_Shopee
+ * @subpackage Rex_Product_Feed/admin/feed-templates/Rex_Feed_Template_Adform
  * @author     RexTheme <info@rextheme.com>
  */
 class Rex_Feed_Template_Shopee extends Rex_Feed_Abstract_Template {
@@ -25,21 +25,20 @@ class Rex_Feed_Template_Shopee extends Rex_Feed_Abstract_Template {
 	 */
 	protected function init_atts() {
 		$this->attributes = array(
-			'Required Information' => array(
-				'Variation Integration No.' => 'Variation Integration No.',
-				'Weight'                    => 'Weight',
-				'Images'                    => 'Images',
+			'Required Information'   => array(
+				'Product name'         => 'Product Name',
+				'SKU'                  => 'SKU',
+				'Price'                => 'Price',
+				'Stock Quantity'       => 'Stock Quantity',
+				'Main Image URL'       => 'Main Image URL',
+				'Product Description'  => 'Product Description',
+				'Shipping Information' => 'Shipping Information',
 			),
-			'Optional Information' => array(
-				'Product Name'        => 'Product Name',
-				'Product Description' => 'Product Description',
-				'Price'               => 'Price',
-				'Cover Image'         => 'Cover Image',
-				'Parent SKU'          => 'Parent SKU',
-				'SKU'                 => 'SKU',
-				'Dimensions'          => 'Dimensions',
-				'Pre-Order DTS'       => 'Pre-Order DTS',
-				'Stock'               => 'Stock',
+			'Additional Information' => array(
+				'Additional Image URLs' => 'Additional Image URLs',
+				'Brand'                 => 'Brand',
+				'Variations'            => 'Variations',
+				'Product Attributes'    => 'Product Attributes'
 			),
 		);
 	}
@@ -52,9 +51,9 @@ class Rex_Feed_Template_Shopee extends Rex_Feed_Abstract_Template {
 	protected function init_default_template_mappings() {
 		$this->template_mappings = array(
 			array(
-				'attr'     => 'Variation Integration No.',
-				'type'     => 'static',
-				'meta_key' => '',
+				'attr'     => 'Product Name',
+				'type'     => 'meta',
+				'meta_key' => 'title',
 				'st_value' => '',
 				'prefix'   => '',
 				'suffix'   => '',
@@ -62,9 +61,9 @@ class Rex_Feed_Template_Shopee extends Rex_Feed_Abstract_Template {
 				'limit'    => 0,
 			),
 			array(
-				'attr'     => 'Weight',
-				'type'     => 'static',
-				'meta_key' => '',
+				'attr'     => 'SKU',
+				'type'     => 'meta',
+				'meta_key' => 'sku',
 				'st_value' => '',
 				'prefix'   => '',
 				'suffix'   => '',
@@ -72,9 +71,29 @@ class Rex_Feed_Template_Shopee extends Rex_Feed_Abstract_Template {
 				'limit'    => 0,
 			),
 			array(
-				'attr'     => 'Images',
-				'type'     => 'static',
-				'meta_key' => '',
+				'attr'     => 'Stock Quantity',
+				'type'     => 'meta',
+				'meta_key' => 'quantity',
+				'st_value' => '',
+				'prefix'   => '',
+				'suffix'   => '',
+				'escape'   => 'cdata',
+				'limit'    => 0,
+			),
+			array(
+				'attr'     => 'Main Image URL',
+				'type'     => 'meta',
+				'meta_key' => 'main_image',
+				'st_value' => '',
+				'prefix'   => '',
+				'suffix'   => '',
+				'escape'   => 'default',
+				'limit'    => 0,
+			),
+			array(
+				'attr'     => 'Product Description',
+				'type'     => 'meta',
+				'meta_key' => 'description',
 				'st_value' => '',
 				'prefix'   => '',
 				'suffix'   => '',
